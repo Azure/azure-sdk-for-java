@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.policy.fluent.models.PolicyExemptionInner;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import com.azure.resourcemanager.resources.policy.models.Selector;
 import com.azure.resourcemanager.resources.policy.models.SelectorKind;
@@ -20,7 +21,7 @@ public final class PolicyExemptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyExemptionInner model = BinaryData.fromString(
-            "{\"properties\":{\"policyAssignmentId\":\"pn\",\"policyDefinitionReferenceIds\":[\"cwwyyur\",\"ochpprpr\",\"nmokayzejnhlbk\",\"bzpcpiljhahzvec\"],\"exemptionCategory\":\"Waiver\",\"expiresOn\":\"2021-11-07T12:28:01Z\",\"displayName\":\"wieholewjwiu\",\"description\":\"wefqsfapaqtferr\",\"metadata\":\"\\\"dataex\\\"\",\"resourceSelectors\":[{\"name\":\"xap\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"o\",\"pud\",\"dabtqwp\",\"yawbzasqbu\"],\"notIn\":[\"gkyexaoguy\"]}]},{\"name\":\"p\",\"selectors\":[{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"tx\",\"jjum\",\"qwazlnqnmcjngzq\",\"qxtbjwgnyf\"],\"notIn\":[\"zsvtuikzhajqgl\",\"fh\",\"l\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"y\",\"qnzrd\"],\"notIn\":[\"vwxzn\"]},{\"kind\":\"resourceType\",\"in\":[\"iyb\",\"abpfhvfs\",\"kvntjlrigjkskyri\",\"ovzidsx\"],\"notIn\":[\"bzmifrygznmmaxr\",\"zkzobgopxlhslnel\",\"ieixynllxe\",\"wcrojphslhcaw\"]}]},{\"name\":\"tifdwfmvi\",\"selectors\":[{\"kind\":\"resourceLocation\",\"in\":[\"tzh\",\"aglkafhon\"],\"notIn\":[\"jeick\",\"zvcpopm\"]}]},{\"name\":\"lnwcltyjed\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"kqscazuawxtzx\",\"uamwabzxrvxc\"],\"notIn\":[\"sphaivmxyasflvg\",\"gzwywak\",\"ihknsmjbl\"]}]}],\"assignmentScopeValidation\":\"DoNotValidate\"},\"id\":\"lnymzotqy\",\"name\":\"yuzcbmqqvxmvw\",\"type\":\"gtayxonsupeujlz\"}")
+            "{\"properties\":{\"policyAssignmentId\":\"pn\",\"policyDefinitionReferenceIds\":[\"cwwyyur\",\"ochpprpr\",\"nmokayzejnhlbk\",\"bzpcpiljhahzvec\"],\"exemptionCategory\":\"Waiver\",\"expiresOn\":\"2021-11-07T12:28:01Z\",\"displayName\":\"wieholewjwiu\",\"description\":\"wefqsfapaqtferr\",\"metadata\":\"\\\"dataex\\\"\",\"resourceSelectors\":[{\"name\":\"xap\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"o\",\"pud\",\"dabtqwp\",\"yawbzasqbu\"],\"notIn\":[\"gkyexaoguy\"]}]},{\"name\":\"p\",\"selectors\":[{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"tx\",\"jjum\",\"qwazlnqnmcjngzq\",\"qxtbjwgnyf\"],\"notIn\":[\"zsvtuikzhajqgl\",\"fh\",\"l\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"y\",\"qnzrd\"],\"notIn\":[\"vwxzn\"]},{\"kind\":\"resourceType\",\"in\":[\"iyb\",\"abpfhvfs\",\"kvntjlrigjkskyri\",\"ovzidsx\"],\"notIn\":[\"bzmifrygznmmaxr\",\"zkzobgopxlhslnel\",\"ieixynllxe\",\"wcrojphslhcaw\"]}]},{\"name\":\"tifdwfmvi\",\"selectors\":[{\"kind\":\"resourceLocation\",\"in\":[\"tzh\",\"aglkafhon\"],\"notIn\":[\"jeick\",\"zvcpopm\"]}]},{\"name\":\"lnwcltyjed\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"kqscazuawxtzx\",\"uamwabzxrvxc\"],\"notIn\":[\"sphaivmxyasflvg\",\"gzwywak\",\"ihknsmjbl\"]}]}],\"assignmentScopeValidation\":\"DoNotValidate\",\"exemptionManagementMode\":\"UserSelfServe\"},\"id\":\"ymzotqyryuzcbmq\",\"name\":\"vxmvw\",\"type\":\"gtayxonsupeujlz\"}")
             .toObject(PolicyExemptionInner.class);
         Assertions.assertEquals("pn", model.policyAssignmentId());
         Assertions.assertEquals("cwwyyur", model.policyDefinitionReferenceIds().get(0));
@@ -34,6 +35,7 @@ public final class PolicyExemptionInnerTests {
         Assertions.assertEquals("o", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
         Assertions.assertEquals("gkyexaoguy", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
         Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, model.assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.USER_SELF_SERVE, model.exemptionManagementMode());
     }
 
     @org.junit.jupiter.api.Test
@@ -81,7 +83,8 @@ public final class PolicyExemptionInnerTests {
                                     Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
                                         .withIn(Arrays.asList("kqscazuawxtzx", "uamwabzxrvxc"))
                                         .withNotIn(Arrays.asList("sphaivmxyasflvg", "gzwywak", "ihknsmjbl"))))))
-                .withAssignmentScopeValidation(AssignmentScopeValidation.DO_NOT_VALIDATE);
+                .withAssignmentScopeValidation(AssignmentScopeValidation.DO_NOT_VALIDATE)
+                .withExemptionManagementMode(ExemptionManagementMode.USER_SELF_SERVE);
         model = BinaryData.fromObject(model).toObject(PolicyExemptionInner.class);
         Assertions.assertEquals("pn", model.policyAssignmentId());
         Assertions.assertEquals("cwwyyur", model.policyDefinitionReferenceIds().get(0));
@@ -95,5 +98,6 @@ public final class PolicyExemptionInnerTests {
         Assertions.assertEquals("o", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
         Assertions.assertEquals("gkyexaoguy", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
         Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, model.assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.USER_SELF_SERVE, model.exemptionManagementMode());
     }
 }

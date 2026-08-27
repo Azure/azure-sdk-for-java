@@ -27,7 +27,8 @@ public final class VariablesDeleteAtManagementGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.variables().deleteAtManagementGroupWithResponse("de", "esu", com.azure.core.util.Context.NONE);
+        manager.variables()
+            .deleteAtManagementGroupWithResponse("hsdbfbm", "ivixzhpjg", com.azure.core.util.Context.NONE);
 
     }
 }

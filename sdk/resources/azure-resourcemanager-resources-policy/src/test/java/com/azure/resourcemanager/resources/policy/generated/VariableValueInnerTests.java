@@ -15,19 +15,17 @@ public final class VariableValueInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VariableValueInner model = BinaryData.fromString(
-            "{\"properties\":{\"values\":[{\"columnName\":\"ah\",\"columnValue\":\"\\\"datahxalybxawo\\\"\"},{\"columnName\":\"jpodtbl\",\"columnValue\":\"\\\"datapkkwj\\\"\"}]},\"id\":\"odqhyk\",\"name\":\"ncn\",\"type\":\"emehllizh\"}")
+            "{\"properties\":{\"values\":[{\"columnName\":\"mxrfdsa\",\"columnValue\":\"\\\"datarednw\\\"\"}]},\"id\":\"shtuwgm\",\"name\":\"vuafpwzyifr\",\"type\":\"gwltxeqip\"}")
             .toObject(VariableValueInner.class);
-        Assertions.assertEquals("ah", model.values().get(0).columnName());
+        Assertions.assertEquals("mxrfdsa", model.values().get(0).columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VariableValueInner model = new VariableValueInner().withValues(Arrays.asList(
-            new PolicyVariableValueColumnValue().withColumnName("ah")
-                .withColumnValue(BinaryData.fromBytes("\"datahxalybxawo\"".getBytes(StandardCharsets.UTF_8))),
-            new PolicyVariableValueColumnValue().withColumnName("jpodtbl")
-                .withColumnValue(BinaryData.fromBytes("\"datapkkwj\"".getBytes(StandardCharsets.UTF_8)))));
+        VariableValueInner model = new VariableValueInner()
+            .withValues(Arrays.asList(new PolicyVariableValueColumnValue().withColumnName("mxrfdsa")
+                .withColumnValue(BinaryData.fromBytes("\"datarednw\"".getBytes(StandardCharsets.UTF_8)))));
         model = BinaryData.fromObject(model).toObject(VariableValueInner.class);
-        Assertions.assertEquals("ah", model.values().get(0).columnName());
+        Assertions.assertEquals("mxrfdsa", model.values().get(0).columnName());
     }
 }

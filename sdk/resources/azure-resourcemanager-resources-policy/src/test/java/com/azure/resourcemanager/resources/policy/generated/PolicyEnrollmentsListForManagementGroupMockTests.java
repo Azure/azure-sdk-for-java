@@ -23,7 +23,7 @@ public final class PolicyEnrollmentsListForManagementGroupMockTests {
     @Test
     public void testListForManagementGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"at\",\"policyAssignmentInstanceId\":\"rznmginmtsdixc\",\"policyDefinitionReferenceIds\":[\"ibmg\",\"ymncjc\",\"gair\"],\"displayName\":\"qzoof\",\"description\":\"qjsvep\",\"metadata\":\"\\\"datahtleberpyljek\\\"\",\"assignmentScopeValidation\":\"Default\",\"resourceSelectors\":[{\"name\":\"j\",\"selectors\":[{},{}]},{\"name\":\"kdnjrxgkrhwie\",\"selectors\":[{},{}]},{\"name\":\"nowawonoehrguqlh\",\"selectors\":[{},{}]},{\"name\":\"bjzm\",\"selectors\":[{},{}]}]},\"eTag\":\"uyfazbkoc\",\"id\":\"gvthrmxkbcjww\",\"name\":\"xomraw\",\"type\":\"pkeboozflyac\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"vx\",\"policyAssignmentInstanceId\":\"dxonckbn\",\"policyDefinitionReferenceIds\":[\"fxlupibaq\",\"izxzpzweghl\",\"wbogvgfklqiy\",\"dve\"],\"displayName\":\"lsb\",\"description\":\"dstrkzxsgtz\",\"metadata\":\"\\\"datavlrdsmovpi\\\"\",\"assignmentScopeValidation\":\"DoNotValidate\",\"resourceSelectors\":[{\"name\":\"xaxnrq\",\"selectors\":[{}]},{\"name\":\"nndx\",\"selectors\":[{}]},{\"name\":\"sdvr\",\"selectors\":[{}]},{\"name\":\"m\",\"selectors\":[{},{}]}]},\"eTag\":\"drpizfulgyctsdb\",\"id\":\"gkujdsooxrqwoe\",\"name\":\"rbtigap\",\"type\":\"ya\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class PolicyEnrollmentsListForManagementGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PolicyEnrollment> response = manager.policyEnrollments()
-            .listForManagementGroup("ukppdixqbo", "xvhhyqq", com.azure.core.util.Context.NONE);
+        PagedIterable<PolicyEnrollment> response
+            = manager.policyEnrollments().listForManagementGroup("toiboancdr", "o", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uyfazbkoc", response.iterator().next().eTag());
-        Assertions.assertEquals("at", response.iterator().next().policyAssignmentId());
-        Assertions.assertEquals("ibmg", response.iterator().next().policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals("qzoof", response.iterator().next().displayName());
-        Assertions.assertEquals("qjsvep", response.iterator().next().description());
-        Assertions.assertEquals(AssignmentScopeValidation.DEFAULT,
+        Assertions.assertEquals("drpizfulgyctsdb", response.iterator().next().eTag());
+        Assertions.assertEquals("vx", response.iterator().next().policyAssignmentId());
+        Assertions.assertEquals("fxlupibaq", response.iterator().next().policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals("lsb", response.iterator().next().displayName());
+        Assertions.assertEquals("dstrkzxsgtz", response.iterator().next().description());
+        Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE,
             response.iterator().next().assignmentScopeValidation());
-        Assertions.assertEquals("j", response.iterator().next().resourceSelectors().get(0).name());
+        Assertions.assertEquals("xaxnrq", response.iterator().next().resourceSelectors().get(0).name());
     }
 }

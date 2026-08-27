@@ -22,7 +22,7 @@ public final class PolicyEnrollmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"ibkgxyxyau\",\"policyAssignmentInstanceId\":\"eddobmcnltm\",\"policyDefinitionReferenceIds\":[\"kujsqycmm\",\"xfabl\",\"gpwb\"],\"displayName\":\"hr\",\"description\":\"li\",\"metadata\":\"\\\"dataycgnwplrrbphc\\\"\",\"assignmentScopeValidation\":\"Default\",\"resourceSelectors\":[{\"name\":\"ticuhqvumsp\",\"selectors\":[{},{}]},{\"name\":\"eqbbewfcuqfpy\",\"selectors\":[{},{}]},{\"name\":\"rmtmvwi\",\"selectors\":[{}]}]},\"eTag\":\"yyjshcybwfuppo\",\"id\":\"rcmvouujx\",\"name\":\"iikmoxrezsvavlrx\",\"type\":\"kj\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"iqqzjkoxdupn\",\"policyAssignmentInstanceId\":\"gl\",\"policyDefinitionReferenceIds\":[\"i\",\"d\",\"fivjqterdqqigdy\",\"kghpcv\"],\"displayName\":\"qirvtk\",\"description\":\"hhmvf\",\"metadata\":\"\\\"dataapj\\\"\",\"assignmentScopeValidation\":\"DoNotValidate\",\"resourceSelectors\":[{\"name\":\"rrwe\",\"selectors\":[{},{}]},{\"name\":\"qokqlujqgirabwly\",\"selectors\":[{},{},{},{}]},{\"name\":\"pqvctsfaeuhwwsk\",\"selectors\":[{},{},{}]},{\"name\":\"zuzhasup\",\"selectors\":[{}]}]},\"eTag\":\"dpgzvzqazv\",\"id\":\"arkptgongruatsyi\",\"name\":\"sjqhenigbeqngu\",\"type\":\"aby\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,16 +31,15 @@ public final class PolicyEnrollmentsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PolicyEnrollment response = manager.policyEnrollments()
-            .getWithResponse("ieopexelxqdwr", "wyil", com.azure.core.util.Context.NONE)
-            .getValue();
+        PolicyEnrollment response
+            = manager.policyEnrollments().getWithResponse("g", "ll", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("yyjshcybwfuppo", response.eTag());
-        Assertions.assertEquals("ibkgxyxyau", response.policyAssignmentId());
-        Assertions.assertEquals("kujsqycmm", response.policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals("hr", response.displayName());
-        Assertions.assertEquals("li", response.description());
-        Assertions.assertEquals(AssignmentScopeValidation.DEFAULT, response.assignmentScopeValidation());
-        Assertions.assertEquals("ticuhqvumsp", response.resourceSelectors().get(0).name());
+        Assertions.assertEquals("dpgzvzqazv", response.eTag());
+        Assertions.assertEquals("iqqzjkoxdupn", response.policyAssignmentId());
+        Assertions.assertEquals("i", response.policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals("qirvtk", response.displayName());
+        Assertions.assertEquals("hhmvf", response.description());
+        Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, response.assignmentScopeValidation());
+        Assertions.assertEquals("rrwe", response.resourceSelectors().get(0).name());
     }
 }

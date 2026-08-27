@@ -12,19 +12,19 @@ public final class PolicyLogInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyLogInfo model = BinaryData.fromString(
-            "{\"policyDefinitionId\":\"disnj\",\"policySetDefinitionId\":\"hdlmydidwhe\",\"policyDefinitionReferenceId\":\"wwtjfdoesxxhmwc\",\"policySetDefinitionName\":\"ck\",\"policySetDefinitionVersion\":\"ikxkxhneg\",\"policyDefinitionName\":\"jzrbhtmeplv\",\"policyDefinitionVersion\":\"aobrlbp\",\"policyDefinitionEffect\":\"nbagnchj\",\"policyAssignmentId\":\"emuowakyw\",\"policyAssignmentName\":\"hjym\",\"policyAssignmentVersion\":\"gqtagd\",\"policyAssignmentScope\":\"lss\"}")
+            "{\"policyDefinitionId\":\"ygywe\",\"policySetDefinitionId\":\"kiecafygzm\",\"policyDefinitionReferenceId\":\"eqvdsm\",\"policySetDefinitionName\":\"lixqcah\",\"policySetDefinitionVersion\":\"xalybxawoijpo\",\"policyDefinitionName\":\"blxpkkwjdjodq\",\"policyDefinitionVersion\":\"kincnremeh\",\"policyDefinitionEffect\":\"izhceumoqodkadp\",\"policyAssignmentId\":\"ibngqladyw\",\"policyAssignmentName\":\"whydt\",\"policyAssignmentVersion\":\"vvadswzs\",\"policyAssignmentScope\":\"yemlowuowhlxln\"}")
             .toObject(PolicyLogInfo.class);
-        Assertions.assertEquals("disnj", model.policyDefinitionId());
-        Assertions.assertEquals("hdlmydidwhe", model.policySetDefinitionId());
-        Assertions.assertEquals("wwtjfdoesxxhmwc", model.policyDefinitionReferenceId());
-        Assertions.assertEquals("ck", model.policySetDefinitionName());
-        Assertions.assertEquals("ikxkxhneg", model.policySetDefinitionVersion());
-        Assertions.assertEquals("jzrbhtmeplv", model.policyDefinitionName());
-        Assertions.assertEquals("aobrlbp", model.policyDefinitionVersion());
-        Assertions.assertEquals("nbagnchj", model.policyDefinitionEffect());
-        Assertions.assertEquals("emuowakyw", model.policyAssignmentId());
-        Assertions.assertEquals("hjym", model.policyAssignmentName());
-        Assertions.assertEquals("gqtagd", model.policyAssignmentVersion());
-        Assertions.assertEquals("lss", model.policyAssignmentScope());
+        Assertions.assertEquals("ygywe", model.policyDefinitionId());
+        Assertions.assertEquals("kiecafygzm", model.policySetDefinitionId());
+        Assertions.assertEquals("eqvdsm", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("lixqcah", model.policySetDefinitionName());
+        Assertions.assertEquals("xalybxawoijpo", model.policySetDefinitionVersion());
+        Assertions.assertEquals("blxpkkwjdjodq", model.policyDefinitionName());
+        Assertions.assertEquals("kincnremeh", model.policyDefinitionVersion());
+        Assertions.assertEquals("izhceumoqodkadp", model.policyDefinitionEffect());
+        Assertions.assertEquals("ibngqladyw", model.policyAssignmentId());
+        Assertions.assertEquals("whydt", model.policyAssignmentName());
+        Assertions.assertEquals("vvadswzs", model.policyAssignmentVersion());
+        Assertions.assertEquals("yemlowuowhlxln", model.policyAssignmentScope());
     }
 }

@@ -22,7 +22,7 @@ public final class VariablesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"columns\":[{\"columnName\":\"py\"},{\"columnName\":\"qeigxuyxsxteuik\"},{\"columnName\":\"znfffnhcgnaqsrm\"},{\"columnName\":\"fqderkr\"}]},\"id\":\"dcob\",\"name\":\"mgqlwyqznbbyzpo\",\"type\":\"zfutgpbygbnb\"}]}";
+            = "{\"value\":[{\"properties\":{\"columns\":[{\"columnName\":\"ouisakl\"},{\"columnName\":\"jfddxqfussub\"},{\"columnName\":\"sspmjvailfauyv\"},{\"columnName\":\"p\"}]},\"id\":\"lkqdgwbztrth\",\"name\":\"dwvog\",\"type\":\"ffjdhgslormhbt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class VariablesListMockTests {
 
         PagedIterable<Variable> response = manager.variables().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("py", response.iterator().next().columns().get(0).columnName());
+        Assertions.assertEquals("ouisakl", response.iterator().next().columns().get(0).columnName());
     }
 }

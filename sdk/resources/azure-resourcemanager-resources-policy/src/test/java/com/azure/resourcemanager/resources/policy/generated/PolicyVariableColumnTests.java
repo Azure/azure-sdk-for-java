@@ -12,14 +12,14 @@ public final class PolicyVariableColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyVariableColumn model
-            = BinaryData.fromString("{\"columnName\":\"eqrkuorhtss\"}").toObject(PolicyVariableColumn.class);
-        Assertions.assertEquals("eqrkuorhtss", model.columnName());
+            = BinaryData.fromString("{\"columnName\":\"ijo\"}").toObject(PolicyVariableColumn.class);
+        Assertions.assertEquals("ijo", model.columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyVariableColumn model = new PolicyVariableColumn().withColumnName("eqrkuorhtss");
+        PolicyVariableColumn model = new PolicyVariableColumn().withColumnName("ijo");
         model = BinaryData.fromObject(model).toObject(PolicyVariableColumn.class);
-        Assertions.assertEquals("eqrkuorhtss", model.columnName());
+        Assertions.assertEquals("ijo", model.columnName());
     }
 }

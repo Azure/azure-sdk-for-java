@@ -28,7 +28,7 @@ public final class VariableValuesDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.variableValues()
-            .deleteByResourceGroupWithResponse("vmnkgghvsryjok", "lwvbjsarxs", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("doebldpoiaffj", "rtnhrevimxmax", com.azure.core.util.Context.NONE);
 
     }
 }

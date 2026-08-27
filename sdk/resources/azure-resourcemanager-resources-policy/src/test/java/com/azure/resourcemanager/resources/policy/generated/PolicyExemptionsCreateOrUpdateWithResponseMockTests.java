@@ -13,6 +13,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.policy.PolicyManager;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import com.azure.resourcemanager.resources.policy.models.Selector;
@@ -27,7 +28,7 @@ public final class PolicyExemptionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"sozjvxdzciggbnv\",\"policyDefinitionReferenceIds\":[\"fwalzyxwhoeamo\"],\"exemptionCategory\":\"Waiver\",\"expiresOn\":\"2021-09-23T11:19:21Z\",\"displayName\":\"eysf\",\"description\":\"imtwuuhau\",\"metadata\":\"\\\"datankwmnfeub\\\"\",\"resourceSelectors\":[{\"name\":\"r\",\"selectors\":[{},{},{}]},{\"name\":\"giphrrkuumnqdu\",\"selectors\":[{},{}]}],\"assignmentScopeValidation\":\"DoNotValidate\"},\"id\":\"pue\",\"name\":\"qusvwlujopwnib\",\"type\":\"ttoztj\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"ejp\",\"policyDefinitionReferenceIds\":[\"hvtozyagjjnxkb\",\"lh\",\"yxg\"],\"exemptionCategory\":\"Mitigated\",\"expiresOn\":\"2020-12-31T17:44:18Z\",\"displayName\":\"q\",\"description\":\"wtrdgs\",\"metadata\":\"\\\"datavq\\\"\",\"resourceSelectors\":[{\"name\":\"gnwxl\",\"selectors\":[{},{},{},{}]},{\"name\":\"yohxpth\",\"selectors\":[{},{},{}]},{\"name\":\"vk\",\"selectors\":[{},{},{}]}],\"assignmentScopeValidation\":\"Default\",\"exemptionManagementMode\":\"Admin\"},\"id\":\"bpbokhmml\",\"name\":\"dyarnggcjfwblq\",\"type\":\"xka\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,29 +38,32 @@ public final class PolicyExemptionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyExemption response = manager.policyExemptions()
-            .define("akkuc")
-            .withExistingScope("bc")
-            .withPolicyAssignmentId("wnhczbutou")
-            .withPolicyDefinitionReferenceIds(Arrays.asList("tirjwayh", "cqqwwvgwkslvlize", "vbia", "v"))
-            .withExemptionCategory(ExemptionCategory.MITIGATED)
-            .withExpiresOn(OffsetDateTime.parse("2021-08-21T09:31:03Z"))
-            .withDisplayName("kzyqxadyfhbmw")
-            .withDescription("ojqttbsp")
-            .withMetadata(BinaryData.fromBytes("\"datahg\"".getBytes(StandardCharsets.UTF_8)))
+            .define("rbccqcdht")
+            .withExistingScope("d")
+            .withPolicyAssignmentId("jvlirk")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("osa"))
+            .withExemptionCategory(ExemptionCategory.WAIVER)
+            .withExpiresOn(OffsetDateTime.parse("2021-10-15T07:18:41Z"))
+            .withDisplayName("agzlgpyai")
+            .withDescription("hzqjjtsmuydqfttk")
+            .withMetadata(BinaryData.fromBytes("\"dataybd\"".getBytes(StandardCharsets.UTF_8)))
             .withResourceSelectors(Arrays.asList(
-                new ResourceSelector().withName("sgyzstujrzxr").withSelectors(Arrays.asList(new Selector())),
-                new ResourceSelector().withName("d")
-                    .withSelectors(Arrays.asList(new Selector(), new Selector(), new Selector()))))
-            .withAssignmentScopeValidation(AssignmentScopeValidation.DEFAULT)
+                new ResourceSelector().withName("gmcdcpkshl")
+                    .withSelectors(Arrays.asList(new Selector(), new Selector(), new Selector(), new Selector())),
+                new ResourceSelector().withName("mhzic")
+                    .withSelectors(Arrays.asList(new Selector(), new Selector(), new Selector(), new Selector()))))
+            .withAssignmentScopeValidation(AssignmentScopeValidation.DO_NOT_VALIDATE)
+            .withExemptionManagementMode(ExemptionManagementMode.USER_SELF_SERVE)
             .create();
 
-        Assertions.assertEquals("sozjvxdzciggbnv", response.policyAssignmentId());
-        Assertions.assertEquals("fwalzyxwhoeamo", response.policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals(ExemptionCategory.WAIVER, response.exemptionCategory());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T11:19:21Z"), response.expiresOn());
-        Assertions.assertEquals("eysf", response.displayName());
-        Assertions.assertEquals("imtwuuhau", response.description());
-        Assertions.assertEquals("r", response.resourceSelectors().get(0).name());
-        Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, response.assignmentScopeValidation());
+        Assertions.assertEquals("ejp", response.policyAssignmentId());
+        Assertions.assertEquals("hvtozyagjjnxkb", response.policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals(ExemptionCategory.MITIGATED, response.exemptionCategory());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T17:44:18Z"), response.expiresOn());
+        Assertions.assertEquals("q", response.displayName());
+        Assertions.assertEquals("wtrdgs", response.description());
+        Assertions.assertEquals("gnwxl", response.resourceSelectors().get(0).name());
+        Assertions.assertEquals(AssignmentScopeValidation.DEFAULT, response.assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.ADMIN, response.exemptionManagementMode());
     }
 }

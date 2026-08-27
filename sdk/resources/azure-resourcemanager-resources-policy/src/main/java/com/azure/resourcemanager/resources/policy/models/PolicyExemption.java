@@ -111,6 +111,13 @@ public interface PolicyExemption {
     AssignmentScopeValidation assignmentScopeValidation();
 
     /**
+     * Gets the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @return the exemptionManagementMode value.
+     */
+    ExemptionManagementMode exemptionManagementMode();
+
+    /**
      * Gets the inner com.azure.resourcemanager.resources.policy.fluent.models.PolicyExemptionInner object.
      * 
      * @return the inner object.
@@ -154,7 +161,7 @@ public interface PolicyExemption {
             extends DefinitionStages.WithPolicyAssignmentId, DefinitionStages.WithPolicyDefinitionReferenceIds,
             DefinitionStages.WithExemptionCategory, DefinitionStages.WithExpiresOn, DefinitionStages.WithDisplayName,
             DefinitionStages.WithDescription, DefinitionStages.WithMetadata, DefinitionStages.WithResourceSelectors,
-            DefinitionStages.WithAssignmentScopeValidation {
+            DefinitionStages.WithAssignmentScopeValidation, DefinitionStages.WithExemptionManagementMode {
             /**
              * Executes the create request.
              * 
@@ -297,6 +304,19 @@ public interface PolicyExemption {
              */
             WithCreate withAssignmentScopeValidation(AssignmentScopeValidation assignmentScopeValidation);
         }
+
+        /**
+         * The stage of the PolicyExemption definition allowing to specify exemptionManagementMode.
+         */
+        interface WithExemptionManagementMode {
+            /**
+             * Specifies the exemptionManagementMode property: The mode indicating how the policy exemption is managed..
+             * 
+             * @param exemptionManagementMode The mode indicating how the policy exemption is managed.
+             * @return the next definition stage.
+             */
+            WithCreate withExemptionManagementMode(ExemptionManagementMode exemptionManagementMode);
+        }
     }
 
     /**
@@ -309,7 +329,8 @@ public interface PolicyExemption {
     /**
      * The template for PolicyExemption update.
      */
-    interface Update extends UpdateStages.WithResourceSelectors, UpdateStages.WithAssignmentScopeValidation {
+    interface Update extends UpdateStages.WithResourceSelectors, UpdateStages.WithAssignmentScopeValidation,
+        UpdateStages.WithExemptionManagementMode {
         /**
          * Executes the update request.
          * 
@@ -357,6 +378,19 @@ public interface PolicyExemption {
              * @return the next definition stage.
              */
             Update withAssignmentScopeValidation(AssignmentScopeValidation assignmentScopeValidation);
+        }
+
+        /**
+         * The stage of the PolicyExemption update allowing to specify exemptionManagementMode.
+         */
+        interface WithExemptionManagementMode {
+            /**
+             * Specifies the exemptionManagementMode property: The mode indicating how the policy exemption is managed..
+             * 
+             * @param exemptionManagementMode The mode indicating how the policy exemption is managed.
+             * @return the next definition stage.
+             */
+            Update withExemptionManagementMode(ExemptionManagementMode exemptionManagementMode);
         }
     }
 

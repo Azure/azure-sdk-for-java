@@ -24,7 +24,7 @@ public final class VariableValuesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"values\":[{\"columnName\":\"nwzruzsoowx\",\"columnValue\":\"\\\"datasmxtlcappnvc\\\"\"},{\"columnName\":\"bsp\",\"columnValue\":\"\\\"datairyomhkdwuwedupb\\\"\"}]},\"id\":\"zkwh\",\"name\":\"jsqwhaefefvv\",\"type\":\"x\"}";
+            = "{\"properties\":{\"values\":[{\"columnName\":\"cxbjgfmyqyyfrri\",\"columnValue\":\"\\\"datazfpsf\\\"\"},{\"columnName\":\"akidfhmlxrqk\",\"columnValue\":\"\\\"dataknumk\\\"\"},{\"columnName\":\"afzvptriysjrg\",\"columnValue\":\"\\\"datar\\\"\"}]},\"id\":\"puqpsrcekdvvo\",\"name\":\"dwedg\",\"type\":\"w\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,17 @@ public final class VariableValuesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VariableValue response = manager.variableValues()
-            .define("duwd")
-            .withExistingVariable("ndu")
+            .define("xw")
+            .withExistingVariable("oqwrnfckjthlok")
             .withValues(Arrays.asList(
-                new PolicyVariableValueColumnValue().withColumnName("xtqmr")
-                    .withColumnValue(BinaryData.fromBytes("\"datac\"".getBytes(StandardCharsets.UTF_8))),
-                new PolicyVariableValueColumnValue().withColumnName("s")
-                    .withColumnValue(BinaryData.fromBytes("\"datalzbki\"".getBytes(StandardCharsets.UTF_8)))))
+                new PolicyVariableValueColumnValue().withColumnName("ubkng")
+                    .withColumnValue(BinaryData.fromBytes("\"datajjxumowynjmoozm\"".getBytes(StandardCharsets.UTF_8))),
+                new PolicyVariableValueColumnValue().withColumnName("uktdrsjtmnkxjouw")
+                    .withColumnValue(BinaryData.fromBytes("\"datazcfdtstiaxtyrnu\"".getBytes(StandardCharsets.UTF_8))),
+                new PolicyVariableValueColumnValue().withColumnName("cfhep")
+                    .withColumnValue(BinaryData.fromBytes("\"datasqbcmlroiomme\"".getBytes(StandardCharsets.UTF_8)))))
             .create();
 
-        Assertions.assertEquals("nwzruzsoowx", response.values().get(0).columnName());
+        Assertions.assertEquals("cxbjgfmyqyyfrri", response.values().get(0).columnName());
     }
 }

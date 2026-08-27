@@ -13,16 +13,16 @@ public final class PolicyVariableValueColumnValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyVariableValueColumnValue model
-            = BinaryData.fromString("{\"columnName\":\"uvvadswzsnu\",\"columnValue\":\"\\\"dataemlowuowhl\\\"\"}")
+            = BinaryData.fromString("{\"columnName\":\"ewxigpxvk\",\"columnValue\":\"\\\"datamaupxvpi\\\"\"}")
                 .toObject(PolicyVariableValueColumnValue.class);
-        Assertions.assertEquals("uvvadswzsnu", model.columnName());
+        Assertions.assertEquals("ewxigpxvk", model.columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyVariableValueColumnValue model = new PolicyVariableValueColumnValue().withColumnName("uvvadswzsnu")
-            .withColumnValue(BinaryData.fromBytes("\"dataemlowuowhl\"".getBytes(StandardCharsets.UTF_8)));
+        PolicyVariableValueColumnValue model = new PolicyVariableValueColumnValue().withColumnName("ewxigpxvk")
+            .withColumnValue(BinaryData.fromBytes("\"datamaupxvpi\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(PolicyVariableValueColumnValue.class);
-        Assertions.assertEquals("uvvadswzsnu", model.columnName());
+        Assertions.assertEquals("ewxigpxvk", model.columnName());
     }
 }

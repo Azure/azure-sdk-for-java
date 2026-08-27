@@ -21,7 +21,7 @@ public final class VariablesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"columns\":[{\"columnName\":\"d\"}]},\"id\":\"yqruvumryddnqiva\",\"name\":\"fc\",\"type\":\"wnjzebpicciyoy\"}";
+            = "{\"properties\":{\"columns\":[{\"columnName\":\"vjsbgmlamoaxc\"},{\"columnName\":\"ytn\"},{\"columnName\":\"kvbpbl\"},{\"columnName\":\"cw\"}]},\"id\":\"xheeocnqo\",\"name\":\"bvepvlryszfhd\",\"type\":\"yfhxohzbzhhav\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,8 @@ public final class VariablesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Variable response
-            = manager.variables().getWithResponse("qoqovqhgphgx", com.azure.core.util.Context.NONE).getValue();
+        Variable response = manager.variables().getWithResponse("efuhb", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("d", response.columns().get(0).columnName());
+        Assertions.assertEquals("vjsbgmlamoaxc", response.columns().get(0).columnName());
     }
 }

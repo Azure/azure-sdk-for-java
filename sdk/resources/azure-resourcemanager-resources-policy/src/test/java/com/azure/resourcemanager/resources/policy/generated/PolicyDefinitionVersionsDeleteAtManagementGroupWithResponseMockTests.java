@@ -28,8 +28,7 @@ public final class PolicyDefinitionVersionsDeleteAtManagementGroupWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policyDefinitionVersions()
-            .deleteAtManagementGroupWithResponse("rshzzbgullcxiqqz", "koxdupnamgl", "ouigdmfivjqte",
-                com.azure.core.util.Context.NONE);
+            .deleteAtManagementGroupWithResponse("izuxlrarwpewsaud", "ejtig", "sx", com.azure.core.util.Context.NONE);
 
     }
 }

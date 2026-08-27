@@ -22,7 +22,7 @@ public final class VariableValuesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"values\":[{\"columnName\":\"gfgqpudhgxgiea\",\"columnValue\":\"\\\"databfpxxavlozukg\\\"\"},{\"columnName\":\"nu\",\"columnValue\":\"\\\"datawyxjsfmaxcebnbeo\\\"\"},{\"columnName\":\"kemqqerwqx\",\"columnValue\":\"\\\"datajpvemdfkht\\\"\"},{\"columnName\":\"uo\",\"columnValue\":\"\\\"datar\\\"\"}]},\"id\":\"mhyt\",\"name\":\"bjkjge\",\"type\":\"cwtfmabvbmn\"}]}";
+            = "{\"value\":[{\"properties\":{\"values\":[{\"columnName\":\"soqtbfkvuozbzch\",\"columnValue\":\"\\\"dataqekwanklpurl\\\"\"},{\"columnName\":\"ydjhtkjserwi\",\"columnValue\":\"\\\"datandurdonkgobxbl\\\"\"},{\"columnName\":\"dolenrsw\",\"columnValue\":\"\\\"datanpdrgnmzaofroe\\\"\"}]},\"id\":\"ckievyr\",\"name\":\"jyoybkqftusdw\",\"type\":\"nrtv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class VariableValuesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VariableValue> response
-            = manager.variableValues().list("mfpabw", com.azure.core.util.Context.NONE);
+            = manager.variableValues().list("jppitygv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gfgqpudhgxgiea", response.iterator().next().values().get(0).columnName());
+        Assertions.assertEquals("soqtbfkvuozbzch", response.iterator().next().values().get(0).columnName());
     }
 }

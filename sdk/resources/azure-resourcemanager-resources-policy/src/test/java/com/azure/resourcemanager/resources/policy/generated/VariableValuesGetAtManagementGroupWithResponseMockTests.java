@@ -21,7 +21,7 @@ public final class VariableValuesGetAtManagementGroupWithResponseMockTests {
     @Test
     public void testGetAtManagementGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"values\":[{\"columnName\":\"spscvsmsp\",\"columnValue\":\"\\\"dataluwozf\\\"\"},{\"columnName\":\"zasupcvqgx\",\"columnValue\":\"\\\"datavwio\\\"\"}]},\"id\":\"cmcgmlmpnvq\",\"name\":\"uyiarznhdqseyp\",\"type\":\"lmajpuyxoafrmz\"}";
+            = "{\"properties\":{\"values\":[{\"columnName\":\"s\",\"columnValue\":\"\\\"datapywdibugvnrgal\\\"\"},{\"columnName\":\"wrhry\",\"columnValue\":\"\\\"databrbknuubxcwoj\\\"\"},{\"columnName\":\"upqdv\",\"columnValue\":\"\\\"datapy\\\"\"}]},\"id\":\"vffifujgtdo\",\"name\":\"lxmwefcbybpchrtc\",\"type\":\"wjcujyznvyr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,9 @@ public final class VariableValuesGetAtManagementGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VariableValue response = manager.variableValues()
-            .getAtManagementGroupWithResponse("twofxfmhlvy", "nslbqr", "lqkiekhjgqqru",
-                com.azure.core.util.Context.NONE)
+            .getAtManagementGroupWithResponse("bucnnrov", "me", "xwsicvwqzocsfshe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("spscvsmsp", response.values().get(0).columnName());
+        Assertions.assertEquals("s", response.values().get(0).columnName());
     }
 }

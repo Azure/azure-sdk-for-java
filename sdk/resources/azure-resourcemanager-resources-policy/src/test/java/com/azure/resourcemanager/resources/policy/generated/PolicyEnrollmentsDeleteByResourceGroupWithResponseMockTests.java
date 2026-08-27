@@ -28,7 +28,7 @@ public final class PolicyEnrollmentsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policyEnrollments()
-            .deleteByResourceGroupWithResponse("oywlunpipcwyb", "zfn", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("deayscseydzje", "exmnv", com.azure.core.util.Context.NONE);
 
     }
 }

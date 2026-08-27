@@ -17,28 +17,31 @@ public final class PolicyDefinitionReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyDefinitionReference model = BinaryData.fromString(
-            "{\"policyDefinitionId\":\"iblkujr\",\"definitionVersion\":\"fojuidjpuuyj\",\"latestDefinitionVersion\":\"ejikzoeovvtzejet\",\"effectiveDefinitionVersion\":\"ln\",\"parameters\":{\"lxrzvhqjwtr\":{\"value\":\"\\\"datajuzkdbqz\\\"\"}},\"policyDefinitionReferenceId\":\"gv\",\"groupNames\":[\"c\",\"rkolawjm\"]}")
+            "{\"policyDefinitionId\":\"kspzhzmtksjcit\",\"definitionVersion\":\"gsxcdgljplkeua\",\"latestDefinitionVersion\":\"tomflrytswfpf\",\"effectiveDefinitionVersion\":\"gycxnmskwhqjjys\",\"parameters\":{\"mpqvwwsk\":{\"value\":\"\\\"datapshhkvpedwqslsr\\\"\"},\"josovyrrl\":{\"value\":\"\\\"datadcbrwimuvq\\\"\"}},\"policyDefinitionReferenceId\":\"esi\",\"groupNames\":[\"tljqobbpih\",\"hcecybmrqbr\",\"bbmpxdlvykfre\",\"crse\"]}")
             .toObject(PolicyDefinitionReference.class);
-        Assertions.assertEquals("iblkujr", model.policyDefinitionId());
-        Assertions.assertEquals("fojuidjpuuyj", model.definitionVersion());
-        Assertions.assertEquals("gv", model.policyDefinitionReferenceId());
-        Assertions.assertEquals("c", model.groupNames().get(0));
+        Assertions.assertEquals("kspzhzmtksjcit", model.policyDefinitionId());
+        Assertions.assertEquals("gsxcdgljplkeua", model.definitionVersion());
+        Assertions.assertEquals("esi", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("tljqobbpih", model.groupNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyDefinitionReference model = new PolicyDefinitionReference().withPolicyDefinitionId("iblkujr")
-            .withDefinitionVersion("fojuidjpuuyj")
-            .withParameters(mapOf("lxrzvhqjwtr",
+        PolicyDefinitionReference model = new PolicyDefinitionReference().withPolicyDefinitionId("kspzhzmtksjcit")
+            .withDefinitionVersion("gsxcdgljplkeua")
+            .withParameters(mapOf("mpqvwwsk",
                 new ParameterValuesValue()
-                    .withValue(BinaryData.fromBytes("\"datajuzkdbqz\"".getBytes(StandardCharsets.UTF_8)))))
-            .withPolicyDefinitionReferenceId("gv")
-            .withGroupNames(Arrays.asList("c", "rkolawjm"));
+                    .withValue(BinaryData.fromBytes("\"datapshhkvpedwqslsr\"".getBytes(StandardCharsets.UTF_8))),
+                "josovyrrl",
+                new ParameterValuesValue()
+                    .withValue(BinaryData.fromBytes("\"datadcbrwimuvq\"".getBytes(StandardCharsets.UTF_8)))))
+            .withPolicyDefinitionReferenceId("esi")
+            .withGroupNames(Arrays.asList("tljqobbpih", "hcecybmrqbr", "bbmpxdlvykfre", "crse"));
         model = BinaryData.fromObject(model).toObject(PolicyDefinitionReference.class);
-        Assertions.assertEquals("iblkujr", model.policyDefinitionId());
-        Assertions.assertEquals("fojuidjpuuyj", model.definitionVersion());
-        Assertions.assertEquals("gv", model.policyDefinitionReferenceId());
-        Assertions.assertEquals("c", model.groupNames().get(0));
+        Assertions.assertEquals("kspzhzmtksjcit", model.policyDefinitionId());
+        Assertions.assertEquals("gsxcdgljplkeua", model.definitionVersion());
+        Assertions.assertEquals("esi", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("tljqobbpih", model.groupNames().get(0));
     }
 
     // Use "Map.of" if available

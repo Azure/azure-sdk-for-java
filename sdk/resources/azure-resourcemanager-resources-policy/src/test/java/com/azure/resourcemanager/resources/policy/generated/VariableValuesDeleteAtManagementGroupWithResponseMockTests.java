@@ -28,7 +28,7 @@ public final class VariableValuesDeleteAtManagementGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.variableValues()
-            .deleteAtManagementGroupWithResponse("raxnfyzguax", "hvjixgo", "qdqw", com.azure.core.util.Context.NONE);
+            .deleteAtManagementGroupWithResponse("cwwvaosckf", "vhkhpsp", "weifdyfa", com.azure.core.util.Context.NONE);
 
     }
 }

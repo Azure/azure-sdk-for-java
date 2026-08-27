@@ -23,7 +23,7 @@ public final class VariablesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"columns\":[{\"columnName\":\"ux\"}]},\"id\":\"hngrxl\",\"name\":\"xoweorocr\",\"type\":\"icgym\"}";
+            = "{\"properties\":{\"columns\":[{\"columnName\":\"vpeyxdyuxurxr\"},{\"columnName\":\"tqmmijgpqfkwna\"},{\"columnName\":\"ikczscymqfv\"},{\"columnName\":\"g\"}]},\"id\":\"qnyumz\",\"name\":\"pd\",\"type\":\"kezvpe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,12 @@ public final class VariablesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Variable response = manager.variables()
-            .define("chmxczbyfkoc")
-            .withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("dctsnlwscrngt")))
+            .define("aajzdebhsermcl")
+            .withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("wu"),
+                new PolicyVariableColumn().withColumnName("yqkaaptb"),
+                new PolicyVariableColumn().withColumnName("svkb")))
             .create();
 
-        Assertions.assertEquals("ux", response.columns().get(0).columnName());
+        Assertions.assertEquals("vpeyxdyuxurxr", response.columns().get(0).columnName());
     }
 }

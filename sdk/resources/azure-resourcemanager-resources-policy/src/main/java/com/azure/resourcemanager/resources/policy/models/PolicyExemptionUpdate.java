@@ -87,6 +87,29 @@ public final class PolicyExemptionUpdate implements JsonSerializable<PolicyExemp
     }
 
     /**
+     * Get the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @return the exemptionManagementMode value.
+     */
+    public ExemptionManagementMode exemptionManagementMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().exemptionManagementMode();
+    }
+
+    /**
+     * Set the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @param exemptionManagementMode the exemptionManagementMode value to set.
+     * @return the PolicyExemptionUpdate object itself.
+     */
+    public PolicyExemptionUpdate withExemptionManagementMode(ExemptionManagementMode exemptionManagementMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionUpdateProperties();
+        }
+        this.innerProperties().withExemptionManagementMode(exemptionManagementMode);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

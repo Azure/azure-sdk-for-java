@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyVariablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyVariableProperties model
-            = BinaryData.fromString("{\"columns\":[{\"columnName\":\"pzfngqjcli\"},{\"columnName\":\"ftujwjjufw\"}]}")
-                .toObject(PolicyVariableProperties.class);
-        Assertions.assertEquals("pzfngqjcli", model.columns().get(0).columnName());
+        PolicyVariableProperties model = BinaryData.fromString(
+            "{\"columns\":[{\"columnName\":\"yujlfyoumpckyecl\"},{\"columnName\":\"digp\"},{\"columnName\":\"ajbrzmqxucy\"}]}")
+            .toObject(PolicyVariableProperties.class);
+        Assertions.assertEquals("yujlfyoumpckyecl", model.columns().get(0).columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyVariableProperties model = new PolicyVariableProperties()
-            .withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("pzfngqjcli"),
-                new PolicyVariableColumn().withColumnName("ftujwjjufw")));
+            .withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("yujlfyoumpckyecl"),
+                new PolicyVariableColumn().withColumnName("digp"),
+                new PolicyVariableColumn().withColumnName("ajbrzmqxucy")));
         model = BinaryData.fromObject(model).toObject(PolicyVariableProperties.class);
-        Assertions.assertEquals("pzfngqjcli", model.columns().get(0).columnName());
+        Assertions.assertEquals("yujlfyoumpckyecl", model.columns().get(0).columnName());
     }
 }

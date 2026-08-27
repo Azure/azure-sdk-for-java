@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.policy.generated;
 
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import com.azure.resourcemanager.resources.policy.models.Selector;
@@ -15,6 +16,23 @@ import java.util.Arrays;
  * Samples for PolicyExemptions Update.
  */
 public final class PolicyExemptionsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyExemptionWithExemptionManagementMode.json
+     */
+    /**
+     * Sample code: Update a policy exemption with exemption management mode.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void updateAPolicyExemptionWithExemptionManagementMode(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        PolicyExemption resource = manager.policyExemptions()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withExemptionManagementMode(ExemptionManagementMode.ADMIN).apply();
+    }
+
     /*
      * x-ms-original-file: 2026-01-01-preview/updatePolicyExemptionWithResourceSelectors.json
      */

@@ -23,7 +23,7 @@ public final class PolicyEnrollmentsListForResourceMockTests {
     @Test
     public void testListForResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"igrjdljlkqhvkrbz\",\"policyAssignmentInstanceId\":\"astax\",\"policyDefinitionReferenceIds\":[\"r\",\"ulhgltoiz\"],\"displayName\":\"vscksgfyys\",\"description\":\"ekgafxczvfcck\",\"metadata\":\"\\\"datatwlety\\\"\",\"assignmentScopeValidation\":\"DoNotValidate\",\"resourceSelectors\":[{\"name\":\"lhpdhwynctaczcnj\",\"selectors\":[{},{},{},{}]},{\"name\":\"fnv\",\"selectors\":[{},{}]},{\"name\":\"zovnkrtiklsm\",\"selectors\":[{}]}]},\"eTag\":\"lcoqksyiib\",\"id\":\"xwbgbudavqd\",\"name\":\"rbccqcdht\",\"type\":\"ojvlirknucosaw\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"kqxs\",\"policyAssignmentInstanceId\":\"uzyigfcvcewbwqhd\",\"policyDefinitionReferenceIds\":[\"satmr\",\"c\"],\"displayName\":\"zdfsqxhyqmr\",\"description\":\"parn\",\"metadata\":\"\\\"datagrszrbwtdrcwg\\\"\",\"assignmentScopeValidation\":\"Default\",\"resourceSelectors\":[{\"name\":\"lhhfi\",\"selectors\":[{},{}]}]},\"eTag\":\"c\",\"id\":\"zjrmhpfywvyld\",\"name\":\"pzfzxsoxinunjlz\",\"type\":\"drocqsxytq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class PolicyEnrollmentsListForResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PolicyEnrollment> response = manager.policyEnrollments()
-            .listForResource("qnm", "tpuwnnohmmzngocf", "juypwyiulaynosu", "kfhaxttpfsmwgsgh", "ucumlddauqml",
-                "feothxu", com.azure.core.util.Context.NONE);
+            .listForResource("kesliky", "hzixyqhfnkvy", "qqqdseipnquwz", "hrptyodlhkfktltd", "sobjop", "ouhbq",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lcoqksyiib", response.iterator().next().eTag());
-        Assertions.assertEquals("igrjdljlkqhvkrbz", response.iterator().next().policyAssignmentId());
-        Assertions.assertEquals("r", response.iterator().next().policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals("vscksgfyys", response.iterator().next().displayName());
-        Assertions.assertEquals("ekgafxczvfcck", response.iterator().next().description());
-        Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE,
+        Assertions.assertEquals("c", response.iterator().next().eTag());
+        Assertions.assertEquals("kqxs", response.iterator().next().policyAssignmentId());
+        Assertions.assertEquals("satmr", response.iterator().next().policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals("zdfsqxhyqmr", response.iterator().next().displayName());
+        Assertions.assertEquals("parn", response.iterator().next().description());
+        Assertions.assertEquals(AssignmentScopeValidation.DEFAULT,
             response.iterator().next().assignmentScopeValidation());
-        Assertions.assertEquals("lhpdhwynctaczcnj", response.iterator().next().resourceSelectors().get(0).name());
+        Assertions.assertEquals("lhhfi", response.iterator().next().resourceSelectors().get(0).name());
     }
 }

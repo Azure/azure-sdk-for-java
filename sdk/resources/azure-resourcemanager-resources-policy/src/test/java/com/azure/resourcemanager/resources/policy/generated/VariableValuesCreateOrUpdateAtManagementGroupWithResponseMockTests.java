@@ -25,7 +25,7 @@ public final class VariableValuesCreateOrUpdateAtManagementGroupWithResponseMock
     @Test
     public void testCreateOrUpdateAtManagementGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"values\":[{\"columnName\":\"aw\",\"columnValue\":\"\\\"dataxc\\\"\"},{\"columnName\":\"mpt\",\"columnValue\":\"\\\"datajrmplzmsl\\\"\"},{\"columnName\":\"bnknyfuysj\",\"columnValue\":\"\\\"datavrrllfswarmyb\\\"\"}]},\"id\":\"rotgeysyq\",\"name\":\"ipehfwwcbfnxiaj\",\"type\":\"vjucfjisosfzl\"}";
+            = "{\"properties\":{\"values\":[{\"columnName\":\"aedogzougxbxx\",\"columnValue\":\"\\\"datajogcphivfhrmte\\\"\"},{\"columnName\":\"fdvdoeary\",\"columnValue\":\"\\\"datausrjzhdtrsyfezf\\\"\"},{\"columnName\":\"my\",\"columnValue\":\"\\\"datajdzyyrwnmwtq\\\"\"}]},\"id\":\"jk\",\"name\":\"nkynkstdtfw\",\"type\":\"jfphfxaqjyih\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,25 +34,21 @@ public final class VariableValuesCreateOrUpdateAtManagementGroupWithResponseMock
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        VariableValue response
-            = manager.variableValues()
-                .createOrUpdateAtManagementGroupWithResponse("ccynbuv", "si", "hedmm",
-                    new VariableValueInner()
-                        .withValues(
-                            Arrays
-                                .asList(
-                                    new PolicyVariableValueColumnValue().withColumnName("eeyrxparxtza")
-                                        .withColumnValue(BinaryData
-                                            .fromBytes("\"dataqwddigebls\"".getBytes(StandardCharsets.UTF_8))),
-                                    new PolicyVariableValueColumnValue().withColumnName("lzdssi")
-                                        .withColumnValue(BinaryData
-                                            .fromBytes("\"datawveeozbjkj\"".getBytes(StandardCharsets.UTF_8))),
-                                    new PolicyVariableValueColumnValue().withColumnName("p")
-                                        .withColumnValue(BinaryData
-                                            .fromBytes("\"datazdnuehxwltss\"".getBytes(StandardCharsets.UTF_8))))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        VariableValue response = manager.variableValues()
+            .createOrUpdateAtManagementGroupWithResponse("qdjlgkuir", "xeuwiiircvnfg", "dviw",
+                new VariableValueInner().withValues(Arrays.asList(
+                    new PolicyVariableValueColumnValue().withColumnName("ktxagfujdb")
+                        .withColumnValue(BinaryData.fromBytes("\"datajnyexbvxgxqq\"".getBytes(StandardCharsets.UTF_8))),
+                    new PolicyVariableValueColumnValue().withColumnName("asfeooq")
+                        .withColumnValue(BinaryData.fromBytes("\"datatpvev\"".getBytes(StandardCharsets.UTF_8))),
+                    new PolicyVariableValueColumnValue().withColumnName("arp")
+                        .withColumnValue(BinaryData.fromBytes("\"dataklqlii\"".getBytes(StandardCharsets.UTF_8))),
+                    new PolicyVariableValueColumnValue().withColumnName("eanuwg")
+                        .withColumnValue(
+                            BinaryData.fromBytes("\"datanofgijydgsebju\"".getBytes(StandardCharsets.UTF_8))))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("aw", response.values().get(0).columnName());
+        Assertions.assertEquals("aedogzougxbxx", response.values().get(0).columnName());
     }
 }

@@ -13,6 +13,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resources.policy.PolicyManager;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,7 +25,7 @@ public final class PolicyExemptionsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"ekrknfdrugjqyck\",\"policyDefinitionReferenceIds\":[\"kr\",\"tulcrcjdklo\"],\"exemptionCategory\":\"Mitigated\",\"expiresOn\":\"2021-08-03T21:07:38Z\",\"displayName\":\"mzoonsvobchkxfpw\",\"description\":\"yslb\",\"metadata\":\"\\\"dataglmnnk\\\"\",\"resourceSelectors\":[{\"name\":\"qshwyqxridt\",\"selectors\":[{},{}]},{\"name\":\"q\",\"selectors\":[{},{},{},{}]},{\"name\":\"xqwqueu\",\"selectors\":[{},{},{},{}]},{\"name\":\"tpziizevjy\",\"selectors\":[{},{}]}],\"assignmentScopeValidation\":\"DoNotValidate\"},\"id\":\"efkhkqtwq\",\"name\":\"epj\",\"type\":\"zkca\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"ntrvrkpsa\",\"policyDefinitionReferenceIds\":[\"xvzmlghny\"],\"exemptionCategory\":\"Waiver\",\"expiresOn\":\"2021-10-03T00:53:25Z\",\"displayName\":\"euukppdi\",\"description\":\"bo\",\"metadata\":\"\\\"datavhh\\\"\",\"resourceSelectors\":[{\"name\":\"gatxgrznmginmtsd\",\"selectors\":[{},{}]}],\"assignmentScopeValidation\":\"Default\",\"exemptionManagementMode\":\"Admin\"},\"id\":\"m\",\"name\":\"jymncjcagai\",\"type\":\"wcqzo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +34,18 @@ public final class PolicyExemptionsListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PolicyExemption> response
-            = manager.policyExemptions().listByResourceGroup("yelsyasvfnk", "myg", com.azure.core.util.Context.NONE);
+        PagedIterable<PolicyExemption> response = manager.policyExemptions()
+            .listByResourceGroup("rwyambhbafebzxfk", "qutibhl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ekrknfdrugjqyck", response.iterator().next().policyAssignmentId());
-        Assertions.assertEquals("kr", response.iterator().next().policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals(ExemptionCategory.MITIGATED, response.iterator().next().exemptionCategory());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T21:07:38Z"), response.iterator().next().expiresOn());
-        Assertions.assertEquals("mzoonsvobchkxfpw", response.iterator().next().displayName());
-        Assertions.assertEquals("yslb", response.iterator().next().description());
-        Assertions.assertEquals("qshwyqxridt", response.iterator().next().resourceSelectors().get(0).name());
-        Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE,
+        Assertions.assertEquals("ntrvrkpsa", response.iterator().next().policyAssignmentId());
+        Assertions.assertEquals("xvzmlghny", response.iterator().next().policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals(ExemptionCategory.WAIVER, response.iterator().next().exemptionCategory());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T00:53:25Z"), response.iterator().next().expiresOn());
+        Assertions.assertEquals("euukppdi", response.iterator().next().displayName());
+        Assertions.assertEquals("bo", response.iterator().next().description());
+        Assertions.assertEquals("gatxgrznmginmtsd", response.iterator().next().resourceSelectors().get(0).name());
+        Assertions.assertEquals(AssignmentScopeValidation.DEFAULT,
             response.iterator().next().assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.ADMIN, response.iterator().next().exemptionManagementMode());
     }
 }

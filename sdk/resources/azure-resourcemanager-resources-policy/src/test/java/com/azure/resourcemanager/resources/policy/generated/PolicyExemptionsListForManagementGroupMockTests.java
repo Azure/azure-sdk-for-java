@@ -13,6 +13,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resources.policy.PolicyManager;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,7 +25,7 @@ public final class PolicyExemptionsListForManagementGroupMockTests {
     @Test
     public void testListForManagementGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"stfzknhrkmjq\",\"policyDefinitionReferenceIds\":[\"vdscnhemv\",\"fnqqwyp\",\"ndrw\"],\"exemptionCategory\":\"Waiver\",\"expiresOn\":\"2021-03-26T18:43:14Z\",\"displayName\":\"ggrssgwjfkain\",\"description\":\"uymvecvzts\",\"metadata\":\"\\\"datagmusaictdscnkzzo\\\"\",\"resourceSelectors\":[{\"name\":\"d\",\"selectors\":[{},{}]},{\"name\":\"qozreh\",\"selectors\":[{},{}]},{\"name\":\"ixbnj\",\"selectors\":[{},{}]},{\"name\":\"yuexozonyn\",\"selectors\":[{}]}],\"assignmentScopeValidation\":\"DoNotValidate\"},\"id\":\"pab\",\"name\":\"reu\",\"type\":\"zosgyjxvcvasorm\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"qnwjjq\",\"policyDefinitionReferenceIds\":[\"kdnjrxgkrhwie\",\"ycpnowaw\",\"noehrguqlhfwa\",\"bjzm\"],\"exemptionCategory\":\"Mitigated\",\"expiresOn\":\"2021-07-04T14:49:37Z\",\"displayName\":\"yfazbkocb\",\"description\":\"vthrmxkb\",\"metadata\":\"\\\"datawwdxomrawp\\\"\",\"resourceSelectors\":[{\"name\":\"ooz\",\"selectors\":[{},{}]},{\"name\":\"cagaedaoiqc\",\"selectors\":[{},{}]},{\"name\":\"twgabdx\",\"selectors\":[{}]},{\"name\":\"bwj\",\"selectors\":[{},{},{},{}]}],\"assignmentScopeValidation\":\"Default\",\"exemptionManagementMode\":\"UserSelfServe\"},\"id\":\"uqb\",\"name\":\"elnii\",\"type\":\"ncgagdvc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +35,18 @@ public final class PolicyExemptionsListForManagementGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PolicyExemption> response = manager.policyExemptions()
-            .listForManagementGroup("fwzcntogffjwaj", "rtwzvaqkifmxa", com.azure.core.util.Context.NONE);
+            .listForManagementGroup("fjnqjsvepf", "htleberpyljek", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("stfzknhrkmjq", response.iterator().next().policyAssignmentId());
-        Assertions.assertEquals("vdscnhemv", response.iterator().next().policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals(ExemptionCategory.WAIVER, response.iterator().next().exemptionCategory());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T18:43:14Z"), response.iterator().next().expiresOn());
-        Assertions.assertEquals("ggrssgwjfkain", response.iterator().next().displayName());
-        Assertions.assertEquals("uymvecvzts", response.iterator().next().description());
-        Assertions.assertEquals("d", response.iterator().next().resourceSelectors().get(0).name());
-        Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE,
+        Assertions.assertEquals("qnwjjq", response.iterator().next().policyAssignmentId());
+        Assertions.assertEquals("kdnjrxgkrhwie", response.iterator().next().policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals(ExemptionCategory.MITIGATED, response.iterator().next().exemptionCategory());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T14:49:37Z"), response.iterator().next().expiresOn());
+        Assertions.assertEquals("yfazbkocb", response.iterator().next().displayName());
+        Assertions.assertEquals("vthrmxkb", response.iterator().next().description());
+        Assertions.assertEquals("ooz", response.iterator().next().resourceSelectors().get(0).name());
+        Assertions.assertEquals(AssignmentScopeValidation.DEFAULT,
             response.iterator().next().assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.USER_SELF_SERVE,
+            response.iterator().next().exemptionManagementMode());
     }
 }

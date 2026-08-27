@@ -22,7 +22,7 @@ public final class VariablesListForManagementGroupMockTests {
     @Test
     public void testListForManagementGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"columns\":[{\"columnName\":\"tcqxmyvkxixypavi\"}]},\"id\":\"czgo\",\"name\":\"vp\",\"type\":\"uw\"}]}";
+            = "{\"value\":[{\"properties\":{\"columns\":[{\"columnName\":\"buhruetc\"},{\"columnName\":\"xriqzzdckh\"},{\"columnName\":\"qdrrj\"},{\"columnName\":\"urnowobwxrxmyo\"}]},\"id\":\"hlsfjfouqjpzhea\",\"name\":\"uvkqxqkvadmj\",\"type\":\"ymudj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class VariablesListForManagementGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Variable> response
-            = manager.variables().listForManagementGroup("zogfcnxcxg", com.azure.core.util.Context.NONE);
+            = manager.variables().listForManagementGroup("zmiaoaweacf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tcqxmyvkxixypavi", response.iterator().next().columns().get(0).columnName());
+        Assertions.assertEquals("buhruetc", response.iterator().next().columns().get(0).columnName());
     }
 }

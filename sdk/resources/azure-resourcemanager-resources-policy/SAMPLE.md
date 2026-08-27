@@ -1823,6 +1823,7 @@ public final class PolicyEnrollmentsUpdateSamples {
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import com.azure.resourcemanager.resources.policy.models.Selector;
 import com.azure.resourcemanager.resources.policy.models.SelectorKind;
@@ -1833,6 +1834,31 @@ import java.util.Arrays;
  * Samples for PolicyExemptions CreateOrUpdate.
  */
 public final class PolicyExemptionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyExemptionWithExemptionManagementMode.json
+     */
+    /**
+     * Sample code: Create or update a policy exemption with exemption management mode.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAPolicyExemptionWithExemptionManagementMode(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .define("DemoExpensiveVM")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster")
+            .withPolicyAssignmentId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("Limit_Skus"))
+            .withExemptionCategory(ExemptionCategory.WAIVER)
+            .withDisplayName("Exempt demo cluster")
+            .withDescription("Exempt demo cluster from limit sku")
+            .withMetadata(BinaryData
+                .fromBytes("{reason=Temporary exemption for a expensive VM demo}".getBytes(StandardCharsets.UTF_8)))
+            .withExemptionManagementMode(ExemptionManagementMode.USER_SELF_SERVE)
+            .create();
+    }
+
     /*
      * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyExemption.json
      */
@@ -2044,6 +2070,7 @@ public final class PolicyExemptionsListForResourceSamples {
 
 ```java
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import com.azure.resourcemanager.resources.policy.models.Selector;
@@ -2054,6 +2081,23 @@ import java.util.Arrays;
  * Samples for PolicyExemptions Update.
  */
 public final class PolicyExemptionsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyExemptionWithExemptionManagementMode.json
+     */
+    /**
+     * Sample code: Update a policy exemption with exemption management mode.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void updateAPolicyExemptionWithExemptionManagementMode(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        PolicyExemption resource = manager.policyExemptions()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withExemptionManagementMode(ExemptionManagementMode.ADMIN).apply();
+    }
+
     /*
      * x-ms-original-file: 2026-01-01-preview/updatePolicyExemptionWithResourceSelectors.json
      */

@@ -22,7 +22,7 @@ public final class PolicySetDefinitionVersionsListAllAtManagementGroupWithRespon
     @Test
     public void testListAllAtManagementGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyType\":\"BuiltIn\",\"displayName\":\"kczbdy\",\"description\":\"bimhjbozvo\",\"metadata\":\"\\\"datatclnh\\\"\",\"parameters\":{\"yuzly\":{},\"qs\":{},\"ibvylkv\":{},\"kcafnwqhawv\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"viulbyl\"},{\"policyDefinitionId\":\"g\"},{\"policyDefinitionId\":\"zrycw\"},{\"policyDefinitionId\":\"bgumwhmxpuckns\"}],\"policyDefinitionGroups\":[{\"name\":\"lpsm\"}],\"version\":\"micttrvl\"},\"id\":\"j\",\"name\":\"xok\",\"type\":\"xamqecjrzvlcivqx\"},{\"properties\":{\"policyType\":\"Static\",\"displayName\":\"phxwwwlojkbgnfb\",\"description\":\"jvfsu\",\"metadata\":\"\\\"dataae\\\"\",\"parameters\":{\"hxczywywuahwcor\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"cnnaaxqjfda\"},{\"policyDefinitionId\":\"rfgimomggewdqbxe\"}],\"policyDefinitionGroups\":[{\"name\":\"z\"},{\"name\":\"vussuqks\"}],\"version\":\"sfx\"},\"id\":\"zqbyeywpmohnrtl\",\"name\":\"kffydztkqrfbgy\",\"type\":\"zfwvzdteqjmy\"},{\"properties\":{\"policyType\":\"Static\",\"displayName\":\"kax\",\"description\":\"prijy\",\"metadata\":\"\\\"dataxjxbsowrrlcck\\\"\",\"parameters\":{\"pjmspau\":{},\"mqomxoalknuy\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"vibzicy\"}],\"policyDefinitionGroups\":[{\"name\":\"hcaptkhjx\"},{\"name\":\"rkbn\"},{\"name\":\"fcck\"},{\"name\":\"z\"}],\"version\":\"nfgvlx\"},\"id\":\"mnctigp\",\"name\":\"sywicklktgk\",\"type\":\"prtqjytd\"}],\"nextLink\":\"efuhb\"}";
+            = "{\"value\":[{\"properties\":{\"policyType\":\"BuiltIn\",\"displayName\":\"alezaydpuzudege\",\"description\":\"lieggotosmhssfnw\",\"metadata\":\"\\\"datakahhec\\\"\",\"parameters\":{\"mkcu\":{},\"thdgwuzronodvhzf\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"nwysodcikgxkkzzf\"}],\"policyDefinitionGroups\":[{\"name\":\"ekebawnxzs\"},{\"name\":\"wyfixi\"},{\"name\":\"gcjf\"},{\"name\":\"iwu\"}],\"version\":\"jkakrxifqnffo\"},\"id\":\"sqtzng\",\"name\":\"bsalewg\",\"type\":\"xcmmhipbvskcitly\"},{\"properties\":{\"policyType\":\"Static\",\"displayName\":\"aangf\",\"description\":\"mcvmhidyliuajkln\",\"metadata\":\"\\\"datagdnxqeon\\\"\",\"parameters\":{\"jjaojpzngdrzige\":{},\"wsadsqyu\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"khwqdmohheuyuu\"},{\"policyDefinitionId\":\"xmyevyigdeipnfi\"},{\"policyDefinitionId\":\"ejwli\"}],\"policyDefinitionGroups\":[{\"name\":\"ndjzwha\"},{\"name\":\"odapqokhdy\"},{\"name\":\"cradxsew\"}],\"version\":\"m\"},\"id\":\"apmqnmelyksygihi\",\"name\":\"lmslnunkqvzlbbb\",\"type\":\"jd\"}],\"nextLink\":\"quawex\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,16 @@ public final class PolicySetDefinitionVersionsListAllAtManagementGroupWithRespon
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicySetDefinitionVersionListResult response = manager.policySetDefinitionVersions()
-            .listAllAtManagementGroupWithResponse("fu", com.azure.core.util.Context.NONE)
+            .listAllAtManagementGroupWithResponse("cfqiywhx", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PolicyType.BUILT_IN, response.value().get(0).policyType());
-        Assertions.assertEquals("kczbdy", response.value().get(0).displayName());
-        Assertions.assertEquals("bimhjbozvo", response.value().get(0).description());
-        Assertions.assertEquals("viulbyl", response.value().get(0).policyDefinitions().get(0).policyDefinitionId());
-        Assertions.assertEquals("lpsm", response.value().get(0).policyDefinitionGroups().get(0).name());
-        Assertions.assertEquals("micttrvl", response.value().get(0).version());
-        Assertions.assertEquals("efuhb", response.nextLink());
+        Assertions.assertEquals("alezaydpuzudege", response.value().get(0).displayName());
+        Assertions.assertEquals("lieggotosmhssfnw", response.value().get(0).description());
+        Assertions.assertEquals("nwysodcikgxkkzzf",
+            response.value().get(0).policyDefinitions().get(0).policyDefinitionId());
+        Assertions.assertEquals("ekebawnxzs", response.value().get(0).policyDefinitionGroups().get(0).name());
+        Assertions.assertEquals("jkakrxifqnffo", response.value().get(0).version());
+        Assertions.assertEquals("quawex", response.nextLink());
     }
 }

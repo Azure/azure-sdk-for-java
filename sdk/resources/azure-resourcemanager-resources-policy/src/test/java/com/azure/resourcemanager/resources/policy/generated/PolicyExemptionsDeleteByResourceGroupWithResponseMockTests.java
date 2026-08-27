@@ -28,7 +28,7 @@ public final class PolicyExemptionsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policyExemptions()
-            .deleteByResourceGroupWithResponse("dajjvywe", "cfkumcfjxo", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("lokfpmijpdvzv", "bhwbdqufvcgnrgla", com.azure.core.util.Context.NONE);
 
     }
 }

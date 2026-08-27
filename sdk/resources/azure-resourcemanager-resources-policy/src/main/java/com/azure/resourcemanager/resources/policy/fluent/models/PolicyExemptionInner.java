@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -314,6 +315,29 @@ public final class PolicyExemptionInner extends ProxyResource {
             this.innerProperties = new PolicyExemptionProperties();
         }
         this.innerProperties().withAssignmentScopeValidation(assignmentScopeValidation);
+        return this;
+    }
+
+    /**
+     * Get the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @return the exemptionManagementMode value.
+     */
+    public ExemptionManagementMode exemptionManagementMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().exemptionManagementMode();
+    }
+
+    /**
+     * Set the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @param exemptionManagementMode the exemptionManagementMode value to set.
+     * @return the PolicyExemptionInner object itself.
+     */
+    public PolicyExemptionInner withExemptionManagementMode(ExemptionManagementMode exemptionManagementMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withExemptionManagementMode(exemptionManagementMode);
         return this;
     }
 

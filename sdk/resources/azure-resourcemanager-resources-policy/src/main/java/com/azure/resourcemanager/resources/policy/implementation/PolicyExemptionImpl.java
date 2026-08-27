@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.policy.fluent.models.PolicyExemptionInner;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemptionUpdate;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
@@ -82,6 +83,10 @@ public final class PolicyExemptionImpl implements PolicyExemption, PolicyExempti
 
     public AssignmentScopeValidation assignmentScopeValidation() {
         return this.innerModel().assignmentScopeValidation();
+    }
+
+    public ExemptionManagementMode exemptionManagementMode() {
+        return this.innerModel().exemptionManagementMode();
     }
 
     public PolicyExemptionInner innerModel() {
@@ -223,6 +228,16 @@ public final class PolicyExemptionImpl implements PolicyExemption, PolicyExempti
             return this;
         } else {
             this.updateParameters.withAssignmentScopeValidation(assignmentScopeValidation);
+            return this;
+        }
+    }
+
+    public PolicyExemptionImpl withExemptionManagementMode(ExemptionManagementMode exemptionManagementMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withExemptionManagementMode(exemptionManagementMode);
+            return this;
+        } else {
+            this.updateParameters.withExemptionManagementMode(exemptionManagementMode);
             return this;
         }
     }

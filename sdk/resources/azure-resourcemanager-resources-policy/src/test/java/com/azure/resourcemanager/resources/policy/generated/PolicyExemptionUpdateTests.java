@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.policy.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemptionUpdate;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import com.azure.resourcemanager.resources.policy.models.Selector;
@@ -17,60 +18,43 @@ public final class PolicyExemptionUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyExemptionUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"resourceSelectors\":[{\"name\":\"i\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"xqhndvnoamlds\",\"haohdjhhflzokxc\",\"xpelnjetagltsx\",\"atftgzpnpbsw\"],\"notIn\":[\"loccsrmozihm\",\"pgawtxxpkyjcxcjx\",\"rytfmpcycil\"]},{\"kind\":\"resourceLocation\",\"in\":[\"kggnoxu\",\"t\",\"ksxwpnd\",\"cpfnznthjtwkja\"],\"notIn\":[\"xuzvoamktcqi\",\"smgbzahgxqdl\"]}]},{\"name\":\"tlt\",\"selectors\":[{\"kind\":\"groupPrincipalId\",\"in\":[\"katbhjm\",\"nnbsoqeqa\"],\"notIn\":[\"vlagun\",\"tgfebwln\",\"mhyreeudz\",\"av\"]},{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"jxlyyzglgouwtlm\",\"jyuojqtobaxkjeyt\",\"nlb\",\"jkwrusnkq\"],\"notIn\":[\"y\"]},{\"kind\":\"resourceLocation\",\"in\":[\"qhd\",\"nxaulk\"],\"notIn\":[\"d\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"nnawtqabpxuckpgg\",\"oweyirdhlis\"],\"notIn\":[\"fl\"]}]},{\"name\":\"mpizru\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"iwfcngjsa\"],\"notIn\":[\"ixtmkzjvkviirhgf\",\"rwsdp\"]},{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"vzbglbyvi\",\"tctbrxkjzwrgxffm\",\"hkwfbkgozxwop\"],\"notIn\":[\"dpizq\"]}]}],\"assignmentScopeValidation\":\"DoNotValidate\"}}")
+            "{\"properties\":{\"resourceSelectors\":[{\"name\":\"z\",\"selectors\":[{\"kind\":\"resourceLocation\",\"in\":[\"hndvnoamldsehao\",\"djh\",\"flzokxco\"],\"notIn\":[\"lnjetaglt\"]},{\"kind\":\"groupPrincipalId\",\"in\":[\"ftgz\"],\"notIn\":[\"bs\",\"vefloccsrmozihmi\",\"g\",\"wtxxpkyjcx\"]},{\"kind\":\"resourceType\",\"in\":[\"ytfmpc\",\"cil\",\"mcayk\"],\"notIn\":[\"oxuztrksx\",\"pndfcpfnznt\",\"jtwkjaos\"]},{\"kind\":\"resourceType\",\"in\":[\"oamktcq\",\"os\",\"gbzahgxqdlyr\",\"ltlaprltzkatbhj\"],\"notIn\":[\"nbsoqeqalarv\",\"agunbtgfebw\",\"nbmhyree\"]}]}],\"assignmentScopeValidation\":\"DoNotValidate\",\"exemptionManagementMode\":\"Admin\"}}")
             .toObject(PolicyExemptionUpdate.class);
-        Assertions.assertEquals("i", model.resourceSelectors().get(0).name());
-        Assertions.assertEquals(SelectorKind.RESOURCE_WITHOUT_LOCATION,
+        Assertions.assertEquals("z", model.resourceSelectors().get(0).name());
+        Assertions.assertEquals(SelectorKind.RESOURCE_LOCATION,
             model.resourceSelectors().get(0).selectors().get(0).kind());
-        Assertions.assertEquals("xqhndvnoamlds", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
-        Assertions.assertEquals("loccsrmozihm", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
+        Assertions.assertEquals("hndvnoamldsehao", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
+        Assertions.assertEquals("lnjetaglt", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
         Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, model.assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.ADMIN, model.exemptionManagementMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyExemptionUpdate model
-            = new PolicyExemptionUpdate()
-                .withResourceSelectors(
-                    Arrays.asList(
-                        new ResourceSelector().withName("i")
-                            .withSelectors(Arrays.asList(
-                                new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
-                                    .withIn(Arrays.asList("xqhndvnoamlds", "haohdjhhflzokxc", "xpelnjetagltsx",
-                                        "atftgzpnpbsw"))
-                                    .withNotIn(Arrays.asList("loccsrmozihm", "pgawtxxpkyjcxcjx", "rytfmpcycil")),
-                                new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
-                                    .withIn(Arrays.asList("kggnoxu", "t", "ksxwpnd", "cpfnznthjtwkja"))
-                                    .withNotIn(Arrays.asList("xuzvoamktcqi", "smgbzahgxqdl")))),
-                        new ResourceSelector().withName("tlt")
-                            .withSelectors(Arrays.asList(
-                                new Selector().withKind(SelectorKind.GROUP_PRINCIPAL_ID)
-                                    .withIn(Arrays.asList("katbhjm", "nnbsoqeqa"))
-                                    .withNotIn(Arrays.asList("vlagun", "tgfebwln", "mhyreeudz", "av")),
-                                new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                    .withIn(Arrays.asList("jxlyyzglgouwtlm", "jyuojqtobaxkjeyt", "nlb", "jkwrusnkq"))
-                                    .withNotIn(Arrays.asList("y")),
-                                new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
-                                    .withIn(Arrays.asList("qhd", "nxaulk"))
-                                    .withNotIn(Arrays.asList("d")),
-                                new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
-                                    .withIn(Arrays.asList("nnawtqabpxuckpgg", "oweyirdhlis"))
-                                    .withNotIn(Arrays.asList("fl")))),
-                        new ResourceSelector().withName("mpizru")
-                            .withSelectors(Arrays.asList(
-                                new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
-                                    .withIn(Arrays.asList("iwfcngjsa"))
-                                    .withNotIn(Arrays.asList("ixtmkzjvkviirhgf", "rwsdp")),
-                                new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                    .withIn(Arrays.asList("vzbglbyvi", "tctbrxkjzwrgxffm", "hkwfbkgozxwop"))
-                                    .withNotIn(Arrays.asList("dpizq"))))))
-                .withAssignmentScopeValidation(AssignmentScopeValidation.DO_NOT_VALIDATE);
+        PolicyExemptionUpdate model = new PolicyExemptionUpdate()
+            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("z")
+                .withSelectors(Arrays.asList(
+                    new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                        .withIn(Arrays.asList("hndvnoamldsehao", "djh", "flzokxco"))
+                        .withNotIn(Arrays.asList("lnjetaglt")),
+                    new Selector().withKind(SelectorKind.GROUP_PRINCIPAL_ID)
+                        .withIn(Arrays.asList("ftgz"))
+                        .withNotIn(Arrays.asList("bs", "vefloccsrmozihmi", "g", "wtxxpkyjcx")),
+                    new Selector().withKind(SelectorKind.RESOURCE_TYPE)
+                        .withIn(Arrays.asList("ytfmpc", "cil", "mcayk"))
+                        .withNotIn(Arrays.asList("oxuztrksx", "pndfcpfnznt", "jtwkjaos")),
+                    new Selector().withKind(SelectorKind.RESOURCE_TYPE)
+                        .withIn(Arrays.asList("oamktcq", "os", "gbzahgxqdlyr", "ltlaprltzkatbhj"))
+                        .withNotIn(Arrays.asList("nbsoqeqalarv", "agunbtgfebw", "nbmhyree"))))))
+            .withAssignmentScopeValidation(AssignmentScopeValidation.DO_NOT_VALIDATE)
+            .withExemptionManagementMode(ExemptionManagementMode.ADMIN);
         model = BinaryData.fromObject(model).toObject(PolicyExemptionUpdate.class);
-        Assertions.assertEquals("i", model.resourceSelectors().get(0).name());
-        Assertions.assertEquals(SelectorKind.RESOURCE_WITHOUT_LOCATION,
+        Assertions.assertEquals("z", model.resourceSelectors().get(0).name());
+        Assertions.assertEquals(SelectorKind.RESOURCE_LOCATION,
             model.resourceSelectors().get(0).selectors().get(0).kind());
-        Assertions.assertEquals("xqhndvnoamlds", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
-        Assertions.assertEquals("loccsrmozihm", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
+        Assertions.assertEquals("hndvnoamldsehao", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
+        Assertions.assertEquals("lnjetaglt", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
         Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, model.assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.ADMIN, model.exemptionManagementMode());
     }
 }

@@ -12,20 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyTokenOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyTokenOperation model
-            = BinaryData.fromString("{\"uri\":\"jrhuzgf\",\"httpMethod\":\"on\",\"content\":\"\\\"datapusllywpv\\\"\"}")
-                .toObject(PolicyTokenOperation.class);
-        Assertions.assertEquals("jrhuzgf", model.uri());
-        Assertions.assertEquals("on", model.httpMethod());
+        PolicyTokenOperation model = BinaryData
+            .fromString(
+                "{\"uri\":\"bxoeeonql\",\"httpMethod\":\"fwmyymv\",\"content\":\"\\\"databpbhfckdvezcrcss\\\"\"}")
+            .toObject(PolicyTokenOperation.class);
+        Assertions.assertEquals("bxoeeonql", model.uri());
+        Assertions.assertEquals("fwmyymv", model.httpMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyTokenOperation model = new PolicyTokenOperation().withUri("jrhuzgf")
-            .withHttpMethod("on")
-            .withContent(BinaryData.fromBytes("\"datapusllywpv\"".getBytes(StandardCharsets.UTF_8)));
+        PolicyTokenOperation model = new PolicyTokenOperation().withUri("bxoeeonql")
+            .withHttpMethod("fwmyymv")
+            .withContent(BinaryData.fromBytes("\"databpbhfckdvezcrcss\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(PolicyTokenOperation.class);
-        Assertions.assertEquals("jrhuzgf", model.uri());
-        Assertions.assertEquals("on", model.httpMethod());
+        Assertions.assertEquals("bxoeeonql", model.uri());
+        Assertions.assertEquals("fwmyymv", model.httpMethod());
     }
 }

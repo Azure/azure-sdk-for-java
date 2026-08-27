@@ -26,7 +26,7 @@ public final class PolicyAssignmentsListForManagementGroupMockTests {
     @Test
     public void testListForManagementGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"vdwkqpldr\",\"policyDefinitionId\":\"fgnaavuagnteta\",\"definitionVersion\":\"tnpdctuhspfefy\",\"latestDefinitionVersion\":\"duyeuyl\",\"effectiveDefinitionVersion\":\"hmtybkcgsuthhll\",\"scope\":\"wynefx\",\"notScopes\":[\"fciatxtjrr\"],\"parameters\":{\"xdlajfo\":{\"value\":\"\\\"dataskjh\\\"\"},\"krmukmyjmkxett\":{\"value\":\"\\\"dataxscvslxlhua\\\"\"},\"xjhqxcsqhtkb\":{\"value\":\"\\\"datalojfkqidnqto\\\"\"},\"ld\":{\"value\":\"\\\"dataqlrn\\\"\"}},\"description\":\"iipsnawwlqkz\",\"metadata\":\"\\\"datahhl\\\"\",\"enforcementMode\":\"DoNotEnforce\",\"nonComplianceMessages\":[{\"message\":\"ctkwmuqqoajxeiyg\",\"policyDefinitionReferenceId\":\"srwvaexhdctrce\"},{\"message\":\"nkbrupobehd\",\"policyDefinitionReferenceId\":\"jzacvumepjpbibn\"},{\"message\":\"pphepifexl\",\"policyDefinitionReferenceId\":\"i\"},{\"message\":\"ccjclykcgxvrpjlv\",\"policyDefinitionReferenceId\":\"uod\"}],\"resourceSelectors\":[{\"name\":\"nettepdjxqeskoy\",\"selectors\":[{},{}]},{\"name\":\"lpckaewsedves\",\"selectors\":[{},{}]},{\"name\":\"gqphrgfnzhctmjts\",\"selectors\":[{},{},{}]}],\"overrides\":[{\"kind\":\"policyEffect\",\"value\":\"zarpzeqacdldt\",\"selectors\":[{},{},{},{}]}],\"assignmentType\":\"System\",\"instanceId\":\"fcpczshnuqndaiz\",\"selfServeExemptionSettings\":{\"enabled\":false,\"policyDefinitionReferenceIds\":[\"ytus\",\"xhmt\",\"tvegwqiukvzwy\",\"wtthaokgksk\"]}},\"location\":\"vb\",\"identity\":{\"principalId\":\"ajq\",\"tenantId\":\"kpeexpgeumilh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"cw\":{\"principalId\":\"exyionofninbd\",\"clientId\":\"s\"},\"fogdrtbfcm\":{\"principalId\":\"rsmpcbbprtuga\",\"clientId\":\"zbcyksiv\"}}},\"id\":\"ftsjcwj\",\"name\":\"xsgm\",\"type\":\"awvifdxke\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"iqezxlhdj\",\"policyDefinitionId\":\"dcadwvpsozjiihjr\",\"definitionVersion\":\"bmrzoepnx\",\"latestDefinitionVersion\":\"v\",\"effectiveDefinitionVersion\":\"jkgv\",\"scope\":\"mxaursqftibtyi\",\"notScopes\":[\"vpi\"],\"parameters\":{\"owsbedenrexkxbh\":{\"value\":\"\\\"datapnqn\\\"\"},\"evdyz\":{\"value\":\"\\\"dataucnulgmnh\\\"\"},\"kmq\":{\"value\":\"\\\"dataajsvk\\\"\"},\"qfhefkwabsol\":{\"value\":\"\\\"datazkivyhjrliizjix\\\"\"}},\"description\":\"nqqlmgnl\",\"metadata\":\"\\\"datasjxtel\\\"\",\"enforcementMode\":\"Enroll\",\"nonComplianceMessages\":[{\"message\":\"qbozoolzqoc\",\"policyDefinitionReferenceId\":\"kuzlbcnn\"}],\"resourceSelectors\":[{\"name\":\"xawqy\",\"selectors\":[{},{},{}]},{\"name\":\"dyz\",\"selectors\":[{}]}],\"overrides\":[{\"kind\":\"policyEffect\",\"value\":\"xak\",\"selectors\":[{},{},{}]},{\"kind\":\"policyEffect\",\"value\":\"x\",\"selectors\":[{},{},{}]},{\"kind\":\"policyEffect\",\"value\":\"dtfohfaog\",\"selectors\":[{},{}]}],\"assignmentType\":\"Custom\",\"instanceId\":\"siwdyjqur\",\"selfServeExemptionSettings\":{\"enabled\":false,\"policyDefinitionReferenceIds\":[\"ueekcsue\",\"ogd\",\"acbcb\"]}},\"location\":\"dlqidywmhmp\",\"identity\":{\"principalId\":\"ilkfbnrqqxv\",\"tenantId\":\"pbnfnqtx\",\"type\":\"None\",\"userAssignedIdentities\":{\"vmywhsbrcarycsjj\":{\"principalId\":\"swbnfddepldwqjns\",\"clientId\":\"ygleexa\"},\"fbfunun\":{\"principalId\":\"voaqajuvehzptdmk\",\"clientId\":\"bhmpfulubefgybp\"}}},\"id\":\"zkrvfyi\",\"name\":\"kdschlzvfictnkjj\",\"type\":\"gcwn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,27 +36,26 @@ public final class PolicyAssignmentsListForManagementGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PolicyAssignment> response = manager.policyAssignments()
-            .listForManagementGroup("qpxlb", "pakftngatwm", "kyutrymdwmfjhpyc", 1900012002,
+            .listForManagementGroup("eikjclwza", "nmwpf", "uqtaazyqbxyxoyf", 634077919,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vb", response.iterator().next().location());
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("vdwkqpldr", response.iterator().next().displayName());
-        Assertions.assertEquals("fgnaavuagnteta", response.iterator().next().policyDefinitionId());
-        Assertions.assertEquals("tnpdctuhspfefy", response.iterator().next().definitionVersion());
-        Assertions.assertEquals("fciatxtjrr", response.iterator().next().notScopes().get(0));
-        Assertions.assertEquals("iipsnawwlqkz", response.iterator().next().description());
-        Assertions.assertEquals(EnforcementMode.DO_NOT_ENFORCE, response.iterator().next().enforcementMode());
-        Assertions.assertEquals("ctkwmuqqoajxeiyg",
-            response.iterator().next().nonComplianceMessages().get(0).message());
-        Assertions.assertEquals("srwvaexhdctrce",
+        Assertions.assertEquals("dlqidywmhmp", response.iterator().next().location());
+        Assertions.assertEquals(ResourceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("iqezxlhdj", response.iterator().next().displayName());
+        Assertions.assertEquals("dcadwvpsozjiihjr", response.iterator().next().policyDefinitionId());
+        Assertions.assertEquals("bmrzoepnx", response.iterator().next().definitionVersion());
+        Assertions.assertEquals("vpi", response.iterator().next().notScopes().get(0));
+        Assertions.assertEquals("nqqlmgnl", response.iterator().next().description());
+        Assertions.assertEquals(EnforcementMode.ENROLL, response.iterator().next().enforcementMode());
+        Assertions.assertEquals("qbozoolzqoc", response.iterator().next().nonComplianceMessages().get(0).message());
+        Assertions.assertEquals("kuzlbcnn",
             response.iterator().next().nonComplianceMessages().get(0).policyDefinitionReferenceId());
-        Assertions.assertEquals("nettepdjxqeskoy", response.iterator().next().resourceSelectors().get(0).name());
+        Assertions.assertEquals("xawqy", response.iterator().next().resourceSelectors().get(0).name());
         Assertions.assertEquals(OverrideKind.POLICY_EFFECT, response.iterator().next().overrides().get(0).kind());
-        Assertions.assertEquals("zarpzeqacdldt", response.iterator().next().overrides().get(0).value());
-        Assertions.assertEquals(AssignmentType.SYSTEM, response.iterator().next().assignmentType());
+        Assertions.assertEquals("xak", response.iterator().next().overrides().get(0).value());
+        Assertions.assertEquals(AssignmentType.CUSTOM, response.iterator().next().assignmentType());
         Assertions.assertFalse(response.iterator().next().selfServeExemptionSettings().enabled());
-        Assertions.assertEquals("ytus",
+        Assertions.assertEquals("ueekcsue",
             response.iterator().next().selfServeExemptionSettings().policyDefinitionReferenceIds().get(0));
     }
 }

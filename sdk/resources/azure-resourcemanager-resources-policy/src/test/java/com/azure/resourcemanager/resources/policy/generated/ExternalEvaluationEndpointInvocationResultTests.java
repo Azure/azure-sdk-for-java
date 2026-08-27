@@ -15,25 +15,25 @@ public final class ExternalEvaluationEndpointInvocationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalEvaluationEndpointInvocationResult model = BinaryData.fromString(
-            "{\"policyInfo\":{\"policyDefinitionId\":\"gamxzkrrcoiis\",\"policySetDefinitionId\":\"mnppccekuztd\",\"policyDefinitionReferenceId\":\"ezax\",\"policySetDefinitionName\":\"ukzxuizh\",\"policySetDefinitionVersion\":\"nepk\",\"policyDefinitionName\":\"tiarxqiubxduk\",\"policyDefinitionVersion\":\"pxdazv\",\"policyDefinitionEffect\":\"ctmmkoszudbl\",\"policyAssignmentId\":\"ntrpcaqkiof\",\"policyAssignmentName\":\"tfmhklbnldpvcb\",\"policyAssignmentVersion\":\"ezyquw\",\"policyAssignmentScope\":\"qxutrpbrruyuua\"},\"result\":\"Failed\",\"endpointKind\":\"bjwcolbmx\",\"message\":\"nwtpcpahprz\",\"retryAfter\":\"2021-02-26T17:59:51Z\",\"claims\":\"\\\"datamt\\\"\",\"policyAction\":\"Deny\",\"policyEvaluationDetails\":\"\\\"datanxzcm\\\"\",\"additionalInfo\":\"\\\"datangxno\\\"\",\"expiration\":\"2021-11-07T12:11:11Z\"}")
+            "{\"policyInfo\":{\"policyDefinitionId\":\"yjgyd\",\"policySetDefinitionId\":\"lod\",\"policyDefinitionReferenceId\":\"euzanhs\",\"policySetDefinitionName\":\"hse\",\"policySetDefinitionVersion\":\"phpzfngqjcl\",\"policyDefinitionName\":\"ftujwjjufw\",\"policyDefinitionVersion\":\"qrkuor\",\"policyDefinitionEffect\":\"ssruqnmdvhazcvj\",\"policyAssignmentId\":\"iqswbqer\",\"policyAssignmentName\":\"xiytxtdgukvl\",\"policyAssignmentVersion\":\"ktg\",\"policyAssignmentScope\":\"tyouambewreswmow\"},\"result\":\"Failed\",\"endpointKind\":\"uteyxeyguq\",\"message\":\"ijiitns\",\"retryAfter\":\"2021-03-05T21:47:33Z\",\"claims\":\"\\\"datadesygrijwa\\\"\",\"policyAction\":\"Error\",\"policyEvaluationDetails\":\"\\\"datan\\\"\",\"additionalInfo\":\"\\\"dataybfueqfrojsydgr\\\"\",\"expiration\":\"2021-04-19T05:33:50Z\"}")
             .toObject(ExternalEvaluationEndpointInvocationResult.class);
-        Assertions.assertEquals("gamxzkrrcoiis", model.policyInfo().policyDefinitionId());
-        Assertions.assertEquals("mnppccekuztd", model.policyInfo().policySetDefinitionId());
-        Assertions.assertEquals("ezax", model.policyInfo().policyDefinitionReferenceId());
-        Assertions.assertEquals("ukzxuizh", model.policyInfo().policySetDefinitionName());
-        Assertions.assertEquals("nepk", model.policyInfo().policySetDefinitionVersion());
-        Assertions.assertEquals("tiarxqiubxduk", model.policyInfo().policyDefinitionName());
-        Assertions.assertEquals("pxdazv", model.policyInfo().policyDefinitionVersion());
-        Assertions.assertEquals("ctmmkoszudbl", model.policyInfo().policyDefinitionEffect());
-        Assertions.assertEquals("ntrpcaqkiof", model.policyInfo().policyAssignmentId());
-        Assertions.assertEquals("tfmhklbnldpvcb", model.policyInfo().policyAssignmentName());
-        Assertions.assertEquals("ezyquw", model.policyInfo().policyAssignmentVersion());
-        Assertions.assertEquals("qxutrpbrruyuua", model.policyInfo().policyAssignmentScope());
+        Assertions.assertEquals("yjgyd", model.policyInfo().policyDefinitionId());
+        Assertions.assertEquals("lod", model.policyInfo().policySetDefinitionId());
+        Assertions.assertEquals("euzanhs", model.policyInfo().policyDefinitionReferenceId());
+        Assertions.assertEquals("hse", model.policyInfo().policySetDefinitionName());
+        Assertions.assertEquals("phpzfngqjcl", model.policyInfo().policySetDefinitionVersion());
+        Assertions.assertEquals("ftujwjjufw", model.policyInfo().policyDefinitionName());
+        Assertions.assertEquals("qrkuor", model.policyInfo().policyDefinitionVersion());
+        Assertions.assertEquals("ssruqnmdvhazcvj", model.policyInfo().policyDefinitionEffect());
+        Assertions.assertEquals("iqswbqer", model.policyInfo().policyAssignmentId());
+        Assertions.assertEquals("xiytxtdgukvl", model.policyInfo().policyAssignmentName());
+        Assertions.assertEquals("ktg", model.policyInfo().policyAssignmentVersion());
+        Assertions.assertEquals("tyouambewreswmow", model.policyInfo().policyAssignmentScope());
         Assertions.assertEquals(ExternalEndpointResult.FAILED, model.result());
-        Assertions.assertEquals("bjwcolbmx", model.endpointKind());
-        Assertions.assertEquals("nwtpcpahprz", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T17:59:51Z"), model.retryAfter());
-        Assertions.assertEquals(PolicyAction.DENY, model.policyAction());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T12:11:11Z"), model.expiration());
+        Assertions.assertEquals("uteyxeyguq", model.endpointKind());
+        Assertions.assertEquals("ijiitns", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T21:47:33Z"), model.retryAfter());
+        Assertions.assertEquals(PolicyAction.ERROR, model.policyAction());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-19T05:33:50Z"), model.expiration());
     }
 }

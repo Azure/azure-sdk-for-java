@@ -27,7 +27,7 @@ public final class VariablesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.variables().deleteWithResponse("oedkspw", com.azure.core.util.Context.NONE);
+        manager.variables().deleteWithResponse("fuxnvkdslcofuvtf", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -12,9 +12,9 @@ public final class VariableValueListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VariableValueListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"values\":[{\"columnName\":\"y\",\"columnValue\":\"\\\"datamouvbl\\\"\"},{\"columnName\":\"mo\",\"columnValue\":\"\\\"datazkltrfowtdvrfmv\\\"\"}]},\"id\":\"hcvjdrqc\",\"name\":\"jidhftu\",\"type\":\"vhdxlwyo\"}],\"nextLink\":\"fqz\"}")
+            "{\"value\":[{\"properties\":{\"values\":[{\"columnName\":\"ify\",\"columnValue\":\"\\\"datayzeyuubeid\\\"\"},{\"columnName\":\"zlfytoit\",\"columnValue\":\"\\\"datagygvfltgvdiho\\\"\"},{\"columnName\":\"nkrxwetwkdrcy\",\"columnValue\":\"\\\"dataucpcunnuzdqumoen\\\"\"},{\"columnName\":\"dnaienhqhskndnel\",\"columnValue\":\"\\\"datakaa\\\"\"}]},\"id\":\"knwfoanniyo\",\"name\":\"etxivcnrlyxnuc\",\"type\":\"ephblkwqpatvbqs\"},{\"properties\":{\"values\":[{\"columnName\":\"jbc\",\"columnValue\":\"\\\"datavivuzqymtuowo\\\"\"},{\"columnName\":\"tgitsqhzvbrzc\",\"columnValue\":\"\\\"databanf\\\"\"}]},\"id\":\"ds\",\"name\":\"xmxeatkdb\",\"type\":\"wnrdjyibqbnaom\"},{\"properties\":{\"values\":[{\"columnName\":\"mk\",\"columnValue\":\"\\\"datahmaxljalfi\\\"\"},{\"columnName\":\"cjmobcanc\",\"columnValue\":\"\\\"dataexxqcwg\\\"\"}]},\"id\":\"fgvaknokzwj\",\"name\":\"zrltixldzyyf\",\"type\":\"tpq\"},{\"properties\":{\"values\":[{\"columnName\":\"ymmpujivy\",\"columnValue\":\"\\\"datalkjuvsmbmslzoyov\\\"\"}]},\"id\":\"dbpqvybefgvm\",\"name\":\"nokcv\",\"type\":\"lubses\"}],\"nextLink\":\"cua\"}")
             .toObject(VariableValueListResult.class);
-        Assertions.assertEquals("y", model.value().get(0).values().get(0).columnName());
-        Assertions.assertEquals("fqz", model.nextLink());
+        Assertions.assertEquals("ify", model.value().get(0).values().get(0).columnName());
+        Assertions.assertEquals("cua", model.nextLink());
     }
 }

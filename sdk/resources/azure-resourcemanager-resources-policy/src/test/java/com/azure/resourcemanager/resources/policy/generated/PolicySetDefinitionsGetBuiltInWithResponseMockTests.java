@@ -23,7 +23,7 @@ public final class PolicySetDefinitionsGetBuiltInWithResponseMockTests {
     @Test
     public void testGetBuiltInWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyType\":\"BuiltIn\",\"displayName\":\"jxldnaryy\",\"description\":\"zkdolrndwdbvxvza\",\"metadata\":\"\\\"datadoyqx\\\"\",\"parameters\":{\"dcaytujraxd\":{\"type\":\"Boolean\",\"allowedValues\":[\"\\\"datamcxqqxmyzklao\\\"\",\"\\\"datan\\\"\",\"\\\"dataohrvmz\\\"\"],\"defaultValue\":\"\\\"datarazadivznllaslks\\\"\",\"schema\":\"\\\"datajqjpv\\\"\",\"metadata\":{\"displayName\":\"hxjtgzgtai\",\"description\":\"b\",\"strongType\":\"roigbsfsgsaenwld\",\"assignPermissions\":false,\"tryldsxebuhsxr\":\"\\\"dataqlxspmrj\\\"\",\"b\":\"\\\"datanmgsdaluyckhef\\\"\",\"uerbgpxebjl\":\"\\\"datas\\\"\"}},\"euynh\":{\"type\":\"Float\",\"allowedValues\":[\"\\\"datamgtnsew\\\"\",\"\\\"datauxlymsvvyl\\\"\"],\"defaultValue\":\"\\\"datarkepos\\\"\",\"schema\":\"\\\"dataqqylmpctwjwds\\\"\",\"metadata\":{\"displayName\":\"mkxerxxxoteeh\",\"description\":\"owgomvvhxowp\",\"strongType\":\"apnpxraqawbmp\",\"assignPermissions\":false,\"vujex\":\"\\\"datalqloc\\\"\",\"paslavxjfiuofpi\":\"\\\"datayglxrkgjnm\\\"\",\"kyhydvikmf\":\"\\\"dataidzlvssqywjopa\\\"\",\"izwgsoriobijeiyd\":\"\\\"datagpmillxgjs\\\"\"}},\"pyvdkgdets\":{\"type\":\"Integer\",\"allowedValues\":[\"\\\"datar\\\"\",\"\\\"datawybriopdwe\\\"\"],\"defaultValue\":\"\\\"datatnorwaigsioct\\\"\",\"schema\":\"\\\"datamvjanx\\\"\",\"metadata\":{\"displayName\":\"ffhtjnw\",\"description\":\"stfjxtvl\",\"strongType\":\"zqfcwrriomxee\",\"assignPermissions\":false,\"xdbsohcw\":\"\\\"datambjiqeg\\\"\"}},\"qrslaate\":{\"type\":\"DateTime\",\"allowedValues\":[\"\\\"datazbjekw\\\"\",\"\\\"datayckyvne\\\"\",\"\\\"datasmuffiwjb\\\"\"],\"defaultValue\":\"\\\"datavbp\\\"\",\"schema\":\"\\\"datajqjtotd\\\"\",\"metadata\":{\"displayName\":\"scsl\",\"description\":\"uusiecktybh\",\"strongType\":\"xidhhxomil\",\"assignPermissions\":false,\"gxwjwil\":\"\\\"datad\\\"\"}}},\"policyDefinitions\":[{\"policyDefinitionId\":\"wuj\",\"definitionVersion\":\"gxqgqwlxrhgtvhv\",\"latestDefinitionVersion\":\"qykbkkt\",\"effectiveDefinitionVersion\":\"zejogmkorvvmvm\",\"parameters\":{\"nqhlbs\":{}},\"policyDefinitionReferenceId\":\"snqliwkmzojfe\",\"groupNames\":[\"lhtgmkn\",\"zgbjbhrpgi\",\"sttcucrcmm\"]},{\"policyDefinitionId\":\"ixpqj\",\"definitionVersion\":\"ifhb\",\"latestDefinitionVersion\":\"ldtt\",\"effectiveDefinitionVersion\":\"qclnaihtg\",\"parameters\":{\"ikvllrhtpmgl\":{},\"k\":{},\"ikmtrawrqkza\":{}},\"policyDefinitionReferenceId\":\"unmpaklwzl\",\"groupNames\":[\"prnejzltkaszf\"]}],\"policyDefinitionGroups\":[{\"name\":\"scbduxapgrcqebmv\",\"displayName\":\"jomlnwsbvvdlsf\",\"category\":\"kq\",\"description\":\"dfedsb\",\"additionalMetadataId\":\"ancoinmphymcqid\"},{\"name\":\"ltvdhqnufbx\",\"displayName\":\"iibntojo\",\"category\":\"nybydhuihaouwud\",\"description\":\"aorhjkehwvumo\",\"additionalMetadataId\":\"ircamqprlo\"},{\"name\":\"rugejcvjkjy\",\"displayName\":\"cmtagelajdyo\",\"category\":\"eqyxqfmzsiz\",\"description\":\"ravrcjkjymg\",\"additionalMetadataId\":\"gcxhnqxgzxl\"},{\"name\":\"rmk\",\"displayName\":\"rghskir\",\"category\":\"pupkcbkfukd\",\"description\":\"qnv\",\"additionalMetadataId\":\"dydshk\"}],\"version\":\"fyaloowwzizzny\",\"versions\":[\"qz\",\"ti\",\"gufy\",\"fdk\"]},\"id\":\"yvndjokgwesym\",\"name\":\"qh\",\"type\":\"qpfzlpejtznxlue\"}";
+            = "{\"properties\":{\"policyType\":\"BuiltIn\",\"displayName\":\"by\",\"description\":\"qpgaixwrgrkk\",\"metadata\":\"\\\"datarfrswqikwep\\\"\",\"parameters\":{\"cn\":{\"type\":\"Float\",\"allowedValues\":[\"\\\"datawnxhtf\\\"\"],\"defaultValue\":\"\\\"dataqbsudzpgchzpg\\\"\",\"schema\":\"\\\"dataumjdjxhzghg\\\"\",\"metadata\":{\"displayName\":\"ynrceqavfdbdf\",\"description\":\"xjdnajuo\",\"strongType\":\"y\",\"assignPermissions\":false,\"q\":\"\\\"datalhvcwl\\\"\",\"zobuzmsxgamtdtk\":\"\\\"dataejkluxxr\\\"\",\"dpoqfxyem\":\"\\\"datappthuzdprmimrl\\\"\",\"loamfmxtllfltym\":\"\\\"datakftbaewhte\\\"\"}}},\"policyDefinitions\":[{\"policyDefinitionId\":\"fijhgga\",\"definitionVersion\":\"bgamklilirwd\",\"latestDefinitionVersion\":\"fhsdpzouhkt\",\"effectiveDefinitionVersion\":\"xqwqnjxr\",\"parameters\":{\"dtullygtavczcxdf\":{},\"eapyfmlxrlj\":{},\"h\":{}},\"policyDefinitionReferenceId\":\"spi\",\"groupNames\":[\"imixlmdbgice\",\"fgsmdrjuqb\",\"xtokljmtz\",\"paxwfqty\"]},{\"policyDefinitionId\":\"qi\",\"definitionVersion\":\"cltungbso\",\"latestDefinitionVersion\":\"ckmiig\",\"effectiveDefinitionVersion\":\"kuckgkdskswtiiq\",\"parameters\":{\"ikclsm\":{},\"lnssw\":{},\"ykdnonaaxwmg\":{}},\"policyDefinitionReferenceId\":\"ujlqcwnynlle\",\"groupNames\":[\"cbgvsbt\",\"ertoxadhxuvj\"]},{\"policyDefinitionId\":\"xmnrqstjcmet\",\"definitionVersion\":\"l\",\"latestDefinitionVersion\":\"cvnpv\",\"effectiveDefinitionVersion\":\"hgjnaq\",\"parameters\":{\"pslzmvcds\":{}},\"policyDefinitionReferenceId\":\"wbitekdtfob\",\"groupNames\":[\"ybxq\"]}],\"policyDefinitionGroups\":[{\"name\":\"gybfzdqekiv\",\"displayName\":\"p\",\"category\":\"vdizulrqtbh\",\"description\":\"ezp\",\"additionalMetadataId\":\"pryfmxmdutzfkgi\"},{\"name\":\"no\",\"displayName\":\"ccgndjgdprig\",\"category\":\"qyeqfcbuulpyuflq\",\"description\":\"shtujcyoh\",\"additionalMetadataId\":\"imwdcsklkqnqvki\"},{\"name\":\"nmbzmecuy\",\"displayName\":\"wimbzayspzvr\",\"category\":\"tvfphmdzxplgtpvd\",\"description\":\"tlzmgs\",\"additionalMetadataId\":\"nzrsbkkzovlzdmn\"},{\"name\":\"mfwsxafofu\",\"displayName\":\"rimm\",\"category\":\"zwdehkkmvhz\",\"description\":\"vanyrvaprtge\",\"additionalMetadataId\":\"wewikfya\"}],\"version\":\"ndmymnqoqjumov\",\"versions\":[\"pbvzopaxmfmvsmcw\",\"xfaxdtnq\",\"fbsatroi\"]},\"id\":\"esugmocpcjycbo\",\"name\":\"lrgttwfldsiuor\",\"type\":\"nikcedpk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,27 +33,27 @@ public final class PolicySetDefinitionsGetBuiltInWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicySetDefinition response = manager.policySetDefinitions()
-            .getBuiltInWithResponse("oeehpmjenvjeatea", "xc", com.azure.core.util.Context.NONE)
+            .getBuiltInWithResponse("wvmqxi", "ookyfoz", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PolicyType.BUILT_IN, response.policyType());
-        Assertions.assertEquals("jxldnaryy", response.displayName());
-        Assertions.assertEquals("zkdolrndwdbvxvza", response.description());
-        Assertions.assertEquals(ParameterType.BOOLEAN, response.parameters().get("dcaytujraxd").type());
-        Assertions.assertEquals("hxjtgzgtai", response.parameters().get("dcaytujraxd").metadata().displayName());
-        Assertions.assertEquals("b", response.parameters().get("dcaytujraxd").metadata().description());
-        Assertions.assertEquals("roigbsfsgsaenwld", response.parameters().get("dcaytujraxd").metadata().strongType());
-        Assertions.assertFalse(response.parameters().get("dcaytujraxd").metadata().assignPermissions());
-        Assertions.assertEquals("wuj", response.policyDefinitions().get(0).policyDefinitionId());
-        Assertions.assertEquals("gxqgqwlxrhgtvhv", response.policyDefinitions().get(0).definitionVersion());
-        Assertions.assertEquals("snqliwkmzojfe", response.policyDefinitions().get(0).policyDefinitionReferenceId());
-        Assertions.assertEquals("lhtgmkn", response.policyDefinitions().get(0).groupNames().get(0));
-        Assertions.assertEquals("scbduxapgrcqebmv", response.policyDefinitionGroups().get(0).name());
-        Assertions.assertEquals("jomlnwsbvvdlsf", response.policyDefinitionGroups().get(0).displayName());
-        Assertions.assertEquals("kq", response.policyDefinitionGroups().get(0).category());
-        Assertions.assertEquals("dfedsb", response.policyDefinitionGroups().get(0).description());
-        Assertions.assertEquals("ancoinmphymcqid", response.policyDefinitionGroups().get(0).additionalMetadataId());
-        Assertions.assertEquals("fyaloowwzizzny", response.version());
-        Assertions.assertEquals("qz", response.versions().get(0));
+        Assertions.assertEquals("by", response.displayName());
+        Assertions.assertEquals("qpgaixwrgrkk", response.description());
+        Assertions.assertEquals(ParameterType.FLOAT, response.parameters().get("cn").type());
+        Assertions.assertEquals("ynrceqavfdbdf", response.parameters().get("cn").metadata().displayName());
+        Assertions.assertEquals("xjdnajuo", response.parameters().get("cn").metadata().description());
+        Assertions.assertEquals("y", response.parameters().get("cn").metadata().strongType());
+        Assertions.assertFalse(response.parameters().get("cn").metadata().assignPermissions());
+        Assertions.assertEquals("fijhgga", response.policyDefinitions().get(0).policyDefinitionId());
+        Assertions.assertEquals("bgamklilirwd", response.policyDefinitions().get(0).definitionVersion());
+        Assertions.assertEquals("spi", response.policyDefinitions().get(0).policyDefinitionReferenceId());
+        Assertions.assertEquals("imixlmdbgice", response.policyDefinitions().get(0).groupNames().get(0));
+        Assertions.assertEquals("gybfzdqekiv", response.policyDefinitionGroups().get(0).name());
+        Assertions.assertEquals("p", response.policyDefinitionGroups().get(0).displayName());
+        Assertions.assertEquals("vdizulrqtbh", response.policyDefinitionGroups().get(0).category());
+        Assertions.assertEquals("ezp", response.policyDefinitionGroups().get(0).description());
+        Assertions.assertEquals("pryfmxmdutzfkgi", response.policyDefinitionGroups().get(0).additionalMetadataId());
+        Assertions.assertEquals("ndmymnqoqjumov", response.version());
+        Assertions.assertEquals("pbvzopaxmfmvsmcw", response.versions().get(0));
     }
 }

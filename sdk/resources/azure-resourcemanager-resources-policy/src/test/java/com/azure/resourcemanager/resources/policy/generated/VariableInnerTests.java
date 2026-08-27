@@ -14,19 +14,18 @@ public final class VariableInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VariableInner model = BinaryData.fromString(
-            "{\"properties\":{\"columns\":[{\"columnName\":\"onhpcz\"},{\"columnName\":\"kmktpvwxqcseh\"},{\"columnName\":\"hkhufm\"},{\"columnName\":\"qumq\"}]},\"id\":\"gy\",\"name\":\"zulo\",\"type\":\"saeuzanhsfnhsenw\"}")
+            "{\"properties\":{\"columns\":[{\"columnName\":\"ylkjztjiuazjcg\"},{\"columnName\":\"xitp\"},{\"columnName\":\"inzcpdltkrlgj\"}]},\"id\":\"bd\",\"name\":\"vcqguefzh\",\"type\":\"mpheqdur\"}")
             .toObject(VariableInner.class);
-        Assertions.assertEquals("onhpcz", model.columns().get(0).columnName());
+        Assertions.assertEquals("ylkjztjiuazjcg", model.columns().get(0).columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VariableInner model
-            = new VariableInner().withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("onhpcz"),
-                new PolicyVariableColumn().withColumnName("kmktpvwxqcseh"),
-                new PolicyVariableColumn().withColumnName("hkhufm"),
-                new PolicyVariableColumn().withColumnName("qumq")));
+            = new VariableInner().withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("ylkjztjiuazjcg"),
+                new PolicyVariableColumn().withColumnName("xitp"),
+                new PolicyVariableColumn().withColumnName("inzcpdltkrlgj")));
         model = BinaryData.fromObject(model).toObject(VariableInner.class);
-        Assertions.assertEquals("onhpcz", model.columns().get(0).columnName());
+        Assertions.assertEquals("ylkjztjiuazjcg", model.columns().get(0).columnName());
     }
 }

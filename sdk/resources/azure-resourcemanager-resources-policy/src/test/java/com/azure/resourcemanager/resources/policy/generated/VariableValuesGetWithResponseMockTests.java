@@ -21,7 +21,7 @@ public final class VariableValuesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"values\":[{\"columnName\":\"tvijvwmrgcnz\",\"columnValue\":\"\\\"datarpl\\\"\"},{\"columnName\":\"xfmbzqu\",\"columnValue\":\"\\\"datautqmhbt\\\"\"}]},\"id\":\"zycgcmbkygvx\",\"name\":\"dqosxzmdzly\",\"type\":\"qfufkekzfkicxhs\"}";
+            = "{\"properties\":{\"values\":[{\"columnName\":\"yuflmsyzzdcrolrz\",\"columnValue\":\"\\\"datasb\\\"\"},{\"columnName\":\"mphzkymunw\",\"columnValue\":\"\\\"dataivt\\\"\"},{\"columnName\":\"uszbdjrdfeuj\",\"columnValue\":\"\\\"datawdalisd\\\"\"}]},\"id\":\"n\",\"name\":\"caydzinlooulp\",\"type\":\"zmdahyclxrs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class VariableValuesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        VariableValue response
-            = manager.variableValues().getWithResponse("gbq", "fy", com.azure.core.util.Context.NONE).getValue();
+        VariableValue response = manager.variableValues()
+            .getWithResponse("knfzqnzbflbqmhb", "yxxvwedhagqbbse", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("tvijvwmrgcnz", response.values().get(0).columnName());
+        Assertions.assertEquals("yuflmsyzzdcrolrz", response.values().get(0).columnName());
     }
 }

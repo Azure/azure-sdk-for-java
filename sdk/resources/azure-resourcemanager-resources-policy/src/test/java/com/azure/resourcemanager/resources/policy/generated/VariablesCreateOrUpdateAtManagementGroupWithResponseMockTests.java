@@ -24,7 +24,7 @@ public final class VariablesCreateOrUpdateAtManagementGroupWithResponseMockTests
     @Test
     public void testCreateOrUpdateAtManagementGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"columns\":[{\"columnName\":\"doduo\"},{\"columnName\":\"txjbrixy\"}]},\"id\":\"kikkqyvurhwishy\",\"name\":\"mrzcqfevnkyakc\",\"type\":\"tehognsddjk\"}";
+            = "{\"properties\":{\"columns\":[{\"columnName\":\"kkyporsyn\"}]},\"id\":\"unbydlgfap\",\"name\":\"wuubwtsaynrtv\",\"type\":\"fqreeoxvqjmrnbl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class VariablesCreateOrUpdateAtManagementGroupWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Variable response = manager.variables()
-            .createOrUpdateAtManagementGroupWithResponse("frppwwqclmdmt", "xxep",
-                new VariableInner().withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("zxlcqzfxaiti"),
-                    new PolicyVariableColumn().withColumnName("mcjbsmkirpqnipu"),
-                    new PolicyVariableColumn().withColumnName("m"))),
+            .createOrUpdateAtManagementGroupWithResponse("qyafewcmodxwu", "ytxnxrqx",
+                new VariableInner().withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("eargvfvkhbjh"),
+                    new PolicyVariableColumn().withColumnName("vpjxsdhweignybff"),
+                    new PolicyVariableColumn().withColumnName("cwwynepktvmw"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("doduo", response.columns().get(0).columnName());
+        Assertions.assertEquals("kkyporsyn", response.columns().get(0).columnName());
     }
 }

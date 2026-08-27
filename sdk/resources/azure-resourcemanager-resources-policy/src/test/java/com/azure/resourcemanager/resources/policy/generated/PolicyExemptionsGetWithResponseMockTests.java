@@ -12,6 +12,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resources.policy.PolicyManager;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +24,7 @@ public final class PolicyExemptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"ffmnoiics\",\"policyDefinitionReferenceIds\":[\"hbrj\",\"talxrdsj\"],\"exemptionCategory\":\"Waiver\",\"expiresOn\":\"2020-12-22T22:14:06Z\",\"displayName\":\"qwgusxxhdo\",\"description\":\"jwyblvtbdmvsb\",\"metadata\":\"\\\"datadaelqpv\\\"\",\"resourceSelectors\":[{\"name\":\"wjfbotloggdusx\",\"selectors\":[{}]},{\"name\":\"ivuxcjkcoqwczs\",\"selectors\":[{},{},{}]},{\"name\":\"izfwihvaangqt\",\"selectors\":[{}]}],\"assignmentScopeValidation\":\"DoNotValidate\"},\"id\":\"mfdvbbaexxjfwtg\",\"name\":\"fkkauigvmua\",\"type\":\"mczfedyuepsvplt\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"xrezsvavlrxi\",\"policyDefinitionReferenceIds\":[\"oywlunpipcwyb\",\"zfn\"],\"exemptionCategory\":\"Mitigated\",\"expiresOn\":\"2021-12-10T14:46:33Z\",\"displayName\":\"pftsaebwf\",\"description\":\"xorpwal\",\"metadata\":\"\\\"datawugexojfccyl\\\"\",\"resourceSelectors\":[{\"name\":\"thvazjpw\",\"selectors\":[{},{},{},{}]}],\"assignmentScopeValidation\":\"DoNotValidate\",\"exemptionManagementMode\":\"UserSelfServe\"},\"id\":\"o\",\"name\":\"zzxezmnrkj\",\"type\":\"pjeuxsp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +34,17 @@ public final class PolicyExemptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyExemption response = manager.policyExemptions()
-            .getWithResponse("rqm", "lpbyxroiduyq", com.azure.core.util.Context.NONE)
+            .getWithResponse("yyjshcybwfuppo", "prcmvouujxdiik", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ffmnoiics", response.policyAssignmentId());
-        Assertions.assertEquals("hbrj", response.policyDefinitionReferenceIds().get(0));
-        Assertions.assertEquals(ExemptionCategory.WAIVER, response.exemptionCategory());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T22:14:06Z"), response.expiresOn());
-        Assertions.assertEquals("qwgusxxhdo", response.displayName());
-        Assertions.assertEquals("jwyblvtbdmvsb", response.description());
-        Assertions.assertEquals("wjfbotloggdusx", response.resourceSelectors().get(0).name());
+        Assertions.assertEquals("xrezsvavlrxi", response.policyAssignmentId());
+        Assertions.assertEquals("oywlunpipcwyb", response.policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals(ExemptionCategory.MITIGATED, response.exemptionCategory());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T14:46:33Z"), response.expiresOn());
+        Assertions.assertEquals("pftsaebwf", response.displayName());
+        Assertions.assertEquals("xorpwal", response.description());
+        Assertions.assertEquals("thvazjpw", response.resourceSelectors().get(0).name());
         Assertions.assertEquals(AssignmentScopeValidation.DO_NOT_VALIDATE, response.assignmentScopeValidation());
+        Assertions.assertEquals(ExemptionManagementMode.USER_SELF_SERVE, response.exemptionManagementMode());
     }
 }

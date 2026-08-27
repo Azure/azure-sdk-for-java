@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
 import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -69,6 +70,11 @@ public final class PolicyExemptionProperties implements JsonSerializable<PolicyE
      * The option whether validate the exemption is at or under the assignment scope.
      */
     private AssignmentScopeValidation assignmentScopeValidation;
+
+    /*
+     * The mode indicating how the policy exemption is managed.
+     */
+    private ExemptionManagementMode exemptionManagementMode;
 
     /**
      * Creates an instance of PolicyExemptionProperties class.
@@ -266,6 +272,26 @@ public final class PolicyExemptionProperties implements JsonSerializable<PolicyE
     }
 
     /**
+     * Get the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @return the exemptionManagementMode value.
+     */
+    public ExemptionManagementMode exemptionManagementMode() {
+        return this.exemptionManagementMode;
+    }
+
+    /**
+     * Set the exemptionManagementMode property: The mode indicating how the policy exemption is managed.
+     * 
+     * @param exemptionManagementMode the exemptionManagementMode value to set.
+     * @return the PolicyExemptionProperties object itself.
+     */
+    public PolicyExemptionProperties withExemptionManagementMode(ExemptionManagementMode exemptionManagementMode) {
+        this.exemptionManagementMode = exemptionManagementMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -288,6 +314,8 @@ public final class PolicyExemptionProperties implements JsonSerializable<PolicyE
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("assignmentScopeValidation",
             this.assignmentScopeValidation == null ? null : this.assignmentScopeValidation.toString());
+        jsonWriter.writeStringField("exemptionManagementMode",
+            this.exemptionManagementMode == null ? null : this.exemptionManagementMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -332,6 +360,9 @@ public final class PolicyExemptionProperties implements JsonSerializable<PolicyE
                 } else if ("assignmentScopeValidation".equals(fieldName)) {
                     deserializedPolicyExemptionProperties.assignmentScopeValidation
                         = AssignmentScopeValidation.fromString(reader.getString());
+                } else if ("exemptionManagementMode".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.exemptionManagementMode
+                        = ExemptionManagementMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

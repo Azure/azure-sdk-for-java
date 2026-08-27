@@ -15,19 +15,23 @@ public final class PolicyVariableValuePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyVariableValueProperties model = BinaryData.fromString(
-            "{\"values\":[{\"columnName\":\"umoqodkad\",\"columnValue\":\"\\\"datapyi\\\"\"},{\"columnName\":\"ngqladywrx\",\"columnValue\":\"\\\"datahydt\\\"\"}]}")
+            "{\"values\":[{\"columnName\":\"zdyi\",\"columnValue\":\"\\\"datasfayorpravkjoges\\\"\"},{\"columnName\":\"abnsmj\",\"columnValue\":\"\\\"datawynqxaekqsykvwj\\\"\"},{\"columnName\":\"qpkevmyltjc\",\"columnValue\":\"\\\"dataspxklu\\\"\"},{\"columnName\":\"cclfgxannn\",\"columnValue\":\"\\\"dataytzpo\\\"\"}]}")
             .toObject(PolicyVariableValueProperties.class);
-        Assertions.assertEquals("umoqodkad", model.values().get(0).columnName());
+        Assertions.assertEquals("zdyi", model.values().get(0).columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyVariableValueProperties model = new PolicyVariableValueProperties().withValues(Arrays.asList(
-            new PolicyVariableValueColumnValue().withColumnName("umoqodkad")
-                .withColumnValue(BinaryData.fromBytes("\"datapyi\"".getBytes(StandardCharsets.UTF_8))),
-            new PolicyVariableValueColumnValue().withColumnName("ngqladywrx")
-                .withColumnValue(BinaryData.fromBytes("\"datahydt\"".getBytes(StandardCharsets.UTF_8)))));
+            new PolicyVariableValueColumnValue().withColumnName("zdyi")
+                .withColumnValue(BinaryData.fromBytes("\"datasfayorpravkjoges\"".getBytes(StandardCharsets.UTF_8))),
+            new PolicyVariableValueColumnValue().withColumnName("abnsmj")
+                .withColumnValue(BinaryData.fromBytes("\"datawynqxaekqsykvwj\"".getBytes(StandardCharsets.UTF_8))),
+            new PolicyVariableValueColumnValue().withColumnName("qpkevmyltjc")
+                .withColumnValue(BinaryData.fromBytes("\"dataspxklu\"".getBytes(StandardCharsets.UTF_8))),
+            new PolicyVariableValueColumnValue().withColumnName("cclfgxannn")
+                .withColumnValue(BinaryData.fromBytes("\"dataytzpo\"".getBytes(StandardCharsets.UTF_8)))));
         model = BinaryData.fromObject(model).toObject(PolicyVariableValueProperties.class);
-        Assertions.assertEquals("umoqodkad", model.values().get(0).columnName());
+        Assertions.assertEquals("zdyi", model.values().get(0).columnName());
     }
 }
