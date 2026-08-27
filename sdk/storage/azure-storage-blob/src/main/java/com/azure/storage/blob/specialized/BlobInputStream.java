@@ -64,8 +64,8 @@ public final class BlobInputStream extends StorageInputStream {
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(BlobClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
-        ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context,
-        AutoRefreshingCache<BlobLayoutCacheValue> layoutCache) throws BlobStorageException {
+        ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties,
+        AutoRefreshingCache<BlobLayoutCacheValue> layoutCache, Context context) throws BlobStorageException {
 
         super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context),
             initialBuffer);

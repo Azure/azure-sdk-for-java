@@ -19,10 +19,19 @@ import java.util.concurrent.ThreadLocalRandom;
  * Cache for expiring storage values.
  */
 public final class AutoRefreshingCache<T extends AutoRefreshingCache.ExpiringValue> {
+    @FunctionalInterface
     public interface ValueProvider<T extends ExpiringValue> {
         Mono<T> createAsync();
 
-        T createSync();
+        /**
+         * Creates the value synchronously. Defaults to blocking on {@link #createAsync()}; override when a
+         * non-blocking synchronous path is available.
+         *
+         * @return The created value.
+         */
+        default T createSync() {
+            return createAsync().block();
+        }
     }
 
     public interface ExpiringValue {

@@ -47,7 +47,6 @@ import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
-import com.azure.storage.blob.implementation.util.BlobLayoutCacheFactory;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
@@ -584,12 +583,12 @@ public class BlobClientBase {
                 AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
                 if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
-                    layoutCache = BlobLayoutCacheFactory.create(() -> finalClient.client
+                    layoutCache = new AutoRefreshingCache<>(() -> finalClient.client
                         .fetchLayoutCacheValueAsync(layoutRange, requestConditions, contextFinal));
                 }
 
                 return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
-                    initialBuffer, requestConditions, properties, contextFinal, layoutCache));
+                    initialBuffer, requestConditions, properties, layoutCache, contextFinal));
             })
             .block();
     }

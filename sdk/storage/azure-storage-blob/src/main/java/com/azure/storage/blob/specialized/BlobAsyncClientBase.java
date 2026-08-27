@@ -48,7 +48,6 @@ import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
-import com.azure.storage.blob.implementation.util.BlobLayoutCacheFactory;
 import com.azure.storage.blob.implementation.util.BlobLayoutRangeResolver;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
@@ -1635,8 +1634,8 @@ public class BlobAsyncClientBase {
                     && remainingCount > 0) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
-                    layoutCache = BlobLayoutCacheFactory
-                        .create(() -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext));
+                    layoutCache = new AutoRefreshingCache<>(
+                        () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext));
                     AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
