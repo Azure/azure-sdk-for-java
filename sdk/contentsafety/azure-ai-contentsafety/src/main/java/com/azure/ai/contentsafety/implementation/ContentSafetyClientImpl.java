@@ -195,6 +195,50 @@ public final class ContentSafetyClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
             RequestOptions requestOptions, Context context);
+
+        @Post("/text:detectProtectedMaterial")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> detectTextProtectedMaterial(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/text:detectProtectedMaterial")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> detectTextProtectedMaterialSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/text:shieldPrompt")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> shieldPrompt(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/text:shieldPrompt")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> shieldPromptSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -422,6 +466,195 @@ public final class ContentSafetyClientImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            options, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Detect Protected Material for Text
+     * 
+     * A synchronous API for detecting protected material in the given text.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     text: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     protectedMaterialAnalysis (Required): {
+     *         detected: boolean (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param options The request body to be detected, which may contain protected material.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the combined detection results of potential protected material along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> detectTextProtectedMaterialWithResponseAsync(BinaryData options,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.detectTextProtectedMaterial(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
+    }
+
+    /**
+     * Detect Protected Material for Text
+     * 
+     * A synchronous API for detecting protected material in the given text.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     text: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     protectedMaterialAnalysis (Required): {
+     *         detected: boolean (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param options The request body to be detected, which may contain protected material.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the combined detection results of potential protected material along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> detectTextProtectedMaterialWithResponse(BinaryData options,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.detectTextProtectedMaterialSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, options, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Shield Prompt
+     * 
+     * A synchronous API for shielding prompt from direct and indirect injection attacks.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     userPrompt: String (Optional)
+     *     documents (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     userPromptAnalysis (Optional): {
+     *         attackDetected: boolean (Required)
+     *     }
+     *     documentsAnalysis (Optional): [
+     *          (Optional){
+     *             attackDetected: boolean (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param options The request body to be detected, which may contain direct or indirect injection attacks.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the combined analysis results of potential direct or indirect injection attacks along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> shieldPromptWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.shieldPrompt(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
+    }
+
+    /**
+     * Shield Prompt
+     * 
+     * A synchronous API for shielding prompt from direct and indirect injection attacks.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     userPrompt: String (Optional)
+     *     documents (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     userPromptAnalysis (Optional): {
+     *         attackDetected: boolean (Required)
+     *     }
+     *     documentsAnalysis (Optional): [
+     *          (Optional){
+     *             attackDetected: boolean (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param options The request body to be detected, which may contain direct or indirect injection attacks.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the combined analysis results of potential direct or indirect injection attacks along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> shieldPromptWithResponse(BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.shieldPromptSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
             options, requestOptions, Context.NONE);
     }
 }

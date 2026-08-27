@@ -96,6 +96,7 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isRegex", this.isRegex);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,6 +115,7 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
             String blocklistItemId = null;
             String text = null;
             String description = null;
+            Boolean isRegex = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -123,6 +125,8 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
                     text = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("isRegex".equals(fieldName)) {
+                    isRegex = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -130,7 +134,38 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
             TextBlocklistItem deserializedTextBlocklistItem = new TextBlocklistItem(text);
             deserializedTextBlocklistItem.blocklistItemId = blocklistItemId;
             deserializedTextBlocklistItem.description = description;
+            deserializedTextBlocklistItem.isRegex = isRegex;
             return deserializedTextBlocklistItem;
         });
+    }
+
+    /*
+     * An optional properties indicating whether this item is to be matched as a regular expression.
+     */
+    @Generated
+    private Boolean isRegex;
+
+    /**
+     * Get the isRegex property: An optional properties indicating whether this item is to be matched as a regular
+     * expression.
+     *
+     * @return the isRegex value.
+     */
+    @Generated
+    public Boolean isRegex() {
+        return this.isRegex;
+    }
+
+    /**
+     * Set the isRegex property: An optional properties indicating whether this item is to be matched as a regular
+     * expression.
+     *
+     * @param isRegex the isRegex value to set.
+     * @return the TextBlocklistItem object itself.
+     */
+    @Generated
+    public TextBlocklistItem setIsRegex(Boolean isRegex) {
+        this.isRegex = isRegex;
+        return this;
     }
 }

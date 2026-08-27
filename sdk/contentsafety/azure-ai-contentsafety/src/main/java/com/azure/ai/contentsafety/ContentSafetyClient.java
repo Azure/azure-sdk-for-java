@@ -9,6 +9,10 @@ import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
+import com.azure.ai.contentsafety.models.DetectTextProtectedMaterialOptions;
+import com.azure.ai.contentsafety.models.DetectTextProtectedMaterialResult;
+import com.azure.ai.contentsafety.models.ShieldPromptOptions;
+import com.azure.ai.contentsafety.models.ShieldPromptResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -262,5 +266,141 @@ public final class ContentSafetyClient {
         // Customized convenience method for analyzeImageWithResponse
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
         return analyzeImage(body);
+    }
+
+    /**
+     * Detect Protected Material for Text
+     *
+     * A synchronous API for detecting protected material in the given text.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     text: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     protectedMaterialAnalysis (Required): {
+     *         detected: boolean (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param options The request body to be detected, which may contain protected material.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the combined detection results of potential protected material along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> detectTextProtectedMaterialWithResponse(BinaryData options,
+        RequestOptions requestOptions) {
+        return this.serviceClient.detectTextProtectedMaterialWithResponse(options, requestOptions);
+    }
+
+    /**
+     * Shield Prompt
+     *
+     * A synchronous API for shielding prompt from direct and indirect injection attacks.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     userPrompt: String (Optional)
+     *     documents (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     userPromptAnalysis (Optional): {
+     *         attackDetected: boolean (Required)
+     *     }
+     *     documentsAnalysis (Optional): [
+     *          (Optional){
+     *             attackDetected: boolean (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param options The request body to be detected, which may contain direct or indirect injection attacks.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the combined analysis results of potential direct or indirect injection attacks along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> shieldPromptWithResponse(BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.shieldPromptWithResponse(options, requestOptions);
+    }
+
+    /**
+     * Detect Protected Material for Text
+     *
+     * A synchronous API for detecting protected material in the given text.
+     *
+     * @param options The request body to be detected, which may contain protected material.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the combined detection results of potential protected material.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DetectTextProtectedMaterialResult detectTextProtectedMaterial(DetectTextProtectedMaterialOptions options) {
+        // Generated convenience method for detectTextProtectedMaterialWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectTextProtectedMaterialWithResponse(BinaryData.fromObject(options), requestOptions).getValue()
+            .toObject(DetectTextProtectedMaterialResult.class);
+    }
+
+    /**
+     * Shield Prompt
+     *
+     * A synchronous API for shielding prompt from direct and indirect injection attacks.
+     *
+     * @param options The request body to be detected, which may contain direct or indirect injection attacks.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the combined analysis results of potential direct or indirect injection attacks.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShieldPromptResult shieldPrompt(ShieldPromptOptions options) {
+        // Generated convenience method for shieldPromptWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return shieldPromptWithResponse(BinaryData.fromObject(options), requestOptions).getValue()
+            .toObject(ShieldPromptResult.class);
     }
 }
