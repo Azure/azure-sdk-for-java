@@ -167,7 +167,7 @@ foreach ($packageDetail in $packageDetails) {
 
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
     Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--global-settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-    mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--global-settings=$PSScriptRoot\..\maven.publish.settings.xml"
+    mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--global-settings=$PSScriptRoot\..\maven.publish.settings.xml" "-e" "-X"
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
 
