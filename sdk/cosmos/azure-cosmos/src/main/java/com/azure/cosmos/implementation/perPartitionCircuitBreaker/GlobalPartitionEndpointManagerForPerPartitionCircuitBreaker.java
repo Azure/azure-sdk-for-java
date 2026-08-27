@@ -59,7 +59,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
-    private final AtomicReference<Disposable> partitionRecoveryDisposable = new AtomicReference<>();
+    private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle(
+        "partition-availability-staleness-check",
+        true);
     private final Logger failbackLogger;
     private final Object latestFailbackMessageByRegionLock = new Object();
     private volatile Map<String, String> latestFailbackMessageByRegion = Collections.emptyMap();
@@ -293,9 +295,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         RxDocumentServiceRequest request,
         PartitionLevelLocationUnavailabilityInfo info) {
 
+        Map<String, LocationSpecificHealthContext> stateByRegion
+            = info == null ? Collections.emptyMap() : info.regionToLocationSpecificHealthContext;
+        request.requestContext.setPerPartitionCircuitBreakerInfoHolder(stateByRegion);
         request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
             .setPerPartitionCircuitBreakerInfoHolder(
-                info == null ? Collections.emptyMap() : info.regionToLocationSpecificHealthContext,
+                stateByRegion,
                 this.latestFailbackMessageByRegion);
     }
 

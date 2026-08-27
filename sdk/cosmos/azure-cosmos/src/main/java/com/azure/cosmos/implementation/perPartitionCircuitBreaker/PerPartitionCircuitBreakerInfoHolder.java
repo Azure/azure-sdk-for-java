@@ -80,6 +80,8 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
                 }
 
                 gen.writeEndObject();
+            } else {
+                gen.writeNull();
             }
         }
     }
