@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.LayoutAwareRouting;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
@@ -541,6 +542,74 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
+    public void openInputStreamWithLayoutAwareRoutingDisabledDoesNotFetchLayout() throws IOException {
+        byte[] contentBytes = createTestContent();
+        SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
+        BlobClient client = seekableClient(httpClient, new ArrayList<>());
+
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(8)
+            .setRange(new BlobRange(0, (long) contentBytes.length))
+            .setLayoutAwareRouting(LayoutAwareRouting.DISABLED);
+
+        byte[] readBytes;
+        try (InputStream is = client.openInputStream(options, new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE))) {
+            readBytes = readAll(is);
+        }
+
+        assertArrayEquals(contentBytes, readBytes);
+        assertEquals(0, httpClient.getLayoutRequestCount());
+        for (SeekableRequestRecord record : httpClient.getDataRequestRecords()) {
+            assertEquals(ORIGINAL_HOST, record.requestHost);
+            assertNull(record.hostHeader);
+        }
+    }
+
+    @DoNotRecord
+    @Test
+    public void openSeekableByteChannelReadWithLayoutAwareRoutingDisabledDoesNotFetchLayout() throws IOException {
+        byte[] contentBytes = createTestContent();
+        SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
+        BlobClient client = seekableClient(httpClient, new ArrayList<>());
+
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.DISABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+
+        try (SeekableByteChannel channel = result.getChannel()) {
+            ByteBuffer buffer = ByteBuffer.allocate(1);
+            assertEquals(1, channel.read(buffer));
+        }
+
+        assertEquals(0, httpClient.getLayoutRequestCount());
+        for (SeekableRequestRecord record : httpClient.getDataRequestRecords()) {
+            assertEquals(ORIGINAL_HOST, record.requestHost);
+            assertNull(record.hostHeader);
+        }
+    }
+
+    @DoNotRecord
+    @ParameterizedTest
+    @MethodSource("layoutAwareRoutingSupplier")
+    public void openInputStreamWithLayoutAwareRoutingStillFetchesLayout(LayoutAwareRouting layoutAwareRouting)
+        throws IOException {
+        byte[] contentBytes = createTestContent();
+        SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
+        BlobClient client = seekableClient(httpClient, new ArrayList<>());
+
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(8)
+            .setRange(new BlobRange(0, (long) contentBytes.length))
+            .setLayoutAwareRouting(layoutAwareRouting);
+
+        try (InputStream is = client.openInputStream(options, new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE))) {
+            assertArrayEquals(contentBytes, readAll(is));
+        }
+
+        assertEquals(1, httpClient.getLayoutRequestCount());
+    }
+
+    @DoNotRecord
+    @Test
     public void openSeekableByteChannelReadPreservesCallerContextAfterEndpointAugmentation() throws IOException {
         byte[] contentBytes = createTestContent();
         List<LayoutRequestRecord> records = new ArrayList<>();
@@ -615,6 +684,11 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     private static Stream<Arguments> nonFatalLayoutStatusSupplier() {
         return Stream.of(Arguments.of(500), Arguments.of(429));
+    }
+
+    private static Stream<Arguments> layoutAwareRoutingSupplier() {
+        return Stream.of(Arguments.of((LayoutAwareRouting) null), Arguments.of(LayoutAwareRouting.AUTO),
+            Arguments.of(LayoutAwareRouting.ENABLED));
     }
 
     private static HttpPipelinePolicy recordLayoutRequestThreadsPolicy(List<LayoutRequestRecord> records) {
