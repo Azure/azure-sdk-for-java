@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VnetInjectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VnetInjection model = BinaryData.fromString("{\"subnetId\":\"ylpstdbhhxsrzdz\",\"vnetId\":\"cers\"}")
+        VnetInjection model = BinaryData.fromString("{\"subnetId\":\"kxfbkpycgklwndn\",\"vnetId\":\"jdauwhvy\"}")
             .toObject(VnetInjection.class);
-        Assertions.assertEquals("ylpstdbhhxsrzdz", model.subnetId());
-        Assertions.assertEquals("cers", model.vnetId());
+        Assertions.assertEquals("kxfbkpycgklwndn", model.subnetId());
+        Assertions.assertEquals("jdauwhvy", model.vnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VnetInjection model = new VnetInjection().withSubnetId("ylpstdbhhxsrzdz").withVnetId("cers");
+        VnetInjection model = new VnetInjection().withSubnetId("kxfbkpycgklwndn").withVnetId("jdauwhvy");
         model = BinaryData.fromObject(model).toObject(VnetInjection.class);
-        Assertions.assertEquals("ylpstdbhhxsrzdz", model.subnetId());
-        Assertions.assertEquals("cers", model.vnetId());
+        Assertions.assertEquals("kxfbkpycgklwndn", model.subnetId());
+        Assertions.assertEquals("jdauwhvy", model.vnetId());
     }
 }
