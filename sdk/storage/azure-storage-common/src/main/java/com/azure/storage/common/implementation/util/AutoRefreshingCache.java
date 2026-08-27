@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.Closeable;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -19,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Cache for expiring storage values.
  */
-public final class AutoRefreshingCache<T extends AutoRefreshingCache.ExpiringValue> implements Closeable {
+public final class AutoRefreshingCache<T extends AutoRefreshingCache.ExpiringValue> {
     public interface ValueProvider<T extends ExpiringValue> {
         Mono<T> createAsync();
 
@@ -160,8 +159,9 @@ public final class AutoRefreshingCache<T extends AutoRefreshingCache.ExpiringVal
 
     /**
      * Closes the cache, cancelling any pending refresh and preventing additional background scheduling.
+     * <p>
+     * Repeated calls are no-ops.
      */
-    @Override
     public void close() {
         synchronized (creationLock) {
             if (closed) {
