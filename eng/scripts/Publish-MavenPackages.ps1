@@ -45,7 +45,7 @@ Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter
 
 Write-Host "Found $($packageDetails.Length) packages to publish:"
-$packageDetails | % { Write-Host $_.FullyQualifiedName }
+$packageDetails | ForEach-Object { Write-Host $_.FullyQualifiedName }
 
 if ($packageDetails.Length -eq 0) {
   throw "Aborting, no packages to publish."
@@ -112,7 +112,7 @@ foreach ($packageDetail in $packageDetails) {
     }
   }
 
-  if ($additionalAssociatedArtifacts -ne $null) {
+  if ($null -ne $additionalAssociatedArtifacts) {
     $commaDelimitedFileNames = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedFileNames += ",$($_.File.FullName)" }
     $filesOption = "-Dfiles=$($commaDelimitedFileNames.Substring(1))"
@@ -155,7 +155,7 @@ foreach ($packageDetail in $packageDetails) {
   # in /eng/versions/external_dependencies.txt. This will prevent an issue with new scripts that remove unused
   # dependencies (which this usage wouldn't be considered one) and from an errant update to the version breaking this
   # release. Effectively, the usage is unique enough here to be handled separately from our normal dependency management.
-  $gpgSignAndDeployWithVer = "org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file"
+  $gpgSignAndDeployWithVer = "org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file"
 
   if ($requiresLocalGpg) {
     $localRepositoryDirectory = Get-RandomRepositoryDirectory
