@@ -24,16 +24,16 @@ import reactor.core.publisher.Mono;
  */
 public interface HorizonDbReplicasClient {
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica along with {@link Response} on successful completion of
+     * @return information about a HorizonDB replica along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -41,59 +41,59 @@ public interface HorizonDbReplicasClient {
         String poolName, String replicaName);
 
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica on successful completion of {@link Mono}.
+     * @return information about a HorizonDB replica on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbReplicaInner> getAsync(String resourceGroupName, String clusterName, String poolName,
         String replicaName);
 
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica along with {@link Response}.
+     * @return information about a HorizonDB replica along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HorizonDbReplicaInner> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         String replicaName, Context context);
 
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica.
+     * @return information about a HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbReplicaInner get(String resourceGroupName, String clusterName, String poolName, String replicaName);
 
     /**
-     * Lists all HorizonDb replicas in a pool.
+     * Lists all HorizonDB replicas in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -103,11 +103,11 @@ public interface HorizonDbReplicasClient {
     PagedFlux<HorizonDbReplicaInner> listAsync(String resourceGroupName, String clusterName, String poolName);
 
     /**
-     * Lists all HorizonDb replicas in a pool.
+     * Lists all HorizonDB replicas in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -117,11 +117,11 @@ public interface HorizonDbReplicasClient {
     PagedIterable<HorizonDbReplicaInner> list(String resourceGroupName, String clusterName, String poolName);
 
     /**
-     * Lists all HorizonDb replicas in a pool.
+     * Lists all HorizonDB replicas in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,34 +133,34 @@ public interface HorizonDbReplicasClient {
         Context context);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents the HorizonDB replica along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String replicaName, HorizonDbReplicaInner resource);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb replica.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<HorizonDbReplicaInner>, HorizonDbReplicaInner> beginCreateOrUpdateAsync(
@@ -168,156 +168,156 @@ public interface HorizonDbReplicasClient {
         HorizonDbReplicaInner resource);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb replica.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbReplicaInner>, HorizonDbReplicaInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String poolName, String replicaName, HorizonDbReplicaInner resource);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb replica.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbReplicaInner>, HorizonDbReplicaInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String poolName, String replicaName, HorizonDbReplicaInner resource, Context context);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica on successful completion of {@link Mono}.
+     * @return represents the HorizonDB replica on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbReplicaInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String poolName,
         String replicaName, HorizonDbReplicaInner resource);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica.
+     * @return represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbReplicaInner createOrUpdate(String resourceGroupName, String clusterName, String poolName,
         String replicaName, HorizonDbReplicaInner resource);
 
     /**
-     * Creates a new HorizonDb replica or updates an existing replica.
+     * Creates a new HorizonDB replica or updates an existing replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica.
+     * @return represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbReplicaInner createOrUpdate(String resourceGroupName, String clusterName, String poolName,
         String replicaName, HorizonDbReplicaInner resource, Context context);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents the HorizonDB replica along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String replicaName, HorizonDbReplicaForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb replica.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<HorizonDbReplicaInner>, HorizonDbReplicaInner> beginUpdateAsync(String resourceGroupName,
         String clusterName, String poolName, String replicaName, HorizonDbReplicaForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb replica.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbReplicaInner>, HorizonDbReplicaInner> beginUpdate(String resourceGroupName,
         String clusterName, String poolName, String replicaName, HorizonDbReplicaForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb replica.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbReplicaInner>, HorizonDbReplicaInner> beginUpdate(String resourceGroupName,
@@ -325,64 +325,64 @@ public interface HorizonDbReplicasClient {
         Context context);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica on successful completion of {@link Mono}.
+     * @return represents the HorizonDB replica on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbReplicaInner> updateAsync(String resourceGroupName, String clusterName, String poolName,
         String replicaName, HorizonDbReplicaForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica.
+     * @return represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbReplicaInner update(String resourceGroupName, String clusterName, String poolName, String replicaName,
         HorizonDbReplicaForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb replica (e.g., role).
+     * Updates an existing HorizonDB replica (e.g., role).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb replica.
+     * @return represents the HorizonDB replica.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbReplicaInner update(String resourceGroupName, String clusterName, String poolName, String replicaName,
         HorizonDbReplicaForPatchUpdate properties, Context context);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -393,12 +393,12 @@ public interface HorizonDbReplicasClient {
         String poolName, String replicaName);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -409,12 +409,12 @@ public interface HorizonDbReplicasClient {
         String replicaName);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,12 +425,12 @@ public interface HorizonDbReplicasClient {
         String replicaName);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -442,12 +442,12 @@ public interface HorizonDbReplicasClient {
         String replicaName, Context context);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -457,12 +457,12 @@ public interface HorizonDbReplicasClient {
     Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String poolName, String replicaName);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -471,12 +471,12 @@ public interface HorizonDbReplicasClient {
     void delete(String resourceGroupName, String clusterName, String poolName, String replicaName);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

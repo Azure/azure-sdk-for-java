@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 2.55.4 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-keys` from `4.11.0` to version `4.11.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.12`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+- Upgraded `azure-security-keyvault-secrets` from `4.11.0` to version `4.11.2`.
+
 ## 2.55.3 (2026-07-01)
 
 ### Other Changes

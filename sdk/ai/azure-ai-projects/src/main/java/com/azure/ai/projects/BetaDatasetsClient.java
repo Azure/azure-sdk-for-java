@@ -62,7 +62,7 @@ public final class BetaDatasetsClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -112,6 +112,13 @@ public final class BetaDatasetsClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -168,7 +175,7 @@ public final class BetaDatasetsClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -251,7 +258,7 @@ public final class BetaDatasetsClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -495,7 +502,7 @@ public final class BetaDatasetsClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -561,7 +568,7 @@ public final class BetaDatasetsClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {

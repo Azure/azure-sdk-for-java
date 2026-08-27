@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.IdentityBindingInner;
-import com.azure.resourcemanager.containerservice.models.AllowedSubject;
 import com.azure.resourcemanager.containerservice.models.IdentityBindingManagedIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.IdentityBindingProperties;
-import com.azure.resourcemanager.containerservice.models.LabelSelector;
-import com.azure.resourcemanager.containerservice.models.LabelSelectorRequirement;
-import com.azure.resourcemanager.containerservice.models.Operator;
-import java.util.Arrays;
 
 /**
  * Samples for IdentityBindings CreateOrUpdate.
  */
 public final class IdentityBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/IdentityBindings_Create_Or_Update.json
+     * x-ms-original-file: 2026-06-01/IdentityBindings_Create_Or_Update.json
      */
     /**
      * Sample code: Create or update Identity Binding.
@@ -33,35 +28,6 @@ public final class IdentityBindingsCreateOrUpdateSamples {
                 new IdentityBindingInner().withProperties(new IdentityBindingProperties()
                     .withManagedIdentity(new IdentityBindingManagedIdentityProfile().withResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-05-02-preview/IdentityBindings_Create_Or_UpdateWithAllowedSubjects.json
-     */
-    /**
-     * Sample code: Create or update Identity Binding with allowed subjects.
-     * 
-     * @param manager Entry point to ContainerServiceManager.
-     */
-    public static void createOrUpdateIdentityBindingWithAllowedSubjects(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
-        manager.serviceClient()
-            .getIdentityBindings()
-            .createOrUpdate("rg1", "clustername1", "identitybinding1",
-                new IdentityBindingInner().withProperties(new IdentityBindingProperties()
-                    .withManagedIdentity(new IdentityBindingManagedIdentityProfile().withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
-                    .withAllowedSubjects(Arrays.asList(
-                        new AllowedSubject().withNamespaceSelector(
-                            new LabelSelector().withMatchLabels(Arrays.asList("kubernetes.io/metadata.name=team-a"))),
-                        new AllowedSubject()
-                            .withNamespaceSelector(new LabelSelector().withMatchExpressions(
-                                Arrays.asList(new LabelSelectorRequirement().withKey("fakeTokenPlaceholder")
-                                    .withOperator(Operator.IN)
-                                    .withValues(Arrays.asList("team-a", "team-b")))))
-                            .withServiceAccountSelector(
-                                new LabelSelector().withMatchLabels(Arrays.asList("app=my-workload")))))),
                 com.azure.core.util.Context.NONE);
     }
 }

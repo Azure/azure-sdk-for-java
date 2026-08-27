@@ -12,25 +12,25 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application
- * using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
+ * Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using
+ * Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
  * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
     implements JsonSerializable<ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics> {
     /*
-     * Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
+     * Indicates if Application Monitoring OpenTelemetry Metrics is enabled or not.
      */
     private Boolean enabled;
 
     /*
-     * The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
+     * The host port for OpenTelemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
      */
     private Long httpPort;
 
     /*
-     * The host port for Open Telemetry GRPC metrics. If not specified, the default port is 28334.
+     * The host port for OpenTelemetry GRPC metrics. If not specified, the default port is 28334.
      */
     private Long grpcPort;
 
@@ -41,7 +41,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Get the enabled property: Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
+     * Get the enabled property: Indicates if Application Monitoring OpenTelemetry Metrics is enabled or not.
      * 
      * @return the enabled value.
      */
@@ -50,7 +50,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Set the enabled property: Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
+     * Set the enabled property: Indicates if Application Monitoring OpenTelemetry Metrics is enabled or not.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics object itself.
@@ -61,7 +61,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Get the httpPort property: The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default
+     * Get the httpPort property: The host port for OpenTelemetry HTTP/PROTOBUF metrics. If not specified, the default
      * port is 28333.
      * 
      * @return the httpPort value.
@@ -71,7 +71,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Set the httpPort property: The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default
+     * Set the httpPort property: The host port for OpenTelemetry HTTP/PROTOBUF metrics. If not specified, the default
      * port is 28333.
      * 
      * @param httpPort the httpPort value to set.
@@ -83,7 +83,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Get the grpcPort property: The host port for Open Telemetry GRPC metrics. If not specified, the default port is
+     * Get the grpcPort property: The host port for OpenTelemetry GRPC metrics. If not specified, the default port is
      * 28334.
      * 
      * @return the grpcPort value.
@@ -93,7 +93,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Set the grpcPort property: The host port for Open Telemetry GRPC metrics. If not specified, the default port is
+     * Set the grpcPort property: The host port for OpenTelemetry GRPC metrics. If not specified, the default port is
      * 28334.
      * 
      * @param grpcPort the grpcPort value to set.
