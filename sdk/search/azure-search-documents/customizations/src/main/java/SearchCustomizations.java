@@ -39,6 +39,7 @@ public class SearchCustomizations extends Customization {
 
         ClassCustomization serviceVersion = documents.getClass("SearchServiceVersion");
         includeOldApiVersions(serviceVersion);
+        removeOldPreviewApiVersions(serviceVersion);
 
         ClassCustomization searchClient = documents.getClass("SearchClient");
         ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
@@ -444,6 +445,13 @@ public class SearchCustomizations extends Customization {
 
             enumDeclaration.setEntries(entries);
         }));
+    }
+
+    private static void removeOldPreviewApiVersions(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName())
+            .ifPresent(enumDeclaration -> enumDeclaration.getEntries()
+                .removeIf(entry -> Arrays.asList("V2025_11_01_PREVIEW", "V2026_05_01_PREVIEW")
+                    .contains(entry.getNameAsString()))));
     }
 
     // At the time this was added, Java TypeSpec for Azure-type generation doesn't use 'T' in WithResponse APIs, which

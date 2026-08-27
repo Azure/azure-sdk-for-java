@@ -23,7 +23,8 @@
 
 ### Breaking Changes
 
-- `WorkIQKnowledgeSource` now takes a `com.azure.search.documents.models.WorkIQKnowledgeSourceParameters`.
+- `WorkIQKnowledgeSource` now takes a
+  `com.azure.search.documents.indexes.models.WorkIQKnowledgeSourceParameters`.
 - Removed the offset-based `listIndexesWithSelectedProperties(List<String> select, Integer top, Integer skip, Boolean count)`
   overload from `SearchIndexClient`/`SearchIndexAsyncClient`. Use `listIndexesWithSelectedProperties()` or
   `listIndexesWithSelectedProperties(List<String> select)`.
