@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.4 (2026-08-26)
+## 1.5.0-beta.4 (2026-08-27)
 
 - Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-07-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -16,10 +16,10 @@
 
 #### `models.AccountConnections` was modified
 
-* `create(java.lang.String,java.lang.String,java.lang.String)` was removed
-* `update(java.lang.String,java.lang.String,java.lang.String)` was removed
-* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
 * `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `create(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
 
 #### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
 
@@ -32,11 +32,11 @@
 
 #### `models.ProjectConnections` was modified
 
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
 * `getById(java.lang.String)` was removed
-* `define(java.lang.String)` was removed
 * `deleteById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.Compute` was modified
 
@@ -102,11 +102,11 @@
 
 #### `models.AccountConnections` was modified
 
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `getById(java.lang.String)` was added
-* `define(java.lang.String)` was added
 * `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `deleteById(java.lang.String)` was added
+* `define(java.lang.String)` was added
 
 #### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
 
@@ -118,18 +118,18 @@
 
 #### `models.ComputeProperties` was modified
 
-* `withLocation(java.lang.String)` was added
 * `location()` was added
+* `withLocation(java.lang.String)` was added
 
 #### `models.ProjectProperties` was modified
 
-* `capabilitySettings()` was added
 * `withCapabilitySettings(models.CapabilitySettings)` was added
+* `capabilitySettings()` was added
 
 #### `models.DeploymentProperties` was modified
 
-* `contextCacheContainerId()` was added
 * `withContextCacheContainerId(java.lang.String)` was added
+* `contextCacheContainerId()` was added
 
 #### `models.ProvisioningState` was modified
 
@@ -148,12 +148,12 @@
 
 #### `models.AccountProperties` was modified
 
-* `agentHostingConfigurations()` was added
-* `withAgentHostingConfigurations(java.util.List)` was added
-* `withCapabilitySettings(models.CapabilitySettings)` was added
-* `capabilitySettings()` was added
-* `a365LoggingEnabled()` was added
 * `withA365LoggingEnabled(java.lang.Boolean)` was added
+* `a365LoggingEnabled()` was added
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `withAgentHostingConfigurations(java.util.List)` was added
+* `agentHostingConfigurations()` was added
+* `capabilitySettings()` was added
 
 #### `models.ClusterComputeProperties` was modified
 
