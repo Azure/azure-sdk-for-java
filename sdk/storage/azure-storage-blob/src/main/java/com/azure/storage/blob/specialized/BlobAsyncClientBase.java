@@ -1621,7 +1621,8 @@ public class BlobAsyncClientBase {
                 long remainingOffset = finalRange.getOffset() + initialChunkSize;
                 long remainingCount = newCount - initialChunkSize;
                 if (DownloadHint.LAYOUT.equals(initialResponse.getDeserializedHeaders().getDownloadHint())
-                    && remainingCount > 0) {
+                    && remainingCount > 0
+                    && StorageImplUtils.pipelineSupportsDataLocality(this.getHttpPipeline())) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
                     layoutCache = new AutoRefreshingCache<>(

@@ -581,7 +581,8 @@ public class BlobClientBase {
                 // client needs to be final for the lambda below, so we create a new variable to hold the value of client.
                 BlobClientBase finalClient = client;
                 AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
-                if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
+                if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())
+                    && StorageImplUtils.pipelineSupportsDataLocality(finalClient.getHttpPipeline())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
                     layoutCache
                         = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
@@ -674,7 +675,8 @@ public class BlobClientBase {
         }
 
         AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
-        if (DownloadHint.LAYOUT.equals(response.getDeserializedHeaders().getDownloadHint())) {
+        if (DownloadHint.LAYOUT.equals(response.getDeserializedHeaders().getDownloadHint())
+            && StorageImplUtils.pipelineSupportsDataLocality(behaviorClient.getHttpPipeline())) {
             BlobClientBase finalBehaviorClient = behaviorClient;
             BlobRequestConditions finalRequestConditions = requestConditions;
             Context finalContext = context;

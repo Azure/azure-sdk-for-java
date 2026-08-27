@@ -4,6 +4,7 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -380,6 +381,42 @@ public class StorageImplUtils {
 
         Context finalContext = context == null ? Context.NONE : context;
         return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
+    }
+
+    /**
+     * Checks whether the provided pipeline can consume data locality context.
+     *
+     * <p>Data locality is deliberately NOT supported for client-side encrypted clients. Three independent reasons:</p>
+     * <ol>
+     * <li>{@code EncryptedBlobClientBuilder} never installs {@link DataLocalityPolicy}, so a resolved endpoint placed
+     * in the request context has nothing to act on it and the {@code getLayout} round trip is pure waste.</li>
+     * <li>The decryption policy treats any GET carrying a body as a download to decrypt, and {@code GET ?comp=layout}
+     * returns an XML body, so the layout response would be fed into decryption.</li>
+     * <li>Layout ranges are expressed in ciphertext offsets as stored by the service, while endpoint resolution is
+     * driven by the caller's plaintext offset. For client-side encryption v2 these are different coordinate spaces,
+     * so routing would be wrong at region boundaries.</li>
+     * </ol>
+     *
+     * <p>This matches the Azure SDK for .NET, which also does not support the combination: its client-side
+     * encryption tests explicitly pass {@code LayoutAwareRouting.Disabled} when opening encrypted blobs for read.
+     * Whether the combination should ever be supported is an open design question; gating on the policy's presence
+     * keeps the suppression automatic and trivially reversible.</p>
+     *
+     * @param pipeline The pipeline to inspect. May be null.
+     * @return {@code true} if the pipeline contains a {@link DataLocalityPolicy}; otherwise {@code false}.
+     */
+    public static boolean pipelineSupportsDataLocality(HttpPipeline pipeline) {
+        if (pipeline == null) {
+            return false;
+        }
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof DataLocalityPolicy) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
