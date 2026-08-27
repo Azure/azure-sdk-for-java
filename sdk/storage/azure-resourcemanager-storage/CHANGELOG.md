@@ -43,19 +43,19 @@
 #### `models.SasPolicy` was modified
 
 * `requireUserBoundUserDelegationSas()` was added
-* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
-* `requireUserBoundUserDelegationSasAction()` was added
 * `withRequireUserBoundUserDelegationSas(java.lang.Boolean)` was added
+* `requireUserBoundUserDelegationSasAction()` was added
+* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
 
 #### `models.StorageAccountUpdateParameters` was modified
 
-* `allowCrossTenantDelegationSas()` was added
 * `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
+* `allowCrossTenantDelegationSas()` was added
 
 #### `models.StorageAccountCreateParameters` was modified
 
-* `allowCrossTenantDelegationSas()` was added
 * `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
+* `allowCrossTenantDelegationSas()` was added
 
 ## 2.57.2 (2026-08-18)
 
