@@ -31,6 +31,11 @@ The Java implementation already:
 - Handles success, error, cancellation, stream completion, and explicit stream
   close for the typed paths.
 - Uses monotonic duration measurement.
+- Serializes GenAI message attributes with `azure-json`, including structured
+  tool results and content-safe escaping.
+- Has SDK-local fixture tests for text and function-call response payloads,
+  content gating, structured tool results, malformed tool results, and special
+  characters.
 - Survives `tsp-client update`.
 - Passes the maintained live quick suite in synchronous and asynchronous modes,
   with 200/200 checks across typed, raw-response, raw-streaming, and tool-call
@@ -38,23 +43,35 @@ The Java implementation already:
 
 ## Python parity gaps
 
-| Priority | Area | Python behavior | Current Java behavior | Required work |
-| --- | --- | --- | --- | --- |
-| P1 | Propagation controls | Has separate trace-context and baggage controls; trace context is enabled by default and baggage is disabled by default | Propagates trace context through Azure Core; the Java bridge never propagates baggage | Decide whether Java needs the same configuration controls. Keep baggage excluded unless explicitly approved. |
-| P2 | Response fixture coverage | Python tests can exercise response and stream payload formatting | Java lifecycle tests do not directly construct full openai-java response payloads | Add recorded fixtures or a narrow test seam for response attributes, usage, tool calls, and content gating. |
-| P2 | Structured event serialization | Uses structured serialization | Some Java event payloads are built with string concatenation | Migrate to `azure-json` `JsonWriter` and add escaping/schema tests. |
+No implementation gaps are currently identified for the supported Java
+surface.
 
-## Release validation gaps
+### Trace propagation terminology and language difference
 
-These are acceptance tasks rather than Python behavior differences:
+Trace context consists of the `traceparent` and optional `tracestate` headers.
+They carry trace and span identifiers so client and service spans can be joined.
 
-1. Inspect the live client spans in Foundry and Application Insights and confirm
-   their hierarchy and visibility. Local exporters already verify the exact
-   GenAI-to-HTTP parent relationship.
-2. Complete Azure SDK architecture review, focused on per-client configuration,
-   environment-variable selection, propagation privacy, and the content
-   boundary.
-3. Record the release owner and target milestone.
+OpenTelemetry baggage is different: it is an application-defined collection of
+key/value pairs that may contain tenant IDs, experiment labels, or other
+customer-controlled data. It is not needed to join spans and is therefore more
+sensitive.
+
+Python exposes separate controls because it installs an HTTP hook on an OpenAI
+client obtained from the Projects client:
+
+- Trace-context propagation defaults to enabled.
+- Baggage propagation defaults to disabled.
+
+Java sends trace context through the normal Azure Core HTTP pipeline. Azure
+Core's OpenTelemetry propagator emits only `traceparent` and `tracestate`; the
+private async bridge also carries only the in-process Azure `Context` and strips
+its opaque token before transmission. Java does not send baggage.
+
+The default wire behavior is therefore aligned. Java does not copy Python's
+extra propagation switches because the Python switches configure a separately
+acquired OpenAI client, while the Java SDK owns and configures its Azure Core
+pipeline. Adding Java-only pipeline interception solely to reproduce those
+Python plumbing switches would go beyond the required behavioral parity.
 
 ## Resolved parity gaps
 
@@ -66,6 +83,8 @@ These are acceptance tasks rather than Python behavior differences:
 | Provider attributes | Java emits `gen_ai.provider.name=microsoft.foundry` and no longer unconditionally emits the legacy `gen_ai.system` attribute, matching the current Python paths in scope. |
 | Metrics verification | In-memory tests assert duration and token metric names, units, values, provider, operation, server, model, token type, and error dimensions. Response operations use Python's `responses` metric operation and `input` / `completion` token types. |
 | Raw responses and raw streams | Existing sync and async protocol methods are instrumented. Raw streaming spans remain open through stream exhaustion, failure, cancellation, or explicit close and use the same async context bridge as typed calls. |
+| Response fixture coverage | SDK-local tests exercise text and function-call response fixtures, content gating, structured and malformed tool results, and special-character escaping. |
+| Structured event serialization | GenAI message attributes use `azure-json` structured serialization instead of manual JSON string concatenation. |
 
 ## Intentional non-gaps
 
@@ -87,10 +106,7 @@ Python or prototype code:
 Python parity is complete when:
 
 - Every P0 item is resolved in code and documentation.
-- Required P1 operation paths and metrics have direct automated coverage.
+- Supported operation paths and metrics have direct automated coverage.
 - Content-disabled tests prove that no customer-controlled content is emitted.
 - Sync and async HTTP spans remain direct children of their GenAI spans.
 - The implementation survives TypeSpec regeneration.
-- Live traces are inspected in Foundry or Application Insights.
-- Architecture and release owners approve the remaining intentional Java
-  differences.

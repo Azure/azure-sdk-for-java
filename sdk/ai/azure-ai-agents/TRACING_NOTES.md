@@ -151,20 +151,24 @@ decision about deterministic AST customization.
 ## 7. Response-path unit-test coverage
 
 - `GenAiAgentTracing` (agent creation) and `GenAiMessageFormatter` are unit-tested against an in-memory OTel SDK.
-- `GenAiResponseTracing` now has direct lifecycle tests for synchronous and asynchronous conversation creation,
-  error propagation, cancellation, returned conversation identity, and async span activation.
-- Chat / invoke-agent response payloads and streaming accumulation are **not** directly unit-tested because
-  constructing complete openai-java `Response` / `ResponseStreamEvent` objects remains impractical.
-- **Open:** cover the response path via recorded/fixture payloads or a thin seam that lets tests inject a
-  synthetic response.
+- `GenAiResponseTracing` has direct lifecycle tests for synchronous and asynchronous conversation creation,
+  error propagation, cancellation, returned conversation identity, async span activation, raw responses, and
+  raw stream ownership.
+- SDK-local fixtures exercise text and function-call response payloads with content recording enabled and
+  disabled. Formatter tests cover structured and malformed tool results and special-character escaping.
+- Streaming lifecycle is covered with synthetic streams; the maintained E2E app covers complete live typed and
+  raw streaming payloads.
 
 ---
 
-## 8. Message/tool-call JSON is built with string concatenation
+## 8. Message/tool-call JSON uses structured serialization
 
-- The formatters were ported from the PR as-is (manual JSON string building) to preserve exact output shape.
-- `azure-ai-inference` instead uses `azure-json` `JsonWriter` (safer escaping, less error-prone).
-- **Open:** migrate the formatters to `JsonWriter` if byte-for-byte parity with the PR output is not required.
+- GenAI message attributes are serialized with `azure-json`, following the established approach in
+  `azure-ai-inference`.
+- Structured serialization preserves the existing schema while handling escaping and nested tool results without
+  manual JSON concatenation.
+- Content-gated fields are omitted from the object model before serialization, keeping the privacy boundary
+  explicit and testable.
 
 ---
 
