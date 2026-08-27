@@ -93,6 +93,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -392,7 +393,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
     @Test
     public void statusPayloadMapsToModelsWithNullables() throws IOException {
         // Sample status payload with nullables for first sync
-        String statusJson = "{\"synchronizationStatus\": \"creating\",\"synchronizationInterval\": \"PT24H\","
+        String statusJson = "{\"synchronizationStatus\": \"creating\",\"synchronizationInterval\": \"1d\","
             + "\"currentSynchronizationState\": null,\"lastSynchronizationState\": null,\"statistics\": {"
             + "\"totalSynchronization\": 0,\"averageSynchronizationDuration\": \"PT0S\","
             + "\"averageItemsProcessedPerSynchronization\": 0}}";
@@ -402,10 +403,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
             assertNotNull(status);
             assertEquals(KnowledgeSourceSynchronizationStatus.CREATING, status.getSynchronizationStatus());
-
-            if (status.getSynchronizationInterval() != null) {
-                assertEquals(Duration.ofHours(24), status.getSynchronizationInterval());
-            }
+            assertEquals(Duration.ofDays(1), status.getSynchronizationInterval());
 
             assertNull(status.getCurrentSynchronizationState());
             assertNull(status.getLastSynchronizationState());
@@ -415,6 +413,28 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals(0, status.getStatistics().getTotalSynchronization());
             assertEquals(Duration.ZERO, status.getStatistics().getAverageSynchronizationDuration());
             assertEquals(0, status.getStatistics().getAverageItemsProcessedPerSynchronization());
+        }
+
+        Map<String, Duration> supportedIntervals = new LinkedHashMap<>();
+        supportedIntervals.put("2h", Duration.ofHours(2));
+        supportedIntervals.put("30m", Duration.ofMinutes(30));
+        supportedIntervals.put("45s", Duration.ofSeconds(45));
+        supportedIntervals.put("P1D", Duration.ofDays(1));
+        supportedIntervals.put("PT30M", Duration.ofMinutes(30));
+        for (Map.Entry<String, Duration> interval : supportedIntervals.entrySet()) {
+            assertEquals(interval.getValue(), deserializeStatus(interval.getKey()).getSynchronizationInterval());
+        }
+
+        assertNull(deserializeStatus(null).getSynchronizationInterval());
+        assertThrows(DateTimeParseException.class, () -> deserializeStatus("1w"));
+    }
+
+    private static KnowledgeSourceStatus deserializeStatus(String synchronizationInterval) throws IOException {
+        String serializedValue = synchronizationInterval == null ? "null" : "\"" + synchronizationInterval + "\"";
+        String statusJson
+            = "{\"synchronizationStatus\":\"active\",\"synchronizationInterval\":" + serializedValue + "}";
+        try (JsonReader reader = JsonProviders.createReader(statusJson)) {
+            return KnowledgeSourceStatus.fromJson(reader);
         }
     }
 

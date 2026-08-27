@@ -38,6 +38,9 @@
 
 ### Bugs Fixed
 
+- Fixed knowledge source status deserialization for compact synchronization intervals such as `1d` while preserving
+  the existing Java `Duration` API.
+
 ### Other Changes
 
 ## 12.0.1 (2026-07-01)

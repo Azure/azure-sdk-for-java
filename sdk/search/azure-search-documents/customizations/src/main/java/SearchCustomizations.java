@@ -59,6 +59,9 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
 
         customizeKnowledgeBaseRetrievalStream(libraryCustomization, logger);
+        customizeKnowledgeSourceStatusDurationParsing(
+            libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
+                .getClass("KnowledgeSourceStatus"));
         repairAsyncSynonymMapsConvenienceMethod(indexes.getClass("SearchIndexAsyncClient"));
 
         // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
@@ -141,6 +144,25 @@ public class SearchCustomizations extends Customization {
             .addFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
                     "response.completed", true, false));
+    }
+
+    private static void customizeKnowledgeSourceStatusDurationParsing(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast
+            .addImport(
+                "com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser")
+            .getClassByName(customization.getClassName())
+            .ifPresent(clazz -> clazz.getMethodsByName("fromJson").forEach(method -> {
+                BlockStmt body = method.getBody()
+                    .orElseThrow(() -> new IllegalStateException("KnowledgeSourceStatus.fromJson has no body."));
+                String generatedParser = "Duration.parse(nonNullReader.getString())";
+                String bodyText = body.toString();
+                if (!bodyText.contains(generatedParser)) {
+                    throw new IllegalStateException(
+                        "KnowledgeSourceStatus.fromJson no longer uses the expected generated duration parser.");
+                }
+                method.setBody(StaticJavaParser.parseBlock(bodyText.replace(generatedParser,
+                    "KnowledgeSourceDurationParser.parse(nonNullReader.getString())")));
+            })));
     }
 
     private static void addAsyncRetrieveStream(ClassCustomization customization) {
