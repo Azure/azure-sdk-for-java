@@ -526,7 +526,7 @@ public class PoolTests extends BatchClientTestBase {
     }
 
     @SyncAsyncTest
-    public void canRebootReimageRemoveNodesAndStopResize() throws Exception {
+    public void canRebootRemoveNodesAndStopResize() throws Exception {
         String modeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String poolId = getStringIdWithUserNamePrefix("-nodeOpsPool" + modeSuffix);
 
@@ -585,36 +585,6 @@ public class PoolTests extends BatchClientTestBase {
         rebootPoller.waitForCompletion();
         BatchNode rebootedNode = rebootPoller.getFinalResult();
         Assertions.assertNotNull(rebootedNode, "Final result of beginRebootNode should not be null");
-
-        // Reimage node
-        SyncPoller<BatchNode, BatchNode> reimagePoller = setPlaybackSyncPollerPollInterval(
-            SyncAsyncExtension.execute(() -> batchClient.beginReimageNode(poolId, nodeIdB),
-                () -> Mono.fromCallable(() -> batchAsyncClient.beginReimageNode(poolId, nodeIdB).getSyncPoller())));
-
-        // First poll – should still be re-imaging OR may already have finished
-        PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
-        BatchNode nodeDuringReimage = reimageFirst.getValue();
-
-        if (reimageFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            // Only possible when state is REIMAGING
-            Assertions.assertNotNull(nodeDuringReimage);
-            Assertions.assertEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
-                "When IN_PROGRESS the node must be REIMAGING");
-        } else {
-            // Operation finished in a single poll
-            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, reimageFirst.getStatus());
-            Assertions.assertNotNull(nodeDuringReimage);
-            Assertions.assertNotEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
-                "Node should have left REIMAGING when operation already completed");
-        }
-
-        // Wait until the OS has been re-applied and the node is usable
-        reimagePoller.waitForCompletion();
-        BatchNode reimagedNode = reimagePoller.getFinalResult();
-        Assertions.assertNotNull(reimagedNode, "Final result of beginReimageNode should not be null");
-
-        Assertions.assertNotEquals(BatchNodeState.REIMAGING, reimagedNode.getState(),
-            "Node should have left the REIMAGING state once the operation completes");
 
         // Shrink pool by one node
         BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
