@@ -460,8 +460,7 @@ public final class KnowledgeBaseRetrievalClient {
      * If received, the terminal {@code error} or {@code response.completed} event is delivered before
      * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
      * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
-     * client does not reconnect automatically. A pending server-sent event is limited to 16 MiB of raw UTF-8 content;
-     * exceeding this limit is reported through {@link ServerSentEventListener#onError(Throwable)}.
+     * client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @param listener The listener that receives events and lifecycle notifications.
@@ -481,8 +480,7 @@ public final class KnowledgeBaseRetrievalClient {
      * If received, the terminal {@code error} or {@code response.completed} event is delivered before
      * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
      * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
-     * client does not reconnect automatically. A pending server-sent event is limited to 16 MiB of raw UTF-8 content;
-     * exceeding this limit is reported through {@link ServerSentEventListener#onError(Throwable)}.
+     * client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
