@@ -673,8 +673,31 @@ public class BlobClientBase {
                     "Concurrency control type " + consistentReadControl + " not supported."));
         }
 
-        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
-            behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
+        AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
+        if (DownloadHint.LAYOUT.equals(response.getDeserializedHeaders().getDownloadHint())) {
+            BlobClientBase finalBehaviorClient = behaviorClient;
+            BlobRequestConditions finalRequestConditions = requestConditions;
+            Context finalContext = context;
+            BlobRange layoutRange = new BlobRange(0);
+
+            layoutCache = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
+                @Override
+                public Mono<BlobLayoutCacheValue> createAsync() {
+                    return finalBehaviorClient.client.fetchLayoutCacheValueAsync(layoutRange, finalRequestConditions,
+                        finalContext);
+                }
+
+                @Override
+                public BlobLayoutCacheValue createSync() {
+                    return finalBehaviorClient.fetchLayoutCacheValueSync(layoutRange, finalRequestConditions,
+                        finalContext);
+                }
+            }, BlobLayoutCacheValue::getExpiresOn);
+        }
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(behaviorClient, initialRange, initialPosition,
+                properties.getBlobSize(), requestConditions, layoutCache, context);
 
         SeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
         return new BlobSeekableByteChannelReadResult(channel, properties);
