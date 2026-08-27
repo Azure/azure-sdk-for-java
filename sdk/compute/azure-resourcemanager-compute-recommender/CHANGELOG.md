@@ -22,8 +22,8 @@
 
 #### `models.SkuMixPlacementResponse` was modified
 
-* `capacityLimits()` was added
 * `id()` was added
+* `capacityLimits()` was added
 
 ## 1.0.0-beta.2 (2026-08-03)
 
