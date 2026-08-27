@@ -1943,6 +1943,20 @@ public class BlobAsyncClientBase {
             .onErrorResume(BlobStorageException.class, BlobAsyncClientBase::handleLayoutFetchError);
     }
 
+    static boolean isFatalLayoutFetchStatus(int statusCode) {
+        // Only these statuses fail the download, because the blob itself cannot be read consistently: 403 (forbidden),
+        // 404 (not found), 409 (conflict), and 412 (the blob changed after the download started).
+        return statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412;
+    }
+
+    static BlobLayoutCacheValue createLayoutFallbackValue(BlobStorageException exception) {
+        // Every other failure, including 400, 5xx, and unlisted statuses such as 429, falls back to the existing
+        // download behavior. The layout is only a routing optimization, so a failed layout call must not fail an
+        // otherwise valid download; a genuine access failure still surfaces on the range GETs themselves.
+        LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
+        return new BlobLayoutCacheValue(null);
+    }
+
     private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>>
         getLayoutPages(BlobGetLayoutOptions layoutOptions, BlobRequestConditions requestConditions, Context context) {
         return getLayoutPageWithHeaders(null, layoutOptions, null, context)
@@ -1971,19 +1985,10 @@ public class BlobAsyncClientBase {
     }
 
     static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
-        int statusCode = exception.getStatusCode();
-
-        // Only these statuses fail the download, because the blob itself cannot be read consistently: 403 (forbidden),
-        // 404 (not found), 409 (conflict), and 412 (the blob changed after the download started).
-        if (statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412) {
+        if (isFatalLayoutFetchStatus(exception.getStatusCode())) {
             return Mono.error(exception);
         }
-
-        // Every other failure, including 400, 5xx, and unlisted statuses such as 429, falls back to the existing
-        // download behavior. The layout is only a routing optimization, so a failed layout call must not fail an
-        // otherwise valid download; a genuine access failure still surfaces on the range GETs themselves.
-        LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
-        return Mono.just(new BlobLayoutCacheValue(null));
+        return Mono.just(createLayoutFallbackValue(exception));
     }
 
     private Mono<PagedResponse<BlobLayout>> getPublicLayoutPageWithLockedETag(String marker,

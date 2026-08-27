@@ -66,6 +66,7 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
@@ -583,8 +584,19 @@ public class BlobClientBase {
                 if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
                     layoutCache
-                        = new AutoRefreshingCache<>(() -> finalClient.client.fetchLayoutCacheValueAsync(layoutRange,
-                            requestConditions, contextFinal), BlobLayoutCacheValue::getExpiresOn);
+                        = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
+                            @Override
+                            public Mono<BlobLayoutCacheValue> createAsync() {
+                                return finalClient.client.fetchLayoutCacheValueAsync(layoutRange, requestConditions,
+                                    contextFinal);
+                            }
+
+                            @Override
+                            public BlobLayoutCacheValue createSync() {
+                                return finalClient.fetchLayoutCacheValueSync(layoutRange, requestConditions,
+                                    contextFinal);
+                            }
+                        }, BlobLayoutCacheValue::getExpiresOn);
                 }
 
                 return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
@@ -1868,6 +1880,26 @@ public class BlobClientBase {
                 () -> getLayoutPageWithLockedETag(continuationToken, finalOptions, pageSize, finalContext, layoutETag))
                 .flux();
         }));
+    }
+
+    BlobLayoutCacheValue fetchLayoutCacheValueSync(BlobRange layoutRange, BlobRequestConditions requestConditions,
+        Context context) {
+        BlobGetLayoutOptions layoutOptions
+            = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
+        try {
+            List<BlobLayoutRange> ranges = new ArrayList<>();
+            for (BlobLayout layout : getLayout(layoutOptions, context)) {
+                if (layout.getRanges() != null) {
+                    ranges.addAll(layout.getRanges());
+                }
+            }
+            return new BlobLayoutCacheValue(ranges);
+        } catch (BlobStorageException e) {
+            if (BlobAsyncClientBase.isFatalLayoutFetchStatus(e.getStatusCode())) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+            return BlobAsyncClientBase.createLayoutFallbackValue(e);
+        }
     }
 
     private PagedResponse<BlobLayout> getLayoutPageWithLockedETag(String marker, BlobGetLayoutOptions options,
