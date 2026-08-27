@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
@@ -13,7 +12,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
-import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.Mockito;
@@ -25,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -153,7 +150,7 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
 
         ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(diagnosticsClientContext);
         statistics.recordResponse(request, null, null);
-        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
+        request.requestContext.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
             "westus",
             createHealthContext(LocationHealthStatus.Healthy)));
 
@@ -175,7 +172,7 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
 
         ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(diagnosticsClientContext);
         statistics.recordGatewayResponse(request, Mockito.mock(StoreResponseDiagnostics.class), null);
-        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
+        request.requestContext.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
             "westus",
             createHealthContext(LocationHealthStatus.Healthy)));
 
@@ -190,8 +187,11 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
     @Test(groups = {"unit"})
     public void routingLookupInitializesEmptyStateWhenNoCircuitExists() throws Exception {
         DiagnosticsClientContext diagnosticsClientContext = Mockito.mock(DiagnosticsClientContext.class);
-        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
-        RxDocumentServiceRequest request = createRequest(diagnosticsClientContext, holder);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            diagnosticsClientContext,
+            OperationType.Read,
+            ResourceType.Document);
+        assertThat(request.requestContext.getPerPartitionCircuitBreakerInfoHolder()).isNull();
         request.setResourceId("collectionRid");
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange("0", "AA", "BB");
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRange;
@@ -207,14 +207,21 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
 
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker manager
             = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(globalEndpointManager);
-        manager.resetCircuitBreakerConfig(PartitionLevelCircuitBreakerConfig.fromJsonString(
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
             "{\"isPartitionLevelCircuitBreakerEnabled\":true,"
                 + "\"consecutiveExceptionCountToleratedForReads\":10,"
-                + "\"consecutiveExceptionCountToleratedForWrites\":5}"));
+                + "\"consecutiveExceptionCountToleratedForWrites\":5}");
+        try {
+            manager.resetCircuitBreakerConfig();
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+        }
 
         assertThat(manager.getUnavailableRegionsForPartitionKeyRange(request, "collectionRid", partitionKeyRange))
             .isEmpty();
-        assertThat(holder.getPerPartitionCircuitBreakerInfoHolder()).isEmpty();
+        assertThat(request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
+            .getPerPartitionCircuitBreakerInfoHolder()).isEmpty();
 
         ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(diagnosticsClientContext);
         statistics.recordResponse(request, null, null);
@@ -230,14 +237,8 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
             diagnosticsClientContext,
             OperationType.Read,
             ResourceType.Document);
-        request.requestContext.setCrossRegionAvailabilityContext(
-            new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
-                null,
-                null,
-                null,
-                new AtomicBoolean(false),
-                holder,
-                new PerPartitionAutomaticFailoverInfoHolder()));
+        request.requestContext.setPerPartitionCircuitBreakerInfoHolder(
+            holder.getPerPartitionCircuitBreakerInfoHolder());
         return request;
     }
 

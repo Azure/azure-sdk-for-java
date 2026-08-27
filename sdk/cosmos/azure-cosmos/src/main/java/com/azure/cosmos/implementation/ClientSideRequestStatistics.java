@@ -174,19 +174,8 @@ public class ClientSideRequestStatistics {
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
             storeResponseStatistics.perPartitionCircuitBreakerInfoHolder
-                = request.requestContext.getPerPartitionCircuitBreakerInfoHolder().snapshot();
-            storeResponseStatistics.perPartitionAutomaticFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
-
-            if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
-                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                    = request.requestContext.getCrossRegionAvailabilityContext();
-
-                if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
-                    storeResponseStatistics.isHubRegionProcessingOnly = "true";
-                } else {
-                    storeResponseStatistics.isHubRegionProcessingOnly = "false";
-                }
-            }
+                = snapshot(request.requestContext.getPerPartitionCircuitBreakerInfoHolder());
+            storeResponseStatistics.perPartitionFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -270,23 +259,8 @@ public class ClientSideRequestStatistics {
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
                     gatewayStatistics.perPartitionCircuitBreakerInfoHolder
-                        = rxDocumentServiceRequest.requestContext.getPerPartitionCircuitBreakerInfoHolder().snapshot();
-                    gatewayStatistics.perPartitionAutomaticFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
-                    gatewayStatistics.isHubRegionProcessingOnly = "false";
-
-                    CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                        = rxDocumentServiceRequest.requestContext.getCrossRegionAvailabilityContext();
-
-                    if (crossRegionAvailabilityContextForRequest != null) {
-                        if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
-                            gatewayStatistics.isHubRegionProcessingOnly = "true";
-                        }
-                    }
-
-                    if (rxDocumentServiceRequest.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
-                        gatewayStatistics.e2ePolicyCfg =
-                            rxDocumentServiceRequest.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
-                    }
+                        = snapshot(rxDocumentServiceRequest.requestContext.getPerPartitionCircuitBreakerInfoHolder());
+                    gatewayStatistics.perPartitionFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -306,6 +280,12 @@ public class ClientSideRequestStatistics {
 
             this.gatewayStatisticsList.add(gatewayStatistics);
         }
+    }
+
+    private static PerPartitionCircuitBreakerInfoHolder snapshot(
+        PerPartitionCircuitBreakerInfoHolder holder) {
+
+        return holder == null ? PerPartitionCircuitBreakerInfoHolder.EMPTY : holder.snapshot();
     }
 
     public int getRequestPayloadSizeInBytes() {
@@ -1039,7 +1019,7 @@ public class ClientSideRequestStatistics {
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
                 this.writeNonNullObjectField(jsonGenerator, "ppcb", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
-                this.writeNonNullObjectField(jsonGenerator, "perPartitionAutomaticFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
                 jsonGenerator.writeEndObject();
             }
