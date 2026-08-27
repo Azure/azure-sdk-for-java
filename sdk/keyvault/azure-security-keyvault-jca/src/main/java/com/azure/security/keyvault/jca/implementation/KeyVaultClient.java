@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation;
 
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
@@ -50,6 +51,7 @@ import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.validateUri;
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -105,6 +107,22 @@ public class KeyVaultClient {
     private final boolean disableChallengeResourceVerification;
 
     /**
+     * Stores a flag indicating whether Authority Information Access (AIA) certificate downloads are disabled.
+     */
+    private final boolean disableAiaDownload;
+
+    /**
+     * Creates a client using the specified Key Vault load-store configuration.
+     *
+     * @param parameter The Key Vault load-store configuration.
+     */
+    public KeyVaultClient(KeyVaultLoadStoreParameter parameter) {
+        this(parameter.getUri(), parameter.getTenantId(), parameter.getClientId(), parameter.getClientSecret(),
+            parameter.getManagedIdentity(), parameter.getAccessToken(),
+            parameter.isDisableChallengeResourceVerification(), parameter.isAiaDownloadDisabled());
+    }
+
+    /**
      * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri The Azure Key Vault URI.
@@ -155,6 +173,25 @@ public class KeyVaultClient {
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity, String providedAccessToken, boolean disableChallengeResourceVerification) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, providedAccessToken,
+            disableChallengeResourceVerification, false);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param keyVaultUri The Azure Key Vault URI.
+     * @param tenantId The tenant ID.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
+     * @param managedIdentity The user-assigned managed identity object ID.
+     * @param providedAccessToken The access token for authentication.
+     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     */
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
+        String managedIdentity, String providedAccessToken, boolean disableChallengeResourceVerification,
+        boolean disableAiaDownload) {
 
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
@@ -171,20 +208,11 @@ public class KeyVaultClient {
         this.managedIdentity = managedIdentity;
         this.providedAccessToken = providedAccessToken;
         this.disableChallengeResourceVerification = disableChallengeResourceVerification;
+        this.disableAiaDownload = disableAiaDownload;
     }
 
     public static KeyVaultClient createKeyVaultClientBySystemProperty() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        String accessToken = System.getProperty("azure.keyvault.access-token");
-        boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
-
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification);
+        return new KeyVaultClient(KeyVaultLoadStoreParameter.fromSystemProperties());
     }
 
     /**
@@ -223,7 +251,8 @@ public class KeyVaultClient {
                 managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
             }
 
-            // Priority: 1. Service Principal (Client ID/Secret), 2. Workload Identity, 3. Managed Identity, 4. Provided Access Token
+            // Priority: 1. Service Principal, 2. Workload Identity, 3. User-assigned Managed Identity,
+            // 4. Provided Access Token, 5. System-assigned Managed Identity.
             if (tenantId != null && clientId != null && clientSecret != null) {
                 LOGGER.info("Using client credentials (client ID/secret) for authentication");
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
@@ -243,11 +272,9 @@ public class KeyVaultClient {
                 // When the token actually expires, Azure will return authentication errors,
                 // which will inform the user to provide a new token.
                 result = new AccessToken(providedAccessToken, Long.MAX_VALUE / 1000);
-            } else if (tenantId != null && clientId != null && clientSecret != null) {
-                LOGGER.info("Using client credentials (client ID/secret) for authentication");
-                String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
-                    disableChallengeResourceVerification);
-                result = getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+            } else {
+                LOGGER.info("Using managed identity for authentication (default)");
+                result = getAccessToken(resource, null);
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
@@ -334,126 +361,192 @@ public class KeyVaultClient {
     }
 
     /**
-     * Get the certificate.
+     * Resolves the certificate, secret, and key references for one certificate version.
+     *
+     * @param alias The certificate alias.
+     * @return The resolved certificate version, or {@code null} if it could not be resolved.
+     */
+    public CertificateVersion resolveCertificateVersion(String alias) {
+        CertificateBundle certificateBundle = getCertificateBundle(alias);
+        if (certificateBundle == null) {
+            return null;
+        }
+
+        boolean exportable = Optional.ofNullable(certificateBundle.getPolicy())
+            .map(CertificatePolicy::getKeyProperties)
+            .map(KeyProperties::isExportable)
+            .orElse(false);
+        String keyType = Optional.ofNullable(certificateBundle.getPolicy())
+            .map(CertificatePolicy::getKeyProperties)
+            .map(KeyProperties::getKty)
+            .orElse(null);
+
+        return new CertificateVersion(alias, certificateBundle.getCer(), certificateBundle.getKid(),
+            certificateBundle.getSid(), exportable, keyType);
+    }
+
+    /**
+     * Gets the certificate from the latest version of an alias.
      *
      * @param alias The alias.
      *
-     * @return The certificate, or null if not found.
+     * @return The certificate, or {@code null} if not found.
      */
     public Certificate getCertificate(String alias) {
-        LOGGER.entering("KeyVaultClient", "getCertificate", alias);
+        return getCertificateForVersion(resolveCertificateVersion(alias));
+    }
+
+    /**
+     * Gets the certificate from a resolved certificate version.
+     *
+     * @param certificateVersion The resolved certificate version.
+     * @return The certificate, or {@code null} if not found.
+     */
+    public Certificate getCertificateForVersion(CertificateVersion certificateVersion) {
+        String alias = certificateVersion == null ? null : certificateVersion.getAlias();
+        LOGGER.entering("KeyVaultClient", "getCertificateForVersion", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
 
         X509Certificate certificate = null;
-        CertificateBundle certificateBundle = getCertificateBundle(alias);
+        String certificateData = certificateVersion == null ? null : certificateVersion.getCertificateData();
 
-        if (certificateBundle != null) {
-            String certificateString = certificateBundle.getCer();
-
-            if (certificateString != null) {
-                try {
-                    CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                    certificate = (X509Certificate) cf
-                        .generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificateString)));
-                } catch (CertificateException ce) {
-                    LOGGER.log(WARNING, "Certificate error", ce);
-                }
+        if (certificateData != null) {
+            try {
+                CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+                certificate = (X509Certificate) certificateFactory
+                    .generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificateData)));
+            } catch (CertificateException exception) {
+                LOGGER.log(WARNING, "Unable to decode certificate", exception);
             }
         }
 
-        LOGGER.exiting("KeyVaultClient", "getCertificate", certificate);
+        LOGGER.exiting("KeyVaultClient", "getCertificateForVersion", certificate);
 
         return certificate;
     }
 
     /**
-     * Get the certificate chain.
+     * Gets the certificate chain from the latest version of an alias.
      *
      * @param alias The alias.
      *
-     * @return The certificate chain, or null if not found.
+    * @return The certificate chain, or an empty array if there is no resolved certificate version, no versioned
+    * secret, or no certificate in the decoded secret.
+    * @throws IllegalStateException If the certificate chain response cannot be loaded, parsed, or decoded.
      */
     public Certificate[] getCertificateChain(String alias) {
-        LOGGER.entering("KeyVaultClient", "getCertificateChain", alias);
-        LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
-
-        String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
-        String response = httpGet(uri, Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
-
-        if (response == null) {
-            throw new NullPointerException();
-        }
-
-        SecretBundle secretBundle = null;
-
-        try {
-            secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, response);
-        } catch (IOException e) {
-            LOGGER.log(WARNING, "Failed to parse secret bundle response", e);
-        }
-
-        Certificate[] certificates = new Certificate[0];
-
-        try {
-            certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
-        } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
-            | NoSuchProviderException | PKCSException e) {
-            LOGGER.log(WARNING, "Unable to decode certificate chain", e);
-        }
-
-        LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
-
-        return certificates;
+        return getCertificateChainForVersion(resolveCertificateVersion(alias));
     }
 
     /**
-     * Get the key.
+     * Gets the certificate chain from a resolved certificate version.
+     *
+     * @param certificateVersion The resolved certificate version.
+    * @return The certificate chain, or an empty array if there is no resolved certificate version, no versioned
+    * secret, or no certificate in the decoded secret.
+    * @throws IllegalStateException If the certificate chain response cannot be loaded, parsed, or decoded.
+     */
+    public Certificate[] getCertificateChainForVersion(CertificateVersion certificateVersion) {
+        String alias = certificateVersion == null ? null : certificateVersion.getAlias();
+        LOGGER.entering("KeyVaultClient", "getCertificateChainForVersion", alias);
+
+        if (certificateVersion == null) {
+            LOGGER.log(FINE, "No resolved certificate version is available for certificate chain.");
+            return new Certificate[0];
+        }
+        LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
+        if (certificateVersion.getSecretId() == null) {
+            LOGGER.log(FINE, "No certificate chain secret is available for alias: {0}", alias);
+            return new Certificate[0];
+        }
+
+        String response = httpGet(certificateVersion.getSecretId() + API_VERSION_POSTFIX,
+            Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
+
+        if (response == null) {
+            throw new IllegalStateException("Failed to load certificate chain response for alias: " + alias);
+        }
+
+        SecretBundle secretBundle;
+
+        try {
+            secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, response);
+        } catch (IOException exception) {
+            throw new IllegalStateException("Failed to parse certificate chain response for alias: " + alias,
+                exception);
+        }
+
+        String secretValue = secretBundle == null ? null : secretBundle.getValue();
+        if (secretValue == null || secretValue.trim().isEmpty()) {
+            throw new IllegalStateException("Certificate chain response has no secret value for alias: " + alias);
+        }
+
+        try {
+            Certificate[] certificates = loadCertificatesFromSecretBundleValue(secretValue, disableAiaDownload);
+            LOGGER.exiting("KeyVaultClient", "getCertificateChainForVersion", alias);
+            return certificates;
+        } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
+            | NoSuchProviderException | PKCSException | IllegalArgumentException exception) {
+            throw new IllegalStateException("Failed to decode certificate chain for alias: " + alias, exception);
+        }
+    }
+
+    /**
+     * Gets the key from the latest version of an alias.
      *
      * @param alias The alias.
      * @param password The password.
      *
-     * @return The key.
+     * @return The key, or {@code null} if not found.
      */
     public Key getKey(String alias, char[] password) {
-        LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
+        return getKeyForVersion(resolveCertificateVersion(alias), password);
+    }
+
+    /**
+     * Gets the key from a resolved certificate version.
+     *
+     * @param certificateVersion The resolved certificate version.
+     * @param password The password.
+     * @return The key, or {@code null} if not found.
+     */
+    public Key getKeyForVersion(CertificateVersion certificateVersion, char[] password) {
+        String alias = certificateVersion == null ? null : certificateVersion.getAlias();
+        LOGGER.entering("KeyVaultClient", "getKeyForVersion", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
 
-        CertificateBundle certificateBundle = getCertificateBundle(alias);
-        boolean isExportable = Optional.ofNullable(certificateBundle)
-            .map(CertificateBundle::getPolicy)
-            .map(CertificatePolicy::getKeyProperties)
-            .map(KeyProperties::isExportable)
-            .orElse(false);
-        String keyType = Optional.ofNullable(certificateBundle)
-            .map(CertificateBundle::getPolicy)
-            .map(CertificatePolicy::getKeyProperties)
-            .map(KeyProperties::getKty)
-            .orElse(null);
+        if (certificateVersion == null) {
+            return null;
+        }
 
-        if (!isExportable) {
-            // Return KeyVaultPrivateKey if certificate is not exportable because if the service needs to obtain the
-            // private key for authentication, and we can't access private key(which is not exportable), we will use
-            // the Azure Key Vault Secrets API to obtain the private key (keyless).
-            int index = keyType.indexOf("-HSM");
-            String keyType2 = (index == -1) ? keyType : keyType.substring(0, index);
+        boolean exportable = certificateVersion.isExportable();
+        String keyType = certificateVersion.getKeyType();
 
-            KeyVaultPrivateKey key = Optional.ofNullable(certificateBundle)
-                .map(CertificateBundle::getKid)
-                .map(kid -> new KeyVaultPrivateKey(keyType2, kid, this))
+        if (!exportable) {
+            // Keyless signing uses the versioned key ID instead of exporting private key material.
+            String keyAlgorithm
+                = keyType != null && keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
+
+            KeyVaultPrivateKey key = Optional.ofNullable(certificateVersion.getKeyId())
+                .map(keyId -> new KeyVaultPrivateKey(keyAlgorithm, keyId, this))
                 .orElse(null);
 
-            LOGGER.exiting("KeyVaultClient", "getKey", key);
+            LOGGER.exiting("KeyVaultClient", "getKeyForVersion", key);
 
             return key;
         }
 
-        String body = httpGet(certificateBundle.getSid() + API_VERSION_POSTFIX,
+        String certificateSecretUri = certificateVersion.getSecretId();
+        if (certificateSecretUri == null) {
+            return null;
+        }
+        String body = httpGet(certificateSecretUri + API_VERSION_POSTFIX,
             Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (body == null) {
             // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
             // Then we do not know the intent of the usage at this stage we skip this key.
-            LOGGER.exiting("KeyVaultClient", "getKey", null);
+            LOGGER.exiting("KeyVaultClient", "getKeyForVersion", null);
 
             // We return null because it is really not needed.
             // The private key is only used for identity authentication.
@@ -499,7 +592,7 @@ public class KeyVaultClient {
 
         // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
         // Then we do not know the intent of the usage at this stage we skip this key.
-        LOGGER.exiting("KeyVaultClient", "getKey", key);
+        LOGGER.exiting("KeyVaultClient", "getKeyForVersion", key);
 
         return key;
     }
@@ -520,7 +613,7 @@ public class KeyVaultClient {
         String bodyString = "{\"alg\": \"" + digestName + "\", \"value\": \"" + digestValue + "\"}";
         Map<String, String> headers = Collections.singletonMap("Authorization", "Bearer " + getAccessToken());
 
-        String response = httpPost(headers, bodyString);
+        String response = httpPost(keyId + "/sign" + API_VERSION_POSTFIX, headers, bodyString);
 
         if (response != null) {
             try {
@@ -562,7 +655,8 @@ public class KeyVaultClient {
     private PrivateKey createPrivateKeyFromPem(String pemString, String keyType)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        LOGGER.entering("KeyVaultClient", "createPrivateKeyFromPem", new Object[] { pemString, keyType });
+        // The PEM string holds the private key, so it must stay out of the log.
+        LOGGER.entering("KeyVaultClient", "createPrivateKeyFromPem", keyType);
 
         StringBuilder builder = new StringBuilder();
 
@@ -599,8 +693,8 @@ public class KeyVaultClient {
         return HttpUtil.get(uri, headers);
     }
 
-    String httpPost(Map<String, String> headers, String body) {
-        return HttpUtil.post("/sign?api-version=7.1", headers, body, "application/json");
+    String httpPost(String uri, Map<String, String> headers, String body) {
+        return HttpUtil.post(uri, headers, body, "application/json");
     }
 
     AccessToken getAccessToken(String resource, String identity) {

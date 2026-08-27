@@ -24,6 +24,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -31,7 +33,7 @@ import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Level.WARNING;
 
 /**
- * The RestClient that uses the Apache HttpClient class.
+ * The REST client that uses the JDK {@link HttpURLConnection} class.
  */
 public final class HttpUtil {
     public static final String DEFAULT_VERSION = "unknown";
@@ -48,19 +50,27 @@ public final class HttpUtil {
     static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
 
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
+    private static final int AIA_HTTP_TIMEOUT_IN_MILLISECONDS = 10_000;
+    static final int MAX_AIA_RESPONSE_SIZE_IN_BYTES = 10 * 1024 * 1024;
+    private static final int AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS = 30_000;
+    private static final int MAX_AIA_REDIRECTS = 5;
 
     public static String get(String uri, Map<String, String> headers) {
+        return get(uri, headers, HttpUtil::openConnection);
+    }
+
+    static String get(String uri, Map<String, String> headers, ConnectionFactory connectionFactory) {
         HttpURLConnection connection = null;
         try {
-            connection = openConnection(uri);
+            connection = connectionFactory.open(uri);
             connection.setRequestMethod("GET");
-            connection.setDoOutput(true);
 
             if (headers != null) {
                 headers.forEach(connection::setRequestProperty);
             }
             connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
 
+            ensureSuccessfulResponse(connection.getResponseCode());
             return readResponseBody(connection);
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
@@ -70,6 +80,203 @@ public final class HttpUtil {
                 connection.disconnect();
             }
         }
+    }
+
+    /**
+     * Performs an HTTP GET request and returns the raw response body as a byte array.
+     * Used primarily for downloading DER-encoded certificates from CA Issuers URLs in
+     * AIA (Authority Information Access) certificate extensions.
+     *
+     * @param url the URL to fetch
+     * @return the response body bytes, or {@code null} if the request fails or returns non-2xx
+     */
+    public static byte[] getBytes(String url) {
+        return getBytesWithMetadata(url).getBody();
+    }
+
+    static BinaryHttpResponse getBytesWithMetadata(String url) {
+        return getBytesWithMetadata(url, HttpUtil::openConnection);
+    }
+
+    static BinaryHttpResponse getBytesWithMetadata(String url, ConnectionFactory connectionFactory) {
+        String currentUrl;
+        try {
+            currentUrl = validateAiaUrl(url);
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: " + url, e);
+            return BinaryHttpResponse.empty();
+        }
+        for (int redirectCount = 0; redirectCount <= MAX_AIA_REDIRECTS; redirectCount++) {
+            HttpURLConnection connection = null;
+            try {
+                connection = connectionFactory.open(currentUrl);
+                connection.setInstanceFollowRedirects(false);
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(AIA_HTTP_TIMEOUT_IN_MILLISECONDS);
+                connection.setReadTimeout(AIA_HTTP_TIMEOUT_IN_MILLISECONDS);
+                connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+
+                int status = connection.getResponseCode();
+                String cacheControl = getCombinedHeaderValue(connection, "Cache-Control");
+                String date = connection.getHeaderField("Date");
+                String age = connection.getHeaderField("Age");
+                String expires = connection.getHeaderField("Expires");
+                if (isRedirect(status)) {
+                    String location = connection.getHeaderField("Location");
+                    if (location == null || redirectCount == MAX_AIA_REDIRECTS) {
+                        LOGGER.log(WARNING, "HTTP GET redirect could not be followed for URL: {0}", currentUrl);
+                        return new BinaryHttpResponse(null, cacheControl, date, age, expires);
+                    }
+                    currentUrl = resolveAiaRedirect(currentUrl, location);
+                    continue;
+                }
+                if (status < 200 || status >= 300) {
+                    LOGGER.log(WARNING, "HTTP GET returned status {0} for URL: {1}",
+                        new Object[] { status, currentUrl });
+                    return new BinaryHttpResponse(null, cacheControl, date, age, expires);
+                }
+
+                long contentLength = connection.getContentLengthLong();
+                if (contentLength > MAX_AIA_RESPONSE_SIZE_IN_BYTES) {
+                    LOGGER.log(WARNING, "AIA response exceeded the maximum size for URL: {0}", currentUrl);
+                    return new BinaryHttpResponse(null, cacheControl, date, age, expires);
+                }
+
+                return new BinaryHttpResponse(readResponseBytes(connection.getInputStream(), currentUrl), cacheControl,
+                    date, age, expires);
+            } catch (IOException | IllegalArgumentException | ClassCastException | UncheckedIOException e) {
+                LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: " + currentUrl, e);
+                return BinaryHttpResponse.empty();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        }
+        return BinaryHttpResponse.empty();
+    }
+
+    private static boolean isRedirect(int status) {
+        return status == HttpURLConnection.HTTP_MOVED_PERM
+            || status == HttpURLConnection.HTTP_MOVED_TEMP
+            || status == HttpURLConnection.HTTP_SEE_OTHER
+            || status == 307
+            || status == 308;
+    }
+
+    private static String resolveAiaRedirect(String currentUrl, String location) {
+        if (location.startsWith("?")) {
+            int queryIndex = currentUrl.indexOf('?');
+            int fragmentIndex = currentUrl.indexOf('#');
+            int suffixIndex
+                = queryIndex < 0 ? fragmentIndex : fragmentIndex < 0 ? queryIndex : Math.min(queryIndex, fragmentIndex);
+            String currentUrlWithoutSuffix = suffixIndex < 0 ? currentUrl : currentUrl.substring(0, suffixIndex);
+            return validateAiaUrl(currentUrlWithoutSuffix + location);
+        }
+        return validateAiaUrl(URI.create(currentUrl).resolve(location).toString());
+    }
+
+    private static String validateAiaUrl(String url) {
+        URI uri = URI.create(url);
+        String scheme = uri.getScheme();
+        if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+            throw new IllegalArgumentException("AIA URL must use HTTP or HTTPS.");
+        }
+        return uri.toString();
+    }
+
+    private static byte[] readResponseBytes(InputStream inputStream, String url) throws IOException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS);
+        try (InputStream responseBody = inputStream; ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[4096];
+            int totalBytesRead = 0;
+            int read;
+            while ((read = responseBody.read(buffer)) != -1) {
+                if (read > MAX_AIA_RESPONSE_SIZE_IN_BYTES - totalBytesRead) {
+                    LOGGER.log(WARNING, "AIA response exceeded the maximum size for URL: {0}", url);
+                    return null;
+                }
+                outputStream.write(buffer, 0, read);
+                totalBytesRead += read;
+                if (System.nanoTime() > deadline) {
+                    LOGGER.log(WARNING, "AIA response exceeded the maximum download time for URL: {0}", url);
+                    return null;
+                }
+            }
+            return outputStream.toByteArray();
+        }
+    }
+
+    private static String getCombinedHeaderValue(HttpURLConnection connection, String name) {
+        Map<String, List<String>> headers = connection.getHeaderFields();
+        if (headers == null) {
+            return connection.getHeaderField(name);
+        }
+        StringBuilder value = new StringBuilder();
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            if (entry.getKey() == null || !name.equalsIgnoreCase(entry.getKey()) || entry.getValue() == null) {
+                continue;
+            }
+            for (String headerValue : entry.getValue()) {
+                if (headerValue == null) {
+                    continue;
+                }
+                if (value.length() > 0) {
+                    value.append(", ");
+                }
+                value.append(headerValue);
+            }
+        }
+        return value.length() == 0 ? connection.getHeaderField(name) : value.toString();
+    }
+
+    static final class BinaryHttpResponse {
+        private final byte[] body;
+        private final String cacheControl;
+        private final String date;
+        private final String age;
+        private final String expires;
+
+        BinaryHttpResponse(byte[] body, String cacheControl, String date, String age, String expires) {
+            this.body = body;
+            this.cacheControl = cacheControl;
+            this.date = date;
+            this.age = age;
+            this.expires = expires;
+        }
+
+        private static BinaryHttpResponse empty() {
+            return new BinaryHttpResponse(null, null, null, null, null);
+        }
+
+        byte[] getBody() {
+            return body;
+        }
+
+        String getCacheControl() {
+            return cacheControl;
+        }
+
+        String getDate() {
+            return date;
+        }
+
+        String getAge() {
+            return age;
+        }
+
+        String getExpires() {
+            return expires;
+        }
+    }
+
+    public static String post(String uri, String body, String contentType) {
+        return post(uri, null, body, contentType);
+    }
+
+    @FunctionalInterface
+    interface ConnectionFactory {
+        HttpURLConnection open(String url) throws IOException;
     }
 
     public static String getUserAgentPrefix() {
@@ -85,9 +292,14 @@ public final class HttpUtil {
     }
 
     public static String post(String uri, Map<String, String> headers, String body, String contentType) {
+        return post(uri, headers, body, contentType, HttpUtil::openConnection);
+    }
+
+    static String post(String uri, Map<String, String> headers, String body, String contentType,
+        ConnectionFactory connectionFactory) {
         HttpURLConnection connection = null;
         try {
-            connection = openConnection(uri);
+            connection = connectionFactory.open(uri);
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
@@ -102,13 +314,8 @@ public final class HttpUtil {
                 outputStream.write(body.getBytes(StandardCharsets.UTF_8));
             }
 
-            int status = connection.getResponseCode();
-            if (status >= 200 && status < 300) {
-                return readResponseBody(connection);
-            } else {
-                LOGGER.log(SEVERE, createErrorMessage(status));
-                return "";
-            }
+            ensureSuccessfulResponse(connection.getResponseCode());
+            return readResponseBody(connection);
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
             return null;
@@ -125,35 +332,55 @@ public final class HttpUtil {
             + "https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.";
     }
 
+    private static void ensureSuccessfulResponse(int status) {
+        if (status < 200 || status >= 300) {
+            String errorMessage = createErrorMessage(status);
+            LOGGER.log(SEVERE, errorMessage);
+            throw new RuntimeException(errorMessage);
+        }
+    }
+
     @SuppressWarnings("StringOperationCanBeSimplified")
     private static String readResponseBody(HttpURLConnection connection) throws IOException {
-        InputStream responseBody
-            = (connection.getErrorStream() != null) ? connection.getErrorStream() : connection.getInputStream();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int read;
-        while ((read = responseBody.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, read);
+        try (InputStream responseBody = connection.getInputStream();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            if (responseBody == null) {
+                return null;
+            }
+            byte[] buffer = new byte[4096];
+            int read;
+            while ((read = responseBody.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+            return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         }
-
-        return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
     }
 
     public static Map<String, List<String>> getWithResponseHeadersOnlyReturn(String uri) {
+        return getWithResponseHeadersOnlyReturn(uri, HttpUtil::openConnection);
+    }
+
+    static Map<String, List<String>> getWithResponseHeadersOnlyReturn(String uri, ConnectionFactory connectionFactory) {
         HttpURLConnection connection = null;
         try {
-            connection = openConnection(uri);
+            connection = connectionFactory.open(uri);
             connection.setRequestMethod("GET");
-            connection.setDoOutput(true);
 
             connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
 
             if (connection.getResponseCode() == 401) {
-                return null;
-            } else {
-                return connection.getHeaderFields();
+                Map<String, List<String>> headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+                Map<String, List<String>> responseHeaders = connection.getHeaderFields();
+                if (responseHeaders != null) {
+                    responseHeaders.forEach((name, values) -> {
+                        if (name != null) {
+                            headers.put(name, values);
+                        }
+                    });
+                }
+                return headers;
             }
+            return null;
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
             return null;

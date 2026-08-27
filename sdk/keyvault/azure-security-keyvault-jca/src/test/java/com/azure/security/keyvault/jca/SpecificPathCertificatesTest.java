@@ -42,15 +42,15 @@ public class SpecificPathCertificatesTest {
     @Test
     public void testGetSpecificPathCertificate()
         throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-        System.setProperty("azure.cert-path.custom", getFilePath("custom"));
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM, getFilePath("custom"));
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         Assertions.assertNotNull(keyStore.getCertificate("sideload"));
     }
 
     @Test
     public void testCertificatePriority1() {
-        System.setProperty("azure.cert-path.well-known", getFilePath("well-known\\"));
-        System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN, getFilePath("well-known\\"));
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM, getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
         ks.engineLoad(null);
         X509Certificate customCertificate = getCertificateByFile(new File(getFilePath("custom\\sideload.x509")));
@@ -61,7 +61,7 @@ public class SpecificPathCertificatesTest {
 
     @Test
     public void testCertificatePriority2() {
-        System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM, getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
         ks.engineLoad(null);
         X509Certificate specificPathCertificate = getCertificateByFile(new File(getFilePath("custom\\sideload2.pem")));

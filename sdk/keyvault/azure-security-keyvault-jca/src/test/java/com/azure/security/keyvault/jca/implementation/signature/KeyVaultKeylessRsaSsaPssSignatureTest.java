@@ -3,13 +3,17 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.MockKeyVaultClient;
 import com.azure.security.keyvault.jca.implementation.mocking.MockPrivateKey;
 import com.azure.security.keyvault.jca.implementation.mocking.MockPublicKey;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -22,6 +26,7 @@ import java.security.spec.PSSParameterSpec;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     KeyVaultKeylessRsaSsaPssSignature keyVaultKeylessRsaSsaPssSignature;
@@ -31,10 +36,26 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
 
+    private String previousKeyVaultUri;
+
     @BeforeEach
     public void before() {
-        System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
+        previousKeyVaultUri = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, KEY_VAULT_TEST_URI_GLOBAL);
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
+    }
+
+    @AfterEach
+    public void after() {
+        restoreKeyVaultUri(previousKeyVaultUri);
+    }
+
+    private static void restoreKeyVaultUri(String value) {
+        if (value == null) {
+            System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        } else {
+            System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, value);
+        }
     }
 
     @Test

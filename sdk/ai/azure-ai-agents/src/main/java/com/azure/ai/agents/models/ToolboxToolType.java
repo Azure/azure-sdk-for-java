@@ -71,7 +71,12 @@ public enum ToolboxToolType {
     /**
      * Enum value toolbox_search_preview.
      */
-    TOOLBOX_SEARCH_PREVIEW("toolbox_search_preview");
+    TOOLBOX_SEARCH_PREVIEW("toolbox_search_preview"),
+
+    /**
+     * Enum value a2a.
+     */
+    A2A("a2a");
 
     /**
      * The actual serialized value for a ToolboxToolType instance.

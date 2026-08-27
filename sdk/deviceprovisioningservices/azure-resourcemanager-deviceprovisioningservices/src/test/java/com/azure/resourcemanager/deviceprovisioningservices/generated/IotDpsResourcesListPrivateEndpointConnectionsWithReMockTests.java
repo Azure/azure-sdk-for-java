@@ -23,7 +23,7 @@ public final class IotDpsResourcesListPrivateEndpointConnectionsWithReMockTests 
     @Test
     public void testListPrivateEndpointConnectionsWithResponse() throws Exception {
         String responseStr
-            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"jmygtdsslswtmwer\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fzp\",\"actionsRequired\":\"semwabnet\"}},\"id\":\"hszhedplvwiwu\",\"name\":\"mwmbes\",\"type\":\"dnkwwtppjflcxog\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"onz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"sikvmkqzeqqkdlt\",\"actionsRequired\":\"xmhhvhgureo\"}},\"id\":\"wobdagxtibqdx\",\"name\":\"xwak\",\"type\":\"ogqxndlkzgxhuri\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"podxunkb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xmubyyntwlrbq\",\"actionsRequired\":\"oievseotgqrlltm\"}},\"id\":\"lauwzizxbmpgcjef\",\"name\":\"zmuvpbttdumorppx\",\"type\":\"bmnzbtbhjpgl\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ohdneuel\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"hsd\",\"actionsRequired\":\"t\"}},\"id\":\"fikdowwqu\",\"name\":\"v\",\"type\":\"zx\"}]";
+            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"wsuwsyr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"dsytgadgvr\",\"actionsRequired\":\"aeneqnzarrwl\"}},\"id\":\"uijfqk\",\"name\":\"cewiipfpub\",\"type\":\"ibwwiftohqkv\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ksgplsa\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"ynfs\",\"actionsRequired\":\"ljphuopxodl\"}},\"id\":\"ynt\",\"name\":\"rz\",\"type\":\"hleosjsw\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,14 @@ public final class IotDpsResourcesListPrivateEndpointConnectionsWithReMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<PrivateEndpointConnection> response = manager.iotDpsResources()
-            .listPrivateEndpointConnectionsWithResponse("dzu", "erscdntne", com.azure.core.util.Context.NONE)
+            .listPrivateEndpointConnectionsWithResponse("kpw", "reqnovvqfov", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fzp", response.get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("semwabnet",
+        Assertions.assertEquals("dsytgadgvr",
+            response.get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("aeneqnzarrwl",
             response.get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

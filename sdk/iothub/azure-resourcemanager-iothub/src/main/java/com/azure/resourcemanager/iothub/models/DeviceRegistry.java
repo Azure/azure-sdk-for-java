@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     /*
-     * The identifier of the Azure Device Registry namespace associated with the GEN2 SKU hub.
+     * The identifier of the Azure Device Registry namespace
      */
     private String namespaceResourceId;
 
@@ -33,8 +33,7 @@ public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     }
 
     /**
-     * Get the namespaceResourceId property: The identifier of the Azure Device Registry namespace associated with the
-     * GEN2 SKU hub.
+     * Get the namespaceResourceId property: The identifier of the Azure Device Registry namespace.
      * 
      * @return the namespaceResourceId value.
      */
@@ -43,8 +42,7 @@ public final class DeviceRegistry implements JsonSerializable<DeviceRegistry> {
     }
 
     /**
-     * Set the namespaceResourceId property: The identifier of the Azure Device Registry namespace associated with the
-     * GEN2 SKU hub.
+     * Set the namespaceResourceId property: The identifier of the Azure Device Registry namespace.
      * 
      * @param namespaceResourceId the namespaceResourceId value to set.
      * @return the DeviceRegistry object itself.

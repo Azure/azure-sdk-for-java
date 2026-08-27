@@ -13,7 +13,12 @@ public enum ContentUnderstandingServiceVersion implements ServiceVersion {
     /**
      * Enum value 2025-11-01.
      */
-    V2025_11_01("2025-11-01");
+    V2025_11_01("2025-11-01"),
+
+    /**
+     * Enum value 2026-06-01-preview.
+     */
+    V2026_06_01_PREVIEW("2026-06-01-preview");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum ContentUnderstandingServiceVersion implements ServiceVersion {
      * @return The latest {@link ContentUnderstandingServiceVersion}.
      */
     public static ContentUnderstandingServiceVersion getLatest() {
-        return V2025_11_01;
+        return V2026_06_01_PREVIEW;
     }
 }

@@ -3,9 +3,16 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Field;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -14,7 +21,9 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeyStoreUnitTest {
 
     /**
@@ -47,19 +56,6 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testGetRefreshInterval() {
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval");
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms");
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        assertEquals(0, keystore.getRefreshInterval());
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "2000");
-        keystore = new KeyVaultKeyStore();
-        assertEquals(2000, keystore.getRefreshInterval());
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
-        assertEquals(1000, keystore.getRefreshInterval());
-    }
-
-    @Test
     public void testEngineGetCertificateAlias() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         X509Certificate certificate;
@@ -89,6 +85,59 @@ public class KeyVaultKeyStoreUnitTest {
 
         keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificate("setcert"));
+    }
+
+    @Test
+    public void testEngineLoadParameterOverridesSystemProperties() {
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN, "/ambient/well-known");
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM, "/ambient/custom");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE,
+            "false");
+
+        KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(null).setCertPathWellKnown("/explicit/well-known")
+                .setCertPathCustom("/explicit/custom")
+                .setRefreshCertificatesWhenHaveUnTrustCertificate(true);
+
+        keyStore.engineLoad(parameter);
+
+        assertEquals("/explicit/well-known", keyStore.certPathWellKnown);
+        assertEquals("/explicit/custom", keyStore.certPathCustom);
+        assertTrue(keyStore.refreshCertificatesWhenHaveUnTrustCertificate);
+    }
+
+    @Test
+    public void testEngineLoadPassesExplicitParameterToKeyVaultClient() throws ReflectiveOperationException {
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "https://ambient.vault.azure.net");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter("https://explicit.vault.azure.net");
+        parameter.disableAiaDownload();
+
+        KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+        keyStore.engineLoad(parameter);
+
+        Field certificatesField = KeyVaultKeyStore.class.getDeclaredField("keyVaultCertificates");
+        certificatesField.setAccessible(true);
+        KeyVaultCertificates certificates = (KeyVaultCertificates) certificatesField.get(keyStore);
+        Field clientField = KeyVaultCertificates.class.getDeclaredField("keyVaultClient");
+        clientField.setAccessible(true);
+        KeyVaultClient client = (KeyVaultClient) clientField.get(certificates);
+        Field uriField = KeyVaultClient.class.getDeclaredField("keyVaultUri");
+        uriField.setAccessible(true);
+        Field disableAiaField = KeyVaultClient.class.getDeclaredField("disableAiaDownload");
+        disableAiaField.setAccessible(true);
+
+        assertEquals("https://explicit.vault.azure.net/", uriField.get(client));
+        assertTrue((Boolean) disableAiaField.get(client));
+    }
+
+    @BeforeEach
+    @AfterEach
+    public void clearCertificateAliasFilterPatternProperties() {
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        System.clearProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN);
+        System.clearProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE);
     }
 
 }

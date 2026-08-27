@@ -37,7 +37,8 @@ public final class JsonConverterUtil {
     public static <T extends JsonSerializable<T>> T fromJson(ReadValueCallback<JsonReader, T> deserializationFunction,
         String json) throws IOException {
 
-        LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { deserializationFunction, json });
+        // Only the callback is logged. The payload carries access tokens and PKCS12 key bundles.
+        LOGGER.entering("JsonConverterUtil", "fromJson", deserializationFunction);
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             T deserialized = deserializationFunction.read(jsonReader);

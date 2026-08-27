@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 
 import java.io.IOException;
@@ -126,8 +127,13 @@ public final class AccessTokenUtil {
      */
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
         String clientId, String clientSecret) {
-        LOGGER.entering("AccessTokenUtil", "getAccessToken",
-            new Object[] { resource, tenantId, clientId, clientSecret });
+        return getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret, HttpUtil::post);
+    }
+
+    static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId, String clientId,
+        String clientSecret, HttpPoster httpPoster) {
+        // The client secret is deliberately left out: entering() renders every parameter in clear text.
+        LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[] { resource, tenantId, clientId });
         LOGGER.info("Getting access token using client ID / client secret");
 
         AccessToken result = null;
@@ -147,7 +153,7 @@ public final class AccessTokenUtil {
         String requestBody = GRANT_TYPE_FRAGMENT + CLIENT_ID_FRAGMENT + clientId + CLIENT_SECRET_FRAGMENT
             + encodedClientSecret + RESOURCE_FRAGMENT + resource;
 
-        String body = HttpUtil.post(oauth2Url, null, requestBody, "application/x-www-form-urlencoded");
+        String body = httpPoster.post(oauth2Url, null, requestBody, "application/x-www-form-urlencoded");
 
         if (body != null) {
             try {
@@ -160,6 +166,11 @@ public final class AccessTokenUtil {
         LOGGER.exiting("AccessTokenUtil", "getAccessToken", result);
 
         return result;
+    }
+
+    @FunctionalInterface
+    interface HttpPoster {
+        String post(String uri, Map<String, String> headers, String body, String contentType);
     }
 
     /**
@@ -450,8 +461,8 @@ public final class AccessTokenUtil {
         } else {
             if (!disableChallengeResourceVerification && !isChallengeResourceValid(resourceUri, scope)) {
                 throw new IllegalStateException("The challenge resource " + scope + " does not match the requested "
-                    + "domain. If you wish to disable this check, set the environment property "
-                    + "'azure.keyvault.disable-challenge-resource-verification' to 'true'. See "
+                    + "domain. If you wish to disable this check, set the environment property " + "'"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION + "' to 'true'. See "
                     + "https://aka.ms/azsdk/blog/vault-uri for more information.");
             }
 

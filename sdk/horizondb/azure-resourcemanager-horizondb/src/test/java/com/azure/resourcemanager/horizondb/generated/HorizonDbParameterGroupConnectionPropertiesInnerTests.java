@@ -11,7 +11,7 @@ public final class HorizonDbParameterGroupConnectionPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbParameterGroupConnectionPropertiesInner model
-            = BinaryData.fromString("{\"name\":\"gylgqgitxmedjvcs\",\"id\":\"n\",\"type\":\"wncwzzhxgktrmg\"}")
+            = BinaryData.fromString("{\"name\":\"fdygpfqbuaceopz\",\"id\":\"rhhuaopppcqeqx\",\"type\":\"z\"}")
                 .toObject(HorizonDbParameterGroupConnectionPropertiesInner.class);
     }
 }

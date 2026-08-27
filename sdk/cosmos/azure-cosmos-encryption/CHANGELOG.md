@@ -1,14 +1,9 @@
 ## Release History
 
-### 2.31.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 2.31.0 (2026-08-26)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.82.0`.
 
 ### 2.30.0 (2026-06-08)
 
@@ -306,4 +301,3 @@
 ### 1.0.0-beta.1 (2021-04-06)
 #### New Features
 * Added Azure Cosmos encryption used for encrypting data with user provided key before saving into Cosmos DB and decrypting it when reading back from the database.
-
