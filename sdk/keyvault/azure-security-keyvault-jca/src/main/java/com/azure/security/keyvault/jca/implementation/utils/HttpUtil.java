@@ -57,6 +57,11 @@ public final class HttpUtil {
     private static final int AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS = 30_000;
     private static final int MAX_AIA_REDIRECTS = 5;
 
+    /**
+     * Functional interface for opening HTTP connections.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP connection behavior to be mocked or overridden.
+     */
     @FunctionalInterface
     interface ConnectionFactory {
         HttpURLConnection open(String url) throws IOException;
@@ -423,6 +428,7 @@ public final class HttpUtil {
         return getWithOnlyResponseHeaders(uri, HttpUtil::openConnection);
     }
 
+    // Overloaded method that allows specifying a custom ConnectionFactory for testing purposes.
     static Map<String, List<String>> getWithOnlyResponseHeaders(String uri, ConnectionFactory connectionFactory) {
         HttpURLConnection connection = null;
 

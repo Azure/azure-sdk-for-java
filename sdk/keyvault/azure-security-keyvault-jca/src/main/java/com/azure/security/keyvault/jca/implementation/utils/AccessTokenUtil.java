@@ -130,6 +130,7 @@ public final class AccessTokenUtil {
         return getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret, HttpUtil::post);
     }
 
+    // Overloaded method that allows specifying a custom HttpPoster for testing.
     static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId, String clientId,
         String clientSecret, HttpPoster httpPoster) {
         // The client secret is deliberately left out: entering() renders every parameter in clear text.
@@ -168,6 +169,11 @@ public final class AccessTokenUtil {
         return result;
     }
 
+    /**
+     * Functional interface for making HTTP POST requests.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP POST behavior to be mocked or overridden.
+     */
     @FunctionalInterface
     interface HttpPoster {
         String post(String uri, Map<String, String> headers, String body, String contentType);

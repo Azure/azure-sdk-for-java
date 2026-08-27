@@ -602,7 +602,8 @@ final class AiaCertificateChainUtil {
     /**
      * Sets the response loader for AIA requests.
      *
-     * <p>This can be used to override the default HTTP-based loader, for example in tests.
+     * <p>Introduced to be used for testing purposes, allowing the HTTP response loading behavior to be mocked or
+     * overridden.
      *
      * @param loader the response loader to use
      */
@@ -613,7 +614,8 @@ final class AiaCertificateChainUtil {
     /**
      * Resets the response loader for AIA requests to the default HTTP-based loader.
      *
-     * <p>This can be used to undo any overrides set by {@link #setResponseLoader(AiaResponseLoader)}.
+     * <p>Introduced to be used for testing purposes, allowing the HTTP response loading behavior to be reset to the
+     * default.
      */
     static synchronized void resetResponseLoader() {
         responseLoader = DEFAULT_RESPONSE_LOADER;
@@ -621,6 +623,8 @@ final class AiaCertificateChainUtil {
 
     /**
      * Functional interface for loading AIA responses.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP POST behavior to be mocked or overridden.
      */
     @FunctionalInterface
     interface AiaResponseLoader {
