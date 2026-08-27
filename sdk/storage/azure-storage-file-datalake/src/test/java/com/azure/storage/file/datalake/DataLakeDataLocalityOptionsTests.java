@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
@@ -41,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
+public class DataLakeDataLocalityOptionsTests {
     private static final String ORIGINAL_DFS_ENDPOINT = "https://account.dfs.core.windows.net/filesystem/path";
     private static final String ORIGINAL_BLOB_HOST = "account.blob.core.windows.net";
     private static final String DATA_LOCALITY_HOST = "other-host.blob.core.windows.net";
@@ -53,25 +52,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
     // The host advertised by LAYOUT_XML, which chunk requests are expected to be routed to.
     private static final String LAYOUT_ENDPOINT_HOST = "host-a";
 
-    @Override
-    public void beforeTest() {
-        if (testContextManager.doNotRecordTest()) {
-            return;
-        }
-
-        super.beforeTest();
-    }
-
-    @Override
-    protected void afterTest() {
-        if (testContextManager.doNotRecordTest()) {
-            return;
-        }
-
-        super.afterTest();
-    }
-
-    @DoNotRecord
     @Test
     public void fileReadOptionsRoundTrip() {
         FileRange range = new FileRange(10, 20L);
@@ -92,17 +72,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         assertEquals(Boolean.TRUE, options.isUserPrincipalName());
     }
 
-    @DoNotRecord
-    @Test
-    public void fileInputStreamOptionsRoundTrip() {
-        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions()
-            .setLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED);
-
-        assertEquals(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED,
-            options.getLayoutAwareRouting());
-    }
-
-    @DoNotRecord
     @Test
     public void fileInputStreamOptionsTransformToBlobInputStreamOptions() {
         DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions()
@@ -114,7 +83,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         assertNull(Transforms.toBlobInputStreamOptions(null));
     }
 
-    @DoNotRecord
     @Test
     public void toBlobLayoutAwareRouting() {
         assertNull(Transforms.toBlobLayoutAwareRouting(null));
@@ -126,7 +94,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
             Transforms.toBlobLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED));
     }
 
-    @DoNotRecord
     @Test
     public void fileReadOptionsTransformToBlobDownloadStreamOptions() {
         FileRange range = new FileRange(10, 20L);
@@ -161,7 +128,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         assertNull(Transforms.toBlobDownloadStreamOptions(null));
     }
 
-    @DoNotRecord
     @Test
     public void fileReadWithResponseUsesDataLocalityEndpoint() {
         ReadHttpClient httpClient = new ReadHttpClient();
@@ -183,7 +149,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         assertNull(unmodified.hostHeader);
     }
 
-    @DoNotRecord
     @Test
     public void fileAsyncReadWithResponseUsesDataLocalityEndpoint() {
         ReadHttpClient httpClient = new ReadHttpClient();
@@ -202,7 +167,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         assertNull(unmodified.hostHeader);
     }
 
-    @DoNotRecord
     @Test
     public void fileOpenInputStreamWithDisabledLayoutAwareRoutingDoesNotFetchLayout() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
@@ -225,7 +189,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         }
     }
 
-    @DoNotRecord
     @Test
     public void fileOpenInputStreamWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
@@ -253,36 +216,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         assertTrue(routedRequestSeen);
     }
 
-    @DoNotRecord
-    @Test
-    public void fileOpenInputStreamWithEnabledLayoutAwareRoutingRoutesChunks() throws IOException {
-        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
-        DataLakeFileClient client = client(httpClient);
-
-        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1)
-            .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
-            .setLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED);
-
-        byte[] bytes;
-        try (InputStream stream = client.openInputStream(options, Context.NONE).getInputStream()) {
-            bytes = readAll(stream);
-        }
-
-        assertArrayEquals(DOWNLOAD_BODY, bytes);
-        assertEquals(1, httpClient.getLayoutRequestCount());
-
-        boolean routedRequestSeen = false;
-        for (CapturedRequest request : httpClient.getDataRequestRecords()) {
-            if (LAYOUT_ENDPOINT_HOST.equals(request.urlHost)) {
-                routedRequestSeen = true;
-                assertEquals(ORIGINAL_BLOB_HOST, request.hostHeader);
-            }
-        }
-
-        assertTrue(routedRequestSeen);
-    }
-
-    @DoNotRecord
     @Test
     public void fileAsyncReadToFileWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
@@ -313,7 +246,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         }
     }
 
-    @DoNotRecord
     @Test
     public void fileReadToFileWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
@@ -344,7 +276,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         }
     }
 
-    @DoNotRecord
     @Test
     public void fileAsyncReadToFileWithDisabledLayoutAwareRoutingDoesNotFetchLayout() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -14,12 +15,18 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -31,14 +38,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -46,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
@@ -57,6 +71,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * use a large enough blob to receive {@code x-ms-download-hint: layout}; the live-only routing test then verifies that
  * subsequent range requests are sent to the service-provided layout endpoint while preserving the original account
  * authority in the {@code Host} header.
+ * <p>
+ * The mock-backed tests additionally cover the caller-supplied one-shot endpoint on
+ * {@link BlobDownloadStreamOptions} and {@link BlobDownloadContentOptions}, which lets a caller who already holds a
+ * layout route a single download without the SDK fetching a layout itself.
  */
 public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final int LIVE_TEST_CONTENT_LENGTH = 16 * Constants.MB;
@@ -64,6 +82,12 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final int LIVE_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int PLAYBACK_DOWNLOAD_BLOCK_SIZE = 2 * Constants.KB;
     private static final int CONTENT_PATTERN_LENGTH = 4 * Constants.KB;
+    private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
+    private static final String DATA_LOCALITY_ENDPOINT = "https://host-a:443";
+    private static final String DATA_LOCALITY_HOST = "host-a";
+    private static final byte[] MOCK_BODY
+        = "the quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8);
+    private static final int MOCK_FAILURE_OFFSET = 16;
 
     private BlobClient bc;
     private byte[] contentBytes;
@@ -112,9 +136,10 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
 
-        assertDoesNotThrow(
-            () -> bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()), null, null));
+        BlobProperties properties
+            = bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()), null, null).getValue();
 
+        assertEquals(contentBytes.length, properties.getBlobSize());
         assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
     }
 
@@ -190,18 +215,6 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertArrayEquals(expected, readBytes);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
-    @Test
-    public void downloadToFileWithDefaultDataLocalityReturnsProperties() throws IOException {
-        testFile = Files.createTempFile(generateBlobName(), ".dat");
-        Files.deleteIfExists(testFile);
-
-        BlobProperties properties
-            = bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()), null, null).getValue();
-
-        assertEquals(contentBytes.length, properties.getBlobSize());
-    }
-
     @DoNotRecord
     @Test
     public void downloadToFileWithLayoutAwareRoutingDisabledDoesNotFetchLayout() throws IOException {
@@ -234,6 +247,162 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         }
     }
 
+    @DoNotRecord
+    @Test
+    public void downloadStreamWithResponseUsesDataLocalityEndpoint() {
+        OneShotHttpClient httpClient = new OneShotHttpClient();
+        BlobClient client = mockClient(httpClient);
+
+        client.downloadStreamWithResponse(new ByteArrayOutputStream(),
+            new BlobDownloadStreamOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT), null, Context.NONE);
+        client.downloadStreamWithResponse(new ByteArrayOutputStream(), new BlobDownloadStreamOptions(), null,
+            Context.NONE);
+
+        assertRoutedThenUnrouted(httpClient);
+    }
+
+    @DoNotRecord
+    @Test
+    public void downloadStreamWithResponseWithRangeUsesDataLocalityEndpoint() {
+        OneShotHttpClient httpClient = new OneShotHttpClient();
+        BlobClient client = mockClient(httpClient);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        client.downloadStreamWithResponse(stream, new BlobDownloadStreamOptions().setRange(new BlobRange(4, 10L))
+            .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT), null, Context.NONE);
+
+        assertRoutedRange(httpClient.getCaptured().get(0));
+        assertArrayEquals(Arrays.copyOfRange(MOCK_BODY, 4, 14), stream.toByteArray());
+    }
+
+    @DoNotRecord
+    @Test
+    public void downloadContentWithResponseUsesDataLocalityEndpoint() {
+        OneShotHttpClient httpClient = new OneShotHttpClient();
+        BlobClient client = mockClient(httpClient);
+
+        client.downloadContentWithResponse(
+            new BlobDownloadContentOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT), null, Context.NONE);
+        client.downloadContentWithResponse(new BlobDownloadContentOptions(), null, Context.NONE);
+
+        assertRoutedThenUnrouted(httpClient);
+    }
+
+    @DoNotRecord
+    @Test
+    public void downloadContentWithResponseWithRangeUsesDataLocalityEndpoint() {
+        OneShotHttpClient httpClient = new OneShotHttpClient();
+        BlobClient client = mockClient(httpClient);
+
+        byte[] content
+            = client.downloadContentWithResponse(new BlobDownloadContentOptions().setRange(new BlobRange(4, 10L))
+                .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT), null, Context.NONE).getValue().toBytes();
+
+        assertRoutedRange(httpClient.getCaptured().get(0));
+        assertArrayEquals(Arrays.copyOfRange(MOCK_BODY, 4, 14), content);
+    }
+
+    @DoNotRecord
+    @Test
+    public void asyncDownloadStreamWithResponseUsesDataLocalityEndpoint() {
+        OneShotHttpClient httpClient = new OneShotHttpClient();
+        BlobAsyncClient client = mockAsyncClient(httpClient);
+
+        drain(client.downloadStreamWithResponse(
+            new BlobDownloadStreamOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT)));
+        drain(client.downloadStreamWithResponse(new BlobDownloadStreamOptions()));
+
+        assertRoutedThenUnrouted(httpClient);
+    }
+
+    @DoNotRecord
+    @Test
+    public void asyncDownloadContentWithResponseUsesDataLocalityEndpoint() {
+        OneShotHttpClient httpClient = new OneShotHttpClient();
+        BlobAsyncClient client = mockAsyncClient(httpClient);
+
+        client
+            .downloadContentWithResponse(
+                new BlobDownloadContentOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT))
+            .block();
+        client.downloadContentWithResponse(new BlobDownloadContentOptions()).block();
+
+        assertRoutedThenUnrouted(httpClient);
+    }
+
+    /**
+     * A mid-stream failure is resumed by re-requesting the remaining bytes. That resumed request must stay on the
+     * endpoint the caller selected, otherwise the tail of the download silently leaves the locality-optimal path.
+     */
+    @DoNotRecord
+    @Test
+    public void inStreamRetryStaysOnTheDataLocalityEndpoint() {
+        TruncatedOneShotHttpClient httpClient = new TruncatedOneShotHttpClient();
+        BlobAsyncClient client = mockAsyncClient(httpClient);
+
+        byte[] content = FluxUtil.collectBytesInByteBufferStream(client
+            .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT))
+            .flatMapMany(BlobDownloadAsyncResponse::getValue)).block();
+
+        assertArrayEquals(MOCK_BODY, content);
+
+        assertEquals(2, httpClient.getCaptured().size(),
+            "Expected the mid-stream failure to trigger exactly one resume.");
+        for (OneShotRequestRecord request : httpClient.getCaptured()) {
+            assertEquals(DATA_LOCALITY_HOST, request.urlHost);
+            assertEquals(ORIGINAL_HOST, request.hostHeader);
+        }
+
+        // The resumed request asks only for the bytes that were never delivered.
+        assertEquals("bytes=" + MOCK_FAILURE_OFFSET + "-" + (MOCK_BODY.length - 1),
+            httpClient.getCaptured().get(1).rangeHeader);
+    }
+
+    private static void assertRoutedThenUnrouted(OneShotHttpClient httpClient) {
+        assertEquals(2, httpClient.getCaptured().size());
+
+        OneShotRequestRecord routed = httpClient.getCaptured().get(0);
+        assertEquals(DATA_LOCALITY_HOST, routed.urlHost);
+        assertEquals(ORIGINAL_HOST, routed.hostHeader);
+
+        OneShotRequestRecord unrouted = httpClient.getCaptured().get(1);
+        assertEquals(ORIGINAL_HOST, unrouted.urlHost);
+        assertNull(unrouted.hostHeader);
+    }
+
+    private static void assertRoutedRange(OneShotRequestRecord routed) {
+        assertEquals(DATA_LOCALITY_HOST, routed.urlHost);
+        assertEquals(ORIGINAL_HOST, routed.hostHeader);
+        assertEquals("bytes=4-13", routed.rangeHeader);
+    }
+
+    private static void drain(Mono<BlobDownloadAsyncResponse> response) {
+        assertNotNull(
+            FluxUtil.collectBytesInByteBufferStream(response.flatMapMany(BlobDownloadAsyncResponse::getValue)).block());
+    }
+
+    private static BlobClient mockClient(HttpClient httpClient) {
+        return mockBuilder(httpClient).buildClient();
+    }
+
+    private static BlobAsyncClient mockAsyncClient(HttpClient httpClient) {
+        return mockBuilder(httpClient).buildAsyncClient();
+    }
+
+    private static BlobClientBuilder mockBuilder(HttpClient httpClient) {
+        return new BlobClientBuilder().endpoint("https://" + ORIGINAL_HOST)
+            .containerName("container")
+            .blobName("blob")
+            .credential(new StorageSharedKeyCredential("accountName", "accountKey"))
+            .httpClient(httpClient);
+    }
+
+    private static HttpHeaders mockDownloadHeaders(int start, int end) {
+        return new HttpHeaders().set(HttpHeaderName.ETAG, "\"etag\"")
+            .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(end - start + 1))
+            .set(HttpHeaderName.CONTENT_RANGE, "bytes " + start + "-" + end + "/" + MOCK_BODY.length);
+    }
+
     private static byte[] readAll(InputStream is) throws IOException {
         java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
         byte[] buffer = new byte[512];
@@ -262,7 +431,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         return content;
     }
 
-    private static final class LayoutRoutingHttpClient implements com.azure.core.http.HttpClient {
+    private static final class LayoutRoutingHttpClient implements HttpClient {
         private final byte[] contentBytes;
         private final List<RequestRecord> dataRequestRecords = new ArrayList<>();
         private int layoutRequestCount;
@@ -383,6 +552,104 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         @Override
         public String toString() {
             return "RequestHostRecord{requestHost='" + requestHost + "', hostHeader='" + hostHeader + "'}";
+        }
+    }
+
+    private static final class OneShotRequestRecord {
+        private final String urlHost;
+        private final String hostHeader;
+        private final String rangeHeader;
+
+        private OneShotRequestRecord(HttpRequest request) {
+            this.urlHost = request.getUrl().getHost();
+            this.hostHeader = request.getHeaders().getValue(HttpHeaderName.HOST);
+            this.rangeHeader = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+        }
+    }
+
+    /**
+     * Serves {@link #MOCK_BODY}, honoring the requested range, and records where each request was sent.
+     */
+    private static class OneShotHttpClient implements HttpClient {
+        private final List<OneShotRequestRecord> captured = new ArrayList<>();
+
+        List<OneShotRequestRecord> getCaptured() {
+            return captured;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            OneShotRequestRecord record = new OneShotRequestRecord(request);
+            captured.add(record);
+
+            int start = 0;
+            int end = MOCK_BODY.length - 1;
+            if (record.rangeHeader != null) {
+                String[] parts = record.rangeHeader.replace("bytes=", "").split("-");
+                start = Integer.parseInt(parts[0]);
+                end = parts.length > 1 ? Math.min(Integer.parseInt(parts[1]), end) : end;
+            }
+
+            byte[] body = Arrays.copyOfRange(MOCK_BODY, start, end + 1);
+            return Mono.just(new MockHttpResponse(request, 206, mockDownloadHeaders(start, end), body));
+        }
+    }
+
+    /**
+     * Fails the first response body partway through with an {@link IOException}, which is the failure shape the
+     * reliable download path resumes from. Subsequent requests are served normally.
+     */
+    private static final class TruncatedOneShotHttpClient extends OneShotHttpClient {
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            if (getCaptured().isEmpty()) {
+                getCaptured().add(new OneShotRequestRecord(request));
+                return Mono.just(new TruncatedBodyResponse(request));
+            }
+
+            return super.send(request);
+        }
+    }
+
+    private static final class TruncatedBodyResponse extends HttpResponse {
+        private TruncatedBodyResponse(HttpRequest request) {
+            super(request);
+        }
+
+        @Override
+        public int getStatusCode() {
+            return 206;
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return getHeaders().getValue(HttpHeaderName.fromString(name));
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return mockDownloadHeaders(0, MOCK_BODY.length - 1);
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.concat(Flux.just(ByteBuffer.wrap(Arrays.copyOfRange(MOCK_BODY, 0, MOCK_FAILURE_OFFSET))),
+                Flux.error(new IOException("Connection reset by peer")));
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return FluxUtil.collectBytesInByteBufferStream(getBody());
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return getBodyAsString(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
         }
     }
 }
