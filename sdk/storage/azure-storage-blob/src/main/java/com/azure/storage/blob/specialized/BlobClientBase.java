@@ -1862,42 +1862,56 @@ public class BlobClientBase {
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 
         return new PagedIterable<>(PagedFlux.create(() -> {
+            // Each enumeration gets its own ETag reference so concurrent iterations don't share request conditions.
             AtomicReference<String> layoutETag = new AtomicReference<>();
-            return (continuationToken, pageSize) -> Mono.<PagedResponse<BlobLayout>>fromSupplier(() -> {
-                BlobGetLayoutOptions requestOptions = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(finalOptions,
-                    continuationToken, layoutETag.get());
-                BlobRange range = requestOptions.getRange() == null ? new BlobRange(0) : requestOptions.getRange();
-                BlobRequestConditions requestConditions = requestOptions.getRequestConditions() == null
-                    ? new BlobRequestConditions()
-                    : requestOptions.getRequestConditions();
-                Integer finalPageSize = pageSize == null ? requestOptions.getMaxResultsPerPage() : pageSize;
-
-                Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation
-                    = () -> this.azureBlobStorage.getBlobs()
-                        .getLayoutWithResponse(containerName, blobName, snapshot, versionId, continuationToken,
-                            finalPageSize, null, range.toHeaderValue(), requestConditions.getLeaseId(),
-                            requestConditions.getTagsConditions(), requestConditions.getIfModifiedSince(),
-                            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                            requestConditions.getIfNoneMatch(), null, customerProvidedKey, finalContext);
-
-                ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
-                    = sendRequest(operation, null, BlobStorageException.class);
-                if (continuationToken == null) {
-                    layoutETag.set(response.getDeserializedHeaders().getETag());
-                }
-
-                BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
-                BlobLayout publicValue = value == null
-                    ? null
-                    : new BlobLayout(value.getRanges(), null,
-                        response.getValue() == null ? null : response.getValue().getNextMarker(), finalPageSize, value);
-                BlobLayoutInternal layout = response.getValue();
-
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    publicValue == null ? Collections.emptyList() : Collections.singletonList(publicValue),
-                    layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
-            }).flux();
+            return (continuationToken, pageSize) -> Mono.fromSupplier(
+                () -> getLayoutPageWithLockedETag(continuationToken, finalOptions, pageSize, finalContext, layoutETag))
+                .flux();
         }));
+    }
+
+    private PagedResponse<BlobLayout> getLayoutPageWithLockedETag(String marker, BlobGetLayoutOptions options,
+        Integer pageSize, Context context, AtomicReference<String> layoutETag) {
+        BlobGetLayoutOptions requestOptions
+            = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
+        Integer finalPageSize = pageSize == null ? requestOptions.getMaxResultsPerPage() : pageSize;
+        ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
+            = getLayoutPageResponse(marker, requestOptions, finalPageSize, context);
+
+        // The first page's ETag pins every continuation request so the enumeration sees a single blob version.
+        if (marker == null) {
+            layoutETag.set(response.getDeserializedHeaders().getETag());
+        }
+
+        return toLayoutPagedResponse(response, finalPageSize);
+    }
+
+    private ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> getLayoutPageResponse(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context) {
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        BlobRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
+
+        Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation = () -> this.azureBlobStorage
+            .getBlobs()
+            .getLayoutWithResponse(containerName, blobName, snapshot, versionId, marker, pageSize, null,
+                range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context);
+
+        return sendRequest(operation, null, BlobStorageException.class);
+    }
+
+    private static PagedResponse<BlobLayout>
+        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response, Integer pageSize) {
+        BlobLayoutInfo layoutInfo = ModelHelper.transformBlobLayoutInfo(response);
+        String nextMarker = response.getValue() == null ? null : response.getValue().getNextMarker();
+        List<BlobLayout> values = layoutInfo == null
+            ? Collections.emptyList()
+            : Collections.singletonList(new BlobLayout(layoutInfo.getRanges(), null, nextMarker, pageSize, layoutInfo));
+
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), values,
+            nextMarker, response.getDeserializedHeaders());
     }
 
     /**
