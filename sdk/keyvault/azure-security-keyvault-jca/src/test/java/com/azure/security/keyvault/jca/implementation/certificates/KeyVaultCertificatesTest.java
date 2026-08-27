@@ -1260,14 +1260,17 @@ public class KeyVaultCertificatesTest {
 
         private void returnValues(K key, List<V> values) {
             List<Supplier<V>> suppliers = new ArrayList<>();
+
             for (V value : values) {
                 suppliers.add(() -> value);
             }
+
             sequence(key, suppliers);
         }
 
         private void throwThenReturn(K key, RuntimeException exception, V value) {
             List<Supplier<V>> suppliers = new ArrayList<>();
+
             suppliers.add(() -> {
                 throw exception;
             });
@@ -1281,6 +1284,7 @@ public class KeyVaultCertificatesTest {
 
         private void answerThenReturn(K key, Supplier<V> supplier, V value) {
             List<Supplier<V>> suppliers = new ArrayList<>();
+
             suppliers.add(supplier);
             suppliers.add(() -> value);
             sequence(key, suppliers);
@@ -1288,23 +1292,31 @@ public class KeyVaultCertificatesTest {
 
         private int callCount(K key) {
             AtomicInteger counter;
+
             synchronized (this) {
                 counter = callCounts.get(key);
             }
+
             return counter == null ? 0 : counter.get();
         }
 
         private V invoke(K key) {
             Supplier<V> supplier;
+
             synchronized (this) {
                 AtomicInteger counter = callCounts.computeIfAbsent(key, unused -> new AtomicInteger());
+
                 counter.incrementAndGet();
+
                 Deque<Supplier<V>> suppliers = queuedSuppliers.get(key);
+
                 if (suppliers == null || suppliers.isEmpty()) {
                     return null;
                 }
+
                 supplier = suppliers.size() > 1 ? suppliers.poll() : suppliers.peek();
             }
+
             // The actual supplier invocation happens outside the synchronized block so blocking suppliers used by
             // concurrency tests don't serialize unrelated calls against this same script.
             return supplier.get();

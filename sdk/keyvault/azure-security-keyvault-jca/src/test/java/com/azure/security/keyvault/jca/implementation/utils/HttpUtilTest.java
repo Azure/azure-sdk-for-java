@@ -58,8 +58,8 @@ public class HttpUtilTest {
     @Test
     void textGetReturnsSuccessfulResponseBody() throws Exception {
         byte[] body = "response".getBytes(StandardCharsets.UTF_8);
-        TestHttpURLConnection connection
-            = new TestHttpURLConnection("https://example.test/value", 200, body, Collections.emptyMap());
+        TestHttpURLConnection connection =
+            new TestHttpURLConnection("https://example.test/value", 200, body, Collections.emptyMap());
 
         String result = HttpUtil.get("https://example.test/value", Collections.singletonMap("x-test", "value"),
             ignored -> connection);
@@ -83,34 +83,34 @@ public class HttpUtilTest {
     }
 
     @Test
-    void postThrowsForNonSuccessfulResponse() throws Exception {
+    void postReturnsNullForNonSuccessfulResponse() throws Exception {
         TestHttpURLConnection connection = new TestHttpURLConnection("https://example.test/value", 403,
             "{\"error\":\"forbidden\"}".getBytes(StandardCharsets.UTF_8), Collections.emptyMap());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> HttpUtil
-            .post("https://example.test/value", null, "request", "application/json", ignored -> connection));
+        String result = HttpUtil
+            .post("https://example.test/value", null, "request", "application/json", ignored -> connection);
 
-        assertTrue(exception.getMessage().contains("403"));
+        assertNull(result);
         assertEquals("request", new String(connection.requestBody.toByteArray(), StandardCharsets.UTF_8));
         assertTrue(connection.disconnected);
     }
 
     @Test
     void authenticationChallengeReturnsCaseInsensitiveHeadersOnlyFor401() throws Exception {
-        Map<String, List<String>> headers
-            = Collections.singletonMap("www-authenticate", Collections.singletonList("Bearer authorization=test"));
-        TestHttpURLConnection unauthorized
-            = new TestHttpURLConnection("https://example.test/challenge", 401, new byte[0], headers);
+        Map<String, List<String>> headers =
+            Collections.singletonMap("www-authenticate", Collections.singletonList("Bearer authorization=test"));
+        TestHttpURLConnection unauthorized =
+            new TestHttpURLConnection("https://example.test/challenge", 401, new byte[0], headers);
 
-        Map<String, List<String>> result
-            = HttpUtil.getWithResponseHeadersOnlyReturn("https://example.test/challenge", ignored -> unauthorized);
+        Map<String, List<String>> result =
+            HttpUtil.getWithOnlyResponseHeaders("https://example.test/challenge", ignored -> unauthorized);
 
         assertEquals("Bearer authorization=test", result.get("WWW-Authenticate").get(0));
         assertTrue(unauthorized.disconnected);
 
-        TestHttpURLConnection successful
-            = new TestHttpURLConnection("https://example.test/challenge", 200, new byte[0], headers);
-        assertNull(HttpUtil.getWithResponseHeadersOnlyReturn("https://example.test/challenge", ignored -> successful));
+        TestHttpURLConnection successful =
+            new TestHttpURLConnection("https://example.test/challenge", 200, new byte[0], headers);
+        assertNull(HttpUtil.getWithOnlyResponseHeaders("https://example.test/challenge", ignored -> successful));
         assertTrue(successful.disconnected);
     }
 
@@ -124,8 +124,8 @@ public class HttpUtilTest {
         headers.put("Expires", Collections.singletonList("Wed, 05 Aug 2026 10:05:00 GMT"));
         TestHttpURLConnection connection = new TestHttpURLConnection(200, body, headers);
 
-        HttpUtil.BinaryHttpResponse result
-            = HttpUtil.getBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+        HttpUtil.BinaryHttpResponse result =
+            HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
 
         assertArrayEquals(body, result.getBody());
         assertEquals("public, max-age=300", result.getCacheControl());
@@ -140,12 +140,12 @@ public class HttpUtilTest {
 
     @Test
     void binaryResponseForFailureHasNoBodyAndPreservesFreshnessMetadata() throws Exception {
-        Map<String, List<String>> headers
-            = Collections.singletonMap("Cache-Control", Collections.singletonList("max-age=3600"));
+        Map<String, List<String>> headers =
+            Collections.singletonMap("Cache-Control", Collections.singletonList("max-age=3600"));
         TestHttpURLConnection connection = new TestHttpURLConnection(503, new byte[] { 1 }, headers);
 
-        HttpUtil.BinaryHttpResponse result
-            = HttpUtil.getBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+        HttpUtil.BinaryHttpResponse result =
+            HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
 
         assertNull(result.getBody());
         assertEquals("max-age=3600", result.getCacheControl());
@@ -160,8 +160,8 @@ public class HttpUtilTest {
         headers.put("cache-control", Arrays.asList("public, max-age=300", "no-store"));
         TestHttpURLConnection connection = new TestHttpURLConnection(200, new byte[] { 1 }, headers);
 
-        HttpUtil.BinaryHttpResponse result
-            = HttpUtil.getBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+        HttpUtil.BinaryHttpResponse result =
+            HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
 
         assertEquals("public, max-age=300, no-store", result.getCacheControl());
     }
@@ -172,8 +172,8 @@ public class HttpUtilTest {
             Collections.singletonList(String.valueOf(HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES + 1)));
         TestHttpURLConnection connection = new TestHttpURLConnection(200, new byte[] { 1 }, headers);
 
-        HttpUtil.BinaryHttpResponse result
-            = HttpUtil.getBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+        HttpUtil.BinaryHttpResponse result =
+            HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
 
         assertNull(result.getBody());
         assertTrue(connection.disconnected);
@@ -184,8 +184,8 @@ public class HttpUtilTest {
         byte[] body = new byte[HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES + 1];
         TestHttpURLConnection connection = new TestHttpURLConnection(200, body, Collections.emptyMap());
 
-        HttpUtil.BinaryHttpResponse result
-            = HttpUtil.getBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+        HttpUtil.BinaryHttpResponse result =
+            HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
 
         assertNull(result.getBody());
         assertTrue(connection.disconnected);
@@ -195,13 +195,13 @@ public class HttpUtilTest {
     void binaryResponseFollowsHttpToHttpsRedirect() throws Exception {
         String sourceUrl = "http://example.test/cert.crt";
         String targetUrl = "https://example.test/cert.crt";
-        Map<String, List<String>> redirectHeaders
-            = Collections.singletonMap("Location", Collections.singletonList(targetUrl));
+        Map<String, List<String>> redirectHeaders =
+            Collections.singletonMap("Location", Collections.singletonList(targetUrl));
         TestHttpURLConnection redirect = new TestHttpURLConnection(sourceUrl, 302, new byte[0], redirectHeaders);
         byte[] body = new byte[] { 1, 2, 3 };
         TestHttpURLConnection response = new TestHttpURLConnection(targetUrl, 200, body, Collections.emptyMap());
 
-        HttpUtil.BinaryHttpResponse result = HttpUtil.getBytesWithMetadata(sourceUrl, url -> {
+        HttpUtil.BinaryHttpResponse result = HttpUtil.getAiaBytesWithMetadata(sourceUrl, url -> {
             if (sourceUrl.equals(url)) {
                 return redirect;
             }
@@ -221,13 +221,13 @@ public class HttpUtilTest {
     void binaryResponsePreservesPathForQueryOnlyRedirect() throws Exception {
         String sourceUrl = "https://example.test/certificates/issuer.crt?v=1";
         String targetUrl = "https://example.test/certificates/issuer.crt?v=2";
-        Map<String, List<String>> redirectHeaders
-            = Collections.singletonMap("Location", Collections.singletonList("?v=2"));
+        Map<String, List<String>> redirectHeaders =
+            Collections.singletonMap("Location", Collections.singletonList("?v=2"));
         TestHttpURLConnection redirect = new TestHttpURLConnection(sourceUrl, 302, new byte[0], redirectHeaders);
         byte[] body = new byte[] { 1, 2, 3 };
         TestHttpURLConnection response = new TestHttpURLConnection(targetUrl, 200, body, Collections.emptyMap());
 
-        HttpUtil.BinaryHttpResponse result = HttpUtil.getBytesWithMetadata(sourceUrl, url -> {
+        HttpUtil.BinaryHttpResponse result = HttpUtil.getAiaBytesWithMetadata(sourceUrl, url -> {
             if (sourceUrl.equals(url)) {
                 return redirect;
             }

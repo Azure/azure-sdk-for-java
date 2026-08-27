@@ -55,10 +55,12 @@ final class AiaCertificateChainUtil {
     private static final int AIA_CACHE_MAX_SIZE = 128;
     private static final long MAX_SUCCESS_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
     private static final long NEGATIVE_TTL_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
-    private static final AiaResponseCache AIA_CACHE
-        = new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis, (message, parameters) -> LOGGER.logp(FINE,
+    private static final AiaResponseCache AIA_CACHE =
+        new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis, (message, parameters) -> LOGGER.logp(FINE,
             AiaResponseCache.class.getName(), "diagnostic", message, parameters));
-    private static final AiaResponseLoader DEFAULT_RESPONSE_LOADER = HttpUtil::getBytesWithMetadata;
+    // A default HTTP-based response loader for AIA requests.
+    private static final AiaResponseLoader DEFAULT_RESPONSE_LOADER = HttpUtil::getAiaBytesWithMetadata;
+    // The currently configured response loader, which can be overridden for tests.
     private static volatile AiaResponseLoader responseLoader = DEFAULT_RESPONSE_LOADER;
 
     /**
@@ -597,14 +599,29 @@ final class AiaCertificateChainUtil {
         AIA_CACHE.clear();
     }
 
+    /**
+     * Sets the response loader for AIA requests.
+     *
+     * <p>This can be used to override the default HTTP-based loader, for example in tests.
+     *
+     * @param loader the response loader to use
+     */
     static synchronized void setResponseLoader(AiaResponseLoader loader) {
         responseLoader = Objects.requireNonNull(loader, "'loader' cannot be null.");
     }
 
+    /**
+     * Resets the response loader for AIA requests to the default HTTP-based loader.
+     *
+     * <p>This can be used to undo any overrides set by {@link #setResponseLoader(AiaResponseLoader)}.
+     */
     static synchronized void resetResponseLoader() {
         responseLoader = DEFAULT_RESPONSE_LOADER;
     }
 
+    /**
+     * Functional interface for loading AIA responses.
+     */
     @FunctionalInterface
     interface AiaResponseLoader {
         HttpUtil.BinaryHttpResponse load(String url);

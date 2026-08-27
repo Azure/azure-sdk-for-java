@@ -439,7 +439,7 @@ public final class AccessTokenUtil {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
         LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
-        Map<String, List<String>> headers = HttpUtil.getWithResponseHeadersOnlyReturn(resourceUri);
+        Map<String, List<String>> headers = HttpUtil.getWithOnlyResponseHeaders(resourceUri);
 
         if (headers == null) {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
