@@ -1,14 +1,8 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0 (2026-08-27)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Azure Resource Manager Azure Enclave client library for Java. This package contains Microsoft Azure SDK for Azure Enclave Management SDK. Microsoft Mission Resource Provider management API. Package api-version 2026-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## 1.0.0-beta.1 (2026-07-17)
 
