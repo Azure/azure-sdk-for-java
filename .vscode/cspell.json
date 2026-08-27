@@ -1048,6 +1048,13 @@
       ]
     },
     {
+      "filename": "**/sdk/discovery/**",
+      "words": [
+        "milli",
+        "invst"
+      ]
+    },
+    {
       "filename": "**/sdk/communication/azure-communication-identity/CHANGELOG.md",
       "words": [
         "reponse"
@@ -1096,7 +1103,8 @@
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
         "akek",
-        "azstorage"
+        "azstorage",
+        "misordered"
       ]
     },
     {

@@ -10,12 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbPrivateEndpointConnectionsClient;
-import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
 import com.azure.resourcemanager.horizondb.models.HorizonDbPrivateEndpointConnections;
-import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionResource;
-import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionUpdate;
 
 public final class HorizonDbPrivateEndpointConnectionsImpl implements HorizonDbPrivateEndpointConnections {
     private static final ClientLogger LOGGER = new ClientLogger(HorizonDbPrivateEndpointConnectionsImpl.class);
@@ -64,34 +61,33 @@ public final class HorizonDbPrivateEndpointConnectionsImpl implements HorizonDbP
             inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnection update(String resourceGroupName, String privateEndpointConnectionName,
-        PrivateEndpointConnectionUpdate properties) {
-        PrivateEndpointConnectionInner inner
-            = this.serviceClient().update(resourceGroupName, privateEndpointConnectionName, properties);
+    public Response<PrivateEndpointConnectionResource> updateStatusWithResponse(String resourceGroupName,
+        String clusterName, String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource,
+        Context context) {
+        Response<PrivateEndpointConnectionResourceInner> inner = this.serviceClient()
+            .updateStatusWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, resource, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionResourceImpl(inner.getValue(), this.manager()));
+    }
+
+    public PrivateEndpointConnectionResource updateStatus(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource) {
+        PrivateEndpointConnectionResourceInner inner = this.serviceClient()
+            .updateStatus(resourceGroupName, clusterName, privateEndpointConnectionName, resource);
         if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
+            return new PrivateEndpointConnectionResourceImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public PrivateEndpointConnection update(String resourceGroupName, String privateEndpointConnectionName,
-        PrivateEndpointConnectionUpdate properties, Context context) {
-        PrivateEndpointConnectionInner inner
-            = this.serviceClient().update(resourceGroupName, privateEndpointConnectionName, properties, context);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
+        this.serviceClient().delete(resourceGroupName, clusterName, privateEndpointConnectionName);
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, privateEndpointConnectionName);
-    }
-
-    public void delete(String resourceGroupName, String privateEndpointConnectionName, Context context) {
-        this.serviceClient().delete(resourceGroupName, privateEndpointConnectionName, context);
+    public void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, clusterName, privateEndpointConnectionName, context);
     }
 
     private HorizonDbPrivateEndpointConnectionsClient serviceClient() {

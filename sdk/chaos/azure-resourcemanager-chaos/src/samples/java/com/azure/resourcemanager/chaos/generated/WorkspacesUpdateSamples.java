@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_Update.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Update.json
      */
     /**
      * Sample code: Update a Workspace in a resource group.
