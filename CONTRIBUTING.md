@@ -107,10 +107,7 @@ This repository routes all Maven dependencies through an Azure Artifacts feed, w
 Internal contributors should set up the Maven credential provider to authenticate with the Azure Artifacts feed.
 
 To set up the credential provider:
-1. Bootstrap the Maven Credential Provider. Run the following command from a folder **outside** the `azure-sdk-for-java` repository:
-   ```bash
-   mvn dependency:get "-Dartifact=com.microsoft.azure:artifacts-maven-credprovider:3.1" "-DremoteRepositories=central::::https://pkgs.dev.azure.com/artifacts-public/PublicTools/_packaging/AzureArtifacts/maven/v1"
-   ```
+1. Install the Maven Credential Provider by following the [official installation instructions on 1ES EngHub](https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/azure-artifacts/maven-credprovider).
 2. Add the Maven extension to `.mvn/extensions.xml` at the repository root:
    ```xml
    <extensions xmlns="http://maven.apache.org/EXTENSIONS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

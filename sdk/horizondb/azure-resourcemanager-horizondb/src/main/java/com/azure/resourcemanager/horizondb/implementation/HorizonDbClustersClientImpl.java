@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -180,6 +181,60 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/start")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/start")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/stop")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/stop")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> stopSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/restart")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/restart")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> restartSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -213,14 +268,14 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster along with {@link Response} on successful completion of
+     * @return information about a HorizonDB cluster along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -234,14 +289,14 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster on successful completion of {@link Mono}.
+     * @return information about a HorizonDB cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbClusterInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
@@ -250,15 +305,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster along with {@link Response}.
+     * @return information about a HorizonDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HorizonDbClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
@@ -269,14 +324,14 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster.
+     * @return information about a HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
@@ -284,15 +339,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents the HorizonDB cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -307,15 +362,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster along with {@link Response}.
+     * @return represents the HorizonDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
@@ -328,16 +383,16 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster along with {@link Response}.
+     * @return represents the HorizonDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
@@ -349,15 +404,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb cluster.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HorizonDbClusterInner>, HorizonDbClusterInner>
@@ -370,15 +425,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb cluster.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbClusterInner>, HorizonDbClusterInner>
@@ -389,16 +444,16 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb cluster.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbClusterInner>, HorizonDbClusterInner> beginCreateOrUpdate(
@@ -409,15 +464,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster on successful completion of {@link Mono}.
+     * @return represents the HorizonDB cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbClusterInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
@@ -427,15 +482,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster.
+     * @return represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbClusterInner createOrUpdate(String resourceGroupName, String clusterName,
@@ -444,16 +499,16 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Creates a new HorizonDb cluster or updates an existing cluster.
+     * Creates a new HorizonDB cluster or updates an existing cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster.
+     * @return represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbClusterInner createOrUpdate(String resourceGroupName, String clusterName,
@@ -462,15 +517,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents the HorizonDB cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -483,15 +538,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster along with {@link Response}.
+     * @return represents the HorizonDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
@@ -504,16 +559,16 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster along with {@link Response}.
+     * @return represents the HorizonDB cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
@@ -525,15 +580,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb cluster.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HorizonDbClusterInner>, HorizonDbClusterInner>
@@ -545,15 +600,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb cluster.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbClusterInner>, HorizonDbClusterInner> beginUpdate(String resourceGroupName,
@@ -564,16 +619,16 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb cluster.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbClusterInner>, HorizonDbClusterInner> beginUpdate(String resourceGroupName,
@@ -584,15 +639,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster on successful completion of {@link Mono}.
+     * @return represents the HorizonDB cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbClusterInner> updateAsync(String resourceGroupName, String clusterName,
@@ -602,15 +657,15 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster.
+     * @return represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbClusterInner update(String resourceGroupName, String clusterName,
@@ -619,16 +674,16 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Updates an existing HorizonDb cluster (e.g., tags, virtual cores, replica count).
+     * Updates an existing HorizonDB cluster (e.g., tags, virtual cores, replica count).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb cluster.
+     * @return represents the HorizonDB cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbClusterInner update(String resourceGroupName, String clusterName,
@@ -637,10 +692,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -655,10 +710,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -671,10 +726,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -688,10 +743,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -705,10 +760,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -721,10 +776,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -739,10 +794,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -754,10 +809,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -768,10 +823,10 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -783,7 +838,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,7 +859,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,7 +874,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -837,7 +892,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -857,7 +912,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,7 +927,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -888,7 +943,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -907,7 +962,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -920,7 +975,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -936,7 +991,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -954,7 +1009,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -966,7 +1021,7 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     }
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -978,6 +1033,452 @@ public final class HorizonDbClustersClientImpl implements HorizonDbClustersClien
     public PagedIterable<HorizonDbClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String clusterName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName) {
+        final String accept = "application/json";
+        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName, Context context) {
+        final String accept = "application/json";
+        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String clusterName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName) {
+        Response<BinaryData> response = startWithResponse(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName,
+        Context context) {
+        Response<BinaryData> response = startWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startAsync(String resourceGroupName, String clusterName) {
+        return beginStartAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String clusterName) {
+        beginStart(resourceGroupName, clusterName).getFinalResult();
+    }
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String clusterName, Context context) {
+        beginStart(resourceGroupName, clusterName, context).getFinalResult();
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String clusterName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String clusterName) {
+        final String accept = "application/json";
+        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, accept, Context.NONE);
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String clusterName, Context context) {
+        final String accept = "application/json";
+        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, accept, context);
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String clusterName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String clusterName) {
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String clusterName, Context context) {
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopAsync(String resourceGroupName, String clusterName) {
+        return beginStopAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String clusterName) {
+        beginStop(resourceGroupName, clusterName).getFinalResult();
+    }
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String clusterName, Context context) {
+        beginStop(resourceGroupName, clusterName, context).getFinalResult();
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String clusterName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> restartWithResponse(String resourceGroupName, String clusterName) {
+        final String accept = "application/json";
+        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> restartWithResponse(String resourceGroupName, String clusterName, Context context) {
+        final String accept = "application/json";
+        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String clusterName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String clusterName) {
+        Response<BinaryData> response = restartWithResponse(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String clusterName,
+        Context context) {
+        Response<BinaryData> response = restartWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> restartAsync(String resourceGroupName, String clusterName) {
+        return beginRestartAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restart(String resourceGroupName, String clusterName) {
+        beginRestart(resourceGroupName, clusterName).getFinalResult();
+    }
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restart(String resourceGroupName, String clusterName, Context context) {
+        beginRestart(resourceGroupName, clusterName, context).getFinalResult();
     }
 
     /**

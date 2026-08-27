@@ -10,11 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purestorageblock.fluent.ReservationsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.LimitDetailsInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingStatusInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingUsageReportInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationInner;
+import com.azure.resourcemanager.purestorageblock.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.purestorageblock.models.LimitDetails;
+import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
 import com.azure.resourcemanager.purestorageblock.models.Reservation;
 import com.azure.resourcemanager.purestorageblock.models.ReservationBillingStatus;
 import com.azure.resourcemanager.purestorageblock.models.ReservationBillingUsageReport;
@@ -125,6 +128,42 @@ public final class ReservationsImpl implements Reservations {
             = this.serviceClient().getBillingReport(resourceGroupName, reservationName);
         if (inner != null) {
             return new ReservationBillingUsageReportImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Reservation linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body) {
+        ReservationInner inner = this.serviceClient().linkSaaS(resourceGroupName, reservationName, body);
+        if (inner != null) {
+            return new ReservationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Reservation linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body,
+        Context context) {
+        ReservationInner inner = this.serviceClient().linkSaaS(resourceGroupName, reservationName, body, context);
+        if (inner != null) {
+            return new ReservationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String reservationName, Context context) {
+        Response<LatestLinkedSaaSResponseInner> inner
+            = this.serviceClient().latestLinkedSaaSWithResponse(resourceGroupName, reservationName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String reservationName) {
+        LatestLinkedSaaSResponseInner inner = this.serviceClient().latestLinkedSaaS(resourceGroupName, reservationName);
+        if (inner != null) {
+            return new LatestLinkedSaaSResponseImpl(inner, this.manager());
         } else {
             return null;
         }

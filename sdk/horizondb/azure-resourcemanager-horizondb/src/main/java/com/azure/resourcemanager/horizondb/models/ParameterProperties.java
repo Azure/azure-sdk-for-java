@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of a HorizonDb parameters.
+ * Properties of a HorizonDB parameters.
  */
 @Fluent
 public final class ParameterProperties implements JsonSerializable<ParameterProperties> {
