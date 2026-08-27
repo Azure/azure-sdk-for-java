@@ -56,6 +56,7 @@ public class KnowledgeBaseCrudExample {
         boolean indexCreated = false;
         boolean knowledgeSourceCreated = false;
         boolean knowledgeBaseCreated = false;
+        Throwable primaryFailure = null;
 
         try {
             searchIndexClient.createIndex(new SearchIndex(indexName,
@@ -114,18 +115,45 @@ public class KnowledgeBaseCrudExample {
             if (!retrieved.getDescription().equals(updated.getDescription())) {
                 throw new IllegalStateException("The updated description wasn't persisted.");
             }
+        } catch (RuntimeException | Error exception) {
+            primaryFailure = exception;
+            throw exception;
         } finally {
+            RuntimeException cleanupFailure = null;
             if (knowledgeBaseCreated) {
-                searchIndexClient.deleteKnowledgeBase(knowledgeBaseName);
+                cleanupFailure
+                    = cleanup(() -> searchIndexClient.deleteKnowledgeBase(knowledgeBaseName), cleanupFailure);
             }
             if (knowledgeSourceCreated) {
-                searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
+                cleanupFailure
+                    = cleanup(() -> searchIndexClient.deleteKnowledgeSource(knowledgeSourceName), cleanupFailure);
             }
             if (indexCreated) {
-                searchIndexClient.deleteIndex(indexName);
+                cleanupFailure = cleanup(() -> searchIndexClient.deleteIndex(indexName), cleanupFailure);
             }
-            System.out.println("\nDeleted sample knowledge base and knowledge source.");
+
+            if (cleanupFailure != null) {
+                if (primaryFailure != null) {
+                    primaryFailure.addSuppressed(cleanupFailure);
+                } else {
+                    throw cleanupFailure;
+                }
+            } else {
+                System.out.println("\nDeleted sample knowledge base, knowledge source, and index.");
+            }
         }
+    }
+
+    private static RuntimeException cleanup(Runnable cleanup, RuntimeException previousFailure) {
+        try {
+            cleanup.run();
+        } catch (RuntimeException exception) {
+            if (previousFailure == null) {
+                return exception;
+            }
+            previousFailure.addSuppressed(exception);
+        }
+        return previousFailure;
     }
 
     private static void verifyTags(Map<String, String> expected, Map<String, String> actual, String operation) {
