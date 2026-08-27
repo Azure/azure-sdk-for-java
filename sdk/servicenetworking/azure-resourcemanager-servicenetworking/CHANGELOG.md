@@ -1,34 +1,160 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-08-27)
 
+- Azure Resource Manager Traffic Controller client library for Java. This package contains Microsoft Azure SDK for Traffic Controller Management SDK. Traffic Controller Provider management API. Package api-version 2026-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Traffic Controller client library for Java. This package contains Microsoft Azure SDK for Traffic Controller Management SDK. Traffic Controller Provider management API. Package api-version 2025-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.AssociationUpdateProperties` was removed
+
+#### `models.TrafficControllerUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.AssociationSubnet` was modified
+
+* `validate()` was removed
+
+#### `models.TrafficControllerUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AssociationSubnetUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityPolicyConfigurations` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityPolicyUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceId` was modified
+
+* `validate()` was removed
+
+#### `models.WafSecurityPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.AssociationUpdate` was modified
+
+* `properties()` was removed
+* `validate()` was removed
+* `withProperties(models.AssociationUpdateProperties)` was removed
+
+#### `models.Association$Update` was modified
+
+* `withProperties(models.AssociationUpdateProperties)` was removed
+
+#### `models.SecurityPolicyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TrafficControllerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FrontendUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityPolicyUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WafPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.AssociationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FrontendProperties` was modified
+
+* `validate()` was removed
 
 ### Features Added
 
+* `models.IpAccessRuleAction` was added
+
+* `models.PrivateLinkResourcesInterfaces` was added
+
+* `models.IpAccessRulesSecurityPolicy` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.PublicNetworkAccess` was added
+
 * `models.IpAccessRule` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
 
 * `models.FrontendUpdateProperties` was added
 
-* `models.IpAccessRuleAction` was added
+* `models.PrivateEndpointReference` was added
+
+* `models.PrivateEndpointConnectionProperties` was added
+
+* `models.FrontendAssociation` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.PrivateEndpointConnectionsInterfaces` was added
 
 * `models.IpAccessRulesPolicy` was added
 
-* `models.IpAccessRulesSecurityPolicy` was added
+* `models.PrivateEndpointConnection` was added
+
+* `models.PrivateLinkServiceConnectionStatus` was added
 
 #### `models.Frontend$Update` was modified
 
 * `withProperties(models.FrontendUpdateProperties)` was added
+
+#### `models.SecurityPolicyConfigurations` was modified
+
+* `withIpAccessRulesSecurityPolicy(models.IpAccessRulesSecurityPolicy)` was added
+* `ipAccessRulesSecurityPolicy()` was added
+
+#### `models.PolicyType` was modified
+
+* `IP_ACCESS_RULES` was added
+
+#### `TrafficControllerManager` was modified
+
+* `privateLinkResourcesInterfaces()` was added
+* `privateEndpointConnectionsInterfaces()` was added
+
+#### `models.AssociationUpdate` was modified
+
+* `withAssociationType(models.AssociationType)` was added
+* `subnet()` was added
+* `associationType()` was added
+* `withSubnet(models.AssociationSubnetUpdate)` was added
+
+#### `models.Association$Update` was modified
+
+* `withAssociationType(models.AssociationType)` was added
+* `withSubnet(models.AssociationSubnetUpdate)` was added
 
 #### `models.SecurityPolicyProperties` was modified
 
 * `withIpAccessRulesPolicy(models.IpAccessRulesPolicy)` was added
 * `ipAccessRulesPolicy()` was added
 
-#### `models.SecurityPolicyConfigurations` was modified
+#### `models.TrafficControllerProperties` was modified
 
-* `ipAccessRulesSecurityPolicy()` was added
-* `withIpAccessRulesSecurityPolicy(models.IpAccessRulesSecurityPolicy)` was added
+* `privateEndpointConnections()` was added
 
 #### `models.FrontendUpdate` was modified
 
@@ -37,13 +163,17 @@
 
 #### `models.SecurityPolicyUpdateProperties` was modified
 
-* `ipAccessRulesPolicy()` was added
 * `withIpAccessRulesPolicy(models.IpAccessRulesPolicy)` was added
+* `ipAccessRulesPolicy()` was added
 
 #### `models.FrontendProperties` was modified
 
-* `securityPolicyConfigurations()` was added
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
 * `withSecurityPolicyConfigurations(models.SecurityPolicyConfigurations)` was added
+* `withAssociation(models.FrontendAssociation)` was added
+* `association()` was added
+* `securityPolicyConfigurations()` was added
 
 ## 1.1.0 (2025-02-06)
 

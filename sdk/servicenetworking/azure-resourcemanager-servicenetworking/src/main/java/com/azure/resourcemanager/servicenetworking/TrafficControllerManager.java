@@ -28,12 +28,16 @@ import com.azure.resourcemanager.servicenetworking.fluent.TrafficControllerManag
 import com.azure.resourcemanager.servicenetworking.implementation.AssociationsInterfacesImpl;
 import com.azure.resourcemanager.servicenetworking.implementation.FrontendsInterfacesImpl;
 import com.azure.resourcemanager.servicenetworking.implementation.OperationsImpl;
+import com.azure.resourcemanager.servicenetworking.implementation.PrivateEndpointConnectionsInterfacesImpl;
+import com.azure.resourcemanager.servicenetworking.implementation.PrivateLinkResourcesInterfacesImpl;
 import com.azure.resourcemanager.servicenetworking.implementation.SecurityPoliciesInterfacesImpl;
 import com.azure.resourcemanager.servicenetworking.implementation.TrafficControllerInterfacesImpl;
 import com.azure.resourcemanager.servicenetworking.implementation.TrafficControllerManagementClientBuilder;
 import com.azure.resourcemanager.servicenetworking.models.AssociationsInterfaces;
 import com.azure.resourcemanager.servicenetworking.models.FrontendsInterfaces;
 import com.azure.resourcemanager.servicenetworking.models.Operations;
+import com.azure.resourcemanager.servicenetworking.models.PrivateEndpointConnectionsInterfaces;
+import com.azure.resourcemanager.servicenetworking.models.PrivateLinkResourcesInterfaces;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPoliciesInterfaces;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerInterfaces;
 import java.time.Duration;
@@ -56,6 +60,10 @@ public final class TrafficControllerManager {
     private SecurityPoliciesInterfaces securityPoliciesInterfaces;
 
     private TrafficControllerInterfaces trafficControllerInterfaces;
+
+    private PrivateEndpointConnectionsInterfaces privateEndpointConnectionsInterfaces;
+
+    private PrivateLinkResourcesInterfaces privateLinkResourcesInterfaces;
 
     private Operations operations;
 
@@ -323,6 +331,32 @@ public final class TrafficControllerManager {
                 = new TrafficControllerInterfacesImpl(clientObject.getTrafficControllerInterfaces(), this);
         }
         return trafficControllerInterfaces;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnectionsInterfaces.
+     * 
+     * @return Resource collection API of PrivateEndpointConnectionsInterfaces.
+     */
+    public PrivateEndpointConnectionsInterfaces privateEndpointConnectionsInterfaces() {
+        if (this.privateEndpointConnectionsInterfaces == null) {
+            this.privateEndpointConnectionsInterfaces = new PrivateEndpointConnectionsInterfacesImpl(
+                clientObject.getPrivateEndpointConnectionsInterfaces(), this);
+        }
+        return privateEndpointConnectionsInterfaces;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResourcesInterfaces.
+     * 
+     * @return Resource collection API of PrivateLinkResourcesInterfaces.
+     */
+    public PrivateLinkResourcesInterfaces privateLinkResourcesInterfaces() {
+        if (this.privateLinkResourcesInterfaces == null) {
+            this.privateLinkResourcesInterfaces
+                = new PrivateLinkResourcesInterfacesImpl(clientObject.getPrivateLinkResourcesInterfaces(), this);
+        }
+        return privateLinkResourcesInterfaces;
     }
 
     /**

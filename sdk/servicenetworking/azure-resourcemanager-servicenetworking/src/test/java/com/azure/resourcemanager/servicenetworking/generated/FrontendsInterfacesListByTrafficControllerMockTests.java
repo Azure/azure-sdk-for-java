@@ -12,6 +12,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
+import com.azure.resourcemanager.servicenetworking.models.PublicNetworkAccess;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public final class FrontendsInterfacesListByTrafficControllerMockTests {
     @Test
     public void testListByTrafficController() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"fqdn\":\"notyfjfcnjbkcn\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"bttk\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"ywpnvjt\"}},\"provisioningState\":\"Updating\"},\"location\":\"rmclfplphoxu\",\"tags\":{\"jta\":\"pabgyeps\",\"kqujidsuyono\":\"qugxywpmueefjzwf\"},\"id\":\"glaocq\",\"name\":\"tcc\",\"type\":\"g\"}]}";
+            = "{\"value\":[{\"properties\":{\"fqdn\":\"ycduier\",\"publicNetworkAccess\":\"Disabled\",\"association\":{\"id\":\"y\"},\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"olpsslqlf\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"dnbbglzps\"}},\"provisioningState\":\"Deleting\"},\"location\":\"mcwyhzdxssadb\",\"tags\":{\"cblylpstdbhhxsr\":\"vdfznudaodvxzb\",\"erscdntne\":\"dzu\",\"tmweriofzpyq\":\"fiwjmygtdssls\"},\"id\":\"emwabnet\",\"name\":\"hhszh\",\"type\":\"d\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +32,17 @@ public final class FrontendsInterfacesListByTrafficControllerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Frontend> response
-            = manager.frontendsInterfaces().listByTrafficController("vce", "vei", com.azure.core.util.Context.NONE);
+        PagedIterable<Frontend> response = manager.frontendsInterfaces()
+            .listByTrafficController("dslgnayqigynduh", "vhqlkthumaqo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rmclfplphoxu", response.iterator().next().location());
-        Assertions.assertEquals("pabgyeps", response.iterator().next().tags().get("jta"));
-        Assertions.assertEquals("bttk",
+        Assertions.assertEquals("mcwyhzdxssadb", response.iterator().next().location());
+        Assertions.assertEquals("vdfznudaodvxzb", response.iterator().next().tags().get("cblylpstdbhhxsr"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
+            response.iterator().next().properties().publicNetworkAccess());
+        Assertions.assertEquals("y", response.iterator().next().properties().association().id());
+        Assertions.assertEquals("olpsslqlf",
             response.iterator().next().properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("ywpnvjt",
+        Assertions.assertEquals("dnbbglzps",
             response.iterator().next().properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }
