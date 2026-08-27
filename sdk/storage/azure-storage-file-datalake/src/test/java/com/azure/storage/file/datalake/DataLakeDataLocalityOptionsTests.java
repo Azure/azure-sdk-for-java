@@ -50,6 +50,8 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
     private static final String LAYOUT_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"3\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-a:443\" /></Endpoints></BlobLayout>";
+    // The host advertised by LAYOUT_XML, which chunk requests are expected to be routed to.
+    private static final String LAYOUT_ENDPOINT_HOST = "host-a";
 
     @Override
     public void beforeTest() {
@@ -225,6 +227,125 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
 
     @DoNotRecord
     @Test
+    public void fileOpenInputStreamWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
+        DataLakeFileClient client = client(httpClient);
+
+        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1)
+            .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length));
+
+        byte[] bytes;
+        try (InputStream stream = client.openInputStream(options, Context.NONE).getInputStream()) {
+            bytes = readAll(stream);
+        }
+
+        assertArrayEquals(DOWNLOAD_BODY, bytes);
+        assertEquals(1, httpClient.getLayoutRequestCount());
+
+        boolean routedRequestSeen = false;
+        for (CapturedRequest request : httpClient.getDataRequestRecords()) {
+            if (LAYOUT_ENDPOINT_HOST.equals(request.urlHost)) {
+                routedRequestSeen = true;
+                assertEquals(ORIGINAL_BLOB_HOST, request.hostHeader);
+            }
+        }
+
+        assertTrue(routedRequestSeen);
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileOpenInputStreamWithEnabledLayoutAwareRoutingRoutesChunks() throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
+        DataLakeFileClient client = client(httpClient);
+
+        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1)
+            .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
+            .setLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED);
+
+        byte[] bytes;
+        try (InputStream stream = client.openInputStream(options, Context.NONE).getInputStream()) {
+            bytes = readAll(stream);
+        }
+
+        assertArrayEquals(DOWNLOAD_BODY, bytes);
+        assertEquals(1, httpClient.getLayoutRequestCount());
+
+        boolean routedRequestSeen = false;
+        for (CapturedRequest request : httpClient.getDataRequestRecords()) {
+            if (LAYOUT_ENDPOINT_HOST.equals(request.urlHost)) {
+                routedRequestSeen = true;
+                assertEquals(ORIGINAL_BLOB_HOST, request.hostHeader);
+            }
+        }
+
+        assertTrue(routedRequestSeen);
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileAsyncReadToFileWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
+        DataLakeFileAsyncClient client = asyncClient(httpClient);
+        Path tempFile = Files.createTempFile("layout-routing", ".dat");
+        Files.deleteIfExists(tempFile);
+
+        try {
+            assertDoesNotThrow(() -> client.readToFileWithResponse(new ReadToFileOptions(tempFile.toString())
+                .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
+                .setRangeGetContentMd5(false)
+                .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))).block());
+
+            assertArrayEquals(DOWNLOAD_BODY, Files.readAllBytes(tempFile));
+            assertEquals(1, httpClient.getLayoutRequestCount());
+
+            boolean routedRequestSeen = false;
+            for (CapturedRequest request : httpClient.getDataRequestRecords()) {
+                if (LAYOUT_ENDPOINT_HOST.equals(request.urlHost)) {
+                    routedRequestSeen = true;
+                    assertEquals(ORIGINAL_BLOB_HOST, request.hostHeader);
+                }
+            }
+
+            assertTrue(routedRequestSeen);
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileReadToFileWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
+        DataLakeFileClient client = client(httpClient);
+        Path tempFile = Files.createTempFile("layout-routing", ".dat");
+        Files.deleteIfExists(tempFile);
+
+        try {
+            assertDoesNotThrow(() -> client.readToFileWithResponse(new ReadToFileOptions(tempFile.toString())
+                .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
+                .setRangeGetContentMd5(false)
+                .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length)), null, Context.NONE));
+
+            assertArrayEquals(DOWNLOAD_BODY, Files.readAllBytes(tempFile));
+            assertEquals(1, httpClient.getLayoutRequestCount());
+
+            boolean routedRequestSeen = false;
+            for (CapturedRequest request : httpClient.getDataRequestRecords()) {
+                if (LAYOUT_ENDPOINT_HOST.equals(request.urlHost)) {
+                    routedRequestSeen = true;
+                    assertEquals(ORIGINAL_BLOB_HOST, request.hostHeader);
+                }
+            }
+
+            assertTrue(routedRequestSeen);
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    @DoNotRecord
+    @Test
     public void fileAsyncReadToFileWithDisabledLayoutAwareRoutingDoesNotFetchLayout() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
         DataLakeFileAsyncClient client = asyncClient(httpClient);
@@ -348,6 +469,16 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         }
 
         List<CapturedRequest> getDataRequestRecords() {
+            List<CapturedRequest> dataRequests = new ArrayList<>();
+            for (CapturedRequest request : captured) {
+                if (!request.url.contains("comp=layout")) {
+                    dataRequests.add(request);
+                }
+            }
+            return dataRequests;
+        }
+
+        List<CapturedRequest> getCapturedRequests() {
             return captured;
         }
     }
