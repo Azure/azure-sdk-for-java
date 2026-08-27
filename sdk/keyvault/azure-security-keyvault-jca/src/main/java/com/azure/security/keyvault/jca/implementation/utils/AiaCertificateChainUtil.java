@@ -55,8 +55,8 @@ final class AiaCertificateChainUtil {
     private static final int AIA_CACHE_MAX_SIZE = 128;
     private static final long MAX_SUCCESS_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
     private static final long NEGATIVE_TTL_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
-    private static final AiaResponseCache AIA_CACHE =
-        new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis, (message, parameters) -> LOGGER.logp(FINE,
+    private static final AiaResponseCache AIA_CACHE
+        = new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis, (message, parameters) -> LOGGER.logp(FINE,
             AiaResponseCache.class.getName(), "diagnostic", message, parameters));
     // A default HTTP-based response loader for AIA requests.
     private static final AiaResponseLoader DEFAULT_RESPONSE_LOADER = HttpUtil::getAiaBytesWithMetadata;

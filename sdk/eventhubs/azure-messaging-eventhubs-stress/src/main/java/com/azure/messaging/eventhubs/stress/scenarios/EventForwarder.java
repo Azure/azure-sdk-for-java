@@ -105,8 +105,7 @@ public class EventForwarder extends EventHubsScenario {
     private EventHubProducerAsyncClient getForwardProducer() {
         final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .credential(options.getEventHubsFullyQualifiedNamespace(), forwardEventHubName,
-                tokenCredential)
+            .credential(options.getEventHubsFullyQualifiedNamespace(), forwardEventHubName, tokenCredential)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .transportType(options.getAmqpTransportType())
             .consumerGroup(options.getEventHubsConsumerGroup());

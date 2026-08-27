@@ -51,6 +51,7 @@ public final class HttpUtil {
 
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
 
+    static final int HTTP_TIMEOUT_IN_MILLISECONDS = 180_000;
     private static final int AIA_HTTP_TIMEOUT_IN_MILLISECONDS = 10_000;
     static final int MAX_AIA_RESPONSE_SIZE_IN_BYTES = 10 * 1024 * 1024;
     private static final int AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS = 30_000;
@@ -67,6 +68,7 @@ public final class HttpUtil {
      * @param uri the URI to send the GET request to
      * @param headers the headers to include in the request
      * @return the response body as a string, or {@code null} if the request fails
+     * @throws RuntimeException if the server returns a non-successful response
      */
     public static String get(String uri, Map<String, String> headers) {
         return get(uri, headers, HttpUtil::openConnection);
@@ -78,20 +80,10 @@ public final class HttpUtil {
 
         try {
             connection = connectionFactory.open(uri);
+            configureConnection(connection, "GET", headers);
 
-            connection.setRequestMethod("GET");
-
-            if (headers != null) {
-                headers.forEach(connection::setRequestProperty);
-            }
-
-            connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
-
-            if (isSuccessfulResponse(connection.getResponseCode())) {
-                return readResponseBody(connection);
-            }
-            
-            return null;
+            ensureSuccessfulResponse(connection.getResponseCode());
+            return readResponseBody(connection);
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
 
@@ -111,6 +103,7 @@ public final class HttpUtil {
      * @param body the body of the POST request
      * @param contentType the content type of the POST request body
      * @return the response body as a string, or {@code null} if the request fails
+     * @throws RuntimeException if the server returns a non-successful response
      */
     public static String post(String uri, Map<String, String> headers, String body, String contentType) {
         return post(uri, headers, body, contentType, HttpUtil::openConnection);
@@ -124,29 +117,19 @@ public final class HttpUtil {
 
         try {
             connection = connectionFactory.open(uri);
-
-            connection.setRequestMethod("POST");
+            configureConnection(connection, "POST", headers);
             connection.setDoOutput(true);
-
-            if (headers != null) {
-                headers.forEach(connection::setRequestProperty);
-            }
 
             if (contentType != null) {
                 connection.setRequestProperty("Content-Type", contentType);
             }
 
-            connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
-
             try (OutputStream outputStream = connection.getOutputStream()) {
                 outputStream.write(body.getBytes(StandardCharsets.UTF_8));
             }
 
-            if (isSuccessfulResponse(connection.getResponseCode())) {
-                return readResponseBody(connection);
-            }
-
-            return null;
+            ensureSuccessfulResponse(connection.getResponseCode());
+            return readResponseBody(connection);
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
 
@@ -188,7 +171,7 @@ public final class HttpUtil {
             HttpURLConnection connection = null;
 
             try {
-                connection = connectionFactory.open(currentUrl);                
+                connection = connectionFactory.open(currentUrl);
 
                 connection.setInstanceFollowRedirects(false);
                 connection.setRequestMethod("GET");
@@ -262,8 +245,8 @@ public final class HttpUtil {
         if (location.startsWith("?")) {
             int queryIndex = currentUrl.indexOf('?');
             int fragmentIndex = currentUrl.indexOf('#');
-            int suffixIndex =
-                queryIndex < 0 ? fragmentIndex : fragmentIndex < 0 ? queryIndex : Math.min(queryIndex, fragmentIndex);
+            int suffixIndex
+                = queryIndex < 0 ? fragmentIndex : fragmentIndex < 0 ? queryIndex : Math.min(queryIndex, fragmentIndex);
             String currentUrlWithoutSuffix = suffixIndex < 0 ? currentUrl : currentUrl.substring(0, suffixIndex);
 
             return validateAiaUrl(currentUrlWithoutSuffix + location);
@@ -382,7 +365,7 @@ public final class HttpUtil {
             return expires;
         }
     }
-    
+
     public static String getUserAgentPrefix() {
         return Optional.of(HttpUtil.class)
             .map(Class::getClassLoader)
@@ -401,20 +384,18 @@ public final class HttpUtil {
             + "https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.";
     }
 
-    private static boolean isSuccessfulResponse(int status) {
-        if (status >= 200 && status < 300) {
-            return true;
+    private static void ensureSuccessfulResponse(int status) {
+        if (status < 200 || status >= 300) {
+            String errorMessage = createErrorMessage(status);
+            LOGGER.log(SEVERE, errorMessage);
+            throw new RuntimeException(errorMessage);
         }
-
-        LOGGER.log(SEVERE, createErrorMessage(status));
-
-        return false;
     }
 
     @SuppressWarnings("StringOperationCanBeSimplified")
     private static String readResponseBody(HttpURLConnection connection) throws IOException {
         try (InputStream responseBody = connection.getInputStream();
-             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
             if (responseBody == null) {
 
@@ -447,9 +428,7 @@ public final class HttpUtil {
 
         try {
             connection = connectionFactory.open(uri);
-
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+            configureConnection(connection, "GET", null);
 
             if (connection.getResponseCode() == 401) {
                 Map<String, List<String>> headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -478,14 +457,25 @@ public final class HttpUtil {
         }
     }
 
+    private static void configureConnection(HttpURLConnection connection, String method, Map<String, String> headers)
+        throws IOException {
+        connection.setRequestMethod(method);
+        connection.setConnectTimeout(HTTP_TIMEOUT_IN_MILLISECONDS);
+        connection.setReadTimeout(HTTP_TIMEOUT_IN_MILLISECONDS);
+        if (headers != null) {
+            headers.forEach(connection::setRequestProperty);
+        }
+        connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+    }
+
     private static HttpURLConnection openConnection(String uri) {
         try {
             HttpURLConnection connection = (HttpURLConnection) URI.create(uri).toURL().openConnection();
 
             if (connection instanceof HttpsURLConnection) {
                 try {
-                    TrustManagerFactory trustManagerFactory =
-                        TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                    TrustManagerFactory trustManagerFactory
+                        = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
                     trustManagerFactory.init(JreKeyStoreFactory.getDefaultKeyStore());
 
