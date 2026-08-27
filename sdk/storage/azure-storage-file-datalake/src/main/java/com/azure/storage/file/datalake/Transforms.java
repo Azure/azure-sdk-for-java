@@ -295,7 +295,8 @@ class Transforms {
         return new BlobInputStreamOptions().setBlockSize(options.getBlockSize())
             .setRange(toBlobRange(options.getRange()))
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
-            .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()));
+            .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()))
+            .setLayoutAwareRouting(toBlobLayoutAwareRouting(options.getLayoutAwareRouting()));
     }
 
     static BlobGetLayoutOptions toBlobGetLayoutOptions(DataLakeFileGetLayoutOptions options) {
@@ -332,6 +333,26 @@ class Transforms {
 
             default:
                 throw new IllegalArgumentException("Could not convert ConsistentReadControl");
+        }
+    }
+
+    static com.azure.storage.blob.models.LayoutAwareRouting
+        toBlobLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting datalakeLayoutAwareRouting) {
+        if (datalakeLayoutAwareRouting == null) {
+            return null;
+        }
+        switch (datalakeLayoutAwareRouting) {
+            case AUTO:
+                return com.azure.storage.blob.models.LayoutAwareRouting.AUTO;
+
+            case DISABLED:
+                return com.azure.storage.blob.models.LayoutAwareRouting.DISABLED;
+
+            case ENABLED:
+                return com.azure.storage.blob.models.LayoutAwareRouting.ENABLED;
+
+            default:
+                throw new IllegalArgumentException("Could not convert LayoutAwareRouting");
         }
     }
 

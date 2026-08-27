@@ -1558,6 +1558,7 @@ public class BlobAsyncClientBase {
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
+        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
 
         // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
@@ -1569,7 +1570,7 @@ public class BlobAsyncClientBase {
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
-                options.getContentValidationAlgorithm(), context))
+                options.getContentValidationAlgorithm(), layoutRoutingEnabled, context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1584,7 +1585,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, boolean layoutRoutingEnabled, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1622,6 +1623,7 @@ public class BlobAsyncClientBase {
                 long remainingCount = newCount - initialChunkSize;
                 if (DownloadHint.LAYOUT.equals(initialResponse.getDeserializedHeaders().getDownloadHint())
                     && remainingCount > 0
+                    && layoutRoutingEnabled
                     && StorageImplUtils.pipelineSupportsDataLocality(this.getHttpPipeline())) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);

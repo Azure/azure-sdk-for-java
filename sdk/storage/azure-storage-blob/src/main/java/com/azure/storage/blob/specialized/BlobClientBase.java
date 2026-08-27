@@ -517,6 +517,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
+        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
         final ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
@@ -582,6 +583,7 @@ public class BlobClientBase {
                 BlobClientBase finalClient = client;
                 AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
                 if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())
+                    && layoutRoutingEnabled
                     && StorageImplUtils.pipelineSupportsDataLocality(finalClient.getHttpPipeline())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
                     layoutCache
@@ -618,6 +620,7 @@ public class BlobClientBase {
         Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
+        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
             : options.getConsistentReadControl();
@@ -676,6 +679,7 @@ public class BlobClientBase {
 
         AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
         if (DownloadHint.LAYOUT.equals(response.getDeserializedHeaders().getDownloadHint())
+            && layoutRoutingEnabled
             && StorageImplUtils.pipelineSupportsDataLocality(behaviorClient.getHttpPipeline())) {
             BlobClientBase finalBehaviorClient = behaviorClient;
             BlobRequestConditions finalRequestConditions = requestConditions;

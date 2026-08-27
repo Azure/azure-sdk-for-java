@@ -1438,13 +1438,18 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response
-                = blockBlobClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
-                    .setRange(Transforms.toBlobRange(options.getRange()))
-                    .setParallelTransferOptions(options.getParallelTransferOptions())
-                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
-                    .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
-                    .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
-                    .setOpenOptions(options.getOpenOptions()), timeout, finalContext);
+                = blockBlobClient.downloadToFileWithResponse(
+                    new BlobDownloadToFileOptions(options.getFilePath())
+                        .setRange(Transforms.toBlobRange(options.getRange()))
+                        .setParallelTransferOptions(options.getParallelTransferOptions())
+                        .setDownloadRetryOptions(
+                            Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
+                        .setRequestConditions(
+                            Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
+                        .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
+                        .setOpenOptions(options.getOpenOptions())
+                        .setLayoutAwareRouting(Transforms.toBlobLayoutAwareRouting(options.getLayoutAwareRouting())),
+                    timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

@@ -9,6 +9,7 @@ import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.LayoutAwareRouting;
 
 import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
@@ -26,6 +27,7 @@ public class ReadToFileOptions {
     private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
+    private LayoutAwareRouting layoutAwareRouting;
 
     /**
      * Constructs a {@link ReadToFileOptions}.
@@ -182,6 +184,15 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
+    }
+
+    /**
      * Sets the value for the x-ms-upn header.
      *
      * @param userPrincipalName The value for the x-ms-upn header.
@@ -189,6 +200,17 @@ public class ReadToFileOptions {
      */
     public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
+        return this;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public ReadToFileOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
         return this;
     }
 

@@ -50,6 +50,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.LayoutAwareRouting;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
@@ -206,6 +207,19 @@ public final class ModelHelper {
         wrapping it. Because it's headers type, we couldn't change the name of the generated type.
          */
         return BlobDownloadHeadersConstructorProxy.create(internalHeaders).setErrorCode(errorCode);
+    }
+
+    /**
+     * Gets whether layout-aware routing should be used.
+     * <p>
+     * AUTO currently resolves to enabled. A {@code null} value is treated the same as AUTO.
+     *
+     * @param layoutAwareRouting The layout-aware routing option.
+     * @return Whether layout-aware routing should be used.
+     */
+    public static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting) {
+        // Null and AUTO both resolve to enabled today; AUTO's behavior may change in a future release.
+        return layoutAwareRouting != LayoutAwareRouting.DISABLED;
     }
 
     /**

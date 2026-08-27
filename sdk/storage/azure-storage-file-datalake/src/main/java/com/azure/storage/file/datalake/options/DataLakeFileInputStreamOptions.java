@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.LayoutAwareRouting;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -17,6 +18,7 @@ public final class DataLakeFileInputStreamOptions {
     private DataLakeRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private LayoutAwareRouting layoutAwareRouting;
     private Boolean userPrincipalName;
 
     /**
@@ -110,6 +112,26 @@ public final class DataLakeFileInputStreamOptions {
      */
     public DataLakeFileInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public DataLakeFileInputStreamOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
         return this;
     }
 
