@@ -583,8 +583,9 @@ public class BlobClientBase {
                 AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
                 if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
-                    layoutCache = new AutoRefreshingCache<>(() -> finalClient.client
-                        .fetchLayoutCacheValueAsync(layoutRange, requestConditions, contextFinal));
+                    layoutCache
+                        = new AutoRefreshingCache<>(() -> finalClient.client.fetchLayoutCacheValueAsync(layoutRange,
+                            requestConditions, contextFinal), BlobLayoutCacheValue::getExpiresOn);
                 }
 
                 return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,

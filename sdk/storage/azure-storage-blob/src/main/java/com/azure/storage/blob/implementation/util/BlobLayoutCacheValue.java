@@ -5,8 +5,6 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache;
-
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.List;
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
-public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringValue {
+public final class BlobLayoutCacheValue {
     private final List<BlobLayoutRange> ranges;
     private final OffsetDateTime expiresOn;
 
@@ -73,24 +71,4 @@ public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringV
         return expiresOn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OffsetDateTime getExpiration() {
-        return expiresOn;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OffsetDateTime getRefreshOn() {
-        /*
-         * Let AutoRefreshingCache choose its default jittered refresh time. For the five-minute layout TTL this
-         * distributes refreshes between 90 and 30 seconds before expiration, which prevents synchronized getLayout
-         * refresh stampedes while preserving a 30-second safety margin before the service-side layout expires.
-         */
-        return null;
-    }
 }

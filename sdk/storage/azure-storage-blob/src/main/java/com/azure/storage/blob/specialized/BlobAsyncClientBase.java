@@ -1635,7 +1635,8 @@ public class BlobAsyncClientBase {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
                     layoutCache = new AutoRefreshingCache<>(
-                        () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext));
+                        () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext),
+                        BlobLayoutCacheValue::getExpiresOn);
                     AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
@@ -1649,7 +1650,6 @@ public class BlobAsyncClientBase {
                 }
                 BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> finalChunkDownloadFunc
                     = chunkDownloadFunc;
-                AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                 Mono<Response<BlobProperties>> download = Flux.range(0, numChunks)
                     .flatMap(
                         chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse, finalRange,
@@ -1660,7 +1660,7 @@ public class BlobAsyncClientBase {
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
-                return finalLayoutCache == null ? download : download.doFinally(ignored -> finalLayoutCache.close());
+                return download;
             });
     }
 

@@ -64,13 +64,4 @@ public class BlobLayoutCacheValueTests {
 
         assertNull(value.getRanges());
     }
-
-    @Test
-    public void refreshTimeUsesCacheJitter() {
-        OffsetDateTime expiresOn = OffsetDateTime.now().plusMinutes(5);
-
-        BlobLayoutCacheValue value = new BlobLayoutCacheValue(Collections.emptyList(), expiresOn);
-
-        assertNull(value.getRefreshOn());
-    }
 }
