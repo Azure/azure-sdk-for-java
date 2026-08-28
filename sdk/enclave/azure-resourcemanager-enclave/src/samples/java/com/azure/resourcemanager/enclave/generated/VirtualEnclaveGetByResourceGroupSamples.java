@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class VirtualEnclaveGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_Get.json
+     * x-ms-original-file: 2026-04-01/VirtualEnclave_Get.json
      */
     /**
      * Sample code: VirtualEnclave_Get.

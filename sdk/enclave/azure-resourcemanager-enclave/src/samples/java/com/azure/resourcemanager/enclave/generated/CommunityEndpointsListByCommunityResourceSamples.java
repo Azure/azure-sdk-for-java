@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class CommunityEndpointsListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_ListByCommunityResource.json
+     * x-ms-original-file: 2026-04-01/CommunityEndpoints_ListByCommunityResource.json
      */
     /**
      * Sample code: CommunityEndpoints_ListByCommunityResource.
