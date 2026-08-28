@@ -112,7 +112,7 @@ foreach ($packageDetail in $packageDetails) {
     }
   }
 
-  if ($null -ne $additionalAssociatedArtifacts) {
+  if ($additionalAssociatedArtifacts.Count -gt 0) {
     $commaDelimitedFileNames = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedFileNames += ",$($_.File.FullName)" }
     $filesOption = "-Dfiles=$($commaDelimitedFileNames.Substring(1))"
@@ -167,7 +167,7 @@ foreach ($packageDetail in $packageDetails) {
 
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
     Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--global-settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-    mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--global-settings=$PSScriptRoot\..\maven.publish.settings.xml" "-e" "-X"
+    mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--global-settings=$PSScriptRoot\..\maven.publish.settings.xml"
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
 
