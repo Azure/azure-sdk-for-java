@@ -1,16 +1,10 @@
 # Release History
 
-## 1.60.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.59.1 (2026-08-27)
 
 ### Bugs Fixed
 
 - Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
-
-### Other Changes
 
 ## 1.59.0 (2026-08-12)
 

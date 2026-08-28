@@ -12,7 +12,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalDeletionCallbackRequestR
  */
 public final class VirtualEnclaveHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-04-01/VirtualEnclave_HandleApprovalDeletion.json
      */
     /**
      * Sample code: VirtualEnclave_HandleApprovalDeletion.
