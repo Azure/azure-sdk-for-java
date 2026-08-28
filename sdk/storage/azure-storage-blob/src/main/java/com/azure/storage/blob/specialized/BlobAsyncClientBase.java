@@ -68,7 +68,6 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobLayout;
-import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -130,7 +129,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -1973,15 +1971,15 @@ public class BlobAsyncClientBase {
         return new BlobLayoutCacheValue(null);
     }
 
-    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>>
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>>
         getLayoutPages(BlobGetLayoutOptions layoutOptions, BlobRequestConditions requestConditions, Context context) {
         return getLayoutPageWithHeaders(null, layoutOptions, null, context)
             .flatMapMany(initialResponse -> expandLayoutPages(initialResponse, layoutOptions.getRange(),
                 requestConditions, context));
     }
 
-    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> expandLayoutPages(
-        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo> initialResponse, BlobRange layoutRange,
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> expandLayoutPages(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout> initialResponse, BlobRange layoutRange,
         BlobRequestConditions requestConditions, Context context) {
         String layoutETag = initialResponse.getDeserializedHeaders().getETag();
         BlobGetLayoutOptions optionsWithConditions = new BlobGetLayoutOptions().setRange(layoutRange)
@@ -1991,9 +1989,8 @@ public class BlobAsyncClientBase {
             .expand(response -> getNextLayoutPage(response, optionsWithConditions, context));
     }
 
-    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> getNextLayoutPage(
-        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo> response, BlobGetLayoutOptions options,
-        Context context) {
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getNextLayoutPage(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout> response, BlobGetLayoutOptions options, Context context) {
         String continuationToken = response.getContinuationToken();
         return continuationToken == null
             ? Mono.empty()
@@ -2010,7 +2007,7 @@ public class BlobAsyncClientBase {
     private Mono<PagedResponse<BlobLayout>> getPublicLayoutPageWithLockedETag(String marker,
         BlobGetLayoutOptions options, Integer pageSize, Context context, AtomicReference<String> layoutETag) {
         BlobGetLayoutOptions optionsWithConditions = getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
-        return getPublicLayoutPageWithHeaders(marker, optionsWithConditions, pageSize, context).map(response -> {
+        return getLayoutPageWithHeaders(marker, optionsWithConditions, pageSize, context).map(response -> {
             // The first page this enumeration observes pins every continuation request it makes, whether the
             // enumeration started at the beginning of the layout or resumed from a caller-supplied marker.
             layoutETag.compareAndSet(null, response.getDeserializedHeaders().getETag());
@@ -2019,18 +2016,7 @@ public class BlobAsyncClientBase {
         });
     }
 
-    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getPublicLayoutPageWithHeaders(String marker,
-        BlobGetLayoutOptions options, Integer pageSize, Context context) {
-        return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> new PagedResponseBase<>(
-            response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue()
-                .stream()
-                .map(info -> new BlobLayout(info.getRanges(), null, response.getContinuationToken(), pageSize, info))
-                .collect(Collectors.toList()),
-            response.getContinuationToken(), response.getDeserializedHeaders()));
-    }
-
-    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> getLayoutPageWithHeaders(String marker,
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayoutPageWithHeaders(String marker,
         BlobGetLayoutOptions options, Integer pageSize, Context context) {
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
         BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
@@ -2048,16 +2034,15 @@ public class BlobAsyncClientBase {
             .map(BlobAsyncClientBase::toLayoutPagedResponse);
     }
 
-    private static Flux<BlobLayoutRange> getLayoutRanges(BlobLayoutInfo layoutInfo) {
-        return layoutInfo.getRanges() == null ? Flux.empty() : Flux.fromIterable(layoutInfo.getRanges());
+    private static Flux<BlobLayoutRange> getLayoutRanges(BlobLayout layout) {
+        return layout.getRanges() == null ? Flux.empty() : Flux.fromIterable(layout.getRanges());
     }
 
-    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>
+    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>
         toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
-        BlobLayoutInternal layout = response.getValue();
+        BlobLayout layout = ModelHelper.transformBlobLayout(response);
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            value == null ? Collections.emptyList() : Collections.singletonList(value),
+            layout == null ? Collections.emptyList() : Collections.singletonList(layout),
             layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
     }
 

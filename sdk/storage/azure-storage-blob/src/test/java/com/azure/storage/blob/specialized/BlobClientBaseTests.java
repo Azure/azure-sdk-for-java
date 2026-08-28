@@ -83,8 +83,11 @@ public class BlobClientBaseTests extends BlobTestBase {
     private static final String FIRST_PAGE_ETAG = "\"0x8DFIRSTPAGE\"";
     private static final String SECOND_PAGE_ETAG = "\"0x8DSECONDPAGE\"";
     private static final String THIRD_PAGE_ETAG = "\"0x8DTHIRDPAGE\"";
+    private static final String FIRST_PAGE_MARKER = "service-page-one";
     private static final String NEXT_MARKER = "page-two";
     private static final String FINAL_MARKER = "page-three";
+    private static final int REQUESTED_PAGE_SIZE = 3;
+    private static final int SERVICE_MAX_RESULTS = 7;
     private static final String LEASE_ID = "lease-id";
     private static final String IF_NONE_MATCH = "\"caller-none-match\"";
     private static final OffsetDateTime IF_UNMODIFIED_SINCE
@@ -100,14 +103,16 @@ public class BlobClientBaseTests extends BlobTestBase {
         + "<Endpoint Index=\"1\" Value=\"https://host-b:443\" /></Endpoints></BlobLayout>";
     private static final String FIRST_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"99\" EndpointIndex=\"0\" /></Ranges>"
-        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-a:443\" /></Endpoints>"
-        + "<NextMarker>page-two</NextMarker></BlobLayout>";
+        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-a:443\" /></Endpoints>" + "<Marker>"
+        + FIRST_PAGE_MARKER + "</Marker><NextMarker>" + NEXT_MARKER + "</NextMarker><MaxResults>" + SERVICE_MAX_RESULTS
+        + "</MaxResults></BlobLayout>";
     private static final String SINGLE_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"99\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-a:443\" /></Endpoints></BlobLayout>";
     private static final String SECOND_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"100\" End=\"199\" EndpointIndex=\"0\" /></Ranges>"
-        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-b:443\" /></Endpoints></BlobLayout>";
+        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-b:443\" /></Endpoints><Marker>" + NEXT_MARKER
+        + "</Marker><MaxResults>" + SERVICE_MAX_RESULTS + "</MaxResults></BlobLayout>";
     private static final String RESUMED_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"100\" End=\"199\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-b:443\" /></Endpoints>" + "<NextMarker>" + FINAL_MARKER
@@ -357,6 +362,41 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertNull(first.ifMatch);
         assertEquals(FIRST_PAGE_ETAG, second.ifMatch);
         assertTrue(second.url.contains("marker=" + NEXT_MARKER), "Expected continuation marker in: " + second.url);
+    }
+
+    @DoNotRecord
+    @Test
+    public void getLayoutPopulatesPagingFieldsFromResponse() {
+        BlobClient client = client(new LayoutPagesHttpClient(true));
+        Iterator<PagedResponse<BlobLayout>> pages
+            = client.getLayout(new BlobGetLayoutOptions().setMaxResultsPerPage(REQUESTED_PAGE_SIZE), Context.NONE)
+                .iterableByPage(REQUESTED_PAGE_SIZE)
+                .iterator();
+
+        PagedResponse<BlobLayout> firstPage = pages.next();
+        BlobLayout layout = firstPage.getValue().get(0);
+
+        assertEquals(FIRST_PAGE_MARKER, layout.getMarker());
+        assertEquals(NEXT_MARKER, layout.getNextMarker());
+        assertEquals(SERVICE_MAX_RESULTS, layout.getMaxResults());
+        assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
+        assertNotNull(layout.getBlobLayoutInfo());
+        assertNotNull(layout.getBlobLayoutInfo().getETag());
+    }
+
+    @DoNotRecord
+    @Test
+    public void getLayoutLeavesOmittedPagingFieldsNull() {
+        BlobClient client = client(new LayoutPagesHttpClient(false));
+        BlobLayout layout
+            = client.getLayout(new BlobGetLayoutOptions().setMaxResultsPerPage(REQUESTED_PAGE_SIZE), Context.NONE)
+                .iterator()
+                .next();
+
+        assertNull(layout.getMarker());
+        assertNull(layout.getNextMarker());
+        assertNull(layout.getMaxResults());
+        assertNotNull(layout.getBlobLayoutInfo());
     }
 
     @DoNotRecord

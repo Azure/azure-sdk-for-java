@@ -65,7 +65,6 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobLayout;
-import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -1943,7 +1942,7 @@ public class BlobClientBase {
         // blob version, whether it started at the beginning of the layout or resumed from a caller-supplied marker.
         layoutETag.compareAndSet(null, response.getDeserializedHeaders().getETag());
 
-        return toLayoutPagedResponse(response, finalPageSize);
+        return toLayoutPagedResponse(response);
     }
 
     private ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> getLayoutPageResponse(String marker,
@@ -1963,12 +1962,10 @@ public class BlobClientBase {
     }
 
     private static PagedResponse<BlobLayout>
-        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response, Integer pageSize) {
-        BlobLayoutInfo layoutInfo = ModelHelper.transformBlobLayoutInfo(response);
-        String nextMarker = response.getValue() == null ? null : response.getValue().getNextMarker();
-        List<BlobLayout> values = layoutInfo == null
-            ? Collections.emptyList()
-            : Collections.singletonList(new BlobLayout(layoutInfo.getRanges(), null, nextMarker, pageSize, layoutInfo));
+        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
+        BlobLayout value = ModelHelper.transformBlobLayout(response);
+        String nextMarker = value == null ? null : value.getNextMarker();
+        List<BlobLayout> values = value == null ? Collections.emptyList() : Collections.singletonList(value);
 
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), values,
             nextMarker, response.getDeserializedHeaders());

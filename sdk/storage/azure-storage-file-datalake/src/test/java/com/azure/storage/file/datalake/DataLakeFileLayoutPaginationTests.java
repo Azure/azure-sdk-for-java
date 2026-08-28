@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -48,6 +49,7 @@ public class DataLakeFileLayoutPaginationTests {
         assertNull(httpClient.requests.get(0).getHeaders().getValue(HttpHeaderName.IF_MATCH));
         assertEquals(FIRST_PAGE_ETAG, httpClient.requests.get(1).getHeaders().getValue(HttpHeaderName.IF_MATCH));
         assertTrue(httpClient.requests.get(1).getUrl().toString().contains("marker=" + NEXT_MARKER));
+        assertFirstPageMetadataPreserved(pages);
     }
 
     @Test
@@ -63,6 +65,13 @@ public class DataLakeFileLayoutPaginationTests {
         }
 
         assertEquals(2, pages.size());
+        assertFirstPageMetadataPreserved(pages);
+    }
+
+    private static void assertFirstPageMetadataPreserved(List<PagedResponse<DataLakeFileLayoutInfo>> pages) {
+        DataLakeFileLayoutInfo firstLayout = pages.get(0).getValue().get(0);
+        assertEquals(1, firstLayout.getRanges().size());
+        assertNotNull(firstLayout.getETag());
     }
 
     private static DataLakeFileAsyncClient asyncClient(HttpClient httpClient) {

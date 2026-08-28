@@ -430,10 +430,10 @@ public final class ModelHelper {
     }
 
     /**
-     * Transforms {@link BlobLayout} into a public {@link BlobLayoutInfo}.
+     * Transforms the generated layout response into a public {@link BlobLayoutInfo}.
      *
-     * @param response {@link ResponseBase}
-     * @return {@link BlobLayoutInfo}
+     * @param response The generated layout response.
+     * @return The public blob layout information.
      */
     public static BlobLayoutInfo
         transformBlobLayoutInfo(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
@@ -472,18 +472,20 @@ public final class ModelHelper {
     }
 
     /**
-     * Transforms the generated layout response into the public blob layout model.
+     * Transforms the generated layout response body and headers into the public blob layout model.
      *
-     * @param layout The generated layout response.
+     * @param response The generated layout response.
      * @return The public blob layout.
      */
-    public static BlobLayout transformBlobLayout(BlobLayoutInternal layout) {
-        if (layout == null) {
+    public static BlobLayout transformBlobLayout(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
+        if (response == null) {
             return null;
         }
 
-        return new BlobLayout(transformBlobLayoutRanges(layout), layout.getMarker(), layout.getNextMarker(),
-            layout.getMaxResults());
+        BlobLayoutInfo layoutInfo = transformBlobLayoutInfo(response);
+        BlobLayoutInternal layout = response.getValue();
+        return new BlobLayout(layoutInfo.getRanges(), layout == null ? null : layout.getMarker(),
+            layout == null ? null : layout.getNextMarker(), layout == null ? null : layout.getMaxResults(), layoutInfo);
     }
 
     private static List<BlobLayoutRange> transformBlobLayoutRanges(BlobLayoutInternal layout) {
