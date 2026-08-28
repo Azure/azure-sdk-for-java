@@ -170,7 +170,6 @@
     "sdk/servicebus/azure-messaging-servicebus-stress/templates/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
-    "sdk/spring/scripts/spring_boot_*_managed_external_dependencies.txt",
     "sdk/storage/azure-storage-internal-avro/**",
     "sdk/storage/azure-storage-queue/**",
     "sdk/synapse/azure-analytics-synapse-accesscontrol/**",
