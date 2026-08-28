@@ -282,11 +282,10 @@ public class WebSocketsConnectionHandlerTest {
                 new Header("X-Custom-Header", "custom-value"),
                 new Header("X-Another-Header", "another-value")));
 
-        final ConnectionOptions connectionOptionsWithHeaders
-            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
-                "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-                ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithHeaders, VERIFY_MODE, PRODUCT,
-                CLIENT_VERSION);
+        final ConnectionOptions connectionOptionsWithHeaders = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithHeaders, VERIFY_MODE,
+            PRODUCT, CLIENT_VERSION);
 
         try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
             connectionOptionsWithHeaders, peerDetails, AmqpMetricsProvider.noop())) {
@@ -315,11 +314,10 @@ public class WebSocketsConnectionHandlerTest {
     @Test
     public void websocketConfigurePassesNullHeadersWhenClientOptionsHeadersAreEmpty() {
         final ClientOptions clientOptionsWithEmptyHeaders = new ClientOptions().setHeaders(Collections.emptyList());
-        final ConnectionOptions connectionOptionsWithEmptyHeaders
-            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
-                "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-                ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithEmptyHeaders, VERIFY_MODE, PRODUCT,
-                CLIENT_VERSION);
+        final ConnectionOptions connectionOptionsWithEmptyHeaders = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithEmptyHeaders,
+            VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
             connectionOptionsWithEmptyHeaders, peerDetails, AmqpMetricsProvider.noop())) {
@@ -344,11 +342,10 @@ public class WebSocketsConnectionHandlerTest {
             new Header("X-Custom-Header", "first-value"),
             new Header("x-custom-header", "second-value")));
 
-        final ConnectionOptions connectionOptionsWithDuplicateHeaders
-            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
-                "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-                ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithDuplicateHeaders, VERIFY_MODE, PRODUCT,
-                CLIENT_VERSION);
+        final ConnectionOptions connectionOptionsWithDuplicateHeaders = new ConnectionOptions(HOSTNAME,
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
+            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
+            clientOptionsWithDuplicateHeaders, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
             connectionOptionsWithDuplicateHeaders, peerDetails, AmqpMetricsProvider.noop())) {
