@@ -1,14 +1,12 @@
 # Release History
 
-## 2.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.13.0-beta.1 (2026-08-27)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to `1.59.1`.
 
 ## 2.12.1 (2026-08-12)
 
@@ -24,7 +22,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+- Upgraded `azure-core` from `1.58.1` to `1.59.0`.
 - Upgraded Reactor from `3.7.18` to `3.7.19`.
 
 ## 2.12.0 (2026-06-08)

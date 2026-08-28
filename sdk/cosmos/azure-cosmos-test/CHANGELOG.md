@@ -1,14 +1,9 @@
 ## Release History
 
-### 1.0.0-beta.20 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 1.0.0-beta.20 (2026-08-26)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.82.0`.
 
 ### 1.0.0-beta.19 (2026-06-08)
 
@@ -131,4 +126,3 @@
 ### 1.0.0-beta.1 (2023-03-17)
 #### Features Added
 * Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329) 
-
