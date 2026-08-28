@@ -41,6 +41,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -307,6 +308,67 @@ public class WebSocketsConnectionHandlerTest {
                 Assertions.assertNotNull(capturedHeaders, "Headers map should not be null.");
                 assertEquals("custom-value", capturedHeaders.get("X-Custom-Header"));
                 assertEquals("another-value", capturedHeaders.get("X-Another-Header"));
+            }
+        }
+    }
+
+    @Test
+    public void websocketConfigurePassesNullHeadersWhenClientOptionsHeadersAreEmpty() {
+        final ClientOptions clientOptionsWithEmptyHeaders = new ClientOptions().setHeaders(Collections.emptyList());
+        final ConnectionOptions connectionOptionsWithEmptyHeaders
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
+                "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+                ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithEmptyHeaders, VERIFY_MODE, PRODUCT,
+                CLIENT_VERSION);
+
+        try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
+            connectionOptionsWithEmptyHeaders, peerDetails, AmqpMetricsProvider.noop())) {
+            try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
+                handlerWithHeaders.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                    mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+                final List<WebSocketImpl> constructed = mockConstruction.constructed();
+                assertEquals(1, constructed.size());
+
+                final WebSocketImpl webSocketImpl = constructed.get(0);
+                verify(webSocketImpl).configure(eq(HOSTNAME), eq("/$servicebus/websocket"), eq(""), eq(0),
+                    eq("AMQPWSB10"), eq(null), eq(null));
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void websocketConfigureMergesDuplicateHeaderNamesCaseInsensitively() {
+        final ClientOptions clientOptionsWithDuplicateHeaders = new ClientOptions().setHeaders(Arrays.asList(
+            new Header("X-Custom-Header", "first-value"),
+            new Header("x-custom-header", "second-value")));
+
+        final ConnectionOptions connectionOptionsWithDuplicateHeaders
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
+                "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+                ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithDuplicateHeaders, VERIFY_MODE, PRODUCT,
+                CLIENT_VERSION);
+
+        try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
+            connectionOptionsWithDuplicateHeaders, peerDetails, AmqpMetricsProvider.noop())) {
+            try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
+                handlerWithHeaders.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                    mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+                final List<WebSocketImpl> constructed = mockConstruction.constructed();
+                assertEquals(1, constructed.size());
+
+                final WebSocketImpl webSocketImpl = constructed.get(0);
+                ArgumentCaptor<Map<String, String>> headersCaptor = ArgumentCaptor.forClass(Map.class);
+                verify(webSocketImpl).configure(eq(HOSTNAME), eq("/$servicebus/websocket"), eq(""), eq(0),
+                    eq("AMQPWSB10"), headersCaptor.capture(), eq(null));
+
+                final Map<String, String> capturedHeaders = headersCaptor.getValue();
+                Assertions.assertNotNull(capturedHeaders, "Headers map should not be null.");
+                assertEquals(1, capturedHeaders.size());
+                assertEquals("first-value,second-value", capturedHeaders.get("X-Custom-Header"));
+                assertEquals("first-value,second-value", capturedHeaders.get("x-custom-header"));
             }
         }
     }

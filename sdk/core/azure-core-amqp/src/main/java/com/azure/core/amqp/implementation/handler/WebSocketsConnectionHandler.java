@@ -12,6 +12,7 @@ import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -68,11 +69,10 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
         final Map<String, String> headers = StreamSupport.stream(getHeaders().spliterator(), false)
             .collect(Collectors.collectingAndThen(
                 Collectors.toMap(Header::getName, Header::getValue, (a, b) -> a + "," + b,
-                    () -> new java.util.TreeMap<>(String.CASE_INSENSITIVE_ORDER)),
+                    () -> new TreeMap<>(String.CASE_INSENSITIVE_ORDER)),
                 m -> m.isEmpty() ? null : m));
 
         webSocket.configure(hostname, SOCKET_PATH, "", 0, PROTOCOL, headers, null);
-
 
         transport.addTransportLayer(webSocket);
 
