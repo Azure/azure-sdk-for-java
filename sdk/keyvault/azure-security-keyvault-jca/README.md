@@ -216,13 +216,17 @@ System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>"
 System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
 
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
+// Load the certificate and private key that identify this server to connecting clients.
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+// Key managers select the server certificate and private key during each TLS handshake.
 KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 managerFactory.init(keyStore, "".toCharArray());
 
+// Configure one-way TLS: clients aren't required to present a certificate.
 SSLContext context = SSLContext.getInstance("TLS");
 context.init(managerFactory.getKeyManagers(), null, null);
 
@@ -230,11 +234,13 @@ SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
 SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
 
 while (true) {
+    // Accept a TLS connection and write a minimal HTTP response over it.
     SSLSocket socket = (SSLSocket) serverSocket.accept();
     System.out.println("Client connected: " + socket.getInetAddress());
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     String body = "Hello, this is server.";
+    // Build a minimal HTTP response and calculate Content-Length from the UTF-8 body bytes.
     String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
         + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
@@ -247,7 +253,7 @@ while (true) {
 **Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side SSL
-If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
+If you are looking to integrate the JCA provider for client side socket connections, see the HTTPS URL connection example below.
 
 ```java readme-sample-clientSSL
 System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
@@ -256,14 +262,47 @@ System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>"
 System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
 
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-// This section initializing SSLContext can be replaced with implementation specific consumption of 'KeyStore',
-// if the library being used has convenience methods for that.
+// Create trust managers from the certificates in the Key Vault-backed KeyStore.
+TrustManagerFactory trustManagerFactory
+    = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+trustManagerFactory.init(keyStore);
+TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+
+// The local server may use a self-signed certificate. Accept a one-certificate server chain while delegating
+// validation of all other chains to the platform trust manager. Do not use this behavior in production.
+for (int i = 0; i < trustManagers.length; i++) {
+    if (trustManagers[i] instanceof X509TrustManager) {
+        X509TrustManager delegate = (X509TrustManager) trustManagers[i];
+        trustManagers[i] = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                delegate.checkClientTrusted(chain, authType);
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                if (chain.length != 1) {
+                    delegate.checkServerTrusted(chain, authType);
+                }
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return delegate.getAcceptedIssuers();
+            }
+        };
+    }
+}
+
+// Configure one-way TLS: the client validates the server but doesn't present a client certificate.
 SSLContext sslContext = SSLContext.getInstance("TLS");
-TrustManager[] trustManagers = SampleUtils.loadTrustMaterial(keyStore);
 sslContext.init(null, trustManagers, null);
 
 String result = null;
@@ -272,19 +311,40 @@ try {
     // openConnection will return HttpsURLConnection when the protocol is 'https'.
     connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
 
-    // Have the HttpsURLConnection use the SSLSocketFactory returned by SSLContext.
+    // Apply the custom trust configuration to this HTTPS connection.
     connection.setSSLSocketFactory(sslContext.getSocketFactory());
+    // Allow the sample certificate to use a hostname other than localhost. Do not do this in production.
+    connection.setHostnameVerifier((hostname, session) -> true);
 
     connection.setRequestMethod("GET");
     int status = connection.getResponseCode();
     if (status == 200) {
-        result = SampleUtils.readResponse(connection);
+        // Decode the response using its declared charset, or UTF-8 when no charset is present.
+        Charset responseCharset = StandardCharsets.UTF_8;
+        String contentType = connection.getContentType();
+        if (contentType != null) {
+            Matcher matcher = Pattern.compile("(?i)\\bcharset\\s*=\\s*\"?([^;\\s\"]+)")
+                .matcher(contentType);
+            if (matcher.find()) {
+                responseCharset = Charset.forName(matcher.group(1));
+            }
+        }
+
+        // Read the complete body without changing its line endings.
+        try (Reader reader = new InputStreamReader(connection.getInputStream(), responseCharset)) {
+            StringBuilder responseBody = new StringBuilder();
+            char[] buffer = new char[1024];
+            int read;
+            while ((read = reader.read(buffer)) != -1) {
+                responseBody.append(buffer, 0, read);
+            }
+            result = responseBody.toString();
+        }
     } else {
         result = "Not success";
     }
 } catch (IOException ioe) {
     ioe.printStackTrace();
-    result = "Not success";
 } finally {
     if (connection != null) {
         connection.disconnect();
@@ -301,14 +361,17 @@ If you are looking to integrate the JCA provider to create an SSLServerSocket se
 
 ```java readme-sample-serverMTLS
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
 System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+// Load the certificate and private key that identify this server to connecting clients.
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+// Key managers select the server certificate and private key during each mTLS handshake.
 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 kmf.init(keyStore, "".toCharArray());
 
@@ -316,24 +379,30 @@ System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+// Load the client certificates that this server trusts.
 KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+// Trust managers validate the certificate presented by each client.
 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 tmf.init(trustStore);
 
+// Combine the server identity with the client trust configuration.
 SSLContext context = SSLContext.getInstance("TLS");
 context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
 SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
 SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
+// Require every client to present a trusted certificate during the TLS handshake.
 serverSocket.setNeedClientAuth(true);
 
 while (true) {
+    // Accept an mTLS connection and write a minimal HTTP response over it.
     SSLSocket socket = (SSLSocket) serverSocket.accept();
     System.out.println("Client connected: " + socket.getInetAddress());
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     String body = "Hello, this is server.";
+    // Build a minimal HTTP response and calculate Content-Length from the UTF-8 body bytes.
     String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
         + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
@@ -346,55 +415,117 @@ while (true) {
 **Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side mTLS
-If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
+If you are looking to integrate the JCA provider for client side socket connections, see the HTTPS URL connection example below.
 
 ```java readme-sample-clientMTLS
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+// Register the provider before requesting its KeyStore implementation.
 Security.addProvider(provider);
 
 System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+// Load the certificate and private key that identify this client to the server.
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+// Load the server certificates that this client trusts.
 KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-// This section initializing SSLContext can be replaced with implementation specific consumption of 'KeyStore',
-// if the library being used has convenience methods for that.
+// Create trust managers from the server trust material.
+TrustManagerFactory trustManagerFactory
+    = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+trustManagerFactory.init(trustStore);
+TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+
+// The local server may use a self-signed certificate. Accept a one-certificate server chain while delegating
+// validation of all other chains to the platform trust manager. Do not use this behavior in production.
+for (int i = 0; i < trustManagers.length; i++) {
+    if (trustManagers[i] instanceof X509TrustManager) {
+        X509TrustManager delegate = (X509TrustManager) trustManagers[i];
+        trustManagers[i] = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                delegate.checkClientTrusted(chain, authType);
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {
+                if (chain.length != 1) {
+                    delegate.checkServerTrusted(chain, authType);
+                }
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return delegate.getAcceptedIssuers();
+            }
+        };
+    }
+}
+
+// Create key managers that select the client certificate and private key during the mTLS handshake.
+KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+keyManagerFactory.init(keyStore, "".toCharArray());
+
+// Combine the client identity with the server trust configuration.
 SSLContext sslContext = SSLContext.getInstance("TLS");
-TrustManager[] trustManagers = SampleUtils.loadTrustMaterial(keyStore);
-KeyManager[] keyManagers = SampleUtils.loadKeyMaterial(keyStore, "".toCharArray());
-sslContext.init(keyManagers, trustManagers, null);
+sslContext.init(keyManagerFactory.getKeyManagers(), trustManagers, null);
 
 String result = null;
 HttpsURLConnection connection = null;
+
 try {
     // openConnection will return HttpsURLConnection when the protocol is 'https'.
     connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
 
-    // Have the HttpsURLConnection use the SSLSocketFactory returned by SSLContext.
+    // Apply the custom identity and trust configuration to this HTTPS connection.
     connection.setSSLSocketFactory(sslContext.getSocketFactory());
+    // Allow the sample certificate to use a hostname other than localhost. Do not do this in production.
+    connection.setHostnameVerifier((hostname, session) -> true);
 
     connection.setRequestMethod("GET");
     int status = connection.getResponseCode();
+
     if (status == 200) {
-        result = SampleUtils.readResponse(connection);
+        // Decode the response using its declared charset, or UTF-8 when no charset is present.
+        Charset responseCharset = StandardCharsets.UTF_8;
+        String contentType = connection.getContentType();
+        if (contentType != null) {
+            Matcher matcher = Pattern.compile("(?i)\\bcharset\\s*=\\s*\"?([^;\\s\"]+)")
+                .matcher(contentType);
+            if (matcher.find()) {
+                responseCharset = Charset.forName(matcher.group(1));
+            }
+        }
+
+        // Read the complete body without changing its line endings.
+        try (Reader reader = new InputStreamReader(connection.getInputStream(), responseCharset)) {
+            StringBuilder responseBody = new StringBuilder();
+            char[] buffer = new char[1024];
+            int read;
+            while ((read = reader.read(buffer)) != -1) {
+                responseBody.append(buffer, 0, read);
+            }
+            result = responseBody.toString();
+        }
     } else {
         result = "Not success";
     }
 } catch (IOException ioe) {
     ioe.printStackTrace();
-    result = "Not success";
 } finally {
     if (connection != null) {
         connection.disconnect();
     }
 }
+
 System.out.println(result);
 ```
 
@@ -736,5 +867,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-
 
