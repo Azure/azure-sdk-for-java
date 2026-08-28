@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ServiceGatewaysUpdateServicesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceGatewayUpdateServicesRequest.json
+     * x-ms-original-file: 2025-09-01/ServiceGatewayUpdateServicesRequest.json
      */
     /**
      * Sample code: Create or full update services in service gateway.
@@ -28,7 +28,7 @@ public final class ServiceGatewaysUpdateServicesSamples {
         createOrFullUpdateServicesInServiceGateway(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getServiceGateways()
-            .updateServices("rg1", "sg", new ServiceGatewayUpdateServicesRequest()
+            .updateServicesWithResponse("rg1", "sg", new ServiceGatewayUpdateServicesRequest()
                 .withAction(ServiceUpdateAction.FULL_UPDATE)
                 .withServiceRequests(Arrays.asList(
                     new ServiceGatewayServiceRequestInner().withService(new ServiceGatewayServiceInner()

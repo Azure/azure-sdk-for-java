@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class RegistriesCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryCreateAbac.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryCreateAbac.json
      */
     /**
      * Sample code: RegistryCreateAbac.
@@ -38,7 +38,7 @@ public final class RegistriesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryCreateDomainNameLabelScope.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryCreateDomainNameLabelScope.json
      */
     /**
      * Sample code: RegistryCreateDomainNameLabelScope.
@@ -58,7 +58,7 @@ public final class RegistriesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryCreateZoneRedundant.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryCreateZoneRedundant.json
      */
     /**
      * Sample code: RegistryCreateZoneRedundant.
@@ -78,7 +78,7 @@ public final class RegistriesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryCreate.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryCreate.json
      */
     /**
      * Sample code: RegistryCreate.

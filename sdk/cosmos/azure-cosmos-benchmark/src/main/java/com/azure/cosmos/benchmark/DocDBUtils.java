@@ -72,7 +72,7 @@ class DocDBUtils {
                 .single().block();
 
         if (feedResponsePages.getResults().isEmpty()) {
-            throw new RuntimeException("cannot find datatbase " + databaseId);
+            throw new RuntimeException("cannot find database " + databaseId);
         }
         return feedResponsePages.getResults().get(0);
     }

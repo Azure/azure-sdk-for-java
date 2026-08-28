@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.3 (Unreleased)
+## 1.5.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,64 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.3 (2026-06-26)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-05-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ManagedComputeCapacityProperties` was modified
+
+* `location()` was removed
+
+### Features Added
+
+* `models.RaiEgressManagedIdentityRef` was added
+
+* `models.RaiEgressHeaderValueRef` was added
+
+* `models.RaiEgressHeaderTransform` was added
+
+* `models.RaiEgressSecretRef` was added
+
+* `models.RaiEgressRewriteTarget` was added
+
+* `models.RaiEgressRuleType` was added
+
+* `models.RaiEgressRule` was added
+
+* `models.RaiEgressPolicyConfig` was added
+
+* `models.RaiEgressDefaultAction` was added
+
+* `models.RaiEgressHeaderOperation` was added
+
+* `models.RaiEgressRuleMatch` was added
+
+* `models.RaiEgressScheme` was added
+
+* `models.RaiEgressMode` was added
+
+* `models.DeploymentSpeculativeDecoding` was added
+
+* `models.RaiEgressRuleActionType` was added
+
+* `models.RaiEgressRuleAction` was added
+
+#### `models.RaiPolicyProperties` was modified
+
+* `egressPolicy()` was added
+* `withEgressPolicy(models.RaiEgressPolicyConfig)` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `speculativeDecoding()` was added
+* `withSpeculativeDecoding(models.DeploymentSpeculativeDecoding)` was added
+
+#### `models.ManagedComputeDeploymentProperties` was modified
+
+* `capabilities()` was added
 
 ## 1.5.0-beta.2 (2026-05-26)
 

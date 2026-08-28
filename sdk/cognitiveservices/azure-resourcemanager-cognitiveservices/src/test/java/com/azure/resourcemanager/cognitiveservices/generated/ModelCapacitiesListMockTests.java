@@ -23,7 +23,7 @@ public final class ModelCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"zdebhserm\",\"properties\":{\"model\":{\"publisher\":\"wwuhyqkaapt\",\"format\":\"svkb\",\"name\":\"ptwybloccuhplx\",\"version\":\"nsshvqnpszbe\",\"source\":\"butcdzj\",\"sourceAccount\":\"tvpeyxdyuxurxr\",\"callRateLimit\":{\"count\":18.827915,\"renewalPeriod\":47.100956,\"rules\":[{}]}},\"skuName\":\"qfkwnaeikczscymq\",\"availableCapacity\":26.377464,\"availableFinetuneCapacity\":17.527985,\"scopeId\":\"qnyumz\",\"scopeType\":\"Global\"},\"id\":\"kezvpe\",\"name\":\"knfzqnzbflbqmhb\",\"type\":\"yxxvwedhagqbbse\"}]}";
+            = "{\"value\":[{\"location\":\"qc\",\"properties\":{\"model\":{\"publisher\":\"oqwrnfckjthlok\",\"format\":\"wawfu\",\"name\":\"ngejjxumowynjmoo\",\"version\":\"xuktdrsjtmnkxjou\",\"source\":\"zcfdtstiaxtyrnu\",\"sourceAccount\":\"fhepis\",\"callRateLimit\":{\"count\":91.650185,\"renewalPeriod\":73.11547,\"rules\":[{}]}},\"skuName\":\"mmemsoqgblcye\",\"availableCapacity\":38.326435,\"availableFinetuneCapacity\":23.748333,\"scopeId\":\"aqcabe\",\"scopeType\":\"Global\"},\"id\":\"esrsixwnlpjc\",\"name\":\"bjgfmyqyy\",\"type\":\"rridzfps\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class ModelCapacitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ModelCapacityListResultValueItem> response
-            = manager.modelCapacities().list("zheahuv", "qxqkv", "dmjhymudjma", com.azure.core.util.Context.NONE);
+            = manager.modelCapacities().list("liqwzutiyelrnhh", "t", "hqsznsyov", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zdebhserm", response.iterator().next().location());
-        Assertions.assertEquals("wwuhyqkaapt", response.iterator().next().properties().model().publisher());
-        Assertions.assertEquals("svkb", response.iterator().next().properties().model().format());
-        Assertions.assertEquals("ptwybloccuhplx", response.iterator().next().properties().model().name());
-        Assertions.assertEquals("nsshvqnpszbe", response.iterator().next().properties().model().version());
-        Assertions.assertEquals("butcdzj", response.iterator().next().properties().model().source());
-        Assertions.assertEquals("tvpeyxdyuxurxr", response.iterator().next().properties().model().sourceAccount());
-        Assertions.assertEquals("qfkwnaeikczscymq", response.iterator().next().properties().skuName());
-        Assertions.assertEquals(26.377464F, response.iterator().next().properties().availableCapacity());
-        Assertions.assertEquals(17.527985F, response.iterator().next().properties().availableFinetuneCapacity());
-        Assertions.assertEquals("qnyumz", response.iterator().next().properties().scopeId());
+        Assertions.assertEquals("qc", response.iterator().next().location());
+        Assertions.assertEquals("oqwrnfckjthlok", response.iterator().next().properties().model().publisher());
+        Assertions.assertEquals("wawfu", response.iterator().next().properties().model().format());
+        Assertions.assertEquals("ngejjxumowynjmoo", response.iterator().next().properties().model().name());
+        Assertions.assertEquals("xuktdrsjtmnkxjou", response.iterator().next().properties().model().version());
+        Assertions.assertEquals("zcfdtstiaxtyrnu", response.iterator().next().properties().model().source());
+        Assertions.assertEquals("fhepis", response.iterator().next().properties().model().sourceAccount());
+        Assertions.assertEquals("mmemsoqgblcye", response.iterator().next().properties().skuName());
+        Assertions.assertEquals(38.326435F, response.iterator().next().properties().availableCapacity());
+        Assertions.assertEquals(23.748333F, response.iterator().next().properties().availableFinetuneCapacity());
+        Assertions.assertEquals("aqcabe", response.iterator().next().properties().scopeId());
         Assertions.assertEquals(QuotaScopeType.GLOBAL, response.iterator().next().properties().scopeType());
     }
 }

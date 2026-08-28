@@ -5,9 +5,7 @@ package com.azure.ai.agents.hostedagents.utils;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
-import com.azure.ai.agents.BetaAgentsClient;
-import com.azure.ai.agents.models.AgentProtocol;
+import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AgentVersionStatus;
@@ -52,44 +50,105 @@ public final class HostedAgentsSampleUtils {
     }
 
     public static HostedAgentSessionResources createAgentAndSession(AgentsClient agentsClient,
-        BetaAgentsClient betaAgentsClient, String agentName, String image) {
-        AgentVersionDetails agent = createHostedAgentVersion(agentsClient, agentName, image);
-        waitForAgentVersionActive(agentsClient, agentName, agent.getVersion());
+        String agentName, String image) {
+        AgentVersionDetails agent = createActiveHostedAgentVersion(agentsClient, agentName, image);
+        try {
+            AgentSessionResource session = createSession(agentsClient, agentName, agent.getVersion());
+            return new HostedAgentSessionResources(agent, session);
+        } catch (RuntimeException error) {
+            try {
+                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            } catch (ResourceNotFoundException ignored) {
+                // The agent version was already deleted.
+            } catch (RuntimeException cleanupError) {
+                error.addSuppressed(cleanupError);
+            }
+            throw error;
+        }
+    }
 
-        AgentSessionResource session = betaAgentsClient.createSessionWithResponse(agentName,
-            BinaryData.fromObject(createSessionRequest(agent.getVersion())), new RequestOptions()).getValue()
+    public static AgentVersionDetails createActiveHostedAgentVersion(AgentsClient agentsClient,
+        String agentName, String image) {
+        AgentVersionDetails agent = createHostedAgentVersion(agentsClient, agentName, image);
+        try {
+            waitForAgentVersionActive(agentsClient, agentName, agent.getVersion());
+            return agent;
+        } catch (RuntimeException error) {
+            try {
+                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            } catch (ResourceNotFoundException ignored) {
+                // The agent version was already deleted.
+            } catch (RuntimeException cleanupError) {
+                error.addSuppressed(cleanupError);
+            }
+            throw error;
+        }
+    }
+
+    public static AgentSessionResource createSession(AgentsClient agentsClient, String agentName, String agentVersion) {
+        AgentSessionResource session = agentsClient.createSessionWithResponse(agentName,
+            BinaryData.fromObject(createSessionRequest(agentVersion)), new RequestOptions()).getValue()
             .toObject(AgentSessionResource.class);
         System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(), session.getStatus());
-
-        return new HostedAgentSessionResources(agent, session);
+        return session;
     }
 
     public static Mono<HostedAgentSessionResources> createAgentAndSessionAsync(AgentsAsyncClient agentsAsyncClient,
-        BetaAgentsAsyncClient betaAgentsAsyncClient, String agentName, String image) {
-        return createHostedAgentVersionAsync(agentsAsyncClient, agentName, image)
-            .flatMap(agent -> waitForAgentVersionActiveAsync(agentsAsyncClient, agentName, agent.getVersion())
-                .then(betaAgentsAsyncClient.createSessionWithResponse(agentName,
-                    BinaryData.fromObject(createSessionRequest(agent.getVersion())), new RequestOptions())
-                    .map(response -> response.getValue().toObject(AgentSessionResource.class)))
-                .map(session -> {
-                    System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(),
-                        session.getStatus());
-                    return new HostedAgentSessionResources(agent, session);
-                }));
+        String agentName, String image) {
+        return Mono.usingWhen(
+            createActiveHostedAgentVersionAsync(agentsAsyncClient, agentName, image),
+            agent -> createSessionAsync(agentsAsyncClient, agentName, agent.getVersion())
+                .map(session -> new HostedAgentSessionResources(agent, session)),
+            agent -> Mono.empty(),
+            (agent, error) -> deleteAgentVersionAfterSetupFailure(agentsAsyncClient, agentName, agent),
+            agent -> deleteAgentVersionAfterSetupFailure(agentsAsyncClient, agentName, agent));
     }
 
-    public static void cleanup(AgentsClient agentsClient, BetaAgentsClient betaAgentsClient, String agentName,
+    public static Mono<AgentVersionDetails> createActiveHostedAgentVersionAsync(AgentsAsyncClient agentsAsyncClient,
+        String agentName, String image) {
+        return Mono.usingWhen(
+            createHostedAgentVersionAsync(agentsAsyncClient, agentName, image),
+            agent -> waitForAgentVersionActiveAsync(agentsAsyncClient, agentName, agent.getVersion()),
+            agent -> Mono.empty(),
+            (agent, error) -> deleteAgentVersionAfterSetupFailure(agentsAsyncClient, agentName, agent),
+            agent -> deleteAgentVersionAfterSetupFailure(agentsAsyncClient, agentName, agent));
+    }
+
+    private static Mono<Void> deleteAgentVersionAfterSetupFailure(AgentsAsyncClient agentsAsyncClient,
+        String agentName, AgentVersionDetails agent) {
+        return agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion())
+            .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+            .onErrorResume(error -> {
+                System.err.printf("Unable to delete agent version %s after setup failed: %s%n",
+                    agent.getVersion(), error.getMessage());
+                return Mono.empty();
+            });
+    }
+
+    public static Mono<AgentSessionResource> createSessionAsync(AgentsAsyncClient agentsAsyncClient,
+        String agentName, String agentVersion) {
+        return agentsAsyncClient.createSessionWithResponse(agentName,
+            BinaryData.fromObject(createSessionRequest(agentVersion)), new RequestOptions())
+            .map(response -> response.getValue().toObject(AgentSessionResource.class))
+            .doOnNext(session -> System.out.printf("Session created (id: %s, status: %s)%n",
+                session.getAgentSessionId(), session.getStatus()));
+    }
+
+    public static void cleanup(AgentsClient agentsClient, String agentName,
         HostedAgentSessionResources resources) {
         if (resources == null) {
             return;
         }
 
+        RuntimeException cleanupError = null;
         if (resources.getSession() != null) {
             try {
-                betaAgentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId(), null);
+                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId());
                 System.out.printf("Session with id: %s deleted.%n", resources.getSession().getAgentSessionId());
             } catch (ResourceNotFoundException ignored) {
                 // The sample may have already deleted the session.
+            } catch (RuntimeException error) {
+                cleanupError = error;
             }
         }
 
@@ -99,11 +158,20 @@ public final class HostedAgentsSampleUtils {
                 System.out.printf("Agent version %s deleted.%n", resources.getAgent().getVersion());
             } catch (ResourceNotFoundException ignored) {
                 // The sample may have already deleted the agent version.
+            } catch (RuntimeException error) {
+                if (cleanupError == null) {
+                    cleanupError = error;
+                } else {
+                    cleanupError.addSuppressed(error);
+                }
             }
+        }
+        if (cleanupError != null) {
+            throw cleanupError;
         }
     }
 
-    public static Mono<Void> cleanupAsync(AgentsAsyncClient agentsAsyncClient, BetaAgentsAsyncClient betaAgentsAsyncClient,
+    public static Mono<Void> cleanupAsync(AgentsAsyncClient agentsAsyncClient,
         String agentName, HostedAgentSessionResources resources) {
         if (resources == null) {
             return Mono.empty();
@@ -112,9 +180,13 @@ public final class HostedAgentsSampleUtils {
         Mono<Void> deleteSession = Mono.empty();
         if (resources.getSession() != null) {
             String sessionId = resources.getSession().getAgentSessionId();
-            deleteSession = betaAgentsAsyncClient.deleteSession(agentName, sessionId, null)
+            deleteSession = agentsAsyncClient.deleteSession(agentName, sessionId)
                 .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n", sessionId))
-                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
+                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+                .onErrorResume(error -> {
+                    System.err.println("Unable to delete session " + sessionId + ": " + error.getMessage());
+                    return Mono.empty();
+                });
         }
 
         Mono<Void> deleteAgentVersion = Mono.empty();
@@ -122,7 +194,11 @@ public final class HostedAgentsSampleUtils {
             String version = resources.getAgent().getVersion();
             deleteAgentVersion = agentsAsyncClient.deleteAgentVersion(agentName, version)
                 .doOnSuccess(unused -> System.out.printf("Agent version %s deleted.%n", version))
-                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
+                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+                .onErrorResume(error -> {
+                    System.err.println("Unable to delete agent version " + version + ": " + error.getMessage());
+                    return Mono.empty();
+                });
         }
 
         return deleteSession.then(deleteAgentVersion);
@@ -213,7 +289,7 @@ public final class HostedAgentsSampleUtils {
         return new HostedAgentDefinition("0.5", "1Gi")
             .setContainerConfiguration(new ContainerConfiguration(image))
             .setProtocolVersions(Collections.singletonList(
-                new ProtocolVersionRecord(AgentProtocol.RESPONSES, "1.0.0")));
+                new ProtocolVersionRecord(AgentEndpointProtocol.RESPONSES, "1.0.0")));
     }
 
     private static void waitForAgentVersionActive(AgentsClient agentsClient, String agentName, String agentVersion) {

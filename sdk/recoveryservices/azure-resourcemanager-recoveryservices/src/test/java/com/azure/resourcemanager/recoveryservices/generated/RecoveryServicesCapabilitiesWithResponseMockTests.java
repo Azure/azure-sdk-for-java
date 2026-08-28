@@ -26,7 +26,7 @@ public final class RecoveryServicesCapabilitiesWithResponseMockTests {
     @Test
     public void testCapabilitiesWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"wbpokulpiujwaasi\",\"qiiobyuqer\",\"qlpqwcciuq\"],\"subResource\":\"AzureSiteRecovery\"},{\"requiredZoneNames\":[\"t\",\"uvfbtkuwh\"],\"subResource\":\"AzureBackup_secondary\"}]},\"type\":\"ykojoxafnndlpic\"}";
+            = "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"zikhl\",\"fjhdg\",\"gge\"],\"subResource\":\"AzureSiteRecovery\"}]},\"type\":\"nyga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,17 @@ public final class RecoveryServicesCapabilitiesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapabilitiesResponse response = manager.recoveryServices()
-            .capabilitiesWithResponse("ofyyvoqacpi",
-                new ResourceCapabilities().withType("nwashrtd")
+            .capabilitiesWithResponse("ag",
+                new ResourceCapabilities().withType("sytxitcskfcktqum")
                     .withProperties(new CapabilitiesProperties().withDnsZones(
-                        Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP)))),
+                        Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
+                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY)))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ykojoxafnndlpic", response.type());
+        Assertions.assertEquals("nyga", response.type());
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY,
             response.properties().dnsZones().get(0).subResource());
-        Assertions.assertEquals("wbpokulpiujwaasi", response.properties().dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("zikhl", response.properties().dnsZones().get(0).requiredZoneNames().get(0));
     }
 }

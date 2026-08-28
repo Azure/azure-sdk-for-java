@@ -11,7 +11,7 @@ public final class ConnectivityEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectivityEndpoints model
-            = BinaryData.fromString("{\"publicIpAddress\":\"gttmvmmagoaqyl\",\"sshPort\":645305407}")
+            = BinaryData.fromString("{\"publicIpAddress\":\"rgjfoknubnoi\",\"sshPort\":1854107559}")
                 .toObject(ConnectivityEndpoints.class);
     }
 }

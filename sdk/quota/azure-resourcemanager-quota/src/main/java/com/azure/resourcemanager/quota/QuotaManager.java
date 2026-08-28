@@ -34,9 +34,11 @@ import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionRequ
 import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionsImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaUsagesImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotasImpl;
+import com.azure.resourcemanager.quota.implementation.IncomingQuotaTransfersImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaManagementClientBuilder;
 import com.azure.resourcemanager.quota.implementation.QuotaOperationsImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaRequestStatusImpl;
+import com.azure.resourcemanager.quota.implementation.QuotaTransfersImpl;
 import com.azure.resourcemanager.quota.implementation.QuotasImpl;
 import com.azure.resourcemanager.quota.implementation.UsagesImpl;
 import com.azure.resourcemanager.quota.models.GroupQuotaLimits;
@@ -48,8 +50,10 @@ import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequests;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptions;
 import com.azure.resourcemanager.quota.models.GroupQuotaUsages;
 import com.azure.resourcemanager.quota.models.GroupQuotas;
+import com.azure.resourcemanager.quota.models.IncomingQuotaTransfers;
 import com.azure.resourcemanager.quota.models.QuotaOperations;
 import com.azure.resourcemanager.quota.models.QuotaRequestStatus;
+import com.azure.resourcemanager.quota.models.QuotaTransfers;
 import com.azure.resourcemanager.quota.models.Quotas;
 import com.azure.resourcemanager.quota.models.Usages;
 import java.time.Duration;
@@ -68,6 +72,10 @@ public final class QuotaManager {
     private QuotaOperations quotaOperations;
 
     private QuotaRequestStatus quotaRequestStatus;
+
+    private QuotaTransfers quotaTransfers;
+
+    private IncomingQuotaTransfers incomingQuotaTransfers;
 
     private GroupQuotas groupQuotas;
 
@@ -328,6 +336,31 @@ public final class QuotaManager {
             this.quotaRequestStatus = new QuotaRequestStatusImpl(clientObject.getQuotaRequestStatus(), this);
         }
         return quotaRequestStatus;
+    }
+
+    /**
+     * Gets the resource collection API of QuotaTransfers. It manages QuotaTransfer.
+     * 
+     * @return Resource collection API of QuotaTransfers.
+     */
+    public QuotaTransfers quotaTransfers() {
+        if (this.quotaTransfers == null) {
+            this.quotaTransfers = new QuotaTransfersImpl(clientObject.getQuotaTransfers(), this);
+        }
+        return quotaTransfers;
+    }
+
+    /**
+     * Gets the resource collection API of IncomingQuotaTransfers.
+     * 
+     * @return Resource collection API of IncomingQuotaTransfers.
+     */
+    public IncomingQuotaTransfers incomingQuotaTransfers() {
+        if (this.incomingQuotaTransfers == null) {
+            this.incomingQuotaTransfers
+                = new IncomingQuotaTransfersImpl(clientObject.getIncomingQuotaTransfers(), this);
+        }
+        return incomingQuotaTransfers;
     }
 
     /**

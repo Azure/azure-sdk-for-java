@@ -191,3 +191,21 @@ extends:
               PublicFeedUrl: ${{ parameters.PublicFeedUrl }}
               PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
 
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
+          - template: /eng/common/pipelines/templates/stages/archetype-auto-release-prepare.yml
+            parameters:
+              DependsOn:
+                # Signing is produced by archetype-java-release-batch.yml above. Auto-release prepares after signing
+                # so the manual release path remains unchanged while auto-release filters the signed output.
+                - Signing
+              Artifacts: ${{ parameters.Artifacts }}
+          - template: archetype-java-auto-release-batch.yml
+            parameters:
+              DependsOn:
+                - AutoReleasePrepare
+              ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              SDKType: ${{ parameters.SDKType }}
+              TestPipeline: ${{ parameters.TestPipeline }}
+              PublicFeedUrl: ${{ parameters.PublicFeedUrl }}
+              PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
+

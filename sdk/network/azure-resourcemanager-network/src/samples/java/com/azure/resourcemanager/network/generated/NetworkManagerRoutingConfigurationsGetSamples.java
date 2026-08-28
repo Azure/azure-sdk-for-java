@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkManagerRoutingConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerRoutingConfigurationGet.json
+     * x-ms-original-file: 2025-09-01/NetworkManagerRoutingConfigurationGet.json
      */
     /**
      * Sample code: Get routing configurations.

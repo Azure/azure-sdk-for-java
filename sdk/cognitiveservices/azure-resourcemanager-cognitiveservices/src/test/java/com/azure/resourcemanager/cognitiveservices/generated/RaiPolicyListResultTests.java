@@ -8,6 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.implementation.models.RaiPolicyListResult;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
 import com.azure.resourcemanager.cognitiveservices.models.RaiActionType;
+import com.azure.resourcemanager.cognitiveservices.models.RaiEgressDefaultAction;
+import com.azure.resourcemanager.cognitiveservices.models.RaiEgressMode;
+import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleActionType;
+import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleType;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentSource;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyMode;
 import org.junit.jupiter.api.Assertions;
@@ -16,27 +20,38 @@ public final class RaiPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"sj\",\"value\":[{\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Deferred\",\"basePolicyName\":\"ezl\",\"contentFilters\":[{\"name\":\"iakp\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Completion\",\"action\":\"HITL\"},{\"name\":\"jihy\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PreToolCall\",\"action\":\"HITL\"}],\"customBlocklists\":[{\"source\":\"PreToolCall\",\"blocklistName\":\"p\",\"blocking\":false}],\"safetyProviders\":[{\"source\":\"PostToolCall\",\"safetyProviderName\":\"wx\",\"blocking\":false},{\"source\":\"PreRun\",\"safetyProviderName\":\"hfstotxhojujbyp\",\"blocking\":false},{\"source\":\"PreRun\",\"safetyProviderName\":\"hixbjxyfwnyl\",\"blocking\":false}]},\"etag\":\"lsttpkiwkkbnuj\",\"tags\":{\"doiwi\":\"vtylbfpncu\",\"cbihwqk\":\"thtywub\",\"umwctondz\":\"fdntwjchrdgoih\",\"tov\":\"luudfdlwggytsb\"},\"id\":\"gseinq\",\"name\":\"iufxqknpir\",\"type\":\"nepttwqmsni\"},{\"properties\":{\"type\":\"SystemManaged\",\"mode\":\"Asynchronous_filter\",\"basePolicyName\":\"r\",\"contentFilters\":[{\"name\":\"ijnkrxfrdd\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"ANNOTATING\"},{\"name\":\"sxiftozq\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PreToolCall\",\"action\":\"RETRY\"},{\"name\":\"zhonnxkrlgnyhmo\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"RETRY\"}],\"customBlocklists\":[{\"source\":\"Completion\",\"blocklistName\":\"hqxvcxgfrpdsofbs\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"Completion\",\"safetyProviderName\":\"wdvzyy\",\"blocking\":false},{\"source\":\"PostRun\",\"safetyProviderName\":\"vj\",\"blocking\":false}]},\"etag\":\"f\",\"tags\":{\"ejnt\":\"opqgikyzirtxdyux\",\"dxtqmieoxo\":\"sewgioilqukr\",\"hhavgrvkffovjz\":\"ggufhyaomtb\",\"gjmfxumvfcl\":\"pjbi\"},\"id\":\"ovwxnbkfezzxsc\",\"name\":\"hwzdgirujbz\",\"type\":\"omvzzbtd\"}]}")
+            "{\"nextLink\":\"impevf\",\"value\":[{\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Deferred\",\"basePolicyName\":\"ywdxsmic\",\"contentFilters\":[{\"name\":\"fscjfnynszquji\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"Prompt\",\"action\":\"ANNOTATING\"},{\"name\":\"bblgyavut\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Prompt\",\"action\":\"ANNOTATING\"},{\"name\":\"sbpimlq\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"PostToolCall\",\"action\":\"None\"},{\"name\":\"ffgcvizqz\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"PreRun\",\"action\":\"ANNOTATING\"}],\"customBlocklists\":[{\"source\":\"Completion\",\"blocklistName\":\"ubdyhgk\",\"blocking\":false},{\"source\":\"Completion\",\"blocklistName\":\"owzfttsttkt\",\"blocking\":false},{\"source\":\"PostToolCall\",\"blocklistName\":\"ctxtgzukxi\",\"blocking\":false},{\"source\":\"Prompt\",\"blocklistName\":\"qqqxhrnxrx\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"PreRun\",\"safetyProviderName\":\"okqdzfvaz\",\"blocking\":false},{\"source\":\"Completion\",\"safetyProviderName\":\"qttbaj\",\"blocking\":true}],\"egressPolicy\":{\"mode\":\"Audit\",\"defaultAction\":\"Allow\",\"description\":\"opidkqqfkuv\",\"rules\":[{\"name\":\"kdmligovi\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Allow\"}},{\"name\":\"kpmloa\",\"ruleType\":\"Fqdn\",\"action\":{\"actionType\":\"Deny\"}}]}},\"etag\":\"ocbgoorbteoyb\",\"tags\":{\"il\":\"xakvvjgslor\",\"t\":\"yw\"},\"id\":\"kxn\",\"name\":\"edabgyvudtjue\",\"type\":\"bcihxuuwhc\"}]}")
             .toObject(RaiPolicyListResult.class);
-        Assertions.assertEquals("sj", model.nextLink());
+        Assertions.assertEquals("impevf", model.nextLink());
         Assertions.assertEquals(RaiPolicyMode.DEFERRED, model.value().get(0).properties().mode());
-        Assertions.assertEquals("ezl", model.value().get(0).properties().basePolicyName());
-        Assertions.assertEquals("iakp", model.value().get(0).properties().contentFilters().get(0).name());
-        Assertions.assertTrue(model.value().get(0).properties().contentFilters().get(0).enabled());
+        Assertions.assertEquals("ywdxsmic", model.value().get(0).properties().basePolicyName());
+        Assertions.assertEquals("fscjfnynszquji", model.value().get(0).properties().contentFilters().get(0).name());
+        Assertions.assertFalse(model.value().get(0).properties().contentFilters().get(0).enabled());
         Assertions.assertEquals(ContentLevel.LOW,
             model.value().get(0).properties().contentFilters().get(0).severityThreshold());
-        Assertions.assertTrue(model.value().get(0).properties().contentFilters().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
+        Assertions.assertFalse(model.value().get(0).properties().contentFilters().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT,
             model.value().get(0).properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiActionType.HITL, model.value().get(0).properties().contentFilters().get(0).action());
-        Assertions.assertEquals("p", model.value().get(0).properties().customBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(RaiActionType.ANNOTATING,
+            model.value().get(0).properties().contentFilters().get(0).action());
+        Assertions.assertEquals("ubdyhgk", model.value().get(0).properties().customBlocklists().get(0).blocklistName());
         Assertions.assertFalse(model.value().get(0).properties().customBlocklists().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL,
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
             model.value().get(0).properties().customBlocklists().get(0).source());
-        Assertions.assertEquals("wx", model.value().get(0).properties().safetyProviders().get(0).safetyProviderName());
+        Assertions.assertEquals("okqdzfvaz",
+            model.value().get(0).properties().safetyProviders().get(0).safetyProviderName());
         Assertions.assertFalse(model.value().get(0).properties().safetyProviders().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL,
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN,
             model.value().get(0).properties().safetyProviders().get(0).source());
-        Assertions.assertEquals("vtylbfpncu", model.value().get(0).tags().get("doiwi"));
+        Assertions.assertEquals(RaiEgressMode.AUDIT, model.value().get(0).properties().egressPolicy().mode());
+        Assertions.assertEquals(RaiEgressDefaultAction.ALLOW,
+            model.value().get(0).properties().egressPolicy().defaultAction());
+        Assertions.assertEquals("opidkqqfkuv", model.value().get(0).properties().egressPolicy().description());
+        Assertions.assertEquals("kdmligovi", model.value().get(0).properties().egressPolicy().rules().get(0).name());
+        Assertions.assertEquals(RaiEgressRuleType.FQDN,
+            model.value().get(0).properties().egressPolicy().rules().get(0).ruleType());
+        Assertions.assertEquals(RaiEgressRuleActionType.ALLOW,
+            model.value().get(0).properties().egressPolicy().rules().get(0).action().actionType());
+        Assertions.assertEquals("xakvvjgslor", model.value().get(0).tags().get("il"));
     }
 }

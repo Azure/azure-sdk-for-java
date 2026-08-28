@@ -8,20 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.DiscoveryRuleListResult;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import org.junit.jupiter.api.Assertions;
 
 public final class DiscoveryRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"xmaehvbbxu\",\"authenticationSetting\":\"iplt\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"baxk\",\"context\":[\"wrck\",\"yklyhpluodpvruud\"]},\"entityName\":\"gzibthostgktstv\"},\"id\":\"eclze\",\"name\":\"qbcvhzlhplod\",\"type\":\"kdl\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"u\",\"authenticationSetting\":\"lkxt\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"smlmbtxhwgfwsrta\",\"context\":[\"ezbrhubskh\",\"dyg\",\"ookk\"]},\"entityName\":\"fqjbvleo\"},\"id\":\"ml\",\"name\":\"iqtqzfavyvnq\",\"type\":\"ybar\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"jkqa\",\"authenticationSetting\":\"qgzsles\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"ernntiewdjcvbquw\",\"context\":[\"hwagohbuffkmrqe\",\"vvhmxtdrj\"]},\"entityName\":\"utacoe\"},\"id\":\"vewzcj\",\"name\":\"nmwcpmgu\",\"type\":\"adraufactkahzo\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"iuxxpshneekulfg\",\"authenticationSetting\":\"lqubkwdlen\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"tujbazpju\",\"context\":[\"inyflnorwmduvwp\",\"lvxwmyg\",\"xpgpq\"]},\"entityName\":\"hiszepnnbjcrxgib\"},\"id\":\"axconfozauo\",\"name\":\"sukokwbqplhl\",\"type\":\"nuuepzlrp\"}],\"nextLink\":\"zsoldwey\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"un\",\"authenticationSetting\":\"ixxrtikvcpw\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"ivtsoxfrkenxpm\",\"context\":[\"frpmpdnqqskaw\"]},\"entityName\":\"oqvm\"},\"id\":\"npqfrtqlkzmeg\",\"name\":\"itgvkx\",\"type\":\"zyqdrfegcealzx\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"symoyq\",\"authenticationSetting\":\"lwigdivbkbx\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"uwasqvd\",\"context\":[\"y\"]},\"entityName\":\"uxakjsqzhzbezk\"},\"id\":\"msidxasicddyvv\",\"name\":\"skgfmocwahpq\",\"type\":\"atjeaahh\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"akz\",\"authenticationSetting\":\"bbjjidjksyxk\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"blbjedn\",\"context\":[\"age\",\"aulx\",\"nsmjbnkppxynen\"]},\"entityName\":\"svxeizzgwklnsr\"},\"id\":\"feycxcktp\",\"name\":\"ymerteeammxq\",\"type\":\"ekkkzd\"}],\"nextLink\":\"tkgdojbmxva\"}")
             .toObject(DiscoveryRuleListResult.class);
-        Assertions.assertEquals("xmaehvbbxu", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("iplt", model.value().get(0).properties().authenticationSetting());
+        Assertions.assertEquals("un", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ixxrtikvcpw", model.value().get(0).properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
             model.value().get(0).properties().discoverRelationships());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
+        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
             model.value().get(0).properties().addRecommendedSignals());
-        Assertions.assertEquals("zsoldwey", model.nextLink());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED,
+            model.value().get(0).properties().addResourceHealthSignal());
+        Assertions.assertEquals("tkgdojbmxva", model.nextLink());
     }
 }

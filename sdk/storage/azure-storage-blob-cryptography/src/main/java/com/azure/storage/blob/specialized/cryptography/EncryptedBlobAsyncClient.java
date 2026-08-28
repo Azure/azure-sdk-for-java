@@ -68,6 +68,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_NONCE_VALIDATOR_KEY;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -764,6 +765,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     = EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption);
 
                 result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY, encryptionData))
+                    .contextWrite(context -> context.put(GCM_NONCE_VALIDATOR_KEY, new CseV2NonceOrderValidator()))
                     .contextWrite(context -> context.put(Constants.ADJUSTED_BLOB_LENGTH_KEY, EncryptedBlobLength
                         .computeAdjustedBlobLength(encryptionData, response.getValue().getBlobSize())));
             }

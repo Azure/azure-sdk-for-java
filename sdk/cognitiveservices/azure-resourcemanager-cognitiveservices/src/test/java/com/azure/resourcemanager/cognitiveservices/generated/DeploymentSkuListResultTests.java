@@ -12,8 +12,8 @@ public final class DeploymentSkuListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSkuListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"hqkvpuvksgplsak\",\"value\":[{\"resourceType\":\"synljphuopxodl\",\"sku\":{\"name\":\"ynt\",\"tier\":\"Standard\",\"size\":\"hleosjsw\",\"family\":\"mslyzrpzbchckqqz\",\"capacity\":345935424},\"capacity\":{\"minimum\":1223269261,\"maximum\":2011830272,\"step\":78187061,\"default\":2121235922,\"allowedValues\":[2066516032]}}]}")
+            "{\"nextLink\":\"uiizynke\",\"value\":[{\"resourceType\":\"rwyhqmibzyhwitsm\",\"sku\":{\"name\":\"yynpcdpumnzgmwz\",\"tier\":\"Enterprise\",\"size\":\"iknsorgjh\",\"family\":\"ldtlwwr\",\"capacity\":1202446824},\"capacity\":{\"minimum\":1488672187,\"maximum\":575537073,\"step\":874517776,\"default\":1621174416,\"allowedValues\":[643963707]}},{\"resourceType\":\"yhgsy\",\"sku\":{\"name\":\"ogjltdtbnnhad\",\"tier\":\"Enterprise\",\"size\":\"kvci\",\"family\":\"nvpamq\",\"capacity\":708415547},\"capacity\":{\"minimum\":1026255480,\"maximum\":443622503,\"step\":1292561525,\"default\":2021225461,\"allowedValues\":[33393175,1558005484]}},{\"resourceType\":\"la\",\"sku\":{\"name\":\"elwuipi\",\"tier\":\"Free\",\"size\":\"kzivgvvcnayrh\",\"family\":\"nxxmueedndrdv\",\"capacity\":928139019},\"capacity\":{\"minimum\":768624981,\"maximum\":1018889547,\"step\":1951861279,\"default\":96926313,\"allowedValues\":[1261287466,669500000,149792642,1035796586]}},{\"resourceType\":\"ygdvwv\",\"sku\":{\"name\":\"iohgwxrtfud\",\"tier\":\"Premium\",\"size\":\"gyqagvrvmnpkuk\",\"family\":\"i\",\"capacity\":2068705398},\"capacity\":{\"minimum\":1554656942,\"maximum\":261614569,\"step\":1772217773,\"default\":1697714955,\"allowedValues\":[44093722,510557599]}}]}")
             .toObject(DeploymentSkuListResult.class);
-        Assertions.assertEquals("hqkvpuvksgplsak", model.nextLink());
+        Assertions.assertEquals("uiizynke", model.nextLink());
     }
 }

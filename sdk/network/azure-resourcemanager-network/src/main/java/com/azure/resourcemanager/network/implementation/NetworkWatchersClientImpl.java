@@ -36,6 +36,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
 import com.azure.resourcemanager.network.fluent.models.AvailableProvidersListInner;
 import com.azure.resourcemanager.network.fluent.models.AzureReachabilityReportInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionAnalyzerInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionAnalyzerQueryStatusResultInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectivityInformationInner;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkConfigurationDiagnosticResponseInner;
@@ -45,6 +47,7 @@ import com.azure.resourcemanager.network.fluent.models.SecurityGroupViewResultIn
 import com.azure.resourcemanager.network.fluent.models.TopologyInner;
 import com.azure.resourcemanager.network.fluent.models.TroubleshootingResultInner;
 import com.azure.resourcemanager.network.fluent.models.VerificationIpFlowResultInner;
+import com.azure.resourcemanager.network.implementation.models.ConnectionAnalyzerListResult;
 import com.azure.resourcemanager.network.implementation.models.NetworkWatcherListResult;
 import com.azure.resourcemanager.network.models.AvailableProvidersListParameters;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportParameters;
@@ -274,6 +277,70 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") NetworkConfigurationDiagnosticParameters parameters, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersCreate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkWatcherName") String networkWatcherName,
+            @PathParam("connectionAnalyzerName") String connectionAnalyzerName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectionAnalyzerInner body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersGet(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkWatcherName") String networkWatcherName,
+            @PathParam("connectionAnalyzerName") String connectionAnalyzerName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersDelete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkWatcherName") String networkWatcherName,
+            @PathParam("connectionAnalyzerName") String connectionAnalyzerName, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersUpdateTags(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkWatcherName") String networkWatcherName,
+            @PathParam("connectionAnalyzerName") String connectionAnalyzerName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TagsObject body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionAnalyzerListResult>> connectionAnalyzersList(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkWatcherName") String networkWatcherName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}/query")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersQuery(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkWatcherName") String networkWatcherName,
+            @PathParam("connectionAnalyzerName") String connectionAnalyzerName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -287,6 +354,14 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkWatcherListResult>> listAllNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionAnalyzerListResult>> connectionAnalyzersListNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -321,7 +396,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -360,7 +435,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -450,7 +525,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -496,7 +571,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -592,7 +667,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -638,7 +713,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -727,7 +802,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, context))
@@ -764,7 +839,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkWatcherName, context);
@@ -925,7 +1000,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -961,7 +1036,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1049,7 +1124,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1079,7 +1154,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1176,7 +1251,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1223,7 +1298,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1320,7 +1395,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1367,7 +1442,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1561,7 +1636,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1607,7 +1682,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1800,7 +1875,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1847,7 +1922,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2051,7 +2126,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2098,7 +2173,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2293,7 +2368,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2340,7 +2415,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2541,7 +2616,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2588,7 +2663,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2790,7 +2865,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2837,7 +2912,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -3039,7 +3114,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3087,7 +3162,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -3293,7 +3368,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3340,7 +3415,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -3551,7 +3626,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3599,7 +3674,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -3809,7 +3884,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3860,7 +3935,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -4067,6 +4142,1213 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     }
 
     /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersCreateWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, ConnectionAnalyzerInner body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.connectionAnalyzersCreate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionAnalyzerName,
+                contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersCreateWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, ConnectionAnalyzerInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.connectionAnalyzersCreate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkWatcherName, connectionAnalyzerName, contentType, accept, body, context);
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner> beginConnectionAnalyzersCreateAsync(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        ConnectionAnalyzerInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = connectionAnalyzersCreateWithResponseAsync(resourceGroupName,
+            networkWatcherName, connectionAnalyzerName, body);
+        return this.client.<ConnectionAnalyzerInner, ConnectionAnalyzerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionAnalyzerInner.class, ConnectionAnalyzerInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner>
+        beginConnectionAnalyzersCreateAsync(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName, ConnectionAnalyzerInner body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = connectionAnalyzersCreateWithResponseAsync(resourceGroupName,
+            networkWatcherName, connectionAnalyzerName, body, context);
+        return this.client.<ConnectionAnalyzerInner, ConnectionAnalyzerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionAnalyzerInner.class, ConnectionAnalyzerInner.class, context);
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner> beginConnectionAnalyzersCreate(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        ConnectionAnalyzerInner body) {
+        return this
+            .beginConnectionAnalyzersCreateAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner> beginConnectionAnalyzersCreate(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        ConnectionAnalyzerInner body, Context context) {
+        return this
+            .beginConnectionAnalyzersCreateAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, body,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionAnalyzerInner> connectionAnalyzersCreateAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, ConnectionAnalyzerInner body) {
+        return beginConnectionAnalyzersCreateAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConnectionAnalyzerInner> connectionAnalyzersCreateAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, ConnectionAnalyzerInner body, Context context) {
+        return beginConnectionAnalyzersCreateAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, body,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionAnalyzerInner connectionAnalyzersCreate(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, ConnectionAnalyzerInner body) {
+        return connectionAnalyzersCreateAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, body)
+            .block();
+    }
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionAnalyzerInner connectionAnalyzersCreate(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, ConnectionAnalyzerInner body, Context context) {
+        return connectionAnalyzersCreateAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, body,
+            context).block();
+    }
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersGetWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.connectionAnalyzersGet(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionAnalyzerName, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersGetWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.connectionAnalyzersGet(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkWatcherName, connectionAnalyzerName, accept, context);
+    }
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionAnalyzerInner> connectionAnalyzersGetAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        return connectionAnalyzersGetWithResponseAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectionAnalyzerInner> connectionAnalyzersGetWithResponse(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        return connectionAnalyzersGetWithResponseAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName,
+            context).block();
+    }
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionAnalyzerInner connectionAnalyzersGet(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName) {
+        return connectionAnalyzersGetWithResponse(resourceGroupName, networkWatcherName, connectionAnalyzerName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersDeleteWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        return FluxUtil.withContext(context -> service.connectionAnalyzersDelete(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionAnalyzerName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersDeleteWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        context = this.client.mergeContext(context);
+        return service.connectionAnalyzersDelete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkWatcherName, connectionAnalyzerName, context);
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginConnectionAnalyzersDeleteAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = connectionAnalyzersDeleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginConnectionAnalyzersDeleteAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = connectionAnalyzersDeleteWithResponseAsync(resourceGroupName,
+            networkWatcherName, connectionAnalyzerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginConnectionAnalyzersDelete(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        return this.beginConnectionAnalyzersDeleteAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginConnectionAnalyzersDelete(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        return this
+            .beginConnectionAnalyzersDeleteAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> connectionAnalyzersDeleteAsync(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName) {
+        return beginConnectionAnalyzersDeleteAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> connectionAnalyzersDeleteAsync(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, Context context) {
+        return beginConnectionAnalyzersDeleteAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void connectionAnalyzersDelete(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName) {
+        connectionAnalyzersDeleteAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName).block();
+    }
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void connectionAnalyzersDelete(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, Context context) {
+        connectionAnalyzersDeleteAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, context).block();
+    }
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersUpdateTagsWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName, TagsObject body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.connectionAnalyzersUpdateTags(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionAnalyzerName,
+                contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersUpdateTagsWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName, TagsObject body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.connectionAnalyzersUpdateTags(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionAnalyzerName, contentType,
+            accept, body, context);
+    }
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionAnalyzerInner> connectionAnalyzersUpdateTagsAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, TagsObject body) {
+        return connectionAnalyzersUpdateTagsWithResponseAsync(resourceGroupName, networkWatcherName,
+            connectionAnalyzerName, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectionAnalyzerInner> connectionAnalyzersUpdateTagsWithResponse(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, TagsObject body, Context context) {
+        return connectionAnalyzersUpdateTagsWithResponseAsync(resourceGroupName, networkWatcherName,
+            connectionAnalyzerName, body, context).block();
+    }
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionAnalyzerInner connectionAnalyzersUpdateTags(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, TagsObject body) {
+        return connectionAnalyzersUpdateTagsWithResponse(resourceGroupName, networkWatcherName, connectionAnalyzerName,
+            body, Context.NONE).getValue();
+    }
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionAnalyzerInner>>
+        connectionAnalyzersListSinglePageAsync(String resourceGroupName, String networkWatcherName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.connectionAnalyzersList(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, accept, context))
+            .<PagedResponse<ConnectionAnalyzerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionAnalyzerInner>>
+        connectionAnalyzersListSinglePageAsync(String resourceGroupName, String networkWatcherName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .connectionAnalyzersList(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, networkWatcherName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConnectionAnalyzerInner> connectionAnalyzersListAsync(String resourceGroupName,
+        String networkWatcherName) {
+        return new PagedFlux<>(() -> connectionAnalyzersListSinglePageAsync(resourceGroupName, networkWatcherName),
+            nextLink -> connectionAnalyzersListNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConnectionAnalyzerInner> connectionAnalyzersListAsync(String resourceGroupName,
+        String networkWatcherName, Context context) {
+        return new PagedFlux<>(
+            () -> connectionAnalyzersListSinglePageAsync(resourceGroupName, networkWatcherName, context),
+            nextLink -> connectionAnalyzersListNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConnectionAnalyzerInner> connectionAnalyzersList(String resourceGroupName,
+        String networkWatcherName) {
+        return new PagedIterable<>(connectionAnalyzersListAsync(resourceGroupName, networkWatcherName));
+    }
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConnectionAnalyzerInner> connectionAnalyzersList(String resourceGroupName,
+        String networkWatcherName, Context context) {
+        return new PagedIterable<>(connectionAnalyzersListAsync(resourceGroupName, networkWatcherName, context));
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersQueryWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.connectionAnalyzersQuery(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionAnalyzerName, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersQueryWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (connectionAnalyzerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectionAnalyzerName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.connectionAnalyzersQuery(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkWatcherName, connectionAnalyzerName, accept, context);
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQueryAsync(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = connectionAnalyzersQueryWithResponseAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName);
+        return this.client
+            .<ConnectionAnalyzerQueryStatusResultInner, ConnectionAnalyzerQueryStatusResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ConnectionAnalyzerQueryStatusResultInner.class,
+                ConnectionAnalyzerQueryStatusResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQueryAsync(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = connectionAnalyzersQueryWithResponseAsync(resourceGroupName,
+            networkWatcherName, connectionAnalyzerName, context);
+        return this.client
+            .<ConnectionAnalyzerQueryStatusResultInner, ConnectionAnalyzerQueryStatusResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ConnectionAnalyzerQueryStatusResultInner.class,
+                ConnectionAnalyzerQueryStatusResultInner.class, context);
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQuery(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName) {
+        return this.beginConnectionAnalyzersQueryAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQuery(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName, Context context) {
+        return this
+            .beginConnectionAnalyzersQueryAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionAnalyzerQueryStatusResultInner> connectionAnalyzersQueryAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        return beginConnectionAnalyzersQueryAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConnectionAnalyzerQueryStatusResultInner> connectionAnalyzersQueryAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        return beginConnectionAnalyzersQueryAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionAnalyzerQueryStatusResultInner connectionAnalyzersQuery(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName) {
+        return connectionAnalyzersQueryAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName).block();
+    }
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionAnalyzerQueryStatusResultInner connectionAnalyzersQuery(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context) {
+        return connectionAnalyzersQueryAsync(resourceGroupName, networkWatcherName, connectionAnalyzerName, context)
+            .block();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4169,6 +5451,60 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionAnalyzerInner>> connectionAnalyzersListNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.connectionAnalyzersListNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ConnectionAnalyzerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionAnalyzerInner>> connectionAnalyzersListNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.connectionAnalyzersListNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

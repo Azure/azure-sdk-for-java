@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class GalleryScriptVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Update.json
+     * x-ms-original-file: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Update.json
      */
     /**
      * Sample code: Update a simple gallery Script Version.

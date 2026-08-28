@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
  */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateProjects.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateProjects.json
      */
     /**
      * Sample code: Update Project.

@@ -13,12 +13,14 @@ import com.azure.ai.agents.models.FabricIqPreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseOutputMessage;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates how to create an agent with the FabricIQ preview tool using async clients.
@@ -27,7 +29,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
  *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
- *   <li>FABRIC_IQ_PROJECT_CONNECTION_ID - The FabricIQ connection ID.</li>
+ *   <li>FOUNDRY_AGENT_NAME - Optional. The agent name; defaults to fabric-iq-agent.</li>
+ *   <li>FABRIC_IQ_PROJECT_CONNECTION_ID - The fully qualified Fabric IQ project connection resource ID.</li>
  *   <li>FABRIC_IQ_USER_INPUT - Optional. The natural-language question to send to the agent.</li>
  * </ul>
  */
@@ -35,6 +38,7 @@ public class FabricIQAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_NAME", "fabric-iq-agent");
         String fabricIqConnectionId = Configuration.getGlobalConfiguration().get("FABRIC_IQ_PROJECT_CONNECTION_ID");
         String userInput = Configuration.getGlobalConfiguration().get("FABRIC_IQ_USER_INPUT",
             "Use FabricIQ to summarize the available enterprise context.");
@@ -45,21 +49,18 @@ public class FabricIQAsync {
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
-            .setServerLabel("fabric_iq")
-            .setRequireApproval("never")
-            .setName("fabric_iq_lookup")
-            .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+            .setServerLabel("fabric-iq-tool")
+            .setRequireApproval("never");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(fabricIqTool));
 
-        agentsAsyncClient.createAgentVersion("fabric-iq-agent", agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
+        Mono<Void> workflow = Mono.usingWhen(
+            agentsAsyncClient.createAgentVersion(agentName, agentDefinition),
+            agent -> {
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
                 AgentReference agentReference = new AgentReference(agent.getName())
@@ -68,18 +69,33 @@ public class FabricIQAsync {
                 return responsesAsyncClient.createAzureResponse(
                     new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
-                        .input(userInput));
-            })
-            .doOnNext(response -> System.out.println("Response: " + response.output()))
-            .then(Mono.defer(() -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"));
-                }
-                return Mono.empty();
-            }))
-            .timeout(Duration.ofSeconds(300))
-            .block();
+                        .input(userInput))
+                    .doOnNext(FabricIQAsync::printResponse)
+                    .then();
+            },
+            agent -> cleanup(agentsAsyncClient, agent),
+            (agent, error) -> cleanup(agentsAsyncClient, agent),
+            agent -> cleanup(agentsAsyncClient, agent))
+            .timeout(Duration.ofSeconds(300));
+
+        workflow.block();
+    }
+
+    private static Mono<Void> cleanup(AgentsAsyncClient agentsAsyncClient, AgentVersionDetails agent) {
+        return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
+            .doOnSuccess(v -> System.out.println("Agent deleted"));
+    }
+
+    private static void printResponse(Response response) {
+        for (ResponseOutputItem outputItem : response.output()) {
+            if (outputItem.message().isPresent()) {
+                ResponseOutputMessage message = outputItem.message().get();
+                message.content().forEach(content -> content.outputText().ifPresent(outputText -> {
+                    System.out.println("Agent response: " + outputText.text());
+                    outputText.annotations()
+                        .forEach(annotation -> System.out.println("Annotation: " + annotation));
+                }));
+            }
+        }
     }
 }

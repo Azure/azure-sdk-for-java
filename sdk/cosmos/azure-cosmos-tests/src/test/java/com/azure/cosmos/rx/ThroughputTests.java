@@ -34,102 +34,107 @@ public class ThroughputTests extends TestSuiteBase{
         client = getClientBuilder().buildAsyncClient();
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = CONTROL_PLANE_TIMEOUT)
     public void readReplaceAutoscaleThroughputDb() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
         int initalThroughput = 5000;
         ThroughputProperties properties = ThroughputProperties.createAutoscaledThroughput(initalThroughput);
-        client.createDatabase(databaseName, properties).block();
-        CosmosAsyncDatabase database = client.getDatabase(databaseName);
-
-        ThroughputResponse readThroughputResponse = database.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
-        String collectionId = UUID.randomUUID().toString();
-        database.createContainer(collectionId, "/myPk").block();
-        // Replace
-        int tagetThroughput = 6000;
-        properties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
-        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-
+        try {
+            client.createDatabase(databaseName, properties).block();
+            ThroughputResponse readThroughputResponse = database.readThroughput().block();
+            assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
+            String collectionId = UUID.randomUUID().toString();
+            database.createContainer(collectionId, "/myPk").block();
+            // Replace
+            int tagetThroughput = 6000;
+            properties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
+            ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
+            assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
+        } finally {
+            safeDeleteDatabase(database);
+        }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = CONTROL_PLANE_TIMEOUT)
     public void readReplaceManualThroughputDb() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
         int initalThroughput = 5000;
         ThroughputProperties properties = ThroughputProperties.createManualThroughput(initalThroughput);
-        client.createDatabase(databaseName, properties).block();
-        CosmosAsyncDatabase database = client.getDatabase(databaseName);
-
-        ThroughputResponse readThroughputResponse = database.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
-        database.createContainer("testCol", "/myPk").block();
-        int tagetThroughput = 6000;
-        properties = ThroughputProperties.createManualThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
-        assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-
+        try {
+            client.createDatabase(databaseName, properties).block();
+            ThroughputResponse readThroughputResponse = database.readThroughput().block();
+            assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
+            database.createContainer("testCol", "/myPk").block();
+            int tagetThroughput = 6000;
+            properties = ThroughputProperties.createManualThroughput(tagetThroughput);
+            ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
+            assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
+        } finally {
+            safeDeleteDatabase(database);
+        }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = CONTROL_PLANE_TIMEOUT)
     public void readReplaceManualThroughputCollection() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
         int initalThroughput = 5000;
         ThroughputProperties throughputProperties =
             ThroughputProperties.createManualThroughput(initalThroughput);
-        client.createDatabase(databaseName).block();
-        CosmosAsyncDatabase database = client.getDatabase(databaseName);
+        try {
+            client.createDatabase(databaseName).block();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+            database.createContainer(
+                containerProperties,
+                throughputProperties,
+                new CosmosContainerRequestOptions()).block();
+            CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
 
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        database.createContainer(
-            containerProperties,
-            throughputProperties,
-            new CosmosContainerRequestOptions()).block();
-        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
+            // Read
+            ThroughputResponse readThroughputResponse = container.readThroughput().block();
+            assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
 
-        // Read
-        ThroughputResponse readThroughputResponse = container.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
-
-        // Replace
-        int tagetThroughput = 6000;
-        throughputProperties = ThroughputProperties.createManualThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
-        assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-
+            // Replace
+            int tagetThroughput = 6000;
+            throughputProperties = ThroughputProperties.createManualThroughput(tagetThroughput);
+            ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
+            assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
+        } finally {
+            safeDeleteDatabase(database);
+        }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = CONTROL_PLANE_TIMEOUT)
     public void readReplaceAutoscaleThroughputCollection() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
         int initalThroughput = 5000;
         ThroughputProperties throughputProperties =
             ThroughputProperties.createAutoscaledThroughput(initalThroughput);
-        client.createDatabase(databaseName).block();
-        CosmosAsyncDatabase database = client.getDatabase(databaseName);
-        String collectionId = UUID.randomUUID().toString();
+        try {
+            client.createDatabase(databaseName).block();
+            String collectionId = UUID.randomUUID().toString();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionId, "/myPk");
+            database.createContainer(
+                containerProperties,
+                throughputProperties,
+                new CosmosContainerRequestOptions()).block();
+            CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
 
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionId, "/myPk");
-        database.createContainer(
-            containerProperties,
-            throughputProperties,
-            new CosmosContainerRequestOptions()).block();
-        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
+            // Read
+            ThroughputResponse readThroughputResponse = container.readThroughput().block();
+            assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
 
-        // Read
-        ThroughputResponse readThroughputResponse = container.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
-
-        // Replace
-        int tagetThroughput = 6000;
-        throughputProperties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
-        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
+            // Replace
+            int tagetThroughput = 6000;
+            throughputProperties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
+            ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
+            assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
+        } finally {
+            safeDeleteDatabase(database);
+        }
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListByResourceGroup.

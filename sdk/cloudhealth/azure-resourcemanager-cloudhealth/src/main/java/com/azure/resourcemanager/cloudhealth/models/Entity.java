@@ -255,4 +255,75 @@ public interface Entity {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void ingestHealthReport(HealthReportRequest body);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity along with {@link Response}.
+     */
+    Response<DataAnnotation> addDataAnnotationWithResponse(AddDataAnnotationRequest body, Context context);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity.
+     */
+    DataAnnotation addDataAnnotation(AddDataAnnotationRequest body);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity along with {@link Response}.
+     */
+    Response<GetDataAnnotationsResponse> getDataAnnotationsWithResponse(GetDataAnnotationsRequest body,
+        Context context);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity.
+     */
+    GetDataAnnotationsResponse getDataAnnotations(GetDataAnnotationsRequest body);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) along with {@link Response}.
+     */
+    Response<GetSignalRecommendationsResponse> getSignalRecommendationsWithResponse(Context context);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     */
+    GetSignalRecommendationsResponse getSignalRecommendations();
 }

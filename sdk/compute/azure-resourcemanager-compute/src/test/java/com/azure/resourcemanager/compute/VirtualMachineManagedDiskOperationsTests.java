@@ -26,7 +26,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -475,19 +474,11 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     @Test
     public void canCreateVirtualMachineByAttachingManagedOsDisk() {
         final String uname = "juser";
-        final String password = password();
         final String vmName = "myvm6";
-        final String storageAccountName = generateRandomResourceName("stg", 17);
 
-        // Creates a native virtual machine
+        // Creates a virtual machine with a managed OS disk
         //
-        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
-            .define(storageAccountName)
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .disableSharedKeyAccess();
-
-        VirtualMachine nativeVm = computeManager.virtualMachines()
+        VirtualMachine baseVm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -497,28 +488,23 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
             .withSize(generalPurposeVMSize())
-            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .create();
 
-        Assertions.assertFalse(nativeVm.isManagedDiskEnabled());
-        String osVhdUri = nativeVm.osUnmanagedDiskVhdUri();
-        Assertions.assertNotNull(osVhdUri);
+        Assertions.assertTrue(baseVm.isManagedDiskEnabled());
+        String osDiskId = baseVm.osDiskId();
+        Assertions.assertNotNull(osDiskId);
 
-        computeManager.virtualMachines().deleteById(nativeVm.id());
+        // Delete the virtual machine, keeping its managed OS disk (OS disk delete option is explicitly set to DETACH)
+        //
+        computeManager.virtualMachines().deleteById(baseVm.id());
 
-        final String diskName = generateRandomResourceName("dsk-", 15);
-        Disk osDisk = computeManager.disks()
-            .define(diskName)
-            .withRegion(region)
-            .withExistingResourceGroup(rgName)
-            .withLinuxFromVhd(osVhdUri)
-            .withStorageAccountName(storageAccountName)
-            .create();
+        Disk osDisk = computeManager.disks().getById(osDiskId);
+        Assertions.assertNotNull(osDisk);
 
-        // Creates a managed virtual machine
+        // Creates a managed virtual machine by attaching the existing managed OS disk
         //
         VirtualMachine managedVm = computeManager.virtualMachines()
             .define(vmName)

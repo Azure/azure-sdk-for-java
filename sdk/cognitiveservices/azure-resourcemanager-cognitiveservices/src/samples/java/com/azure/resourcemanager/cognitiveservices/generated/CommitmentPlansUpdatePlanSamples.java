@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CommitmentPlansUpdatePlanSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateSharedCommitmentPlan.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateSharedCommitmentPlan.json
      */
     /**
      * Sample code: Create Commitment Plan.

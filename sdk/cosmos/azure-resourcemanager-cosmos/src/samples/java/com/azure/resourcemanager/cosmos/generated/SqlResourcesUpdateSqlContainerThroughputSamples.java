@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class SqlResourcesUpdateSqlContainerThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlContainerThroughputUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlContainerThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlContainerThroughputUpdate.

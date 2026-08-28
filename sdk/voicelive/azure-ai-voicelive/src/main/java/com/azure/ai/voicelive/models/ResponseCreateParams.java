@@ -667,13 +667,13 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     }
 
     /*
-     * Input data to invoke the hosted agent. This feature is in preview.
+     * Input data to invoke the hosted agent.
      */
     @Generated
     private Map<String, BinaryData> invokeInput;
 
     /**
-     * Get the invokeInput property: Input data to invoke the hosted agent. This feature is in preview.
+     * Get the invokeInput property: Input data to invoke the hosted agent.
      *
      * @return the invokeInput value.
      */
@@ -683,7 +683,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     }
 
     /**
-     * Set the invokeInput property: Input data to invoke the hosted agent. This feature is in preview.
+     * Set the invokeInput property: Input data to invoke the hosted agent.
      *
      * @param invokeInput the invokeInput value to set.
      * @return the ResponseCreateParams object itself.

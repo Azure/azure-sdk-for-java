@@ -44,6 +44,18 @@ public final class StaticRoutesConfig implements JsonSerializable<StaticRoutesCo
     }
 
     /**
+     * Set the propagateStaticRoutes property: Boolean indicating whether static routes on this connection are
+     * automatically propagate to route tables which this connection propagates to.
+     * 
+     * @param propagateStaticRoutes the propagateStaticRoutes value to set.
+     * @return the StaticRoutesConfig object itself.
+     */
+    public StaticRoutesConfig withPropagateStaticRoutes(Boolean propagateStaticRoutes) {
+        this.propagateStaticRoutes = propagateStaticRoutes;
+        return this;
+    }
+
+    /**
      * Get the vnetLocalRouteOverrideCriteria property: Parameter determining whether NVA in spoke vnet is bypassed for
      * traffic with destination in spoke.
      * 
@@ -80,6 +92,7 @@ public final class StaticRoutesConfig implements JsonSerializable<StaticRoutesCo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("propagateStaticRoutes", this.propagateStaticRoutes);
         jsonWriter.writeStringField("vnetLocalRouteOverrideCriteria",
             this.vnetLocalRouteOverrideCriteria == null ? null : this.vnetLocalRouteOverrideCriteria.toString());
         return jsonWriter.writeEndObject();

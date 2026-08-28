@@ -59,6 +59,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -335,7 +336,7 @@ public final class CosmosAsyncClient implements Closeable {
      * Create a Database if it does not already exist on the service.
      * <br/>
      * The throughputProperties will only be used if the specified database
-     * does not exist and therefor a new database will be created with throughputProperties.
+     * does not exist and therefore a new database will be created with throughputProperties.
      * <br/>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
@@ -880,6 +881,17 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public List<String> getPreferredRegions(CosmosAsyncClient client) {
                     return client.connectionPolicy.getPreferredRegions();
+                }
+
+                @Override
+                public List<String> getExcludedRegions(CosmosAsyncClient client) {
+                    if (client.connectionPolicy.getExcludedRegionsSupplier() == null
+                        || client.connectionPolicy.getExcludedRegionsSupplier().get() == null) {
+
+                        return Collections.emptyList();
+                    }
+
+                    return new ArrayList<>(client.connectionPolicy.getExcludedRegionsSupplier().get().getExcludedRegions());
                 }
 
                 @Override

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class WorkbenchesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/GetWorkbench.json
+     * x-ms-original-file: 2026-05-15-preview/GetWorkbench.json
      */
     /**
      * Sample code: GetWorkbench.

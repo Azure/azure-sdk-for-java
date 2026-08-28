@@ -227,7 +227,6 @@ public class ServiceBusMessageChannelBinder extends
             .getHeaders()
             .get(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
         if (messageContext != null) {
-            messageContext.deadLetter();
             DeadLetterOptions options = new DeadLetterOptions();
             options.setDeadLetterReason(deadLetterReason);
             options.setDeadLetterErrorDescription(deadLetterErrorDescription);

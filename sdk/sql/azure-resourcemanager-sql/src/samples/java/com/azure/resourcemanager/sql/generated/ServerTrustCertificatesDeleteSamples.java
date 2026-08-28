@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerTrustCertificatesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerTrustCertificatesDelete.json
+     * x-ms-original-file: 2025-01-01/ServerTrustCertificatesDelete.json
      */
     /**
      * Sample code: Delete server trust certificate.

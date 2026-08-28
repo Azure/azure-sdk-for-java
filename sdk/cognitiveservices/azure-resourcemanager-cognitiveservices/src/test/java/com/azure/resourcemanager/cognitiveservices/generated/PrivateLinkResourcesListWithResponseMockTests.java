@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"mbcsloygsabdgd\",\"requiredMembers\":[\"onsdunr\",\"zvzuat\"],\"requiredZoneNames\":[\"zuyxtrvfdbqskg\",\"jbvitptpvsf\"],\"displayName\":\"vdhpiwrmuwkgjwb\"},\"id\":\"dwfbwxy\",\"name\":\"dqtmggcpdrmeg\",\"type\":\"jrzctwymz\"},{\"properties\":{\"groupId\":\"qkkge\",\"requiredMembers\":[\"phgliupqscoobk\",\"lcaxsqcomjiqi\"],\"requiredZoneNames\":[\"evxxkdevpximzii\",\"meqmduvtvodqxxpq\",\"ml\",\"ibtblmcvrjazno\"],\"displayName\":\"ofqvpbqsdq\"},\"id\":\"sb\",\"name\":\"sbbmitaftazgcx\",\"type\":\"vqlcqufylamxo\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"rhikwsbzrhdug\",\"requiredMembers\":[\"trgzfr\",\"njfhrjh\"],\"requiredZoneNames\":[\"bauseqnczk\",\"ihvtuwyjsqw\"],\"displayName\":\"zoszjg\"},\"id\":\"nkfnyskwwunq\",\"name\":\"czavoj\",\"type\":\"slhip\"},{\"properties\":{\"groupId\":\"vbljpxprrvc\",\"requiredMembers\":[\"uqalpcufjjfxt\",\"ztqdstahhh\"],\"requiredZoneNames\":[\"xxsri\",\"rcwbaae\"],\"displayName\":\"yefmxwoqotii\"},\"id\":\"gpasrvrmtisty\",\"name\":\"kjhorlxkpy\",\"type\":\"k\"},{\"properties\":{\"groupId\":\"ycntrqxxwtdmb\",\"requiredMembers\":[\"suhqhtoxt\",\"yqavfxbqmzxsyaks\",\"npaami\"],\"requiredZoneNames\":[\"ghvwtgp\"],\"displayName\":\"chcgsfz\"},\"id\":\"jkiysqbjsdj\",\"name\":\"gxe\",\"type\":\"sgw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("kxunsaujqgbb", "vovoa", com.azure.core.util.Context.NONE)
+            .listWithResponse("kqmxvpor", "wbwggijts", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zuyxtrvfdbqskg", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("bauseqnczk", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

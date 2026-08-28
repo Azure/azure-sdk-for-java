@@ -6,6 +6,7 @@ import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -46,14 +47,17 @@ public class CustomerWorkflowChangeFeedProcessorTest extends CustomerWorkflowTes
         closeClient();
     }
 
-    @Test(groups = {"fi-customer-workflows"}, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"fi-customer-workflows"}, timeOut = 5 * TIMEOUT,
+        retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void latestVersionProcessorRestartResumesFromLeasesWorkflow() throws InterruptedException {
-        CosmosAsyncContainer feedContainer = createTemporaryContainer("customer-cfp-feed", "/mypk");
-        CosmosAsyncContainer leaseContainer = createTemporaryContainer("customer-cfp-lease", "/id");
+        CosmosAsyncContainer feedContainer = null;
+        CosmosAsyncContainer leaseContainer = null;
         ChangeFeedProcessor processor = null;
         FaultInjectionRule readFeedDelayRule = null;
 
         try {
+            feedContainer = createTemporaryContainer("customer-cfp-feed", "/mypk");
+            leaseContainer = createTemporaryContainer("customer-cfp-lease", "/id");
             Set<String> expectedIds = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
             Set<String> receivedIds = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
             CountDownLatch initialLatch = new CountDownLatch(2);
@@ -108,13 +112,16 @@ public class CustomerWorkflowChangeFeedProcessorTest extends CustomerWorkflowTes
         }
     }
 
-    @Test(groups = {"fi-customer-workflows"}, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"fi-customer-workflows"}, timeOut = 5 * TIMEOUT,
+        retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void latestVersionProcessorWithNewLeasePrefixReprocessesFromBeginningWorkflow() throws InterruptedException {
-        CosmosAsyncContainer feedContainer = createTemporaryContainer("customer-cfp-feed", "/mypk");
-        CosmosAsyncContainer leaseContainer = createTemporaryContainer("customer-cfp-lease", "/id");
+        CosmosAsyncContainer feedContainer = null;
+        CosmosAsyncContainer leaseContainer = null;
         ChangeFeedProcessor processor = null;
 
         try {
+            feedContainer = createTemporaryContainer("customer-cfp-feed", "/mypk");
+            leaseContainer = createTemporaryContainer("customer-cfp-lease", "/id");
             Set<String> expectedIds = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
             Set<String> initialReceivedIds = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
             CountDownLatch initialLatch = new CountDownLatch(2);

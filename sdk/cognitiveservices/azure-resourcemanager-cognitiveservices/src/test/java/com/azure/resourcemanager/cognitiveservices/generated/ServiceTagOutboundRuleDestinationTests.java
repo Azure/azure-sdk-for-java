@@ -14,27 +14,27 @@ public final class ServiceTagOutboundRuleDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTagOutboundRuleDestination model = BinaryData.fromString(
-            "{\"serviceTag\":\"wjiutgnjiz\",\"protocol\":\"ewoi\",\"portRanges\":\"rvzb\",\"action\":\"Deny\",\"addressPrefixes\":[\"rziuctixgbdsuif\",\"evkaa\"]}")
+            "{\"serviceTag\":\"jfdoesxxhm\",\"protocol\":\"dbckyo\",\"portRanges\":\"xkxhnegknjzrbhtm\",\"action\":\"Deny\",\"addressPrefixes\":[\"kaobrl\",\"pgsn\",\"agnchjhgemuowaky\",\"a\"]}")
             .toObject(ServiceTagOutboundRuleDestination.class);
-        Assertions.assertEquals("wjiutgnjiz", model.serviceTag());
-        Assertions.assertEquals("ewoi", model.protocol());
-        Assertions.assertEquals("rvzb", model.portRanges());
+        Assertions.assertEquals("jfdoesxxhm", model.serviceTag());
+        Assertions.assertEquals("dbckyo", model.protocol());
+        Assertions.assertEquals("xkxhnegknjzrbhtm", model.portRanges());
         Assertions.assertEquals(RuleAction.DENY, model.action());
-        Assertions.assertEquals("rziuctixgbdsuif", model.addressPrefixes().get(0));
+        Assertions.assertEquals("kaobrl", model.addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTagOutboundRuleDestination model = new ServiceTagOutboundRuleDestination().withServiceTag("wjiutgnjiz")
-            .withProtocol("ewoi")
-            .withPortRanges("rvzb")
+        ServiceTagOutboundRuleDestination model = new ServiceTagOutboundRuleDestination().withServiceTag("jfdoesxxhm")
+            .withProtocol("dbckyo")
+            .withPortRanges("xkxhnegknjzrbhtm")
             .withAction(RuleAction.DENY)
-            .withAddressPrefixes(Arrays.asList("rziuctixgbdsuif", "evkaa"));
+            .withAddressPrefixes(Arrays.asList("kaobrl", "pgsn", "agnchjhgemuowaky", "a"));
         model = BinaryData.fromObject(model).toObject(ServiceTagOutboundRuleDestination.class);
-        Assertions.assertEquals("wjiutgnjiz", model.serviceTag());
-        Assertions.assertEquals("ewoi", model.protocol());
-        Assertions.assertEquals("rvzb", model.portRanges());
+        Assertions.assertEquals("jfdoesxxhm", model.serviceTag());
+        Assertions.assertEquals("dbckyo", model.protocol());
+        Assertions.assertEquals("xkxhnegknjzrbhtm", model.portRanges());
         Assertions.assertEquals(RuleAction.DENY, model.action());
-        Assertions.assertEquals("rziuctixgbdsuif", model.addressPrefixes().get(0));
+        Assertions.assertEquals("kaobrl", model.addressPrefixes().get(0));
     }
 }

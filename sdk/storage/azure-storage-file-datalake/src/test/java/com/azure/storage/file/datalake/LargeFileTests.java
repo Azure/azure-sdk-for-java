@@ -114,12 +114,20 @@ public class LargeFileTests extends DataLakeTestBase {
         long tail = Constants.MB;
         File file = getLargeRandomFile(LARGE_BLOCK_SIZE + tail);
 
-        fc.uploadFromFile(file.toPath().toString(), new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE),
-            null, null, null, null);
+        try {
+            fc.uploadFromFile(file.toPath().toString(),
+                new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE), null, null, null, null);
 
-        assertEquals(2, countingPolicy.count.get());
-        assertTrue(countingPolicy.appendPayloadSizes.contains(LARGE_BLOCK_SIZE));
-        assertTrue(countingPolicy.appendPayloadSizes.contains(tail));
+            assertEquals(2, countingPolicy.count.get());
+            assertTrue(countingPolicy.appendPayloadSizes.contains(LARGE_BLOCK_SIZE));
+            assertTrue(countingPolicy.appendPayloadSizes.contains(tail));
+        } finally {
+            // Delete the ~2.5 GiB source eagerly instead of waiting for deleteOnExit() so it doesn't occupy agent
+            // disk for the remainder of the module's test JVM.
+            if (!file.delete()) {
+                file.deleteOnExit();
+            }
+        }
     }
 
     // This test does not send large payload over the wire

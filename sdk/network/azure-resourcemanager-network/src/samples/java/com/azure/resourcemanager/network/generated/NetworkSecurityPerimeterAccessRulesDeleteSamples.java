@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterAccessRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspAccessRuleDelete.json
+     * x-ms-original-file: 2025-09-01/NspAccessRuleDelete.json
      */
     /**
      * Sample code: NspAccessRulesDelete.

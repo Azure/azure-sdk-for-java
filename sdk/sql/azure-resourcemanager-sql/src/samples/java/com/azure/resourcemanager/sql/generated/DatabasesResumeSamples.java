@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabasesResumeSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ResumeDatabase.json
+     * x-ms-original-file: 2025-01-01/ResumeDatabase.json
      */
     /**
      * Sample code: Resumes a database.

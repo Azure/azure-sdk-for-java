@@ -12,9 +12,9 @@ public final class HorizonDbPrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbPrivateLinkResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"yexfwh\",\"requiredMembers\":[\"i\",\"vyvdcs\",\"tynnaamdectehfi\",\"scjeypv\"],\"requiredZoneNames\":[\"rkgqhcjrefo\",\"gm\",\"qsl\",\"yyvxyqjpkcattpn\"]},\"id\":\"cr\",\"name\":\"czsqpjhvm\",\"type\":\"ajvnysounqe\"},{\"properties\":{\"groupId\":\"oaeupfhyhltrpmo\",\"requiredMembers\":[\"cma\",\"u\",\"kthfui\",\"aodsfcpkv\"],\"requiredZoneNames\":[\"puozmyzydag\",\"uaxbezyiuokkt\"]},\"id\":\"rdxwzywqsm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"},{\"properties\":{\"groupId\":\"stkiiuxhqyud\",\"requiredMembers\":[\"rq\",\"b\",\"oczvy\",\"fqrvkdvjsllrmvvd\"],\"requiredZoneNames\":[\"t\",\"pnpulexxbczwtru\"]},\"id\":\"qzbqjvsov\",\"name\":\"yokacspkw\",\"type\":\"hzdobpxjmflbvvnc\"},{\"properties\":{\"groupId\":\"cciw\",\"requiredMembers\":[\"uqkhrsajiwku\"],\"requiredZoneNames\":[\"skghsauuimj\"]},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"}],\"nextLink\":\"csonpclhoco\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"wnfnbacf\",\"requiredMembers\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"],\"requiredZoneNames\":[\"mngnzscxaqw\"]},\"id\":\"chcbonqvpkvlrxnj\",\"name\":\"ase\",\"type\":\"pheoflokeyy\"},{\"properties\":{\"groupId\":\"jbdlwtgrhpdjpju\",\"requiredMembers\":[\"xazjpqyegual\",\"b\"],\"requiredZoneNames\":[\"e\",\"jzzvdud\"]},\"id\":\"dslfhotwmcy\",\"name\":\"pwlbjnpg\",\"type\":\"cftadeh\"},{\"properties\":{\"groupId\":\"tyfsoppusuesn\",\"requiredMembers\":[\"ej\",\"avo\"],\"requiredZoneNames\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"]},\"id\":\"jjugwdkcglhslaz\",\"name\":\"dyggdtjixhbku\",\"type\":\"fqweykhmene\"},{\"properties\":{\"groupId\":\"exfwhy\",\"requiredMembers\":[\"bvyvdcsity\"],\"requiredZoneNames\":[\"amdecte\",\"f\"]},\"id\":\"scjeypv\",\"name\":\"ezrkgqhcjrefo\",\"type\":\"gm\"}],\"nextLink\":\"sle\"}")
             .toObject(HorizonDbPrivateLinkResourceListResult.class);
-        Assertions.assertEquals("rkgqhcjrefo", model.value().get(0).properties().requiredZoneNames().get(0));
-        Assertions.assertEquals("csonpclhoco", model.nextLink());
+        Assertions.assertEquals("mngnzscxaqw", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("sle", model.nextLink());
     }
 }

@@ -180,6 +180,20 @@ public interface ComputeManagementClient {
     VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands();
 
     /**
+     * Gets the VirtualMachineDiagnosticRunCommandsClient object to access its operations.
+     * 
+     * @return the VirtualMachineDiagnosticRunCommandsClient object.
+     */
+    VirtualMachineDiagnosticRunCommandsClient getVirtualMachineDiagnosticRunCommands();
+
+    /**
+     * Gets the VirtualMachineScaleSetVMDiagnosticRunCommandsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetVMDiagnosticRunCommandsClient object.
+     */
+    VirtualMachineScaleSetVMDiagnosticRunCommandsClient getVirtualMachineScaleSetVMDiagnosticRunCommands();
+
+    /**
      * Gets the DisksClient object to access its operations.
      * 
      * @return the DisksClient object.
@@ -311,6 +325,20 @@ public interface ComputeManagementClient {
      * @return the CommunityGalleryImageVersionsClient object.
      */
     CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions();
+
+    /**
+     * Gets the SharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the SharedGalleryInvitesClient object.
+     */
+    SharedGalleryInvitesClient getSharedGalleryInvites();
+
+    /**
+     * Gets the TenantLevelSharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the TenantLevelSharedGalleryInvitesClient object.
+     */
+    TenantLevelSharedGalleryInvitesClient getTenantLevelSharedGalleryInvites();
 
     /**
      * Gets the ResourceSkusClient object to access its operations.

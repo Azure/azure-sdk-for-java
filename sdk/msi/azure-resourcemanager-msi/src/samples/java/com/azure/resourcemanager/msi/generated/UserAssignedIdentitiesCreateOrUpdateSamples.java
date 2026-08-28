@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class UserAssignedIdentitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/IdentityCreate.json
+     * x-ms-original-file: 2024-11-30/IdentityCreate.json
      */
     /**
      * Sample code: IdentityCreate.

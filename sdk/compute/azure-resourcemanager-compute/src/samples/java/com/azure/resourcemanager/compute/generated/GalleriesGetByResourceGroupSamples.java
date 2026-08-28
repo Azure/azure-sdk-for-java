@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.SelectPermissions;
  */
 public final class GalleriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/CommunityGallery_Get.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/CommunityGallery_Get.json
      */
     /**
      * Sample code: Get a community gallery.
@@ -27,7 +27,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Get_WithSelectPermissions.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Get_WithSelectPermissions.json
      */
     /**
      * Sample code: Get a gallery with select permissions.
@@ -42,7 +42,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Get.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Get.json
      */
     /**
      * Sample code: Get a gallery.
@@ -57,7 +57,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
      */
     /**
      * Sample code: Get a gallery with expand sharingProfile groups.
@@ -73,7 +73,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Get_WithManagedIdentity.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Get_WithManagedIdentity.json
      */
     /**
      * Sample code: Get a gallery with system-assigned and user-assigned managed identities.

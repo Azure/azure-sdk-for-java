@@ -34,11 +34,16 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cloudhealth.fluent.EntitiesClient;
+import com.azure.resourcemanager.cloudhealth.fluent.models.DataAnnotationInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetDataAnnotationsResponseInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetSignalRecommendationsResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.EntityListResult;
+import com.azure.resourcemanager.cloudhealth.models.AddDataAnnotationRequest;
 import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsRequest;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
 import java.nio.ByteBuffer;
@@ -218,6 +223,68 @@ public final class EntitiesClientImpl implements EntitiesClient {
             @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") HealthReportRequest body,
             Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/addDataAnnotation")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DataAnnotationInner>> addDataAnnotation(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AddDataAnnotationRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/addDataAnnotation")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataAnnotationInner> addDataAnnotationSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AddDataAnnotationRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getDataAnnotations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetDataAnnotationsResponseInner>> getDataAnnotations(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetDataAnnotationsRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getDataAnnotations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<GetDataAnnotationsResponseInner> getDataAnnotationsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetDataAnnotationsRequest body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalRecommendations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetSignalRecommendationsResponseInner>> getSignalRecommendations(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalRecommendations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<GetSignalRecommendationsResponseInner> getSignalRecommendationsSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1056,6 +1123,264 @@ public final class EntitiesClientImpl implements EntitiesClient {
     public void ingestHealthReport(String resourceGroupName, String healthModelName, String entityName,
         HealthReportRequest body) {
         ingestHealthReportWithResponse(resourceGroupName, healthModelName, entityName, body, Context.NONE);
+    }
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DataAnnotationInner>> addDataAnnotationWithResponseAsync(String resourceGroupName,
+        String healthModelName, String entityName, AddDataAnnotationRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.addDataAnnotation(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DataAnnotationInner> addDataAnnotationAsync(String resourceGroupName, String healthModelName,
+        String entityName, AddDataAnnotationRequest body) {
+        return addDataAnnotationWithResponseAsync(resourceGroupName, healthModelName, entityName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataAnnotationInner> addDataAnnotationWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, AddDataAnnotationRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.addDataAnnotationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataAnnotationInner addDataAnnotation(String resourceGroupName, String healthModelName, String entityName,
+        AddDataAnnotationRequest body) {
+        return addDataAnnotationWithResponse(resourceGroupName, healthModelName, entityName, body, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetDataAnnotationsResponseInner>> getDataAnnotationsWithResponseAsync(
+        String resourceGroupName, String healthModelName, String entityName, GetDataAnnotationsRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getDataAnnotations(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetDataAnnotationsResponseInner> getDataAnnotationsAsync(String resourceGroupName,
+        String healthModelName, String entityName, GetDataAnnotationsRequest body) {
+        return getDataAnnotationsWithResponseAsync(resourceGroupName, healthModelName, entityName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetDataAnnotationsResponseInner> getDataAnnotationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, GetDataAnnotationsRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getDataAnnotationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetDataAnnotationsResponseInner getDataAnnotations(String resourceGroupName, String healthModelName,
+        String entityName, GetDataAnnotationsRequest body) {
+        return getDataAnnotationsWithResponse(resourceGroupName, healthModelName, entityName, body, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetSignalRecommendationsResponseInner>>
+        getSignalRecommendationsWithResponseAsync(String resourceGroupName, String healthModelName, String entityName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.getSignalRecommendations(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetSignalRecommendationsResponseInner> getSignalRecommendationsAsync(String resourceGroupName,
+        String healthModelName, String entityName) {
+        return getSignalRecommendationsWithResponseAsync(resourceGroupName, healthModelName, entityName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetSignalRecommendationsResponseInner> getSignalRecommendationsWithResponse(
+        String resourceGroupName, String healthModelName, String entityName, Context context) {
+        final String accept = "application/json";
+        return service.getSignalRecommendationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, accept, context);
+    }
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetSignalRecommendationsResponseInner getSignalRecommendations(String resourceGroupName,
+        String healthModelName, String entityName) {
+        return getSignalRecommendationsWithResponse(resourceGroupName, healthModelName, entityName, Context.NONE)
+            .getValue();
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PacketCapturesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherPacketCaptureDelete.json
+     * x-ms-original-file: 2025-09-01/NetworkWatcherPacketCaptureDelete.json
      */
     /**
      * Sample code: Delete packet capture.

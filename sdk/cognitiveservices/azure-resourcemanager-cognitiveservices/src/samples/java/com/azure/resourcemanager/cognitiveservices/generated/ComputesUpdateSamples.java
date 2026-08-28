@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ComputesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateCompute.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateCompute.json
      */
     /**
      * Sample code: UpdateCompute.

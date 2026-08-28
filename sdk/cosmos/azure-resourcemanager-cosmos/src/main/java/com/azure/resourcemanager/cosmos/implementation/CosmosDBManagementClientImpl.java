@@ -11,28 +11,21 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.cosmos.fluent.CassandraClustersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraDataCentersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraResourcesClient;
-import com.azure.resourcemanager.cosmos.fluent.ChaosFaultsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionsClient;
-import com.azure.resourcemanager.cosmos.fluent.CopyJobsClient;
 import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClient;
-import com.azure.resourcemanager.cosmos.fluent.DataTransferJobsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabasesClient;
-import com.azure.resourcemanager.cosmos.fluent.FleetAnalyticsClient;
 import com.azure.resourcemanager.cosmos.fluent.FleetsClient;
 import com.azure.resourcemanager.cosmos.fluent.FleetspaceAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.FleetspacesClient;
-import com.azure.resourcemanager.cosmos.fluent.GarnetClustersClient;
-import com.azure.resourcemanager.cosmos.fluent.GraphResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.GremlinResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.LocationsClient;
 import com.azure.resourcemanager.cosmos.fluent.MongoDBResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.MongoMIResourcesClient;
-import com.azure.resourcemanager.cosmos.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.cosmos.fluent.NotebookWorkspacesClient;
 import com.azure.resourcemanager.cosmos.fluent.OperationsClient;
 import com.azure.resourcemanager.cosmos.fluent.PartitionKeyRangeIdRegionsClient;
@@ -57,10 +50,6 @@ import com.azure.resourcemanager.cosmos.fluent.RestorableTablesClient;
 import com.azure.resourcemanager.cosmos.fluent.ServicesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
-import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolAccountsClient;
-import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolAccountsOperationsClient;
-import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolsClient;
-import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolsOperationsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -182,34 +171,6 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The CopyJobsClient object to access its operations.
-     */
-    private final CopyJobsClient copyJobs;
-
-    /**
-     * Gets the CopyJobsClient object to access its operations.
-     * 
-     * @return the CopyJobsClient object.
-     */
-    public CopyJobsClient getCopyJobs() {
-        return this.copyJobs;
-    }
-
-    /**
-     * The GraphResourcesClient object to access its operations.
-     */
-    private final GraphResourcesClient graphResources;
-
-    /**
-     * Gets the GraphResourcesClient object to access its operations.
-     * 
-     * @return the GraphResourcesClient object.
-     */
-    public GraphResourcesClient getGraphResources() {
-        return this.graphResources;
-    }
-
-    /**
      * The SqlResourcesClient object to access its operations.
      */
     private final SqlResourcesClient sqlResources;
@@ -280,48 +241,6 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The DataTransferJobsClient object to access its operations.
-     */
-    private final DataTransferJobsClient dataTransferJobs;
-
-    /**
-     * Gets the DataTransferJobsClient object to access its operations.
-     * 
-     * @return the DataTransferJobsClient object.
-     */
-    public DataTransferJobsClient getDataTransferJobs() {
-        return this.dataTransferJobs;
-    }
-
-    /**
-     * The GarnetClustersClient object to access its operations.
-     */
-    private final GarnetClustersClient garnetClusters;
-
-    /**
-     * Gets the GarnetClustersClient object to access its operations.
-     * 
-     * @return the GarnetClustersClient object.
-     */
-    public GarnetClustersClient getGarnetClusters() {
-        return this.garnetClusters;
-    }
-
-    /**
-     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
-     */
-    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
-
-    /**
-     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
-     * 
-     * @return the NetworkSecurityPerimeterConfigurationsClient object.
-     */
-    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
-        return this.networkSecurityPerimeterConfigurations;
-    }
-
-    /**
      * The NotebookWorkspacesClient object to access its operations.
      */
     private final NotebookWorkspacesClient notebookWorkspaces;
@@ -361,20 +280,6 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
-    }
-
-    /**
-     * The ChaosFaultsClient object to access its operations.
-     */
-    private final ChaosFaultsClient chaosFaults;
-
-    /**
-     * Gets the ChaosFaultsClient object to access its operations.
-     * 
-     * @return the ChaosFaultsClient object.
-     */
-    public ChaosFaultsClient getChaosFaults() {
-        return this.chaosFaults;
     }
 
     /**
@@ -756,62 +661,6 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The ThroughputPoolsClient object to access its operations.
-     */
-    private final ThroughputPoolsClient throughputPools;
-
-    /**
-     * Gets the ThroughputPoolsClient object to access its operations.
-     * 
-     * @return the ThroughputPoolsClient object.
-     */
-    public ThroughputPoolsClient getThroughputPools() {
-        return this.throughputPools;
-    }
-
-    /**
-     * The ThroughputPoolsOperationsClient object to access its operations.
-     */
-    private final ThroughputPoolsOperationsClient throughputPoolsOperations;
-
-    /**
-     * Gets the ThroughputPoolsOperationsClient object to access its operations.
-     * 
-     * @return the ThroughputPoolsOperationsClient object.
-     */
-    public ThroughputPoolsOperationsClient getThroughputPoolsOperations() {
-        return this.throughputPoolsOperations;
-    }
-
-    /**
-     * The ThroughputPoolAccountsClient object to access its operations.
-     */
-    private final ThroughputPoolAccountsClient throughputPoolAccounts;
-
-    /**
-     * Gets the ThroughputPoolAccountsClient object to access its operations.
-     * 
-     * @return the ThroughputPoolAccountsClient object.
-     */
-    public ThroughputPoolAccountsClient getThroughputPoolAccounts() {
-        return this.throughputPoolAccounts;
-    }
-
-    /**
-     * The ThroughputPoolAccountsOperationsClient object to access its operations.
-     */
-    private final ThroughputPoolAccountsOperationsClient throughputPoolAccountsOperations;
-
-    /**
-     * Gets the ThroughputPoolAccountsOperationsClient object to access its operations.
-     * 
-     * @return the ThroughputPoolAccountsOperationsClient object.
-     */
-    public ThroughputPoolAccountsOperationsClient getThroughputPoolAccountsOperations() {
-        return this.throughputPoolAccountsOperations;
-    }
-
-    /**
      * The MongoMIResourcesClient object to access its operations.
      */
     private final MongoMIResourcesClient mongoMIResources;
@@ -837,20 +686,6 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
      */
     public FleetsClient getFleets() {
         return this.fleets;
-    }
-
-    /**
-     * The FleetAnalyticsClient object to access its operations.
-     */
-    private final FleetAnalyticsClient fleetAnalytics;
-
-    /**
-     * Gets the FleetAnalyticsClient object to access its operations.
-     * 
-     * @return the FleetAnalyticsClient object.
-     */
-    public FleetAnalyticsClient getFleetAnalytics() {
-        return this.fleetAnalytics;
     }
 
     /**
@@ -899,23 +734,17 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-11-01-preview";
+        this.apiVersion = "2026-03-15";
         this.operations = new OperationsClientImpl(this);
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
-        this.copyJobs = new CopyJobsClientImpl(this);
-        this.graphResources = new GraphResourcesClientImpl(this);
         this.sqlResources = new SqlResourcesClientImpl(this);
         this.mongoDBResources = new MongoDBResourcesClientImpl(this);
         this.tableResources = new TableResourcesClientImpl(this);
         this.cassandraResources = new CassandraResourcesClientImpl(this);
         this.gremlinResources = new GremlinResourcesClientImpl(this);
-        this.dataTransferJobs = new DataTransferJobsClientImpl(this);
-        this.garnetClusters = new GarnetClustersClientImpl(this);
-        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.notebookWorkspaces = new NotebookWorkspacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.chaosFaults = new ChaosFaultsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.collections = new CollectionsClientImpl(this);
         this.collectionRegions = new CollectionRegionsClientImpl(this);
@@ -943,13 +772,8 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.restorableTables = new RestorableTablesClientImpl(this);
         this.restorableTableResources = new RestorableTableResourcesClientImpl(this);
         this.services = new ServicesClientImpl(this);
-        this.throughputPools = new ThroughputPoolsClientImpl(this);
-        this.throughputPoolsOperations = new ThroughputPoolsOperationsClientImpl(this);
-        this.throughputPoolAccounts = new ThroughputPoolAccountsClientImpl(this);
-        this.throughputPoolAccountsOperations = new ThroughputPoolAccountsOperationsClientImpl(this);
         this.mongoMIResources = new MongoMIResourcesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
-        this.fleetAnalytics = new FleetAnalyticsClientImpl(this);
         this.fleetspaces = new FleetspacesClientImpl(this);
         this.fleetspaceAccounts = new FleetspaceAccountsClientImpl(this);
     }

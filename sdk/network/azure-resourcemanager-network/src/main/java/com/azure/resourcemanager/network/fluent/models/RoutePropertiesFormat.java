@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RouteNextHopEcmp;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import java.io.IOException;
 
@@ -34,6 +35,12 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
      * is VirtualAppliance.
      */
     private String nextHopIpAddress;
+
+    /*
+     * The next hop definition containing ECMP next hop IP addresses. Only allowed when nextHopType is
+     * VirtualApplianceEcmp.
+     */
+    private RouteNextHopEcmp nextHop;
 
     /*
      * The provisioning state of the route resource.
@@ -114,6 +121,28 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     }
 
     /**
+     * Get the nextHop property: The next hop definition containing ECMP next hop IP addresses. Only allowed when
+     * nextHopType is VirtualApplianceEcmp.
+     * 
+     * @return the nextHop value.
+     */
+    public RouteNextHopEcmp nextHop() {
+        return this.nextHop;
+    }
+
+    /**
+     * Set the nextHop property: The next hop definition containing ECMP next hop IP addresses. Only allowed when
+     * nextHopType is VirtualApplianceEcmp.
+     * 
+     * @param nextHop the nextHop value to set.
+     * @return the RoutePropertiesFormat object itself.
+     */
+    public RoutePropertiesFormat withNextHop(RouteNextHopEcmp nextHop) {
+        this.nextHop = nextHop;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the route resource.
      * 
      * @return the provisioningState value.
@@ -143,6 +172,9 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
                 .log(new IllegalArgumentException(
                     "Missing required property nextHopType in model RoutePropertiesFormat"));
         }
+        if (nextHop() != null) {
+            nextHop().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoutePropertiesFormat.class);
@@ -156,6 +188,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
         jsonWriter.writeStringField("nextHopType", this.nextHopType == null ? null : this.nextHopType.toString());
         jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
         jsonWriter.writeStringField("nextHopIpAddress", this.nextHopIpAddress);
+        jsonWriter.writeJsonField("nextHop", this.nextHop);
         return jsonWriter.writeEndObject();
     }
 
@@ -181,6 +214,8 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
                     deserializedRoutePropertiesFormat.addressPrefix = reader.getString();
                 } else if ("nextHopIpAddress".equals(fieldName)) {
                     deserializedRoutePropertiesFormat.nextHopIpAddress = reader.getString();
+                } else if ("nextHop".equals(fieldName)) {
+                    deserializedRoutePropertiesFormat.nextHop = RouteNextHopEcmp.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRoutePropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

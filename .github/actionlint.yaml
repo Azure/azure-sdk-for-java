@@ -1,3 +1,15 @@
 self-hosted-runner:
   labels:
     - 1ES.Pool=azsdk-pool-github-runners
+
+# Generated GitHub Agentic Workflow (gh-aw) lock files use newer GitHub Actions
+# features that actionlint (v1.7.12, the latest release) does not yet recognize:
+#   - the "copilot-requests" permission scope
+#   - the "queue" key under "concurrency"
+# These are valid GitHub features, so ignore those specific false-positives for the
+# generated *.lock.yml files only. Hand-authored workflows remain fully linted.
+paths:
+  .github/workflows/*.lock.yml:
+    ignore:
+      - 'unknown permission scope "copilot-requests"'
+      - 'unexpected key "queue" for "concurrency" section'

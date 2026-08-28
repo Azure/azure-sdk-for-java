@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortAuthorizationsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRoutePortAuthorizationGet.json
+     * x-ms-original-file: 2025-09-01/ExpressRoutePortAuthorizationGet.json
      */
     /**
      * Sample code: Get ExpressRoutePort Authorization.

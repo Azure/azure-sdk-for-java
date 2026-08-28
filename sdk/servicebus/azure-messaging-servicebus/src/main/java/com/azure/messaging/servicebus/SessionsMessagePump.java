@@ -894,7 +894,15 @@ final class SessionsMessagePump {
 
             Mono<Void> updateDispositionMono;
             if (receiver != null) {
-                updateDispositionMono = receiver.updateDisposition(message.getLockToken(), deliveryState);
+                // Mark the message settled once the broker acknowledges the disposition, mirroring the non-session
+                // and V1 session paths (ServiceBusReceiverAsyncClient). This arms the message.isSettled() guard above
+                // so that a redundant settlement attempt (e.g. when the handler calls complete() manually AND
+                // auto-complete is left enabled) short-circuits here with a benign "already settled" error instead of
+                // reaching the receive-link and logging a spurious DeliveryNotOnLinkException once the delivery has
+                // already been removed from the link's DeliveryMap.
+                // See https://github.com/Azure/azure-sdk-for-java/issues/47356
+                updateDispositionMono = receiver.updateDisposition(message.getLockToken(), deliveryState)
+                    .<Void>then(Mono.fromRunnable(() -> message.setIsSettled()));
             } else {
                 updateDispositionMono
                     = Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(message.getLockToken(), deliveryState));

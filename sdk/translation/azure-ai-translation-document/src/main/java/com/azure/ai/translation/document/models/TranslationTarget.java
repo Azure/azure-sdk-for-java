@@ -156,6 +156,7 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
         jsonWriter.writeStringField("targetUrl", this.targetUrl);
         jsonWriter.writeStringField("language", this.language);
         jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("deploymentName", this.deploymentName);
         jsonWriter.writeArrayField("glossaries", this.glossaries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("storageSource", this.storageSource == null ? null : this.storageSource.toString());
         return jsonWriter.writeEndObject();
@@ -176,6 +177,7 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
             String targetUrl = null;
             String language = null;
             String category = null;
+            String deploymentName = null;
             List<TranslationGlossary> glossaries = null;
             TranslationStorageSource storageSource = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -187,6 +189,8 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
                     language = reader.getString();
                 } else if ("category".equals(fieldName)) {
                     category = reader.getString();
+                } else if ("deploymentName".equals(fieldName)) {
+                    deploymentName = reader.getString();
                 } else if ("glossaries".equals(fieldName)) {
                     glossaries = reader.readArray(reader1 -> TranslationGlossary.fromJson(reader1));
                 } else if ("storageSource".equals(fieldName)) {
@@ -197,9 +201,38 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
             }
             TranslationTarget deserializedTranslationTarget = new TranslationTarget(targetUrl, language);
             deserializedTranslationTarget.category = category;
+            deserializedTranslationTarget.deploymentName = deploymentName;
             deserializedTranslationTarget.glossaries = glossaries;
             deserializedTranslationTarget.storageSource = storageSource;
             return deserializedTranslationTarget;
         });
+    }
+
+    /*
+     * Deployment name of the custom translation model for the translation request.
+     */
+    @Generated
+    private String deploymentName;
+
+    /**
+     * Get the deploymentName property: Deployment name of the custom translation model for the translation request.
+     *
+     * @return the deploymentName value.
+     */
+    @Generated
+    public String getDeploymentName() {
+        return this.deploymentName;
+    }
+
+    /**
+     * Set the deploymentName property: Deployment name of the custom translation model for the translation request.
+     *
+     * @param deploymentName the deploymentName value to set.
+     * @return the TranslationTarget object itself.
+     */
+    @Generated
+    public TranslationTarget setDeploymentName(String deploymentName) {
+        this.deploymentName = deploymentName;
+        return this;
     }
 }

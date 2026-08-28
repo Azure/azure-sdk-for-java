@@ -42,6 +42,13 @@ public final class SignalOperator extends ExpandableStringEnum<SignalOperator> {
     public static final SignalOperator NOT_EQUAL = fromString("NotEqual");
 
     /**
+     * Dynamic threshold — uses deviation from a ML-computed baseline to determine health state transitions. Only valid
+     * for the unhealthy threshold rule. Requires `sensitivity` and `lookBackWindow` on the rule; `threshold` is
+     * ignored.
+     */
+    public static final SignalOperator DYNAMIC = fromString("Dynamic");
+
+    /**
      * Creates a new instance of SignalOperator value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

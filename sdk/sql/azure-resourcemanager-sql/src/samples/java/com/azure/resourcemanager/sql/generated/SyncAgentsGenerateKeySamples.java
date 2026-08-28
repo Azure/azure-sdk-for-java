@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncAgentsGenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncAgentGenerateKey.json
+     * x-ms-original-file: 2025-01-01/SyncAgentGenerateKey.json
      */
     /**
      * Sample code: Generate a sync agent key.

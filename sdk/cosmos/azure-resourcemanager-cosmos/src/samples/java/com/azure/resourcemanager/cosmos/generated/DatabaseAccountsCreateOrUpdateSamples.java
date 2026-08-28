@@ -9,7 +9,6 @@ import com.azure.resourcemanager.cosmos.models.AnalyticalStorageSchemaType;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.cosmos.models.Capacity;
-import com.azure.resourcemanager.cosmos.models.CapacityMode;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.ContinuousModeBackupPolicy;
 import com.azure.resourcemanager.cosmos.models.ContinuousModeProperties;
@@ -45,7 +44,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -76,7 +75,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withRestoreParameters(new RestoreParameters().withRestoreWithTtlDisabled(false)
                     .withRestoreMode(RestoreMode.POINT_IN_TIME)
                     .withRestoreSource(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc")
+                        "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc")
                     .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-11T22:05:09Z"))
                     .withDatabasesToRestore(Arrays.asList(
                         new DatabaseRestoreResource().withDatabaseName("db1")
@@ -84,12 +83,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                         new DatabaseRestoreResource().withDatabaseName("db2")
                             .withCollectionNames(Arrays.asList("collection3", "collection4"))))
                     .withSourceBackupLocation("westus"))
-                .withEnableMaterializedViews(false)
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS), com.azure.core.util.Context.NONE);
+                .withMinimalTlsVersion(MinimalTlsVersion.TLS)
+                .withEnforceHierarchicalPartitionKeyIdLastLevel(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -139,18 +138,16 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withNetworkAclBypassResourceIds(Arrays.asList(
                     "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000))
-                .withCapacityMode(CapacityMode.PROVISIONED)
-                .withEnableMaterializedViews(false)
                 .withEnableBurstCapacity(true)
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS12)
                 .withEnablePriorityBasedExecution(true)
                 .withDefaultPriorityLevel(DefaultPriorityLevel.LOW)
                 .withEnablePerRegionPerPartitionAutoscale(true)
-                .withEnableAllVersionsAndDeletesChangeFeed(false), com.azure.core.util.Context.NONE);
+                .withEnforceHierarchicalPartitionKeyIdLastLevel(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

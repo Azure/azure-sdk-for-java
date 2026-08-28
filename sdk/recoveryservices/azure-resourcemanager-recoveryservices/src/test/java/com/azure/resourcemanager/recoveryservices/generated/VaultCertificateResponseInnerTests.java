@@ -13,14 +13,14 @@ public final class VaultCertificateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultCertificateResponseInner model = BinaryData.fromString(
-            "{\"name\":\"dptkoenkouk\",\"type\":\"udwtiukbl\",\"id\":\"gkpocipazyxoe\",\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"jnpiucgyg\",\"issuer\":\"qzntypm\",\"resourceId\":221325804548371978,\"subject\":\"c\",\"thumbprint\":\"qjsdpydnfyhxdeo\",\"validFrom\":\"2021-03-05T21:12:23Z\",\"validTo\":\"2021-05-15T00:01:52Z\"}}")
+            "{\"name\":\"puz\",\"type\":\"ispnqzahmgkbrp\",\"id\":\"dhibnuq\",\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"kadrgvt\",\"issuer\":\"gnbuy\",\"resourceId\":3652177911029735213,\"subject\":\"gmebfsiarbutrcv\",\"thumbprint\":\"azzmhjrunmpxt\",\"validFrom\":\"2021-10-06T02:07:53Z\",\"validTo\":\"2021-07-16T15:39:21Z\"}}")
             .toObject(VaultCertificateResponseInner.class);
-        Assertions.assertEquals("jnpiucgyg", model.properties().friendlyName());
-        Assertions.assertEquals("qzntypm", model.properties().issuer());
-        Assertions.assertEquals(221325804548371978L, model.properties().resourceId());
-        Assertions.assertEquals("c", model.properties().subject());
-        Assertions.assertEquals("qjsdpydnfyhxdeo", model.properties().thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T21:12:23Z"), model.properties().validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T00:01:52Z"), model.properties().validTo());
+        Assertions.assertEquals("kadrgvt", model.properties().friendlyName());
+        Assertions.assertEquals("gnbuy", model.properties().issuer());
+        Assertions.assertEquals(3652177911029735213L, model.properties().resourceId());
+        Assertions.assertEquals("gmebfsiarbutrcv", model.properties().subject());
+        Assertions.assertEquals("azzmhjrunmpxt", model.properties().thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T02:07:53Z"), model.properties().validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T15:39:21Z"), model.properties().validTo());
     }
 }

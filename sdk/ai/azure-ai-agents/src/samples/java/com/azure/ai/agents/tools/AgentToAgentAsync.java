@@ -6,7 +6,8 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.A2APreviewTool;
+import com.azure.ai.agents.models.A2AProtocolVersion;
+import com.azure.ai.agents.models.A2ATool;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -45,8 +46,8 @@ public class AgentToAgentAsync {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        // Create agent-to-agent tool with connection ID
-        A2APreviewTool a2aTool = new A2APreviewTool()
+        // Create agent-to-agent tool with A2A protocol version and connection ID
+        A2ATool a2aTool = new A2ATool(A2AProtocolVersion.V1_0)
             .setProjectConnectionId(a2aConnectionId);
         // Create agent with agent-to-agent tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

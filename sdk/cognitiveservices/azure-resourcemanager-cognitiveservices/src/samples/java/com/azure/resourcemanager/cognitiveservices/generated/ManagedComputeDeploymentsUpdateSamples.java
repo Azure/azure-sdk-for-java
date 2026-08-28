@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class ManagedComputeDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateVmManagedComputeDeployment.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateVmManagedComputeDeployment.json
      */
     /**
      * Sample code: UpdateVmManagedComputeDeployment.
@@ -28,7 +28,7 @@ public final class ManagedComputeDeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateManagedComputeDeployment.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateManagedComputeDeployment.json
      */
     /**
      * Sample code: UpdateManagedComputeDeployment.

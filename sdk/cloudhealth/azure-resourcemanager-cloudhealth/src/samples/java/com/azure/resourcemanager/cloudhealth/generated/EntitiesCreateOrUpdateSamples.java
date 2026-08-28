@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
 import com.azure.resourcemanager.cloudhealth.models.AlertConfiguration;
 import com.azure.resourcemanager.cloudhealth.models.AlertSeverity;
 import com.azure.resourcemanager.cloudhealth.models.AzureMonitorWorkspaceSignals;
+import com.azure.resourcemanager.cloudhealth.models.AzureResourceHealthSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignals;
 import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
@@ -23,6 +24,7 @@ import com.azure.resourcemanager.cloudhealth.models.LogAnalyticsSignals;
 import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.PrometheusMetricsSignal;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import com.azure.resourcemanager.cloudhealth.models.SignalGroups;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
@@ -35,7 +37,7 @@ import java.util.Map;
  */
 public final class EntitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Entities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Entities_CreateOrUpdate.json
      */
     /**
      * Sample code: Entities_CreateOrUpdate.
@@ -44,79 +46,105 @@ public final class EntitiesCreateOrUpdateSamples {
      */
     public static void entitiesCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities()
-            .define("uszrxbdkxesdrxhmagmzywebgbjj")
-            .withExistingHealthmodel("rgopenapi", "myHealthModel")
-            .withProperties(new EntityProperties().withDisplayName("My entity")
-                .withCanvasPosition(new EntityCoordinates().withX(14.0).withY(13.0))
-                .withIcon(new IconDefinition().withIconName("Custom").withCustomData("rcitntvapruccrhtxmkqjphbxunkz"))
-                .withHealthObjective(62.0D)
+            .define("orders-api")
+            .withExistingHealthmodel("online-store-rg", "online-store")
+            .withProperties(new EntityProperties().withDisplayName("Orders API")
+                .withCanvasPosition(new EntityCoordinates().withX(360.0).withY(240.0))
+                .withIcon(new IconDefinition().withIconName("Kubernetes"))
+                .withHealthObjective(99.9D)
                 .withImpact(EntityImpact.STANDARD)
-                .withTags(mapOf("key1376", "fakeTokenPlaceholder"))
+                .withTags(mapOf("environment", "production", "team", "online-store"))
                 .withSignalGroups(new SignalGroups().withAzureResource(new AzureResourceSignals()
-                    .withAuthenticationSetting("auth123")
+                    .withAuthenticationSetting("default-auth")
                     .withAzureResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1")
-                    .withAzureResourceKind("functionapp")
-                    .withSignals(Arrays.asList(new AzureResourceSignal().withName("uniqueSignalName1")
-                        .withSignalDefinitionName("sigdef1")
-                        .withMetricNamespace("microsoft.compute/virtualMachines")
-                        .withMetricName("cpuusage")
-                        .withTimeGrain("PT1M")
-                        .withAggregationType(MetricAggregationType.NONE)
-                        .withDimension("nodename")
-                        .withDimensionFilter("node1")
-                        .withDisplayName("CPU usage")
+                        "/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.ContainerService/managedClusters/online-store-aks")
+                    .withAzureResourceKind("managedClusters")
+                    .withSignals(Arrays.asList(new AzureResourceSignal().withName("node-cpu")
+                        .withMetricNamespace("Microsoft.ContainerService/managedClusters")
+                        .withMetricName("node_cpu_usage_percentage")
+                        .withTimeGrain("PT5M")
+                        .withAggregationType(MetricAggregationType.AVERAGE)
+                        .withDisplayName("Node CPU utilization")
                         .withRefreshInterval(RefreshInterval.PT1M)
-                        .withDataUnit("Count")
+                        .withDataUnit("Percent")
                         .withEvaluationRules(new EvaluationRule()
-                            .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan"))
-                                .withThreshold(10.0))
+                            .withDegradedRule(
+                                new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0D))
                             .withUnhealthyRule(
-                                new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan"))
-                                    .withThreshold(1.0))))))
-                    .withAzureLogAnalytics(new LogAnalyticsSignals().withAuthenticationSetting("auth123")
+                                new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(90.0D)))))
+                    .withResourceHealth(new AzureResourceHealthSignal()
+                        .withEnabled(ResourceHealthAvailabilityStateSignalBehavior.ENABLED)))
+                    .withAzureLogAnalytics(new LogAnalyticsSignals().withAuthenticationSetting("default-auth")
                         .withLogAnalyticsWorkspaceResourceId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace")
-                        .withSignals(Arrays.asList(new LogAnalyticsSignal().withName("uniqueSignalName2")
-                            .withQueryText("print 1")
-                            .withTimeGrain("PT30M")
-                            .withValueColumnName("result")
-                            .withDisplayName("Test LA signal")
-                            .withRefreshInterval(RefreshInterval.PT1M)
-                            .withDataUnit("my unit")
+                            "/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.OperationalInsights/workspaces/online-store-law")
+                        .withSignals(Arrays.asList(new LogAnalyticsSignal().withName("unhealthy-pods")
+                            .withQueryText(
+                                "KubePodInventory | where TimeGenerated > ago(5m) | where Namespace == 'online-store' | where PodStatus != 'Running' | summarize unhealthyPods = dcount(Name)")
+                            .withTimeGrain("PT5M")
+                            .withValueColumnName("unhealthyPods")
+                            .withDisplayName("Unhealthy pods")
+                            .withRefreshInterval(RefreshInterval.PT5M)
+                            .withDataUnit("Count")
                             .withEvaluationRules(new EvaluationRule()
                                 .withDegradedRule(
-                                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(1.0))
+                                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(0.0D))
                                 .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
-                                    .withThreshold(5.0))))))
-                    .withAzureMonitorWorkspace(new AzureMonitorWorkspaceSignals().withAuthenticationSetting("auth123")
+                                    .withThreshold(2.0D))))))
+                    .withAzureMonitorWorkspace(new AzureMonitorWorkspaceSignals()
+                        .withAuthenticationSetting("default-auth")
                         .withAzureMonitorWorkspaceResourceId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace")
-                        .withSignals(Arrays.asList(new PrometheusMetricsSignal().withName("pod-cpu-usage")
-                            .withSignalDefinitionName("PodCpuUsageDefinition")
-                            .withQueryText("rate(container_cpu_usage_seconds_total{pod=~\"my-app-.*\"}[5m]) * 100")
+                            "/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Monitor/accounts/online-store-amw")
+                        .withSignals(Arrays.asList(new PrometheusMetricsSignal().withName("error-rate")
+                            .withQueryText(
+                                "sum(rate(http_requests_total{job=\"orders-api\", code=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=\"orders-api\"}[5m])) * 100")
                             .withTimeGrain("PT5M")
-                            .withDisplayName("Pod CPU Usage")
+                            .withDisplayName("HTTP 5xx error rate")
                             .withRefreshInterval(RefreshInterval.PT1M)
                             .withDataUnit("Percent")
                             .withEvaluationRules(new EvaluationRule()
                                 .withDegradedRule(
-                                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0))
+                                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(1.0D))
                                 .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
-                                    .withThreshold(90.0))))))
+                                    .withThreshold(5.0D))),
+                            new PrometheusMetricsSignal().withName("p95-latency")
+                                .withQueryText(
+                                    "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"orders-api\"}[5m]))) * 1000")
+                                .withTimeGrain("PT5M")
+                                .withDisplayName("p95 request latency")
+                                .withRefreshInterval(RefreshInterval.PT1M)
+                                .withDataUnit("MilliSeconds")
+                                .withEvaluationRules(new EvaluationRule()
+                                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                                        .withThreshold(300.0D))
+                                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                                        .withThreshold(800.0D))),
+                            new PrometheusMetricsSignal().withName("pod-cpu")
+                                .withSignalDefinitionName("pod-cpu-usage")
+                                .withQueryText(
+                                    "sum(rate(container_cpu_usage_seconds_total{namespace=\"online-store\", pod=~\"orders-api-.*\"}[5m])) * 100")
+                                .withTimeGrain("PT5M")
+                                .withDisplayName("Pod CPU utilization")
+                                .withRefreshInterval(RefreshInterval.PT1M)
+                                .withDataUnit("Percent")
+                                .withEvaluationRules(new EvaluationRule()
+                                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                                        .withThreshold(70.0D))
+                                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                                        .withThreshold(90.0D))))))
                     .withDependencies(
                         new DependenciesSignalGroupV2().withAggregationType(DependenciesAggregationType.MIN_HEALTHY)
-                            .withDegradedThreshold(80.0D)
+                            .withDegradedThreshold(100.0D)
                             .withUnhealthyThreshold(50.0D)
-                            .withUnit(DependenciesAggregationUnit.PERCENTAGE)))
+                            .withUnit(DependenciesAggregationUnit.PERCENTAGE)
+                            .withIgnoreUnknown(true)))
                 .withAlerts(new EntityAlerts().withUnhealthy(new AlertConfiguration().withSeverity(AlertSeverity.SEV1)
-                    .withDescription("Alert description")
+                    .withDescription("Orders API is unhealthy.")
                     .withActionGroupIds(Arrays.asList(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup")))
-                    .withDegraded(new AlertConfiguration().withSeverity(AlertSeverity.SEV4)
-                        .withDescription("Alert description")
+                        "/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall")))
+                    .withDegraded(new AlertConfiguration().withSeverity(AlertSeverity.SEV3)
+                        .withDescription("Orders API is degraded.")
                         .withActionGroupIds(Arrays.asList(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup")))))
+                            "/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall")))))
             .create();
     }
 

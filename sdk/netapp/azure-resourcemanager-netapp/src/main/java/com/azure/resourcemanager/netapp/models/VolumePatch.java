@@ -156,9 +156,11 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -168,9 +170,11 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatch object itself.
@@ -207,7 +211,9 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -216,7 +222,9 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumePatch object itself.

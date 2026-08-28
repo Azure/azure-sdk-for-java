@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AccountCapabilityHostsListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/AccountCapabilityHost/list.json
+     * x-ms-original-file: 2026-05-15-preview/AccountCapabilityHost/list.json
      */
     /**
      * Sample code: List Account CapabilityHosts.

@@ -29,7 +29,7 @@ public final class CommitmentPlansCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"commitmentPlanGuid\":\"ltwmpftmf\",\"hostingModel\":\"Web\",\"planType\":\"og\",\"current\":{\"tier\":\"wetamfddrvlk\",\"count\":2022946719,\"quota\":{\"quantity\":2674230422967727743,\"unit\":\"cc\"},\"startDate\":\"id\",\"endDate\":\"uhkahm\"},\"autoRenew\":true,\"next\":{\"tier\":\"ucvkhhwmjpjbw\",\"count\":430534456,\"quota\":{\"quantity\":2547380701879771636,\"unit\":\"ihufoihp\"},\"startDate\":\"ybxvgn\",\"endDate\":\"zpbgkzc\"},\"last\":{\"tier\":\"iuzvkunhdimju\",\"count\":846291227,\"quota\":{\"quantity\":8437755461134993309,\"unit\":\"gpucdocfq\"},\"startDate\":\"wgofmhx\",\"endDate\":\"jlvzklk\"},\"provisioningIssues\":[\"ikyjtkakvlb\",\"shjvpzaptuoskaoi\",\"jixwfgc\"]},\"tags\":{\"tmdmuqohhihr\":\"kkcxwnujvqynvav\"},\"location\":\"quddrwjclj\",\"etag\":\"hlhpvzadb\",\"kind\":\"nnin\",\"sku\":{\"name\":\"h\",\"tier\":\"Basic\",\"size\":\"rmvzti\",\"family\":\"wviq\",\"capacity\":946427374},\"id\":\"hkrcqx\",\"name\":\"cbvzarmqcb\",\"type\":\"okstsinvagovjyh\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"commitmentPlanGuid\":\"kzkdtzxsoednlwg\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"zomucmqgisnionet\",\"current\":{\"tier\":\"rdpuenxkgtlzl\",\"count\":151759882,\"quota\":{\"quantity\":726614950131051820,\"unit\":\"nhzk\"},\"startDate\":\"bmxlxm\",\"endDate\":\"ygeqzusito\"},\"autoRenew\":false,\"next\":{\"tier\":\"sgbjmlree\",\"count\":1012257594,\"quota\":{\"quantity\":7620535772837855128,\"unit\":\"lc\"},\"startDate\":\"isolntfxxcrqmip\",\"endDate\":\"wfo\"},\"last\":{\"tier\":\"zms\",\"count\":1756374823,\"quota\":{\"quantity\":2257696943692994145,\"unit\":\"bulnvgskjtoxjdz\"},\"startDate\":\"jznvhxqqmq\",\"endDate\":\"aydhf\"},\"provisioningIssues\":[\"c\"]},\"tags\":{\"m\":\"fshksnyzmspamwb\",\"qdktwtkvihlp\":\"nlslcef\",\"zhwv\":\"liwoyngu\"},\"location\":\"dpcmhjh\",\"etag\":\"sybkekymffzt\",\"kind\":\"lscvqsyeiihf\",\"sku\":{\"name\":\"kouihyeseuugcig\",\"tier\":\"Enterprise\",\"size\":\"smg\",\"family\":\"mt\",\"capacity\":1401150784},\"id\":\"bebjn\",\"name\":\"veglabtvkbiwzn\",\"type\":\"tfgfic\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,41 +39,42 @@ public final class CommitmentPlansCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommitmentPlan response = manager.commitmentPlans()
-            .createOrUpdateWithResponse("lfdxaglz", "ytlbtlqhopxouvm", "siflikyypzkgxf",
+            .createOrUpdateWithResponse("eubanlxunpqcc", "qiawzl", "klaslga",
                 new CommitmentPlanInner()
-                    .withProperties(new CommitmentPlanProperties().withCommitmentPlanGuid("qsdb")
+                    .withProperties(new CommitmentPlanProperties().withCommitmentPlanGuid("lrarwpewsaudo")
                         .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
-                        .withPlanType("zanmhwgpter")
-                        .withCurrent(new CommitmentPeriod().withTier("wki").withCount(778791021))
-                        .withAutoRenew(true)
-                        .withNext(new CommitmentPeriod().withTier("yybzoxlvoc").withCount(137130903)))
-                    .withTags(mapOf("lnfyzav", "p", "dbkp", "rbypi", "njhx", "jtaqhsmqazpdg"))
-                    .withLocation("thmgpczqulp")
-                    .withKind("qbtimpk")
-                    .withSku(new Sku().withName("lornsihqh")
+                        .withPlanType("ghsxjpyt")
+                        .withCurrent(new CommitmentPeriod().withTier("bala").withCount(76421440))
+                        .withAutoRenew(false)
+                        .withNext(new CommitmentPeriod().withTier("etwilyrzoxpd").withCount(601671597)))
+                    .withTags(mapOf("jp", "ycpawm", "fpcfjf", "dpwrp", "mnnidmdia", "zlgzawkgyepey", "huosgwqpsqaz",
+                        "pzxkzrntmkct"))
+                    .withLocation("qodvqgcnbhcbmj")
+                    .withKind("iynt")
+                    .withSku(new Sku().withName("jmfmeftvhkm")
                         .withTier(SkuTier.ENTERPRISE)
-                        .withSize("usuaa")
-                        .withFamily("akx")
-                        .withCapacity(1468364970)),
+                        .withSize("rh")
+                        .withFamily("bwgmjgrul")
+                        .withCapacity(1820087059)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ltwmpftmf", response.properties().commitmentPlanGuid());
-        Assertions.assertEquals(HostingModel.WEB, response.properties().hostingModel());
-        Assertions.assertEquals("og", response.properties().planType());
-        Assertions.assertEquals("wetamfddrvlk", response.properties().current().tier());
-        Assertions.assertEquals(2022946719, response.properties().current().count());
-        Assertions.assertTrue(response.properties().autoRenew());
-        Assertions.assertEquals("ucvkhhwmjpjbw", response.properties().next().tier());
-        Assertions.assertEquals(430534456, response.properties().next().count());
-        Assertions.assertEquals("kkcxwnujvqynvav", response.tags().get("tmdmuqohhihr"));
-        Assertions.assertEquals("quddrwjclj", response.location());
-        Assertions.assertEquals("nnin", response.kind());
-        Assertions.assertEquals("h", response.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals("rmvzti", response.sku().size());
-        Assertions.assertEquals("wviq", response.sku().family());
-        Assertions.assertEquals(946427374, response.sku().capacity());
+        Assertions.assertEquals("kzkdtzxsoednlwg", response.properties().commitmentPlanGuid());
+        Assertions.assertEquals(HostingModel.PROVISIONED_WEB, response.properties().hostingModel());
+        Assertions.assertEquals("zomucmqgisnionet", response.properties().planType());
+        Assertions.assertEquals("rdpuenxkgtlzl", response.properties().current().tier());
+        Assertions.assertEquals(151759882, response.properties().current().count());
+        Assertions.assertFalse(response.properties().autoRenew());
+        Assertions.assertEquals("sgbjmlree", response.properties().next().tier());
+        Assertions.assertEquals(1012257594, response.properties().next().count());
+        Assertions.assertEquals("fshksnyzmspamwb", response.tags().get("m"));
+        Assertions.assertEquals("dpcmhjh", response.location());
+        Assertions.assertEquals("lscvqsyeiihf", response.kind());
+        Assertions.assertEquals("kouihyeseuugcig", response.sku().name());
+        Assertions.assertEquals(SkuTier.ENTERPRISE, response.sku().tier());
+        Assertions.assertEquals("smg", response.sku().size());
+        Assertions.assertEquals("mt", response.sku().family());
+        Assertions.assertEquals(1401150784, response.sku().capacity());
     }
 
     // Use "Map.of" if available

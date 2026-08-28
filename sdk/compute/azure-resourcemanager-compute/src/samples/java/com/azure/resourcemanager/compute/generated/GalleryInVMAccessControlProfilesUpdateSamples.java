@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
  */
 public final class GalleryInVMAccessControlProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Update.json
+     * x-ms-original-file: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Update.json
      */
     /**
      * Sample code: Update a gallery inVMAccessControlProfile.

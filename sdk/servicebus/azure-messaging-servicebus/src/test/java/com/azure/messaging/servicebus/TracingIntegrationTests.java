@@ -16,7 +16,9 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.IdGenerator;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
@@ -139,6 +141,47 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertClientSpan(completed.get(0), Collections.singletonList(received.get(0)), "ServiceBus.complete", "settle");
         assertClientSpan(completed.get(1), Collections.singletonList(received.get(1)), "ServiceBus.complete", "settle");
         assertSettledVsProcessed(completed, processed, messages.size());
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    public void sendMessageHasParentSpanOnFirstCall() {
+        // Regression test for https://github.com/Azure/azure-sdk-for-java/issues/44958
+        // The FIRST sendMessage() on a freshly built sender establishes the AMQP connection on a
+        // background thread. Ensure the "ServiceBus.send" and "ServiceBus.message" spans still inherit
+        // the caller's ambient (thread-local) trace context as the parent, rather than starting a new trace.
+        // Create the caller span from a SEPARATE OpenTelemetry instance so it is not validated by the
+        // Service-Bus-specific TestSpanProcessor (which requires az.namespace/messaging attributes on every
+        // span it sees). It is still made current on this thread, so the SDK picks it up as the parent via
+        // io.opentelemetry.context.Context.current().
+        Tracer testTracer = OpenTelemetrySdk.builder().build().getTracer("test");
+        Span callerSpan = testTracer.spanBuilder("caller").startSpan();
+        String expectedTraceId = callerSpan.getSpanContext().getTraceId();
+
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
+        try (Scope scope = callerSpan.makeCurrent()) {
+            StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
+        } finally {
+            callerSpan.end();
+        }
+
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+        // Exactly one send span and one message span should be produced for a single sendMessage() call.
+        // An exact-count assertion guards against accidental double-instrumentation regressions.
+        List<ReadableSpan> send = findSpans(spans, "ServiceBus.send");
+        assertEquals(1, send.size());
+        assertEquals(expectedTraceId, send.get(0).getSpanContext().getTraceId());
+        assertEquals(expectedTraceId, send.get(0).getParentSpanContext().getTraceId());
+
+        List<ReadableSpan> messageSpans = findSpans(spans, "ServiceBus.message");
+        assertEquals(1, messageSpans.size());
+        assertMessageSpan(messageSpans.get(0), message);
+        assertEquals(expectedTraceId, messageSpans.get(0).getSpanContext().getTraceId());
+
+        // the traceparent injected into the outgoing message carries the caller's trace id
+        String traceparent = (String) message.getApplicationProperties().get("traceparent");
+        assertTrue(traceparent.startsWith("00-" + expectedTraceId));
     }
 
     @Test

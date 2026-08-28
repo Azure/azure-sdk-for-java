@@ -4,6 +4,7 @@
 package com.azure.ai.projects.models;
 
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -19,6 +20,7 @@ import java.util.Set;
  * Request body for updating a model version. Only description and tags can be modified.
  */
 @Fluent
+@Beta(warningText = "Preview API. Models=V1Preview")
 public final class UpdateModelVersionInput implements JsonSerializable<UpdateModelVersionInput> {
 
     /*

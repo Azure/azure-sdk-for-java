@@ -11,7 +11,7 @@ public final class RegistryStatisticsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryStatisticsInner model = BinaryData.fromString(
-            "{\"totalDeviceCount\":5116891970547577634,\"enabledDeviceCount\":1189606992396926172,\"disabledDeviceCount\":4604879226339647444}")
+            "{\"totalDeviceCount\":7011756283032975989,\"enabledDeviceCount\":1050926206308737519,\"disabledDeviceCount\":7045736863404189107}")
             .toObject(RegistryStatisticsInner.class);
     }
 }

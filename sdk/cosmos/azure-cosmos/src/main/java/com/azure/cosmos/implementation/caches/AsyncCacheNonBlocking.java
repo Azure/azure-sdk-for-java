@@ -177,7 +177,18 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         public AsyncLazyWithRefresh(Function<TValue, Mono<TValue>> taskFactory) {
             this.value = new AtomicReference<>();
-            this.value.set(taskFactory.apply(null).cache());
+            // Once the initial load succeeds, replace the cached value with a detached
+            // Mono.just(response). Otherwise the cached Mono keeps its upstream source chain
+            // reachable, which captures the initializing caller's object graph (e.g. the
+            // RxDocumentClientImpl, collection cache and diagnostics behind a routing-map fetch).
+            // When the AsyncCacheNonBlocking is shared across clients (see
+            // SharedPartitionKeyRangeCacheRegistry), that would pin the first client to populate a
+            // key for the life of the shared entry. Mirrors createBackgroundRefreshTask.
+            this.value.set(
+                taskFactory
+                    .apply(null)
+                    .flatMap(response -> this.value.updateAndGet(existingValue -> Mono.just(response)))
+                    .cache());
             this.refreshInProgress = new AtomicReference<>(null);
         }
 

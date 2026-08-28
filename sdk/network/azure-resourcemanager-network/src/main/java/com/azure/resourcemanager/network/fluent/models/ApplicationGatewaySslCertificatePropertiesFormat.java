@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayManagedHsm;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
@@ -37,6 +38,11 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat
      * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
      */
     private String keyVaultSecretId;
+
+    /*
+     * Managed HSM properties of the Application Gateway resource.
+     */
+    private ApplicationGatewayManagedHsm hsm;
 
     /*
      * The provisioning state of the SSL certificate resource.
@@ -122,6 +128,26 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat
     }
 
     /**
+     * Get the hsm property: Managed HSM properties of the Application Gateway resource.
+     * 
+     * @return the hsm value.
+     */
+    public ApplicationGatewayManagedHsm hsm() {
+        return this.hsm;
+    }
+
+    /**
+     * Set the hsm property: Managed HSM properties of the Application Gateway resource.
+     * 
+     * @param hsm the hsm value to set.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object itself.
+     */
+    public ApplicationGatewaySslCertificatePropertiesFormat withHsm(ApplicationGatewayManagedHsm hsm) {
+        this.hsm = hsm;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the SSL certificate resource.
      * 
      * @return the provisioningState value.
@@ -136,6 +162,9 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (hsm() != null) {
+            hsm().validate();
+        }
     }
 
     /**
@@ -147,6 +176,7 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat
         jsonWriter.writeStringField("data", this.data);
         jsonWriter.writeStringField("password", this.password);
         jsonWriter.writeStringField("keyVaultSecretId", this.keyVaultSecretId);
+        jsonWriter.writeJsonField("hsm", this.hsm);
         return jsonWriter.writeEndObject();
     }
 
@@ -174,6 +204,9 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat
                     deserializedApplicationGatewaySslCertificatePropertiesFormat.publicCertData = reader.getString();
                 } else if ("keyVaultSecretId".equals(fieldName)) {
                     deserializedApplicationGatewaySslCertificatePropertiesFormat.keyVaultSecretId = reader.getString();
+                } else if ("hsm".equals(fieldName)) {
+                    deserializedApplicationGatewaySslCertificatePropertiesFormat.hsm
+                        = ApplicationGatewayManagedHsm.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewaySslCertificatePropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

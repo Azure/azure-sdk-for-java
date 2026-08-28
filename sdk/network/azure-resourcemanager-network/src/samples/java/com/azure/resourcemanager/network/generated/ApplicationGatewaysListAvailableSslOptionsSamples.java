@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysListAvailableSslOptionsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayAvailableSslOptionsGet.json
+     * x-ms-original-file: 2025-09-01/ApplicationGatewayAvailableSslOptionsGet.json
      */
     /**
      * Sample code: Get Available Ssl Options.
