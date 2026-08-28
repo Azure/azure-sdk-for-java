@@ -277,10 +277,8 @@ public class WebSocketsConnectionHandlerTest {
     @Test
     public void websocketConfigurePassesClientOptionsHeaders() {
         // Arrange
-        final ClientOptions clientOptionsWithHeaders = new ClientOptions()
-            .setHeaders(Arrays.asList(
-                new Header("X-Custom-Header", "custom-value"),
-                new Header("X-Another-Header", "another-value")));
+        final ClientOptions clientOptionsWithHeaders = new ClientOptions().setHeaders(Arrays
+            .asList(new Header("X-Custom-Header", "custom-value"), new Header("X-Another-Header", "another-value")));
 
         final ConnectionOptions connectionOptionsWithHeaders = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
@@ -316,8 +314,8 @@ public class WebSocketsConnectionHandlerTest {
         final ClientOptions clientOptionsWithEmptyHeaders = new ClientOptions().setHeaders(Collections.emptyList());
         final ConnectionOptions connectionOptionsWithEmptyHeaders = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithEmptyHeaders,
-            VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithEmptyHeaders, VERIFY_MODE,
+            PRODUCT, CLIENT_VERSION);
 
         try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
             connectionOptionsWithEmptyHeaders, peerDetails, AmqpMetricsProvider.noop())) {
@@ -338,14 +336,13 @@ public class WebSocketsConnectionHandlerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void websocketConfigureMergesDuplicateHeaderNamesCaseInsensitively() {
-        final ClientOptions clientOptionsWithDuplicateHeaders = new ClientOptions().setHeaders(Arrays.asList(
-            new Header("X-Custom-Header", "first-value"),
-            new Header("x-custom-header", "second-value")));
+        final ClientOptions clientOptionsWithDuplicateHeaders = new ClientOptions().setHeaders(
+            Arrays.asList(new Header("X-Custom-Header", "first-value"), new Header("x-custom-header", "second-value")));
 
-        final ConnectionOptions connectionOptionsWithDuplicateHeaders = new ConnectionOptions(HOSTNAME,
-            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
-            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
-            clientOptionsWithDuplicateHeaders, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+        final ConnectionOptions connectionOptionsWithDuplicateHeaders = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithDuplicateHeaders,
+            VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
             connectionOptionsWithDuplicateHeaders, peerDetails, AmqpMetricsProvider.noop())) {
