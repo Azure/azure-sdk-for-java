@@ -230,7 +230,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
     private static final String FINAL_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"200\" End=\"299\" EndpointIndex=\"0\" /></Ranges>"
-        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-c:443\" /></Endpoints></BlobLayout>";
+        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-c:443\" /></Endpoints>" + "</BlobLayout>";
 
     private static BlobAsyncClient client(HttpClient httpClient) {
         return new BlobClientBuilder().endpoint("https://account.blob.core.windows.net")
@@ -345,6 +345,25 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
         assertTrue(second.url.contains("marker=" + NEXT_MARKER),
             "Expected the continuation marker, but was: " + second.url);
+    }
+
+    @Test
+    public void getLayoutWithoutRangeSendsNoRangeHeaderOnAnyPage() {
+        // Contract: when the caller sets no range, continuation pages must also omit x-ms-range.
+        LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
+        BlobAsyncClient client = client(httpClient);
+
+        StepVerifier.create(client.getLayoutWithResponse(null).collectList())
+            .assertNext(layouts -> assertEquals(2, layouts.size()))
+            .verifyComplete();
+
+        assertEquals(2, httpClient.captured.size());
+        CapturedRequest first = httpClient.captured.get(0);
+        CapturedRequest second = httpClient.captured.get(1);
+        assertNull(first.range, "Initial page must not send x-ms-range when no range was set");
+        assertNull(second.range, "Continuation page must not send x-ms-range when no range was set");
+        assertNull(first.ifMatch);
+        assertEquals(FIRST_PAGE_ETAG, second.ifMatch);
     }
 
     private static final class CapturedRequest {

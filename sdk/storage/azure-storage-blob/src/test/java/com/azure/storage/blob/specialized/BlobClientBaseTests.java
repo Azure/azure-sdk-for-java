@@ -20,12 +20,14 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
 import com.azure.storage.blob.models.BlobLayout;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
@@ -37,17 +39,21 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.DataLocalityPolicy;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.StandardCharsets;
@@ -56,6 +62,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -85,6 +92,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     private static final String CALLER_CONTEXT_KEY = "caller-context-key";
     private static final String CALLER_CONTEXT_VALUE = "caller-context-value";
     private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
+    private static final int LARGE_LIVE_BLOB_SIZE = 16 * Constants.MB;
     private static final String SEEKABLE_LAYOUT_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"99\" EndpointIndex=\"0\" />"
         + "<Range Start=\"100\" End=\"199\" EndpointIndex=\"1\" /></Ranges>"
@@ -237,6 +245,102 @@ public class BlobClientBaseTests extends BlobTestBase {
         BlobClient blobClient = cc.getBlobClient(generateBlobName());
 
         assertThrows(BlobStorageException.class, () -> blobClient.getLayout(null, Context.NONE).stream().count());
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void getLayoutLiveSmallBlobIsSinglePageCoveringWholeBlob() {
+        String accountHost = URI.create(bc.getBlobUrl()).getHost();
+        List<PagedResponse<BlobLayout>> pages = new ArrayList<>();
+        bc.getLayout(null, Context.NONE).iterableByPage().forEach(pages::add);
+
+        assertEquals(1, pages.size(), "Expected a single page for a small blob");
+        assertNull(pages.get(0).getContinuationToken(), "Expected no continuation token for a single-page result");
+
+        List<BlobLayoutRange> ranges = collectLayoutRanges(pages);
+        assertLayoutCoversWindow(ranges, 0, DATA.getDefaultDataSize() - 1, accountHost);
+    }
+
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void getLayoutLiveLargeBlobCoversWholeBlobAcrossPages() {
+        BlobClient blobClient = uploadLargeLiveBlob();
+        String accountHost = URI.create(blobClient.getBlobUrl()).getHost();
+
+        // Part (a): the service currently returns one range covering the whole blob, but the contract permits
+        // pagination; assertions are coverage-based to remain correct as the service evolves.
+        List<BlobLayoutRange> rangesA = collectLayoutRanges(blobClient.getLayout(null, Context.NONE).iterableByPage());
+        assertLayoutCoversWindow(rangesA, 0, LARGE_LIVE_BLOB_SIZE - 1, accountHost);
+
+        // Part (b): enumerate page-by-page with preferredPageSize=1, following markers to exhaustion.
+        // This exercises the marker-following code path live even when the service returns a single page.
+        List<BlobLayoutRange> rangesB = new ArrayList<>();
+        int pageCount = 0;
+        for (PagedResponse<BlobLayout> page : blobClient.getLayout(null, Context.NONE).iterableByPage(1)) {
+            assertTrue(++pageCount <= 100, "Exceeded 100 pages; possible infinite pagination loop");
+            for (BlobLayout layout : page.getValue()) {
+                if (layout.getRanges() != null) {
+                    rangesB.addAll(layout.getRanges());
+                }
+            }
+        }
+        assertLayoutCoversWindow(rangesB, 0, LARGE_LIVE_BLOB_SIZE - 1, accountHost);
+    }
+
+    /**
+     * Ranged {@code getLayout} is deliberately limited to its first page here, because following the marker hits a
+     * known service bug. {@link #getLayoutLiveRangeRequestEnumeratesEveryPage()} captures that bug and asserts the
+     * behavior expected once it is fixed. Multi-page enumeration mechanics are covered by the mock-backed
+     * pagination tests, which are the only place they can be exercised while the bug stands.
+     */
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void getLayoutLiveRangeRequestCoversRequestedWindow() {
+        BlobClient blobClient = uploadLargeLiveBlob();
+        String accountHost = URI.create(blobClient.getBlobUrl()).getHost();
+        long rangeOffset = 8L * Constants.MB;
+        long rangeLength = 4L * Constants.MB;
+
+        Iterator<PagedResponse<BlobLayout>> pages = blobClient
+            .getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(rangeOffset, rangeLength)), Context.NONE)
+            .iterableByPage()
+            .iterator();
+
+        assertTrue(pages.hasNext(), "Expected at least one layout page for a ranged request");
+        List<BlobLayoutRange> ranges = collectLayoutRanges(Collections.singletonList(pages.next()));
+
+        // The service returns ranges reaching the end of the blob rather than stopping at the requested window;
+        // assertLayoutCoversWindow tolerates coverage wider than the request.
+        assertLayoutCoversWindow(ranges, rangeOffset, rangeOffset + rangeLength - 1, accountHost);
+    }
+
+    /**
+     * Reproduces a known service bug in ranged {@code getLayout}, reported 2026-08-21. The service returns a
+     * {@code NextMarker} even when the ranges it already returned reach the end of the blob, and continuing that
+     * marker fails with {@code 400 InvalidQueryParameterValue}. Verified to be independent of client behavior: the
+     * marker is rejected whether it is sent percent-encoded or raw, with or without {@code If-Match}, and with or
+     * without the original range header repeated. Enumerating to completion is the behavior the SDK should be able
+     * to offer, so this test asserts the fixed behavior and stays disabled until the service change ships.
+     */
+    @Disabled("Service bug: ranged getLayout returns a NextMarker that fails with 400 InvalidQueryParameterValue "
+        + "when followed. Re-enable when the service fix ships.")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void getLayoutLiveRangeRequestEnumeratesEveryPage() {
+        BlobClient blobClient = uploadLargeLiveBlob();
+        String accountHost = URI.create(blobClient.getBlobUrl()).getHost();
+        long rangeOffset = 8L * Constants.MB;
+        long rangeLength = 4L * Constants.MB;
+
+        List<BlobLayoutRange> ranges = collectLayoutRanges(blobClient
+            .getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(rangeOffset, rangeLength)), Context.NONE)
+            .iterableByPage());
+
+        assertLayoutCoversWindow(ranges, rangeOffset, rangeOffset + rangeLength - 1, accountHost);
     }
 
     @DoNotRecord
@@ -688,6 +792,24 @@ public class BlobClientBaseTests extends BlobTestBase {
         }
     }
 
+    @DoNotRecord
+    @Test
+    public void getLayoutWithoutRangeSendsNoRangeHeaderOnAnyPage() {
+        // Contract: when the caller sets no range, continuation pages must also omit x-ms-range.
+        LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
+        BlobClient client = client(httpClient);
+
+        assertEquals(2, client.getLayout(null).stream().count());
+
+        assertEquals(2, httpClient.captured.size());
+        CapturedRequest first = httpClient.captured.get(0);
+        CapturedRequest second = httpClient.captured.get(1);
+        assertNull(first.range, "Initial page must not send x-ms-range when no range was set");
+        assertNull(second.range, "Continuation page must not send x-ms-range when no range was set");
+        assertNull(first.ifMatch);
+        assertEquals(FIRST_PAGE_ETAG, second.ifMatch);
+    }
+
     private static BlobClient client(HttpClient httpClient) {
         return new BlobClientBuilder().endpoint("https://account.blob.core.windows.net")
             .containerName("container")
@@ -753,12 +875,100 @@ public class BlobClientBaseTests extends BlobTestBase {
         return content;
     }
 
+    private BlobClient uploadLargeLiveBlob() {
+        BlobClient blobClient = cc.getBlobClient(generateBlobName());
+        byte[] data = getRandomByteArray(LARGE_LIVE_BLOB_SIZE);
+        blobClient.getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length, true);
+        return blobClient;
+    }
+
+    private static String describeRanges(List<BlobLayoutRange> ranges) {
+        if (ranges == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < ranges.size(); i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            BlobLayoutRange r = ranges.get(i);
+            sb.append("{offset=")
+                .append(r.getRange().getOffset())
+                .append(", length=")
+                .append(r.getRange().getLength())
+                .append(", endpoint=")
+                .append(r.getEndpoint())
+                .append("}");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private static void assertLayoutCoversWindow(List<BlobLayoutRange> ranges, long windowStart,
+        long windowEndInclusive, String accountHost) {
+        String desc = describeRanges(ranges);
+        assertNotNull(ranges, "ranges must not be null; " + desc);
+        assertFalse(ranges.isEmpty(), "ranges must not be empty; " + desc);
+
+        long firstOffset = ranges.get(0).getRange().getOffset();
+        assertTrue(firstOffset <= windowStart,
+            "First range offset " + firstOffset + " must be <= windowStart " + windowStart + "; " + desc);
+
+        long nextOffset = firstOffset;
+        boolean unbounded = false;
+
+        for (int i = 0; i < ranges.size(); i++) {
+            BlobLayoutRange r = ranges.get(i);
+            long offset = r.getRange().getOffset();
+            Long length = r.getRange().getLength();
+
+            assertEquals(nextOffset, offset,
+                "Range " + i + " must start at " + nextOffset + " but offset was " + offset + "; " + desc);
+
+            String endpoint = r.getEndpoint();
+            assertNotNull(endpoint, "endpoint at range " + i + " must not be null; " + desc);
+            assertFalse(endpoint.trim().isEmpty(), "endpoint at range " + i + " must not be blank; " + desc);
+
+            String host = UrlBuilder.parse(endpoint).getHost();
+            assertNotNull(host, "host parsed from endpoint '" + endpoint + "' must not be null; " + desc);
+            assertFalse(host.isEmpty(), "host parsed from endpoint '" + endpoint + "' must not be empty; " + desc);
+            assertFalse(accountHost.equalsIgnoreCase(host),
+                "backend host '" + host + "' must not equal account host '" + accountHost + "'; " + desc);
+
+            if (length == null) {
+                // Null length means this range is unbounded; coverage through the end of the blob is satisfied.
+                unbounded = true;
+                break;
+            }
+            nextOffset = offset + length;
+        }
+
+        if (!unbounded) {
+            // nextOffset is the exclusive end of coverage; last covered byte = nextOffset - 1.
+            assertTrue(nextOffset > windowEndInclusive, "Coverage ends at byte " + (nextOffset - 1)
+                + " but windowEndInclusive is " + windowEndInclusive + "; " + desc);
+        }
+    }
+
+    private static List<BlobLayoutRange> collectLayoutRanges(Iterable<PagedResponse<BlobLayout>> pages) {
+        List<BlobLayoutRange> result = new ArrayList<>();
+        for (PagedResponse<BlobLayout> page : pages) {
+            for (BlobLayout layout : page.getValue()) {
+                if (layout.getRanges() != null) {
+                    result.addAll(layout.getRanges());
+                }
+            }
+        }
+        return result;
+    }
+
     private static final class CapturedRequest {
         private final String url;
         private final String ifMatch;
         private final String ifNoneMatch;
         private final String ifUnmodifiedSince;
         private final String leaseId;
+        private final String range;
 
         CapturedRequest(HttpRequest request) {
             this.url = request.getUrl().toString();
@@ -766,6 +976,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             this.ifNoneMatch = request.getHeaders().getValue(HttpHeaderName.IF_NONE_MATCH);
             this.ifUnmodifiedSince = request.getHeaders().getValue(HttpHeaderName.IF_UNMODIFIED_SINCE);
             this.leaseId = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-lease-id"));
+            this.range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
         }
     }
 
