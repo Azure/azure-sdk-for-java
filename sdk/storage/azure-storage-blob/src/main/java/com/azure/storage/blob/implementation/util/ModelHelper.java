@@ -23,6 +23,7 @@ import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointI
 import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
+import com.azure.storage.blob.implementation.models.BlobPropertiesInternalConstructorProperties;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
@@ -31,6 +32,8 @@ import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
@@ -41,7 +44,6 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobLayout;
-import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
@@ -59,6 +61,7 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
@@ -70,6 +73,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -430,48 +434,6 @@ public final class ModelHelper {
     }
 
     /**
-     * Transforms the generated layout response into a public {@link BlobLayoutInfo}.
-     *
-     * @param response The generated layout response.
-     * @return The public blob layout information.
-     */
-    public static BlobLayoutInfo
-        transformBlobLayoutInfo(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        if (response == null) {
-            return null;
-        }
-
-        // Substituting an empty header set for missing headers lets every property below be read unconditionally,
-        // as each generated getter returns null when its header is absent.
-        BlobsGetLayoutHeaders headers = response.getDeserializedHeaders() == null
-            ? new BlobsGetLayoutHeaders(new HttpHeaders())
-            : response.getDeserializedHeaders();
-
-        BlobImmutabilityPolicy immutabilityPolicy
-            = new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
-                .setPolicyMode(headers.getXMsImmutabilityPolicyMode());
-
-        return new BlobLayoutInfo(transformBlobLayoutRanges(response.getValue()), headers.getLastModified(),
-            headers.getXMsCreationTime(), headers.getXMsMeta(),
-            getObjectReplicationDestinationPolicyId(headers.getXMsOr()),
-            getObjectReplicationSourcePolicies(headers.getXMsOr()), headers.getXMsBlobType(),
-            headers.getXMsCopyCompletionTime(), headers.getXMsCopyStatusDescription(), headers.getXMsCopyId(),
-            headers.getXMsCopyProgress(), headers.getXMsCopySource(), headers.getXMsCopyStatus(),
-            headers.getXMsLeaseDuration(), headers.getXMsLeaseState(), headers.getXMsLeaseStatus(),
-            headers.getContentLength(), headers.getContentType(), headers.getETag(), headers.getContentMD5(),
-            headers.getContentEncoding(), headers.getContentDisposition(), headers.getContentLanguage(),
-            headers.getCacheControl(), headers.getXMsBlobSequenceNumber(), headers.getAcceptRanges(),
-            headers.getXMsBlobCommittedBlockCount(), headers.isXMsServerEncrypted(),
-            headers.getXMsEncryptionKeySha256(), headers.getXMsEncryptionScope(), headers.getXMsAccessTier(),
-            headers.isXMsAccessTierInferred(), headers.getXMsSmartAccessTier(), headers.getXMsArchiveStatus(),
-            headers.getXMsAccessTierChangeTime(), headers.getXMsVersionId(), headers.isXMsIsCurrentVersion(),
-            headers.getXMsTagCount(), headers.getXMsExpiryTime(), headers.isXMsBlobSealed(),
-            headers.getXMsRehydratePriority(), headers.getXMsLastAccessTime(), immutabilityPolicy,
-            headers.isXMsLegalHold(), headers.getXMsBlobContentLength(), headers.getXMsBlobContentType(),
-            headers.getXMsBlobContentEncoding(), headers.getXMsBlobContentMd5(), headers.getXMsBlobCreationTime());
-    }
-
-    /**
      * Transforms the generated layout response body and headers into the public blob layout model.
      *
      * @param response The generated layout response.
@@ -482,10 +444,43 @@ public final class ModelHelper {
             return null;
         }
 
-        BlobLayoutInfo layoutInfo = transformBlobLayoutInfo(response);
         BlobLayoutInternal layout = response.getValue();
-        return new BlobLayout(layout == null ? null : layout.getMarker(),
-            layout == null ? null : layout.getNextMarker(), layout == null ? null : layout.getMaxResults(), layoutInfo);
+        BlobsGetLayoutHeaders headers = response.getDeserializedHeaders() == null
+            ? new BlobsGetLayoutHeaders(new HttpHeaders())
+            : response.getDeserializedHeaders();
+        return new BlobLayout(transformBlobLayoutRanges(layout), layout == null ? null : layout.getMarker(),
+            layout == null ? null : layout.getNextMarker(), layout == null ? null : layout.getMaxResults(),
+            transformBlobLayoutProperties(headers));
+    }
+
+    private static BlobProperties transformBlobLayoutProperties(BlobsGetLayoutHeaders headers) {
+        OffsetDateTime creationTime = headers.getXMsBlobCreationTime() == null
+            ? headers.getXMsCreationTime()
+            : headers.getXMsBlobCreationTime();
+        Long contentLength = headers.getXMsBlobContentLength();
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
+                .setPolicyMode(headers.getXMsImmutabilityPolicyMode());
+
+        return BlobPropertiesConstructorProxy
+            .create(new BlobPropertiesInternalConstructorProperties(creationTime, headers.getLastModified(),
+                headers.getETag(), contentLength == null ? 0 : contentLength, headers.getXMsBlobContentType(),
+                headers.getXMsBlobContentMd5(), headers.getXMsBlobContentEncoding(), headers.getContentDisposition(),
+                headers.getContentLanguage(), headers.getCacheControl(), headers.getXMsBlobSequenceNumber(),
+                headers.getXMsBlobType(), headers.getXMsLeaseStatus(), headers.getXMsLeaseState(),
+                headers.getXMsLeaseDuration(), headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                headers.getXMsCopySource(), headers.getXMsCopyProgress(), headers.getXMsCopyCompletionTime(),
+                headers.getXMsCopyStatusDescription(), headers.isXMsServerEncrypted(), headers.isXMsIncrementalCopy(),
+                headers.getXMsCopyDestinationSnapshot(), AccessTier.fromString(headers.getXMsAccessTier()),
+                AccessTier.fromString(headers.getXMsSmartAccessTier()), headers.isXMsAccessTierInferred(),
+                ArchiveStatus.fromString(headers.getXMsArchiveStatus()), headers.getXMsEncryptionKeySha256(),
+                headers.getXMsEncryptionScope(), headers.getXMsAccessTierChangeTime(), headers.getXMsMeta(),
+                headers.getXMsBlobCommittedBlockCount(), headers.getXMsTagCount(), headers.getXMsVersionId(),
+                headers.isXMsIsCurrentVersion(), getObjectReplicationSourcePolicies(headers.getXMsOr()),
+                getObjectReplicationDestinationPolicyId(headers.getXMsOr()),
+                RehydratePriority.fromString(headers.getXMsRehydratePriority()), headers.isXMsBlobSealed(),
+                headers.getXMsLastAccessTime(), headers.getXMsExpiryTime(), immutabilityPolicy,
+                headers.isXMsLegalHold(), headers.getXMsRequestId()));
     }
 
     private static List<BlobLayoutRange> transformBlobLayoutRanges(BlobLayoutInternal layout) {

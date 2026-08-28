@@ -192,10 +192,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new PagedResponseBase<Void, DataLakeFileLayoutInfo>(response.getRequest(),
                     response.getStatusCode(), response.getHeaders(),
-                    response.getValue()
-                        .stream()
-                        .map(layout -> Transforms.toDataLakeFileLayoutInfo(layout.getBlobLayoutInfo()))
-                        .collect(Collectors.toList()),
+                    response.getValue().stream().map(Transforms::toDataLakeFileLayoutInfo).collect(Collectors.toList()),
                     response.getContinuationToken(), null));
         });
     }

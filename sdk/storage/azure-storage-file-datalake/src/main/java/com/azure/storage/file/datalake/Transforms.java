@@ -19,7 +19,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
@@ -394,55 +394,36 @@ class Transforms {
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
 
-            if (r == null) {
-                return pathProperties;
-            } else {
-                String encryptionContext = r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
-                String owner = r.getHeaders().getValue(X_MS_OWNER);
-                String group = r.getHeaders().getValue(X_MS_GROUP);
-                String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
-                String acl = r.getHeaders().getValue(X_MS_ACL);
-                Boolean accessTierInferred = properties.isAccessTierInferred();
-                AccessTier smartAccessTier = Transforms.toDataLakeAccessTier(properties.getSmartAccessTier());
-
-                return AccessorUtility.getPathPropertiesAccessor()
-                    .setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext, owner, group,
-                        permissions, acl, accessTierInferred, smartAccessTier);
+            String encryptionContext = null;
+            String owner = null;
+            String group = null;
+            String permissions = null;
+            String acl = null;
+            if (r != null) {
+                encryptionContext = r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
+                owner = r.getHeaders().getValue(X_MS_OWNER);
+                group = r.getHeaders().getValue(X_MS_GROUP);
+                permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
+                acl = r.getHeaders().getValue(X_MS_ACL);
             }
+
+            return AccessorUtility.getPathPropertiesAccessor()
+                .setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext, owner, group,
+                    permissions, acl, properties.isAccessTierInferred(),
+                    Transforms.toDataLakeAccessTier(properties.getSmartAccessTier()));
         }
     }
 
-    static DataLakeFileLayoutInfo toDataLakeFileLayoutInfo(BlobLayoutInfo blobLayoutInfo) {
-        if (blobLayoutInfo == null) {
+    static DataLakeFileLayoutInfo toDataLakeFileLayoutInfo(BlobLayout blobLayout) {
+        if (blobLayout == null) {
             return null;
         }
 
-        Long fileSize = blobLayoutInfo.getBlobContentLength();
-        List<DataLakeFileLayoutRange> ranges = blobLayoutInfo.getRanges() == null
+        List<DataLakeFileLayoutRange> ranges = blobLayout.getRanges() == null
             ? new ArrayList<>()
-            : blobLayoutInfo.getRanges()
-                .stream()
-                .map(Transforms::toDataLakeFileLayoutRange)
-                .collect(Collectors.toList());
+            : blobLayout.getRanges().stream().map(Transforms::toDataLakeFileLayoutRange).collect(Collectors.toList());
 
-        return new DataLakeFileLayoutInfo(ranges, blobLayoutInfo.getBlobCreatedOn(), blobLayoutInfo.getLastModified(),
-            blobLayoutInfo.getETag(), fileSize == null ? 0 : fileSize, blobLayoutInfo.getBlobContentType(),
-            blobLayoutInfo.getBlobContentMd5(), blobLayoutInfo.getBlobContentEncoding(),
-            blobLayoutInfo.getContentDisposition(), blobLayoutInfo.getContentLanguage(),
-            blobLayoutInfo.getCacheControl(), Transforms.toDataLakeLeaseStatusType(blobLayoutInfo.getLeaseStatus()),
-            Transforms.toDataLakeLeaseStateType(blobLayoutInfo.getLeaseState()),
-            Transforms.toDataLakeLeaseDurationType(blobLayoutInfo.getLeaseDuration()), blobLayoutInfo.getCopyId(),
-            Transforms.toDataLakeCopyStatusType(blobLayoutInfo.getCopyStatus()), blobLayoutInfo.getCopySource(),
-            blobLayoutInfo.getCopyProgress(), blobLayoutInfo.getCopyCompletionTime(),
-            blobLayoutInfo.getCopyStatusDescription(), blobLayoutInfo.isServerEncrypted(),
-            Transforms.toDataLakeAccessTier(blobLayoutInfo.getAccessTier() == null
-                ? null
-                : com.azure.storage.blob.models.AccessTier.fromString(blobLayoutInfo.getAccessTier())),
-            Transforms.toDataLakeArchiveStatus(blobLayoutInfo.getArchiveStatus() == null
-                ? null
-                : com.azure.storage.blob.models.ArchiveStatus.fromString(blobLayoutInfo.getArchiveStatus())),
-            blobLayoutInfo.getEncryptionKeySha256(), blobLayoutInfo.getAccessTierChangeTime(),
-            blobLayoutInfo.getMetadata(), blobLayoutInfo.getExpiresOn());
+        return new DataLakeFileLayoutInfo(ranges, toPathProperties(blobLayout.getBlobProperties()));
     }
 
     private static DataLakeFileLayoutRange toDataLakeFileLayoutRange(BlobLayoutRange blobLayoutRange) {

@@ -67,8 +67,8 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             BlobLayout layout = r.get(0);
-            assertNotNull(layout.getBlobLayoutInfo());
-            assertFalse(layout.getBlobLayoutInfo().getRanges().isEmpty());
+            assertNotNull(layout.getBlobProperties());
+            assertFalse(layout.getRanges().isEmpty());
         }).verifyComplete();
     }
 
@@ -203,6 +203,11 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     private static final String FIRST_PAGE_ETAG = "\"0x8DFIRSTPAGE\"";
     private static final String SECOND_PAGE_ETAG = "\"0x8DSECONDPAGE\"";
     private static final String THIRD_PAGE_ETAG = "\"0x8DTHIRDPAGE\"";
+    private static final long LAYOUT_BLOB_SIZE = 300;
+    private static final String LAYOUT_BLOB_CONTENT_TYPE = "application/octet-stream";
+    private static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH
+        = HttpHeaderName.fromString("x-ms-blob-content-length");
+    private static final HttpHeaderName X_MS_BLOB_CONTENT_TYPE = HttpHeaderName.fromString("x-ms-blob-content-type");
     private static final String FIRST_PAGE_MARKER = "service-page-one";
     private static final String NEXT_MARKER = "page-two";
     private static final String FINAL_MARKER = "page-three";
@@ -276,8 +281,10 @@ class BlobAsyncClientBaseLayoutPaginationTests {
                 assertEquals(NEXT_MARKER, layout.getNextMarker());
                 assertEquals(SERVICE_MAX_RESULTS, layout.getMaxResults());
                 assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
-                assertNotNull(layout.getBlobLayoutInfo());
-                assertNotNull(layout.getBlobLayoutInfo().getETag());
+                assertNotNull(layout.getBlobProperties());
+                assertNotNull(layout.getBlobProperties().getETag());
+                assertEquals(LAYOUT_BLOB_SIZE, layout.getBlobProperties().getBlobSize());
+                assertEquals(LAYOUT_BLOB_CONTENT_TYPE, layout.getBlobProperties().getContentType());
             })
             .verifyComplete();
     }
@@ -294,7 +301,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
                 assertNull(layout.getMarker());
                 assertNull(layout.getNextMarker());
                 assertNull(layout.getMaxResults());
-                assertNotNull(layout.getBlobLayoutInfo());
+                assertNotNull(layout.getBlobProperties());
             })
             .verifyComplete();
     }
@@ -439,11 +446,15 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
             boolean isFirstPage = captured.size() == 1;
             String body = isFirstPage ? (includeContinuation ? FIRST_PAGE : SINGLE_PAGE) : SECOND_PAGE;
+            byte[] bodyBytes = body.getBytes(StandardCharsets.UTF_8);
             HttpHeaders headers
                 = new HttpHeaders().set(HttpHeaderName.ETAG, isFirstPage ? FIRST_PAGE_ETAG : SECOND_PAGE_ETAG)
-                    .set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+                    .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(bodyBytes.length))
+                    .set(HttpHeaderName.CONTENT_TYPE, "application/xml")
+                    .set(X_MS_BLOB_CONTENT_LENGTH, String.valueOf(LAYOUT_BLOB_SIZE))
+                    .set(X_MS_BLOB_CONTENT_TYPE, LAYOUT_BLOB_CONTENT_TYPE);
 
-            return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
+            return Mono.just(new MockHttpResponse(request, 200, headers, bodyBytes));
         }
     }
 

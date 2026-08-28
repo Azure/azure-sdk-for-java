@@ -2035,7 +2035,7 @@ public class BlobAsyncClientBase {
     }
 
     private static Flux<BlobLayoutRange> getLayoutRanges(BlobLayout layout) {
-        return Flux.fromIterable(layout.getBlobLayoutInfo().getRanges());
+        return Flux.fromIterable(layout.getRanges());
     }
 
     private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>

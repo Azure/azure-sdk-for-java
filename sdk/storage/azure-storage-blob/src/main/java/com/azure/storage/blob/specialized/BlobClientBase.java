@@ -1917,7 +1917,7 @@ public class BlobClientBase {
         try {
             List<BlobLayoutRange> ranges = new ArrayList<>();
             for (BlobLayout layout : getLayout(layoutOptions, context)) {
-                ranges.addAll(layout.getBlobLayoutInfo().getRanges());
+                ranges.addAll(layout.getRanges());
             }
             return new BlobLayoutCacheValue(ranges);
         } catch (BlobStorageException e) {

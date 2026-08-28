@@ -202,7 +202,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         // Use bc (plain client, no recording policy) so this call does not pollute records.
         Set<String> layoutEndpointHosts = new HashSet<>();
         for (BlobLayout layout : bc.getLayout(null, Context.NONE)) {
-            for (BlobLayoutRange range : layout.getBlobLayoutInfo().getRanges()) {
+            for (BlobLayoutRange range : layout.getRanges()) {
                 String host = UrlBuilder.parse(range.getEndpoint()).getHost();
                 if (host != null) {
                     layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -27,6 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DataLakeFileLayoutPaginationTests {
     private static final String NEXT_MARKER = "page-two";
     private static final String FIRST_PAGE_ETAG = "\"0x8DFIRSTPAGE\"";
+    private static final long FILE_SIZE = 200;
+    private static final String FILE_CONTENT_TYPE = "application/octet-stream";
+    private static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH
+        = HttpHeaderName.fromString("x-ms-blob-content-length");
+    private static final HttpHeaderName X_MS_BLOB_CONTENT_TYPE = HttpHeaderName.fromString("x-ms-blob-content-type");
+    private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
+    private static final HttpHeaderName X_MS_ACCESS_TIER_INFERRED
+        = HttpHeaderName.fromString("x-ms-access-tier-inferred");
+    private static final HttpHeaderName X_MS_SMART_ACCESS_TIER = HttpHeaderName.fromString("x-ms-smart-access-tier");
+    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+    private static final String ENCRYPTION_SCOPE = "layout-scope";
     private static final String FIRST_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"99\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-a:443\" /></Endpoints><NextMarker>" + NEXT_MARKER
@@ -71,7 +83,14 @@ public class DataLakeFileLayoutPaginationTests {
     private static void assertFirstPageMetadataPreserved(List<PagedResponse<DataLakeFileLayoutInfo>> pages) {
         DataLakeFileLayoutInfo firstLayout = pages.get(0).getValue().get(0);
         assertEquals(1, firstLayout.getRanges().size());
-        assertNotNull(firstLayout.getETag());
+        assertNotNull(firstLayout.getPathProperties());
+        assertNotNull(firstLayout.getPathProperties().getETag());
+        assertEquals(FILE_SIZE, firstLayout.getPathProperties().getFileSize());
+        assertEquals(FILE_CONTENT_TYPE, firstLayout.getPathProperties().getContentType());
+        assertEquals(AccessTier.SMART, firstLayout.getPathProperties().getAccessTier());
+        assertEquals(AccessTier.HOT, firstLayout.getPathProperties().getSmartAccessTier());
+        assertEquals(true, firstLayout.getPathProperties().isAccessTierInferred());
+        assertEquals(ENCRYPTION_SCOPE, firstLayout.getPathProperties().getEncryptionScope());
     }
 
     private static DataLakeFileAsyncClient asyncClient(HttpClient httpClient) {
@@ -95,7 +114,13 @@ public class DataLakeFileLayoutPaginationTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             requests.add(request);
             boolean firstPage = requests.size() == 1;
-            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml")
+                .set(X_MS_BLOB_CONTENT_LENGTH, String.valueOf(FILE_SIZE))
+                .set(X_MS_BLOB_CONTENT_TYPE, FILE_CONTENT_TYPE)
+                .set(X_MS_ACCESS_TIER, "Smart")
+                .set(X_MS_ACCESS_TIER_INFERRED, "true")
+                .set(X_MS_SMART_ACCESS_TIER, "Hot")
+                .set(X_MS_ENCRYPTION_SCOPE, ENCRYPTION_SCOPE);
             if (firstPage) {
                 headers.set(HttpHeaderName.ETAG, FIRST_PAGE_ETAG);
             }
