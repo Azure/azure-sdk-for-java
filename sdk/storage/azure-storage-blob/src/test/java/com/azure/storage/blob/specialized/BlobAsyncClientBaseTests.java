@@ -67,8 +67,8 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             BlobLayout layout = r.get(0);
-            assertNotNull(layout.getRanges());
-            assertFalse(layout.getRanges().isEmpty());
+            assertNotNull(layout.getBlobLayoutInfo());
+            assertFalse(layout.getBlobLayoutInfo().getRanges().isEmpty());
         }).verifyComplete();
     }
 

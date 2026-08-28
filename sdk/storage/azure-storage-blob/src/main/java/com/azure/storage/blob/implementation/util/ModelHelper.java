@@ -484,7 +484,7 @@ public final class ModelHelper {
 
         BlobLayoutInfo layoutInfo = transformBlobLayoutInfo(response);
         BlobLayoutInternal layout = response.getValue();
-        return new BlobLayout(layoutInfo.getRanges(), layout == null ? null : layout.getMarker(),
+        return new BlobLayout(layout == null ? null : layout.getMarker(),
             layout == null ? null : layout.getNextMarker(), layout == null ? null : layout.getMaxResults(), layoutInfo);
     }
 

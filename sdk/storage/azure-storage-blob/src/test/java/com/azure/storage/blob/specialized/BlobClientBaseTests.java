@@ -159,8 +159,8 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertTrue(iterator.hasNext());
         BlobLayout layout = iterator.next();
-        assertNotNull(layout.getRanges());
-        assertFalse(layout.getRanges().isEmpty());
+        assertNotNull(layout.getBlobLayoutInfo());
+        assertFalse(layout.getBlobLayoutInfo().getRanges().isEmpty());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
@@ -286,9 +286,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         for (PagedResponse<BlobLayout> page : blobClient.getLayout(null, Context.NONE).iterableByPage(1)) {
             assertTrue(++pageCount <= 100, "Exceeded 100 pages; possible infinite pagination loop");
             for (BlobLayout layout : page.getValue()) {
-                if (layout.getRanges() != null) {
-                    rangesB.addAll(layout.getRanges());
-                }
+                rangesB.addAll(layout.getBlobLayoutInfo().getRanges());
             }
         }
         assertLayoutCoversWindow(rangesB, 0, LARGE_LIVE_BLOB_SIZE - 1, accountHost);
@@ -994,9 +992,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         List<BlobLayoutRange> result = new ArrayList<>();
         for (PagedResponse<BlobLayout> page : pages) {
             for (BlobLayout layout : page.getValue()) {
-                if (layout.getRanges() != null) {
-                    result.addAll(layout.getRanges());
-                }
+                result.addAll(layout.getBlobLayoutInfo().getRanges());
             }
         }
         return result;
