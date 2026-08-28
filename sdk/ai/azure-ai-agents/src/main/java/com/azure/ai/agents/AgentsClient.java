@@ -14,6 +14,8 @@ import com.azure.ai.agents.implementation.models.CreateAgentRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
+import com.azure.ai.agents.implementation.models.GetMicrosoft365AppPackageRequest;
+import com.azure.ai.agents.implementation.models.PublishAgentToMicrosoft365Request;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.implementation.utils.FileUtils;
@@ -27,8 +29,12 @@ import com.azure.ai.agents.models.CodeFileDetails;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.GetMicrosoft365AppPackageOptions;
 import com.azure.ai.agents.models.HostedAgentDefinition;
+import com.azure.ai.agents.models.Microsoft365PublishDefaults;
+import com.azure.ai.agents.models.Microsoft365PublishResponse;
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.PublishAgentToMicrosoft365Options;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.ai.agents.models.SessionFileWriteResult;
 import com.azure.ai.agents.models.SessionLogEvent;
@@ -89,7 +95,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -140,7 +146,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -195,7 +203,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -203,6 +211,7 @@ public final class AgentsClient {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      * }
      * }
@@ -223,7 +232,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -353,7 +362,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -457,35 +466,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Create an agent version
-     *
-     * Creates a new version for the specified agent and returns the created version resource.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
-    }
-
-    /**
      * Create an agent
      *
      * Creates a new agent or a new version of an existing agent.
@@ -501,7 +481,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -509,6 +489,7 @@ public final class AgentsClient {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
@@ -542,6 +523,7 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -586,7 +568,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -637,7 +619,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -691,7 +675,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -725,7 +709,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -776,7 +760,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -824,7 +810,8 @@ public final class AgentsClient {
      * If no changes, returns the existing agent version.
      *
      * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param definition The agent definition. This can be a prompt, workflow, hosted, external, or voice agent
+     * definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -898,7 +885,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -949,7 +936,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1033,7 +1022,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -1084,7 +1073,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1162,7 +1153,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1394,7 +1385,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1517,7 +1508,7 @@ public final class AgentsClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external", "voice".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1556,7 +1547,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -1607,7 +1598,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1925,6 +1918,7 @@ public final class AgentsClient {
                 .setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
                 .setBlueprintReference(options.getBlueprintReference())
+                .setDigitalWorkerType(options.getDigitalWorkerType())
                 .setDraft(options.isDraft())
                 .setAgentEndpoint(options.getAgentEndpoint())
                 .setAgentCard(options.getAgentCard());
@@ -2111,7 +2105,8 @@ public final class AgentsClient {
      * If no changes, returns the existing agent version.
      *
      * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param definition The agent definition. This can be a prompt, workflow, hosted, external, or voice agent
+     * definition.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -2173,7 +2168,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -2224,7 +2219,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2300,7 +2297,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -2351,7 +2348,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2440,6 +2439,7 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -2484,7 +2484,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -2535,7 +2535,9 @@ public final class AgentsClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2602,7 +2604,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -4157,5 +4159,338 @@ public final class AgentsClient {
         }
         return serviceClient.listAgentVersions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * Publish an agent to Microsoft 365
+     *
+     * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
+     * Teams app ids.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to publish.
+     * @param publishAgentToMicrosoft365Request The publishAgentToMicrosoft365Request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from publishing an agent to Microsoft 365 / Microsoft Teams along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> publishAgentToMicrosoft365WithResponse(String agentName,
+        BinaryData publishAgentToMicrosoft365Request, RequestOptions requestOptions) {
+        return this.serviceClient.publishAgentToMicrosoft365WithResponse(agentName, publishAgentToMicrosoft365Request,
+            requestOptions);
+    }
+
+    /**
+     * Generate a Microsoft 365 app package
+     *
+     * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
+     * request, without publishing it. Returns the app package as `application/zip`.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to generate the app package for.
+     * @param getMicrosoft365AppPackageRequest The getMicrosoft365AppPackageRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMicrosoft365AppPackageWithResponse(String agentName,
+        BinaryData getMicrosoft365AppPackageRequest, RequestOptions requestOptions) {
+        return this.serviceClient.getMicrosoft365AppPackageWithResponse(agentName, getMicrosoft365AppPackageRequest,
+            requestOptions);
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>publishAsDigitalWorker</td><td>Boolean</td><td>No</td><td>When true, returns defaults for publishing the
+     * agent as an autopilot (digital worker) agent.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     appPublishScope: String(Personal/Shared/Tenant) (Optional)
+     *     agentName: String (Optional)
+     *     agentDisplayName: String (Optional)
+     *     appRegistrationClientId: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     appVersion: String (Optional)
+     *     recommendedNextAppVersion: String (Optional)
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to get publish defaults for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMicrosoft365PublishDefaultsWithResponse(String agentName,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getMicrosoft365PublishDefaultsWithResponse(agentName, requestOptions);
+    }
+
+    /**
+     * Publish an agent to Microsoft 365
+     *
+     * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
+     * Teams app ids.
+     *
+     * @param options Options for publishAgentToMicrosoft365 API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from publishing an agent to Microsoft 365 / Microsoft Teams.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Microsoft365PublishResponse publishAgentToMicrosoft365(PublishAgentToMicrosoft365Options options) {
+        // Generated convenience method for publishAgentToMicrosoft365WithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String agentName = options.getAgentName();
+        PublishAgentToMicrosoft365Request publishAgentToMicrosoft365RequestObj
+            = new PublishAgentToMicrosoft365Request(options.getPublishScope())
+                .setAgentDisplayName(options.getAgentDisplayName())
+                .setBotServiceArmId(options.getBotServiceArmId())
+                .setPublishAsAutopilot(options.isPublishAsAutopilot())
+                .setAccessBoundaries(options.getAccessBoundaries())
+                .setOptionalPermissionScopes(options.getOptionalPermissionScopes())
+                .setCanRespondWithoutMention(options.isCanRespondWithoutMention())
+                .setAppVersion(options.getAppVersion())
+                .setShortDescription(options.getShortDescription())
+                .setFullDescription(options.getFullDescription())
+                .setDeveloperName(options.getDeveloperName())
+                .setDeveloperWebsiteUrl(options.getDeveloperWebsiteUrl())
+                .setPrivacyUrl(options.getPrivacyUrl())
+                .setTermsOfUseUrl(options.getTermsOfUseUrl())
+                .setColorIconBase64(options.getColorIconBase64())
+                .setOutlineIconBase64(options.getOutlineIconBase64());
+        BinaryData publishAgentToMicrosoft365Request = BinaryData.fromObject(publishAgentToMicrosoft365RequestObj);
+        return publishAgentToMicrosoft365WithResponse(agentName, publishAgentToMicrosoft365Request, requestOptions)
+            .getValue()
+            .toObject(Microsoft365PublishResponse.class);
+    }
+
+    /**
+     * Generate a Microsoft 365 app package
+     *
+     * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
+     * request, without publishing it. Returns the app package as `application/zip`.
+     *
+     * @param options Options for getMicrosoft365AppPackage API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getMicrosoft365AppPackage(GetMicrosoft365AppPackageOptions options) {
+        // Generated convenience method for getMicrosoft365AppPackageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String agentName = options.getAgentName();
+        GetMicrosoft365AppPackageRequest getMicrosoft365AppPackageRequestObj
+            = new GetMicrosoft365AppPackageRequest(options.getPublishScope())
+                .setAgentDisplayName(options.getAgentDisplayName())
+                .setBotServiceArmId(options.getBotServiceArmId())
+                .setPublishAsAutopilot(options.isPublishAsAutopilot())
+                .setAccessBoundaries(options.getAccessBoundaries())
+                .setOptionalPermissionScopes(options.getOptionalPermissionScopes())
+                .setCanRespondWithoutMention(options.isCanRespondWithoutMention())
+                .setAppVersion(options.getAppVersion())
+                .setShortDescription(options.getShortDescription())
+                .setFullDescription(options.getFullDescription())
+                .setDeveloperName(options.getDeveloperName())
+                .setDeveloperWebsiteUrl(options.getDeveloperWebsiteUrl())
+                .setPrivacyUrl(options.getPrivacyUrl())
+                .setTermsOfUseUrl(options.getTermsOfUseUrl())
+                .setColorIconBase64(options.getColorIconBase64())
+                .setOutlineIconBase64(options.getOutlineIconBase64());
+        BinaryData getMicrosoft365AppPackageRequest = BinaryData.fromObject(getMicrosoft365AppPackageRequestObj);
+        return getMicrosoft365AppPackageWithResponse(agentName, getMicrosoft365AppPackageRequest, requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     *
+     * @param agentName The name of the agent to get publish defaults for.
+     * @param publishAsDigitalWorker When true, returns defaults for publishing the agent as an autopilot (digital
+     * worker) agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Microsoft365PublishDefaults getMicrosoft365PublishDefaults(String agentName,
+        Boolean publishAsDigitalWorker) {
+        // Generated convenience method for getMicrosoft365PublishDefaultsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (publishAsDigitalWorker != null) {
+            requestOptions.addQueryParam("publishAsDigitalWorker", String.valueOf(publishAsDigitalWorker), false);
+        }
+        return getMicrosoft365PublishDefaultsWithResponse(agentName, requestOptions).getValue()
+            .toObject(Microsoft365PublishDefaults.class);
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     *
+     * @param agentName The name of the agent to get publish defaults for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Microsoft365PublishDefaults getMicrosoft365PublishDefaults(String agentName) {
+        // Generated convenience method for getMicrosoft365PublishDefaultsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMicrosoft365PublishDefaultsWithResponse(agentName, requestOptions).getValue()
+            .toObject(Microsoft365PublishDefaults.class);
     }
 }
