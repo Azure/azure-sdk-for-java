@@ -13,7 +13,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalCallbackRequestResourceR
  */
 public final class EnclaveEndpointsHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_HandleApprovalCreation.json
      */
     /**
      * Sample code: EnclaveEndpoints_HandleApprovalCreation.
