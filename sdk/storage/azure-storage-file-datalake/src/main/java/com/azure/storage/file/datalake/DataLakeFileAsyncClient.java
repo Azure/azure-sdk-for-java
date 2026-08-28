@@ -22,7 +22,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutPagingAccessHelper;
 import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -82,6 +84,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -179,22 +182,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
-        PagedFlux<BlobLayout> inputPagedFlux
-            = blockBlobAsyncClient.getLayoutWithResponse(Transforms.toBlobGetLayoutOptions(options));
+        Supplier<PageRetriever<String, PagedResponse<BlobLayout>>> provider = BlobLayoutPagingAccessHelper
+            .getPageRetrieverProvider(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
 
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BlobLayout>> flux;
-            if (continuationToken != null && pageSize != null) {
-                flux = inputPagedFlux.byPage(continuationToken, pageSize);
-            } else if (continuationToken != null) {
-                flux = inputPagedFlux.byPage(continuationToken);
-            } else if (pageSize != null) {
-                flux = inputPagedFlux.byPage(pageSize);
-            } else {
-                flux = inputPagedFlux.byPage();
-            }
-
-            return flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+        return PagedFlux.create(() -> {
+            // Avoid nesting the public Blob PagedFlux, which eagerly advances its pager when adapted to PagedIterable.
+            PageRetriever<String, PagedResponse<BlobLayout>> pageRetriever = provider.get();
+            return (continuationToken, pageSize) -> pageRetriever.get(continuationToken, pageSize)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new PagedResponseBase<Void, DataLakeFileLayoutInfo>(response.getRequest(),
                     response.getStatusCode(), response.getHeaders(),
                     response.getValue()

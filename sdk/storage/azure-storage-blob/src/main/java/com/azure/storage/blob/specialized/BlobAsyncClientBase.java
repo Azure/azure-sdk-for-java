@@ -23,6 +23,7 @@ import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -33,6 +34,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutPagingAccessHelper;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
@@ -134,6 +136,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -148,6 +151,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 public class BlobAsyncClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
+
+    static {
+        BlobLayoutPagingAccessHelper
+            .setAccessor((client, options) -> client.layoutPageRetrieverProvider(options, null));
+    }
 
     private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(
         new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
@@ -1908,12 +1916,7 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options) {
-        return PagedFlux.create(() -> {
-            AtomicReference<String> layoutETag = new AtomicReference<>();
-            return (continuationToken, pageSize) -> withContext(
-                context -> getPublicLayoutPageWithLockedETag(continuationToken, options, pageSize, context, layoutETag))
-                    .flux();
-        });
+        return PagedFlux.create(layoutPageRetrieverProvider(options, null));
     }
 
     /**
@@ -1925,11 +1928,21 @@ public class BlobAsyncClientBase {
      */
     public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        return PagedFlux.create(() -> {
+        return PagedFlux.create(layoutPageRetrieverProvider(options, finalContext));
+    }
+
+    private Supplier<PageRetriever<String, PagedResponse<BlobLayout>>>
+        layoutPageRetrieverProvider(BlobGetLayoutOptions options, Context context) {
+        return () -> {
             AtomicReference<String> layoutETag = new AtomicReference<>();
+            if (context == null) {
+                return (continuationToken,
+                    pageSize) -> withContext(operationContext -> getPublicLayoutPageWithLockedETag(continuationToken,
+                        options, pageSize, operationContext, layoutETag)).flux();
+            }
             return (continuationToken, pageSize) -> getPublicLayoutPageWithLockedETag(continuationToken, options,
-                pageSize, finalContext, layoutETag).flux();
-        });
+                pageSize, context, layoutETag).flux();
+        };
     }
 
     Mono<BlobLayoutCacheValue> fetchLayoutCacheValueAsync(BlobRange layoutRange,
