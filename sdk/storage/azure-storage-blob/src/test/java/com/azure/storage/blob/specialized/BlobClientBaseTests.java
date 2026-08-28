@@ -75,7 +75,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BlobClientBaseTests extends BlobTestBase {
     private static final String FIRST_PAGE_ETAG = "\"0x8DFIRSTPAGE\"";
     private static final String SECOND_PAGE_ETAG = "\"0x8DSECONDPAGE\"";
+    private static final String THIRD_PAGE_ETAG = "\"0x8DTHIRDPAGE\"";
     private static final String NEXT_MARKER = "page-two";
+    private static final String FINAL_MARKER = "page-three";
     private static final String LEASE_ID = "lease-id";
     private static final String IF_NONE_MATCH = "\"caller-none-match\"";
     private static final OffsetDateTime IF_UNMODIFIED_SINCE
@@ -98,6 +100,13 @@ public class BlobClientBaseTests extends BlobTestBase {
     private static final String SECOND_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"100\" End=\"199\" EndpointIndex=\"0\" /></Ranges>"
         + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-b:443\" /></Endpoints></BlobLayout>";
+    private static final String RESUMED_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        + "<BlobLayout><Ranges><Range Start=\"100\" End=\"199\" EndpointIndex=\"0\" /></Ranges>"
+        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-b:443\" /></Endpoints>" + "<NextMarker>" + FINAL_MARKER
+        + "</NextMarker></BlobLayout>";
+    private static final String FINAL_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        + "<BlobLayout><Ranges><Range Start=\"200\" End=\"299\" EndpointIndex=\"0\" /></Ranges>"
+        + "<Endpoints><Endpoint Index=\"0\" Value=\"https://host-c:443\" /></Endpoints></BlobLayout>";
 
     private BlobClient bc;
 
@@ -298,6 +307,31 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertNull(httpClient.captured.get(1).ifMatch);
         assertEquals(FIRST_PAGE_ETAG, httpClient.captured.get(2).ifMatch);
         assertEquals(SECOND_PAGE_ETAG, httpClient.captured.get(3).ifMatch);
+    }
+
+    @DoNotRecord
+    @Test
+    public void getLayoutResumedEnumerationLocksContinuationPagesToItsFirstPageETag() {
+        ResumedLayoutPagesHttpClient httpClient = new ResumedLayoutPagesHttpClient();
+        BlobClient client = client(httpClient);
+        List<PagedResponse<BlobLayout>> pages = new ArrayList<>();
+
+        client.getLayout(null).iterableByPage(NEXT_MARKER).forEach(pages::add);
+
+        assertEquals(2, pages.size());
+        assertEquals(2, httpClient.captured.size());
+        CapturedRequest resumed = httpClient.captured.get(0);
+        CapturedRequest continuation = httpClient.captured.get(1);
+
+        // There is nothing to lock to on the resumed page: the caller's marker came from an earlier enumeration
+        // whose ETag this client never observed.
+        assertTrue(resumed.url.contains("marker=" + NEXT_MARKER), "Expected the resumed marker in: " + resumed.url);
+        assertNull(resumed.ifMatch);
+
+        // Every later page of the resumed enumeration is pinned to the first page that enumeration did observe.
+        assertTrue(continuation.url.contains("marker=" + FINAL_MARKER),
+            "Expected the continuation marker in: " + continuation.url);
+        assertEquals(SECOND_PAGE_ETAG, continuation.ifMatch);
     }
 
     @DoNotRecord
@@ -820,6 +854,29 @@ public class BlobClientBaseTests extends BlobTestBase {
 
             firstPageRequests++;
             return firstPageRequests == 1 ? FIRST_PAGE_ETAG : SECOND_PAGE_ETAG;
+        }
+    }
+
+    /**
+     * Serves an enumeration that a caller resumed from {@link #NEXT_MARKER}. The resumed page carries its own ETag
+     * and a further continuation marker, so the enumeration has both a first page and a continuation page even
+     * though it never requested the layout's first page.
+     */
+    private static final class ResumedLayoutPagesHttpClient implements HttpClient {
+        private final List<CapturedRequest> captured = new ArrayList<>();
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            CapturedRequest capturedRequest = new CapturedRequest(request);
+            captured.add(capturedRequest);
+
+            boolean isResumedPage = capturedRequest.url.contains("marker=" + NEXT_MARKER);
+            String body = isResumedPage ? RESUMED_PAGE : FINAL_PAGE;
+            HttpHeaders headers
+                = new HttpHeaders().set(HttpHeaderName.ETAG, isResumedPage ? SECOND_PAGE_ETAG : THIRD_PAGE_ETAG)
+                    .set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+
+            return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
         }
     }
 

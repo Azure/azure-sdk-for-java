@@ -1939,10 +1939,9 @@ public class BlobClientBase {
         ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
             = getLayoutPageResponse(marker, requestOptions, finalPageSize, context);
 
-        // The first page's ETag pins every continuation request so the enumeration sees a single blob version.
-        if (marker == null) {
-            layoutETag.set(response.getDeserializedHeaders().getETag());
-        }
+        // The first page this enumeration observes pins every continuation request so the enumeration sees a single
+        // blob version, whether it started at the beginning of the layout or resumed from a caller-supplied marker.
+        layoutETag.compareAndSet(null, response.getDeserializedHeaders().getETag());
 
         return toLayoutPagedResponse(response, finalPageSize);
     }

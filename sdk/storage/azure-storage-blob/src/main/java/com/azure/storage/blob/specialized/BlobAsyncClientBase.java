@@ -1998,9 +1998,9 @@ public class BlobAsyncClientBase {
         BlobGetLayoutOptions options, Integer pageSize, Context context, AtomicReference<String> layoutETag) {
         BlobGetLayoutOptions optionsWithConditions = getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
         return getPublicLayoutPageWithHeaders(marker, optionsWithConditions, pageSize, context).map(response -> {
-            if (marker == null) {
-                layoutETag.set(response.getDeserializedHeaders().getETag());
-            }
+            // The first page this enumeration observes pins every continuation request it makes, whether the
+            // enumeration started at the beginning of the layout or resumed from a caller-supplied marker.
+            layoutETag.compareAndSet(null, response.getDeserializedHeaders().getETag());
 
             return response;
         });
