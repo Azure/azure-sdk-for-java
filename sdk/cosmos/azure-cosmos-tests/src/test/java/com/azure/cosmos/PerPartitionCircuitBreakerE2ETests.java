@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -13,6 +14,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -67,6 +69,7 @@ import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,6 +90,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
         = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor
+        = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private List<String> writeRegions;
     private List<String> readRegions;
@@ -246,6 +252,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
             this.writeRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, true).serviceOrderedWriteableRegions);
+            this.readRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, false).serviceOrderedReadableRegions);
 
             CosmosAsyncDatabase sharedAsyncDatabase = getSharedCosmosDatabase(testClient);
             CosmosAsyncContainer sharedMultiPartitionCosmosContainerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(testClient);
@@ -3549,6 +3556,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                 boolean hasReachedCircuitBreakingThreshold = false;
                 int executionCountAfterCircuitBreakingThresholdBreached = 0;
+                boolean failbackExpected = false;
+                Set<PpcbDiagnosticsPhase> loggedPpcbDiagnosticsPhases = new HashSet<>();
 
                 List<TestObject> testObjects = operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith;
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper
@@ -3563,6 +3572,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     }
 
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    assertPpcbSnapshotsPopulated(response, PpcbDiagnosticsPhase.FAILURE, false);
+                    logPpcbDiagnosticsOnce(response, PpcbDiagnosticsPhase.FAILURE, loggedPpcbDiagnosticsPhases);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3588,6 +3599,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
+                        failbackExpected |= assertPpcbSnapshotsPopulated(
+                            response,
+                            PpcbDiagnosticsPhase.POST_FAILOVER,
+                            false);
+                        logPpcbDiagnosticsOnce(
+                            response,
+                            PpcbDiagnosticsPhase.POST_FAILOVER,
+                            loggedPpcbDiagnosticsPhases);
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -3639,6 +3658,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
+                    assertPpcbSnapshotsPopulated(
+                        response,
+                        PpcbDiagnosticsPhase.POST_FAILBACK,
+                        failbackExpected);
+                    logPpcbDiagnosticsOnce(
+                        response,
+                        PpcbDiagnosticsPhase.POST_FAILBACK,
+                        loggedPpcbDiagnosticsPhases);
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -3674,6 +3701,193 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             safeClose(client);
         }
+    }
+
+    private static CosmosDiagnosticsContext getDiagnosticsContext(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics().getDiagnosticsContext();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics().getDiagnosticsContext();
+        }
+        return null;
+    }
+
+    private static void logPpcbDiagnosticsOnce(
+        ResponseWrapper<?> response,
+        PpcbDiagnosticsPhase phase,
+        Set<PpcbDiagnosticsPhase> loggedPhases) {
+
+        if (loggedPhases.add(phase)) {
+            CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+            if (diagnosticsContext != null) {
+                logger.info("PPCB CosmosDiagnostics [{}]: {}", phase.label, diagnosticsContext.toJson());
+            }
+        }
+    }
+
+    private static boolean assertPpcbSnapshotsPopulated(
+        ResponseWrapper<?> response,
+        PpcbDiagnosticsPhase phase,
+        boolean failbackExpected) {
+
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        assertThat(diagnosticsContext)
+            .as("Expected CosmosDiagnostics for %s", phase.label)
+            .isNotNull();
+        assertThat(diagnosticsContext.getDiagnostics())
+            .as("Expected diagnostics entries for %s", phase.label)
+            .isNotNull();
+
+        int applicableStatisticCount = 0;
+        List<LocationSpecificHealthContext> healthContexts = new ArrayList<>();
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> statisticsCollection
+                = cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (statisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics statistics : statisticsCollection) {
+                if (statistics == null) {
+                    continue;
+                }
+
+                for (ClientSideRequestStatistics.StoreResponseStatistics storeStatistics
+                    : statistics.getResponseStatisticsList()) {
+
+                    if (isPpcbApplicableDataPlaneStatistic(
+                        storeStatistics.getRequestResourceType(),
+                        storeStatistics.getRequestOperationType())) {
+
+                        applicableStatisticCount++;
+                        assertThat(storeStatistics.getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected direct PPCB holder for %s", phase.label)
+                            .isNotNull();
+                        Map<String, LocationSpecificHealthContext> stateByRegion
+                            = storeStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                                .getPerPartitionCircuitBreakerInfoHolder();
+                        assertThat(stateByRegion)
+                            .as("Expected populated direct PPCB snapshot for %s", phase.label)
+                            .isNotNull();
+                        healthContexts.addAll(stateByRegion.values());
+                    }
+                }
+
+                for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics
+                    : statistics.getGatewayStatisticsList()) {
+
+                    if (isPpcbApplicableDataPlaneStatistic(
+                        gatewayStatistics.getResourceType(),
+                        gatewayStatistics.getOperationType())) {
+
+                        applicableStatisticCount++;
+                        assertThat(gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected gateway PPCB holder for %s", phase.label)
+                            .isNotNull();
+                        Map<String, LocationSpecificHealthContext> stateByRegion
+                            = gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                                .getPerPartitionCircuitBreakerInfoHolder();
+                        assertThat(stateByRegion)
+                            .as("Expected populated gateway PPCB snapshot for %s", phase.label)
+                            .isNotNull();
+                        healthContexts.addAll(stateByRegion.values());
+                    }
+                }
+            }
+        }
+
+        if (applicableStatisticCount == 0) {
+            assertThat(hasOnlyQueryPlanStatistics(diagnosticsContext))
+                .as("Expected PPCB-applicable data-plane statistics or QueryPlan-only diagnostics for %s", phase.label)
+                .isTrue();
+        }
+
+        boolean unavailableRegionFound = false;
+        boolean successfulFailbackFound = false;
+        for (LocationSpecificHealthContext healthContext : healthContexts) {
+            if (healthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                unavailableRegionFound = true;
+                if (phase == PpcbDiagnosticsPhase.POST_FAILOVER) {
+                    assertThat(healthContext.getLastFailbackOutcome())
+                        .as("Failback must not have succeeded while the region remains unavailable")
+                        .isNotEqualTo(LocationSpecificHealthContext.FailbackOutcome.Succeeded);
+                }
+            }
+
+            if (healthContext.getLastFailbackOutcome()
+                == LocationSpecificHealthContext.FailbackOutcome.Succeeded) {
+
+                successfulFailbackFound = true;
+                assertThat(healthContext.getLastFailbackAttemptTime())
+                    .as("Expected failback attempt timestamp after successful failback")
+                    .isNotNull();
+                assertThat(healthContext.getLocationHealthStatus())
+                    .as("Expected recovered region after successful failback")
+                    .isIn(LocationHealthStatus.HealthyTentative, LocationHealthStatus.Healthy);
+            }
+        }
+
+        if (phase == PpcbDiagnosticsPhase.POST_FAILBACK && failbackExpected) {
+            assertThat(successfulFailbackFound)
+                .as("Expected a successful failback outcome for a previously unavailable region")
+                .isTrue();
+        }
+
+        return unavailableRegionFound;
+    }
+
+    private static boolean isPpcbApplicableDataPlaneStatistic(
+        ResourceType resourceType,
+        OperationType operationType) {
+
+        return resourceType == ResourceType.Document && operationType != OperationType.QueryPlan;
+    }
+
+    private static boolean hasOnlyQueryPlanStatistics(CosmosDiagnosticsContext diagnosticsContext) {
+        boolean queryPlanStatisticFound = false;
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> statisticsCollection
+                = cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (statisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics statistics : statisticsCollection) {
+                if (statistics == null) {
+                    continue;
+                }
+
+                for (ClientSideRequestStatistics.StoreResponseStatistics storeStatistics
+                    : statistics.getResponseStatisticsList()) {
+
+                    if (storeStatistics.getRequestResourceType() != ResourceType.Document) {
+                        continue;
+                    }
+                    if (storeStatistics.getRequestOperationType() != OperationType.QueryPlan) {
+                        return false;
+                    }
+                    queryPlanStatisticFound = true;
+                }
+
+                for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics
+                    : statistics.getGatewayStatisticsList()) {
+
+                    if (gatewayStatistics.getResourceType() != ResourceType.Document) {
+                        continue;
+                    }
+                    if (gatewayStatistics.getOperationType() != OperationType.QueryPlan) {
+                        return false;
+                    }
+                    queryPlanStatisticFound = true;
+                }
+            }
+        }
+
+        return queryPlanStatisticFound;
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
@@ -5249,6 +5463,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         READ_MANY, READ_ALL
     }
 
+    private enum PpcbDiagnosticsPhase {
+        FAILURE("failed operation"),
+        POST_FAILOVER("post-failover operation"),
+        POST_FAILBACK("post-failback operation");
+
+        private final String label;
+
+        PpcbDiagnosticsPhase(String label) {
+            this.label = label;
+        }
+    }
+
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
@@ -5263,5 +5489,187 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
             this.regionNameToEndpoint = regionNameToEndpoint;
         }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 20 * TIMEOUT)
+    @SuppressWarnings("unchecked")
+    public void ppcbRecoveryResolvesAddressesAfterInitialAddressRefreshFailures() throws Exception {
+        if (this.readRegions == null || this.readRegions.size() <= 1) {
+            throw new SkipException("Test requires a multi-region account");
+        }
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(getClientBuilder());
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        String originalPpcbConfig = System.getProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+        TestObject testObject = TestObject.create();
+        PartitionKey partitionKey = new PartitionKey(testObject.getId());
+        try (CosmosAsyncClient bootstrapClient = getClientBuilder().buildAsyncClient()) {
+            bootstrapClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey)
+                .createItem(testObject, partitionKey, new CosmosItemRequestOptions())
+                .block();
+        }
+
+        CosmosAsyncClient testClient = null;
+        FaultInjectionRule addressRefreshRule = null;
+        try {
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\":true,"
+                    + "\"circuitBreakerType\":\"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\":10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\":5}");
+            testClient = getClientBuilder()
+                .preferredRegions(this.readRegions)
+                .buildAsyncClient();
+            CosmosAsyncContainer container = testClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            RxDocumentClientImpl documentClient
+                = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
+            RxCollectionCache collectionCache = ReflectionUtils.getClientCollectionCache(documentClient);
+            RxPartitionKeyRangeCache partitionKeyRangeCache = ReflectionUtils.getPartitionKeyRangeCache(documentClient);
+            DocumentCollection documentCollection = collectionCache
+                .resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
+                .block();
+            List<PartitionKeyRange> partitionKeyRanges = partitionKeyRangeCache
+                .tryGetOverlappingRangesAsync(
+                    null,
+                    documentCollection.getResourceId(),
+                    new FeedRangePartitionKeyImpl(BridgeInternal.getPartitionKeyInternal(partitionKey))
+                        .getEffectiveRange(documentCollection.getPartitionKey()),
+                    true,
+                    null)
+                .block()
+                .v;
+            assertThat(partitionKeyRanges).hasSize(1);
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper
+                = new PartitionKeyRangeWrapper(partitionKeyRanges.get(0), documentCollection.getResourceId());
+
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcbManager
+                = documentClient.getGlobalPartitionEndpointManagerForCircuitBreaker();
+            assertThat(ppcbManager.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()).isTrue();
+            Class<?> partitionUnavailabilityInfoClass = getClassBySimpleName(
+                GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses(),
+                "PartitionLevelLocationUnavailabilityInfo");
+            assertThat(partitionUnavailabilityInfoClass).isNotNull();
+
+            Field partitionUnavailabilityMapField
+                = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class
+                    .getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            partitionUnavailabilityMapField.setAccessible(true);
+            ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionUnavailabilityMap
+                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionUnavailabilityMapField.get(ppcbManager);
+
+            Field locationContextMapField = partitionUnavailabilityInfoClass
+                .getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+            locationContextMapField.setAccessible(true);
+
+            addressRefreshRule = new FaultInjectionRuleBuilder(
+                "ppcb-address-refresh-connection-delay-" + UUID.randomUUID())
+                .condition(new FaultInjectionConditionBuilder()
+                    .region(this.readRegions.get(0))
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
+                    .build())
+                .result(FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(11))
+                    .times(3)
+                    .build())
+                .duration(Duration.ofMinutes(10))
+                .hitLimit(60)
+                .build();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                container,
+                Collections.singletonList(addressRefreshRule)).block();
+
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+            CosmosDiagnostics lastDiagnostics = null;
+            for (int i = 0; i < 20
+                && !hasUnavailableLocationForPartition(
+                    partitionKeyRangeWrapper,
+                    partitionUnavailabilityMap,
+                    locationContextMapField); i++) {
+
+                try {
+                    CosmosItemResponse<TestObject> response = container
+                        .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                        .block();
+                    lastDiagnostics = response.getDiagnostics();
+                } catch (CosmosException exception) {
+                    lastDiagnostics = exception.getDiagnostics();
+                }
+            }
+
+            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(30);
+            assertThat(hasUnavailableLocationForPartition(
+                partitionKeyRangeWrapper,
+                partitionUnavailabilityMap,
+                locationContextMapField)).isTrue();
+            assertThat(lastDiagnostics).isNotNull();
+
+            CosmosItemResponse<TestObject> failedOverResponse = container
+                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                .block();
+            assertThat(failedOverResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames())
+                .contains(this.readRegions.get(1).toLowerCase(Locale.ROOT));
+
+            addressRefreshRule.disable();
+            long recoveryDeadline = System.nanoTime() + Duration.ofSeconds(120).toNanos();
+            while (hasUnavailableLocationForPartition(
+                partitionKeyRangeWrapper,
+                partitionUnavailabilityMap,
+                locationContextMapField) && System.nanoTime() < recoveryDeadline) {
+
+                Thread.sleep(Duration.ofSeconds(1).toMillis());
+            }
+
+            assertThat(hasUnavailableLocationForPartition(
+                partitionKeyRangeWrapper,
+                partitionUnavailabilityMap,
+                locationContextMapField)).isFalse();
+
+            CosmosItemResponse<TestObject> recoveredResponse = container
+                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                .block();
+            assertThat(recoveredResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames())
+                .containsExactly(this.readRegions.get(0).toLowerCase(Locale.ROOT));
+        } finally {
+            if (addressRefreshRule != null) {
+                addressRefreshRule.disable();
+            }
+            safeClose(testClient);
+            if (originalPpcbConfig == null) {
+                System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            } else {
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", originalPpcbConfig);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static boolean hasUnavailableLocationForPartition(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+        Field locationEndpointToLocationSpecificContextForPartitionField) throws IllegalAccessException {
+
+        Object partitionUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+        if (partitionUnavailabilityInfo == null) {
+            return false;
+        }
+
+        ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationContexts
+            = (ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext>)
+                locationEndpointToLocationSpecificContextForPartitionField.get(partitionUnavailabilityInfo);
+
+        return locationContexts.values().stream()
+            .anyMatch(context -> context.getLocationHealthStatus() == LocationHealthStatus.Unavailable);
     }
 }
