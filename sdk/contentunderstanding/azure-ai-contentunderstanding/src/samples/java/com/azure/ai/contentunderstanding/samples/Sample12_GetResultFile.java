@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -19,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
 import java.time.Duration;
 import java.util.List;
 
@@ -63,7 +63,14 @@ public class Sample12_GetResultFile {
         System.out.println("Started analysis operation");
 
         // Wait for completion
+        LongRunningOperationStatus status = poller.waitForCompletion().getStatus();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException("Video analysis completed unsuccessfully with status: " + status);
+        }
         AnalysisResult result = poller.getFinalResult();
+        if (result == null) {
+            throw new IllegalStateException("Video analysis completed without a final result.");
+        }
         System.out.println("Analysis completed successfully!");
 
         // Get the operation ID from the polling result using the getId() convenience method
@@ -101,30 +108,7 @@ public class Sample12_GetResultFile {
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image with retry logic
-            // Note: Result files may not be immediately available after analysis completion
-            // The service requires additional time for keyframe extraction
-            BinaryData fileData = null;
-            int maxRetries = 12;
-            int retryDelayMs = 10000; // 10 seconds between retries
-            for (int attempt = 1; attempt <= maxRetries; attempt++) {
-                try {
-                    fileData = client.getResultFile(operationId, framePath);
-                    break; // Success
-                } catch (Exception e) {
-                    if (attempt == maxRetries) {
-                        throw e;
-                    }
-                    System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
-                    System.out.println("Waiting " + (retryDelayMs / 1000) + " seconds before retry...");
-                    try {
-                        Thread.sleep(retryDelayMs);
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("Interrupted while waiting for retry", ie);
-                    }
-                }
-            }
+            BinaryData fileData = client.getResultFile(operationId, framePath);
             byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
@@ -194,17 +178,7 @@ public class Sample12_GetResultFile {
             System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
             System.out.println("  Saved to: " + outputPath.toAbsolutePath());
         } else {
-            // No video content (expected for document analysis)
-            System.out.println("\nGetResultFile API Usage Example:");
-            System.out.println("   For video analysis with keyframes:");
-            System.out.println("   1. Analyze video with prebuilt-videoSearch");
-            System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimes()");
-            System.out.println("   3. Retrieve keyframes using getResultFile():");
-            System.out.println("      BinaryData fileData = client.getResultFile(\"" + operationId
-                + "\", \"keyframes/1000\");");
-            System.out.println("   4. Save or process the keyframe image");
-
-            System.out.println("Operation ID available for GetResultFile API: " + operationId);
+            throw new IllegalStateException("Video analysis did not return AudioVisualContent with keyframes.");
         }
     }
 

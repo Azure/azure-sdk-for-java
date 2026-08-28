@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class DatabasesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
+     * x-ms-original-file: 2025-01-01/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
      */
     /**
      * Sample code: Assigns maintenance window to a database.
@@ -38,7 +38,7 @@ public final class DatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchVCoreDatabaseResetMaintenanceConfiguration.json
+     * x-ms-original-file: 2025-01-01/PatchVCoreDatabaseResetMaintenanceConfiguration.json
      */
     /**
      * Sample code: Resets maintenance window of a database to default.
@@ -57,7 +57,7 @@ public final class DatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchDatabaseVBSEnclave.json
+     * x-ms-original-file: 2025-01-01/PatchDatabaseVBSEnclave.json
      */
     /**
      * Sample code: Updates a database with VBS enclave type.
@@ -73,7 +73,7 @@ public final class DatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchDatabaseDefaultEnclave.json
+     * x-ms-original-file: 2025-01-01/PatchDatabaseDefaultEnclave.json
      */
     /**
      * Sample code: Updates a database with Default enclave type.
@@ -89,7 +89,7 @@ public final class DatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
+     * x-ms-original-file: 2025-01-01/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
      */
     /**
      * Sample code: Patch a database with database-level customer managed keys.
@@ -115,7 +115,7 @@ public final class DatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchVCoreDatabase.json
+     * x-ms-original-file: 2025-01-01/PatchVCoreDatabase.json
      */
     /**
      * Sample code: Updates a database.

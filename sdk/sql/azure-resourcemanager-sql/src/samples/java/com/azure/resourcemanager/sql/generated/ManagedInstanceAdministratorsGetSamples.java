@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.AdministratorName;
  */
 public final class ManagedInstanceAdministratorsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdministratorGet.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorGet.json
      */
     /**
      * Sample code: Get administrator of managed instance.

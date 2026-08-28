@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.msi.models.ClaimsMatchingExpression;
 import java.io.IOException;
 import java.util.List;
 
@@ -164,32 +163,6 @@ public final class FederatedIdentityCredentialInner extends ProxyResource {
             this.innerProperties = new FederatedIdentityCredentialProperties();
         }
         this.innerProperties().withAudiences(audiences);
-        return this;
-    }
-
-    /**
-     * Get the claimsMatchingExpression property: Object for defining the allowed identifiers of external identities.
-     * Either 'subject' or 'claimsMatchingExpression' must be defined, but not both. Introduced in 2025-01-31-preview.
-     * 
-     * @return the claimsMatchingExpression value.
-     */
-    public ClaimsMatchingExpression claimsMatchingExpression() {
-        return this.innerProperties() == null ? null : this.innerProperties().claimsMatchingExpression();
-    }
-
-    /**
-     * Set the claimsMatchingExpression property: Object for defining the allowed identifiers of external identities.
-     * Either 'subject' or 'claimsMatchingExpression' must be defined, but not both. Introduced in 2025-01-31-preview.
-     * 
-     * @param claimsMatchingExpression the claimsMatchingExpression value to set.
-     * @return the FederatedIdentityCredentialInner object itself.
-     */
-    public FederatedIdentityCredentialInner
-        withClaimsMatchingExpression(ClaimsMatchingExpression claimsMatchingExpression) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FederatedIdentityCredentialProperties();
-        }
-        this.innerProperties().withClaimsMatchingExpression(claimsMatchingExpression);
         return this;
     }
 

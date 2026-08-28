@@ -33,6 +33,11 @@ public final class SignalHistoryResponseInner implements JsonSerializable<Signal
      */
     private List<SignalHistoryDataPoint> history;
 
+    /*
+     * An opaque string value that identifies the portion of the result set to be returned with the next operation.
+     */
+    private String nextMarker;
+
     /**
      * Creates an instance of SignalHistoryResponseInner class.
      */
@@ -67,6 +72,16 @@ public final class SignalHistoryResponseInner implements JsonSerializable<Signal
     }
 
     /**
+     * Get the nextMarker property: An opaque string value that identifies the portion of the result set to be returned
+     * with the next operation.
+     * 
+     * @return the nextMarker value.
+     */
+    public String nextMarker() {
+        return this.nextMarker;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -75,6 +90,7 @@ public final class SignalHistoryResponseInner implements JsonSerializable<Signal
         jsonWriter.writeStringField("entityName", this.entityName);
         jsonWriter.writeStringField("signalName", this.signalName);
         jsonWriter.writeArrayField("history", this.history, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextMarker", this.nextMarker);
         return jsonWriter.writeEndObject();
     }
 
@@ -102,6 +118,8 @@ public final class SignalHistoryResponseInner implements JsonSerializable<Signal
                     List<SignalHistoryDataPoint> history
                         = reader.readArray(reader1 -> SignalHistoryDataPoint.fromJson(reader1));
                     deserializedSignalHistoryResponseInner.history = history;
+                } else if ("nextMarker".equals(fieldName)) {
+                    deserializedSignalHistoryResponseInner.nextMarker = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

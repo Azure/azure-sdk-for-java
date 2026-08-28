@@ -42,11 +42,6 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
     private MetricAggregationType aggregationType;
 
     /*
-     * Optional: Dimension to split by
-     */
-    private String dimension;
-
-    /*
      * Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set.
      */
     private String dimensionFilter;
@@ -148,26 +143,6 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
     }
 
     /**
-     * Get the dimension property: Optional: Dimension to split by.
-     * 
-     * @return the dimension value.
-     */
-    public String dimension() {
-        return this.dimension;
-    }
-
-    /**
-     * Set the dimension property: Optional: Dimension to split by.
-     * 
-     * @param dimension the dimension value to set.
-     * @return the ResourceMetricSignalDefinitionProperties object itself.
-     */
-    public ResourceMetricSignalDefinitionProperties withDimension(String dimension) {
-        this.dimension = dimension;
-        return this;
-    }
-
-    /**
      * Get the dimensionFilter property: Optional: Dimension filter to apply to the dimension. Must only be set if also
      * Dimension is set.
      * 
@@ -251,7 +226,6 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
         jsonWriter.writeStringField("aggregationType",
             this.aggregationType == null ? null : this.aggregationType.toString());
         jsonWriter.writeStringField("signalKind", this.signalKind == null ? null : this.signalKind.toString());
-        jsonWriter.writeStringField("dimension", this.dimension);
         jsonWriter.writeStringField("dimensionFilter", this.dimensionFilter);
         return jsonWriter.writeEndObject();
     }
@@ -301,8 +275,6 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
                 } else if ("signalKind".equals(fieldName)) {
                     deserializedResourceMetricSignalDefinitionProperties.signalKind
                         = SignalKind.fromString(reader.getString());
-                } else if ("dimension".equals(fieldName)) {
-                    deserializedResourceMetricSignalDefinitionProperties.dimension = reader.getString();
                 } else if ("dimensionFilter".equals(fieldName)) {
                     deserializedResourceMetricSignalDefinitionProperties.dimensionFilter = reader.getString();
                 } else {

@@ -11,14 +11,14 @@ public final class RoutingTwinPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingTwinProperties model
-            = BinaryData.fromString("{\"desired\":\"\\\"dataltskzbbtd\\\"\",\"reported\":\"\\\"datamv\\\"\"}")
+            = BinaryData.fromString("{\"desired\":\"\\\"datajpkiidzyexznelix\\\"\",\"reported\":\"\\\"datarzt\\\"\"}")
                 .toObject(RoutingTwinProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingTwinProperties model
-            = new RoutingTwinProperties().withDesired("\"dataltskzbbtd\"").withReported("\"datamv\"");
+            = new RoutingTwinProperties().withDesired("\"datajpkiidzyexznelix\"").withReported("\"datarzt\"");
         model = BinaryData.fromObject(model).toObject(RoutingTwinProperties.class);
     }
 }

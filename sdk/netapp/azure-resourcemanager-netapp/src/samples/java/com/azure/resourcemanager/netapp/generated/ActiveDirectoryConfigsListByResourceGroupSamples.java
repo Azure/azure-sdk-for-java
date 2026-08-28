@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ActiveDirectoryConfigsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
+     * x-ms-original-file: 2026-06-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_ListByResourceGroup.

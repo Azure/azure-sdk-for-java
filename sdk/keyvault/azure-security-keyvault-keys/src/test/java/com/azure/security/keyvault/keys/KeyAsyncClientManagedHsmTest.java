@@ -6,6 +6,9 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -322,6 +325,36 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
                 assertTrue(keyAttestation.getPublicKeyAttestation().length > 0);
                 assertNotNull(keyAttestation.getVersion());
             }).verifyComplete();
+        });
+    }
+
+    /**
+     * Tests that an external key can be registered, retrieved, and deleted on a Managed HSM.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void externalKeyLifecycle(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        createExternalKeyRunner((keyToCreate) -> {
+            StepVerifier.create(keyAsyncClient.createExternalKey(keyToCreate)).assertNext(createdKey -> {
+                assertEquals(keyToCreate.getName(), createdKey.getName());
+                assertNotNull(createdKey.getProperties().getExternalKey());
+                assertNotNull(createdKey.getProperties().getExternalKey().getId());
+            }).verifyComplete();
+
+            StepVerifier.create(keyAsyncClient.getKey(keyToCreate.getName())).assertNext(retrievedKey -> {
+                assertEquals(keyToCreate.getName(), retrievedKey.getName());
+                assertNotNull(retrievedKey.getProperties().getExternalKey());
+                assertNotNull(retrievedKey.getProperties().getExternalKey().getId());
+            }).verifyComplete();
+
+            PollerFlux<DeletedKey, Void> poller
+                = setPlaybackPollerFluxPollInterval(keyAsyncClient.beginDeleteKey(keyToCreate.getName()));
+
+            StepVerifier.create(poller.last().map(AsyncPollResponse::getValue))
+                .assertNext(deletedKey -> assertEquals(keyToCreate.getName(), deletedKey.getName()))
+                .verifyComplete();
         });
     }
 }

@@ -12,18 +12,18 @@ public final class SharedLimitCapPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedLimitCapProperties model = BinaryData
-            .fromString("{\"defaultMemberCap\":1778385162,\"isBoundedCap\":false,\"provisioningState\":\"Succeeded\"}")
+            .fromString("{\"defaultMemberCap\":732529011,\"isBoundedCap\":false,\"provisioningState\":\"Succeeded\"}")
             .toObject(SharedLimitCapProperties.class);
-        Assertions.assertEquals(1778385162, model.defaultMemberCap());
+        Assertions.assertEquals(732529011, model.defaultMemberCap());
         Assertions.assertFalse(model.isBoundedCap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedLimitCapProperties model
-            = new SharedLimitCapProperties().withDefaultMemberCap(1778385162).withIsBoundedCap(false);
+            = new SharedLimitCapProperties().withDefaultMemberCap(732529011).withIsBoundedCap(false);
         model = BinaryData.fromObject(model).toObject(SharedLimitCapProperties.class);
-        Assertions.assertEquals(1778385162, model.defaultMemberCap());
+        Assertions.assertEquals(732529011, model.defaultMemberCap());
         Assertions.assertFalse(model.isBoundedCap());
     }
 }

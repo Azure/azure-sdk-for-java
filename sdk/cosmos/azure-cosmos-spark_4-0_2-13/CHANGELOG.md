@@ -7,9 +7,20 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Added a defensive guard in bounded change feed reads (with `endLsn`) that fails the Spark task with `IllegalStateException` when the underlying paginator stops before the latest continuation token has advanced to `endLsn`. - See [PR 49393](https://github.com/Azure/azure-sdk-for-java/pull/49393)
 
 #### Other Changes
+
+### 4.49.2 (2026-07-27)
+
+#### Bugs Fixed
+* Fixed `ItemPatch`/`ItemPatchIfExists` write strategies to skip documents excluded by a conditional `spark.cosmos.write.patch.filter` instead of failing the write with `412 Precondition Failed`. - See [PR 49700](https://github.com/Azure/azure-sdk-for-java/pull/49700)
+* Fixed bounded change feed reads hanging after partition splits when stale feed-range metadata collapsed child continuation LSNs into a single `endLsn`. - See [PR 49883](https://github.com/Azure/azure-sdk-for-java/pull/49883)
+
+### 4.49.1 (2026-07-03)
+
+#### Bugs Fixed
+* Added a defensive guard in bounded change feed reads (with `endLsn`) that fails the Spark task with `IllegalStateException` when the underlying paginator stops before the latest continuation token has advanced to `endLsn`. - See [PR 49393](https://github.com/Azure/azure-sdk-for-java/pull/49393)
+* Fixed an issue in the `readManyByPartitionKeys` API in the Spark connector which could result in duplicates and missing the first record. - See [PR 49694](https://github.com/Azure/azure-sdk-for-java/pull/49694)
 
 ### 4.49.0 (2026-06-08)
 

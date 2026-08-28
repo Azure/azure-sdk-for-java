@@ -1,16 +1,36 @@
 ## Release History
 
-### 4.82.0-beta.1 (Unreleased)
+### 4.83.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
 
 #### Other Changes
+
+### 4.82.0 (2026-08-26)
+
+#### Features Added
+* Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
+* Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
+
+#### Bugs Fixed
+* Fixed a possible delay of PPCB failback when the SDK has never received a successful address response for the affected partition before failover, which could impact tail latency in certain workloads - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+* Fixed an intermittent `IndexOutOfBoundsException` in cross-partition hybrid search queries caused by multiple subscriptions to the coalesced component query results. - See PR [49831](https://github.com/Azure/azure-sdk-for-java/issues/49831)
+* Fixed document requests failing when Gateway V2 is enabled with resource-token or permission-feed authentication by routing those requests through Compute Gateway. - See PR [50084](https://github.com/Azure/azure-sdk-for-java/pull/50084).
+* Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed thin-client (Gateway V2) queries with a prefix (partial) hierarchical partition key returning co-located documents from other logical partitions. - See PR [49688](https://github.com/Azure/azure-sdk-for-java/pull/49688).
+* Fixed hedged requests losing request-scoped routing, timeout, authorization, throughput-control, and metadata state when cloning the original request. - See [PR 50069](https://github.com/Azure/azure-sdk-for-java/pull/50069).
+
+#### Other Changes
+* Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is enabled by default; opt out by setting system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429` to `false`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
+* Added bounded retries for transient "collection routing map / partition key range metadata not available" responses (HTTP 404 with sub-status `0`, `1003`, or `1013`) that can briefly occur right after a container is (re)created, improving the robustness of data-plane operations against the post-creation metadata-propagation race. As part of this change, when the routing map remains unavailable after retries an operation now fails with a `CosmosException` (HTTP 404, sub-status `1024` / `INCORRECT_CONTAINER_RID`) instead of an internal `IllegalStateException`. - See [PR 49639](https://github.com/Azure/azure-sdk-for-java/pull/49639).
+* Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM are configured with the same service endpoint. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed. - See [PR 49560](https://github.com/Azure/azure-sdk-for-java/pull/49560).
 
 ### 4.81.0 (2026-06-08)
 
@@ -23,6 +43,7 @@
 * Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
 * Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 * Fixed silent drift in `CosmosChangeFeedRequestOptions` when resuming from a continuation token via `byPage(savedContinuation)`. Previously only `maxPrefetchPageCount` and `throughputControlGroupName` were inherited onto the rebuilt impl; `endLSN`, `customSerializer`, `excludeRegions`, `readConsistencyStrategy`, `completeAfterAllCurrentChangesRetrieved`, and other caller-supplied configuration were silently dropped. All non-token-encoded fields are now propagated. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+* Fixed HTTP/2 PING keepalive handler (introduced in [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)) so it observes child-stream HEADERS/DATA reads via `Http2PingCloseRewrapHandler.channelReadComplete`, preventing spurious PINGs (and spurious closes) on connections actively serving requests through `Http2MultiplexHandler`.
 
 #### Other Changes
 * Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)
@@ -302,7 +323,7 @@
 * Added system property `COSMOS.LOAD_AZURE_VM_META_DATA` to allow customers to disable/enable loading Azure VM metadata for diagnostics - See [PR 42874](https://github.com/Azure/azure-sdk-for-java/pull/42874)
 
 #### Bugs Fixed
-* Fixed a Null Pointer Exception in `ContainerThroughputConrolGroupProperties` if defaultGroup is not set. - See [PR 42835](https://github.com/Azure/azure-sdk-for-java/pull/42835)
+* Fixed a Null Pointer Exception in `ContainerThroughputControlGroupProperties` if defaultGroup is not set. - See [PR 42835](https://github.com/Azure/azure-sdk-for-java/pull/42835)
 * Fixed a Null Pointer Exception in `RoutingMapProviderHelpers#getOverlappingRanges()` in case of Routing map being null - See [PR 42874](https://github.com/Azure/azure-sdk-for-java/pull/42874)
 * Fixed an issue where `continuationToken` is not being updated in the lease document if only `304` has been observed since `changeFeedProcessor` startup - See [PR 43013](https://github.com/Azure/azure-sdk-for-java/pull/43013)
 
@@ -412,7 +433,7 @@
 * Fixed UserAgent encoding when the suffix contains non-ASCII characters. - See [PR 40293](https://github.com/Azure/azure-sdk-for-java/pull/40293)
 
 #### Other Changes
-* Added robustness improvement to avoid client-side parsing errors `java.lang.IllegalArgumentException: Unable to parse JSON` when Gateway returns duplicate `unqiueKeyPolicy` in IndexPolicy (invalid json) - See[PR 40306](https://github.com/Azure/azure-sdk-for-java/pull/40306)
+* Added robustness improvement to avoid client-side parsing errors `java.lang.IllegalArgumentException: Unable to parse JSON` when Gateway returns duplicate `uniqueKeyPolicy` in IndexPolicy (invalid json) - See[PR 40306](https://github.com/Azure/azure-sdk-for-java/pull/40306)
 
 ### 4.60.0 (2024-05-19)
 
@@ -496,7 +517,7 @@
 ### 4.56.0 (2024-02-20)
 
 #### Features Added
-* Added overloads for `CosmosAsyncContainer.readMany` and `CosmosContainr.readMany` accepting request options via `CosmosReadManyRequestOptions` to allow specifying excluded regions, diagnostics thresholds and end-to-end timeout etc. - See [PR 38821](https://github.com/Azure/azure-sdk-for-java/pull/38821)
+* Added overloads for `CosmosAsyncContainer.readMany` and `CosmosContainer.readMany` accepting request options via `CosmosReadManyRequestOptions` to allow specifying excluded regions, diagnostics thresholds and end-to-end timeout etc. - See [PR 38821](https://github.com/Azure/azure-sdk-for-java/pull/38821)
 
 #### Bugs Fixed
 * Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
@@ -553,7 +574,7 @@
 #### Bugs Fixed
 * Fixed a bug resulting in `CosmosDiagnosticsContext.getStatusCode()` always returning `0` for `readMany` operations. - See [PR 37394](https://github.com/Azure/azure-sdk-for-java/pull/37394)
 * Fixed an issue where PartitionKeyRange request will not do cross region retry. - See [PR 37403](https://github.com/Azure/azure-sdk-for-java/pull/37403)
-* Fixed an issue where Session consistency was not honored when the consistency level on the `CosmosClientBuilder.consistencyLevel` was not explicitly set to `ConsistencyLevel.SESSION` but the default account consistency level is session. If not enforcing session consistency is the intended behavior, you can set the `CosmsoClientBuilder.consistencyLevel` to `ConsistencyLevel.EVENTUAL`. - See [PR 37377](https://github.com/Azure/azure-sdk-for-java/pull/37377)
+* Fixed an issue where Session consistency was not honored when the consistency level on the `CosmosClientBuilder.consistencyLevel` was not explicitly set to `ConsistencyLevel.SESSION` but the default account consistency level is session. If not enforcing session consistency is the intended behavior, you can set the `CosmosClientBuilder.consistencyLevel` to `ConsistencyLevel.EVENTUAL`. - See [PR 37377](https://github.com/Azure/azure-sdk-for-java/pull/37377)
 * Fixed an issue where client level `EndToEndOperationLatencyPolicyConfig.availabilityStrategy` is not being applied for `query` - See [PR 37511](https://github.com/Azure/azure-sdk-for-java/pull/37511)
 * Fixed an issue where operation is not cancelled based on `CosmosEndToEndOperationLatencyPolicyConfig.endToEndOperationTimeout` when `429` happens - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
 * Fixed an issue where `CosmosEndToEndOperationLatencyPolicyConfig.endToEndOperationTimeout` is not applied for `ReadMany` - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
@@ -605,7 +626,7 @@
 * Fixed `CosmosClient` connection warm up bug to open connections aggressively. - See [PR 36889](https://github.com/Azure/azure-sdk-for-java/pull/36889)
 
 #### Other Changes
-* Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
+* Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmosException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
 * Reverted preserve ordering in bulk mode([PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)). See [PR 36638](https://github.com/Azure/azure-sdk-for-java/pull/36638)
 
 ### 4.45.2-hotfix (2023-09-18)
@@ -925,7 +946,7 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 ### 4.28.0 (2022-03-18)
 #### Features Added
 * Added the "VM Unique ID" - see [Accessing and Using Azure VM Unique ID](https://azure.microsoft.com/blog/accessing-and-using-azure-vm-unique-id/) - to the request diagnostics. This information helps to simplify investigating any network issues between an application hosted in Azure and the corresponding Cosmos DB service endpoint. - See [PR 27692](https://github.com/Azure/azure-sdk-for-java/pull/27692)
-* Added overload of read api on ClientEncryptionKey with request options for cosmos encrytion project. - See [PR 27210](https://github.com/Azure/azure-sdk-for-java/pull/27210)
+* Added overload of read api on ClientEncryptionKey with request options for cosmos encryption project. - See [PR 27210](https://github.com/Azure/azure-sdk-for-java/pull/27210)
 
 #### Bugs Fixed
 * Added `decodeTime` in `CosmosDiagnostics` - See [PR 22808](https://github.com/Azure/azure-sdk-for-java/pull/22808)
@@ -1191,7 +1212,7 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 * Updated netty library version to `4.1.54.Final`.
 
 #### Bugs Fixed
-* Fixed RntbdServiceEnpoint close issue.
+* Fixed RntbdServiceEndpoint close issue.
 * Improved the latency and throughput for writes when multiplexing.
 
 ### 4.10.0 (2020-12-14)

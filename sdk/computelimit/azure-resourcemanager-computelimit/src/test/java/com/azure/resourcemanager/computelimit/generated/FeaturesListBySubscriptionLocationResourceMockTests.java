@@ -23,7 +23,7 @@ public final class FeaturesListBySubscriptionLocationResourceMockTests {
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Failed\"},\"id\":\"yifqrvkdvjsllrmv\",\"name\":\"d\",\"type\":\"watkpnpulexxb\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Failed\"},\"id\":\"vjxxjnsp\",\"name\":\"dptkoenkouk\",\"type\":\"vudwtiukbldng\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class FeaturesListBySubscriptionLocationResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Feature> response
-            = manager.features().listBySubscriptionLocationResource("rq", com.azure.core.util.Context.NONE);
+            = manager.features().listBySubscriptionLocationResource("ggi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(FeatureState.ENABLED, response.iterator().next().properties().state());
+        Assertions.assertEquals(FeatureState.DISABLED, response.iterator().next().properties().state());
     }
 }

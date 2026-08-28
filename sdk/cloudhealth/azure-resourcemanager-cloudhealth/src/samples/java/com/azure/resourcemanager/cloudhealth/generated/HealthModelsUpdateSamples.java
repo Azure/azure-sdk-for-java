@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
-import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +13,7 @@ import java.util.Map;
  */
 public final class HealthModelsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/HealthModels_Update.json
+     * x-ms-original-file: 2026-05-01-preview/HealthModels_Update.json
      */
     /**
      * Sample code: HealthModels_Update.
@@ -25,16 +22,9 @@ public final class HealthModelsUpdateSamples {
      */
     public static void healthModelsUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         HealthModel resource = manager.healthModels()
-            .getByResourceGroupWithResponse("rgopenapi", "model1", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("online-store-rg", "online-store", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withTags(mapOf("key21", "fakeTokenPlaceholder"))
-            .withIdentity(new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1",
-                    new UserAssignedIdentity())))
-            .apply();
+        resource.update().withTags(mapOf("environment", "production", "team", "online-store", "tier", "gold")).apply();
     }
 
     // Use "Map.of" if available

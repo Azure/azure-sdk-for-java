@@ -22,7 +22,7 @@ public final class ResourceAssociation implements JsonSerializable<ResourceAssoc
     private String name;
 
     /*
-     * The accessMode property.
+     * Access mode of the resource association
      */
     private ResourceAssociationAccessMode accessMode;
 
@@ -42,7 +42,7 @@ public final class ResourceAssociation implements JsonSerializable<ResourceAssoc
     }
 
     /**
-     * Get the accessMode property: The accessMode property.
+     * Get the accessMode property: Access mode of the resource association.
      * 
      * @return the accessMode value.
      */

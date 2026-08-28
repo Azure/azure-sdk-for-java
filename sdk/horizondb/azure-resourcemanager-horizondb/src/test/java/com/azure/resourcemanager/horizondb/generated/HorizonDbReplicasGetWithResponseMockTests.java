@@ -22,7 +22,7 @@ public final class HorizonDbReplicasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"role\":\"Read\",\"status\":\"Stopped\",\"fullyQualifiedDomainName\":\"bmwmbesldnkw\",\"availabilityZone\":\"pp\",\"provisioningState\":\"InProgress\"},\"id\":\"xogaokonzmnsikv\",\"name\":\"kqze\",\"type\":\"qkdltfz\"}";
+            = "{\"properties\":{\"role\":\"Read\",\"status\":\"Stopped\",\"fullyQualifiedDomainName\":\"ajqgxy\",\"availabilityZone\":\"ocmbqfqvmkcxoza\",\"provisioningState\":\"Succeeded\"},\"id\":\"lxprglyatddckcbc\",\"name\":\"ejrjxgciqibrho\",\"type\":\"xsdqrhzoymibmrqy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class HorizonDbReplicasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HorizonDbReplica response = manager.horizonDbReplicas()
-            .getWithResponse("tmweriofzpyq", "emwabnet", "hhszh", "d", com.azure.core.util.Context.NONE)
+            .getWithResponse("yzvqt", "nubexk", "zksmondj", "quxvypomgkop", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ReplicaRole.READ, response.properties().role());
-        Assertions.assertEquals("pp", response.properties().availabilityZone());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", response.properties().availabilityZone());
     }
 }

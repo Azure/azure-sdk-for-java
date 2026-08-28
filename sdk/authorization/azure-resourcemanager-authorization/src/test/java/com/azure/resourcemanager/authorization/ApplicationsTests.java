@@ -10,7 +10,11 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
+import java.util.Base64;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
@@ -45,6 +49,47 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             System.out.println(application.id() + " - " + application.applicationId());
             Assertions.assertEquals(0, application.passwordCredentials().size());
             Assertions.assertEquals(0, application.certificateCredentials().size());
+        } finally {
+            if (application != null) {
+                authorizationManager.applications().deleteById(application.id());
+            }
+        }
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canAddCertificateCredentialFromX509CertificateDuringUpdate() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        byte[] certificateBytes;
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/myTest.cer")) {
+            X509Certificate certificate
+                = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
+            certificateBytes = certificate.getEncoded();
+        }
+
+        String encodedCertificate = Base64.getEncoder().encodeToString(certificateBytes);
+        Assertions.assertTrue(encodedCertificate.contains("+") || encodedCertificate.contains("/"));
+
+        String name = generateRandomResourceName("javasdkapp", 20);
+        ActiveDirectoryApplication application = null;
+        try {
+            application = authorizationManager.applications()
+                .define(name)
+                .withSignOnUrl("http://easycreate.azure.com/" + name)
+                .create();
+
+            application.update()
+                .defineCertificateCredential("cert")
+                .withAsymmetricX509Certificate()
+                .withPublicKey(certificateBytes)
+                .withDuration(Duration.ofDays(100))
+                .attach()
+                .apply();
+
+            Assertions.assertEquals(1, application.certificateCredentials().size());
         } finally {
             if (application != null) {
                 authorizationManager.applications().deleteById(application.id());

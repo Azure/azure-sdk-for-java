@@ -26,7 +26,7 @@ public interface VirtualMachine {
     String id();
 
     /**
-     * Gets the type property: Type of the virtual machine.
+     * Gets the type property: ARM resource type - virtual machine.
      * 
      * @return the type value.
      */
@@ -46,6 +46,27 @@ public interface VirtualMachine {
      * @return the error value.
      */
     ApiError error();
+
+    /**
+     * Gets the vmSize property: The VM size of the virtual machine.
+     * 
+     * @return the vmSize value.
+     */
+    String vmSize();
+
+    /**
+     * Gets the zone property: The availability zone of the virtual machine.
+     * 
+     * @return the zone value.
+     */
+    String zone();
+
+    /**
+     * Gets the priority property: The priority of the virtual machine.
+     * 
+     * @return the priority value.
+     */
+    String priority();
 
     /**
      * Gets the inner com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineInner object.

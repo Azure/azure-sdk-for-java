@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_Custom.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Get_Custom.json
      */
     /**
      * Sample code: VolumeGroups_Get_Custom.
@@ -21,7 +21,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_SapHana.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Get_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Get_SapHana.
@@ -33,7 +33,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_Custom_SMB.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Get_Custom_SMB.json
      */
     /**
      * Sample code: VolumeGroups_Get_Custom_SMB.
@@ -45,7 +45,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_Oracle.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Get_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Get_Oracle.

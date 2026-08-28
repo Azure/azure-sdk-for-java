@@ -284,16 +284,16 @@ public interface Workspace {
     Workspace refresh(Context context);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    WorkspaceEvaluation refreshRecommendations();
+    WorkspaceDiscovery discover();
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,5 +301,25 @@ public interface Workspace {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    WorkspaceEvaluation refreshRecommendations(Context context);
+    WorkspaceDiscovery discover(Context context);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    WorkspaceEvaluation evaluate();
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    WorkspaceEvaluation evaluate(Context context);
 }

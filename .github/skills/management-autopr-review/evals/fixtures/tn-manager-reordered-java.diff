@@ -1,0 +1,9 @@
+diff --git a/sdk/appcontainers/azure-resourcemanager-appcontainers/src/main/java/com/azure/resourcemanager/appcontainers/ContainerAppsApiManager.java b/sdk/appcontainers/azure-resourcemanager-appcontainers/src/main/java/com/azure/resourcemanager/appcontainers/ContainerAppsApiManager.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/appcontainers/azure-resourcemanager-appcontainers/src/main/java/com/azure/resourcemanager/appcontainers/ContainerAppsApiManager.java
+@@ -0,0 +1,4 @@
++package com.azure.resourcemanager.appcontainers;
++
++public final class ContainerAppsApiManager {
++}

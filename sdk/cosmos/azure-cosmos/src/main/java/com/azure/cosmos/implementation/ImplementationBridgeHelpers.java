@@ -1499,6 +1499,7 @@ public class ImplementationBridgeHelpers {
             EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client);
             boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
+            List<String> getExcludedRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             String getConnectionMode(CosmosAsyncClient client);
             String getUserAgent(CosmosAsyncClient client);

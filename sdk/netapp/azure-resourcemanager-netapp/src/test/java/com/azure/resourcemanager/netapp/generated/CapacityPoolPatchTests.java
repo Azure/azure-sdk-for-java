@@ -15,31 +15,31 @@ public final class CapacityPoolPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityPoolPatch model = BinaryData.fromString(
-            "{\"location\":\"mrjgeihfqlggwfi\",\"id\":\"cxmjpbyephmg\",\"name\":\"ljvrcmyfqipgxhnp\",\"type\":\"yqwcabvnuil\",\"tags\":{\"ugmrmf\":\"aswlp\",\"oauk\":\"lrxw\",\"moaedsxj\":\"fkvcisi\"},\"properties\":{\"size\":2870027995494188014,\"qosType\":\"Manual\",\"coolAccess\":true,\"customThroughputMibps\":1018835661}}")
+            "{\"location\":\"yeew\",\"id\":\"iqbps\",\"name\":\"omguamlj\",\"type\":\"rgmsplzga\",\"tags\":{\"pqanxrjkix\":\"shhvnewgnxky\",\"yghs\":\"wbtaoyp\"},\"properties\":{\"size\":4157830624762350361,\"qosType\":\"Manual\",\"coolAccess\":true,\"customThroughputMibps\":1324330930}}")
             .toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("mrjgeihfqlggwfi", model.location());
-        Assertions.assertEquals("aswlp", model.tags().get("ugmrmf"));
-        Assertions.assertEquals(2870027995494188014L, model.size());
+        Assertions.assertEquals("yeew", model.location());
+        Assertions.assertEquals("shhvnewgnxky", model.tags().get("pqanxrjkix"));
+        Assertions.assertEquals(4157830624762350361L, model.size());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(1018835661, model.customThroughputMibps());
+        Assertions.assertEquals(1324330930, model.customThroughputMibps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityPoolPatch model = new CapacityPoolPatch().withLocation("mrjgeihfqlggwfi")
-            .withTags(mapOf("ugmrmf", "aswlp", "oauk", "lrxw", "moaedsxj", "fkvcisi"))
-            .withSize(2870027995494188014L)
+        CapacityPoolPatch model = new CapacityPoolPatch().withLocation("yeew")
+            .withTags(mapOf("pqanxrjkix", "shhvnewgnxky", "yghs", "wbtaoyp"))
+            .withSize(4157830624762350361L)
             .withQosType(QosType.MANUAL)
             .withCoolAccess(true)
-            .withCustomThroughputMibps(1018835661);
+            .withCustomThroughputMibps(1324330930);
         model = BinaryData.fromObject(model).toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("mrjgeihfqlggwfi", model.location());
-        Assertions.assertEquals("aswlp", model.tags().get("ugmrmf"));
-        Assertions.assertEquals(2870027995494188014L, model.size());
+        Assertions.assertEquals("yeew", model.location());
+        Assertions.assertEquals("shhvnewgnxky", model.tags().get("pqanxrjkix"));
+        Assertions.assertEquals(4157830624762350361L, model.size());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(1018835661, model.customThroughputMibps());
+        Assertions.assertEquals(1324330930, model.customThroughputMibps());
     }
 
     // Use "Map.of" if available

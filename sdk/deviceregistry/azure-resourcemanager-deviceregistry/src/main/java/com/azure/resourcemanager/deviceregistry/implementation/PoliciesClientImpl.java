@@ -948,7 +948,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -968,7 +968,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -986,7 +986,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1005,7 +1005,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1025,7 +1025,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1043,7 +1043,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1062,7 +1062,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1079,7 +1079,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1094,7 +1094,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

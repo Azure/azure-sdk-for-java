@@ -16,7 +16,7 @@ import java.io.IOException;
  * Base model for a manual dispatch payload.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public class RoutineDispatchPayload implements JsonSerializable<RoutineDispatchPayload> {
 
     /*

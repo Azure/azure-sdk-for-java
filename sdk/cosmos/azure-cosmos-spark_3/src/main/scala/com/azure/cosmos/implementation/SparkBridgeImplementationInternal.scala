@@ -139,8 +139,14 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
   def extractContinuationTokensFromChangeFeedStateJson(stateJsonBase64: String): Array[(NormalizedRange, Long)] = {
     assert(!Strings.isNullOrWhiteSpace(stateJsonBase64), s"Argument 'stateJsonBase64' must not be null or empty.")
-    val state = ChangeFeedState.fromString(stateJsonBase64)
-    state
+    extractContinuationTokensFromChangeFeedState(ChangeFeedState.fromString(stateJsonBase64))
+  }
+
+  def extractContinuationTokensFromChangeFeedState(
+    changeFeedState: ChangeFeedState
+  ): Array[(NormalizedRange, Long)] = {
+    assert(changeFeedState != null, "Argument 'changeFeedState' must not be null.")
+    changeFeedState
       .extractContinuationTokens() // already sorted
       .asScala
       .map(t => Tuple2(rangeToNormalizedRange(t.getRange), toLsn(t.getToken)))

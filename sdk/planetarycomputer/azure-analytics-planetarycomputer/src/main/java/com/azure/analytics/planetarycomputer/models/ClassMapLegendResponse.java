@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +24,7 @@ public final class ClassMapLegendResponse implements JsonSerializable<ClassMapLe
      * ClassMap legend response model.
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of ClassMapLegendResponse class.
@@ -38,7 +39,7 @@ public final class ClassMapLegendResponse implements JsonSerializable<ClassMapLe
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -50,8 +51,13 @@ public final class ClassMapLegendResponse implements JsonSerializable<ClassMapLe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -69,7 +75,7 @@ public final class ClassMapLegendResponse implements JsonSerializable<ClassMapLe
     public static ClassMapLegendResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ClassMapLegendResponse deserializedClassMapLegendResponse = new ClassMapLegendResponse();
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -78,7 +84,8 @@ public final class ClassMapLegendResponse implements JsonSerializable<ClassMapLe
                     additionalProperties = new LinkedHashMap<>();
                 }
 
-                additionalProperties.put(fieldName, reader.readUntyped());
+                additionalProperties.put(fieldName,
+                    reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
             }
             deserializedClassMapLegendResponse.additionalProperties = additionalProperties;
 

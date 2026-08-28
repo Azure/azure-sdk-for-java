@@ -61,6 +61,20 @@ public interface QuotaManagementClient {
     QuotaRequestStatusClient getQuotaRequestStatus();
 
     /**
+     * Gets the QuotaTransfersClient object to access its operations.
+     * 
+     * @return the QuotaTransfersClient object.
+     */
+    QuotaTransfersClient getQuotaTransfers();
+
+    /**
+     * Gets the IncomingQuotaTransfersClient object to access its operations.
+     * 
+     * @return the IncomingQuotaTransfersClient object.
+     */
+    IncomingQuotaTransfersClient getIncomingQuotaTransfers();
+
+    /**
      * Gets the GroupQuotasClient object to access its operations.
      * 
      * @return the GroupQuotasClient object.

@@ -14,17 +14,17 @@ public final class JobResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"vbopfppdbwnu\",\"backupManagementType\":\"AzureWorkload\",\"operation\":\"xkumasjcaac\",\"status\":\"mmcpug\",\"startTime\":\"2021-09-14T23:55:36Z\",\"endTime\":\"2021-09-16T19:52:32Z\",\"activityId\":\"vufhbzehewhoq\"},\"tags\":{\"xeaclgsc\":\"bqnbl\",\"rsrrmoucsofldp\":\"orim\",\"mxuq\":\"viyfcaabeolhbhlv\"},\"location\":\"s\",\"eTag\":\"kcudfbsfarfsiowl\",\"id\":\"xnq\",\"name\":\"vwgf\",\"type\":\"tmhqykiz\"}")
+            "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"jtkbusqogsfika\",\"backupManagementType\":\"AzureIaasVM\",\"operation\":\"sharujtj\",\"status\":\"xfz\",\"startTime\":\"2021-09-16T23:50:41Z\",\"endTime\":\"2021-11-24T09:34:57Z\",\"activityId\":\"wkpqhjpenuygbq\"},\"tags\":{\"f\":\"ekewvnqvcdlguauc\",\"un\":\"jwnlax\",\"gx\":\"qikczvvita\"},\"location\":\"csserxht\",\"eTag\":\"oxhlw\",\"id\":\"sjgqrsxyp\",\"name\":\"uuuybnchrsziz\",\"type\":\"yuel\"}")
             .toObject(JobResourceInner.class);
-        Assertions.assertEquals("vbopfppdbwnu", model.properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.properties().backupManagementType());
-        Assertions.assertEquals("xkumasjcaac", model.properties().operation());
-        Assertions.assertEquals("mmcpug", model.properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T23:55:36Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T19:52:32Z"), model.properties().endTime());
-        Assertions.assertEquals("vufhbzehewhoq", model.properties().activityId());
-        Assertions.assertEquals("bqnbl", model.tags().get("xeaclgsc"));
-        Assertions.assertEquals("s", model.location());
-        Assertions.assertEquals("kcudfbsfarfsiowl", model.etag());
+        Assertions.assertEquals("jtkbusqogsfika", model.properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.properties().backupManagementType());
+        Assertions.assertEquals("sharujtj", model.properties().operation());
+        Assertions.assertEquals("xfz", model.properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T23:50:41Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T09:34:57Z"), model.properties().endTime());
+        Assertions.assertEquals("wkpqhjpenuygbq", model.properties().activityId());
+        Assertions.assertEquals("ekewvnqvcdlguauc", model.tags().get("f"));
+        Assertions.assertEquals("csserxht", model.location());
+        Assertions.assertEquals("oxhlw", model.etag());
     }
 }

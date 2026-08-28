@@ -4,16 +4,16 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaToolboxesClient;
-import com.azure.ai.agents.models.McpTool;
-import com.azure.ai.agents.models.Tool;
+import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.models.McpToolboxTool;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * This sample demonstrates how to retrieve a specific version of a toolbox
- * using the BetaToolboxesClient.
+ * using the ToolboxesClient.
  *
  * <p>The {@code getToolboxVersion} method returns the full version details
  * including the list of tools, description, metadata, and creation timestamp.</p>
@@ -29,10 +29,10 @@ public class GetToolboxVersion {
         String toolboxName = "toolbox_created_from_java";
         String version = "1"; // Replace with the desired version
         // Code sample for retrieving a specific toolbox version
-        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .beta().buildBetaToolboxesClient();
+                .buildToolboxesClient();
 
         ToolboxVersionDetails toolboxVersion = toolboxesClient.getToolboxVersion(toolboxName, version);
 
@@ -41,11 +41,11 @@ public class GetToolboxVersion {
         System.out.println("Description: " + toolboxVersion.getDescription());
         System.out.println("Created At: " + toolboxVersion.getCreatedAt());
         System.out.println("Tools:");
-        for (Tool tool : toolboxVersion.getTools()) {
-            if (tool instanceof McpTool) {
-                McpTool mcpTool = (McpTool) tool;
+        for (ToolboxTool tool : toolboxVersion.getTools()) {
+            if (tool instanceof McpToolboxTool) {
+                McpToolboxTool mcpTool = (McpToolboxTool) tool;
                 System.out.println("  - MCP '" + mcpTool.getServerLabel()
-                        + "' require_approval: " + mcpTool.getRequireApprovalAsString());
+                        + "' require_approval: " + mcpTool.getRequireApproval());
             }
         }
     }

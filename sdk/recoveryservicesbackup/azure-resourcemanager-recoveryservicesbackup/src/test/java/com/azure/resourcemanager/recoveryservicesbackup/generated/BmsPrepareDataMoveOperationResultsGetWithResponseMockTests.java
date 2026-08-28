@@ -29,7 +29,7 @@ public final class BmsPrepareDataMoveOperationResultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VaultStorageConfigOperationResultResponse response = manager.bmsPrepareDataMoveOperationResults()
-            .getWithResponse("nxtminklog", "svtzarhzv", "nsqktc", com.azure.core.util.Context.NONE)
+            .getWithResponse("izcbfzmcrunfhiuc", "mfbcpaqktkrum", "u", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

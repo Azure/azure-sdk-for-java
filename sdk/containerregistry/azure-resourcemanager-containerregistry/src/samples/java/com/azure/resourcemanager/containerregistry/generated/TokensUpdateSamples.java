@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class TokensUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/TokenUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/TokenUpdate.json
      */
     /**
      * Sample code: TokenUpdate.

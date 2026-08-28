@@ -435,6 +435,7 @@ public class HttpConstants {
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
         public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
+        public static final int COLLECTION_NOT_AVAILABLE_FOR_READ = 1013;
 
         public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
@@ -508,6 +509,7 @@ public class HttpConstants {
         public static final int SERVER_GENERATED_408 = 21010;
         public static final int FAILED_TO_PARSE_SERVER_RESPONSE = 21011;
         public static final int GLOBAL_N_REGION_COMMIT_WRITE_BARRIER_NOT_MET = 21012;
+        public static final int SERVER_WRITE_BARRIER_THROTTLED = 21013;
     }
 
     public static class HeaderValues {

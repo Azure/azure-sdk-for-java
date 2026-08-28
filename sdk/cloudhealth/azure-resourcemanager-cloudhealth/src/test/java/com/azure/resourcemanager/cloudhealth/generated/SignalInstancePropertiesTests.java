@@ -12,18 +12,18 @@ public final class SignalInstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalInstanceProperties model = BinaryData.fromString(
-            "{\"signalKind\":\"SignalInstanceProperties\",\"name\":\"xcyjmoadsuvarmy\",\"signalDefinitionName\":\"mjsjqb\",\"status\":{\"healthState\":\"Degraded\",\"value\":36.2110541434972,\"reportedAt\":\"2021-10-15T21:40:20Z\",\"error\":\"co\"}}")
+            "{\"signalKind\":\"SignalInstanceProperties\",\"name\":\"rwkq\",\"signalDefinitionName\":\"hgbijt\",\"status\":{\"healthState\":\"Deleted\",\"value\":9.178297793940615,\"reportedAt\":\"2021-08-16T20:44:49Z\",\"error\":\"ibsystawf\",\"additionalContext\":\"jpvkvpbjxbkzbzkd\"}}")
             .toObject(SignalInstanceProperties.class);
-        Assertions.assertEquals("xcyjmoadsuvarmy", model.name());
-        Assertions.assertEquals("mjsjqb", model.signalDefinitionName());
+        Assertions.assertEquals("rwkq", model.name());
+        Assertions.assertEquals("hgbijt", model.signalDefinitionName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SignalInstanceProperties model
-            = new SignalInstanceProperties().withName("xcyjmoadsuvarmy").withSignalDefinitionName("mjsjqb");
+            = new SignalInstanceProperties().withName("rwkq").withSignalDefinitionName("hgbijt");
         model = BinaryData.fromObject(model).toObject(SignalInstanceProperties.class);
-        Assertions.assertEquals("xcyjmoadsuvarmy", model.name());
-        Assertions.assertEquals("mjsjqb", model.signalDefinitionName());
+        Assertions.assertEquals("rwkq", model.name());
+        Assertions.assertEquals("hgbijt", model.signalDefinitionName());
     }
 }

@@ -119,19 +119,25 @@ public final class BingGroundingTool extends Tool {
     }
 
     /*
-     * Optional user-defined name for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String name;
 
     /*
-     * Optional user-defined description for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String description;
 
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
     /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the name value.
      */
@@ -141,7 +147,7 @@ public final class BingGroundingTool extends Tool {
     }
 
     /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param name the name value to set.
      * @return the BingGroundingTool object itself.
@@ -153,7 +159,7 @@ public final class BingGroundingTool extends Tool {
     }
 
     /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the description value.
      */
@@ -163,7 +169,7 @@ public final class BingGroundingTool extends Tool {
     }
 
     /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param description the description value to set.
      * @return the BingGroundingTool object itself.
@@ -174,18 +180,8 @@ public final class BingGroundingTool extends Tool {
         return this;
     }
 
-    /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
     /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the toolConfigs value.
      */
@@ -195,9 +191,7 @@ public final class BingGroundingTool extends Tool {
     }
 
     /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param toolConfigs the toolConfigs value to set.
      * @return the BingGroundingTool object itself.

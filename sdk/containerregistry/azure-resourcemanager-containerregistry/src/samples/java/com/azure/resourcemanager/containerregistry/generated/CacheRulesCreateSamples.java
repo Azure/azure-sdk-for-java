@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleInner;
+import com.azure.resourcemanager.containerregistry.models.GarAuthenticationProperties;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerregistry.models.UserIdentityProperties;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public final class CacheRulesCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/CacheRuleCreate.json
+     * x-ms-original-file: 2026-03-01-preview/CacheRuleCreate.json
      */
     /**
      * Sample code: CacheRuleCreate.
@@ -34,7 +35,7 @@ public final class CacheRulesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
+     * x-ms-original-file: 2026-03-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
      */
     /**
      * Sample code: CacheRuleCreateUserAssignedMIAuthentication.
@@ -51,6 +52,31 @@ public final class CacheRulesCreateSamples {
                         "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
                         new UserIdentityProperties())))
                 .withSourceRepository("acr-registry.azurecr.io/library/repository")
+                .withTargetRepository("cached-acr/hello-world"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
+     */
+    /**
+     * Sample code: CacheRuleCreateUserAssignedMIAuthGoogle.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void cacheRuleCreateUserAssignedMIAuthGoogle(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getCacheRules()
+            .create("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleInner()
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserIdentityProperties())))
+                .withAdditionalAuthenticationProperties(
+                    new GarAuthenticationProperties().withProjectNumber("123456789012")
+                        .withWorkloadIdentityPool("my-workload-identity-pool")
+                        .withWorkloadIdentityProvider("my-workload-identity-provider"))
+                .withSourceRepository("us-west1-docker.pkg.dev/repository/hello-world")
                 .withTargetRepository("cached-acr/hello-world"), com.azure.core.util.Context.NONE);
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class DiscoveryRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_Get.json
+     * x-ms-original-file: 2026-05-01-preview/DiscoveryRules_Get.json
      */
     /**
      * Sample code: DiscoveryRules_Get.
@@ -18,6 +18,6 @@ public final class DiscoveryRulesGetSamples {
      */
     public static void discoveryRulesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.discoveryRules()
-            .getWithResponse("myResourceGroup", "myHealthModel", "myDiscoveryRule", com.azure.core.util.Context.NONE);
+            .getWithResponse("online-store-rg", "online-store", "discover-web-apps", com.azure.core.util.Context.NONE);
     }
 }
