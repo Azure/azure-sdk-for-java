@@ -17,12 +17,15 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobLayout;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
@@ -52,7 +55,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -61,6 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests that the default locality-aware chunk-download wiring works end-to-end (layout cache construction,
@@ -80,6 +87,8 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final int LIVE_TEST_CONTENT_LENGTH = 16 * Constants.MB;
     private static final int PLAYBACK_TEST_CONTENT_LENGTH = 16 * Constants.KB;
     private static final int LIVE_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    private static final int NO_HINT_LIVE_CONTENT_LENGTH = 4 * Constants.MB;
+    private static final int NO_HINT_LIVE_DOWNLOAD_BLOCK_SIZE = Constants.MB;
     private static final int PLAYBACK_DOWNLOAD_BLOCK_SIZE = 2 * Constants.KB;
     private static final int CONTENT_PATTERN_LENGTH = 4 * Constants.KB;
     private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
@@ -183,6 +192,68 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
                 "Layout-routed request must preserve the original account authority in the Host header.");
         }
         assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
+
+        // The layout is fetched once and cached for the duration of the download; re-fetching it per chunk would be
+        // a regression. Continuation pages are part of that one enumeration, so only marker-less requests are counted.
+        assertEquals(1, countLayoutEnumerations(records),
+            "Expected exactly one comp=layout enumeration. Observed requests: " + records);
+
+        // Verify each routed chunk's host matches an endpoint from the public getLayout API.
+        // Use bc (plain client, no recording policy) so this call does not pollute records.
+        Set<String> layoutEndpointHosts = new HashSet<>();
+        for (BlobLayout layout : bc.getLayout(null, Context.NONE)) {
+            for (BlobLayoutRange range : layout.getRanges()) {
+                String host = UrlBuilder.parse(range.getEndpoint()).getHost();
+                if (host != null) {
+                    layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));
+                }
+            }
+        }
+        for (RequestHostRecord record : rewrittenRecords) {
+            assertTrue(layoutEndpointHosts.contains(record.requestHost.toLowerCase(Locale.ROOT)),
+                "Chunk host '" + record.requestHost + "' not in layout endpoints " + layoutEndpointHosts
+                    + ". Observed requests: " + records);
+        }
+    }
+
+    /**
+     * A blob below the size at which the service emits {@code x-ms-download-hint: layout} must not cause the SDK to
+     * fetch a layout at all. The block size is deliberately smaller than the blob so the download is genuinely
+     * chunked -- otherwise the layout would be skipped because no bytes remain after the initial chunk, and the test
+     * would pass without ever exercising the download-hint check.
+     */
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadToFileSmallBlobDoesNotFetchLayout() throws IOException {
+        byte[] data = getRandomByteArray(NO_HINT_LIVE_CONTENT_LENGTH);
+        BlobClient smallBlobClient = cc.getBlobClient(generateBlobName());
+        smallBlobClient.getBlockBlobClient().upload(new java.io.ByteArrayInputStream(data), data.length, true);
+
+        List<RequestHostRecord> records = new CopyOnWriteArrayList<>();
+        BlobClient downloadClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            smallBlobClient.getBlobUrl(), recordRequestHostsPolicy(records));
+
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        assertDoesNotThrow(
+            () -> downloadClient.downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(testFile.toString()).setParallelTransferOptions(
+                    new ParallelTransferOptions().setBlockSizeLong((long) NO_HINT_LIVE_DOWNLOAD_BLOCK_SIZE)),
+                null, null));
+
+        URI accountUri = URI.create(smallBlobClient.getBlobUrl());
+        String accountHost = accountUri.getHost();
+
+        assertEquals(0, countLayoutRequests(records),
+            "Small blob must not trigger comp=layout. Observed requests: " + records);
+        assertTrue(getRewrittenRecords(records, accountHost).isEmpty(),
+            "All requests must stay on the account host. Observed requests: " + records);
+        for (RequestHostRecord record : records) {
+            assertNull(record.hostHeader, "No Host header rewriting expected. Observed: " + record);
+        }
+        assertArrayEquals(data, Files.readAllBytes(testFile));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
@@ -519,6 +590,35 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         return rewrittenRecords;
     }
 
+    private static long countLayoutRequests(List<RequestHostRecord> records) {
+        long count = 0;
+        for (RequestHostRecord record : records) {
+            if (isLayoutRequest(record)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Counts layout enumerations rather than layout requests. The service is permitted to paginate a layout, and every
+     * continuation page is also a {@code comp=layout} request, so only the marker-less request that starts an
+     * enumeration is counted.
+     */
+    private static long countLayoutEnumerations(List<RequestHostRecord> records) {
+        long count = 0;
+        for (RequestHostRecord record : records) {
+            if (isLayoutRequest(record) && !record.requestUrl.contains("marker=")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private static boolean isLayoutRequest(RequestHostRecord record) {
+        return record.requestUrl != null && record.requestUrl.contains("comp=layout");
+    }
+
     private static HttpPipelinePolicy recordRequestHostsPolicy(List<RequestHostRecord> records) {
         return new HttpPipelinePolicy() {
             @Override
@@ -535,7 +635,8 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
             private void recordRequest(HttpPipelineCallContext context) {
                 records.add(new RequestHostRecord(context.getHttpRequest().getUrl().getHost(),
-                    context.getHttpRequest().getHeaders().getValue(HttpHeaderName.HOST)));
+                    context.getHttpRequest().getHeaders().getValue(HttpHeaderName.HOST),
+                    context.getHttpRequest().getUrl().toString()));
             }
         };
     }
@@ -543,15 +644,18 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final class RequestHostRecord {
         private final String requestHost;
         private final String hostHeader;
+        private final String requestUrl;
 
-        private RequestHostRecord(String requestHost, String hostHeader) {
+        private RequestHostRecord(String requestHost, String hostHeader, String requestUrl) {
             this.requestHost = requestHost;
             this.hostHeader = hostHeader;
+            this.requestUrl = requestUrl;
         }
 
         @Override
         public String toString() {
-            return "RequestHostRecord{requestHost='" + requestHost + "', hostHeader='" + hostHeader + "'}";
+            return "RequestHostRecord{requestHost='" + requestHost + "', hostHeader='" + hostHeader + "', requestUrl='"
+                + requestUrl + "'}";
         }
     }
 
