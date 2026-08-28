@@ -193,17 +193,6 @@ public class ReadToFileOptions {
     }
 
     /**
-     * Sets the value for the x-ms-upn header.
-     *
-     * @param userPrincipalName The value for the x-ms-upn header.
-     * @return The updated options.
-     */
-    public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
-        this.userPrincipalName = userPrincipalName;
-        return this;
-    }
-
-    /**
      * Sets the {@link LayoutAwareRouting}.
      *
      * @param layoutAwareRouting {@link LayoutAwareRouting}
@@ -211,6 +200,17 @@ public class ReadToFileOptions {
      */
     public ReadToFileOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
         this.layoutAwareRouting = layoutAwareRouting;
+        return this;
+    }
+
+    /**
+     * Sets the value for the x-ms-upn header.
+     *
+     * @param userPrincipalName The value for the x-ms-upn header.
+     * @return The updated options.
+     */
+    public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
         return this;
     }
 
