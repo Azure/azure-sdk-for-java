@@ -3,6 +3,7 @@ class;com.azure.ai.agents.models.A2APreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2APreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCallOutput;Preview API. preview_tool;
+field;com.azure.ai.agents.models.AgentDetails;Preview API. DigitalWorker=V1Preview;digital_worker_type
 class;com.azure.ai.agents.models.AgentOptimizationCandidate;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationDatasetCriterion;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationDatasetInput;Preview API. AgentsOptimization=V2Preview;
@@ -18,6 +19,7 @@ class;com.azure.ai.agents.models.AgentOptimizationJobResult;Preview API. AgentsO
 class;com.azure.ai.agents.models.AgentOptimizationOptions;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationReferenceDatasetInput;Preview API. AgentsOptimization=V2Preview;
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
+field;com.azure.ai.agents.models.AzureCreateResponseDetails;Preview API. ModelRouterControls=V1Preview;model_selection_details
 class;com.azure.ai.agents.models.BingCustomSearchConfiguration;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BingCustomSearchPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BingCustomSearchToolCall;Preview API. preview_tool;
@@ -30,7 +32,8 @@ class;com.azure.ai.agents.models.BrowserAutomationToolCallOutput;Preview API. pr
 class;com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationToolParameters;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores=V1Preview;
-field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview;definition
+field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
+field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.ExternalAgentDefinition;Preview API. ExternalAgents=V1Preview;
 class;com.azure.ai.agents.models.FabricDataAgentToolCall;Preview API. preview_tool;
@@ -60,10 +63,19 @@ class;com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;Preview API. M
 class;com.azure.ai.agents.models.MemoryStoreUpdateResponse;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreUpdateStatus;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MicrosoftFabricPreviewTool;Preview API. preview_tool;
+class;com.azure.ai.agents.models.ModelRouterAttempt;Preview API. ModelRouterControls=V1Preview;
+class;com.azure.ai.agents.models.ModelRouterAttemptError;Preview API. ModelRouterControls=V1Preview;
+class;com.azure.ai.agents.models.ModelRouterAttemptResult;Preview API. ModelRouterControls=V1Preview;
+class;com.azure.ai.agents.models.ModelRouterDetails;Preview API. ModelRouterControls=V1Preview;
+class;com.azure.ai.agents.models.ModelRouterMode;Preview API. ModelRouterControls=V1Preview;
+class;com.azure.ai.agents.models.ModelRouterResponseHeaderValue;Preview API. ModelRouterControls=V1Preview;
+class;com.azure.ai.agents.models.ModelSelectionDetails;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.OptimizedAgentIdentifier;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.ProceduralMemoryItem;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.PromotionInfo;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.ReminderPreviewToolboxTool;Preview API. preview_tool;
+field;com.azure.ai.agents.models.Response;Preview API. ModelRouterControls=V1Preview;model_selection_details
+class;com.azure.ai.agents.models.RoutingTraceEntry;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.SharepointGroundingToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.SharepointGroundingToolCallOutput;Preview API. preview_tool;
 class;com.azure.ai.agents.models.SharepointGroundingToolParameters;Preview API. preview_tool;
