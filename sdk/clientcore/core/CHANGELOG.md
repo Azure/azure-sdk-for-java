@@ -3,8 +3,14 @@
 ## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
+- Added typed continuation tokens and custom continuation predicates to `PagedIterable`, `PagedResponse`, and
+  `PagingOptions`.
+- Added custom HTTP request and response logging hooks to `HttpInstrumentationOptions`.
+- Added observable `LongGauge` metrics.
 
 ### Breaking Changes
+- Added a continuation-token generic parameter to `PagedIterable`, `PagedResponse`, and `PagingOptions`. Existing
+  string-token usages should specify `String` as the continuation-token type.
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
   `Function<HttpRetryCondition, Duration>` instead of `Function<HttpHeaders, Duration>`. This allows richer inspection
   of the reason the request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))

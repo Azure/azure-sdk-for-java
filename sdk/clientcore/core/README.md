@@ -25,7 +25,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>io.clientcore</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.0-beta.11</version>
+    <version>1.0.0-beta.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,10 +36,13 @@ The key concepts of Core (and therefore all client libraries using Core) include
 
 - Configuring service clients, e.g. configuring retries, logging, etc. (`HttpTrait<T>`, `ConfigurationTrait<T>`, etc.)
 - Accessing HTTP response details (`Response<T>`).
+- Iterating paged responses with typed continuation tokens and custom continuation predicates
+    (`PagedIterable<T, C>`).
 - Exceptions for reporting errors from service requests consistently.
 - Abstractions for representing SDK credentials.
 - Operation timeouts
 - JSON and XML serialization
+- Logging, distributed tracing, counters, histograms, and observable gauges.
 
 These will be introduced by way of the examples presented below.
 

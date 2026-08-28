@@ -117,7 +117,7 @@ public class Utility {
     }
 
     // Sync Handler
-    public static PagedResponse<ConfigurationSetting>
+    public static PagedResponse<ConfigurationSetting, String>
         handleNotModifiedErrorToValidResponse(HttpResponseException error) {
         Response<BinaryData> httpResponse = error.getResponse();
         if (httpResponse != null) {
