@@ -28,7 +28,7 @@ public final class StorageTargetOperationsInvalidateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.storageTargetOperations()
-            .invalidate("zhyrmewipmve", "dxukuqgsjjxundxg", "etw", com.azure.core.util.Context.NONE);
+            .invalidate("fuzboyjathwtzolb", "emwmdxmebwjs", "jpahlxvea", com.azure.core.util.Context.NONE);
 
     }
 }

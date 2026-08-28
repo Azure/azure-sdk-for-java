@@ -9,14 +9,14 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class StorageTargetsDnsRefreshSamples {
     /*
-     * x-ms-original-file: 2026-01-01/StorageTargets_DnsRefresh.json
+     * x-ms-original-file: 2026-08-01/StorageTargets_DnsRefresh.json
      */
     /**
-     * Sample code: Caches_DnsRefresh.
+     * Sample code: StorageTargets_DnsRefresh.
      * 
      * @param manager Entry point to StorageCacheManager.
      */
-    public static void cachesDnsRefresh(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
+    public static void storageTargetsDnsRefresh(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.storageTargets().dnsRefresh("scgroup", "sc", "st1", com.azure.core.util.Context.NONE);
     }
 }

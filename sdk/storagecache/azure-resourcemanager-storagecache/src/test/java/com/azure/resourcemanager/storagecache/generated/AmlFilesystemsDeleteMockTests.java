@@ -27,7 +27,7 @@ public final class AmlFilesystemsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.amlFilesystems().delete("xyiopidkqqfku", "s", com.azure.core.util.Context.NONE);
+        manager.amlFilesystems().delete("spave", "hrv", com.azure.core.util.Context.NONE);
 
     }
 }
