@@ -16,11 +16,9 @@ import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.BooleanLiteralExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NullLiteralExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
-import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -37,8 +35,11 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
@@ -51,6 +52,7 @@ import java.net.URI;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,6 +61,8 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
@@ -237,10 +241,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     // Helper methods
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method,
         ProcessingEnvironment processingEnv) {
-        // TODO (alzimmer): For now throw @SuppressWarnings("cast") on generated methods while we
-        //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
-            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"), new StringLiteralExpr("cast")))
             .addMarkerAnnotation(Override.class)
             .setType(TypeConverter.getAstType(method.getMethodReturnType()));
 
@@ -256,9 +257,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method, processingEnv);
-        addRequestContextToRequestIfPresent(body, method);
-        finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
+        RequestBodyHandler.configureRequestBody(body, method, processingEnv);
+        addRequestConfigurationToRequest(body, method);
+        finalizeHttpRequest(body, method.getMethodReturnType(), method);
 
         internalMethod.setBody(body);
     }
@@ -277,22 +278,33 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    private void addRequestContextToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
-        boolean hasRequestContext = method.getParameters()
+    void addRequestConfigurationToRequest(BlockStmt body, HttpRequestContext method) {
+        findParameterByType(method, RequestContext.class).ifPresent(parameter -> {
+            String parameterName = parameter.getName();
+            body.addStatement(StaticJavaParser.parseStatement("httpRequest.setContext(" + parameterName + ");"));
+            body.addStatement(
+                StaticJavaParser.parseStatement("httpRequest.getContext().getRequestCallback().accept(httpRequest);"));
+        });
+
+        findParameterByType(method, ServerSentEventListener.class).ifPresent(parameter -> body.addStatement(
+            StaticJavaParser.parseStatement("httpRequest.setServerSentEventListener(" + parameter.getName() + ");")));
+    }
+
+    private static Optional<HttpRequestContext.MethodParameter> findParameterByType(HttpRequestContext method,
+        Class<?> expectedType) {
+        return method.getParameters()
             .stream()
-            .anyMatch(parameter -> "requestContext".equals(parameter.getName())
-                && "RequestContext".equals(parameter.getShortTypeName()));
+            .filter(parameter -> isType(parameter.getTypeMirror(), expectedType))
+            .findFirst();
+    }
 
-        if (hasRequestContext) {
-            // Create a statement for setting request options
-            Statement statement1 = StaticJavaParser.parseStatement("httpRequest.setContext(requestContext);");
-
-            Statement statement2
-                = StaticJavaParser.parseStatement("httpRequest.getContext().getRequestCallback().accept(httpRequest);");
-
-            body.addStatement(statement1);
-            body.addStatement(statement2);
+    private static boolean isType(TypeMirror type, Class<?> expectedType) {
+        if (!(type instanceof DeclaredType)) {
+            return false;
         }
+
+        return expectedType.getCanonicalName()
+            .contentEquals(((TypeElement) ((DeclaredType) type).asElement()).getQualifiedName());
     }
 
     void initializeHttpRequest(BlockStmt body, HttpRequestContext method) {
@@ -389,7 +401,19 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     }
                 } else {
                     // For non-static query parameters the value should be the name of the method parameter.
-                    valueExpression = StaticJavaParser.parseExpression(value);
+                    Optional<HttpRequestContext.MethodParameter> parameter = method.getParameters()
+                        .stream()
+                        .filter(methodParameter -> methodParameter.getName().equals(value))
+                        .findFirst();
+                    if (!queryParameter.isMultiple()
+                        && parameter.isPresent()
+                        && isCollectionType(parameter.get().getTypeMirror())) {
+                        body.tryAddImportToParentCompilationUnit(BinaryData.class);
+                        valueExpression = StaticJavaParser
+                            .parseExpression("BinaryData.fromObject(" + value + ", jsonSerializer).toString()");
+                    } else {
+                        valueExpression = StaticJavaParser.parseExpression(value);
+                    }
                 }
             } else {
                 body.tryAddImportToParentCompilationUnit(Arrays.class);
@@ -428,7 +452,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
      * always applied.
      * <p>
      */
-    private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
+    void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
         if (method.getHeaders().isEmpty()) {
             // No headers to add; exit early for clarity and efficiency.
             return;
@@ -442,7 +466,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             StringBuilder addHeader = new StringBuilder();
 
             String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
-            if ("CONTENT_TYPE".equals(constantName)) {
+            if ("CONTENT_TYPE".equals(constantName)
+                && (method.getBody() != null || !method.getFormParameters().isEmpty())) {
                 continue;
             }
             if (headerValues.isEmpty()) {
@@ -468,6 +493,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 Optional<HttpRequestContext.MethodParameter> paramOpt
                     = method.getParameters().stream().filter(p -> p.getName().equals(value)).findFirst();
                 if (paramOpt.isPresent()) {
+                    if (isMapType(paramOpt.get().getTypeMirror())) {
+                        addHeaderCollection(body, method, headerKey, value);
+                        continue;
+                    }
+
                     String paramType = paramOpt.get().getShortTypeName();
                     if ("String".equals(paramType)) {
                         // Dynamic header: use parameter name directly.
@@ -516,8 +546,53 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
-        boolean serializationFormatSet) {
-        generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
+    private static boolean isMapType(TypeMirror type) {
+        if (!(type instanceof DeclaredType)) {
+            return false;
+        }
+
+        TypeElement typeElement = (TypeElement) ((DeclaredType) type).asElement();
+        return Map.class.getCanonicalName().contentEquals(typeElement.getQualifiedName());
+    }
+
+    private static boolean isCollectionType(TypeMirror type) {
+        if (!(type instanceof DeclaredType)) {
+            return false;
+        }
+
+        String typeName = ((TypeElement) ((DeclaredType) type).asElement()).getQualifiedName().toString();
+        return Collection.class.getCanonicalName().equals(typeName)
+            || List.class.getCanonicalName().equals(typeName)
+            || Iterable.class.getCanonicalName().equals(typeName);
+    }
+
+    private static void addHeaderCollection(BlockStmt body, HttpRequestContext method, String prefix,
+        String parameterName) {
+        body.tryAddImportToParentCompilationUnit(Map.class);
+        body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
+        String entryName = getAvailableLocalName(method, parameterName + "HeaderEntry");
+        String prefixLiteral = new StringLiteralExpr(prefix).toString();
+        body.addStatement(StaticJavaParser
+            .parseStatement("if (" + parameterName + " != null) { " + "for (Map.Entry<?, ?> " + entryName + " : "
+                + parameterName + ".entrySet()) { " + "if (" + entryName + ".getKey() != null && " + entryName
+                + ".getValue() != null) { " + "httpRequest.getHeaders().set(HttpHeaderName.fromString(" + prefixLiteral
+                + " + " + entryName + ".getKey()), String.valueOf(" + entryName + ".getValue())); } } }"));
+    }
+
+    private static String getAvailableLocalName(HttpRequestContext method, String preferredName) {
+        String name = preferredName;
+        int suffix = 2;
+        while (containsParameter(method, name)) {
+            name = preferredName + suffix++;
+        }
+        return name;
+    }
+
+    private static boolean containsParameter(HttpRequestContext method, String name) {
+        return method.getParameters().stream().anyMatch(parameter -> parameter.getName().equals(name));
+    }
+
+    private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method) {
+        generateResponseHandling(body, returnTypeName, method);
     }
 }

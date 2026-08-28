@@ -8,10 +8,11 @@ import com.github.javaparser.ast.stmt.Statement;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.WildcardType;
 
 /**
  * Utility class for annotation processor.
@@ -27,45 +28,45 @@ public final class AnnotationProcessorUtils {
      * @return A JavaParser {@link Statement} that creates a {@code ParameterizedType} for the given return type.
      */
     public static String createParameterizedTypeStatement(TypeMirror returnType, BlockStmt body) {
-        if (returnType.getKind() == TypeKind.DECLARED) {
-            DeclaredType declaredType = (DeclaredType) returnType;
-            String outerType = ((TypeElement) declaredType.asElement()).getQualifiedName().toString() + ".class";
-
-            if (!declaredType.getTypeArguments().isEmpty()) {
-                TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
-                if (firstGenericType.getKind() == TypeKind.ARRAY) {
-                    ArrayType arrayType = (ArrayType) firstGenericType;
-                    String componentTypeName = arrayType.getComponentType().toString();
-                    return "CoreUtils.createParameterizedType(" + outerType + ", " + componentTypeName + "[].class)";
-                } else if (firstGenericType instanceof DeclaredType) {
-                    DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                    TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-
-                    body.findCompilationUnit()
-                        .ifPresent(compilationUnit -> compilationUnit
-                            .addImport(genericTypeElement.getQualifiedName().toString()));
-
-                    String genericType = ((DeclaredType) declaredType.getTypeArguments().get(0)).asElement()
-                        .getSimpleName()
-                        .toString();
-                    if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                        if (!genericDeclaredType.getTypeArguments().isEmpty()) {
-                            String innerType
-                                = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
-                                    .getSimpleName()
-                                    .toString();
-                            return "CoreUtils.createParameterizedType(" + genericType + ".class, " + innerType
-                                + ".class)";
-                        }
-                    } else {
-                        return "CoreUtils.createParameterizedType(" + outerType + ", " + genericType + ".class)";
-                    }
-                }
-            }
-            return "CoreUtils.createParameterizedType(" + outerType + ")";
-        } else {
-            return "null;";
+        if (!(returnType instanceof DeclaredType)) {
+            return "CoreUtils.createParameterizedType(" + createTypeExpression(returnType) + ")";
         }
+
+        DeclaredType declaredType = (DeclaredType) returnType;
+        String rawType = ((TypeElement) declaredType.asElement()).getQualifiedName().toString() + ".class";
+        if (declaredType.getTypeArguments().isEmpty()) {
+            return "CoreUtils.createParameterizedType(" + rawType + ")";
+        }
+
+        String typeArguments = declaredType.getTypeArguments()
+            .stream()
+            .map(AnnotationProcessorUtils::createTypeExpression)
+            .collect(Collectors.joining(", "));
+        return "CoreUtils.createParameterizedType(" + rawType + ", " + typeArguments + ")";
+    }
+
+    private static String createTypeExpression(TypeMirror type) {
+        if (type instanceof DeclaredType) {
+            DeclaredType declaredType = (DeclaredType) type;
+            if (!declaredType.getTypeArguments().isEmpty()) {
+                return createParameterizedTypeStatement(declaredType, null);
+            }
+
+            return ((TypeElement) declaredType.asElement()).getQualifiedName().toString() + ".class";
+        }
+
+        if (type.getKind() == TypeKind.WILDCARD) {
+            WildcardType wildcardType = (WildcardType) type;
+            TypeMirror bound = wildcardType.getExtendsBound();
+            return bound == null ? "Object.class" : createTypeExpression(bound);
+        }
+
+        if (type.getKind() == TypeKind.TYPEVAR) {
+            TypeMirror upperBound = ((TypeVariable) type).getUpperBound();
+            return upperBound == null ? "Object.class" : createTypeExpression(upperBound);
+        }
+
+        return type + ".class";
     }
 
     /**

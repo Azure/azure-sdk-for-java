@@ -136,6 +136,27 @@ public interface SpecialReturnBodiesService {
         @BodyParam("application/json") byte[] value);
 
     /**
+     * Gets standard Base64 encoded binary data from the specified URL.
+     *
+     * @param endpoint The URL.
+     * @return A response containing decoded binary data.
+     */
+    @HttpRequestInformation(
+        method = HttpMethod.GET,
+        path = "/encode/bytes/body/response/base64",
+        expectedStatusCodes = { 200 })
+    Response<byte[]> base64(@HostParam("url") String endpoint);
+
+    /**
+     * Gets a plain text response from the specified URL.
+     *
+     * @param endpoint The URL.
+     * @return A response containing the text body.
+     */
+    @HttpRequestInformation(method = HttpMethod.GET, path = "/text", expectedStatusCodes = { 200 })
+    Response<String> getText(@HostParam("url") String endpoint);
+
+    /**
      * Gets Base64 encoded binary data from the specified URL.
      * @param endpoint The URL.
      * @param value The value to encode.
