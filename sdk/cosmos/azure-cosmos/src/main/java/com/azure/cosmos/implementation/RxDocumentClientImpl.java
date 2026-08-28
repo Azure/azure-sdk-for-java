@@ -7611,8 +7611,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover, "Argument 'globalPartitionEndpointManagerForPerPartitionAutomaticFailover' cannot be null.");
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
-
-        this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
     }
 
     private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
@@ -7642,6 +7640,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig();
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
+
+        this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
     }
 
     private void enableAvailabilityStrategyForReads() {

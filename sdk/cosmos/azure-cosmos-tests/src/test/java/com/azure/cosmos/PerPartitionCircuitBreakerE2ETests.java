@@ -4237,6 +4237,53 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
+    @Test(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = TIMEOUT)
+    public void partitionLevelCircuitBreakerConfigIsPresentInClientCfgsDiagnostics() {
+
+        try (CosmosAsyncClient client = getClientBuilder().buildAsyncClient()) {
+
+            CosmosAsyncContainer container = client
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            TestObject item = TestObject.create();
+
+            CosmosItemResponse<TestObject> createResponse = container
+                .createItem(item, new PartitionKey(item.getId()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+
+            String diagnosticsString = createResponse.getDiagnostics().toString();
+
+            assertThat(diagnosticsString)
+                .as("clientCfgs section should be present in the CosmosDiagnostics")
+                .contains("\"clientCfgs\"");
+
+            List<String> expectedClientCfgsKeys = Arrays.asList(
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg",
+                "partitionLevelCircuitBreakerCfg");
+
+            for (String expectedKey : expectedClientCfgsKeys) {
+                assertThat(diagnosticsString)
+                    .as("clientCfgs key '%s' should be present in the CosmosDiagnostics", expectedKey)
+                    .contains("\"" + expectedKey + "\"");
+            }
+        }
+    }
+
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
 
         switch (faultInjectionOperationType) {
