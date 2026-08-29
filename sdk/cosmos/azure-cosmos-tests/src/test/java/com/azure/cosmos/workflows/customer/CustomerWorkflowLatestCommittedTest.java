@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBase {
 
-    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+    @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
     public CustomerWorkflowLatestCommittedTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
