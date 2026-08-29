@@ -12,6 +12,31 @@ path has a specialized non-Java validation route, it clears the job-local Packag
 directory so Create-PrJobMatrix produces an empty matrix.
 
 Build and Analyze are intentionally not suppressed by this proof of concept.
+
+.PARAMETER DiffPath
+Path to the diff.json file produced by Generate-PR-Diff.ps1. ChangedFiles and
+DeletedFiles from the document are classified. This parameter cannot be used
+with ChangedFiles.
+
+.PARAMETER ChangedFiles
+Repository-relative paths to classify directly instead of reading diff.json.
+This is intended for local diagnostics and unit tests. This parameter cannot
+be used with DiffPath.
+
+.PARAMETER PackageInfoDirectory
+Job-local PackageInfo directory used to generate the PR test matrix. When the
+classification does not require Java tests, JSON files below this directory
+are removed so Create-PrJobMatrix.ps1 emits an empty matrix. If omitted, the
+script reports the classification without modifying PackageInfo.
+
+.PARAMETER ForceFullValidation
+Forces Java tests to remain enabled regardless of path classification. The
+pipeline can also enable this behavior through the FORCE_FULL_VALIDATION
+environment variable.
+
+.PARAMETER PassThru
+Writes the classification object to the output pipeline for local diagnostics
+and tests. Azure Pipelines normally consumes the emitted task variables instead.
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'Diff')]
