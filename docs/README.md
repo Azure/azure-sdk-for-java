@@ -1,5 +1,7 @@
 # Azure SDK for Java – Documentation Hub
 
+<!-- This comment validates documentation-only pull request classification. -->
+
 This directory is the **canonical documentation hub** for the Azure SDK for Java repository.
 It is structured so that both humans and LLM/agent tooling can navigate directly to any topic.
 
