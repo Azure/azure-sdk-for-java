@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupUsageSummariesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Common/BackupProtectedItem_UsageSummary_Get.json
+     * x-ms-original-file: 2026-08-01/Common/BackupProtectedItem_UsageSummary_Get.json
      */
     /**
      * Sample code: Get Protected Items Usages Summary.
@@ -24,7 +24,7 @@ public final class BackupUsageSummariesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Common/BackupProtectionContainers_UsageSummary_Get.json
+     * x-ms-original-file: 2026-08-01/Common/BackupProtectionContainers_UsageSummary_Get.json
      */
     /**
      * Sample code: Get Protected Containers Usages Summary.

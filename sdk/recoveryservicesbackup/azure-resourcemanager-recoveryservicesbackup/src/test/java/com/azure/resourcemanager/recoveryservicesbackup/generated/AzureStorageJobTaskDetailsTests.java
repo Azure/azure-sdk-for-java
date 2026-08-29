@@ -12,9 +12,9 @@ public final class AzureStorageJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageJobTaskDetails model
-            = BinaryData.fromString("{\"taskId\":\"hxkumasjcaacfdmm\",\"status\":\"ugmehqepvufhbze\"}")
+            = BinaryData.fromString("{\"taskId\":\"qbawpcbbnzqcykn\",\"status\":\"qofyuicdhzbdy\"}")
                 .toObject(AzureStorageJobTaskDetails.class);
-        Assertions.assertEquals("hxkumasjcaacfdmm", model.taskId());
-        Assertions.assertEquals("ugmehqepvufhbze", model.status());
+        Assertions.assertEquals("qbawpcbbnzqcykn", model.taskId());
+        Assertions.assertEquals("qofyuicdhzbdy", model.status());
     }
 }

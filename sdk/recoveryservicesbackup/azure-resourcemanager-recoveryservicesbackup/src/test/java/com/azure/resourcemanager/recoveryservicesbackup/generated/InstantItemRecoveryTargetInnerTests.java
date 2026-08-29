@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner;
 import org.junit.jupiter.api.Assertions;
 
-public final class InstantItemRecoveryTargetTests {
+public final class InstantItemRecoveryTargetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InstantItemRecoveryTarget model = BinaryData.fromString(
+        InstantItemRecoveryTargetInner model = BinaryData.fromString(
             "{\"clientScripts\":[{\"scriptContent\":\"y\",\"scriptExtension\":\"git\",\"osType\":\"qhabifpikxwcz\",\"url\":\"scnpqxuhivy\",\"scriptNameSuffix\":\"iwbybrkxvdumjg\"}]}")
-            .toObject(InstantItemRecoveryTarget.class);
+            .toObject(InstantItemRecoveryTargetInner.class);
         Assertions.assertEquals("y", model.clientScripts().get(0).scriptContent());
         Assertions.assertEquals("git", model.clientScripts().get(0).scriptExtension());
         Assertions.assertEquals("qhabifpikxwcz", model.clientScripts().get(0).osType());

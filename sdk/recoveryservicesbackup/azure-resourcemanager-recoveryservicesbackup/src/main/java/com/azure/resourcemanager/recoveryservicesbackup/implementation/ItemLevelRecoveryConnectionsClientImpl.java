@@ -23,7 +23,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryOperationResultRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -103,6 +105,32 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
             @PathParam("protectedItemName") String protectedItemName,
             @PathParam("recoveryPointId") String recoveryPointId, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/listInstantItemRecoveryOperationResult")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<InstantItemRecoveryTargetInner>> listInstantItemRecoveryOperationResult(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
+            @PathParam("protectedItemName") String protectedItemName,
+            @PathParam("recoveryPointId") String recoveryPointId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InstantItemRecoveryOperationResultRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/listInstantItemRecoveryOperationResult")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
+            @PathParam("protectedItemName") String protectedItemName,
+            @PathParam("recoveryPointId") String recoveryPointId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InstantItemRecoveryOperationResultRequest body, Context context);
     }
 
     /**
@@ -303,5 +331,115 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         String protectedItemName, String recoveryPointId) {
         revokeWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
             Context.NONE);
+    }
+
+    /**
+     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
+     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
+     * the operationsStatus (ILR provision) response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the VaultResource.
+     * @param fabricName The name of the BackupFabricResource.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return target details for file / folder restore along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<InstantItemRecoveryTargetInner>> listInstantItemRecoveryOperationResultWithResponseAsync(
+        String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
+        String recoveryPointId, InstantItemRecoveryOperationResultRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listInstantItemRecoveryOperationResult(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
+                containerName, protectedItemName, recoveryPointId, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
+     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
+     * the operationsStatus (ILR provision) response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the VaultResource.
+     * @param fabricName The name of the BackupFabricResource.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return target details for file / folder restore on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultAsync(String resourceGroupName,
+        String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body) {
+        return listInstantItemRecoveryOperationResultWithResponseAsync(resourceGroupName, vaultName, fabricName,
+            containerName, protectedItemName, recoveryPointId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
+     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
+     * the operationsStatus (ILR provision) response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the VaultResource.
+     * @param fabricName The name of the BackupFabricResource.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return target details for file / folder restore along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
+        String recoveryPointId, InstantItemRecoveryOperationResultRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.listInstantItemRecoveryOperationResultSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
+            containerName, protectedItemName, recoveryPointId, contentType, accept, body, context);
+    }
+
+    /**
+     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
+     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
+     * the operationsStatus (ILR provision) response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the VaultResource.
+     * @param fabricName The name of the BackupFabricResource.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return target details for file / folder restore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InstantItemRecoveryTargetInner listInstantItemRecoveryOperationResult(String resourceGroupName,
+        String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body) {
+        return listInstantItemRecoveryOperationResultWithResponse(resourceGroupName, vaultName, fabricName,
+            containerName, protectedItemName, recoveryPointId, body, Context.NONE).getValue();
     }
 }

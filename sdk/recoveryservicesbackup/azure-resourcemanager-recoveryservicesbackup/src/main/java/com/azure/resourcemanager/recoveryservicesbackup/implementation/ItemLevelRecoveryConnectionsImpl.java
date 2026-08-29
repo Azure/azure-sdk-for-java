@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryOperationResultRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
 
 public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecoveryConnections {
@@ -50,6 +54,29 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
         String protectedItemName, String recoveryPointId) {
         this.serviceClient()
             .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+    }
+
+    public Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
+        String recoveryPointId, InstantItemRecoveryOperationResultRequest body, Context context) {
+        Response<InstantItemRecoveryTargetInner> inner = this.serviceClient()
+            .listInstantItemRecoveryOperationResultWithResponse(resourceGroupName, vaultName, fabricName, containerName,
+                protectedItemName, recoveryPointId, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new InstantItemRecoveryTargetImpl(inner.getValue(), this.manager()));
+    }
+
+    public InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body) {
+        InstantItemRecoveryTargetInner inner = this.serviceClient()
+            .listInstantItemRecoveryOperationResult(resourceGroupName, vaultName, fabricName, containerName,
+                protectedItemName, recoveryPointId, body);
+        if (inner != null) {
+            return new InstantItemRecoveryTargetImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

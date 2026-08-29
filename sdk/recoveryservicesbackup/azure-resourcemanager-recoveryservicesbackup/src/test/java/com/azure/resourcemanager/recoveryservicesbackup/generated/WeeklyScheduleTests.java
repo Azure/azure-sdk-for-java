@@ -14,20 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WeeklyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WeeklySchedule model = BinaryData
-            .fromString("{\"scheduleRunDays\":[\"Sunday\",\"Monday\"],\"scheduleRunTimes\":[\"2021-06-06T20:33:44Z\"]}")
+        WeeklySchedule model = BinaryData.fromString(
+            "{\"scheduleRunDays\":[\"Friday\",\"Monday\",\"Wednesday\",\"Sunday\"],\"scheduleRunTimes\":[\"2021-04-20T11:51:51Z\"]}")
             .toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.SUNDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T20:33:44Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-20T11:51:51Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WeeklySchedule model
-            = new WeeklySchedule().withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.MONDAY))
-                .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-06-06T20:33:44Z")));
+        WeeklySchedule model = new WeeklySchedule()
+            .withScheduleRunDays(
+                Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY))
+            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-04-20T11:51:51Z")));
         model = BinaryData.fromObject(model).toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.SUNDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T20:33:44Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-20T11:51:51Z"), model.scheduleRunTimes().get(0));
     }
 }

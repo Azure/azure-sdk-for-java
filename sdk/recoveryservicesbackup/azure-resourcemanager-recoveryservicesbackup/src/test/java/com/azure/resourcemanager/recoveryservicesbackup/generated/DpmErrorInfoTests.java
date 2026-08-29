@@ -12,9 +12,9 @@ public final class DpmErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DpmErrorInfo model = BinaryData
-            .fromString("{\"errorString\":\"uzk\",\"recommendations\":[\"zolxrzvhqjwtr\",\"tgvgzp\",\"rrkolawjmjs\"]}")
+            .fromString("{\"errorString\":\"puuyjucejik\",\"recommendations\":[\"ovvtzejetjkln\",\"ikyju\"]}")
             .toObject(DpmErrorInfo.class);
-        Assertions.assertEquals("uzk", model.errorString());
-        Assertions.assertEquals("zolxrzvhqjwtr", model.recommendations().get(0));
+        Assertions.assertEquals("puuyjucejik", model.errorString());
+        Assertions.assertEquals("ovvtzejetjkln", model.recommendations().get(0));
     }
 }

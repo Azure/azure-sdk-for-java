@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatusProvisionIlrExtendedInfo;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusProvisionIlrExtendedInfoInner;
 import org.junit.jupiter.api.Assertions;
 
-public final class OperationStatusProvisionIlrExtendedInfoTests {
+public final class OperationStatusProvisionIlrExtendedInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusProvisionIlrExtendedInfo model = BinaryData.fromString(
+        OperationStatusProvisionIlrExtendedInfoInner model = BinaryData.fromString(
             "{\"objectType\":\"OperationStatusProvisionILRExtendedInfo\",\"recoveryTarget\":{\"clientScripts\":[{\"scriptContent\":\"ofcqhsm\",\"scriptExtension\":\"rkdtmlxh\",\"osType\":\"uksjtxukcdmp\",\"url\":\"cryuan\",\"scriptNameSuffix\":\"uxzdxtay\"},{\"scriptContent\":\"hmwhfpmrqo\",\"scriptExtension\":\"tu\",\"osType\":\"nryrtihf\",\"url\":\"ijbpzvgnwzsymgl\",\"scriptNameSuffix\":\"fcyzkohdbihanufh\"}]}}")
-            .toObject(OperationStatusProvisionIlrExtendedInfo.class);
+            .toObject(OperationStatusProvisionIlrExtendedInfoInner.class);
         Assertions.assertEquals("ofcqhsm", model.recoveryTarget().clientScripts().get(0).scriptContent());
         Assertions.assertEquals("rkdtmlxh", model.recoveryTarget().clientScripts().get(0).scriptExtension());
         Assertions.assertEquals("uksjtxukcdmp", model.recoveryTarget().clientScripts().get(0).osType());
