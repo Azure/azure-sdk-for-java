@@ -88,7 +88,8 @@ extends:
                   pwsh: true
                 displayName: 'Generate Linting Commands'
 
-              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+              # Authenticate with Azure Artifacts
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
               - task: Maven@4
                 displayName: 'Build and Run Linting'
