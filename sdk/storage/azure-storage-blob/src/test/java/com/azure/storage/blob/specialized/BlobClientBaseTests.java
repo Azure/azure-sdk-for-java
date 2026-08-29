@@ -368,15 +368,15 @@ public class BlobClientBaseTests extends BlobTestBase {
     @DoNotRecord
     @Test
     public void getLayoutPopulatesPagingFieldsFromResponse() {
-        BlobClient client = client(new LayoutPagesHttpClient(true));
+        LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
+        BlobClient client = client(httpClient);
         Iterator<PagedResponse<BlobLayout>> pages
-            = client.getLayout(new BlobGetLayoutOptions().setMaxResultsPerPage(REQUESTED_PAGE_SIZE), Context.NONE)
-                .iterableByPage(REQUESTED_PAGE_SIZE)
-                .iterator();
+            = client.getLayout(null, Context.NONE).iterableByPage(REQUESTED_PAGE_SIZE).iterator();
 
         PagedResponse<BlobLayout> firstPage = pages.next();
         BlobLayout layout = firstPage.getValue().get(0);
 
+        assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
         assertEquals(FIRST_PAGE_MARKER, layout.getMarker());
         assertEquals(NEXT_MARKER, layout.getNextMarker());
         assertEquals(SERVICE_MAX_RESULTS, layout.getMaxResults());
@@ -391,10 +391,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutLeavesOmittedPagingFieldsNull() {
         BlobClient client = client(new LayoutPagesHttpClient(false));
-        BlobLayout layout
-            = client.getLayout(new BlobGetLayoutOptions().setMaxResultsPerPage(REQUESTED_PAGE_SIZE), Context.NONE)
-                .iterator()
-                .next();
+        BlobLayout layout = client.getLayout(null, Context.NONE).iterator().next();
 
         assertNull(layout.getMarker());
         assertNull(layout.getNextMarker());

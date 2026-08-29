@@ -1932,9 +1932,8 @@ public class BlobClientBase {
         Integer pageSize, Context context, AtomicReference<String> layoutETag) {
         BlobGetLayoutOptions requestOptions
             = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
-        Integer finalPageSize = pageSize == null ? requestOptions.getMaxResultsPerPage() : pageSize;
         ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
-            = getLayoutPageResponse(marker, requestOptions, finalPageSize, context);
+            = getLayoutPageResponse(marker, requestOptions, pageSize, context);
 
         // The first page this enumeration observes pins every continuation request so the enumeration sees a single
         // blob version, whether it started at the beginning of the layout or resumed from a caller-supplied marker.

@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 public class BlobGetLayoutOptions {
     private BlobRange range;
     private BlobRequestConditions requestConditions;
-    private Integer pageSize;
 
     /**
      * Creates a new instance of {@link BlobGetLayoutOptions}.
@@ -54,31 +53,16 @@ public class BlobGetLayoutOptions {
     /**
      * Sets the requestConditions property.
      *
-     * @param requestConditions The requestConditions value to set.
+     * @param requestConditions The requestConditions value to set by copying the values from the provided RequestConditions.
      * @return The updated object
      */
     public BlobGetLayoutOptions setRequestConditions(BlobRequestConditions requestConditions) {
-        this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the pageSize property.
-     *
-     * @return The pageSize property.
-     */
-    public Integer getMaxResultsPerPage() {
-        return pageSize;
-    }
-
-    /**
-     * Sets the pageSize property.
-     *
-     * @param pageSize The pageSize value to set.
-     * @return The updated object
-     */
-    public BlobGetLayoutOptions setMaxResultsPerPage(Integer pageSize) {
-        this.pageSize = pageSize;
+        this.requestConditions = requestConditions == null ? null : new BlobRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setLeaseId(requestConditions.getLeaseId());
         return this;
     }
 }

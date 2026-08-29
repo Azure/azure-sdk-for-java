@@ -2023,11 +2023,10 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
             ? new BlobRequestConditions()
             : finalOptions.getRequestConditions();
-        Integer finalPageSize = pageSize == null ? finalOptions.getMaxResultsPerPage() : pageSize;
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getBlobs()
-            .getLayoutWithResponseAsync(containerName, blobName, snapshot, versionId, marker, finalPageSize, null,
+            .getLayoutWithResponseAsync(containerName, blobName, snapshot, versionId, marker, pageSize, null,
                 range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
@@ -2051,10 +2050,8 @@ public class BlobAsyncClientBase {
         if (marker == null || layoutETag == null) {
             return options;
         }
-
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
         return new BlobGetLayoutOptions().setRange(finalOptions.getRange())
-            .setMaxResultsPerPage(finalOptions.getMaxResultsPerPage())
             .setRequestConditions(copyRequestConditionsWithIfMatch(finalOptions.getRequestConditions(), layoutETag));
     }
 

@@ -304,8 +304,7 @@ class Transforms {
             return null;
         }
         return new BlobGetLayoutOptions().setRange(toBlobRange(options.getRange()))
-            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
-            .setMaxResultsPerPage(options.getMaxResultsPerPage());
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
     }
 
     static BlobDownloadStreamOptions toBlobDownloadStreamOptions(FileReadOptions options) {

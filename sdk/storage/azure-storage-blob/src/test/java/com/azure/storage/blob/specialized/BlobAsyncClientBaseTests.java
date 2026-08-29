@@ -270,13 +270,14 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
     @Test
     public void getLayoutPopulatesPagingFieldsFromResponse() {
-        BlobAsyncClient client = client(new LayoutPagesHttpClient(true));
-        BlobGetLayoutOptions options = new BlobGetLayoutOptions().setMaxResultsPerPage(REQUESTED_PAGE_SIZE);
+        LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
+        BlobAsyncClient client = client(httpClient);
 
-        StepVerifier.create(client.getLayoutWithResponse(options).byPage(REQUESTED_PAGE_SIZE).next())
+        StepVerifier.create(client.getLayoutWithResponse(null).byPage(REQUESTED_PAGE_SIZE).next())
             .assertNext(firstPage -> {
                 BlobLayout layout = firstPage.getValue().get(0);
 
+                assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
                 assertEquals(FIRST_PAGE_MARKER, layout.getMarker());
                 assertEquals(NEXT_MARKER, layout.getNextMarker());
                 assertEquals(SERVICE_MAX_RESULTS, layout.getMaxResults());
@@ -292,9 +293,8 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     @Test
     public void getLayoutLeavesOmittedPagingFieldsNull() {
         BlobAsyncClient client = client(new LayoutPagesHttpClient(false));
-        BlobGetLayoutOptions options = new BlobGetLayoutOptions().setMaxResultsPerPage(REQUESTED_PAGE_SIZE);
 
-        StepVerifier.create(client.getLayoutWithResponse(options).byPage(REQUESTED_PAGE_SIZE).next())
+        StepVerifier.create(client.getLayoutWithResponse(null).byPage(REQUESTED_PAGE_SIZE).next())
             .assertNext(firstPage -> {
                 BlobLayout layout = firstPage.getValue().get(0);
 

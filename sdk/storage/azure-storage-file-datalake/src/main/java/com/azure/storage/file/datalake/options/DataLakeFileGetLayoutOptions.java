@@ -14,7 +14,6 @@ import com.azure.storage.file.datalake.models.FileRange;
 public class DataLakeFileGetLayoutOptions {
     private FileRange range;
     private DataLakeRequestConditions requestConditions;
-    private Integer pageSize;
 
     /**
      * Creates a new instance of {@link DataLakeFileGetLayoutOptions}.
@@ -59,26 +58,6 @@ public class DataLakeFileGetLayoutOptions {
      */
     public DataLakeFileGetLayoutOptions setRequestConditions(DataLakeRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the pageSize property.
-     *
-     * @return The pageSize property.
-     */
-    public Integer getMaxResultsPerPage() {
-        return pageSize;
-    }
-
-    /**
-     * Sets the pageSize property.
-     *
-     * @param pageSize The pageSize value to set.
-     * @return The updated object
-     */
-    public DataLakeFileGetLayoutOptions setMaxResultsPerPage(Integer pageSize) {
-        this.pageSize = pageSize;
         return this;
     }
 }
