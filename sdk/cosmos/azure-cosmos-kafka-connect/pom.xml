@@ -28,11 +28,6 @@ Licensed under the MIT License.
 
   <repositories>
     <repository>
-      <id>confluent</id>
-      <name>Confluent</name>
-      <url>https://packages.confluent.io/maven/</url>
-    </repository>
-    <repository>
       <id>maven-repo1</id>
       <name>Maven Repo1</name>
       <url>https://repo1.maven.org/maven2/</url>
@@ -242,13 +237,6 @@ Licensed under the MIT License.
       <version>4.0.4</version> <!-- {x-version-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
-    <dependency>
-      <groupId>io.confluent</groupId>
-      <artifactId>kafka-avro-serializer</artifactId>
-      <version>7.6.0</version><!-- {x-version-update;cosmos_io.confluent:kafka-avro-serializer;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
@@ -419,7 +407,6 @@ Licensed under the MIT License.
                   <artifactSet>
                     <excludes>
                       <exclude>org.slf4j</exclude>
-                      <exclude>io.confluent:*</exclude>
                       <exclude>org.apache.kafka:*</exclude>
                     </excludes>
                   </artifactSet>
