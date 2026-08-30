@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
@@ -40,7 +39,7 @@ public class ChunkedDownloadUtils {
 
     /*
     Has a context value for additional download adjustments.
-    
+
     Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
     access conditions containing the etag to lock on, and the response from downloading the first chunk.
      */
@@ -144,8 +143,11 @@ public class ChunkedDownloadUtils {
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
         // We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
         return new BlobRequestConditions().setIfModifiedSince(requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(requestConditions.getIfModifiedSince())
-            .setIfMatch(StorageImplUtils.toETagHeaderValue(etag))
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            // Preserve the original service-returned ETag value here. Normalizing via
+            // StorageImplUtils.toETagHeaderValue() would change the request wire format for retry/download locking and
+            // should be treated as a separate compatibility decision rather than part of this bug fix.
+            .setIfMatch(etag)
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setLeaseId(requestConditions.getLeaseId());
     }
