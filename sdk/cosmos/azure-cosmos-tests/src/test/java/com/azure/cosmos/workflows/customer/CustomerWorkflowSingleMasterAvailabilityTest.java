@@ -253,28 +253,41 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
         Duration deadline = Duration.ofSeconds(30);
         long deadlineNanos = System.nanoTime() + deadline.toNanos();
         CosmosException lastNotFound = null;
+        Set<String> lastContactedRegions = null;
 
         while (System.nanoTime() < deadlineNanos) {
             try {
-                return this.container
+                CosmosItemResponse<TestObject> response = this.container
                     .readItem(item.getId(), partitionKey(item), options, TestObject.class)
                     .block();
+
+                lastNotFound = null;
+                lastContactedRegions = response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames();
+                if (lastContactedRegions != null && lastContactedRegions.size() == 1) {
+                    return response;
+                }
             } catch (CosmosException error) {
                 if (error.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND) {
                     throw error;
                 }
-                // Item not yet replicated to the remaining readable region - wait and retry.
                 lastNotFound = error;
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException interrupted) {
-                    Thread.currentThread().interrupt();
-                    throw new AssertionError("Interrupted while waiting for cross-region replication.", interrupted);
-                }
+                lastContactedRegions = null;
+            }
+
+            // The remaining readable region may not have the item yet. A 404 can either surface directly or be
+            // retried internally against the hub region, producing a successful response that contacted both regions.
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new AssertionError("Interrupted while waiting for cross-region replication.", interrupted);
             }
         }
 
-        throw new AssertionError("Item was not replicated to the remaining readable region within " + deadline, lastNotFound);
+        throw new AssertionError(
+            "Read did not complete through exactly one contacted region within " + deadline
+                + "; last contacted regions: " + lastContactedRegions,
+            lastNotFound);
     }
 
     private CosmosDiagnosticsContext createWithDiagnostics(TestObject item, CosmosItemRequestOptions options) {
