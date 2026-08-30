@@ -173,7 +173,7 @@ public class StorageImplUtils {
             return eTag;
         }
 
-        if (eTag.length() >= 2 && (eTag.startsWith("\"") || eTag.startsWith("W/\"")) && eTag.endsWith("\"")) {
+        if (eTag.length() >= 2 && eTag.startsWith("\"")  && eTag.endsWith("\"")) {
             return eTag;
         }
 

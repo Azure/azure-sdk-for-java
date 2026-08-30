@@ -39,7 +39,7 @@ public class ChunkedDownloadUtils {
 
     /*
     Has a context value for additional download adjustments.
-
+    
     Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
     access conditions containing the etag to lock on, and the response from downloading the first chunk.
      */

@@ -31,24 +31,22 @@ public class ChunkedDownloadUtilsTests {
     void setup() {
         ifModifiedSince = OffsetDateTime.now().minusDays(1);
         ifUnmodifiedSince = OffsetDateTime.now();
-        requestConditions = new BlobRequestConditions().setIfModifiedSince(ifModifiedSince)
-            .setIfUnmodifiedSince(ifUnmodifiedSince);
+        requestConditions
+            = new BlobRequestConditions().setIfModifiedSince(ifModifiedSince).setIfUnmodifiedSince(ifUnmodifiedSince);
         BlobDownloadHeaders headers = new BlobDownloadHeaders().setETag("0x8DABC").setContentRange("bytes 0-3/8");
-        response
-            = new BlobDownloadAsyncResponse(null, 206, new HttpHeaders(), Flux.<ByteBuffer>empty(), headers);
+        response = new BlobDownloadAsyncResponse(null, 206, new HttpHeaders(), Flux.<ByteBuffer>empty(), headers);
 
     }
 
     @Test
     void downloadFirstChunkQuotesRetrievedETag() {
-            requestConditions.setIfNoneMatch("*")
-                .setLeaseId("leaseId");
+        requestConditions.setIfNoneMatch("*").setLeaseId("leaseId");
 
-
-        Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> result = ChunkedDownloadUtils
-            .downloadFirstChunk(new BlobRange(0), new ParallelTransferOptions().setBlockSizeLong(4L),
-                requestConditions, (range, conditions) -> Mono.just(response), true)
-            .block();
+        Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> result
+            = ChunkedDownloadUtils
+                .downloadFirstChunk(new BlobRange(0), new ParallelTransferOptions().setBlockSizeLong(4L),
+                    requestConditions, (range, conditions) -> Mono.just(response), true)
+                .block();
 
         assertNotNull(result);
         assertEquals(ifModifiedSince, result.getT2().getIfModifiedSince());
@@ -59,10 +57,11 @@ public class ChunkedDownloadUtilsTests {
 
     @Test
     void downloadFirstChunkUsesIfUnmodifiedSinceFromRequestConditions() {
-        Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> result = ChunkedDownloadUtils
-            .downloadFirstChunk(new BlobRange(0), new ParallelTransferOptions().setBlockSizeLong(4L),
-                requestConditions, (range, conditions) -> Mono.just(response), true)
-            .block();
+        Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> result
+            = ChunkedDownloadUtils
+                .downloadFirstChunk(new BlobRange(0), new ParallelTransferOptions().setBlockSizeLong(4L),
+                    requestConditions, (range, conditions) -> Mono.just(response), true)
+                .block();
 
         assertNotNull(result);
         assertEquals("0x8DABC", result.getT2().getIfMatch());
