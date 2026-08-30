@@ -32,7 +32,35 @@ public class ShareStorageCustomization extends Customization {
                     + "that all file/directory ACLs are bypassed and full permissions are granted. User must also have "
                     + "required RBAC permission.")));
 
+        removeGeneratedConvenienceClients(customization, logger);
+
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
+    }
+
+    /**
+     * The public clients ({@code ShareServiceClient}/{@code ShareClient}/{@code ShareDirectoryClient}/
+     * {@code ShareFileClient} and their async variants) are hand-written over the generated implementation layer
+     * ({@code AzureFileStorageImpl} + the {@code *Impl} operation-group clients). All service operations are marked
+     * internal for java (see client.tsp) so the emitter only produces internal convenience methods, but it still
+     * emits an empty public convenience-client shell per operation-group interface plus a generated builder. These
+     * are dead code, so they are removed here. Removing the generated {@code ShareClient}/{@code ShareAsyncClient}
+     * from the output also preserves the hand-written public classes of the same name.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void removeGeneratedConvenienceClients(LibraryCustomization customization, Logger logger) {
+        String basePath = "src/main/java/com/azure/storage/file/share/";
+        List<String> generatedClientsToRemove = Arrays.asList("DirectoryClient", "DirectoryAsyncClient", "FileClient",
+            "FileAsyncClient", "ServiceClient", "ServiceAsyncClient", "ShareClient", "ShareAsyncClient",
+            "AzureFileStorageBuilder");
+        for (String className : generatedClientsToRemove) {
+            String filePath = basePath + className + ".java";
+            if (customization.getRawEditor().getContents().containsKey(filePath)) {
+                customization.getRawEditor().removeFile(filePath);
+                logger.info("Removed generated convenience client: {}", filePath);
+            }
+        }
     }
 
     /**
