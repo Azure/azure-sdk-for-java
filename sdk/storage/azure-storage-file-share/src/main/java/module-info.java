@@ -8,6 +8,6 @@ module com.azure.storage.file.share {
     exports com.azure.storage.file.share;
     exports com.azure.storage.file.share.models;
 
-    opens com.azure.storage.file.share.models to com.azure.core;
     opens com.azure.storage.file.share.implementation.models to com.azure.core;
+    opens com.azure.storage.file.share.models to com.azure.core;
 }
