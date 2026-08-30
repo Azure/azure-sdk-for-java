@@ -31,7 +31,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.file.share.FileServiceVersion;
+import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -70,7 +70,7 @@ public final class FilesImpl {
      *
      * @return the serviceVersion value.
      */
-    public FileServiceVersion getServiceVersion() {
+    public ShareServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
         } catch (ShareStorageExceptionInternal internalException) {
