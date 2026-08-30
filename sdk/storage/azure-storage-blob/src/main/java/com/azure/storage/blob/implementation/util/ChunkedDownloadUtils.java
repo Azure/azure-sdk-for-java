@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
@@ -144,7 +145,7 @@ public class ChunkedDownloadUtils {
         // We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
         return new BlobRequestConditions().setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfModifiedSince())
-            .setIfMatch(etag)
+            .setIfMatch(StorageImplUtils.toETagHeaderValue(etag))
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setLeaseId(requestConditions.getLeaseId());
     }

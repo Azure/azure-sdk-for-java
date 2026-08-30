@@ -1277,7 +1277,7 @@ public class BlobAsyncClientBase {
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
             firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
-                String eTag = blobsDownloadHeaders.getETag();
+                String eTag = StorageImplUtils.toETagHeaderValue(blobsDownloadHeaders.getETag());
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
                     ModelHelper.getErrorCode(response.getHeaders()));
 

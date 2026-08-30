@@ -99,6 +99,9 @@ public class DownloadResponseTests extends BlobTestBase {
                 TestUtils.assertArraysEqual(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block(),
                     flux.getScenarioData().array());
                 assertEquals(tryNumber, flux.getTryNumber());
+                if (scenario == DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES) {
+                    assertEquals("\"0x8DABC\"", flux.getRetryIfMatch());
+                }
             })
             .verifyComplete();
     }
