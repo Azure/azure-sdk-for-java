@@ -50,6 +50,9 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
 
     @Test(groups = {"fi-sm-customer-workflows"}, timeOut = TIMEOUT)
     public void excludedReadableRegionRoutesReadToRemainingReadableRegion() {
+        // Gateway ReadConsistencyStrategy support was added in PR #48787 after azure-cosmos 4.81.0.
+        skipIfNotDirectMode("Customer excluded readable region workflow");
+
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
         registerForCleanup(item);
