@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobLayoutRange;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,6 +55,17 @@ public class BlobLayoutCacheValueTests {
 
         assertThrows(UnsupportedOperationException.class,
             () -> value.getRanges().add(new BlobLayoutRange(new HttpRange(1000, 999L), "https://host-b:443")));
+    }
+
+    @Test
+    public void rangesAreDefensivelyCopied() {
+        List<BlobLayoutRange> ranges = new ArrayList<>();
+        ranges.add(new BlobLayoutRange(new HttpRange(0, 999L), "https://host-a:443"));
+        BlobLayoutCacheValue value = new BlobLayoutCacheValue(ranges, OffsetDateTime.now().plusMinutes(5));
+
+        ranges.clear();
+
+        assertEquals(1, value.getRanges().size());
     }
 
     @Test

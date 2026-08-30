@@ -11,8 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.storage.file.datalake.models.AccessTier;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -53,7 +52,7 @@ public class DataLakeFileLayoutPaginationTests {
         LayoutHttpClient httpClient = new LayoutHttpClient();
         DataLakeFileAsyncClient client = asyncClient(httpClient);
 
-        List<PagedResponse<DataLakeFileLayoutInfo>> pages = new ArrayList<>();
+        List<PagedResponse<DataLakeFileLayoutRange>> pages = new ArrayList<>();
         client.getLayout(null).byPage().doOnNext(pages::add).blockLast();
 
         assertEquals(2, pages.size());
@@ -70,8 +69,8 @@ public class DataLakeFileLayoutPaginationTests {
         LayoutHttpClient httpClient = new LayoutHttpClient();
         DataLakeFileClient client = syncClient(httpClient);
 
-        List<PagedResponse<DataLakeFileLayoutInfo>> pages = new ArrayList<>();
-        for (PagedResponse<DataLakeFileLayoutInfo> page : client.getLayout(null).iterableByPage()) {
+        List<PagedResponse<DataLakeFileLayoutRange>> pages = new ArrayList<>();
+        for (PagedResponse<DataLakeFileLayoutRange> page : client.getLayout(null).iterableByPage()) {
             pages.add(page);
             assertEquals(pages.size(), httpClient.requests.size());
         }
@@ -80,17 +79,17 @@ public class DataLakeFileLayoutPaginationTests {
         assertFirstPageMetadataPreserved(pages);
     }
 
-    private static void assertFirstPageMetadataPreserved(List<PagedResponse<DataLakeFileLayoutInfo>> pages) {
-        DataLakeFileLayoutInfo firstLayout = pages.get(0).getValue().get(0);
-        assertEquals(1, firstLayout.getRanges().size());
-        assertNotNull(firstLayout.getPathProperties());
-        assertNotNull(firstLayout.getPathProperties().getETag());
-        assertEquals(FILE_SIZE, firstLayout.getPathProperties().getFileSize());
-        assertEquals(FILE_CONTENT_TYPE, firstLayout.getPathProperties().getContentType());
-        assertEquals(AccessTier.SMART, firstLayout.getPathProperties().getAccessTier());
-        assertEquals(AccessTier.HOT, firstLayout.getPathProperties().getSmartAccessTier());
-        assertEquals(true, firstLayout.getPathProperties().isAccessTierInferred());
-        assertEquals(ENCRYPTION_SCOPE, firstLayout.getPathProperties().getEncryptionScope());
+    private static void assertFirstPageMetadataPreserved(List<PagedResponse<DataLakeFileLayoutRange>> pages) {
+        PagedResponse<DataLakeFileLayoutRange> firstPage = pages.get(0);
+        assertEquals(1, firstPage.getValue().size());
+        assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
+        assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
+        assertEquals(String.valueOf(FILE_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
+        assertEquals(FILE_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));
+        assertEquals("Smart", firstPage.getHeaders().getValue(X_MS_ACCESS_TIER));
+        assertEquals("Hot", firstPage.getHeaders().getValue(X_MS_SMART_ACCESS_TIER));
+        assertEquals("true", firstPage.getHeaders().getValue(X_MS_ACCESS_TIER_INFERRED));
+        assertEquals(ENCRYPTION_SCOPE, firstPage.getHeaders().getValue(X_MS_ENCRYPTION_SCOPE));
     }
 
     private static DataLakeFileAsyncClient asyncClient(HttpClient httpClient) {

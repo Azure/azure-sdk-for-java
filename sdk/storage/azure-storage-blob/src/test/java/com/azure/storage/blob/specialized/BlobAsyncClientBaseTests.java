@@ -17,7 +17,6 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -66,9 +65,8 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     public void getLayout() {
         StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
-            BlobLayout layout = r.get(0);
-            assertNotNull(layout.getBlobProperties());
-            assertFalse(layout.getRanges().isEmpty());
+            assertNotNull(r.get(0).getRange());
+            assertNotNull(r.get(0).getEndpoint());
         }).verifyComplete();
     }
 
@@ -105,7 +103,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutContinuationToken() {
-        Flux<PagedResponse<BlobLayout>> response = bc.getLayoutWithResponse(null)
+        Flux<PagedResponse<BlobLayoutRange>> response = bc.getLayoutWithResponse(null)
             .byPage(1)
             .next()
             .flatMapMany(r -> bc.getLayoutWithResponse(null).byPage(r.getContinuationToken()));
@@ -121,7 +119,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
 
-        Flux<BlobLayout> response = bc.setTags(t)
+        Flux<BlobLayoutRange> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match),
                 BlobTestBase::convertNulls))
             .flatMapMany(conditions -> {
@@ -269,39 +267,32 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     }
 
     @Test
-    public void getLayoutPopulatesPagingFieldsFromResponse() {
+    public void getLayoutReturnsRangesAndPageMetadata() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClient client = client(httpClient);
 
         StepVerifier.create(client.getLayoutWithResponse(null).byPage(REQUESTED_PAGE_SIZE).next())
             .assertNext(firstPage -> {
-                BlobLayout layout = firstPage.getValue().get(0);
-
                 assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
-                assertEquals(FIRST_PAGE_MARKER, layout.getMarker());
-                assertEquals(NEXT_MARKER, layout.getNextMarker());
-                assertEquals(SERVICE_MAX_RESULTS, layout.getMaxResults());
+                assertEquals(1, firstPage.getValue().size());
+                assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
                 assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
-                assertNotNull(layout.getBlobProperties());
-                assertNotNull(layout.getBlobProperties().getETag());
-                assertEquals(LAYOUT_BLOB_SIZE, layout.getBlobProperties().getBlobSize());
-                assertEquals(LAYOUT_BLOB_CONTENT_TYPE, layout.getBlobProperties().getContentType());
+                assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
+                assertEquals(String.valueOf(LAYOUT_BLOB_SIZE),
+                    firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
+                assertEquals(LAYOUT_BLOB_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));
             })
             .verifyComplete();
     }
 
     @Test
-    public void getLayoutLeavesOmittedPagingFieldsNull() {
+    public void getLayoutSinglePageHasNoContinuationToken() {
         BlobAsyncClient client = client(new LayoutPagesHttpClient(false));
 
         StepVerifier.create(client.getLayoutWithResponse(null).byPage(REQUESTED_PAGE_SIZE).next())
             .assertNext(firstPage -> {
-                BlobLayout layout = firstPage.getValue().get(0);
-
-                assertNull(layout.getMarker());
-                assertNull(layout.getNextMarker());
-                assertNull(layout.getMaxResults());
-                assertNotNull(layout.getBlobProperties());
+                assertNull(firstPage.getContinuationToken());
+                assertEquals(1, firstPage.getValue().size());
             })
             .verifyComplete();
     }

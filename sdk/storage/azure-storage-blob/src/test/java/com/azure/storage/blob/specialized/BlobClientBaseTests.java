@@ -26,7 +26,6 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -158,12 +157,12 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayout() {
-        Iterator<BlobLayout> iterator = bc.getLayout(null, Context.NONE).iterator();
+        Iterator<BlobLayoutRange> iterator = bc.getLayout(null, Context.NONE).iterator();
 
         assertTrue(iterator.hasNext());
-        BlobLayout layout = iterator.next();
-        assertNotNull(layout.getBlobProperties());
-        assertFalse(layout.getRanges().isEmpty());
+        BlobLayoutRange range = iterator.next();
+        assertNotNull(range.getRange());
+        assertNotNull(range.getEndpoint());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
@@ -189,11 +188,12 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutPageSize() {
-        Iterator<PagedResponse<BlobLayout>> iterator = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
+        Iterator<PagedResponse<BlobLayoutRange>> iterator
+            = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
         int pageCount = 0;
 
         while (iterator.hasNext()) {
-            PagedResponse<BlobLayout> page = iterator.next();
+            PagedResponse<BlobLayoutRange> page = iterator.next();
             assertTrue(page.getValue().size() <= 1);
             pageCount++;
         }
@@ -204,7 +204,8 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutContinuationToken() {
-        Iterator<PagedResponse<BlobLayout>> iterator = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
+        Iterator<PagedResponse<BlobLayoutRange>> iterator
+            = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
         String token = iterator.next().getContinuationToken();
 
         assertDoesNotThrow(() -> bc.getLayout(null, Context.NONE).iterableByPage(token).iterator().hasNext());
@@ -260,7 +261,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @Test
     public void getLayoutLiveSmallBlobIsSinglePageCoveringWholeBlob() {
         String accountHost = URI.create(bc.getBlobUrl()).getHost();
-        List<PagedResponse<BlobLayout>> pages = new ArrayList<>();
+        List<PagedResponse<BlobLayoutRange>> pages = new ArrayList<>();
         bc.getLayout(null, Context.NONE).iterableByPage().forEach(pages::add);
 
         assertEquals(1, pages.size(), "Expected a single page for a small blob");
@@ -286,11 +287,9 @@ public class BlobClientBaseTests extends BlobTestBase {
         // This exercises the marker-following code path live even when the service returns a single page.
         List<BlobLayoutRange> rangesB = new ArrayList<>();
         int pageCount = 0;
-        for (PagedResponse<BlobLayout> page : blobClient.getLayout(null, Context.NONE).iterableByPage(1)) {
+        for (PagedResponse<BlobLayoutRange> page : blobClient.getLayout(null, Context.NONE).iterableByPage(1)) {
             assertTrue(++pageCount <= 100, "Exceeded 100 pages; possible infinite pagination loop");
-            for (BlobLayout layout : page.getValue()) {
-                rangesB.addAll(layout.getRanges());
-            }
+            rangesB.addAll(page.getValue());
         }
         assertLayoutCoversWindow(rangesB, 0, LARGE_LIVE_BLOB_SIZE - 1, accountHost);
     }
@@ -310,7 +309,7 @@ public class BlobClientBaseTests extends BlobTestBase {
         long rangeOffset = 8L * Constants.MB;
         long rangeLength = 4L * Constants.MB;
 
-        Iterator<PagedResponse<BlobLayout>> pages = blobClient
+        Iterator<PagedResponse<BlobLayoutRange>> pages = blobClient
             .getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(rangeOffset, rangeLength)), Context.NONE)
             .iterableByPage()
             .iterator();
@@ -367,36 +366,31 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
-    public void getLayoutPopulatesPagingFieldsFromResponse() {
+    public void getLayoutReturnsRangesAndPageMetadata() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobClient client = client(httpClient);
-        Iterator<PagedResponse<BlobLayout>> pages
+        Iterator<PagedResponse<BlobLayoutRange>> pages
             = client.getLayout(null, Context.NONE).iterableByPage(REQUESTED_PAGE_SIZE).iterator();
 
-        PagedResponse<BlobLayout> firstPage = pages.next();
-        BlobLayout layout = firstPage.getValue().get(0);
+        PagedResponse<BlobLayoutRange> firstPage = pages.next();
 
         assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
-        assertEquals(FIRST_PAGE_MARKER, layout.getMarker());
-        assertEquals(NEXT_MARKER, layout.getNextMarker());
-        assertEquals(SERVICE_MAX_RESULTS, layout.getMaxResults());
+        assertEquals(1, firstPage.getValue().size());
+        assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
         assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
-        assertNotNull(layout.getBlobProperties());
-        assertNotNull(layout.getBlobProperties().getETag());
-        assertEquals(LAYOUT_BLOB_SIZE, layout.getBlobProperties().getBlobSize());
-        assertEquals(LAYOUT_BLOB_CONTENT_TYPE, layout.getBlobProperties().getContentType());
+        assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
+        assertEquals(String.valueOf(LAYOUT_BLOB_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
+        assertEquals(LAYOUT_BLOB_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));
     }
 
     @DoNotRecord
     @Test
-    public void getLayoutLeavesOmittedPagingFieldsNull() {
+    public void getLayoutSinglePageHasNoContinuationToken() {
         BlobClient client = client(new LayoutPagesHttpClient(false));
-        BlobLayout layout = client.getLayout(null, Context.NONE).iterator().next();
+        PagedResponse<BlobLayoutRange> page = client.getLayout(null, Context.NONE).iterableByPage().iterator().next();
 
-        assertNull(layout.getMarker());
-        assertNull(layout.getNextMarker());
-        assertNull(layout.getMaxResults());
-        assertNotNull(layout.getBlobProperties());
+        assertNull(page.getContinuationToken());
+        assertEquals(1, page.getValue().size());
     }
 
     @DoNotRecord
@@ -437,9 +431,9 @@ public class BlobClientBaseTests extends BlobTestBase {
     public void getLayoutIndependentEnumerationsUseTheirOwnFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true, true);
         BlobClient client = client(httpClient);
-        PagedIterable<BlobLayout> layouts = client.getLayout(null);
-        Iterator<PagedResponse<BlobLayout>> firstEnumeration = layouts.iterableByPage().iterator();
-        Iterator<PagedResponse<BlobLayout>> secondEnumeration = layouts.iterableByPage().iterator();
+        PagedIterable<BlobLayoutRange> layouts = client.getLayout(null);
+        Iterator<PagedResponse<BlobLayoutRange>> firstEnumeration = layouts.iterableByPage().iterator();
+        Iterator<PagedResponse<BlobLayoutRange>> secondEnumeration = layouts.iterableByPage().iterator();
 
         firstEnumeration.next();
         secondEnumeration.next();
@@ -458,7 +452,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     public void getLayoutResumedEnumerationLocksContinuationPagesToItsFirstPageETag() {
         ResumedLayoutPagesHttpClient httpClient = new ResumedLayoutPagesHttpClient();
         BlobClient client = client(httpClient);
-        List<PagedResponse<BlobLayout>> pages = new ArrayList<>();
+        List<PagedResponse<BlobLayoutRange>> pages = new ArrayList<>();
 
         client.getLayout(null).iterableByPage(NEXT_MARKER).forEach(pages::add);
 
@@ -990,12 +984,10 @@ public class BlobClientBaseTests extends BlobTestBase {
         }
     }
 
-    private static List<BlobLayoutRange> collectLayoutRanges(Iterable<PagedResponse<BlobLayout>> pages) {
+    private static List<BlobLayoutRange> collectLayoutRanges(Iterable<PagedResponse<BlobLayoutRange>> pages) {
         List<BlobLayoutRange> result = new ArrayList<>();
-        for (PagedResponse<BlobLayout> page : pages) {
-            for (BlobLayout layout : page.getValue()) {
-                result.addAll(layout.getRanges());
-            }
+        for (PagedResponse<BlobLayoutRange> page : pages) {
+            result.addAll(page.getValue());
         }
         return result;
     }

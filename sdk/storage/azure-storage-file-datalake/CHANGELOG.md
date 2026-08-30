@@ -3,9 +3,6 @@
 ## 12.29.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added `getLayout` on `DataLakeFileClient` and `DataLakeFileAsyncClient`, returning `DataLakeFileLayoutInfo` so callers can obtain a file layout and use its endpoint for one-shot reads.
-- Added `FileReadOptions` and `readWithResponse` overloads on the sync and async file clients, including `setDataLocalityEndpoint` for one-shot reads.
-- Added `DataLakeFileLayoutInfo` and `DataLakeFileLayoutRange` in `com.azure.storage.file.datalake.models`, and `readToFile`/`openInputStream` inherit the blob layer's locality-aware chunk routing.
 
 ### Breaking Changes
 

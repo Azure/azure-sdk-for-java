@@ -40,7 +40,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -155,17 +155,21 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Returns the file's layout.
+     * Returns the ranges that describe the file's physical layout.
+     *
+     * <p>Each {@link DataLakeFileLayoutRange} is returned as a paged item. File properties returned with a service page
+     * are available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * {@link PagedIterable#iterableByPage()}.</p>
      * <p>
      * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API
      * through the wrapped {@link BlockBlobClient} because Data Lake does not yet have its own generated layout REST
      * client. This should be revisited if a Data Lake-native {@code getLayout} operation is added.
      *
      * @param options {@link DataLakeFileGetLayoutOptions}
-     * @return A response emitting all file layout information.
+     * @return A paged response containing the file's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
+    public PagedIterable<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
         return new PagedIterable<>(dataLakeFileAsyncClient.getLayout(options));
     }
 

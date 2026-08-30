@@ -24,7 +24,6 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -201,12 +200,10 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         // Verify each routed chunk's host matches an endpoint from the public getLayout API.
         // Use bc (plain client, no recording policy) so this call does not pollute records.
         Set<String> layoutEndpointHosts = new HashSet<>();
-        for (BlobLayout layout : bc.getLayout(null, Context.NONE)) {
-            for (BlobLayoutRange range : layout.getRanges()) {
-                String host = UrlBuilder.parse(range.getEndpoint()).getHost();
-                if (host != null) {
-                    layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));
-                }
+        for (BlobLayoutRange range : bc.getLayout(null, Context.NONE)) {
+            String host = UrlBuilder.parse(range.getEndpoint()).getHost();
+            if (host != null) {
+                layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));
             }
         }
         for (RequestHostRecord record : rewrittenRecords) {

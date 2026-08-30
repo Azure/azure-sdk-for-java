@@ -67,7 +67,6 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -1907,29 +1906,37 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Returns the blob's layout.
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is emitted as a paged item. Blob properties returned with a service page are
+     * available through {@link PagedResponse#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
+     * </p>
      *
      * @param options {@link BlobGetLayoutOptions}
-     * @return A reactive response emitting all blob layout information.
+     * @return A paged reactive response emitting the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options) {
+    public PagedFlux<BlobLayoutRange> getLayoutWithResponse(BlobGetLayoutOptions options) {
         return PagedFlux.create(layoutPageRetrieverProvider(options, null));
     }
 
     /**
-     * Returns the blob's layout.
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is emitted as a paged item. Blob properties returned with a service page are
+     * available through {@link PagedResponse#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
+     * </p>
      *
      * @param options {@link BlobGetLayoutOptions}
      * @param context {@link Context}
-     * @return A reactive response emitting all blob layout information.
+     * @return A paged reactive response emitting the blob's layout ranges.
      */
-    public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
+    public PagedFlux<BlobLayoutRange> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         return PagedFlux.create(layoutPageRetrieverProvider(options, finalContext));
     }
 
-    private Supplier<PageRetriever<String, PagedResponse<BlobLayout>>>
+    private Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>>
         layoutPageRetrieverProvider(BlobGetLayoutOptions options, Context context) {
         return () -> {
             AtomicReference<String> layoutETag = new AtomicReference<>();
@@ -1948,49 +1955,35 @@ public class BlobAsyncClientBase {
         BlobGetLayoutOptions layoutOptions
             = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
 
-        // A 204 is an expected response that carries no ranges, so it yields an empty layout and the download falls
+        // A 204 is an expected response that carries no ranges, so it yields an empty page and the download falls
         // back to the blob's original endpoint.
         return getLayoutPages(layoutOptions, requestConditions, context).flatMapIterable(PagedResponse::getValue)
-            .flatMap(BlobAsyncClientBase::getLayoutRanges)
             .collectList()
             .map(BlobLayoutCacheValue::new)
             .onErrorResume(BlobStorageException.class, BlobAsyncClientBase::handleLayoutFetchError);
     }
 
-    static boolean isFatalLayoutFetchStatus(int statusCode) {
-        // Only these statuses fail the download, because the blob itself cannot be read consistently: 403 (forbidden),
-        // 404 (not found), 409 (conflict), and 412 (the blob changed after the download started).
-        return statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412;
-    }
-
-    static BlobLayoutCacheValue createLayoutFallbackValue(BlobStorageException exception) {
-        // Every other failure, including 400, 5xx, and unlisted statuses such as 429, falls back to the existing
-        // download behavior. The layout is only a routing optimization, so a failed layout call must not fail an
-        // otherwise valid download; a genuine access failure still surfaces on the range GETs themselves.
-        LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
-        return new BlobLayoutCacheValue(null);
-    }
-
-    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>>
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>>
         getLayoutPages(BlobGetLayoutOptions layoutOptions, BlobRequestConditions requestConditions, Context context) {
         return getLayoutPageWithHeaders(null, layoutOptions, null, context)
             .flatMapMany(initialResponse -> expandLayoutPages(initialResponse, layoutOptions.getRange(),
                 requestConditions, context));
     }
 
-    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> expandLayoutPages(
-        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout> initialResponse, BlobRange layoutRange,
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>> expandLayoutPages(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange> initialResponse, BlobRange layoutRange,
         BlobRequestConditions requestConditions, Context context) {
         String layoutETag = initialResponse.getDeserializedHeaders().getETag();
         BlobGetLayoutOptions optionsWithConditions = new BlobGetLayoutOptions().setRange(layoutRange)
-            .setRequestConditions(copyRequestConditionsWithIfMatch(requestConditions, layoutETag));
+            .setRequestConditions(ModelHelper.copyBlobRequestConditionsWithIfMatch(requestConditions, layoutETag));
 
         return Flux.just(initialResponse)
             .expand(response -> getNextLayoutPage(response, optionsWithConditions, context));
     }
 
-    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getNextLayoutPage(
-        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout> response, BlobGetLayoutOptions options, Context context) {
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>> getNextLayoutPage(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange> response, BlobGetLayoutOptions options,
+        Context context) {
         String continuationToken = response.getContinuationToken();
         return continuationToken == null
             ? Mono.empty()
@@ -1998,15 +1991,16 @@ public class BlobAsyncClientBase {
     }
 
     static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
-        if (isFatalLayoutFetchStatus(exception.getStatusCode())) {
+        if (ModelHelper.isFatalLayoutFetchStatus(exception.getStatusCode())) {
             return Mono.error(exception);
         }
-        return Mono.just(createLayoutFallbackValue(exception));
+        return Mono.just(ModelHelper.createLayoutFallbackValue(exception));
     }
 
-    private Mono<PagedResponse<BlobLayout>> getPublicLayoutPageWithLockedETag(String marker,
+    private Mono<PagedResponse<BlobLayoutRange>> getPublicLayoutPageWithLockedETag(String marker,
         BlobGetLayoutOptions options, Integer pageSize, Context context, AtomicReference<String> layoutETag) {
-        BlobGetLayoutOptions optionsWithConditions = getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
+        BlobGetLayoutOptions optionsWithConditions
+            = ModelHelper.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
         return getLayoutPageWithHeaders(marker, optionsWithConditions, pageSize, context).map(response -> {
             // The first page this enumeration observes pins every continuation request it makes, whether the
             // enumeration started at the beginning of the layout or resumed from a caller-supplied marker.
@@ -2016,7 +2010,7 @@ public class BlobAsyncClientBase {
         });
     }
 
-    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayoutPageWithHeaders(String marker,
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>> getLayoutPageWithHeaders(String marker,
         BlobGetLayoutOptions options, Integer pageSize, Context context) {
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
         BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
@@ -2033,40 +2027,12 @@ public class BlobAsyncClientBase {
             .map(BlobAsyncClientBase::toLayoutPagedResponse);
     }
 
-    private static Flux<BlobLayoutRange> getLayoutRanges(BlobLayout layout) {
-        return Flux.fromIterable(layout.getRanges());
-    }
-
-    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>
+    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>
         toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        BlobLayout layout = ModelHelper.transformBlobLayout(response);
+        BlobLayoutInternal layout = response.getValue();
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            layout == null ? Collections.emptyList() : Collections.singletonList(layout),
-            layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
-    }
-
-    static BlobGetLayoutOptions getLayoutOptionsWithLockedETag(BlobGetLayoutOptions options, String marker,
-        String layoutETag) {
-        if (marker == null || layoutETag == null) {
-            return options;
-        }
-        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
-        return new BlobGetLayoutOptions().setRange(finalOptions.getRange())
-            .setRequestConditions(copyRequestConditionsWithIfMatch(finalOptions.getRequestConditions(), layoutETag));
-    }
-
-    static BlobRequestConditions copyRequestConditionsWithIfMatch(BlobRequestConditions source, String layoutETag) {
-        // ScrubEtagPolicy strips the quotes from the response ETag, but RFC 9110 requires them on the wire.
-        if (source == null) {
-            return new BlobRequestConditions().setIfMatch(StorageImplUtils.toETagHeaderValue(layoutETag));
-        }
-
-        return new BlobRequestConditions().setLeaseId(source.getLeaseId())
-            .setTagsConditions(source.getTagsConditions())
-            .setIfModifiedSince(source.getIfModifiedSince())
-            .setIfUnmodifiedSince(source.getIfUnmodifiedSince())
-            .setIfMatch(layoutETag == null ? source.getIfMatch() : StorageImplUtils.toETagHeaderValue(layoutETag))
-            .setIfNoneMatch(source.getIfNoneMatch());
+            ModelHelper.transformBlobLayoutRanges(layout), layout == null ? null : layout.getNextMarker(),
+            response.getDeserializedHeaders());
     }
 
     /**

@@ -25,7 +25,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutPagingAccessHelper;
-import com.azure.storage.blob.models.BlobLayout;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -44,7 +44,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -171,28 +171,34 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Returns the file's layout.
+     * Returns the ranges that describe the file's physical layout.
+     *
+     * <p>Each {@link DataLakeFileLayoutRange} is emitted as a paged item. File properties returned with a service page
+     * are available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * {@link PagedFlux#byPage()}.</p>
      * <p>
      * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API
      * through the wrapped {@link BlockBlobAsyncClient} because Data Lake does not yet have its own generated layout REST
      * client. This should be revisited if a Data Lake-native {@code getLayout} operation is added.
      *
      * @param options {@link DataLakeFileGetLayoutOptions}
-     * @return A reactive response emitting all file layout information.
+     * @return A paged reactive response emitting the file's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
-        Supplier<PageRetriever<String, PagedResponse<BlobLayout>>> provider = BlobLayoutPagingAccessHelper
-            .getPageRetrieverProvider(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
-
+    public PagedFlux<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
         return PagedFlux.create(() -> {
+            Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>> provider = BlobLayoutPagingAccessHelper
+                .getPageRetrieverProvider(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
             // Avoid nesting the public Blob PagedFlux, which eagerly advances its pager when adapted to PagedIterable.
-            PageRetriever<String, PagedResponse<BlobLayout>> pageRetriever = provider.get();
+            PageRetriever<String, PagedResponse<BlobLayoutRange>> pageRetriever = provider.get();
             return (continuationToken, pageSize) -> pageRetriever.get(continuationToken, pageSize)
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new PagedResponseBase<Void, DataLakeFileLayoutInfo>(response.getRequest(),
+                .map(response -> new PagedResponseBase<Void, DataLakeFileLayoutRange>(response.getRequest(),
                     response.getStatusCode(), response.getHeaders(),
-                    response.getValue().stream().map(Transforms::toDataLakeFileLayoutInfo).collect(Collectors.toList()),
+                    response.getValue()
+                        .stream()
+                        .map(Transforms::toDataLakeFileLayoutRange)
+                        .collect(Collectors.toList()),
                     response.getContinuationToken(), null));
         });
     }

@@ -64,7 +64,6 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -1879,25 +1878,33 @@ public class BlobClientBase {
     }
 
     /**
-     * Returns the blob's layout.
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is returned as a paged item. Blob properties returned with a service page are
+     * available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * {@link PagedIterable#iterableByPage()}.</p>
      *
      * @param options {@link BlobGetLayoutOptions}
-     * @return A response emitting all blob layout information.
+     * @return A paged response containing the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobLayout> getLayout(BlobGetLayoutOptions options) {
+    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
         return getLayout(options, Context.NONE);
     }
 
     /**
-     * Returns the blob's layout.
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is returned as a paged item. Blob properties returned with a service page are
+     * available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * {@link PagedIterable#iterableByPage()}.</p>
      *
      * @param options {@link BlobGetLayoutOptions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response emitting all blob layout information.
+     * @return A paged response containing the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobLayout> getLayout(BlobGetLayoutOptions options, Context context) {
+    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 
@@ -1916,22 +1923,22 @@ public class BlobClientBase {
             = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
         try {
             List<BlobLayoutRange> ranges = new ArrayList<>();
-            for (BlobLayout layout : getLayout(layoutOptions, context)) {
-                ranges.addAll(layout.getRanges());
+            for (BlobLayoutRange range : getLayout(layoutOptions, context)) {
+                ranges.add(range);
             }
             return new BlobLayoutCacheValue(ranges);
         } catch (BlobStorageException e) {
-            if (BlobAsyncClientBase.isFatalLayoutFetchStatus(e.getStatusCode())) {
+            if (ModelHelper.isFatalLayoutFetchStatus(e.getStatusCode())) {
                 throw LOGGER.logExceptionAsError(e);
             }
-            return BlobAsyncClientBase.createLayoutFallbackValue(e);
+            return ModelHelper.createLayoutFallbackValue(e);
         }
     }
 
-    private PagedResponse<BlobLayout> getLayoutPageWithLockedETag(String marker, BlobGetLayoutOptions options,
+    private PagedResponse<BlobLayoutRange> getLayoutPageWithLockedETag(String marker, BlobGetLayoutOptions options,
         Integer pageSize, Context context, AtomicReference<String> layoutETag) {
         BlobGetLayoutOptions requestOptions
-            = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
+            = ModelHelper.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
         ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
             = getLayoutPageResponse(marker, requestOptions, pageSize, context);
 
@@ -1958,14 +1965,13 @@ public class BlobClientBase {
         return sendRequest(operation, null, BlobStorageException.class);
     }
 
-    private static PagedResponse<BlobLayout>
+    private static PagedResponse<BlobLayoutRange>
         toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        BlobLayout value = ModelHelper.transformBlobLayout(response);
-        String nextMarker = value == null ? null : value.getNextMarker();
-        List<BlobLayout> values = value == null ? Collections.emptyList() : Collections.singletonList(value);
+        BlobLayoutInternal layout = response.getValue();
 
-        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), values,
-            nextMarker, response.getDeserializedHeaders());
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            ModelHelper.transformBlobLayoutRanges(layout), layout == null ? null : layout.getNextMarker(),
+            response.getDeserializedHeaders());
     }
 
     /**

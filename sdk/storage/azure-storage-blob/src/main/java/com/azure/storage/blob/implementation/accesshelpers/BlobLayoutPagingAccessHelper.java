@@ -5,7 +5,7 @@ package com.azure.storage.blob.implementation.accesshelpers;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.paging.PageRetriever;
-import com.azure.storage.blob.models.BlobLayout;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 
@@ -36,8 +36,8 @@ public final class BlobLayoutPagingAccessHelper {
          * @param options The layout options.
          * @return The page retriever provider.
          */
-        Supplier<PageRetriever<String, PagedResponse<BlobLayout>>> getPageRetrieverProvider(BlobAsyncClientBase client,
-            BlobGetLayoutOptions options);
+        Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>>
+            getPageRetrieverProvider(BlobAsyncClientBase client, BlobGetLayoutOptions options);
     }
 
     /**
@@ -56,7 +56,7 @@ public final class BlobLayoutPagingAccessHelper {
      * @param options The layout options.
      * @return The page retriever provider.
      */
-    public static Supplier<PageRetriever<String, PagedResponse<BlobLayout>>>
+    public static Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>>
         getPageRetrieverProvider(BlobAsyncClientBase client, BlobGetLayoutOptions options) {
         if (accessor == null) {
             throw new IllegalStateException("Blob layout paging accessor has not been initialized.");

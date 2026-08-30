@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
@@ -62,7 +61,6 @@ import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
-import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -413,19 +411,7 @@ class Transforms {
         }
     }
 
-    static DataLakeFileLayoutInfo toDataLakeFileLayoutInfo(BlobLayout blobLayout) {
-        if (blobLayout == null) {
-            return null;
-        }
-
-        List<DataLakeFileLayoutRange> ranges = blobLayout.getRanges() == null
-            ? new ArrayList<>()
-            : blobLayout.getRanges().stream().map(Transforms::toDataLakeFileLayoutRange).collect(Collectors.toList());
-
-        return new DataLakeFileLayoutInfo(ranges, toPathProperties(blobLayout.getBlobProperties()));
-    }
-
-    private static DataLakeFileLayoutRange toDataLakeFileLayoutRange(BlobLayoutRange blobLayoutRange) {
+    static DataLakeFileLayoutRange toDataLakeFileLayoutRange(BlobLayoutRange blobLayoutRange) {
         if (blobLayoutRange == null) {
             return null;
         }

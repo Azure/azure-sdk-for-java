@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,27 +22,21 @@ import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointI
 import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
-import com.azure.storage.blob.implementation.models.BlobPropertiesInternalConstructorProperties;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
-import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
@@ -61,9 +54,9 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -73,7 +66,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -224,6 +216,81 @@ public final class ModelHelper {
     public static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting) {
         // Null and AUTO both resolve to enabled today; AUTO's behavior may change in a future release.
         return layoutAwareRouting != LayoutAwareRouting.DISABLED;
+    }
+
+    /**
+     * Copies layout options and pins continuation requests to the initial response ETag.
+     *
+     * @param options The layout options.
+     * @param marker The continuation marker.
+     * @param layoutETag The ETag from the first page observed by this enumeration.
+     * @return The options to use for the request.
+     */
+    public static BlobGetLayoutOptions getLayoutOptionsWithLockedETag(BlobGetLayoutOptions options, String marker,
+        String layoutETag) {
+        if (marker == null || layoutETag == null) {
+            return options;
+        }
+
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+        return new BlobGetLayoutOptions().setRange(finalOptions.getRange())
+            .setRequestConditions(
+                copyBlobRequestConditionsWithIfMatch(finalOptions.getRequestConditions(), layoutETag));
+    }
+
+    /**
+     * Copies request conditions and replaces If-Match when an ETag is provided.
+     *
+     * @param source The request conditions to copy.
+     * @param layoutETag The ETag to use for If-Match.
+     * @return The copied request conditions.
+     */
+    public static BlobRequestConditions copyBlobRequestConditionsWithIfMatch(BlobRequestConditions source,
+        String layoutETag) {
+        // ScrubEtagPolicy strips the quotes from the response ETag, but RFC 9110 requires them on the wire.
+        if (source == null) {
+            return new BlobRequestConditions().setIfMatch(StorageImplUtils.toETagHeaderValue(layoutETag));
+        }
+
+        return copyBlobRequestConditions(source)
+            .setIfMatch(layoutETag == null ? source.getIfMatch() : StorageImplUtils.toETagHeaderValue(layoutETag));
+    }
+
+    /**
+     * Determines whether a layout-fetch failure must fail the download.
+     *
+     * @param statusCode The layout response status code.
+     * @return Whether the failure is fatal.
+     */
+    public static boolean isFatalLayoutFetchStatus(int statusCode) {
+        // The blob cannot be read consistently after these responses.
+        return statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412;
+    }
+
+    /**
+     * Creates the cached value used to fall back to the original blob endpoint after a non-fatal layout failure.
+     *
+     * @param exception The layout-fetch failure.
+     * @return A cache value with no usable layout.
+     */
+    public static BlobLayoutCacheValue createLayoutFallbackValue(BlobStorageException exception) {
+        LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
+        return new BlobLayoutCacheValue(null);
+    }
+
+    private static BlobRequestConditions copyBlobRequestConditions(BlobRequestConditions source) {
+        if (source == null) {
+            return null;
+        }
+
+        return new BlobRequestConditions().setLeaseId(source.getLeaseId())
+            .setTagsConditions(source.getTagsConditions())
+            .setIfModifiedSince(source.getIfModifiedSince())
+            .setIfUnmodifiedSince(source.getIfUnmodifiedSince())
+            .setIfMatch(source.getIfMatch())
+            .setIfNoneMatch(source.getIfNoneMatch())
+            .setAccessTierIfModifiedSince(source.getAccessTierIfModifiedSince())
+            .setAccessTierIfUnmodifiedSince(source.getAccessTierIfUnmodifiedSince());
     }
 
     /**
@@ -434,56 +501,12 @@ public final class ModelHelper {
     }
 
     /**
-     * Transforms the generated layout response body and headers into the public blob layout model.
+     * Transforms the generated layout response body into public blob layout range models.
      *
-     * @param response The generated layout response.
-     * @return The public blob layout.
+     * @param layout The generated layout response body.
+     * @return The public blob layout ranges.
      */
-    public static BlobLayout transformBlobLayout(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        if (response == null) {
-            return null;
-        }
-
-        BlobLayoutInternal layout = response.getValue();
-        BlobsGetLayoutHeaders headers = response.getDeserializedHeaders() == null
-            ? new BlobsGetLayoutHeaders(new HttpHeaders())
-            : response.getDeserializedHeaders();
-        return new BlobLayout(transformBlobLayoutRanges(layout), layout == null ? null : layout.getMarker(),
-            layout == null ? null : layout.getNextMarker(), layout == null ? null : layout.getMaxResults(),
-            transformBlobLayoutProperties(headers));
-    }
-
-    private static BlobProperties transformBlobLayoutProperties(BlobsGetLayoutHeaders headers) {
-        OffsetDateTime creationTime = headers.getXMsBlobCreationTime() == null
-            ? headers.getXMsCreationTime()
-            : headers.getXMsBlobCreationTime();
-        Long contentLength = headers.getXMsBlobContentLength();
-        BlobImmutabilityPolicy immutabilityPolicy
-            = new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
-                .setPolicyMode(headers.getXMsImmutabilityPolicyMode());
-
-        return BlobPropertiesConstructorProxy
-            .create(new BlobPropertiesInternalConstructorProperties(creationTime, headers.getLastModified(),
-                headers.getETag(), contentLength == null ? 0 : contentLength, headers.getXMsBlobContentType(),
-                headers.getXMsBlobContentMd5(), headers.getXMsBlobContentEncoding(), headers.getContentDisposition(),
-                headers.getContentLanguage(), headers.getCacheControl(), headers.getXMsBlobSequenceNumber(),
-                headers.getXMsBlobType(), headers.getXMsLeaseStatus(), headers.getXMsLeaseState(),
-                headers.getXMsLeaseDuration(), headers.getXMsCopyId(), headers.getXMsCopyStatus(),
-                headers.getXMsCopySource(), headers.getXMsCopyProgress(), headers.getXMsCopyCompletionTime(),
-                headers.getXMsCopyStatusDescription(), headers.isXMsServerEncrypted(), headers.isXMsIncrementalCopy(),
-                headers.getXMsCopyDestinationSnapshot(), AccessTier.fromString(headers.getXMsAccessTier()),
-                AccessTier.fromString(headers.getXMsSmartAccessTier()), headers.isXMsAccessTierInferred(),
-                ArchiveStatus.fromString(headers.getXMsArchiveStatus()), headers.getXMsEncryptionKeySha256(),
-                headers.getXMsEncryptionScope(), headers.getXMsAccessTierChangeTime(), headers.getXMsMeta(),
-                headers.getXMsBlobCommittedBlockCount(), headers.getXMsTagCount(), headers.getXMsVersionId(),
-                headers.isXMsIsCurrentVersion(), getObjectReplicationSourcePolicies(headers.getXMsOr()),
-                getObjectReplicationDestinationPolicyId(headers.getXMsOr()),
-                RehydratePriority.fromString(headers.getXMsRehydratePriority()), headers.isXMsBlobSealed(),
-                headers.getXMsLastAccessTime(), headers.getXMsExpiryTime(), immutabilityPolicy,
-                headers.isXMsLegalHold(), headers.getXMsRequestId()));
-    }
-
-    private static List<BlobLayoutRange> transformBlobLayoutRanges(BlobLayoutInternal layout) {
+    public static List<BlobLayoutRange> transformBlobLayoutRanges(BlobLayoutInternal layout) {
         List<BlobLayoutRange> layoutRanges = new ArrayList<>();
         if (layout == null || layout.getRanges() == null || layout.getRanges().getRange() == null) {
             return layoutRanges;

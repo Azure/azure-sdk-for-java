@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.common.implementation.Constants;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public final class BlobLayoutCacheValue {
      * @param expiresOn The time at which this cached value should no longer be considered valid.
      */
     public BlobLayoutCacheValue(List<BlobLayoutRange> ranges, OffsetDateTime expiresOn) {
-        this.ranges = ranges == null ? null : Collections.unmodifiableList(ranges);
+        this.ranges = ranges == null ? null : Collections.unmodifiableList(new ArrayList<>(ranges));
         this.expiresOn = expiresOn;
     }
 
