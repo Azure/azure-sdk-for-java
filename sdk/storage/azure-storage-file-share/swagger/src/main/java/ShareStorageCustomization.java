@@ -34,6 +34,14 @@ public class ShareStorageCustomization extends Customization {
 
         removeGeneratedConvenienceClients(customization, logger);
 
+        // The generated module-info only requires com.azure.core and omits the storage.common dependency plus the
+        // options/sas/specialized exports the hand-written public API needs; remove it so the hand-written
+        // module-info.java is preserved.
+        if (customization.getRawEditor().getContents().containsKey("src/main/java/module-info.java")) {
+            customization.getRawEditor().removeFile("src/main/java/module-info.java");
+            logger.info("Removed generated module-info.java to preserve the hand-written one");
+        }
+
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
     }
 
