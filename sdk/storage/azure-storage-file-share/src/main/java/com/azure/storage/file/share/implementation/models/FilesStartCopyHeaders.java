@@ -9,6 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.models.CopyStatusType;
 import java.time.OffsetDateTime;
 
 /**
@@ -38,7 +39,7 @@ public final class FilesStartCopyHeaders {
      * The x-ms-copy-status property.
      */
     @Generated
-    private final CopyStatus copyStatus;
+    private final CopyStatusType copyStatus;
 
     /*
      * The x-ms-version property.
@@ -87,7 +88,7 @@ public final class FilesStartCopyHeaders {
         this.copyId = rawHeaders.getValue(X_MS_COPY_ID);
         String copyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         if (copyStatus != null) {
-            this.copyStatus = CopyStatus.fromString(copyStatus);
+            this.copyStatus = CopyStatusType.fromString(copyStatus);
         } else {
             this.copyStatus = null;
         }
@@ -141,7 +142,7 @@ public final class FilesStartCopyHeaders {
      * @return the copyStatus value.
      */
     @Generated
-    public CopyStatus getCopyStatus() {
+    public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
 
