@@ -395,6 +395,13 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
         }
     }
 
+    protected final void skipIfThinClient(String scenarioName) {
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(this.client);
+        if (rxDocumentClient.useThinClient()) {
+            throw new SkipException(scenarioName + " does not apply when Thin Client is selected.");
+        }
+    }
+
     /**
      * Skips fault-injection scenarios that cannot be injected for the gateway connection type. The gateway
      * internally retries 410/0, so {@code GONE} and {@code STALED_ADDRESSES_SERVER_GONE} rules are rejected at

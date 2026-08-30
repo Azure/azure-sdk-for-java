@@ -49,6 +49,9 @@ public class CustomerWorkflowDaoStyleOperationsTest extends CustomerWorkflowTest
 
     @Test(groups = {"fi-customer-workflows"}, timeOut = TIMEOUT)
     public void crudReadAllPatchBatchAndBulkWorkflow() {
+        // Thin Client excluded-region and availability-strategy routing was fixed in PR #48432 in azure-cosmos 4.79.0.
+        skipIfThinClient("Customer DAO-style workflow");
+
         List<String> excludedRegions = excludeFirstWritableRegion();
         TestObject item = TestObject.create();
 

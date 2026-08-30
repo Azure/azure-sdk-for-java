@@ -243,7 +243,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region"})
+    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master"})
     public void beforeClass() {
         try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
@@ -4773,18 +4773,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
     public void beforeMethod() throws Exception {
         // add a cool off time
         CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
     }
 
-    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void afterMethod() throws Exception {
         logger.info("captureNettyLeaks: {}", captureNettyLeaks());
     }
 
-    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" })
+    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

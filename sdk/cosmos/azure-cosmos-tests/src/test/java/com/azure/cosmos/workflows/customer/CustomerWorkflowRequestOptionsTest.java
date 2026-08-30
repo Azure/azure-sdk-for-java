@@ -44,6 +44,9 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
 
     @Test(groups = {"fi-customer-workflows"}, timeOut = TIMEOUT)
     public void excludedRegionAndKeywordIdentifiersFlowAcrossOperations() {
+        // Gateway ReadConsistencyStrategy support was added in PR #48787 after azure-cosmos 4.81.0.
+        skipIfNotDirectMode("Customer request options workflow");
+
         String excludedRegion = this.writableRegions.get(0);
         List<String> excludedRegions = Collections.singletonList(excludedRegion);
         TestObject item = TestObject.create();

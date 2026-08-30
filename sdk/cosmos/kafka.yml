@@ -14,6 +14,7 @@ extends:
             COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
             COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT: $(cosmos-client-telemetry-cosmos-account)
             COSMOS_ACR_NAME: $(kafka-mcr-name)
+            TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX: $(kafka-acr-login-server)/
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -35,3 +36,32 @@ extends:
           AdditionalVariables:
             - name: AdditionalArgs
               value: ''
+          PreTestRunSteps:
+            - script: |
+                if ! command -v docker &>/dev/null; then
+                  echo "Docker not found; please install Docker or ensure it's available on the agent."
+                  exit 1
+                fi
+
+                # wait for docker daemon to be ready
+                for i in {1..30}; do
+                  if docker info >/dev/null 2>&1; then
+                    echo "Docker is running"
+                    break
+                  fi
+                  echo "Waiting for Docker to start... ($i/30)"
+                  sleep 2
+                done
+
+                if ! docker info >/dev/null 2>&1; then
+                  echo "Docker failed to start"
+                  exit 1
+                fi
+              displayName: 'Ensure Docker is installed and running'
+            - script: |
+                printf '%s' "$(kafka-acr-sp-client-secret)" | docker login "$(kafka-acr-login-server)" --username "$(kafka-acr-sp-client-id)" --password-stdin
+              displayName: 'Login to ACR for Testcontainers image cache'
+          PostSteps:
+            - script: docker logout "$(kafka-acr-login-server)"
+              displayName: 'Logout from ACR'
+              condition: always()
