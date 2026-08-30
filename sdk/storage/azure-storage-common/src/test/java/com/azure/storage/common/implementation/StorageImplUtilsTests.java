@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.policy.DataLocalityPolicy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -64,31 +65,25 @@ public class StorageImplUtilsTests {
     }
 
     @Test
-    void addDataLocalityEndpointReturnsContextUnchangedWhenEndpointIsEmpty() {
-        Context context = new Context("key", "value");
-        Context result = StorageImplUtils.addDataLocalityEndpoint(context, "");
-
-        assertSame(context, result);
-    }
-
-    @Test
     void addDataLocalityEndpointUsesContextNoneWhenContextIsNull() {
-        Context result = StorageImplUtils.addDataLocalityEndpoint(null, "layout.example.net:8443");
+        DataLocalityEndpoint endpoint = DataLocalityEndpoint.fromString("layout.example.net:8443");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(null, endpoint);
 
         assertNotNull(result);
         assertTrue(result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
-        assertEquals("layout.example.net:8443", result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+        assertEquals(endpoint, result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
     }
 
     @Test
     void addDataLocalityEndpointPreservesExistingContextData() {
         Context context = new Context("existingKey", "existingValue");
-        Context result = StorageImplUtils.addDataLocalityEndpoint(context, "layout.example.net");
+        DataLocalityEndpoint endpoint = DataLocalityEndpoint.fromString("layout.example.net");
+        Context result = StorageImplUtils.addDataLocalityEndpoint(context, endpoint);
 
         assertTrue(result.getData("existingKey").isPresent());
         assertEquals("existingValue", result.getData("existingKey").get());
         assertTrue(result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
-        assertEquals("layout.example.net", result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+        assertEquals(endpoint, result.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
     }
 
     @Test

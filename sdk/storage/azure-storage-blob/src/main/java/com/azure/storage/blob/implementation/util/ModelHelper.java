@@ -57,6 +57,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
+import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -512,20 +513,29 @@ public final class ModelHelper {
             return layoutRanges;
         }
 
-        Map<Integer, String> endpointsByIndex = new HashMap<>();
+        Map<Integer, DataLocalityEndpoint> endpointsByIndex = new HashMap<>();
         if (layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
             for (BlobLayoutEndpointsEndpointItem endpointItem : layout.getEndpoints().getEndpoint()) {
                 if (endpointItem != null) {
-                    endpointsByIndex.put(endpointItem.getIndex(), endpointItem.getValue());
+                    try {
+                        endpointsByIndex.put(endpointItem.getIndex(),
+                            DataLocalityEndpoint.fromString(endpointItem.getValue()));
+                    } catch (IllegalArgumentException exception) {
+                        LOGGER.verbose("Ignoring an invalid data locality endpoint returned by the service.",
+                            exception);
+                    }
                 }
             }
         }
 
         for (BlobLayoutRangesRangeItem rangeItem : layout.getRanges().getRange()) {
             if (rangeItem != null) {
-                HttpRange httpRange
-                    = new HttpRange(rangeItem.getStart(), rangeItem.getEnd() - rangeItem.getStart() + 1);
-                layoutRanges.add(new BlobLayoutRange(httpRange, endpointsByIndex.get(rangeItem.getEndpointIndex())));
+                DataLocalityEndpoint endpoint = endpointsByIndex.get(rangeItem.getEndpointIndex());
+                if (endpoint != null) {
+                    HttpRange httpRange
+                        = new HttpRange(rangeItem.getStart(), rangeItem.getEnd() - rangeItem.getStart() + 1);
+                    layoutRanges.add(new BlobLayoutRange(httpRange, endpoint));
+                }
             }
         }
 

@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
@@ -98,7 +99,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         Context callContext = context;
         if (layoutCache != null) {
             BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
-            String endpoint = BlobLayoutRangeResolver.resolveEndpoint(sourceOffset, cached.getRanges());
+            DataLocalityEndpoint endpoint = BlobLayoutRangeResolver.resolveEndpoint(sourceOffset, cached.getRanges());
             callContext = StorageImplUtils.addDataLocalityEndpoint(context, endpoint);
         }
 

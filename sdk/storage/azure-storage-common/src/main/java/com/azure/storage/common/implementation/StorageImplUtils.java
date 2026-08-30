@@ -11,6 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.policy.DataLocalityPolicy;
 import reactor.core.publisher.Mono;
 
@@ -370,12 +371,12 @@ public class StorageImplUtils {
      * request to that endpoint.
      *
      * @param context The call context. May be null.
-     * @param dataLocalityEndpoint The endpoint the request should be routed to. May be null or empty, in which case
-     * the context is returned unchanged.
+     * @param dataLocalityEndpoint The endpoint the request should be routed to. May be null, in which case the context
+     * is returned unchanged.
      * @return The context carrying the data locality endpoint, or the original context if no endpoint was supplied.
      */
-    public static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
-        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+    public static Context addDataLocalityEndpoint(Context context, DataLocalityEndpoint dataLocalityEndpoint) {
+        if (dataLocalityEndpoint == null) {
             return context;
         }
 

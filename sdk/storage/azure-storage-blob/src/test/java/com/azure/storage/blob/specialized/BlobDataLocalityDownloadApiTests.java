@@ -17,7 +17,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -31,6 +30,7 @@ import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -91,7 +91,8 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private static final int PLAYBACK_DOWNLOAD_BLOCK_SIZE = 2 * Constants.KB;
     private static final int CONTENT_PATTERN_LENGTH = 4 * Constants.KB;
     private static final String ORIGINAL_HOST = "account.blob.core.windows.net";
-    private static final String DATA_LOCALITY_ENDPOINT = "https://host-a:443";
+    private static final DataLocalityEndpoint DATA_LOCALITY_ENDPOINT
+        = DataLocalityEndpoint.fromString("https://host-a:443");
     private static final String DATA_LOCALITY_HOST = "host-a";
     private static final byte[] MOCK_BODY
         = "the quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8);
@@ -201,7 +202,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         // Use bc (plain client, no recording policy) so this call does not pollute records.
         Set<String> layoutEndpointHosts = new HashSet<>();
         for (BlobLayoutRange range : bc.getLayout(null, Context.NONE)) {
-            String host = UrlBuilder.parse(range.getEndpoint()).getHost();
+            String host = range.getEndpoint().getHost();
             if (host != null) {
                 layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));
             }

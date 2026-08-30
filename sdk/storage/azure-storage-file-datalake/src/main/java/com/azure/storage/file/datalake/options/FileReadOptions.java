@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.common.DataLocalityEndpoint;
 
 /**
  * Extended options that may be passed when reading a file range to an output stream.
@@ -17,7 +18,7 @@ public final class FileReadOptions {
     private DownloadRetryOptions downloadRetryOptions;
     private DataLakeRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
-    private String dataLocalityEndpoint;
+    private DataLocalityEndpoint dataLocalityEndpoint;
     private Boolean userPrincipalName;
 
     /**
@@ -111,17 +112,17 @@ public final class FileReadOptions {
      *
      * @return The data locality endpoint, or {@code null} if the client's configured endpoint should be used.
      */
-    public String getDataLocalityEndpoint() {
+    public DataLocalityEndpoint getDataLocalityEndpoint() {
         return dataLocalityEndpoint;
     }
 
     /**
      * Sets the endpoint to use for this download.
      *
-     * @param dataLocalityEndpoint The absolute endpoint selected from file layout information.
+     * @param dataLocalityEndpoint The endpoint selected from file layout information.
      * @return The updated options.
      */
-    public FileReadOptions setDataLocalityEndpoint(String dataLocalityEndpoint) {
+    public FileReadOptions setDataLocalityEndpoint(DataLocalityEndpoint dataLocalityEndpoint) {
         this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }

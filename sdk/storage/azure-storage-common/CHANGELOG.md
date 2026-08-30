@@ -3,6 +3,8 @@
 ## 12.35.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `DataLocalityEndpoint`, an immutable, validated representation of the host and optional port used for
+  locality-aware download routing.
 - Added `AutoRefreshingCache`, a generic, thread-safe cache for a single expiring value with jittered proactive
   background refresh and single-flight creation, for internal use by clients that need to cache a value obtained
   from a service call that is valid for a limited time (for example, layout/routing information for locality-aware

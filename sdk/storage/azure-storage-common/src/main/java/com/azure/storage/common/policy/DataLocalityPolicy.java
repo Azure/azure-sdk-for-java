@@ -11,9 +11,8 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.DataLocalityEndpoint;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
@@ -24,16 +23,13 @@ import java.util.Optional;
  * preserving the original host on the {@code Host} header.
  * <p>
  * This policy is a no-op for any request that does not opt in by setting the {@link #LAYOUT_ENDPOINT_KEY}
- * property on the call context, for example via
- * {@code context.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint)} before issuing the request.
+ * property on the call context to a {@link DataLocalityEndpoint}.
  */
 public final class DataLocalityPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(DataLocalityPolicy.class);
-
     /**
      * The {@link com.azure.core.util.Context} data key used to opt a request into locality-aware routing.
-     * When present and set to a non-null, non-empty endpoint string, this policy rewrites the outgoing request's
-     * host/port to that endpoint. The endpoint may be a bare {@code host[:port]} or a full URL.
+     * When present and set to a {@link DataLocalityEndpoint}, this policy rewrites the outgoing request's host and port
+     * to that endpoint.
      */
     public static final String LAYOUT_ENDPOINT_KEY = "Azure.Storage.LayoutEndpoint";
 
@@ -59,53 +55,25 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
         Optional<Object> endpointData = context.getData(LAYOUT_ENDPOINT_KEY);
         HttpRequest request = context.getHttpRequest();
 
-        if (!endpointData.isPresent() || !(endpointData.get() instanceof String)) {
+        if (!endpointData.isPresent()) {
             return;
+        }
+        if (!(endpointData.get() instanceof DataLocalityEndpoint)) {
+            throw new IllegalArgumentException(
+                "Context value for DataLocalityPolicy.LAYOUT_ENDPOINT_KEY must be a DataLocalityEndpoint.");
         }
 
-        String endpoint = (String) endpointData.get();
-        if (CoreUtils.isNullOrEmpty(endpoint)) {
-            return;
-        }
+        DataLocalityEndpoint endpoint = (DataLocalityEndpoint) endpointData.get();
 
         UrlBuilder requestUrlBuilder = UrlBuilder.parse(request.getUrl().toString());
-        UrlBuilder endpointUrlBuilder = parseEndpoint(endpoint);
 
         String originalAuthority = request.getUrl().getAuthority();
-        requestUrlBuilder.setHost(endpointUrlBuilder.getHost());
-        Integer endpointPort = endpointUrlBuilder.getPort();
+        requestUrlBuilder.setHost(endpoint.getHost());
+        Integer endpointPort = endpoint.getPort();
         requestUrlBuilder.setPort(endpointPort == null ? null : endpointPort.toString());
 
         request.setUrl(requestUrlBuilder.toString());
         request.setHeader(HttpHeaderName.HOST, originalAuthority);
-    }
-
-    private static UrlBuilder parseEndpoint(String endpoint) {
-        if (endpoint.trim().isEmpty()) {
-            throw invalidEndpoint(endpoint, null);
-        }
-
-        UrlBuilder endpointUrlBuilder;
-        try {
-            endpointUrlBuilder = UrlBuilder.parse(endpoint);
-        } catch (IllegalArgumentException ex) {
-            throw invalidEndpoint(endpoint, ex);
-        }
-
-        if (CoreUtils.isNullOrEmpty(endpointUrlBuilder.getHost())) {
-            throw invalidEndpoint(endpoint, null);
-        }
-
-        return endpointUrlBuilder;
-    }
-
-    private static IllegalArgumentException invalidEndpoint(String endpoint, Throwable cause) {
-        String message = "Invalid data locality endpoint '" + endpoint
-            + "'. The endpoint must be a host[:port] or an absolute URL.";
-        IllegalArgumentException exception
-            = cause == null ? new IllegalArgumentException(message) : new IllegalArgumentException(message, cause);
-        LOGGER.logExceptionAsError(exception);
-        return exception;
     }
 
     /**

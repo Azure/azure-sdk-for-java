@@ -5,6 +5,9 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRange;
+import com.azure.storage.common.DataLocalityEndpoint;
+
+import java.util.Objects;
 
 /**
  * Represents a range in a blob layout.
@@ -12,17 +15,17 @@ import com.azure.core.http.HttpRange;
 @Immutable
 public final class BlobLayoutRange {
     private final HttpRange range;
-    private final String endpoint;
+    private final DataLocalityEndpoint endpoint;
 
     /**
      * Creates a new {@code BlobLayoutRange}.
      *
      * @param range The {@link HttpRange}.
-     * @param endpoint The endpoint that contains the range.
+     * @param endpoint The {@link DataLocalityEndpoint} that contains the range.
      */
-    public BlobLayoutRange(HttpRange range, String endpoint) {
+    public BlobLayoutRange(HttpRange range, DataLocalityEndpoint endpoint) {
         this.range = range;
-        this.endpoint = endpoint;
+        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' must not be null");
     }
 
     /**
@@ -39,7 +42,7 @@ public final class BlobLayoutRange {
      *
      * @return The endpoint property.
      */
-    public String getEndpoint() {
+    public DataLocalityEndpoint getEndpoint() {
         return endpoint;
     }
 }
