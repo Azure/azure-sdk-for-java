@@ -35,9 +35,12 @@ public final class BlobLayoutRange {
     }
 
     /**
-     * Gets the endpoint property.
+     * Gets the endpoint that contains this range.
      *
-     * @return The endpoint property.
+     * <p>The endpoint is represented as either a DNS hostname and port, such as {@code blob.example.net:443}, or an
+     * absolute URL containing that authority, such as {@code https://blob.example.net:443/}.</p>
+     *
+     * @return The endpoint that contains this range.
      */
     public String getEndpoint() {
         return endpoint;
