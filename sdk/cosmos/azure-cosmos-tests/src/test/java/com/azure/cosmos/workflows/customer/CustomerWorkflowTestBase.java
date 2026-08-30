@@ -11,6 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -392,6 +393,12 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     protected final void skipIfNotGatewayMode(String scenarioName) {
         if (getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
             throw new SkipException(scenarioName + " only applies to the gateway connection mode client builder.");
+        }
+    }
+
+    protected final void skipIfThinClient(String scenarioName) {
+        if (Configs.isThinClientEnabled() && getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException(scenarioName + " does not apply when Thin Client is selected.");
         }
     }
 
