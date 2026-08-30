@@ -5,9 +5,6 @@ package com.azure.storage.file.datalake.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRange;
-import com.azure.storage.common.DataLocalityEndpoint;
-
-import java.util.Objects;
 
 /**
  * Represents a range in a file's layout.
@@ -15,17 +12,17 @@ import java.util.Objects;
 @Immutable
 public final class DataLakeFileLayoutRange {
     private final HttpRange range;
-    private final DataLocalityEndpoint endpoint;
+    private final String endpoint;
 
     /**
      * Creates a new {@code DataLakeFileLayoutRange}.
      *
      * @param range The {@link HttpRange}.
-     * @param endpoint The {@link DataLocalityEndpoint} that contains the range.
+     * @param endpoint The endpoint that contains the range.
      */
-    public DataLakeFileLayoutRange(HttpRange range, DataLocalityEndpoint endpoint) {
+    public DataLakeFileLayoutRange(HttpRange range, String endpoint) {
         this.range = range;
-        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' must not be null");
+        this.endpoint = endpoint;
     }
 
     /**
@@ -42,7 +39,7 @@ public final class DataLakeFileLayoutRange {
      *
      * @return The endpoint property.
      */
-    public DataLocalityEndpoint getEndpoint() {
+    public String getEndpoint() {
         return endpoint;
     }
 }

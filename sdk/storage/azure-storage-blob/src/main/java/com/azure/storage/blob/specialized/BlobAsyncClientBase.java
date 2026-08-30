@@ -95,7 +95,6 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
@@ -1638,7 +1637,7 @@ public class BlobAsyncClientBase {
                         BlobLayoutCacheValue::getExpiresOn);
                     AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
-                        DataLocalityEndpoint endpoint
+                        String endpoint
                             = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
                         Context callContext = StorageImplUtils.addDataLocalityEndpoint(finalContext, endpoint);
                         return BlobAsyncClientBase.this.downloadStreamWithResponse(range, downloadRetryOptions,

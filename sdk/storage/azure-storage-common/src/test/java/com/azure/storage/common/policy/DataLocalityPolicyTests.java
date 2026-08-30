@@ -15,13 +15,13 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
-import com.azure.storage.common.DataLocalityEndpoint;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataLocalityPolicyTests {
     @SyncAsyncTest
@@ -43,23 +43,32 @@ public class DataLocalityPolicyTests {
     }
 
     @SyncAsyncTest
-    public void absentEndpointDoesNotRewriteRequestUrl() throws Exception {
+    public void absentAndEmptyEndpointDoNotRewriteRequestUrl() throws Exception {
         assertRequestUrlDoesNotRewrite(Context.NONE);
+        assertRequestUrlDoesNotRewrite(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, ""));
     }
 
     @SyncAsyncTest
-    public void untypedEndpointThrowsClearError() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> sendRequest(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "layout.example.net")));
+    public void malformedEndpointThrowsClearError() {
+        assertMalformedEndpointThrows("http://");
+    }
 
-        assertEquals("Context value for DataLocalityPolicy.LAYOUT_ENDPOINT_KEY must be a DataLocalityEndpoint.",
-            exception.getMessage());
+    @SyncAsyncTest
+    public void whitespaceEndpointThrowsClearError() {
+        assertMalformedEndpointThrows("   ");
+    }
+
+    private void assertMalformedEndpointThrows(String endpoint) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> sendRequest(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint)));
+
+        assertTrue(exception.getMessage().contains("Invalid data locality endpoint '" + endpoint + "'"));
+        assertTrue(exception.getMessage().contains("host[:port]"));
     }
 
     private void assertRequestUrlRewritesHostAndPreservesOriginalHeader(String layoutEndpoint, String expectedUrl)
         throws Exception {
-        HttpRequest seenRequest = sendRequest(
-            new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, DataLocalityEndpoint.fromString(layoutEndpoint)));
+        HttpRequest seenRequest = sendRequest(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, layoutEndpoint));
 
         assertEquals(expectedUrl, seenRequest.getUrl().toString());
         assertEquals("storage.example.com", seenRequest.getHeaders().getValue(HttpHeaderName.HOST));

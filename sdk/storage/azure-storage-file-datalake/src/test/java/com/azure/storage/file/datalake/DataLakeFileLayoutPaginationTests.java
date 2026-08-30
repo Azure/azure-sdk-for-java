@@ -12,7 +12,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
-import com.azure.storage.common.DataLocalityEndpoint;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -83,7 +82,7 @@ public class DataLakeFileLayoutPaginationTests {
     private static void assertFirstPageMetadataPreserved(List<PagedResponse<DataLakeFileLayoutRange>> pages) {
         PagedResponse<DataLakeFileLayoutRange> firstPage = pages.get(0);
         assertEquals(1, firstPage.getValue().size());
-        assertEquals(DataLocalityEndpoint.fromString("https://host-a:443"), firstPage.getValue().get(0).getEndpoint());
+        assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
         assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
         assertEquals(String.valueOf(FILE_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
         assertEquals(FILE_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));

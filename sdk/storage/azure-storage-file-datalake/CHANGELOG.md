@@ -5,8 +5,6 @@
 ### Features Added
 
 ### Breaking Changes
-- Replaced string-based data locality endpoints in file layout ranges and read options with the validated
-  `DataLocalityEndpoint` type.
 
 ### Bugs Fixed
 

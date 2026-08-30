@@ -19,7 +19,6 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileReadOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
-import com.azure.storage.common.DataLocalityEndpoint;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -45,8 +44,7 @@ public class DataLakeDataLocalityOptionsTests {
     private static final String ORIGINAL_DFS_ENDPOINT = "https://account.dfs.core.windows.net/filesystem/path";
     private static final String ORIGINAL_BLOB_HOST = "account.blob.core.windows.net";
     private static final String DATA_LOCALITY_HOST = "other-host.blob.core.windows.net";
-    private static final DataLocalityEndpoint DATA_LOCALITY_ENDPOINT
-        = DataLocalityEndpoint.fromString("https://" + DATA_LOCALITY_HOST);
+    private static final String DATA_LOCALITY_ENDPOINT = "https://" + DATA_LOCALITY_HOST;
     private static final byte[] DOWNLOAD_BODY = "test".getBytes(StandardCharsets.UTF_8);
     private static final String LAYOUT_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"3\" EndpointIndex=\"0\" /></Ranges>"

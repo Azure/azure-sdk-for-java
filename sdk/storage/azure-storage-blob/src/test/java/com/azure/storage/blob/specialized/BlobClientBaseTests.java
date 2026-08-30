@@ -20,6 +20,7 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -34,7 +35,6 @@ import com.azure.storage.blob.models.LayoutAwareRouting;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
-import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.DataLocalityPolicy;
@@ -376,7 +376,7 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
         assertEquals(1, firstPage.getValue().size());
-        assertEquals(endpoint("https://host-a:443"), firstPage.getValue().get(0).getEndpoint());
+        assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
         assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
         assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
         assertEquals(String.valueOf(LAYOUT_BLOB_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
@@ -480,7 +480,7 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertNotNull(value.getRanges());
         assertEquals(1, value.getRanges().size());
-        assertEquals(endpoint("https://host-a:443"), value.getRanges().get(0).getEndpoint());
+        assertEquals("https://host-a:443", value.getRanges().get(0).getEndpoint());
     }
 
     @DoNotRecord
@@ -491,8 +491,8 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertNotNull(value.getRanges());
         assertEquals(2, value.getRanges().size());
-        assertEquals(endpoint("https://host-a:443"), value.getRanges().get(0).getEndpoint());
-        assertEquals(endpoint("https://host-b:443"), value.getRanges().get(1).getEndpoint());
+        assertEquals("https://host-a:443", value.getRanges().get(0).getEndpoint());
+        assertEquals("https://host-b:443", value.getRanges().get(1).getEndpoint());
     }
 
     @DoNotRecord
@@ -804,7 +804,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             .findFirst()
             .orElseThrow(() -> new AssertionError("Expected a data request after layout lookup."));
         assertEquals(CALLER_CONTEXT_VALUE, dataRequest.callerContextValue);
-        assertEquals(endpoint("https://host-a:443").toString(), dataRequest.layoutEndpointValue);
+        assertEquals("https://host-a:443", dataRequest.layoutEndpointValue);
     }
 
     @DoNotRecord
@@ -855,10 +855,6 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     private static BlobClientBase layoutClient(HttpClient httpClient) {
         return client(httpClient);
-    }
-
-    private static DataLocalityEndpoint endpoint(String value) {
-        return DataLocalityEndpoint.fromString(value);
     }
 
     private static BlobClient seekableClient(SeekableReadHttpClient httpClient, List<LayoutRequestRecord> records) {
@@ -963,10 +959,13 @@ public class BlobClientBaseTests extends BlobTestBase {
             assertEquals(nextOffset, offset,
                 "Range " + i + " must start at " + nextOffset + " but offset was " + offset + "; " + desc);
 
-            DataLocalityEndpoint endpoint = r.getEndpoint();
+            String endpoint = r.getEndpoint();
             assertNotNull(endpoint, "endpoint at range " + i + " must not be null; " + desc);
+            assertFalse(endpoint.trim().isEmpty(), "endpoint at range " + i + " must not be blank; " + desc);
 
-            String host = endpoint.getHost();
+            String host = UrlBuilder.parse(endpoint).getHost();
+            assertNotNull(host, "host parsed from endpoint '" + endpoint + "' must not be null; " + desc);
+            assertFalse(host.isEmpty(), "host parsed from endpoint '" + endpoint + "' must not be empty; " + desc);
             assertFalse(accountHost.equalsIgnoreCase(host),
                 "backend host '" + host + "' must not equal account host '" + accountHost + "'; " + desc);
 

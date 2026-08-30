@@ -22,7 +22,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
-import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -250,10 +249,6 @@ class BlobAsyncClientBaseLayoutPaginationTests {
             .buildAsyncClient();
     }
 
-    private static DataLocalityEndpoint endpoint(String value) {
-        return DataLocalityEndpoint.fromString(value);
-    }
-
     @Test
     public void getLayoutContinuationUsesFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
@@ -280,7 +275,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
             .assertNext(firstPage -> {
                 assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
                 assertEquals(1, firstPage.getValue().size());
-                assertEquals(endpoint("https://host-a:443"), firstPage.getValue().get(0).getEndpoint());
+                assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
                 assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
                 assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
                 assertEquals(String.valueOf(LAYOUT_BLOB_SIZE),
@@ -370,8 +365,8 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         assertNotNull(value);
         List<BlobLayoutRange> ranges = Objects.requireNonNull(value.getRanges());
         assertEquals(2, ranges.size());
-        assertEquals(endpoint("https://host-a:443"), ranges.get(0).getEndpoint());
-        assertEquals(endpoint("https://host-b:443"), ranges.get(1).getEndpoint());
+        assertEquals("https://host-a:443", ranges.get(0).getEndpoint());
+        assertEquals("https://host-b:443", ranges.get(1).getEndpoint());
 
         assertEquals(2, httpClient.captured.size());
         CapturedRequest first = httpClient.captured.get(0);

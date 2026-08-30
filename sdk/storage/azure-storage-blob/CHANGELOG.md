@@ -5,8 +5,6 @@
 ### Features Added
 
 ### Breaking Changes
-- Replaced string-based data locality endpoints in layout ranges and download options with the validated
-  `DataLocalityEndpoint` type.
 
 ### Bugs Fixed
 

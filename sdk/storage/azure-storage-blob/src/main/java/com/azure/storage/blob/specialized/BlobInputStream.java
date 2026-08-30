@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.common.DataLocalityEndpoint;
 import com.azure.storage.common.StorageInputStream;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -91,7 +90,7 @@ public final class BlobInputStream extends StorageInputStream {
             Context callContext = this.context;
             if (layoutCache != null) {
                 BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
-                DataLocalityEndpoint endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
+                String endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
                 callContext = StorageImplUtils.addDataLocalityEndpoint(this.context, endpoint);
             }
 
