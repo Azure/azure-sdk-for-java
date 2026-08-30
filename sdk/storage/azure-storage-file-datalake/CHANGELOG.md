@@ -3,6 +3,8 @@
 ## 12.31.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `DataLakeServiceClientBuilder.blobEndpoint(String)` to configure the Blob service endpoint separately from
+  the Data Lake service endpoint for custom endpoint and proxy scenarios.
 
 ### Breaking Changes
 
