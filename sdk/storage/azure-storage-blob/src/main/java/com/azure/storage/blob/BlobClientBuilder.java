@@ -31,6 +31,7 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -92,6 +93,7 @@ public final class BlobClientBuilder
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and {@link
@@ -99,6 +101,18 @@ public final class BlobClientBuilder
      */
     public BlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+    }
+
+    /**
+     * Sets the options for session-based authentication of eligible GET blob requests.
+     * Requests that are not eligible continue to use bearer token authentication.
+     *
+     * @param sessionOptions The session options for the HTTP pipeline.
+     * @return the updated BlobClientBuilder object.
+     */
+    public BlobClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+        return this;
     }
 
     /**
@@ -189,18 +203,20 @@ public final class BlobClientBuilder
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
             snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
     }
 
     /**
@@ -650,4 +666,5 @@ public final class BlobClientBuilder
         this.audience = audience;
         return this;
     }
+
 }

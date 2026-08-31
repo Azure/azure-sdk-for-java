@@ -585,6 +585,7 @@ public final class BlobsDownloadHeaders {
             this.xMsAccessTierChangeTime = null;
         }
         this.xMsSmartAccessTier = rawHeaders.getValue(X_MS_SMART_ACCESS_TIER);
+
         String xMsDownloadHint = rawHeaders.getValue(X_MS_DOWNLOAD_HINT);
         if (xMsDownloadHint != null) {
             this.xMsDownloadHint = DownloadHint.fromString(xMsDownloadHint);

@@ -1,0 +1,378 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob.implementation.util;
+
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.SessionCredential;
+import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.models.SessionProvider;
+import com.azure.storage.blob.models.SessionRequestContext;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import reactor.core.publisher.Mono;
+
+import java.time.Clock;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * A pipeline policy that selects between session token and bearer token authentication.
+ * <p>
+ * This policy occupies the authentication policy slot in the pipeline, wrapping the
+ * {@link StorageBearerTokenChallengeAuthorizationPolicy}. For eligible blob GET requests,
+ * the policy authenticates with a session token. For all other requests, it delegates to the
+ * wrapped bearer token policy.
+ * <p>
+ * If session authentication cannot be used against an account, either because session acquisition failed with
+ * HTTP 400, 403, or 5xx, or because the service rejected session-signed requests with HTTP 401 three times in
+ * a row, the account is placed in a five minute cooldown during which requests go straight to bearer
+ * authentication. Cooldown state is held by this policy instance, so it is scoped to a single client pipeline.
+ * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
+ * and do not start a cooldown.
+ */
+public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(SessionTokenCredentialPolicy.class);
+    private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
+    private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
+    private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
+    private static final String SESSION_EXPIRING = "session_expiring";
+    private static final String SESSION_PREFIX = "Session ";
+    private static final Duration SESSION_COOLDOWN = Duration.ofMinutes(5);
+    private static final int MAX_CONSECUTIVE_SESSION_REJECTIONS = 3;
+
+    private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
+    private final SessionProvider sessionProvider;
+    private final SessionOptions sessionOptions;
+    private final Clock clock;
+    private final ConcurrentHashMap<String, OffsetDateTime> accountCooldowns = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, AtomicInteger> accountRejections = new ConcurrentHashMap<>();
+
+    SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+        SessionProvider sessionProvider, SessionOptions sessionOptions) {
+        this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
+    }
+
+    SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+        SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
+        this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
+        this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
+        this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
+        this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
+    }
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        SessionRequestContext requestContext = resolveSessionRequest(context);
+        if (requestContext == null) {
+            return bearerPolicy.process(context, next);
+        }
+        if (isAccountInCooldown(requestContext.getAccountName())) {
+            return bearerPolicy.process(context, next);
+        }
+
+        HttpPipelineNextPolicy retryNext = next.clone();
+        Mono<SessionCredential> sessionMono;
+        try {
+            sessionMono = sessionProvider.getSessionAsync(requestContext);
+        } catch (RuntimeException ex) {
+            handleSessionAcquisitionFailure(requestContext, ex);
+            return bearerPolicy.process(context, next);
+        }
+
+        return sessionMono.onErrorResume(error -> {
+            handleSessionAcquisitionFailure(requestContext, error);
+            return Mono.empty();
+        }).flatMap(session -> {
+            signRequest(context, session);
+            return next.process()
+                .flatMap(response -> handleSessionResponse(context, response, session, requestContext, retryNext));
+        }).switchIfEmpty(Mono.defer(() -> bearerPolicy.process(context, next)));
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        SessionRequestContext requestContext = resolveSessionRequest(context);
+        if (requestContext == null) {
+            return bearerPolicy.processSync(context, next);
+        }
+        if (isAccountInCooldown(requestContext.getAccountName())) {
+            return bearerPolicy.processSync(context, next);
+        }
+
+        HttpPipelineNextSyncPolicy retryNext = next.clone();
+        SessionCredential session;
+        try {
+            session = sessionProvider.getSession(requestContext);
+        } catch (RuntimeException ex) {
+            handleSessionAcquisitionFailure(requestContext, ex);
+            return bearerPolicy.processSync(context, next);
+        }
+        signRequest(context, session);
+
+        HttpResponse response = next.processSync();
+        return handleSessionResponseSync(context, response, session, requestContext, retryNext);
+    }
+
+    private SessionRequestContext resolveSessionRequest(HttpPipelineCallContext context) {
+        if (sessionOptions.getSessionMode() == SessionMode.DISABLED
+            || context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
+            return null;
+        }
+
+        BlobUrlParts parts;
+        try {
+            parts = BlobUrlParts.parse(context.getHttpRequest().getUrl());
+        } catch (RuntimeException ex) {
+            LOGGER.warning("Unable to resolve session authentication context from request URL. Using bearer token.",
+                ex);
+            return null;
+        }
+
+        String containerName = getOverrideOrDefault(sessionOptions.getContainerName(), parts.getBlobContainerName());
+        String accountName = getOverrideOrDefault(sessionOptions.getAccountName(), parts.getAccountName());
+
+        // comp indicates sub-operations (metadata, tags, etc.) that should use bearer auth.
+        if (CoreUtils.isNullOrEmpty(containerName)
+            || CoreUtils.isNullOrEmpty(parts.getBlobName())
+            || parts.getUnparsedParameters().containsKey("comp")) {
+            return null;
+        }
+
+        return new SessionRequestContext().setContainerName(containerName).setAccountName(accountName);
+    }
+
+    private static String getOverrideOrDefault(String override, String defaultValue) {
+        return CoreUtils.isNullOrEmpty(override) ? defaultValue : override;
+    }
+
+    /**
+     * Handles the response after a session-authenticated async request. Inspects for
+     * session-expiring hints, retryable failures, and fallback conditions.
+     */
+    private Mono<HttpResponse> handleSessionResponse(HttpPipelineCallContext context, HttpResponse response,
+        SessionCredential session, SessionRequestContext requestContext, HttpPipelineNextPolicy retryNext) {
+
+        handleSessionExpiringHeader(response, requestContext);
+
+        if (response.getStatusCode() == 401) {
+            handleSessionRejection(requestContext, session);
+        } else {
+            recordSessionAccepted(requestContext);
+        }
+
+        if (shouldFallBackToBearer(context, response)) {
+            response.close();
+            context.setData(RETRY_CONTEXT_KEY, true);
+            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+            return bearerPolicy.process(context, retryNext);
+        }
+
+        return Mono.just(response);
+    }
+
+    /**
+     * Handles the response after a session-authenticated sync request. Inspects for
+     * session-expiring hints, retryable failures, and fallback conditions.
+     */
+    private HttpResponse handleSessionResponseSync(HttpPipelineCallContext context, HttpResponse response,
+        SessionCredential session, SessionRequestContext requestContext, HttpPipelineNextSyncPolicy retryNext) {
+
+        handleSessionExpiringHeader(response, requestContext);
+
+        if (response.getStatusCode() == 401) {
+            handleSessionRejection(requestContext, session);
+        } else {
+            recordSessionAccepted(requestContext);
+        }
+
+        if (shouldFallBackToBearer(context, response)) {
+            response.close();
+            context.setData(RETRY_CONTEXT_KEY, true);
+            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+            return bearerPolicy.processSync(context, retryNext);
+        }
+
+        return response;
+    }
+
+    private void signRequest(HttpPipelineCallContext context, SessionCredential credential) {
+        if (context.getHttpRequest().getHeaders().getValue(X_MS_DATE) == null) {
+            context.getHttpRequest().setHeader(X_MS_DATE, DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
+        }
+
+        StorageSharedKeyCredential sharedKey
+            = new StorageSharedKeyCredential(credential.getAccountName(), credential.getSessionKey());
+        boolean contentLengthMissing
+            = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH) == null;
+        if (contentLengthMissing) {
+            context.getHttpRequest().setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+        }
+
+        String sharedKeyAuthorization;
+        try {
+            sharedKeyAuthorization = sharedKey.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(), context.getHttpRequest().getHeaders(), false);
+        } finally {
+            if (contentLengthMissing) {
+                context.getHttpRequest().getHeaders().remove(HttpHeaderName.CONTENT_LENGTH);
+            }
+        }
+        String signature = sharedKeyAuthorization.substring(sharedKeyAuthorization.indexOf(':') + 1);
+        context.getHttpRequest()
+            .setHeader(HttpHeaderName.AUTHORIZATION, SESSION_PREFIX + credential.getSessionToken() + ":" + signature);
+    }
+
+    /**
+     * Handles a session credential being rejected by the service. The rejected credential is invalidated so it is not
+     * reused, and the rejection is counted. Because invalidation causes the next request to create a brand new
+     * session, an environment that cannot use sessions at all would otherwise create and lose one session per
+     * request indefinitely. After {@value #MAX_CONSECUTIVE_SESSION_REJECTIONS} consecutive rejections the account is
+     * placed in cooldown so requests fall straight through to bearer.
+     */
+    private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
+        logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
+
+        int consecutiveRejections = accountRejections
+            .computeIfAbsent(normalize(requestContext.getAccountName()), ignored -> new AtomicInteger())
+            .incrementAndGet();
+
+        if (consecutiveRejections >= MAX_CONSECUTIVE_SESSION_REJECTIONS
+            && beginAccountCooldown(requestContext.getAccountName())) {
+            LOGGER.warning(
+                "Session authentication was rejected {} times in a row for container '{}'. Suppressing session "
+                    + "authentication for this account for five minutes and using bearer token.",
+                consecutiveRejections, requestContext.getContainerName());
+        }
+    }
+
+    /**
+     * Clears the consecutive rejection count once the service accepts a session credential. Any response other than
+     * 401 means the session authenticated successfully, so an account where sessions work never reaches the
+     * rejection threshold.
+     */
+    private void recordSessionAccepted(SessionRequestContext requestContext) {
+        accountRejections.remove(normalize(requestContext.getAccountName()));
+    }
+
+    private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {
+        String authInfo = response.getHeaderValue(X_MS_AUTH_INFO);
+        if (authInfo != null && authInfo.contains(SESSION_EXPIRING)) {
+            sessionProvider.refreshSession(requestContext);
+        }
+    }
+
+    private static void logSessionInvalidation(SessionRequestContext requestContext, boolean invalidated) {
+        if (invalidated) {
+            LOGGER.warning(
+                "Session authentication was rejected with HTTP 401 for container '{}'. "
+                    + "The cached session was invalidated and the request will proceed using bearer token.",
+                requestContext.getContainerName());
+        } else {
+            LOGGER.verbose(
+                "Session authentication was rejected with HTTP 401 for container '{}', but the cached "
+                    + "session was already invalidated. The request will proceed using bearer token.",
+                requestContext.getContainerName());
+        }
+    }
+
+    /**
+     * Returns true for responses where retrying with bearer authentication can preserve
+     * request compatibility when session authentication is unavailable or rejected.
+     */
+    private static boolean shouldFallBackToBearer(HttpPipelineCallContext context, HttpResponse response) {
+        if (Boolean.TRUE.equals(context.getData(RETRY_CONTEXT_KEY).orElse(false))) {
+            return false;
+        }
+
+        int statusCode = response.getStatusCode();
+        return statusCode == 400 || statusCode == 401;
+    }
+
+    /**
+     * Handles a failure to obtain a session credential. When the failure carries an HTTP 400, 403, or 5xx response
+     * the account is placed in cooldown so following requests skip session acquisition entirely. Any other failure
+     * is logged and falls back to bearer for the current request only.
+     */
+    private void handleSessionAcquisitionFailure(SessionRequestContext requestContext, Throwable error) {
+        Throwable current = error;
+        while (current != null && !(current instanceof HttpResponseException)) {
+            current = current.getCause();
+        }
+
+        if (current != null && ((HttpResponseException) current).getResponse() != null) {
+            HttpResponse response = ((HttpResponseException) current).getResponse();
+            int statusCode = response.getStatusCode();
+            if (statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599)) {
+                if (beginAccountCooldown(requestContext.getAccountName())) {
+                    LOGGER.warning(
+                        "Session acquisition failed with HTTP {}. Suppressing session authentication for this account "
+                            + "for five minutes and using bearer token.",
+                        statusCode);
+                }
+                return;
+            }
+        }
+
+        LOGGER.warning("Unable to obtain a session credential. Using bearer token.", error);
+    }
+
+    private boolean isAccountInCooldown(String accountName) {
+        String key = normalize(accountName);
+        OffsetDateTime cooldownUntil = accountCooldowns.get(key);
+        if (cooldownUntil == null) {
+            return false;
+        }
+
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        if (now.isBefore(cooldownUntil)) {
+            return true;
+        }
+
+        accountCooldowns.remove(key, cooldownUntil);
+        return false;
+    }
+
+    private boolean beginAccountCooldown(String accountName) {
+        String key = normalize(accountName);
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        OffsetDateTime cooldownUntil = now.plus(SESSION_COOLDOWN);
+        AtomicBoolean cooldownStarted = new AtomicBoolean();
+        accountCooldowns.compute(key, (ignored, currentExpirationTime) -> {
+            if (currentExpirationTime != null && now.isBefore(currentExpirationTime)) {
+                return currentExpirationTime;
+            }
+
+            cooldownStarted.set(true);
+            return cooldownUntil;
+        });
+
+        if (cooldownStarted.get()) {
+            // Reset the count so the account gets a fresh set of attempts once the cooldown lapses.
+            accountRejections.remove(key);
+        }
+
+        return cooldownStarted.get();
+    }
+
+    private static String normalize(String accountName) {
+        return CoreUtils.isNullOrEmpty(accountName) ? "" : accountName.trim().toLowerCase(Locale.ROOT);
+    }
+}
