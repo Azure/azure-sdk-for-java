@@ -200,7 +200,7 @@ final class TokenCredentialSessionProvider implements SessionProvider {
 
         OffsetDateTime expiration = session.getExpiration();
         if (expiration == null) {
-            expiration = OffsetDateTime.now().plus(DEFAULT_EXPIRATION_OFFSET);
+            expiration = OffsetDateTime.now(clock).plus(DEFAULT_EXPIRATION_OFFSET);
         }
         return new SessionCredential(creds.getSessionToken(), creds.getSessionKey(), expiration, resolvedAccountName);
     }

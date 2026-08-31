@@ -15,16 +15,24 @@ import com.azure.storage.blob.models.SessionRequestContext;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenCredentialSessionProviderTests extends BlobTestBase {
 
@@ -80,6 +88,26 @@ public class TokenCredentialSessionProviderTests extends BlobTestBase {
         assertNotNull(credential.getSessionKey());
         assertNotNull(credential.getExpiresAt());
         assertEquals(1, policyInvocationCount.get());
+    }
+
+    @LiveOnly
+    @Test
+    public void actualExpirationCausesSessionReplacement() {
+        AtomicInteger policyInvocationCount = new AtomicInteger();
+        MutableClock clock = new MutableClock(Instant.now());
+        TokenCredentialSessionProvider sessionProvider = new TokenCredentialSessionProvider(
+            createOAuthPipeline(policyInvocationCount), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+            BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), clock);
+        SessionRequestContext context = new SessionRequestContext().setContainerName(cc.getBlobContainerName());
+
+        SessionCredential first = sessionProvider.getSession(context);
+        assertTrue(first.getExpiresAt().isAfter(OffsetDateTime.now(clock)));
+
+        clock.setInstant(first.getExpiresAt().plusSeconds(1).toInstant());
+        SessionCredential replacement = sessionProvider.getSession(context);
+
+        assertNotSame(first, replacement);
+        assertEquals(2, policyInvocationCount.get());
     }
 
     @Test
@@ -189,5 +217,38 @@ public class TokenCredentialSessionProviderTests extends BlobTestBase {
 
         instrument(builder);
         return builder.buildClient().getHttpPipeline();
+    }
+
+    private static final class MutableClock extends Clock {
+        private final ZoneId zone;
+        private Instant instant;
+
+        private MutableClock(Instant instant) {
+            this(instant, ZoneOffset.UTC);
+        }
+
+        private MutableClock(Instant instant, ZoneId zone) {
+            this.instant = instant;
+            this.zone = zone;
+        }
+
+        @Override
+        public ZoneId getZone() {
+            return zone;
+        }
+
+        @Override
+        public Clock withZone(ZoneId newZone) {
+            return new MutableClock(instant, newZone);
+        }
+
+        @Override
+        public Instant instant() {
+            return instant;
+        }
+
+        private void setInstant(Instant instant) {
+            this.instant = instant;
+        }
     }
 }

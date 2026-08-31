@@ -101,6 +101,15 @@ public class TokenCredentialSessionProviderCacheTest {
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
     }
 
+    @Test
+    public void absentExpirationUsesProviderClock() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, null);
+
+        SessionCredential credential = provider.getSession(contextFor(CONTAINER_A));
+
+        assertEquals(now().plus(SESSION_LIFETIME), credential.getExpiresAt());
+    }
+
     /**
      * When the service has NOT sent a {@code session_expiring} hint, the cache must still refresh
      * automatically once its own jittered timer elapses (while the current token is still usable), serving
@@ -424,12 +433,12 @@ public class TokenCredentialSessionProviderCacheTest {
     }
 
     private static HttpResponse buildResponse(HttpRequest request, String token, OffsetDateTime expiresAt) {
-        String expiration = new DateTimeRfc1123(expiresAt).toString();
+        String expiration = expiresAt == null ? "" : "<Expiration>" + new DateTimeRfc1123(expiresAt) + "</Expiration>";
         String body = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<CreateSessionResult>"
-            + "<Id>test-session-id</Id>" + "<Expiration>" + expiration + "</Expiration>"
-            + "<AuthenticationType>HMAC</AuthenticationType>" + "<Credentials>" + "<SessionToken>" + token
-            + "</SessionToken>" + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
-            + "</Credentials>" + "</CreateSessionResult>";
+            + "<Id>test-session-id</Id>" + expiration + "<AuthenticationType>HMAC</AuthenticationType>"
+            + "<Credentials>" + "<SessionToken>" + token + "</SessionToken>"
+            + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>" + "</Credentials>"
+            + "</CreateSessionResult>";
 
         return new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8)).addHeader("Content-Type",
             "application/xml");
