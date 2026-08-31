@@ -11,6 +11,42 @@
 - Added `VoiceAgentInputTranscription.setLanguages(...)` and `setKeywords(...)`.
 - Added `WebSearchTool.setExternalWebAccess(...)` and `WebSearchToolboxTool.setExternalWebAccess(...)`.
 - Added `ImageGenToolModel.GPT_IMAGE_2` and `GPT_IMAGE_2_2026_04_21`.
+- Added broad voice-agent support: `VoiceAgentDefinition` (agent kind `voice`) with audio input/output configuration,
+  avatar rendering, turn-detection (server and semantic VAD), noise reduction, input transcription, greeting
+  configuration, and function/MCP/toolbox/system tools. Realtime conversation items now also support MCP tool calls
+  and list-tools results (`RealtimeMCPToolCall`, `RealtimeMCPListTools`, `RealtimeMCPApprovalRequest` /
+  `RealtimeMCPApprovalResponse`).
+- Added the beta `BetaAgentEndpointConversationsClient` / `BetaAgentEndpointConversationsAsyncClient` (via
+  `AgentsClientBuilder.beta()`) for listing/getting/deleting persisted voice-agent conversations, their responses and
+  conversation items, and the associated audio content.
+- Added Microsoft 365 agent publishing. `AgentsClient` / `AgentsAsyncClient` gained `publishAgentToMicrosoft365`,
+  `getMicrosoft365AppPackage`, and `getMicrosoft365PublishDefaults` (plus `WithResponse` overloads), backed by new
+  `PublishAgentToMicrosoft365Options`, `GetMicrosoft365AppPackageOptions`, `Microsoft365PublishResponse`,
+  `Microsoft365PublishDefaults`, `Microsoft365PublishScope`, and `Microsoft365PermissionScopes` models.
+  `AgentEndpointConfig.getPublishApprovalStatus()` exposes the Microsoft 365 store review status through the new
+  `PublishApprovalStatus` enum.
+- Added digital-worker (formerly "autopilot") support: the `DigitalWorkerType` enum, `AgentDetails.getDigitalWorkerType()`,
+  and a `publishAsAutopilot` option on the Microsoft 365 publish/app-package options to publish an agent as a
+  Microsoft 365 digital worker.
+- Added activity-protocol access boundaries: the `ActivityProtocolAccessBoundary` enum and
+  `ActivityProtocolConfiguration.getAccessBoundaries()`, plus matching `accessBoundaries` options on the Microsoft 365
+  publish/app-package options, to scope developer/manager/tenant read and write access for one-on-one and group
+  conversations.
+- Added Model Router support: `ModelRouterDetails`, `ModelRouterMode`, `ModelRouterAttempt` /
+  `ModelRouterAttemptResult` / `ModelRouterAttemptError`, `RoutingTraceEntry`, and `ModelSelectionDetails` (exposed via
+  `AzureCreateResponseDetails.getModelSelectionDetails()`) provide visibility into automatic model-selection routing
+  decisions.
+- Added `WebIqPreviewTool` / `WebIqPreviewToolboxTool` for connecting an agent to a WebIQ MCP server.
+- Added `ShellToolboxTool` for running shell commands in an automatically provisioned or existing container,
+  configured via `ToolboxShellEnvironment`, `ToolboxShellContainerAutoEnvironment`,
+  `ToolboxShellContainerReferenceEnvironment`, and `ToolboxShellNetworkPolicy`.
+- Added hosted-agent session configuration: `SessionConfiguration` and
+  `HostedAgentDefinition.setSessionConfiguration()` / `getSessionConfiguration()` let callers set the idle-timeout
+  default applied to sessions created for a hosted-agent version.
+- Added the `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW` opt-in flag for the Agent Insights preview feature
+  area.
+- Added `AgentsClient.generateAgent` / `generateAgentWithResponse` (and async equivalents) to generate and create an
+  agent from kind-specific, high-level inputs.
 
 ### Breaking Changes
 

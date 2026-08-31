@@ -5,6 +5,7 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -34,7 +35,7 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
      * Parameters of the function in JSON Schema.
      */
     @Generated
-    private RealtimeFunctionToolParameters parameters;
+    private BinaryData parameters;
 
     /*
      * The function name.
@@ -95,20 +96,8 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
      * @return the parameters value.
      */
     @Generated
-    public RealtimeFunctionToolParameters getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameters of the function in JSON Schema.
-     *
-     * @param parameters the parameters value to set.
-     * @return the VoiceAgentFunctionTool object itself.
-     */
-    @Generated
-    public VoiceAgentFunctionTool setParameters(RealtimeFunctionToolParameters parameters) {
-        this.parameters = parameters;
-        return this;
     }
 
     /**
@@ -131,7 +120,10 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeJsonField("parameters", this.parameters);
+        if (this.parameters != null) {
+            jsonWriter.writeFieldName("parameters");
+            this.parameters.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -150,7 +142,7 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
             String name = null;
             String type = "function";
             String description = null;
-            RealtimeFunctionToolParameters parameters = null;
+            BinaryData parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -161,7 +153,8 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters = RealtimeFunctionToolParameters.fromJson(reader);
+                    parameters
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }
@@ -172,5 +165,17 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
             deserializedVoiceAgentFunctionTool.parameters = parameters;
             return deserializedVoiceAgentFunctionTool;
         });
+    }
+
+    /**
+     * Set the parameters property: Parameters of the function in JSON Schema.
+     *
+     * @param parameters the parameters value to set.
+     * @return the VoiceAgentFunctionTool object itself.
+     */
+    @Generated
+    public VoiceAgentFunctionTool setParameters(BinaryData parameters) {
+        this.parameters = parameters;
+        return this;
     }
 }

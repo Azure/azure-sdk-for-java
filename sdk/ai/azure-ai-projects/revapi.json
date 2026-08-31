@@ -64,6 +64,12 @@
           "code": "java.class.removed",
           "old": "class com.azure.ai.projects.models.TaskGenerationDataGenerationJobOptions",
           "justification": "Breaking change in beta operation: TaskGenerationDataGenerationJobOptions was renamed to SimulationSeedDataGenerationJobOptions to align with the current DataGenerationJobs preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.numberOfParametersChanged",
+          "old": "method .* com\\.azure\\.ai\\.projects\\.BetaRoutines(Async)?Client::createOrUpdateRoutine\\(.*\\)",
+          "justification": "Breaking change in beta operation: BetaRoutines(Async)Client createOrUpdateRoutine takes an additional optional 'authorization' parameter to align with the current Routines preview contract."
         }
       ]
     }

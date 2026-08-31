@@ -10,6 +10,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ToolChoiceFunction;
+import com.openai.models.responses.ToolChoiceMcp;
 import java.io.IOException;
 
 /**
@@ -73,8 +76,8 @@ public final class VoiceAgentLlmGeneratedGreetingConfig extends VoiceAgentGreeti
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
+    BinaryData getToolChoice() {
+        // AI Tooling: union type
         return this.toolChoice;
     }
 
@@ -84,8 +87,8 @@ public final class VoiceAgentLlmGeneratedGreetingConfig extends VoiceAgentGreeti
      * @param toolChoice the toolChoice value to set.
      * @return the VoiceAgentLlmGeneratedGreetingConfig object itself.
      */
-    @Generated
-    public VoiceAgentLlmGeneratedGreetingConfig setToolChoice(BinaryData toolChoice) {
+    VoiceAgentLlmGeneratedGreetingConfig setToolChoice(BinaryData toolChoice) {
+        // AI Tooling: union type
         this.toolChoice = toolChoice;
         return this;
     }
@@ -141,5 +144,103 @@ public final class VoiceAgentLlmGeneratedGreetingConfig extends VoiceAgentGreeti
             deserializedVoiceAgentLlmGeneratedGreetingConfig.toolChoice = toolChoice;
             return deserializedVoiceAgentLlmGeneratedGreetingConfig;
         });
+    }
+
+    /**
+     * Set the toolChoice property: The tool-selection policy for the opening response. Defaults to `none`.
+     *
+     * @param toolChoice the tool-selection mode to set, one of {@code "none"}, {@code "auto"} or {@code "required"}.
+     * @return the VoiceAgentLlmGeneratedGreetingConfig object itself.
+     */
+    public VoiceAgentLlmGeneratedGreetingConfig setToolChoice(String toolChoice) {
+        // AI Tooling: union type
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property: The tool-selection policy for the opening response. Defaults to `none`.
+     *
+     * @return the toolChoice value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public String getToolChoiceAsString() {
+        // AI Tooling: union type
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.toolChoice.toObject(String.class);
+    }
+
+    /**
+     * Set the toolChoice property to a specific function tool: The tool-selection policy for the opening response.
+     * Defaults to `none`.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
+     * @return the VoiceAgentLlmGeneratedGreetingConfig object itself.
+     */
+    public VoiceAgentLlmGeneratedGreetingConfig setFunctionToolChoice(ToolChoiceFunction toolChoice) {
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: The tool-selection policy for the
+     * opening response. Defaults to `none`.
+     *
+     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceFunction getFunctionToolChoice() {
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isFunction()) {
+            return null;
+        }
+        return choice.asFunction();
+    }
+
+    /**
+     * Set the toolChoice property to a specific MCP tool: The tool-selection policy for the opening response. Defaults
+     * to `none`.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
+     * @return the VoiceAgentLlmGeneratedGreetingConfig object itself.
+     */
+    public VoiceAgentLlmGeneratedGreetingConfig setMcpToolChoice(ToolChoiceMcp toolChoice) {
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: The tool-selection policy for the opening
+     * response. Defaults to `none`.
+     *
+     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceMcp getMcpToolChoice() {
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isMcp()) {
+            return null;
+        }
+        return choice.asMcp();
+    }
+
+    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!json.startsWith("{")) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ResponseCreateParams.ToolChoice.class);
     }
 }

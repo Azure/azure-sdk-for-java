@@ -52,7 +52,7 @@ public class RoutinesTimerTriggerAsyncSample {
         routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by the timer-trigger sample.", true, triggers, action))
+                "Routine used by the timer-trigger sample.", true, triggers, action, null))
             .flatMap(created -> {
                 System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
                 System.out.printf("Fire at: %s%n", trigger.getAt());

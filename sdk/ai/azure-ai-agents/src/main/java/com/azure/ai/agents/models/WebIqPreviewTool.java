@@ -105,8 +105,8 @@ public final class WebIqPreviewTool extends Tool {
      *
      * @return the requireApproval value.
      */
-    @Generated
-    public BinaryData getRequireApproval() {
+    BinaryData getRequireApproval() {
+        // AI Tooling: union type
         return this.requireApproval;
     }
 
@@ -117,8 +117,8 @@ public final class WebIqPreviewTool extends Tool {
      * @param requireApproval the requireApproval value to set.
      * @return the WebIqPreviewTool object itself.
      */
-    @Generated
-    public WebIqPreviewTool setRequireApproval(BinaryData requireApproval) {
+    WebIqPreviewTool setRequireApproval(BinaryData requireApproval) {
+        // AI Tooling: union type
         this.requireApproval = requireApproval;
         return this;
     }
@@ -178,5 +178,68 @@ public final class WebIqPreviewTool extends Tool {
             deserializedWebIqPreviewTool.requireApproval = requireApproval;
             return deserializedWebIqPreviewTool;
         });
+    }
+
+    /**
+     * Set the requireApproval property: Whether the agent requires approval before executing actions. When omitted, the
+     * service defaults to "always".
+     *
+     * @param requireApproval the approval setting string to set (e.g., "always" or "never").
+     * @return the WebIqPreviewTool object itself.
+     */
+    public WebIqPreviewTool setRequireApproval(String requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = requireApproval == null ? null : BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property: Whether the agent requires approval before executing actions. When omitted, the
+     * service defaults to "always".
+     *
+     * @return the requireApproval value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public String getRequireApprovalAsString() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        String json = this.requireApproval.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.requireApproval.toObject(String.class);
+    }
+
+    /**
+     * Set the requireApproval property: Whether the agent requires approval before executing actions. When omitted, the
+     * service defaults to "always".
+     *
+     * @param requireApproval the {@link McpToolRequireApproval} filter to set.
+     * @return the WebIqPreviewTool object itself.
+     */
+    public WebIqPreviewTool setRequireApproval(McpToolRequireApproval requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = requireApproval == null ? null : BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property: Whether the agent requires approval before executing actions. When omitted, the
+     * service defaults to "always".
+     *
+     * @return the requireApproval value as a {@link McpToolRequireApproval}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public McpToolRequireApproval getRequireApprovalAsMcpToolRequireApproval() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        String json = this.requireApproval.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.requireApproval.toObject(McpToolRequireApproval.class);
     }
 }

@@ -61,7 +61,7 @@ public class RoutinesTimerTriggerSample {
             triggers.put("once", trigger);
 
             Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by the timer-trigger sample.", true, triggers, action);
+                "Routine used by the timer-trigger sample.", true, triggers, action, null);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
             System.out.printf("Fire at: %s%n", trigger.getAt());
             // END:com.azure.ai.projects.RoutinesTimerTriggerSample.createRoutine

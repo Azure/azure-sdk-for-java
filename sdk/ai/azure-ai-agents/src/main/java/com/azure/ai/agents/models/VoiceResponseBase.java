@@ -270,8 +270,8 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      *
      * @return the maxOutputTokens value.
      */
-    @Generated
-    public BinaryData getMaxOutputTokens() {
+    BinaryData getMaxOutputTokens() {
+        // AI Tooling: union type
         return this.maxOutputTokens;
     }
 
@@ -350,5 +350,43 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
             }
             return deserializedVoiceResponseBase;
         });
+    }
+
+    /**
+     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
+     * tool calls, that was used in this response.
+     *
+     * @return the maxOutputTokens value as an Integer, or {@code null} when it is not set or holds another variant.
+     */
+    public final Integer getMaxOutputTokensAsInteger() {
+        // AI Tooling: union type
+        BinaryData value = getMaxOutputTokens();
+        if (value == null) {
+            return null;
+        }
+        String json = value.toString().trim();
+        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
+            return null;
+        }
+        return value.toObject(Integer.class);
+    }
+
+    /**
+     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
+     * tool calls, that was used in this response.
+     *
+     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public final String getMaxOutputTokensAsString() {
+        // AI Tooling: union type
+        BinaryData value = getMaxOutputTokens();
+        if (value == null) {
+            return null;
+        }
+        String json = value.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return value.toObject(String.class);
     }
 }

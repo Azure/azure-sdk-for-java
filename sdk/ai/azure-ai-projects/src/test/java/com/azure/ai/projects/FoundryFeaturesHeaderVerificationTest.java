@@ -110,6 +110,9 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaAgentInsightMonitorsClient().getWithResponse("monitor", new RequestOptions());
+        assertEquals("AgentInsights=V1Preview", foundryFeatures(httpClient));
     }
 
     @Test
