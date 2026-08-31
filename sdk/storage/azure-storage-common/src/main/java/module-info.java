@@ -27,5 +27,6 @@ module com.azure.storage.common {
         com.azure.storage.file.share, com.azure.storage.file.datalake, com.azure.storage.queue;
     exports com.azure.storage.common.implementation.contentvalidation to // FIXME this should not be a long-term solution
         com.azure.storage.blob, com.azure.storage.file.share, com.azure.storage.file.datalake;
+
     exports com.azure.storage.common.implementation.util to com.azure.storage.blob; //FIXME this should not be a long-term solution
 }

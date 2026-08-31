@@ -16,17 +16,42 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
- * Cache for container-scoped storage session credentials.
+ * Cache for values that expire and must be refreshed transparently, such as container-scoped storage session
+ * credentials and blob data locality layouts.
  * <p>
- * {@code T} is not required to implement any particular interface; the caller supplies a
- * {@link Function} that extracts the expiration instant from a value, decoupling this cache from any
- * specific credential shape.
+ * {@code T} is not required to implement any particular interface; the caller supplies a {@link Function} that
+ * extracts the expiration instant from a value, decoupling this cache from any specific value shape.
+ * <p>
+ * Refresh is opportunistic rather than scheduled: a caller that observes a value past its jittered refresh point
+ * receives the still-valid cached value immediately and triggers the refresh in the background. There is no timer
+ * to cancel, so instances need no cleanup.
+ * <p>
+ * RESERVED FOR INTERNAL USE.
  */
 public final class AutoRefreshingCache<T> {
+    /**
+     * Supplies the values held by the cache.
+     *
+     * @param <T> The type of value produced.
+     */
+    @FunctionalInterface
     public interface ValueProvider<T> {
+        /**
+         * Creates the value asynchronously.
+         *
+         * @return A {@link Mono} that emits the created value.
+         */
         Mono<T> createAsync();
 
-        T createSync();
+        /**
+         * Creates the value synchronously. Defaults to blocking on {@link #createAsync()}; override when a
+         * non-blocking synchronous path is available.
+         *
+         * @return The created value.
+         */
+        default T createSync() {
+            return createAsync().block();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoRefreshingCache.class);
@@ -146,7 +171,7 @@ public final class AutoRefreshingCache<T> {
         }
 
         createOrJoinAsync().subscribe(ignored -> {
-        }, error -> LOGGER.warning("Background session refresh failed.", error));
+        }, error -> LOGGER.warning("Background value refresh failed.", error));
     }
 
     public void forceRefreshValueInBackground() {

@@ -4,12 +4,14 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -160,6 +162,27 @@ public class StorageImplUtils {
      */
     public static <T> Mono<T> applyOptionalTimeout(Mono<T> publisher, Duration timeout) {
         return timeout == null ? publisher : publisher.timeout(timeout);
+    }
+
+    /**
+     * Converts a potentially unquoted ETag into an RFC 9110 entity-tag value suitable for use in HTTP conditions.
+
+     * Storage historically exposed service-returned ETags without quotes, so both that legacy representation and the
+     * RFC-compliant representation are accepted. Response values remain unchanged for customer compatibility.
+     *
+     * @param eTag ETag value to normalize.
+     * @return An RFC 9110 conformant entity-tag, or the original value when no conversion is needed.
+     */
+    public static String toETagHeaderValue(String eTag) {
+        if (eTag == null || eTag.isEmpty() || Constants.HeaderConstants.ETAG_WILDCARD.equals(eTag)) {
+            return eTag;
+        }
+
+        if (eTag.length() >= 2 && (eTag.startsWith("\"") || eTag.startsWith("W/\"")) && eTag.endsWith("\"")) {
+            return eTag;
+        }
+
+        return "\"" + eTag + "\"";
     }
 
     /**
@@ -343,6 +366,60 @@ public class StorageImplUtils {
             logger.info(STRING_TO_SIGN_LOG_INFO_MESSAGE, stringToSign, System.lineSeparator());
             logger.warning(STRING_TO_SIGN_LOG_WARNING_MESSAGE, Constants.STORAGE_LOG_STRING_TO_SIGN);
         }
+    }
+
+    /**
+     * Adds a data locality endpoint to the given {@link Context} so that {@link DataLocalityPolicy} routes the
+     * request to that endpoint.
+     *
+     * @param context The call context. May be null.
+     * @param dataLocalityEndpoint The endpoint the request should be routed to. May be null or empty, in which case
+     * the context is returned unchanged.
+     * @return The context carrying the data locality endpoint, or the original context if no endpoint was supplied.
+     */
+    public static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
+        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+            return context;
+        }
+
+        Context finalContext = context == null ? Context.NONE : context;
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
+    }
+
+    /**
+     * Checks whether the provided pipeline can consume data locality context.
+     *
+     * <p>Data locality is deliberately NOT supported for client-side encrypted clients. Three independent reasons:</p>
+     * <ol>
+     * <li>{@code EncryptedBlobClientBuilder} never installs {@link DataLocalityPolicy}, so a resolved endpoint placed
+     * in the request context has nothing to act on it and the {@code getLayout} round trip is pure waste.</li>
+     * <li>The decryption policy treats any GET carrying a body as a download to decrypt, and {@code GET ?comp=layout}
+     * returns an XML body, so the layout response would be fed into decryption.</li>
+     * <li>Layout ranges are expressed in ciphertext offsets as stored by the service, while endpoint resolution is
+     * driven by the caller's plaintext offset. For client-side encryption v2 these are different coordinate spaces,
+     * so routing would be wrong at region boundaries.</li>
+     * </ol>
+     *
+     * <p>This matches the Azure SDK for .NET, which also does not support the combination: its client-side
+     * encryption tests explicitly pass {@code LayoutAwareRouting.Disabled} when opening encrypted blobs for read.
+     * Whether the combination should ever be supported is an open design question; gating on the policy's presence
+     * keeps the suppression automatic and trivially reversible.</p>
+     *
+     * @param pipeline The pipeline to inspect. May be null.
+     * @return {@code true} if the pipeline contains a {@link DataLocalityPolicy}; otherwise {@code false}.
+     */
+    public static boolean pipelineSupportsDataLocality(HttpPipeline pipeline) {
+        if (pipeline == null) {
+            return false;
+        }
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof DataLocalityPolicy) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

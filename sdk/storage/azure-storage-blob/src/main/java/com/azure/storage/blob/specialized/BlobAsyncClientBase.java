@@ -8,7 +8,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
@@ -19,6 +23,7 @@ import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -29,18 +34,23 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutPagingAccessHelper;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
+import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
+import com.azure.storage.blob.implementation.util.BlobLayoutRangeResolver;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
@@ -57,6 +67,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -66,6 +77,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadHint;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
@@ -77,6 +89,7 @@ import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
@@ -84,6 +97,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
@@ -116,8 +130,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -132,6 +148,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 public class BlobAsyncClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
+
+    static {
+        BlobLayoutPagingAccessHelper
+            .setAccessor((client, options) -> client.layoutPageRetrieverProvider(options, null));
+    }
 
     private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(
         new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
@@ -1189,7 +1210,8 @@ public class BlobAsyncClientBase {
             BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
-                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context));
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
+                StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1242,7 +1264,8 @@ public class BlobAsyncClientBase {
             BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
-                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context)
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
+                StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1540,6 +1563,7 @@ public class BlobAsyncClientBase {
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
+        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
 
         // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
@@ -1551,7 +1575,7 @@ public class BlobAsyncClientBase {
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
-                options.getContentValidationAlgorithm(), context))
+                options.getContentValidationAlgorithm(), layoutRoutingEnabled, context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1566,7 +1590,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, boolean layoutRoutingEnabled, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1593,16 +1617,46 @@ public class BlobAsyncClientBase {
                 numChunks = numChunks == 0 ? 1 : numChunks;
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
-                return Flux.range(0, numChunks)
+                BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> chunkDownloadFunc
+                    = downloadFunc;
+                AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
+                long initialChunkSize = finalParallelTransferOptions.getBlockSizeLong();
+                if (finalRange.getCount() != null && finalRange.getCount() < initialChunkSize) {
+                    initialChunkSize = finalRange.getCount();
+                }
+                long remainingOffset = finalRange.getOffset() + initialChunkSize;
+                long remainingCount = newCount - initialChunkSize;
+                if (DownloadHint.LAYOUT.equals(initialResponse.getDeserializedHeaders().getDownloadHint())
+                    && remainingCount > 0
+                    && layoutRoutingEnabled
+                    && StorageImplUtils.pipelineSupportsDataLocality(this.getHttpPipeline())) {
+                    Context finalContext = context == null ? Context.NONE : context;
+                    BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
+                    layoutCache = new AutoRefreshingCache<>(
+                        () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext),
+                        BlobLayoutCacheValue::getExpiresOn);
+                    AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
+                    chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
+                        String endpoint
+                            = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
+                        Context callContext = StorageImplUtils.addDataLocalityEndpoint(finalContext, endpoint);
+                        return BlobAsyncClientBase.this.downloadStreamWithResponse(range, downloadRetryOptions,
+                            conditions, rangeGetContentMd5, callContext);
+                    });
+                }
+                BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> finalChunkDownloadFunc
+                    = chunkDownloadFunc;
+                Mono<Response<BlobProperties>> download = Flux.range(0, numChunks)
                     .flatMap(
                         chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse, finalRange,
-                            finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                            finalParallelTransferOptions, finalConditions, newCount, finalChunkDownloadFunc,
                             response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
                                 progressReporter == null ? null : progressReporter.createChild()).flux()),
                         finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
+                return download;
             });
     }
 
@@ -1849,6 +1903,136 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.getBlobs()
             .getPropertiesNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot, versionId, null, null,
                 null, null, null, null, null, null, customerProvidedKey, context);
+    }
+
+    /**
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is emitted as a paged item. Blob properties returned with a service page are
+     * available through {@link Response#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
+     * </p>
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @return A paged reactive response emitting the blob's layout ranges.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BlobLayoutRange> getLayoutWithResponse(BlobGetLayoutOptions options) {
+        return PagedFlux.create(layoutPageRetrieverProvider(options, null));
+    }
+
+    /**
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is emitted as a paged item. Blob properties returned with a service page are
+     * available through {@link Response#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
+     * </p>
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @param context {@link Context}
+     * @return A paged reactive response emitting the blob's layout ranges.
+     */
+    public PagedFlux<BlobLayoutRange> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        return PagedFlux.create(layoutPageRetrieverProvider(options, finalContext));
+    }
+
+    private Supplier<PageRetriever<String, PagedResponse<BlobLayoutRange>>>
+        layoutPageRetrieverProvider(BlobGetLayoutOptions options, Context context) {
+        return () -> {
+            AtomicReference<String> layoutETag = new AtomicReference<>();
+            if (context == null) {
+                return (continuationToken,
+                    pageSize) -> withContext(operationContext -> getPublicLayoutPageWithLockedETag(continuationToken,
+                        options, pageSize, operationContext, layoutETag)).flux();
+            }
+            return (continuationToken, pageSize) -> getPublicLayoutPageWithLockedETag(continuationToken, options,
+                pageSize, context, layoutETag).flux();
+        };
+    }
+
+    Mono<BlobLayoutCacheValue> fetchLayoutCacheValueAsync(BlobRange layoutRange,
+        BlobRequestConditions requestConditions, Context context) {
+        BlobGetLayoutOptions layoutOptions
+            = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
+
+        // A 204 is an expected response that carries no ranges, so it yields an empty page and the download falls
+        // back to the blob's original endpoint.
+        return getLayoutPages(layoutOptions, requestConditions, context).flatMapIterable(PagedResponse::getValue)
+            .collectList()
+            .map(BlobLayoutCacheValue::new)
+            .onErrorResume(BlobStorageException.class, BlobAsyncClientBase::handleLayoutFetchError);
+    }
+
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>>
+        getLayoutPages(BlobGetLayoutOptions layoutOptions, BlobRequestConditions requestConditions, Context context) {
+        return getLayoutPageWithHeaders(null, layoutOptions, null, context)
+            .flatMapMany(initialResponse -> expandLayoutPages(initialResponse, layoutOptions.getRange(),
+                requestConditions, context));
+    }
+
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>> expandLayoutPages(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange> initialResponse, BlobRange layoutRange,
+        BlobRequestConditions requestConditions, Context context) {
+        String layoutETag = initialResponse.getDeserializedHeaders().getETag();
+        BlobGetLayoutOptions optionsWithConditions = new BlobGetLayoutOptions().setRange(layoutRange)
+            .setRequestConditions(ModelHelper.copyBlobRequestConditionsWithIfMatch(requestConditions, layoutETag));
+
+        return Flux.just(initialResponse)
+            .expand(response -> getNextLayoutPage(response, optionsWithConditions, context));
+    }
+
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>> getNextLayoutPage(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange> response, BlobGetLayoutOptions options,
+        Context context) {
+        String continuationToken = response.getContinuationToken();
+        return continuationToken == null
+            ? Mono.empty()
+            : getLayoutPageWithHeaders(continuationToken, options, null, context);
+    }
+
+    static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
+        if (ModelHelper.isFatalLayoutFetchStatus(exception.getStatusCode())) {
+            return Mono.error(exception);
+        }
+        return Mono.just(ModelHelper.createLayoutFallbackValue(exception));
+    }
+
+    private Mono<PagedResponse<BlobLayoutRange>> getPublicLayoutPageWithLockedETag(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context, AtomicReference<String> layoutETag) {
+        BlobGetLayoutOptions optionsWithConditions
+            = ModelHelper.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
+        return getLayoutPageWithHeaders(marker, optionsWithConditions, pageSize, context).map(response -> {
+            // The first page this enumeration observes pins every continuation request it makes, whether the
+            // enumeration started at the beginning of the layout or resumed from a caller-supplied marker.
+            layoutETag.compareAndSet(null, response.getDeserializedHeaders().getETag());
+
+            return response;
+        });
+    }
+
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>> getLayoutPageWithHeaders(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context) {
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+        BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
+        BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            ? new BlobRequestConditions()
+            : finalOptions.getRequestConditions();
+        context = context == null ? Context.NONE : context;
+
+        return this.azureBlobStorage.getBlobs()
+            .getLayoutWithResponseAsync(containerName, blobName, snapshot, versionId, marker, pageSize, null,
+                range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            .map(BlobAsyncClientBase::toLayoutPagedResponse);
+    }
+
+    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>
+        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
+        BlobLayoutInternal layout = response.getValue();
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            ModelHelper.transformBlobLayoutRanges(layout), layout == null ? null : layout.getNextMarker(),
+            response.getDeserializedHeaders());
     }
 
     /**

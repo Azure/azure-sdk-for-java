@@ -8,6 +8,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -27,12 +31,14 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
@@ -40,6 +46,7 @@ import com.azure.storage.blob.implementation.models.BlobsSetLegalHoldHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
+import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
@@ -57,6 +64,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
@@ -69,6 +77,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadHint;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
@@ -79,6 +88,7 @@ import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -89,6 +99,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -504,6 +515,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
+        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
         final ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
@@ -544,6 +556,9 @@ public class BlobClientBase {
                     case ETAG:
                         // Target the user specified eTag by default. If not provided, target the latest eTag.
                         if (requestConditions.getIfMatch() == null) {
+                            // Preserve the service-returned value here to keep retry/download locking on the existing wire
+                            // format. Do not normalize through StorageImplUtils.toETagHeaderValue() unless a deliberate
+                            // compatibility change is intended.
                             requestConditions.setIfMatch(eTag);
                         }
                         break;
@@ -565,8 +580,31 @@ public class BlobClientBase {
                             new IllegalArgumentException("Concurrency control type not " + "supported."));
                 }
 
-                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
-                    initialBuffer, requestConditions, properties, contextFinal));
+                // client needs to be final for the lambda below, so we create a new variable to hold the value of client.
+                BlobClientBase finalClient = client;
+                AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
+                if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())
+                    && layoutRoutingEnabled
+                    && StorageImplUtils.pipelineSupportsDataLocality(finalClient.getHttpPipeline())) {
+                    BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
+                    layoutCache
+                        = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
+                            @Override
+                            public Mono<BlobLayoutCacheValue> createAsync() {
+                                return finalClient.client.fetchLayoutCacheValueAsync(layoutRange, requestConditions,
+                                    contextFinal);
+                            }
+
+                            @Override
+                            public BlobLayoutCacheValue createSync() {
+                                return finalClient.fetchLayoutCacheValueSync(layoutRange, requestConditions,
+                                    contextFinal);
+                            }
+                        }, BlobLayoutCacheValue::getExpiresOn);
+                }
+
+                return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
+                    initialBuffer, requestConditions, properties, layoutCache, contextFinal));
             })
             .block();
     }
@@ -583,6 +621,7 @@ public class BlobClientBase {
         Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
+        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
             : options.getConsistentReadControl();
@@ -618,6 +657,9 @@ public class BlobClientBase {
                 requestConditions = requestConditions != null ? requestConditions : new BlobRequestConditions();
                 // If etag locking but no explicitly specified etag, use the etag from prefetch
                 if (requestConditions.getIfMatch() == null) {
+                    // Preserve the service-returned value here to keep the existing retry/read-lock wire format.
+                    // Do not normalize through StorageImplUtils.toETagHeaderValue() unless a deliberate compatibility
+                    // change is intended.
                     requestConditions.setIfMatch(properties.getETag());
                 }
                 break;
@@ -639,8 +681,33 @@ public class BlobClientBase {
                     "Concurrency control type " + consistentReadControl + " not supported."));
         }
 
-        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
-            behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
+        AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
+        if (DownloadHint.LAYOUT.equals(response.getDeserializedHeaders().getDownloadHint())
+            && layoutRoutingEnabled
+            && StorageImplUtils.pipelineSupportsDataLocality(behaviorClient.getHttpPipeline())) {
+            BlobClientBase finalBehaviorClient = behaviorClient;
+            BlobRequestConditions finalRequestConditions = requestConditions;
+            Context finalContext = context;
+            BlobRange layoutRange = new BlobRange(0);
+
+            layoutCache = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
+                @Override
+                public Mono<BlobLayoutCacheValue> createAsync() {
+                    return finalBehaviorClient.client.fetchLayoutCacheValueAsync(layoutRange, finalRequestConditions,
+                        finalContext);
+                }
+
+                @Override
+                public BlobLayoutCacheValue createSync() {
+                    return finalBehaviorClient.fetchLayoutCacheValueSync(layoutRange, finalRequestConditions,
+                        finalContext);
+                }
+            }, BlobLayoutCacheValue::getExpiresOn);
+        }
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(behaviorClient, initialRange, initialPosition,
+                properties.getBlobSize(), requestConditions, layoutCache, context);
 
         SeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
         return new BlobSeekableByteChannelReadResult(channel, properties);
@@ -1299,6 +1366,7 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         options = options == null ? new BlobDownloadStreamOptions() : options;
+        context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1404,6 +1472,7 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
         Context context) {
         options = options == null ? new BlobDownloadContentOptions() : options;
+        context = StorageImplUtils.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1812,6 +1881,103 @@ public class BlobClientBase {
             = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, BlobPropertiesConstructorProxy
             .create(new BlobPropertiesInternalGetProperties(response.getDeserializedHeaders())));
+    }
+
+    /**
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is returned as a paged item. Blob properties returned with a service page are
+     * available through {@link Response#getHeaders()} when consuming the result with
+     * {@link PagedIterable#iterableByPage()}.</p>
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @return A paged response containing the blob's layout ranges.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
+        return getLayout(options, Context.NONE);
+    }
+
+    /**
+     * Returns the ranges that describe the blob's physical layout.
+     *
+     * <p>Each {@link BlobLayoutRange} is returned as a paged item. Blob properties returned with a service page are
+     * available through {@link Response#getHeaders()} when consuming the result with
+     * {@link PagedIterable#iterableByPage()}.</p>
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A paged response containing the blob's layout ranges.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+
+        return new PagedIterable<>(PagedFlux.create(() -> {
+            // Each enumeration gets its own ETag reference so concurrent iterations don't share request conditions.
+            AtomicReference<String> layoutETag = new AtomicReference<>();
+            return (continuationToken, pageSize) -> Mono.fromSupplier(
+                () -> getLayoutPageWithLockedETag(continuationToken, finalOptions, pageSize, finalContext, layoutETag))
+                .flux();
+        }));
+    }
+
+    BlobLayoutCacheValue fetchLayoutCacheValueSync(BlobRange layoutRange, BlobRequestConditions requestConditions,
+        Context context) {
+        BlobGetLayoutOptions layoutOptions
+            = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
+        try {
+            List<BlobLayoutRange> ranges = new ArrayList<>();
+            for (BlobLayoutRange range : getLayout(layoutOptions, context)) {
+                ranges.add(range);
+            }
+            return new BlobLayoutCacheValue(ranges);
+        } catch (BlobStorageException e) {
+            if (ModelHelper.isFatalLayoutFetchStatus(e.getStatusCode())) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+            return ModelHelper.createLayoutFallbackValue(e);
+        }
+    }
+
+    private PagedResponse<BlobLayoutRange> getLayoutPageWithLockedETag(String marker, BlobGetLayoutOptions options,
+        Integer pageSize, Context context, AtomicReference<String> layoutETag) {
+        BlobGetLayoutOptions requestOptions
+            = ModelHelper.getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
+        ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
+            = getLayoutPageResponse(marker, requestOptions, pageSize, context);
+
+        // The first page this enumeration observes pins every continuation request so the enumeration sees a single
+        // blob version, whether it started at the beginning of the layout or resumed from a caller-supplied marker.
+        layoutETag.compareAndSet(null, response.getDeserializedHeaders().getETag());
+
+        return toLayoutPagedResponse(response);
+    }
+
+    private ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> getLayoutPageResponse(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context) {
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        BlobRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
+
+        Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation = () -> this.azureBlobStorage
+            .getBlobs()
+            .getLayoutWithResponse(containerName, blobName, snapshot, versionId, marker, pageSize, null,
+                range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context);
+
+        return sendRequest(operation, null, BlobStorageException.class);
+    }
+
+    private static PagedResponse<BlobLayoutRange>
+        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
+        BlobLayoutInternal layout = response.getValue();
+
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            ModelHelper.transformBlobLayoutRanges(layout), layout == null ? null : layout.getNextMarker(),
+            response.getDeserializedHeaders());
     }
 
     /**

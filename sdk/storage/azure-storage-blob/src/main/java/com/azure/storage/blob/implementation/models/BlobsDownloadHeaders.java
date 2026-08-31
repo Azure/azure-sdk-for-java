@@ -320,6 +320,12 @@ public final class BlobsDownloadHeaders {
     private String xMsSmartAccessTier;
 
     /*
+     * The x-ms-download-hint property.
+     */
+    @Generated
+    private DownloadHint xMsDownloadHint;
+
+    /*
      * The x-ms-content-crc64 property.
      */
     @Generated
@@ -400,6 +406,8 @@ public final class BlobsDownloadHeaders {
         = HttpHeaderName.fromString("x-ms-access-tier-change-time");
 
     private static final HttpHeaderName X_MS_SMART_ACCESS_TIER = HttpHeaderName.fromString("x-ms-smart-access-tier");
+
+    private static final HttpHeaderName X_MS_DOWNLOAD_HINT = HttpHeaderName.fromString("x-ms-download-hint");
 
     private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
@@ -577,6 +585,13 @@ public final class BlobsDownloadHeaders {
             this.xMsAccessTierChangeTime = null;
         }
         this.xMsSmartAccessTier = rawHeaders.getValue(X_MS_SMART_ACCESS_TIER);
+
+        String xMsDownloadHint = rawHeaders.getValue(X_MS_DOWNLOAD_HINT);
+        if (xMsDownloadHint != null) {
+            this.xMsDownloadHint = DownloadHint.fromString(xMsDownloadHint);
+        } else {
+            this.xMsDownloadHint = null;
+        }
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
@@ -1724,6 +1739,28 @@ public final class BlobsDownloadHeaders {
     @Generated
     public BlobsDownloadHeaders setXMsSmartAccessTier(String xMsSmartAccessTier) {
         this.xMsSmartAccessTier = xMsSmartAccessTier;
+        return this;
+    }
+
+    /**
+     * Get the xMsDownloadHint property: The x-ms-download-hint property.
+     * 
+     * @return the xMsDownloadHint value.
+     */
+    @Generated
+    public DownloadHint getXMsDownloadHint() {
+        return this.xMsDownloadHint;
+    }
+
+    /**
+     * Set the xMsDownloadHint property: The x-ms-download-hint property.
+     * 
+     * @param xMsDownloadHint the xMsDownloadHint value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsDownloadHint(DownloadHint xMsDownloadHint) {
+        this.xMsDownloadHint = xMsDownloadHint;
         return this;
     }
 

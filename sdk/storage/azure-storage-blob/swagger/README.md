@@ -45,7 +45,6 @@ directive:
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
 
-
 ### /{containerName}/{blob}?comp=appendblock
 ``` yaml
 directive:
@@ -591,24 +590,6 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
-### Delete Container_ListBlobFlatSegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
-  transform: >
-    delete $["x-ms-pageable"];
-```
-
-### Delete Container_ListBlobHierarchySegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
-  transform: >
-    delete $["x-ms-pageable"];
-```
-
 ### BlobDeleteType expandable string enum
 ``` yaml
 directive:
@@ -632,6 +613,19 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete the Apache Arrow list x-ms-pageable extensions as autorest can't recognize the itemName for their binary responses
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
+  transform: >
+    delete $["x-ms-pageable"];
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
   transform: >
     delete $["x-ms-pageable"];
 ```
