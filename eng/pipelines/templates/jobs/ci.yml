@@ -421,6 +421,10 @@ jobs:
           version: 22.x
         displayName: Use Node.js 22.x
 
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+        parameters:
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
+
       - task: PowerShell@2
         displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
@@ -429,6 +433,8 @@ jobs:
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       # Authenticate with Azure Artifacts
       - template: /eng/pipelines/templates/steps/maven-authenticate.yml
