@@ -80,6 +80,22 @@ public class GeneratedCodeUtilsTests {
     }
 
     @Test
+    void identifiesJsonContentTypes() {
+        assertTrue(GeneratedCodeUtils
+            .isJsonContentType(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; charset=utf-8")));
+        assertTrue(GeneratedCodeUtils
+            .isJsonContentType(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/merge-patch+json")));
+    }
+
+    @Test
+    void rejectsNonJsonContentTypes() {
+        assertTrue(!GeneratedCodeUtils
+            .isJsonContentType(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream")));
+        assertTrue(!GeneratedCodeUtils.isJsonContentType(new HttpHeaders()));
+        assertTrue(!GeneratedCodeUtils.isJsonContentType(null));
+    }
+
+    @Test
     void handleUnexpectedResponseOctetStream() {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream")
             .set(HttpHeaderName.CONTENT_LENGTH, "1024");

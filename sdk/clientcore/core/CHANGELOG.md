@@ -3,6 +3,9 @@
 ## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
+- Added recursive JSON deserialization for typed lists and maps containing models, enums, binary data, temporal values,
+  and numeric values.
+- Added `CoreUtils.durationToStringWithDays` for ISO-8601 duration formatting that preserves day components.
 
 ### Breaking Changes
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
@@ -10,6 +13,9 @@
   of the reason the request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
 
 ### Bugs Fixed
+- Fixed untyped JSON serialization of durations, date-times, and arbitrary numeric values in collection and dictionary
+  payloads.
+- Fixed generic network response decoding to preserve nested type information.
 
 ### Other Changes
 
