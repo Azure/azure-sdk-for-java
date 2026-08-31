@@ -3,6 +3,12 @@
 ## 12.35.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `AutoRefreshingCache`, a generic, thread-safe cache for a single expiring value with jittered proactive
+  background refresh and single-flight creation, for internal use by clients that need to cache a value obtained
+  from a service call that is valid for a limited time (for example, layout/routing information for locality-aware
+  downloads).
+- Added `DataLocalityPolicy`, an `HttpPipelinePolicy` that routes a request to an ideal endpoint set on the per-call
+  `Context` (see `DataLocalityPolicy.LAYOUT_ENDPOINT_KEY`), for internal use by data-locality-aware download paths.
 
 ### Breaking Changes
 

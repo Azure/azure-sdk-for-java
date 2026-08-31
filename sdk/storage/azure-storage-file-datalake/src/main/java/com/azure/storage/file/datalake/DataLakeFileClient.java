@@ -8,6 +8,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -39,6 +41,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -52,11 +55,13 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileReadOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
@@ -148,6 +153,25 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public String getFileName() {
         return getObjectName();
+    }
+
+    /**
+     * Returns the ranges that describe the file's physical layout.
+     *
+     * <p>Each {@link DataLakeFileLayoutRange} is returned as a paged item. File properties returned with a service page
+     * are available through {@link Response#getHeaders()} when consuming the result with
+     * {@link PagedIterable#iterableByPage()}.</p>
+     * <p>
+     * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API
+     * through the wrapped {@link BlockBlobClient} because Data Lake does not yet have its own generated layout REST
+     * client. This should be revisited if a Data Lake-native {@code getLayout} operation is added.
+     *
+     * @param options {@link DataLakeFileGetLayoutOptions}
+     * @return A paged response containing the file's layout ranges.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataLakeFileLayoutRange> getLayout(DataLakeFileGetLayoutOptions options) {
+        return new PagedIterable<>(dataLakeFileAsyncClient.getLayout(options));
     }
 
     /**
@@ -1099,6 +1123,34 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
+     * Reads a range of bytes from a file into an output stream with options.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param options {@link FileReadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
+     */
+    public FileReadResponse readWithResponse(OutputStream stream, FileReadOptions options, Duration timeout,
+        Context context) {
+        FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
+        Context upnContext = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, context);
+        Context finalContext
+            = StorageImplUtils.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            BlobDownloadResponse response = blockBlobClient.downloadStreamWithResponse(stream,
+                Transforms.toBlobDownloadStreamOptions(finalOptions), timeout, finalContext);
+            return Transforms.toFileReadResponse(response);
+        }, LOGGER);
+    }
+
+    /**
      * Opens a file input stream to download the file. Locks on ETags.
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.openInputStream -->
@@ -1391,13 +1443,18 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response
-                = blockBlobClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
-                    .setRange(Transforms.toBlobRange(options.getRange()))
-                    .setParallelTransferOptions(options.getParallelTransferOptions())
-                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
-                    .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
-                    .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
-                    .setOpenOptions(options.getOpenOptions()), timeout, finalContext);
+                = blockBlobClient.downloadToFileWithResponse(
+                    new BlobDownloadToFileOptions(options.getFilePath())
+                        .setRange(Transforms.toBlobRange(options.getRange()))
+                        .setParallelTransferOptions(options.getParallelTransferOptions())
+                        .setDownloadRetryOptions(
+                            Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
+                        .setRequestConditions(
+                            Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
+                        .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
+                        .setOpenOptions(options.getOpenOptions())
+                        .setLayoutAwareRouting(Transforms.toBlobLayoutAwareRouting(options.getLayoutAwareRouting())),
+                    timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

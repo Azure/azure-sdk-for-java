@@ -19,6 +19,7 @@ public final class BlobDownloadContentOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private ContentValidationAlgorithm contentValidationAlgorithm;
+    private String dataLocalityEndpoint;
 
     /**
      * Creates a new instance of {@link BlobDownloadContentOptions}.
@@ -124,6 +125,26 @@ public final class BlobDownloadContentOptions {
     public BlobDownloadContentOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
+        return this;
+    }
+
+    /**
+     * Gets the endpoint to use for this download.
+     *
+     * @return The data locality endpoint, or null if the client's configured endpoint should be used.
+     */
+    public String getDataLocalityEndpoint() {
+        return dataLocalityEndpoint;
+    }
+
+    /**
+     * Sets the endpoint to use for this download.
+     *
+     * @param dataLocalityEndpoint The absolute endpoint selected from blob layout information.
+     * @return The updated options.
+     */
+    public BlobDownloadContentOptions setDataLocalityEndpoint(String dataLocalityEndpoint) {
+        this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }
 }
