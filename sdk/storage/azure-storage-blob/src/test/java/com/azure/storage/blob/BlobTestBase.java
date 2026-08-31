@@ -52,6 +52,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -166,6 +167,15 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
+    /*
+    The values below are shared fixtures for session authentication tests. They are never sent to the service.
+     */
+    public static final String TEST_SESSION_KEY = "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==";
+
+    public static final String TEST_SESSION_TOKEN = "test-session-token-abc123";
+
+    public static final String TEST_SESSION_ACCOUNT_NAME = "testaccount";
+
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -205,7 +215,11 @@ public class BlobTestBase extends TestProxyTestBase {
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER),
-                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL)));
+                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -417,21 +431,85 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceClient(new SessionOptions());
+    }
 
-        instrument(builder);
+    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions) {
+        return getOAuthServiceClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    }
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionOptions, null, policies).buildClient();
+    }
+
+    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionOptions, httpClient).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceAsyncClient(new SessionOptions());
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
+        return getOAuthServiceAsyncClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionOptions, null, policies).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionOptions, httpClient).buildAsyncClient();
+    }
+
+    /**
+     * Builds an OAuth service client builder. When {@code httpClient} is supplied it replaces the transport that
+     * {@code instrument} installed, which lets a test observe requests as they go on the wire.
+     *
+     * @param sessionOptions The session options to configure.
+     * @param httpClient The transport to send requests with, or null to keep the instrumented one.
+     * @param policies Additional policies to add to the pipeline.
+     * @return The configured builder.
+     */
+    private BlobServiceClientBuilder getOAuthServiceClientBuilder(SessionOptions sessionOptions, HttpClient httpClient,
+        HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+        if (httpClient != null) {
+            builder.httpClient(httpClient);
+        }
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    }
+
+    /**
+     * Creates a session expiration time in the future.
+     *
+     * @return A valid session expiration time.
+     */
+    public static OffsetDateTime createValidSessionExpiration() {
+        return OffsetDateTime.now().plusHours(1);
+    }
+
+    /**
+     * Creates a session expiration time in the past.
+     *
+     * @return An expired session expiration time.
+     */
+    public static OffsetDateTime createExpiredSessionExpiration() {
+        return OffsetDateTime.now().minusMinutes(5);
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {

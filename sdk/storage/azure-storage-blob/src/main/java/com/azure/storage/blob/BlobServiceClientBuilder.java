@@ -30,6 +30,8 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.implementation.util.SessionTokenCredentialPolicy;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
@@ -93,6 +95,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private BlobServiceVersion version;
     private BlobAudience audience;
     private boolean anonymousAccess;
+    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -123,7 +126,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -139,6 +142,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
+            if (pipeline.getPolicy(i) instanceof SessionTokenCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
         }
         anonymousAccess = !foundCredential;
 
@@ -146,12 +153,13 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+    private HttpPipeline constructPipeline(BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
     }
 
     /**
@@ -175,7 +183,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -188,6 +196,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 break;
             }
             if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof SessionTokenCredentialPolicy) {
                 foundCredential = true;
                 break;
             }
@@ -585,6 +597,26 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      */
     public BlobServiceClientBuilder audience(BlobAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionOptions} that controls how the SDK manages session-based authentication
+     * for container clients created from this service client.
+     * <p>
+     * Sessions amortize authentication and authorization cost across many requests by signing them
+     * with a lightweight HMAC key instead of a full bearer token. This setting is passed to container
+     * clients created via {@link BlobServiceClient#getBlobContainerClient(String)}. Session authentication is
+     * attempted only for eligible GET blob requests; all other requests continue to use bearer token authentication.
+     * If the options do not
+     * specify a {@link com.azure.storage.blob.models.SessionProvider}, the SDK creates a built-in provider
+     * scoped to this service client's pipeline.
+     *
+     * @param sessionOptions The session options for the HTTP pipeline.
+     * @return the updated BlobServiceClientBuilder object.
+     */
+    public BlobServiceClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
         return this;
     }
 }
