@@ -47,7 +47,7 @@ public class ListSettingsWithTagsFilter {
 
         List<String> tagsFilterInString = getTagsFilterInString(tags2);
         System.out.println("List settings with tags filter = " + tagsFilterInString);
-        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("key*")
+        PagedIterable<ConfigurationSetting, String> configurationSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("key*")
                 .setTagsFilter(tagsFilterInString));
         configurationSettings.forEach(setting -> System.out.printf(
                 "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));

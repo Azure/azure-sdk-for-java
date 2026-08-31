@@ -350,7 +350,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
+    public PagedResponse<Key, String> getKeysSinglePage(String accept, String name, String after, String syncToken,
         String acceptDatetime) {
         Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             after, syncToken, acceptDatetime, accept, RequestContext.none());
@@ -375,7 +375,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
+    public PagedResponse<Key, String> getKeysSinglePage(String accept, String name, String after, String syncToken,
         String acceptDatetime, RequestContext requestContext) {
         Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             after, syncToken, acceptDatetime, accept, requestContext);
@@ -399,7 +399,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken,
+    public PagedIterable<Key, String> getKeys(String accept, String name, String after, String syncToken,
         String acceptDatetime) {
         return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime),
             (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, accept, syncToken, acceptDatetime));
@@ -415,7 +415,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Key> getKeys(String accept) {
+    public PagedIterable<Key, String> getKeys(String accept) {
         final String name = null;
         final String after = null;
         final String syncToken = null;
@@ -441,8 +441,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken, String acceptDatetime,
-        RequestContext requestContext) {
+    public PagedIterable<Key, String> getKeys(String accept, String name, String after, String syncToken,
+        String acceptDatetime, RequestContext requestContext) {
 
         return new PagedIterable<>(
             (pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime, requestContext),
@@ -534,9 +534,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
-        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
-        String ifNoneMatch, List<String> tags) {
+    public PagedResponse<KeyValue, String> getKeyValuesSinglePage(String accept, String key, String label,
+        String syncToken, String after, String acceptDatetime, List<SettingFields> select, String snapshot,
+        String ifMatch, String ifNoneMatch, List<String> tags) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -581,9 +581,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
-        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
-        String ifNoneMatch, List<String> tags, RequestContext requestContext) {
+    public PagedResponse<KeyValue, String> getKeyValuesSinglePage(String accept, String key, String label,
+        String syncToken, String after, String acceptDatetime, List<SettingFields> select, String snapshot,
+        String ifMatch, String ifNoneMatch, List<String> tags, RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -627,9 +627,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags) {
+    public PagedIterable<KeyValue, String> getKeyValues(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags) {
         return new PagedIterable<>(
             (pagingOptions) -> getKeyValuesSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
                 snapshot, ifMatch, ifNoneMatch, tags),
@@ -647,7 +647,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(String accept) {
+    public PagedIterable<KeyValue, String> getKeyValues(String accept) {
         final String key = null;
         final String label = null;
         final String syncToken = null;
@@ -694,9 +694,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags, RequestContext requestContext) {
+    public PagedIterable<KeyValue, String> getKeyValues(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags, RequestContext requestContext) {
 
         return new PagedIterable<>(
             (pagingOptions) -> getKeyValuesSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
@@ -1106,7 +1106,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(String accept, String name, String after,
+    public PagedResponse<ConfigurationSnapshot, String> getSnapshotsSinglePage(String accept, String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken) {
         String selectConverted = (select == null)
             ? null
@@ -1142,7 +1142,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(String accept, String name, String after,
+    public PagedResponse<ConfigurationSnapshot, String> getSnapshotsSinglePage(String accept, String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken,
         RequestContext requestContext) {
         String selectConverted = (select == null)
@@ -1178,7 +1178,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept, String name, String after,
+    public PagedIterable<ConfigurationSnapshot, String> getSnapshots(String accept, String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken) {
         return new PagedIterable<>(
             (pagingOptions) -> getSnapshotsSinglePage(accept, name, after, select, status, syncToken),
@@ -1195,7 +1195,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept) {
+    public PagedIterable<ConfigurationSnapshot, String> getSnapshots(String accept) {
         final String name = null;
         final String after = null;
         final List<SnapshotFields> select = null;
@@ -1223,7 +1223,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept, String name, String after,
+    public PagedIterable<ConfigurationSnapshot, String> getSnapshots(String accept, String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken,
         RequestContext requestContext) {
 
@@ -1498,8 +1498,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SettingLabel> getLabelsSinglePage(String accept, String name, String syncToken, String after,
-        String acceptDatetime, List<SettingLabelFields> select) {
+    public PagedResponse<SettingLabel, String> getLabelsSinglePage(String accept, String name, String syncToken,
+        String after, String acceptDatetime, List<SettingLabelFields> select) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -1529,8 +1529,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SettingLabel> getLabelsSinglePage(String accept, String name, String syncToken, String after,
-        String acceptDatetime, List<SettingLabelFields> select, RequestContext requestContext) {
+    public PagedResponse<SettingLabel, String> getLabelsSinglePage(String accept, String name, String syncToken,
+        String after, String acceptDatetime, List<SettingLabelFields> select, RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -1559,7 +1559,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> getLabels(String accept, String name, String syncToken, String after,
+    public PagedIterable<SettingLabel, String> getLabels(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<SettingLabelFields> select) {
         return new PagedIterable<>(
             (pagingOptions) -> getLabelsSinglePage(accept, name, syncToken, after, acceptDatetime, select),
@@ -1576,7 +1576,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> getLabels(String accept) {
+    public PagedIterable<SettingLabel, String> getLabels(String accept) {
         final String name = null;
         final String syncToken = null;
         final String after = null;
@@ -1605,7 +1605,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> getLabels(String accept, String name, String syncToken, String after,
+    public PagedIterable<SettingLabel, String> getLabels(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<SettingLabelFields> select, RequestContext requestContext) {
         return new PagedIterable<>(
             (pagingOptions) -> getLabelsSinglePage(accept, name, syncToken, after, acceptDatetime, select,
@@ -1835,8 +1835,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
-        String after, String acceptDatetime, List<SettingFields> select, List<String> tags) {
+    public PagedResponse<KeyValue, String> getRevisionsSinglePage(String accept, String key, String label,
+        String syncToken, String after, String acceptDatetime, List<SettingFields> select, List<String> tags) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -1875,8 +1875,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
-        String after, String acceptDatetime, List<SettingFields> select, List<String> tags,
+    public PagedResponse<KeyValue, String> getRevisionsSinglePage(String accept, String key, String label,
+        String syncToken, String after, String acceptDatetime, List<SettingFields> select, List<String> tags,
         RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
@@ -1915,8 +1915,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, List<String> tags) {
+    public PagedIterable<KeyValue, String> getRevisions(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, List<String> tags) {
         return new PagedIterable<>(
             (pagingOptions) -> getRevisionsSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
                 tags),
@@ -1933,7 +1933,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(String accept) {
+    public PagedIterable<KeyValue, String> getRevisions(String accept) {
         final String key = null;
         final String label = null;
         final String syncToken = null;
@@ -1970,8 +1970,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, List<String> tags, RequestContext requestContext) {
+    public PagedIterable<KeyValue, String> getRevisions(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, List<String> tags,
+        RequestContext requestContext) {
 
         return new PagedIterable<>(
             (pagingOptions) -> getRevisionsSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
@@ -2107,7 +2108,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<Key, String> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<KeyListResult> res = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
             accept, RequestContext.none());
@@ -2132,7 +2133,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<Key, String> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, RequestContext requestContext) {
         Response<KeyListResult> res
             = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestContext);
@@ -2160,7 +2161,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<KeyValue, String> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
             acceptDatetime, ifMatch, ifNoneMatch, accept, RequestContext.none());
@@ -2189,7 +2190,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<KeyValue, String> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch, RequestContext requestContext) {
         Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
             acceptDatetime, ifMatch, ifNoneMatch, accept, requestContext);
@@ -2211,7 +2212,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a snapshot list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(String nextLink, String accept,
+    public PagedResponse<ConfigurationSnapshot, String> getSnapshotsNextSinglePage(String nextLink, String accept,
         String syncToken) {
         Response<SnapshotListResult> res
             = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, RequestContext.none());
@@ -2234,7 +2235,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a snapshot list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(String nextLink, String accept,
+    public PagedResponse<ConfigurationSnapshot, String> getSnapshotsNextSinglePage(String nextLink, String accept,
         String syncToken, RequestContext requestContext) {
         Response<SnapshotListResult> res
             = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, requestContext);
@@ -2258,7 +2259,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<SettingLabel, String> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<LabelListResult> res = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
             accept, RequestContext.none());
@@ -2283,7 +2284,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<SettingLabel, String> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, RequestContext requestContext) {
         Response<LabelListResult> res
             = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestContext);
@@ -2307,7 +2308,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<KeyValue, String> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<KeyValueListResult> res = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken,
             acceptDatetime, accept, RequestContext.none());
@@ -2332,7 +2333,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
+    public PagedResponse<KeyValue, String> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, RequestContext requestContext) {
         Response<KeyValueListResult> res
             = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestContext);

@@ -48,7 +48,7 @@ public class SecretReferenceConfigurationSettingSample {
         printSecretReferenceConfigurationSetting(setting);
 
         System.out.println("[List-SecretReferenceConfigurationSetting]");
-        final PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector());
+        final PagedIterable<ConfigurationSetting, String> configurationSettings = client.listConfigurationSettings(new SettingSelector());
         for (ConfigurationSetting configurationSetting : configurationSettings) {
             if (configurationSetting instanceof SecretReferenceConfigurationSetting) {
                 System.out.println("-Listing-SecretReferenceConfigurationSetting");

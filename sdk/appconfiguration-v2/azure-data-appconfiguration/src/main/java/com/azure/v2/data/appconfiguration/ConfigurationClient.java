@@ -950,7 +950,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
+    public PagedIterable<ConfigurationSetting, String> listConfigurationSettings(SettingSelector selector) {
         return listConfigurationSettings(selector, RequestContext.none());
     }
 
@@ -979,7 +979,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector,
+    public PagedIterable<ConfigurationSetting, String> listConfigurationSettings(SettingSelector selector,
         RequestContext context) {
         final String keyFilter = selector == null ? null : selector.getKeyFilter();
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
@@ -990,7 +990,7 @@ public final class ConfigurationClient {
 
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedIterable<>(ignored -> {
-            PagedResponse<KeyValue> pagedResponse;
+            PagedResponse<KeyValue, String> pagedResponse;
             try {
                 pagedResponse = serviceClient.getKeyValuesSinglePage(null, keyFilter, labelFilter, null, null,
                     acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
@@ -1000,7 +1000,7 @@ public final class ConfigurationClient {
             }
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, (nextLink, ignored) -> {
-            PagedResponse<KeyValue> pagedResponse;
+            PagedResponse<KeyValue, String> pagedResponse;
             try {
                 pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null,
                     acceptDateTime, null, getPageETag(matchConditionsList, pageETagIndex), context);
@@ -1034,7 +1034,7 @@ public final class ConfigurationClient {
     //     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
     //     */
     //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {
+    //    public PagedIterable<ConfigurationSetting, String> listConfigurationSettingsForSnapshot(String snapshotName) {
     //        return listConfigurationSettingsForSnapshot(snapshotName, null, Context.none());
     //    }
     //
@@ -1065,15 +1065,15 @@ public final class ConfigurationClient {
     //     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
     //     */
     //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
+    //    public PagedIterable<ConfigurationSetting, String> listConfigurationSettingsForSnapshot(String snapshotName,
     //                                                                                    List<SettingFields> fields, Context context) {
     //        return new PagedIterable<>(() -> {
-    //            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
+    //            final PagedResponse<KeyValue, String> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
     //                null, null,
     //                fields, snapshotName, null, null, null, new requestContext().setContext(context));
     //            return toConfigurationSettingWithPagedResponse(pagedResponse);
     //        }, nextLink -> {
-    //            final PagedResponse<KeyValue> pagedResponse
+    //            final PagedResponse<KeyValue, String> pagedResponse
     //                = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null, null, null, null,
     //                new requestContext().setContext(context));
     //            return toConfigurationSettingWithPagedResponse(pagedResponse);
@@ -1111,7 +1111,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector) {
+    public PagedIterable<ConfigurationSetting, String> listRevisions(SettingSelector selector) {
         return listRevisions(selector, RequestContext.none());
     }
 
@@ -1144,16 +1144,16 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, RequestContext context) {
+    public PagedIterable<ConfigurationSetting, String> listRevisions(SettingSelector selector, RequestContext context) {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         return new PagedIterable<>(ignored -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(null,
+            final PagedResponse<KeyValue, String> pagedResponse = serviceClient.getRevisionsSinglePage(null,
                 selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
                 null, null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
                 selector == null ? null : selector.getTagsFilter(), context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, (nextLink, ignored) -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient
+            final PagedResponse<KeyValue, String> pagedResponse = serviceClient
                 .getRevisionsNextSinglePage(nextLink.getContinuationToken(), null, null, acceptDateTime, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
@@ -1394,7 +1394,7 @@ public final class ConfigurationClient {
     //     * @return A {@link PagedIterable} of {@link ConfigurationSnapshot}.
     //     */
     //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector) {
+    //    public PagedIterable<ConfigurationSnapshot, String> listSnapshots(SnapshotSelector selector) {
     //        return listSnapshots(selector, Context.none());
     //    }
     //
@@ -1421,7 +1421,7 @@ public final class ConfigurationClient {
     //     * @return A {@link PagedIterable} of {@link ConfigurationSnapshot}.
     //     */
     //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
+    //    public PagedIterable<ConfigurationSnapshot, String> listSnapshots(SnapshotSelector selector, Context context) {
     //        return new PagedIterable<>(
     //            () -> serviceClient.getSnapshotsSinglePage(selector == null ? null : selector.getNameFilter(), null,
     //                selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
@@ -1449,7 +1449,7 @@ public final class ConfigurationClient {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> listLabels() {
+    public PagedIterable<SettingLabel, String> listLabels() {
         return listLabels(null);
     }
 
@@ -1475,7 +1475,7 @@ public final class ConfigurationClient {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> listLabels(SettingLabelSelector selector) {
+    public PagedIterable<SettingLabel, String> listLabels(SettingLabelSelector selector) {
         return listLabels(selector, RequestContext.none());
     }
 
@@ -1504,7 +1504,7 @@ public final class ConfigurationClient {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> listLabels(SettingLabelSelector selector, RequestContext context) {
+    public PagedIterable<SettingLabel, String> listLabels(SettingLabelSelector selector, RequestContext context) {
         final String labelNameFilter = selector == null ? null : selector.getNameFilter();
         final String acceptDatetime = selector == null
             ? null

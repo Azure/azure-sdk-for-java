@@ -8,15 +8,17 @@ import io.clientcore.core.annotations.MetadataProperties;
 
 /**
  * The paging options for the pageable operation.
+ *
+ * @param <C> The type of the continuation token.
  */
 @Metadata(properties = MetadataProperties.FLUENT)
-public final class PagingOptions {
+public final class PagingOptions<C> {
 
     private Long offset;
     private Long pageSize;
     private Long pageIndex;
 
-    private String continuationToken;
+    private C continuationToken;
 
     /**
      * Creates an instance of {@link PagingOptions}.
@@ -39,7 +41,7 @@ public final class PagingOptions {
      * @param offset the offset on items
      * @return the PagingOptions object itself
      */
-    public PagingOptions setOffset(Long offset) {
+    public PagingOptions<C> setOffset(Long offset) {
         this.offset = offset;
         return this;
     }
@@ -59,7 +61,7 @@ public final class PagingOptions {
      * @param pageSize the size of a page
      * @return the PagingOptions object itself
      */
-    public PagingOptions setPageSize(Long pageSize) {
+    public PagingOptions<C> setPageSize(Long pageSize) {
         this.pageSize = pageSize;
         return this;
     }
@@ -79,7 +81,7 @@ public final class PagingOptions {
      * @param pageIndex the page index
      * @return the PagingOptions object itself
      */
-    public PagingOptions setPageIndex(Long pageIndex) {
+    public PagingOptions<C> setPageIndex(Long pageIndex) {
         this.pageIndex = pageIndex;
         return this;
     }
@@ -89,7 +91,7 @@ public final class PagingOptions {
      *
      * @return the continuation token
      */
-    public String getContinuationToken() {
+    public C getContinuationToken() {
         return continuationToken;
     }
 
@@ -99,7 +101,7 @@ public final class PagingOptions {
      * @param continuationToken the continuation token
      * @return the PagingOptions object itself
      */
-    public PagingOptions setContinuationToken(String continuationToken) {
+    public PagingOptions<C> setContinuationToken(C continuationToken) {
         this.continuationToken = continuationToken;
         return this;
     }

@@ -29,6 +29,13 @@ add the direct dependency to your project as follows.
 
 ## Key concepts
 
+- Azure token and shared access signature credentials.
+- Bearer, Continuous Access Evaluation, Proof-of-Possession, and SAS authentication policies.
+- Thread-safe access-token caching with proactive refresh.
+- Synchronous polling for Azure long-running operations.
+- Shared Azure cloud and response-error models.
+- Key encryption key and resolver contracts.
+
 ## Examples
 
 ## Next steps

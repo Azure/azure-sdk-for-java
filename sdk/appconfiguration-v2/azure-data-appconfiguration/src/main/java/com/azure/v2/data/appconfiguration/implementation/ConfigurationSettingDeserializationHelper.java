@@ -43,8 +43,8 @@ public final class ConfigurationSettingDeserializationHelper {
     /*
      * Utility method for translating KeyValue to ConfigurationSetting with PagedResponse.
      */
-    public static PagedResponse<ConfigurationSetting>
-        toConfigurationSettingWithPagedResponse(PagedResponse<KeyValue> pagedResponse) {
+    public static PagedResponse<ConfigurationSetting, String>
+        toConfigurationSettingWithPagedResponse(PagedResponse<KeyValue, String> pagedResponse) {
         List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
         pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
         return new PagedResponse<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),

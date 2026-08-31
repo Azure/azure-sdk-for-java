@@ -59,7 +59,7 @@ public class ReadmeSamples {
      */
     public void listRoleDefinitions() {
         // BEGIN: readme-sample-listRoleDefinitions
-        PagedIterable<KeyVaultRoleDefinition> roleDefinitions =
+        PagedIterable<KeyVaultRoleDefinition, String> roleDefinitions =
             keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
 
         roleDefinitions.forEach(roleDefinition ->
@@ -111,7 +111,7 @@ public class ReadmeSamples {
      */
     public void listRoleAssignments() {
         // BEGIN: readme-sample-listRoleAssignments
-        PagedIterable<KeyVaultRoleAssignment> roleAssignments =
+        PagedIterable<KeyVaultRoleAssignment, String> roleAssignments =
             keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
 
         roleAssignments.forEach(roleAssignment ->

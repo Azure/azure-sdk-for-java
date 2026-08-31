@@ -193,7 +193,7 @@ including:
 List the role definitions in the key vault or managed HSM by calling `listRoleDefinitions()`.
 
 ```java readme-sample-listRoleDefinitions
-PagedIterable<KeyVaultRoleDefinition> roleDefinitions =
+PagedIterable<KeyVaultRoleDefinition, String> roleDefinitions =
     keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
 
 roleDefinitions.forEach(roleDefinition ->
@@ -243,7 +243,7 @@ System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionNam
 List the role assignments in the key vault or managed HSM by calling `listRoleAssignments()`.
 
 ```java readme-sample-listRoleAssignments
-PagedIterable<KeyVaultRoleAssignment> roleAssignments =
+PagedIterable<KeyVaultRoleAssignment, String> roleAssignments =
     keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
 
 roleAssignments.forEach(roleAssignment ->

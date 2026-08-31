@@ -271,7 +271,7 @@ public class TestInterfaceGenerationTests {
             TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
 
         // Fetch the first page
-        PagedIterable<Foo> pagedIterable = new PagedIterable<>(
+        PagedIterable<Foo, String> pagedIterable = new PagedIterable<>(
             pagingOptions -> toPagedResponse(
                 testInterface.listFooListResult(uri, RequestContext.none()), null),
             (pagingOptions, nextLink) -> toPagedResponse(
@@ -322,10 +322,10 @@ public class TestInterfaceGenerationTests {
         assertNotNull(fooFirstPageResponse);
         assertNotNull(fooFirstPageResponse.get(0).bar());
 
-        // Convert List<Foo> response to PagedResponse<Foo>
-        PagedResponse<Foo> firstPage = toPagedResponse(initialResponse, null);
+        // Convert List<Foo> response to PagedResponse<Foo, String>
+        PagedResponse<Foo, String> firstPage = toPagedResponse(initialResponse, null);
 
-        PagedIterable<Foo> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
+        PagedIterable<Foo, String> pagedIterable = new PagedIterable<>(pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
                 Response<List<Foo>> nextResponse
                     = testInterface.listNextFoo(nextLink, RequestContext.none());
@@ -338,11 +338,11 @@ public class TestInterfaceGenerationTests {
     }
 
     /**
-     * Converts a Response&lt;T&gt; to a PagedResponse&lt;Foo&gt;.
+    * Converts a Response&lt;T&gt; to a PagedResponse&lt;Foo, String&gt;.
      * Supports both Response&lt;FooListResult&gt; and Response&lt;List&lt;Foo&gt;&gt;.
      */
     @SuppressWarnings({ "unchecked", "cast" })
-    private <T> PagedResponse<Foo> toPagedResponse(Response<T> response, String nextLink) {
+    private <T> PagedResponse<Foo, String> toPagedResponse(Response<T> response, String nextLink) {
         if (response == null || response.getValue() == null) {
             return new PagedResponse<>(
                 response != null
