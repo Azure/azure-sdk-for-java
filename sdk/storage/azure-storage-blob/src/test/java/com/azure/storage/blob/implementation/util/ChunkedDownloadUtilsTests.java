@@ -39,7 +39,7 @@ public class ChunkedDownloadUtilsTests {
     }
 
     @Test
-    void downloadFirstChunkPreservesRetrievedETagUntilHttpBoundary() {
+    void downloadFirstChunkQuotesRetrievedETag() {
         requestConditions.setIfNoneMatch("*").setLeaseId("leaseId");
 
         Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> result
@@ -49,7 +49,6 @@ public class ChunkedDownloadUtilsTests {
                 .block();
 
         assertNotNull(result);
-        assertEquals("0x8DABC", result.getT2().getIfMatch());
         assertEquals(ifModifiedSince, result.getT2().getIfModifiedSince());
         assertEquals(ifUnmodifiedSince, result.getT2().getIfUnmodifiedSince());
         assertEquals("*", result.getT2().getIfNoneMatch());

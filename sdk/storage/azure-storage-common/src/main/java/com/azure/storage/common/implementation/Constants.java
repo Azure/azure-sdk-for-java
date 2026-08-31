@@ -250,15 +250,6 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
-        public static final HttpHeaderName SOURCE_IF_MATCH = HttpHeaderName.fromString("x-ms-source-if-match");
-
-        public static final HttpHeaderName SOURCE_IF_NONE_MATCH
-            = HttpHeaderName.fromString("x-ms-source-if-none-match");
-
-        public static final HttpHeaderName BLOB_IF_MATCH = HttpHeaderName.fromString("x-ms-blob-if-match");
-
-        public static final HttpHeaderName BLOB_IF_NONE_MATCH = HttpHeaderName.fromString("x-ms-blob-if-none-match");
-
         public static final String CONTENT_CRC64 = "x-ms-content-crc64";
 
         public static final HttpHeaderName CONTENT_CRC64_HEADER_NAME = HttpHeaderName.fromString(CONTENT_CRC64);

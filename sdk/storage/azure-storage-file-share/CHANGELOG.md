@@ -8,8 +8,6 @@
 
 ### Bugs Fixed
 
-- Fixed conditional requests to accept legacy unquoted ETags while sending RFC 9110-compliant header values.
-
 ### Other Changes
 
 ## 12.31.1 (2026-08-18)
