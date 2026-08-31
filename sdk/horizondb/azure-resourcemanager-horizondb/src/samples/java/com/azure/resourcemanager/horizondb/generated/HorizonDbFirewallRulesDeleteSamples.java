@@ -9,14 +9,14 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbFirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_Delete.json
      */
     /**
-     * Sample code: Delete a HorizonDb firewall rule.
+     * Sample code: Delete a HorizonDB firewall rule.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void deleteAHorizonDbFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void deleteAHorizonDBFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .delete("exampleresourcegroup", "examplecluster", "examplepool", "examplefirewallrule",
                 com.azure.core.util.Context.NONE);

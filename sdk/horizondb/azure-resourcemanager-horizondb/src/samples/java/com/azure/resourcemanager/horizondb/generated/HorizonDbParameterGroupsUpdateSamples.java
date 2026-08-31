@@ -16,14 +16,14 @@ import java.util.Map;
  */
 public final class HorizonDbParameterGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_Update.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_Update.json
      */
     /**
-     * Sample code: Update a HorizonDb parameter group.
+     * Sample code: Update a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void updateAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void updateAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         HorizonDbParameterGroup resource = manager.horizonDbParameterGroups()
             .getByResourceGroupWithResponse("exampleresourcegroup", "exampleparametergroup",
                 com.azure.core.util.Context.NONE)

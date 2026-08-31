@@ -16,7 +16,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
@@ -25,6 +24,7 @@ import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
+import com.azure.search.documents.implementation.MultipartFormDataHelper;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
@@ -33,7 +33,7 @@ import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
-import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -41,6 +41,8 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
+import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -339,62 +341,6 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteSynonymMapWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             format: String (Required)
-     *             synonyms (Required): [
-     *                 String (Required)
-     *             ]
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
-     *                 }
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List SynonymMaps request along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getSynonymMapsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSynonymMapsWithResponse(requestOptions);
     }
 
     /**
@@ -1015,7 +961,7 @@ public final class SearchIndexClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
+     *         kind: String(minimal/low/medium/auto) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -1033,6 +979,9 @@ public final class SearchIndexClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -1040,6 +989,11 @@ public final class SearchIndexClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     retrieveDefaults (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *         maxOutputDocuments: Integer (Optional)
+     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -1064,7 +1018,7 @@ public final class SearchIndexClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
+     *         kind: String(minimal/low/medium/auto) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -1082,6 +1036,9 @@ public final class SearchIndexClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -1089,6 +1046,11 @@ public final class SearchIndexClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     retrieveDefaults (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *         maxOutputDocuments: Integer (Optional)
+     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -1184,6 +1146,7 @@ public final class SearchIndexClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1210,6 +1173,7 @@ public final class SearchIndexClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1441,14 +1405,15 @@ public final class SearchIndexClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSynonymMapsResult getSynonymMaps() {
-        // Generated convenience method for getSynonymMapsWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SynonymMap> getSynonymMaps() {
+        // Generated convenience method for getSynonymMaps
         RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
+        return serviceClient.getSynonymMaps(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SynonymMap.class));
     }
 
     /**
@@ -1463,58 +1428,18 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps() {
-        return new PagedIterable<>(() -> {
-            Response<ListSynonymMapsResult> response = listSynonymMapsWithResponse(new RequestOptions());
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().getSynonymMaps(), null, null);
-        });
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListSynonymMapsResult> listSynonymMapsWithResponse(RequestOptions requestOptions) {
-        return convertResponse(getSynonymMapsWithResponse(requestOptions), ListSynonymMapsResult.class);
+        return getSynonymMaps(null, null, null, null);
     }
 
     /**
      * Lists the names of all synonym maps available for a search service.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the names of all synonym maps as paginated response with {@link PagedIterable}.
+     * @return the names of all synonym maps as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames() {
-        return new PagedIterable<>(() -> {
-            Response<ListSynonymMapsResult> response
-                = listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
-            List<String> names
-                = response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList());
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                names, null, null);
-        });
+        return getSynonymMaps(java.util.Collections.singletonList("name"), null, null, null)
+            .mapPage(SynonymMap::getName);
     }
 
     /**
@@ -3007,11 +2932,12 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
-     * 1000.</td></tr>
-     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
-     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
-     * items. Default is false.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3717,6 +3643,18 @@ public final class SearchIndexClient {
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3810,7 +3748,7 @@ public final class SearchIndexClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
+     *         kind: String(minimal/low/medium/auto) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3828,6 +3766,9 @@ public final class SearchIndexClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3835,6 +3776,11 @@ public final class SearchIndexClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     retrieveDefaults (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *         maxOutputDocuments: Integer (Optional)
+     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -3856,6 +3802,18 @@ public final class SearchIndexClient {
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3875,7 +3833,7 @@ public final class SearchIndexClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
+     *         kind: String(minimal/low/medium/auto) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3893,6 +3851,9 @@ public final class SearchIndexClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3900,6 +3861,11 @@ public final class SearchIndexClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     retrieveDefaults (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *         maxOutputDocuments: Integer (Optional)
+     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -3939,7 +3905,7 @@ public final class SearchIndexClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
+     *         kind: String(minimal/low/medium/auto) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3957,6 +3923,9 @@ public final class SearchIndexClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -3964,6 +3933,11 @@ public final class SearchIndexClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     retrieveDefaults (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *         maxOutputDocuments: Integer (Optional)
+     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -3988,7 +3962,7 @@ public final class SearchIndexClient {
      *         }
      *     ]
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
+     *         kind: String(minimal/low/medium/auto) (Required)
      *     }
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -4006,6 +3980,9 @@ public final class SearchIndexClient {
      *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
      *     retrievalInstructions: String (Optional)
      *     answerInstructions: String (Optional)
      *     corsOptions (Optional): {
@@ -4013,6 +3990,11 @@ public final class SearchIndexClient {
      *             String (Required)
      *         ]
      *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     retrieveDefaults (Optional): {
+     *         maxRuntimeInSeconds: Integer (Optional)
+     *         maxOutputDocuments: Integer (Optional)
+     *         maxOutputSizeInTokens: Integer (Optional)
      *     }
      * }
      * }
@@ -4043,6 +4025,7 @@ public final class SearchIndexClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4077,6 +4060,18 @@ public final class SearchIndexClient {
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4085,6 +4080,7 @@ public final class SearchIndexClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4126,6 +4122,7 @@ public final class SearchIndexClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4152,6 +4149,7 @@ public final class SearchIndexClient {
      *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
+     *     resultsProcessing: String(rerank/none) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -4272,6 +4270,7 @@ public final class SearchIndexClient {
      *         maxComplexObjectsInCollectionsPerDocument: Integer (Optional)
      *         maxStoragePerIndex: Long (Optional)
      *         maxCumulativeIndexerRuntimeSeconds: Long (Optional)
+     *         maxVectorIndexSizePerIndexInBytes: Long (Optional)
      *     }
      *     indexersRuntime (Required): {
      *         usedSeconds: long (Required)
@@ -4305,11 +4304,12 @@ public final class SearchIndexClient {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
-     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
-     * 1000.</td></tr>
-     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
-     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
-     * items. Default is false.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4542,26 +4542,6 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select) {
-        return listIndexesWithSelectedProperties(select, null, null, null);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSynonymMapsResult getSynonymMaps(List<String> select) {
-        // Generated convenience method for getSynonymMapsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -4570,7 +4550,8 @@ public final class SearchIndexClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
+        return serviceClient.listIndexesWithSelectedProperties(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexResponse.class));
     }
 
     /**
@@ -4579,11 +4560,12 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
-     * 1000.</td></tr>
-     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
-     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
-     * items. Default is false.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4614,81 +4596,6 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all indexes available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param top The number of items to retrieve. Default is 50, maximum is 1000.
-     * @param skip The number of items to skip.
-     * @param count A value that specifies whether to fetch the total count of items. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select, Integer top,
-        Integer skip, Boolean count) {
-        // Generated convenience method for listIndexesWithSelectedProperties
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (top != null) {
-            requestOptions.addQueryParam("$top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
-        }
-        if (count != null) {
-            requestOptions.addQueryParam("$count", String.valueOf(count), false);
-        }
-        return serviceClient.listIndexesWithSelectedProperties(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexResponse.class));
-    }
-
-    /**
-     * Retrieves a summary of statistics for all indexes in the search service.
-     *
-     * @param top The number of items to retrieve. Default is 50, maximum is 1000.
-     * @param skip The number of items to skip.
-     * @param count A value that specifies whether to fetch the total count of items. Default is false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a request to retrieve stats summary of all indexes as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IndexStatisticsSummary> listIndexStatsSummary(Integer top, Integer skip, Boolean count) {
-        // Generated convenience method for listIndexStatsSummary
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("$top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
-        }
-        if (count != null) {
-            requestOptions.addQueryParam("$count", String.valueOf(count), false);
-        }
-        return serviceClient.listIndexStatsSummary(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
-    }
-
-    /**
      * Retrieves a summary of statistics for all indexes in the search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4710,6 +4617,20 @@ public final class SearchIndexClient {
 
     /**
      * Lists all files in a File knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>prefix</td><td>String</td><td>No</td><td>Optional prefix to filter files by their directory-like
+     * path.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4721,6 +4642,12 @@ public final class SearchIndexClient {
      *     createdAt: OffsetDateTime (Optional)
      *     lastUpdatedAt: OffsetDateTime (Optional)
      *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
      * }
      * }
      * </pre>
@@ -4798,6 +4725,330 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> uploadKnowledgeSourceFileMultipartWithResponse(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        // Operation 'uploadKnowledgeSourceFileMultipart' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
+        return this.serviceClient.uploadKnowledgeSourceFileMultipartWithResponse(name, body, requestOptions);
+    }
+
+    /**
+     * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param fileId The unique identifier of the file to update.
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> updateKnowledgeSourceFileWithResponse(String fileId, String name, BinaryData body,
+        RequestOptions requestOptions) {
+        // Operation 'updateKnowledgeSourceFile' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.updateKnowledgeSourceFileWithResponse(fileId, name, body, requestOptions);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SynonymMap> getSynonymMaps(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for getSynonymMaps
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.getSynonymMaps(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SynonymMap.class));
+    }
+
+    /**
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
+     *
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSourceFile uploadKnowledgeSourceFileMultipart(String name,
+        UploadKnowledgeSourceFileMultipartRequest body) {
+        // Generated convenience method for uploadKnowledgeSourceFileMultipartWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadKnowledgeSourceFileMultipartWithResponse(name,
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
+                .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
+                    body.getContent().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions).getValue().toObject(KnowledgeSourceFile.class);
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param prefix Optional prefix to filter files by their directory-like path.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Files request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, String prefix, String search,
+        Integer pageSize, ListingSearchType searchType) {
+        // Generated convenience method for listKnowledgeSourceFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.listKnowledgeSourceFiles(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
+     *
+     * @param fileId The unique identifier of the file to update.
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSourceFile updateKnowledgeSourceFile(String fileId, String name,
+        UpdateKnowledgeSourceFileRequest body) {
+        // Generated convenience method for updateKnowledgeSourceFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updateKnowledgeSourceFileWithResponse(fileId, name,
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", body.getMetadata())
+                .serializeFileField("content", body.getContent().getContent(), body.getContent().getContentType(),
+                    body.getContent().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions).getValue().toObject(KnowledgeSourceFile.class);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> listIndexStatsSummary(String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for listIndexStatsSummary
+        RequestOptions requestOptions = new RequestOptions();
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.listIndexStatsSummary(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> getSynonymMaps(RequestOptions requestOptions) {
+        return this.serviceClient.getSynonymMaps(requestOptions);
+    }
+
+    /**
      * Uploads a file to a File knowledge source for processing and indexing.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -4818,6 +5069,12 @@ public final class SearchIndexClient {
      *     createdAt: OffsetDateTime (Optional)
      *     lastUpdatedAt: OffsetDateTime (Optional)
      *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
      * }
      * }
      * </pre>

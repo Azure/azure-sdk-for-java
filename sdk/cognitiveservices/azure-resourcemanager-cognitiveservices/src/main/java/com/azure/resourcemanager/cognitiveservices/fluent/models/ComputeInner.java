@@ -32,11 +32,6 @@ public final class ComputeInner extends ProxyResource {
     private String etag;
 
     /*
-     * The location of the compute resource.
-     */
-    private String location;
-
-    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -106,26 +101,6 @@ public final class ComputeInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the location property: The location of the compute resource.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the compute resource.
-     * 
-     * @param location the location value to set.
-     * @return the ComputeInner object itself.
-     */
-    public ComputeInner withLocation(String location) {
-        this.location = location;
-        return this;
     }
 
     /**
@@ -234,7 +209,6 @@ public final class ComputeInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("identity", this.identity);
@@ -267,8 +241,6 @@ public final class ComputeInner extends ProxyResource {
                     deserializedComputeInner.properties = ComputeProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedComputeInner.etag = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedComputeInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedComputeInner.tags = tags;

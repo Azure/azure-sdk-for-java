@@ -1,12 +1,26 @@
 # Release History
 
-## 1.59.0-beta.1 (Unreleased)
+## 1.60.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.59.1 (2026-08-27)
+
+### Bugs Fixed
+
+- Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
+
+## 1.59.0 (2026-08-12)
 
 ### Features Added
 
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
-
-### Breaking Changes
 
 ### Bugs Fixed
 

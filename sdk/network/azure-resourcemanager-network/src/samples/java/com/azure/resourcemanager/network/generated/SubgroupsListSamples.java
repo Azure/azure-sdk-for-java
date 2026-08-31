@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubgroupsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SubgroupList.json
+     * x-ms-original-file: 2025-09-01/SubgroupList.json
      */
     /**
      * Sample code: List subgroups.

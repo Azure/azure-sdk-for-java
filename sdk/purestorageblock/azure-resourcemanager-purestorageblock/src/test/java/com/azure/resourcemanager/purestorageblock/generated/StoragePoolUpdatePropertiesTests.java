@@ -5,23 +5,44 @@
 package com.azure.resourcemanager.purestorageblock.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAccessSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSubnet;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolUpdateProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class StoragePoolUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StoragePoolUpdateProperties model
-            = BinaryData.fromString("{\"provisionedBandwidthMbPerSec\":3210432700680479776}")
-                .toObject(StoragePoolUpdateProperties.class);
-        Assertions.assertEquals(3210432700680479776L, model.provisionedBandwidthMbPerSec());
+        StoragePoolUpdateProperties model = BinaryData.fromString(
+            "{\"provisionedBandwidthMbPerSec\":651752597881008375,\"platformConsoleSettings\":{\"enabled\":true,\"gui\":{\"enabled\":false},\"api\":{\"enabled\":false},\"cli\":{\"enabled\":false},\"subnets\":[{\"id\":\"taruoujmkcj\",\"managementIpAddress\":\"qytjrybnwjewgd\",\"serviceBackendIps\":[\"rvnaenqpeh\",\"ndoygmifthnzdnd\",\"l\"]},{\"id\":\"nayqi\",\"managementIpAddress\":\"nduhavhqlkthum\",\"serviceBackendIps\":[\"lbg\",\"cdui\",\"r\",\"gccymvaolpssl\"]},{\"id\":\"lfmmdnbbglzpswi\",\"managementIpAddress\":\"mcwyhzdxssadb\",\"serviceBackendIps\":[\"vdfznudaodvxzb\",\"cblylpstdbhhxsr\",\"dzu\"]},{\"id\":\"erscdntne\",\"managementIpAddress\":\"iwjmygtdssls\",\"serviceBackendIps\":[\"weriofzpyqsem\",\"abnetshh\",\"zhedplvwiw\"]}],\"defaultUsername\":\"mwmbes\"}}")
+            .toObject(StoragePoolUpdateProperties.class);
+        Assertions.assertEquals(651752597881008375L, model.provisionedBandwidthMbPerSec());
+        Assertions.assertTrue(model.platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().gui().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().api().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("taruoujmkcj", model.platformConsoleSettings().subnets().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolUpdateProperties model
-            = new StoragePoolUpdateProperties().withProvisionedBandwidthMbPerSec(3210432700680479776L);
+        StoragePoolUpdateProperties model = new StoragePoolUpdateProperties()
+            .withProvisionedBandwidthMbPerSec(651752597881008375L)
+            .withPlatformConsoleSettings(new PlatformConsoleSettings().withEnabled(true)
+                .withGui(new PlatformConsoleAccessSettings().withEnabled(false))
+                .withApi(new PlatformConsoleAccessSettings().withEnabled(false))
+                .withCli(new PlatformConsoleAccessSettings().withEnabled(false))
+                .withSubnets(Arrays.asList(new PlatformConsoleSubnet().withId("taruoujmkcj"),
+                    new PlatformConsoleSubnet().withId("nayqi"), new PlatformConsoleSubnet().withId("lfmmdnbbglzpswi"),
+                    new PlatformConsoleSubnet().withId("erscdntne"))));
         model = BinaryData.fromObject(model).toObject(StoragePoolUpdateProperties.class);
-        Assertions.assertEquals(3210432700680479776L, model.provisionedBandwidthMbPerSec());
+        Assertions.assertEquals(651752597881008375L, model.provisionedBandwidthMbPerSec());
+        Assertions.assertTrue(model.platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().gui().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().api().enabled());
+        Assertions.assertFalse(model.platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("taruoujmkcj", model.platformConsoleSettings().subnets().get(0).id());
     }
 }

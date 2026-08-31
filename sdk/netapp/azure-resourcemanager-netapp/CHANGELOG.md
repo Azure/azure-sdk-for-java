@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.5.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,389 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.5.0-beta.2 (2026-08-26)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-06-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.LdapConfiguration` was modified
+
+* `ldapOverTLS()` was removed
+* `withLdapOverTLS(java.lang.Boolean)` was removed
+
+#### `models.LdapConfigurationPatch` was modified
+
+* `withLdapOverTLS(java.lang.Boolean)` was removed
+* `ldapOverTLS()` was removed
+
+### Features Added
+
+* `models.SecureLdapType` was added
+
+#### `models.LdapConfiguration` was modified
+
+* `withSecureLdapType(models.SecureLdapType)` was added
+* `secureLdapType()` was added
+
+#### `models.LdapConfigurationPatch` was modified
+
+* `withSecureLdapType(models.SecureLdapType)` was added
+* `secureLdapType()` was added
+
+## 2.5.0-beta.1 (2026-07-27)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-05-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NetAppAccountPatch` was modified
+
+* `disableShowmount()` was removed
+* `name()` was removed
+* `multiAdStatus()` was removed
+* `id()` was removed
+* `type()` was removed
+* `location()` was removed
+* `provisioningState()` was removed
+* `withLocation(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ElasticBackupProperties` was added
+
+* `models.ElasticBackupPolicyProperties` was added
+
+* `models.ElasticBackupPolicyUpdateProperties` was added
+
+* `models.ElasticSnapshot` was added
+
+* `models.ElasticCapacityPools` was added
+
+* `models.ElasticKeyVaultProperties` was added
+
+* `models.LdapConfiguration` was added
+
+* `models.ElasticVolumeUpdateProperties` was added
+
+* `models.ElasticBackup$Definition` was added
+
+* `models.ElasticSnapshotPolicyHourlySchedule` was added
+
+* `models.ElasticMountTargetProperties` was added
+
+* `models.EntraIdAkvConfigPatch` was added
+
+* `models.ElasticVolumeUpdate` was added
+
+* `models.ElasticVolume$UpdateStages` was added
+
+* `models.ElasticVolumeDataProtectionProperties` was added
+
+* `models.ElasticSnapshotPolicyProperties` was added
+
+* `models.ElasticVolumeSnapshotProperties` was added
+
+* `models.ElasticPoolEncryptionKeySource` was added
+
+* `models.ElasticServiceLevel` was added
+
+* `models.ElasticBackupPolicy` was added
+
+* `models.ElasticResourceAvailabilityStatus` was added
+
+* `models.ElasticCapacityPoolUpdateProperties` was added
+
+* `models.ElasticNfsv3Access` was added
+
+* `models.CheckElasticVolumeFilePathAvailabilityRequest` was added
+
+* `models.ElasticSmbEncryption` was added
+
+* `models.ElasticVolumeProperties` was added
+
+* `models.ElasticAccount$DefinitionStages` was added
+
+* `models.ElasticEncryption` was added
+
+* `models.ElasticBackupPolicy$Definition` was added
+
+* `models.ElasticVolumeRevert` was added
+
+* `models.ElasticBackupVaultUpdate` was added
+
+* `models.ActiveDirectoryConfig$Definition` was added
+
+* `models.SnapshotUsage` was added
+
+* `models.ElasticSnapshotPolicyUpdateProperties` was added
+
+* `models.ActiveDirectoryConfig` was added
+
+* `models.VolumeSize` was added
+
+* `models.ElasticBackupPolicies` was added
+
+* `models.ElasticExportPolicyRule` was added
+
+* `models.BindPasswordAkvConfigPatch` was added
+
+* `models.ActiveDirectoryConfig$DefinitionStages` was added
+
+* `models.ElasticAccountUpdate` was added
+
+* `models.ElasticCapacityPoolUpdate` was added
+
+* `models.ElasticSnapshot$UpdateStages` was added
+
+* `models.ActiveDirectoryConfigUpdateProperties` was added
+
+* `models.ElasticAccountProperties` was added
+
+* `models.ElasticSnapshotPolicyUpdate` was added
+
+* `models.ElasticSnapshots` was added
+
+* `models.ElasticKeyVaultStatus` was added
+
+* `models.ElasticEncryptionIdentity` was added
+
+* `models.ElasticSnapshotProperties` was added
+
+* `models.ActiveDirectoryConfigs` was added
+
+* `models.BindPasswordAkvConfig` was added
+
+* `models.ElasticBackup$UpdateStages` was added
+
+* `models.ActiveDirectoryConfig$Update` was added
+
+* `models.SecretPasswordIdentity` was added
+
+* `models.ElasticAccount$UpdateStages` was added
+
+* `models.LdapConfigurationPatch` was added
+
+* `models.ElasticBackupPolicy$Update` was added
+
+* `models.ElasticBackupVaults` was added
+
+* `models.ElasticCapacityPool` was added
+
+* `models.ElasticExportPolicy` was added
+
+* `models.ElasticSnapshotPolicyWeeklySchedule` was added
+
+* `models.ElasticVolume$Definition` was added
+
+* `models.ElasticRootAccess` was added
+
+* `models.ElasticBackupVault$Update` was added
+
+* `models.ElasticBackups` was added
+
+* `models.ElasticSnapshotPolicy` was added
+
+* `models.CheckElasticResourceAvailabilityStatus` was added
+
+* `models.SecretPassword` was added
+
+* `models.ElasticBackup$Update` was added
+
+* `models.ElasticCapacityPool$Update` was added
+
+* `models.ElasticSnapshotPolicyDailySchedule` was added
+
+* `models.ElasticCapacityPool$UpdateStages` was added
+
+* `models.EntraIdAkvConfig` was added
+
+* `models.BindAuthenticationLevel` was added
+
+* `models.ElasticAccount$Update` was added
+
+* `models.ElasticSnapshotPolicy$Definition` was added
+
+* `models.ElasticSnapshot$Definition` was added
+
+* `models.ElasticBackupVaultProperties` was added
+
+* `models.ElasticBackupPolicy$DefinitionStages` was added
+
+* `models.ElasticNfsv4Access` was added
+
+* `models.ActiveDirectoryConfigProperties` was added
+
+* `models.ElasticVolumeRestorationState` was added
+
+* `models.ElasticVolumePolicyEnforcement` was added
+
+* `models.SecretPasswordKeyVaultProperties` was added
+
+* `models.ElasticAccount$Definition` was added
+
+* `models.ElasticVolumes` was added
+
+* `models.EntraIdConfig` was added
+
+* `models.ElasticBackupVault$Definition` was added
+
+* `models.ElasticSnapshotPolicy$Update` was added
+
+* `models.ElasticBackup$DefinitionStages` was added
+
+* `models.ElasticSnapshotPolicies` was added
+
+* `models.ElasticAccount` was added
+
+* `models.EntraIdConfigPatch` was added
+
+* `models.CheckElasticResourceAvailabilityReason` was added
+
+* `models.ElasticCapacityPoolProperties` was added
+
+* `models.ActiveDirectoryConfigUpdate` was added
+
+* `models.ElasticVolume$DefinitionStages` was added
+
+* `models.ElasticAccountUpdateProperties` was added
+
+* `models.ElasticCapacityPool$DefinitionStages` was added
+
+* `models.ElasticSmbProperties` was added
+
+* `models.LargeVolumeType` was added
+
+* `models.PolicyStatus` was added
+
+* `models.ElasticVolumeBackupProperties` was added
+
+* `models.ElasticBackup` was added
+
+* `models.ChangeZoneRequest` was added
+
+* `models.ElasticBackupVault$DefinitionStages` was added
+
+* `models.ElasticSnapshot$Update` was added
+
+* `models.CheckElasticResourceAvailabilityResponse` was added
+
+* `models.ElasticBackupVault` was added
+
+* `models.ElasticUnixAccessRule` was added
+
+* `models.ActiveDirectoryConfig$UpdateStages` was added
+
+* `models.ElasticVolume` was added
+
+* `models.ElasticVolume$Update` was added
+
+* `models.ElasticBackupPolicyState` was added
+
+* `models.ElasticSnapshotPolicyMonthlySchedule` was added
+
+* `models.ElasticVolumeDataProtectionPatchProperties` was added
+
+* `models.ElasticAccounts` was added
+
+* `models.ElasticSmbPatchProperties` was added
+
+* `models.ElasticSnapshot$DefinitionStages` was added
+
+* `models.ElasticBackupVault$UpdateStages` was added
+
+* `models.ElasticBackupPolicyUpdate` was added
+
+* `models.SnapshotDirectoryVisibility` was added
+
+* `models.ElasticBackupPolicy$UpdateStages` was added
+
+* `models.ElasticEncryptionConfiguration` was added
+
+* `models.DayOfWeek` was added
+
+* `models.ElasticCapacityPool$Definition` was added
+
+* `models.ElasticSnapshotPolicy$DefinitionStages` was added
+
+* `models.ElasticBackupType` was added
+
+* `models.ElasticProtocolType` was added
+
+* `models.ElasticSnapshotPolicy$UpdateStages` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+* `withEntraIdConfig(models.EntraIdConfig)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withLanguage(models.VolumeLanguage)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `ldapConfiguration()` was added
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
+* `entraIdConfig()` was added
+* `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `largeVolumeType()` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `language()` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `ldapServerType()` was added
+
+#### `models.Volume` was modified
+
+* `ldapServerType()` was added
+* `largeVolumeType()` was added
+* `language()` was added
+
+#### `NetAppFilesManager` was modified
+
+* `elasticVolumes()` was added
+* `elasticCapacityPools()` was added
+* `elasticBackupPolicies()` was added
+* `elasticBackupVaults()` was added
+* `elasticAccounts()` was added
+* `elasticSnapshots()` was added
+* `elasticBackups()` was added
+* `elasticSnapshotPolicies()` was added
+* `activeDirectoryConfigs()` was added
+
+#### `models.Accounts` was modified
+
+* `refreshLdapBindPassword(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `refreshLdapBindPassword(java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `refreshLdapBindPassword()` was added
+* `refreshLdapBindPassword(com.azure.core.util.Context)` was added
+* `ldapConfiguration()` was added
+* `entraIdConfig()` was added
+
+#### `models.CredentialsAkvDetails` was modified
+
+* `withUserAssignedIdentity(java.lang.String)` was added
+* `userAssignedIdentity()` was added
+
+#### `models.CertificateAkvDetails` was modified
+
+* `withUserAssignedIdentity(java.lang.String)` was added
+* `userAssignedIdentity()` was added
 
 ## 2.4.0 (2026-07-21)
 

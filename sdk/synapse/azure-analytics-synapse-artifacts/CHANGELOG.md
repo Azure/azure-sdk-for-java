@@ -173,7 +173,7 @@
 ### Features Added
 
 - Added `authenticationType` , `containerUri`, `sasUri` and `sasToken`  properties to BlobService.
-- Added `setSystemVariable` proprety to SetVariableActivityTypeProperties.
+- Added `setSystemVariable` property to SetVariableActivityTypeProperties.
 - Added `mongoDbAtlasDriverVersion` property to MongoDbAtlasLinkedServiceTypeProperties.
 - Added `ActionOnExistingTargetTable`  property for Synapse Link.
 - Added `OutputColumn`  Object For Office365Source outputColumns.
@@ -219,7 +219,7 @@
 - Added TargetSparkConfiguration property for SparkJobDefinition and Notebook.
 - Added GoogleSheets connector.
 - Added SAP ODP connector.
-- Added support OAuth2ClientCredential auth in RestSevice.
+- Added support OAuth2ClientCredential auth in RestService.
 - Added support rejected data linked service in dataflow sink.
 - Added Dataworld, AppFigures, Asana, Twilio connectors.
 - Added Fail Activity.

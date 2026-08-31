@@ -99,6 +99,13 @@ public class DownloadResponseTests extends BlobTestBase {
                 TestUtils.assertArraysEqual(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block(),
                     flux.getScenarioData().array());
                 assertEquals(tryNumber, flux.getTryNumber());
+                if (scenario == DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES) {
+                    // Preserve the raw service-returned ETag here for retry compatibility. Normalizing through
+                    // StorageImplUtils.toETagHeaderValue() would change the request wire format and should only be
+                    // done as a deliberate compatibility change in a separate update. We would only change this, if we
+                    // were observing strict compliant with the RFC7232 spec, which requires the ETag to be quoted.\
+                    assertEquals("0x8DABC", flux.getRetryIfMatch());
+                }
             })
             .verifyComplete();
     }
