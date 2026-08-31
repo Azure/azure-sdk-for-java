@@ -1,6 +1,16 @@
 # Release History
 
-## 12.1.0-beta.2 (Unreleased)
+## 12.1.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.1.0-beta.2 (2026-08-28)
 
 ### Features Added
 
@@ -41,8 +51,6 @@
 
 - Fixed knowledge source status deserialization for compact synchronization intervals such as `1d` while preserving
   the existing Java `Duration` API.
-
-### Other Changes
 
 ## 12.0.2 (2026-08-18)
 
