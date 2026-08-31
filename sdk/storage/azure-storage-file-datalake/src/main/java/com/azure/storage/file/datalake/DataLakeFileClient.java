@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
