@@ -44,8 +44,8 @@
 
 * `requireUserBoundUserDelegationSas()` was added
 * `withRequireUserBoundUserDelegationSas(java.lang.Boolean)` was added
-* `requireUserBoundUserDelegationSasAction()` was added
 * `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
+* `requireUserBoundUserDelegationSasAction()` was added
 
 #### `models.StorageAccountUpdateParameters` was modified
 
