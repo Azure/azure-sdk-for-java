@@ -1044,4 +1044,34 @@ public final class BlobDownloadHeaders {
         internalHeaders.setXMsCreationTime(creationTime);
         return this;
     }
+
+    /**
+     * Get the xMsDownloadHint property: A hint from the service that the client should call
+     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(
+     *     com.azure.storage.blob.options.BlobGetLayoutOptions)} (or the async
+     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint.
+     *
+     * @return the downloadHint value.
+     */
+    public DownloadHint getDownloadHint() {
+        String downloadHint
+            = internalHeaders.getXMsDownloadHint() == null ? null : internalHeaders.getXMsDownloadHint().toString();
+        return downloadHint == null ? null : DownloadHint.fromString(downloadHint);
+    }
+
+    /**
+     * Set the xMsDownloadHint property: A hint from the service that the client should call
+     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(
+     *     com.azure.storage.blob.options.BlobGetLayoutOptions)} (or the async
+     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint.
+     *
+     * @param downloadHint the xMsDownloadHint value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setDownloadHint(DownloadHint downloadHint) {
+        internalHeaders.setXMsDownloadHint(downloadHint == null
+            ? null
+            : com.azure.storage.blob.implementation.models.DownloadHint.fromString(downloadHint.toString()));
+        return this;
+    }
 }
