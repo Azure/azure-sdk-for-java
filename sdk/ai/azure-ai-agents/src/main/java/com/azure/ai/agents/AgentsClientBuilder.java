@@ -94,6 +94,9 @@ public final class AgentsClientBuilder
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
 
+    private static final String VOICE_AGENTS_PREVIEW_FEATURES
+        = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
+
     private boolean allowPreview;
 
     @Generated
@@ -531,7 +534,8 @@ public final class AgentsClientBuilder
      * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
      * policies, retry settings, logging options, client options, and service version. Use this method
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
-     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, or {@link BetaMemoryStoresAsyncClient}.
+     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
+     * {@link BetaAgentEndpointConversationsClient}, or {@link BetaAgentEndpointConversationsAsyncClient}.
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
@@ -556,8 +560,10 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
+            BetaAgentEndpointConversationsClient.class,
             BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class })
+            BetaMemoryStoresAsyncClient.class,
+            BetaAgentEndpointConversationsAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
@@ -598,6 +604,22 @@ public final class AgentsClientBuilder
         }
 
         /**
+         * Builds an asynchronous beta client for preview voice-agent conversation operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for voice-agent preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
+         *
+         * @return an instance of BetaAgentEndpointConversationsAsyncClient.
+         */
+        @Beta
+        public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
+            return new BetaAgentEndpointConversationsAsyncClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaAgentEndpointConversations());
+        }
+
+        /**
          * Builds a synchronous beta Agents client for preview agent optimization operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
@@ -625,6 +647,22 @@ public final class AgentsClientBuilder
         @Beta
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        }
+
+        /**
+         * Builds a synchronous beta client for preview voice-agent conversation operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for voice-agent preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
+         *
+         * @return an instance of BetaAgentEndpointConversationsClient.
+         */
+        @Beta
+        public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
+            return new BetaAgentEndpointConversationsClient(
+                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaAgentEndpointConversations());
         }
     }
 
@@ -689,9 +727,9 @@ public final class AgentsClientBuilder
      *
      * @return an instance of BetaAgentEndpointConversationsAsyncClient.
      */
-    @Generated
-    public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
-        return new BetaAgentEndpointConversationsAsyncClient(buildInnerClient().getBetaAgentEndpointConversations());
+    private BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
+        return new BetaAgentEndpointConversationsAsyncClient(
+            buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaAgentEndpointConversations());
     }
 
     /**
@@ -699,8 +737,8 @@ public final class AgentsClientBuilder
      *
      * @return an instance of BetaAgentEndpointConversationsClient.
      */
-    @Generated
-    public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
-        return new BetaAgentEndpointConversationsClient(buildInnerClient().getBetaAgentEndpointConversations());
+    private BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
+        return new BetaAgentEndpointConversationsClient(
+            buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaAgentEndpointConversations());
     }
 }
