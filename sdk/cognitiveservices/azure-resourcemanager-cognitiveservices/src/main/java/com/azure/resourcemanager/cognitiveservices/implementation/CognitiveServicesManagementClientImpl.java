@@ -31,6 +31,7 @@ import com.azure.resourcemanager.cognitiveservices.fluent.AccountConnectionsClie
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AgentApplicationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AgentDeploymentsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ArcDeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
@@ -465,6 +466,20 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The ArcDeploymentsClient object to access its operations.
+     */
+    private final ArcDeploymentsClient arcDeployments;
+
+    /**
+     * Gets the ArcDeploymentsClient object to access its operations.
+     * 
+     * @return the ArcDeploymentsClient object.
+     */
+    public ArcDeploymentsClient getArcDeployments() {
+        return this.arcDeployments;
+    }
+
+    /**
      * The AgentApplicationsClient object to access its operations.
      */
     private final AgentApplicationsClient agentApplications;
@@ -817,7 +832,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-15-preview";
+        this.apiVersion = "2026-07-15-preview";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
@@ -839,6 +854,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.projectConnections = new ProjectConnectionsClientImpl(this);
         this.projectCapabilityHosts = new ProjectCapabilityHostsClientImpl(this);
         this.quotaTiers = new QuotaTiersClientImpl(this);
+        this.arcDeployments = new ArcDeploymentsClientImpl(this);
         this.agentApplications = new AgentApplicationsClientImpl(this);
         this.managedComputeDeployments = new ManagedComputeDeploymentsClientImpl(this);
         this.computeOperations = new ComputeOperationsClientImpl(this);
