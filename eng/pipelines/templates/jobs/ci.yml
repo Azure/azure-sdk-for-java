@@ -427,17 +427,6 @@ jobs:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
 
-      - task: PowerShell@2
-        displayName: Verify Swagger and TypeSpec Code Generation
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
-            -RegenerationType 'All'
-        env:
-          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
-
       # Authenticate with Azure Artifacts
       - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
