@@ -9,7 +9,7 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: Delete a private endpoint connection.
@@ -18,7 +18,8 @@ public final class HorizonDbPrivateEndpointConnectionsDeleteSamples {
      */
     public static void deleteAPrivateEndpointConnection(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateEndpointConnections()
-            .delete("exampleresourcegroup", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+            .delete("exampleresourcegroup", "examplecluster",
+                "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2026-07-30)
+
+- Azure Resource Manager Edge Zones client library for Java. This package contains Microsoft Azure SDK for Edge Zones Management SDK.  Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Other Changes
+
+- First GA release.
 
 ## 1.0.0-beta.3 (2026-05-08)
 
@@ -54,4 +62,3 @@ objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonPr
 ## 1.0.0-beta.1 (2024-04-24)
 
 - Azure Resource Manager Edge Zones client library for Java. This package contains Microsoft Azure SDK for Edge Zones Management SDK.  Package tag package-2024-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-

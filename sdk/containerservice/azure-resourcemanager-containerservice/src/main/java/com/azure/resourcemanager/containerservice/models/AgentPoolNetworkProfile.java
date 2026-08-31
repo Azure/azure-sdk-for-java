@@ -23,15 +23,6 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
     private List<IpTag> nodePublicIpTags;
 
     /*
-     * The resource IDs of public IP prefixes for node public IPs. At most one IPv4 and one IPv6 prefix may be
-     * specified. Order does not matter; the RP determines IP version from the referenced resource's
-     * publicIPAddressVersion. Requires enableNodePublicIP to be true on the agent pool. Mutually exclusive with the
-     * top-level nodePublicIPPrefixID property. Immutable after node pool creation. To change prefixes, delete and
-     * recreate the node pool. For more information, see https://aka.ms/aks/ipv6-ilpip
-     */
-    private List<String> nodePublicIPPrefixIDs;
-
-    /*
      * The port ranges that are allowed to access. The specified ranges are allowed to overlap.
      */
     private List<PortRange> allowedHostPorts;
@@ -42,15 +33,9 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
     private List<String> applicationSecurityGroups;
 
     /*
-     * Secondary network interface configurations for each VM in the agent pool. Each entry is a template: one physical
-     * NIC per entry is provisioned on every VM instance. These interfaces are created at agent pool creation time and
-     * are immutable. The length of the list must be less than the NIC capacity minus 1 for the VM size of the agent
-     * pool (AKS manages the primary NIC). For example, a Standard_D8a_v4 VM supports up to 4 NICs, so the maximum
-     * number of secondary interfaces allowed is 3. For mixed-SKU VM pools the effective capacity is the minimum across
-     * all SKUs: count(secondaryNetworkInterfaces) + 1 <= min(maxNICs). For more information, see
-     * https://aka.ms/aks/multi-nic
+     * DRANET settings of an agent pool.
      */
-    private List<AgentPoolNetworkInterface> secondaryNetworkInterfaces;
+    private DRANETProfile dranet;
 
     /**
      * Creates an instance of AgentPoolNetworkProfile class.
@@ -75,34 +60,6 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
      */
     public AgentPoolNetworkProfile withNodePublicIpTags(List<IpTag> nodePublicIpTags) {
         this.nodePublicIpTags = nodePublicIpTags;
-        return this;
-    }
-
-    /**
-     * Get the nodePublicIPPrefixIDs property: The resource IDs of public IP prefixes for node public IPs. At most one
-     * IPv4 and one IPv6 prefix may be specified. Order does not matter; the RP determines IP version from the
-     * referenced resource's publicIPAddressVersion. Requires enableNodePublicIP to be true on the agent pool. Mutually
-     * exclusive with the top-level nodePublicIPPrefixID property. Immutable after node pool creation. To change
-     * prefixes, delete and recreate the node pool. For more information, see https://aka.ms/aks/ipv6-ilpip.
-     * 
-     * @return the nodePublicIPPrefixIDs value.
-     */
-    public List<String> nodePublicIPPrefixIDs() {
-        return this.nodePublicIPPrefixIDs;
-    }
-
-    /**
-     * Set the nodePublicIPPrefixIDs property: The resource IDs of public IP prefixes for node public IPs. At most one
-     * IPv4 and one IPv6 prefix may be specified. Order does not matter; the RP determines IP version from the
-     * referenced resource's publicIPAddressVersion. Requires enableNodePublicIP to be true on the agent pool. Mutually
-     * exclusive with the top-level nodePublicIPPrefixID property. Immutable after node pool creation. To change
-     * prefixes, delete and recreate the node pool. For more information, see https://aka.ms/aks/ipv6-ilpip.
-     * 
-     * @param nodePublicIPPrefixIDs the nodePublicIPPrefixIDs value to set.
-     * @return the AgentPoolNetworkProfile object itself.
-     */
-    public AgentPoolNetworkProfile withNodePublicIPPrefixIDs(List<String> nodePublicIPPrefixIDs) {
-        this.nodePublicIPPrefixIDs = nodePublicIPPrefixIDs;
         return this;
     }
 
@@ -151,35 +108,22 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
     }
 
     /**
-     * Get the secondaryNetworkInterfaces property: Secondary network interface configurations for each VM in the agent
-     * pool. Each entry is a template: one physical NIC per entry is provisioned on every VM instance. These interfaces
-     * are created at agent pool creation time and are immutable. The length of the list must be less than the NIC
-     * capacity minus 1 for the VM size of the agent pool (AKS manages the primary NIC). For example, a Standard_D8a_v4
-     * VM supports up to 4 NICs, so the maximum number of secondary interfaces allowed is 3. For mixed-SKU VM pools the
-     * effective capacity is the minimum across all SKUs: count(secondaryNetworkInterfaces) + 1 &lt;= min(maxNICs). For
-     * more information, see https://aka.ms/aks/multi-nic.
+     * Get the dranet property: DRANET settings of an agent pool.
      * 
-     * @return the secondaryNetworkInterfaces value.
+     * @return the dranet value.
      */
-    public List<AgentPoolNetworkInterface> secondaryNetworkInterfaces() {
-        return this.secondaryNetworkInterfaces;
+    public DRANETProfile dranet() {
+        return this.dranet;
     }
 
     /**
-     * Set the secondaryNetworkInterfaces property: Secondary network interface configurations for each VM in the agent
-     * pool. Each entry is a template: one physical NIC per entry is provisioned on every VM instance. These interfaces
-     * are created at agent pool creation time and are immutable. The length of the list must be less than the NIC
-     * capacity minus 1 for the VM size of the agent pool (AKS manages the primary NIC). For example, a Standard_D8a_v4
-     * VM supports up to 4 NICs, so the maximum number of secondary interfaces allowed is 3. For mixed-SKU VM pools the
-     * effective capacity is the minimum across all SKUs: count(secondaryNetworkInterfaces) + 1 &lt;= min(maxNICs). For
-     * more information, see https://aka.ms/aks/multi-nic.
+     * Set the dranet property: DRANET settings of an agent pool.
      * 
-     * @param secondaryNetworkInterfaces the secondaryNetworkInterfaces value to set.
+     * @param dranet the dranet value to set.
      * @return the AgentPoolNetworkProfile object itself.
      */
-    public AgentPoolNetworkProfile
-        withSecondaryNetworkInterfaces(List<AgentPoolNetworkInterface> secondaryNetworkInterfaces) {
-        this.secondaryNetworkInterfaces = secondaryNetworkInterfaces;
+    public AgentPoolNetworkProfile withDranet(DRANETProfile dranet) {
+        this.dranet = dranet;
         return this;
     }
 
@@ -195,8 +139,8 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
         if (allowedHostPorts() != null) {
             allowedHostPorts().forEach(e -> e.validate());
         }
-        if (secondaryNetworkInterfaces() != null) {
-            secondaryNetworkInterfaces().forEach(e -> e.validate());
+        if (dranet() != null) {
+            dranet().validate();
         }
     }
 
@@ -208,14 +152,11 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("nodePublicIPTags", this.nodePublicIpTags,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("nodePublicIPPrefixIDs", this.nodePublicIPPrefixIDs,
-            (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("allowedHostPorts", this.allowedHostPorts,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("secondaryNetworkInterfaces", this.secondaryNetworkInterfaces,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dranet", this.dranet);
         return jsonWriter.writeEndObject();
     }
 
@@ -237,19 +178,14 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
                 if ("nodePublicIPTags".equals(fieldName)) {
                     List<IpTag> nodePublicIpTags = reader.readArray(reader1 -> IpTag.fromJson(reader1));
                     deserializedAgentPoolNetworkProfile.nodePublicIpTags = nodePublicIpTags;
-                } else if ("nodePublicIPPrefixIDs".equals(fieldName)) {
-                    List<String> nodePublicIPPrefixIDs = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAgentPoolNetworkProfile.nodePublicIPPrefixIDs = nodePublicIPPrefixIDs;
                 } else if ("allowedHostPorts".equals(fieldName)) {
                     List<PortRange> allowedHostPorts = reader.readArray(reader1 -> PortRange.fromJson(reader1));
                     deserializedAgentPoolNetworkProfile.allowedHostPorts = allowedHostPorts;
                 } else if ("applicationSecurityGroups".equals(fieldName)) {
                     List<String> applicationSecurityGroups = reader.readArray(reader1 -> reader1.getString());
                     deserializedAgentPoolNetworkProfile.applicationSecurityGroups = applicationSecurityGroups;
-                } else if ("secondaryNetworkInterfaces".equals(fieldName)) {
-                    List<AgentPoolNetworkInterface> secondaryNetworkInterfaces
-                        = reader.readArray(reader1 -> AgentPoolNetworkInterface.fromJson(reader1));
-                    deserializedAgentPoolNetworkProfile.secondaryNetworkInterfaces = secondaryNetworkInterfaces;
+                } else if ("dranet".equals(fieldName)) {
+                    deserializedAgentPoolNetworkProfile.dranet = DRANETProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
