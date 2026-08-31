@@ -503,7 +503,7 @@ jobs:
               ServiceDirectory: ${{parameters.ServiceDirectory}}
               ExcludePaths: ${{parameters.ExcludePaths}}
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            # POC: Build and Analyze remain enabled so their unique validation is preserved.
+            # Phase 1 keeps Build and Analyze enabled so their unique validation is preserved.
             # Clearing only this job's PackageInfo folder produces an empty test matrix.
             - task: PowerShell@2
               displayName: Classify PR changes for Java test matrix
@@ -514,7 +514,8 @@ jobs:
                 arguments: >
                   -DiffPath '$(Build.ArtifactStagingDirectory)/diff/diff.json'
                   -PackageInfoDirectory '$(Build.ArtifactStagingDirectory)/PackageInfo'
-              # Set the pipeline variable to true as a definition-level rollback switch.
+              # Define ForceFullValidation=true on the pipeline to disable test suppression
+              # without requiring a code change.
               env:
                 FORCE_FULL_VALIDATION: $(ForceFullValidation)
       MatrixFilters: ${{ parameters.MatrixFilters }}

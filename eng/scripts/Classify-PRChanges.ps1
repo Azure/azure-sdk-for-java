@@ -6,12 +6,12 @@
 Classifies pull request paths to determine whether Java test matrix jobs are required.
 
 .DESCRIPTION
-This is a proof-of-concept classifier for the unified Java pull request pipeline. It is
-deny-first and defaults unknown paths to full Java test validation. When every changed
-path has a specialized non-Java validation route, it clears the job-local PackageInfo
-directory so Create-PrJobMatrix produces an empty matrix.
+Classifies changes for the unified Java pull request pipeline. It is deny-first and
+defaults unknown paths to full Java test validation. When every changed path has a
+specialized non-Java validation route, it clears the job-local PackageInfo directory
+so Create-PrJobMatrix produces an empty matrix.
 
-Build and Analyze are intentionally not suppressed by this proof of concept.
+Build and Analyze remain enabled in this phase so their unique validation is preserved.
 
 .PARAMETER DiffPath
 Path to the diff.json file produced by Generate-PR-Diff.ps1. ChangedFiles and
@@ -31,8 +31,9 @@ script reports the classification without modifying PackageInfo.
 
 .PARAMETER ForceFullValidation
 Forces Java tests to remain enabled regardless of path classification. The
-pipeline can also enable this behavior through the FORCE_FULL_VALIDATION
-environment variable.
+pipeline can also enable this behavior by defining its ForceFullValidation
+variable as true, which is passed through the FORCE_FULL_VALIDATION environment
+variable.
 
 .PARAMETER PassThru
 Writes the classification object to the output pipeline for local diagnostics
@@ -110,7 +111,7 @@ function Get-PathClassification {
             'Version, dependency, BOM, and release inputs require Java build validation.'
     }
 
-    # Keep engineering changes conservative in the POC. These can alter all CI behavior.
+    # Keep engineering changes conservative because they can alter all CI behavior.
     if ($normalizedPath -match '^eng/') {
         return New-PathClassification $normalizedPath 'engineering-input' $true `
             'Engineering-system changes default to full Java validation.'
@@ -203,7 +204,7 @@ function Get-PRChangeClassification {
     return [PSCustomObject]@{
         DocumentationOnly = $documentationOnly
         ForceFullValidation = $ForceValidation
-        # Build and Analyze remain enabled until their unique checks are moved into preflight.
+        # These outputs are reserved diagnostics until later phases wire their owning jobs.
         RunBuild = $true
         RunAnalyze = $true
         RunTests = $runTests
@@ -240,6 +241,8 @@ foreach ($pathResult in $result.Paths) {
 
 Write-Host "PR change classification: RunBuild=$($result.RunBuild), RunAnalyze=$($result.RunAnalyze), RunTests=$($result.RunTests), RunDocs=$($result.RunDocs), RunCodegen=$($result.RunCodegen), RunEngTests=$($result.RunEngTests), ForceFullValidation=$($result.ForceFullValidation)"
 
+# RunTests controls PackageInfo removal below. The remaining output variables are
+# diagnostic/reserved signals for subsequent rollout phases.
 foreach ($variableName in @(
         'DocumentationOnly',
         'RunBuild',
