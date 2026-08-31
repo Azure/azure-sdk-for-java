@@ -406,6 +406,11 @@ jobs:
           version: 22.x
         displayName: Use Node.js 22.x
 
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+        parameters:
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
+          registryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
+
       - task: PowerShell@2
         displayName: Verify Code Generation for Pull Request
         inputs:
@@ -413,6 +418,8 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
@@ -421,6 +428,8 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:

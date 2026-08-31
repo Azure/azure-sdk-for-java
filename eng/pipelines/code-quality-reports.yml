@@ -40,6 +40,7 @@ extends:
                         - '**/*.xml'
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
+                        - 'eng/code-quality-reports'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'
@@ -61,6 +62,21 @@ extends:
               - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
                 parameters:
                   JobType: 'linting'
+
+              # Authenticate with Azure Artifacts before installing the repository-local lint extensions.
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
+              - task: Maven@4
+                displayName: 'Install SDK Build Tools'
+                inputs:
+                  mavenPomFile: eng/code-quality-reports/pom.xml
+                  goals: 'install'
+                  options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true'
+                  mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: $(JavaBuildVersion)
+                  jdkArchitectureOption: 'x64'
+                  publishJUnitResults: false
 
               # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
               # is for FromSource runs or, in the case of code quality reports, a run that needs to build
@@ -87,9 +103,6 @@ extends:
                     -LintingPipelineVariable "LintingGoals"
                   pwsh: true
                 displayName: 'Generate Linting Commands'
-
-              # Authenticate with Azure Artifacts
-              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
               - task: Maven@4
                 displayName: 'Build and Run Linting'
