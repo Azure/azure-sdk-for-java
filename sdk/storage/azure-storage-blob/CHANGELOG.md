@@ -8,8 +8,8 @@
 
 ### Bugs Fixed
 
-- Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
-  RFC 9110-conformant `If-Match` values.
+- Fixed conditional requests, including SDK-generated consistency locks for retries, chunked downloads, input streams,
+  and seekable reads, to accept legacy unquoted ETags while sending RFC 9110-compliant header values.
 
 ### Other Changes
 

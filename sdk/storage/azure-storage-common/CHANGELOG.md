@@ -4,9 +4,14 @@
 
 ### Features Added
 
+- Added `StorageEtagPolicy`, which normalizes Storage ETags on requests and responses. `ScrubEtagPolicy` retains its
+  existing response-only behavior for compatibility.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed Storage conditional requests to accept legacy unquoted ETags while sending RFC 9110-compliant header values.
 
 ### Other Changes
 

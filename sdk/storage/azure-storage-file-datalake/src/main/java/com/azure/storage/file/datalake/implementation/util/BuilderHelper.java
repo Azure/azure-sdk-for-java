@@ -39,7 +39,7 @@ import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageEtagPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -118,6 +118,8 @@ public final class BuilderHelper {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
+        // Normalize ETag condition headers before authentication because Shared Key includes them in the signature.
+        policies.add(new StorageEtagPolicy());
 
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
@@ -142,8 +144,6 @@ public final class BuilderHelper {
         policies.add(getResponseValidationPolicy());
 
         policies.add(new HttpLoggingPolicy(logOptions));
-
-        policies.add(new ScrubEtagPolicy());
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)

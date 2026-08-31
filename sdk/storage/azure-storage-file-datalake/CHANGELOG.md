@@ -7,6 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed conditional requests to accept legacy unquoted ETags while sending RFC 9110-compliant header values.
+
 - Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
   name a second time, causing subsequent requests made through that client to target a double-encoded path when the
   name contained characters such as `%`, `#`, or a space.
@@ -897,4 +900,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-
