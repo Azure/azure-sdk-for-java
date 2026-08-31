@@ -3,6 +3,7 @@
 ### 4.83.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for hierarchical (sub)partition keys whose last path is `/id`. When the last partition key path is `/id`, point operations, bulk operations and `readMany` now automatically append the item's `id` to the partition key. - See [PR 49709](https://github.com/Azure/azure-sdk-for-java/pull/49709)
 
 #### Breaking Changes
 
@@ -15,7 +16,6 @@
 #### Features Added
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
-* Added support for hierarchical (sub)partition keys whose last path is `/id`. When the last partition key path is `/id`, point operations, bulk operations and `readMany` now automatically append the item's `id` to the partition key. - See [PR 49709](https://github.com/Azure/azure-sdk-for-java/pull/49709).
 
 #### Bugs Fixed
 * Fixed a possible delay of PPCB failback when the SDK has never received a successful address response for the affected partition before failover, which could impact tail latency in certain workloads - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
