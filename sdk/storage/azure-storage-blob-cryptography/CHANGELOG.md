@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed encrypted downloads to apply the initial blob version lock when request conditions are omitted and to send the
+  generated `If-Match` value in RFC 9110-conformant form.
+
 ### Other Changes
 
 ## 12.35.0-beta.1 (2026-07-28)
@@ -737,4 +740,3 @@ and
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports client side encryption for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
