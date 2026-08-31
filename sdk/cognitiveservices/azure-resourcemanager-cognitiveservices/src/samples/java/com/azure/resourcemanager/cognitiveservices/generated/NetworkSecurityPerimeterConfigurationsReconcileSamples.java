@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ReconcileNetworkSecurityPerimeterConfigurations.json
+     * x-ms-original-file: 2026-07-01/ReconcileNetworkSecurityPerimeterConfigurations.json
      */
     /**
      * Sample code: ReconcileNetworkSecurityPerimeterConfigurations.

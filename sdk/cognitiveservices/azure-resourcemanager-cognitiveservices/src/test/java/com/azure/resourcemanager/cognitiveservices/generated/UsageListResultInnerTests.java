@@ -15,18 +15,18 @@ public final class UsageListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageListResultInner model = BinaryData.fromString(
-            "{\"nextLink\":\"mohctb\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"ndnvo\",\"localizedValue\":\"ujjugwdkcglh\"},\"quotaPeriod\":\"azjdyggd\",\"limit\":92.2174087854439,\"currentValue\":3.8497339257224095,\"nextResetTime\":\"ofqweykhmenevfye\",\"status\":\"Blocked\",\"scopeType\":\"Classic\",\"scopeId\":\"cibvyvdcsitynn\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"ctehfiqscjey\",\"localizedValue\":\"hezrkgq\"},\"quotaPeriod\":\"jrefovgmkqsle\",\"limit\":97.29868657736189,\"currentValue\":91.19923353577501,\"nextResetTime\":\"k\",\"status\":\"Included\",\"scopeType\":\"Classic\",\"scopeId\":\"gjcrcczsqpjhvm\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"ysou\",\"localizedValue\":\"e\"},\"quotaPeriod\":\"noae\",\"limit\":94.26749513394212,\"currentValue\":97.24576844160318,\"nextResetTime\":\"rpmopjmc\",\"status\":\"Included\",\"scopeType\":\"Regional\",\"scopeId\":\"thfuiuaodsfcpkvx\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"zmyzydagf\",\"localizedValue\":\"xbezyiuokktwh\"},\"quotaPeriod\":\"xw\",\"limit\":48.933406236795584,\"currentValue\":60.16505440558948,\"nextResetTime\":\"ureximoryocfs\",\"status\":\"Included\",\"scopeType\":\"DataZone\",\"scopeId\":\"dystkiiuxhqyud\"}]}")
+            "{\"nextLink\":\"dkcglhsl\",\"value\":[{\"unit\":\"Count\",\"name\":{\"value\":\"dtjixhb\",\"localizedValue\":\"ofqweykhmenevfye\"},\"quotaPeriod\":\"whybcib\",\"limit\":53.581217264194194,\"currentValue\":12.89051185586626,\"nextResetTime\":\"ynnaam\",\"status\":\"InOverage\",\"scopeType\":\"Regional\",\"scopeId\":\"f\"},{\"unit\":\"Count\",\"name\":{\"value\":\"eypvhezrkg\",\"localizedValue\":\"c\"},\"quotaPeriod\":\"efovgmk\",\"limit\":33.12551044707579,\"currentValue\":38.22056349066922,\"nextResetTime\":\"yqjpkcatt\",\"status\":\"Unknown\",\"scopeType\":\"Regional\",\"scopeId\":\"cczsq\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"daj\",\"localizedValue\":\"ysou\"},\"quotaPeriod\":\"e\",\"limit\":21.05759367053658,\"currentValue\":74.55696647155128,\"nextResetTime\":\"fhyhltrpmopjmcma\",\"status\":\"Included\",\"scopeType\":\"Classic\",\"scopeId\":\"fu\"}]}")
             .toObject(UsageListResultInner.class);
-        Assertions.assertEquals("mohctb", model.nextLink());
-        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());
-        Assertions.assertEquals("ndnvo", model.value().get(0).name().value());
-        Assertions.assertEquals("ujjugwdkcglh", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("azjdyggd", model.value().get(0).quotaPeriod());
-        Assertions.assertEquals(92.2174087854439D, model.value().get(0).limit());
-        Assertions.assertEquals(3.8497339257224095D, model.value().get(0).currentValue());
-        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.value().get(0).status());
-        Assertions.assertEquals(QuotaScopeType.CLASSIC, model.value().get(0).scopeType());
-        Assertions.assertEquals("cibvyvdcsitynn", model.value().get(0).scopeId());
+        Assertions.assertEquals("dkcglhsl", model.nextLink());
+        Assertions.assertEquals(UnitType.COUNT, model.value().get(0).unit());
+        Assertions.assertEquals("dtjixhb", model.value().get(0).name().value());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("whybcib", model.value().get(0).quotaPeriod());
+        Assertions.assertEquals(53.581217264194194D, model.value().get(0).limit());
+        Assertions.assertEquals(12.89051185586626D, model.value().get(0).currentValue());
+        Assertions.assertEquals("ynnaam", model.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, model.value().get(0).status());
+        Assertions.assertEquals(QuotaScopeType.REGIONAL, model.value().get(0).scopeType());
+        Assertions.assertEquals("f", model.value().get(0).scopeId());
     }
 }

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricName model = BinaryData.fromString("{\"value\":\"bvvnchrkcciw\",\"localizedValue\":\"juqk\"}")
-            .toObject(MetricName.class);
-        Assertions.assertEquals("bvvnchrkcciw", model.value());
-        Assertions.assertEquals("juqk", model.localizedValue());
+        MetricName model
+            = BinaryData.fromString("{\"value\":\"ocfs\",\"localizedValue\":\"s\"}").toObject(MetricName.class);
+        Assertions.assertEquals("ocfs", model.value());
+        Assertions.assertEquals("s", model.localizedValue());
     }
 }

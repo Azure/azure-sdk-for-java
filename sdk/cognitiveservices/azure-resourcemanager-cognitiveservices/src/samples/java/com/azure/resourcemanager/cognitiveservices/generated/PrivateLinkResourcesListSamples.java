@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ListPrivateLinkResources.json
+     * x-ms-original-file: 2026-07-01/ListPrivateLinkResources.json
      */
     /**
      * Sample code: ListPrivateLinkResources.

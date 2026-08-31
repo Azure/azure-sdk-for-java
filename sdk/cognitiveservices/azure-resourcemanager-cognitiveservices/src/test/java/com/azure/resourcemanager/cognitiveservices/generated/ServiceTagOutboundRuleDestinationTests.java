@@ -14,27 +14,27 @@ public final class ServiceTagOutboundRuleDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTagOutboundRuleDestination model = BinaryData.fromString(
-            "{\"serviceTag\":\"jfdoesxxhm\",\"protocol\":\"dbckyo\",\"portRanges\":\"xkxhnegknjzrbhtm\",\"action\":\"Deny\",\"addressPrefixes\":[\"kaobrl\",\"pgsn\",\"agnchjhgemuowaky\",\"a\"]}")
+            "{\"serviceTag\":\"izmoaeds\",\"protocol\":\"wuived\",\"portRanges\":\"gyeewxeiq\",\"action\":\"Deny\",\"addressPrefixes\":[\"omguamlj\"]}")
             .toObject(ServiceTagOutboundRuleDestination.class);
-        Assertions.assertEquals("jfdoesxxhm", model.serviceTag());
-        Assertions.assertEquals("dbckyo", model.protocol());
-        Assertions.assertEquals("xkxhnegknjzrbhtm", model.portRanges());
+        Assertions.assertEquals("izmoaeds", model.serviceTag());
+        Assertions.assertEquals("wuived", model.protocol());
+        Assertions.assertEquals("gyeewxeiq", model.portRanges());
         Assertions.assertEquals(RuleAction.DENY, model.action());
-        Assertions.assertEquals("kaobrl", model.addressPrefixes().get(0));
+        Assertions.assertEquals("omguamlj", model.addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTagOutboundRuleDestination model = new ServiceTagOutboundRuleDestination().withServiceTag("jfdoesxxhm")
-            .withProtocol("dbckyo")
-            .withPortRanges("xkxhnegknjzrbhtm")
+        ServiceTagOutboundRuleDestination model = new ServiceTagOutboundRuleDestination().withServiceTag("izmoaeds")
+            .withProtocol("wuived")
+            .withPortRanges("gyeewxeiq")
             .withAction(RuleAction.DENY)
-            .withAddressPrefixes(Arrays.asList("kaobrl", "pgsn", "agnchjhgemuowaky", "a"));
+            .withAddressPrefixes(Arrays.asList("omguamlj"));
         model = BinaryData.fromObject(model).toObject(ServiceTagOutboundRuleDestination.class);
-        Assertions.assertEquals("jfdoesxxhm", model.serviceTag());
-        Assertions.assertEquals("dbckyo", model.protocol());
-        Assertions.assertEquals("xkxhnegknjzrbhtm", model.portRanges());
+        Assertions.assertEquals("izmoaeds", model.serviceTag());
+        Assertions.assertEquals("wuived", model.protocol());
+        Assertions.assertEquals("gyeewxeiq", model.portRanges());
         Assertions.assertEquals(RuleAction.DENY, model.action());
-        Assertions.assertEquals("kaobrl", model.addressPrefixes().get(0));
+        Assertions.assertEquals("omguamlj", model.addressPrefixes().get(0));
     }
 }

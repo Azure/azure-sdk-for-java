@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ResourceProviderCalculateModelCapacitySamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/CalculateModelCapacity.json
+     * x-ms-original-file: 2026-07-01/CalculateModelCapacity.json
      */
     /**
      * Sample code: Calculate Model Capacity.

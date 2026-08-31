@@ -14,18 +14,17 @@ public final class OutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRule model = BinaryData.fromString(
-            "{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"fnjyix\",\"parentRuleNames\":[\"ratqxmbjro\",\"mzznvalqjrhuzgfx\",\"njt\",\"usllywpvtiotz\"]}")
+            "{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Provisioning\",\"errorInformation\":\"xvgpiude\",\"parentRuleNames\":[\"sxze\",\"paxwkufyk\"]}")
             .toObject(OutboundRule.class);
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.category());
         Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundRule model
-            = new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.PROVISIONING);
+        OutboundRule model = new OutboundRule().withCategory(RuleCategory.REQUIRED).withStatus(RuleStatus.PROVISIONING);
         model = BinaryData.fromObject(model).toObject(OutboundRule.class);
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.category());
         Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
     }
 }

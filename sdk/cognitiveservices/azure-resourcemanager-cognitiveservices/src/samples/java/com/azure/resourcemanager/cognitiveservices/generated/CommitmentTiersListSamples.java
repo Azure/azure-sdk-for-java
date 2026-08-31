@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class CommitmentTiersListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ListCommitmentTiers.json
+     * x-ms-original-file: 2026-07-01/ListCommitmentTiers.json
      */
     /**
      * Sample code: ListCommitmentTiers.

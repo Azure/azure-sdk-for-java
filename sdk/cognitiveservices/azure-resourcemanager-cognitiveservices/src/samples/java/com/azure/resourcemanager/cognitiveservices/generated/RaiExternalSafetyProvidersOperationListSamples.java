@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiExternalSafetyProvidersOperationListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ListRaiExternalSafetyProviders.json
+     * x-ms-original-file: 2026-07-01/ListRaiExternalSafetyProviders.json
      */
     /**
      * Sample code: ListRaiExternalSafetyProviders.

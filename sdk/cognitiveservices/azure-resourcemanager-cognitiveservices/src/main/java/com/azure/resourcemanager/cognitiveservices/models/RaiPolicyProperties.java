@@ -48,12 +48,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
      */
     private List<SafetyProviderConfig> safetyProviders;
 
-    /*
-     * Egress (outbound network) policy controlling which external endpoints sandboxed
-     * agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
-     */
-    private RaiEgressPolicyConfig egressPolicy;
-
     /**
      * Creates an instance of RaiPolicyProperties class.
      */
@@ -174,28 +168,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     }
 
     /**
-     * Get the egressPolicy property: Egress (outbound network) policy controlling which external endpoints sandboxed
-     * agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
-     * 
-     * @return the egressPolicy value.
-     */
-    public RaiEgressPolicyConfig egressPolicy() {
-        return this.egressPolicy;
-    }
-
-    /**
-     * Set the egressPolicy property: Egress (outbound network) policy controlling which external endpoints sandboxed
-     * agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
-     * 
-     * @param egressPolicy the egressPolicy value to set.
-     * @return the RaiPolicyProperties object itself.
-     */
-    public RaiPolicyProperties withEgressPolicy(RaiEgressPolicyConfig egressPolicy) {
-        this.egressPolicy = egressPolicy;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -209,7 +181,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("safetyProviders", this.safetyProviders,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("egressPolicy", this.egressPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -246,8 +217,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
                     List<SafetyProviderConfig> safetyProviders
                         = reader.readArray(reader1 -> SafetyProviderConfig.fromJson(reader1));
                     deserializedRaiPolicyProperties.safetyProviders = safetyProviders;
-                } else if ("egressPolicy".equals(fieldName)) {
-                    deserializedRaiPolicyProperties.egressPolicy = RaiEgressPolicyConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
