@@ -29,6 +29,11 @@ public enum FoundryFeaturesOptInKeys {
     INSIGHTS_V1_PREVIEW("Insights=V1Preview"),
 
     /**
+     * Enum value AgentInsights=V1Preview.
+     */
+    AGENT_INSIGHTS_V1_PREVIEW("AgentInsights=V1Preview"),
+
+    /**
      * Enum value MemoryStores=V1Preview.
      */
     MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview"),

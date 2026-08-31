@@ -62,10 +62,12 @@ import java.util.stream.Stream;
     serviceClients = {
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
+        BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
+        BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
@@ -680,5 +682,25 @@ public final class AgentsClientBuilder
     @Generated
     public ToolboxesClient buildToolboxesClient() {
         return new ToolboxesClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of BetaAgentEndpointConversationsAsyncClient class.
+     *
+     * @return an instance of BetaAgentEndpointConversationsAsyncClient.
+     */
+    @Generated
+    public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
+        return new BetaAgentEndpointConversationsAsyncClient(buildInnerClient().getBetaAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of BetaAgentEndpointConversationsClient class.
+     *
+     * @return an instance of BetaAgentEndpointConversationsClient.
+     */
+    @Generated
+    public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
+        return new BetaAgentEndpointConversationsClient(buildInnerClient().getBetaAgentEndpointConversations());
     }
 }
