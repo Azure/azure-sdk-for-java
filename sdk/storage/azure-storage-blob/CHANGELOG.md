@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
+  RFC 9110-conformant `If-Match` values.
+
 ### Other Changes
 
 ## 12.36.0-beta.1 (2026-07-28)

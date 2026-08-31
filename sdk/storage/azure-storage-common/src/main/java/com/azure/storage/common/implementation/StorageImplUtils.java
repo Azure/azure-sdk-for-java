@@ -166,12 +166,15 @@ public class StorageImplUtils {
 
     /**
      * Converts a potentially unquoted ETag into an RFC 9110 entity-tag value suitable for use in HTTP conditions.
+
+     * Storage historically exposed service-returned ETags without quotes, so both that legacy representation and the
+     * RFC-compliant representation are accepted. Response values remain unchanged for customer compatibility.
      *
      * @param eTag ETag value to normalize.
      * @return An RFC 9110 conformant entity-tag, or the original value when no conversion is needed.
      */
     public static String toETagHeaderValue(String eTag) {
-        if (eTag == null || eTag.isEmpty() || "*".equals(eTag)) {
+        if (eTag == null || eTag.isEmpty() || Constants.HeaderConstants.ETAG_WILDCARD.equals(eTag)) {
             return eTag;
         }
 

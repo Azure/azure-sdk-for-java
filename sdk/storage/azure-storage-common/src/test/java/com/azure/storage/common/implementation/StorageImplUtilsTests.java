@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -138,8 +139,9 @@ public class StorageImplUtilsTests {
     }
 
     private static Stream<Arguments> etagValues() {
-        return Stream.of(Arguments.of(null, null), Arguments.of("", ""), Arguments.of("*", "*"),
+        return Stream.of(Arguments.of(null, null), Arguments.of("", ""),
+            Arguments.of(Constants.HeaderConstants.ETAG_WILDCARD, Constants.HeaderConstants.ETAG_WILDCARD),
             Arguments.of("0x8DABC", "\"0x8DABC\""), Arguments.of("\"0x8DABC\"", "\"0x8DABC\""),
-            Arguments.of("W/\"0x8DABC\"", "W/\"0x8DABC\""), Arguments.of("\"", "\"\"\""));
+            Arguments.of("W/\"0x8DABC\"", "W/\"0x8DABC\""), Arguments.of("\"\"", "\"\""));
     }
 }
