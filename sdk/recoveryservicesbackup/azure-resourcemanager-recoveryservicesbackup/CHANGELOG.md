@@ -1,40 +1,17 @@
 # Release History
 
-## 1.8.0 (2026-08-29)
+## 1.8.0 (2026-08-31)
 
 - Azure Resource Manager Recovery Services Backup client library for Java. This package contains Microsoft Azure SDK for Recovery Services Backup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package api-version 2026-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-
-### Breaking Changes
-
-#### `models.OperationStatusProvisionIlrExtendedInfo` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `java.lang.String objectType()` -> `java.lang.String objectType()`
-* `toJson(com.azure.json.JsonWriter)` was removed
-* `models.InstantItemRecoveryTarget recoveryTarget()` -> `models.InstantItemRecoveryTarget recoveryTarget()`
-
-#### `models.InstantItemRecoveryTarget` was modified
-
-* `java.util.List clientScripts()` -> `java.util.List clientScripts()`
-* `toJson(com.azure.json.JsonWriter)` was removed
-* `fromJson(com.azure.json.JsonReader)` was removed
 
 ### Features Added
 
 * `models.InstantItemRecoveryOperationResultRequest` was added
 
-#### `models.OperationStatusProvisionIlrExtendedInfo` was modified
-
-* `innerModel()` was added
-
-#### `models.InstantItemRecoveryTarget` was modified
-
-* `innerModel()` was added
-
 #### `models.ItemLevelRecoveryConnections` was modified
 
-* `listInstantItemRecoveryOperationResultWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.InstantItemRecoveryOperationResultRequest,com.azure.core.util.Context)` was added
 * `listInstantItemRecoveryOperationResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.InstantItemRecoveryOperationResultRequest)` was added
+* `listInstantItemRecoveryOperationResultWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.InstantItemRecoveryOperationResultRequest,com.azure.core.util.Context)` was added
 
 ## 1.7.0 (2026-08-13)
 

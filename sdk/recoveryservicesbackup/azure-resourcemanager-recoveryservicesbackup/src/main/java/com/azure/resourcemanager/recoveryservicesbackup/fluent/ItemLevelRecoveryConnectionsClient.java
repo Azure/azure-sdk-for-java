@@ -8,9 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryOperationResultRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
 
 /**
  * An instance of this class provides access to all the operations defined in ItemLevelRecoveryConnectionsClient.
@@ -118,9 +118,9 @@ public interface ItemLevelRecoveryConnectionsClient {
      * @return target details for file / folder restore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultWithResponse(
-        String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
-        String recoveryPointId, InstantItemRecoveryOperationResultRequest body, Context context);
+    Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body, Context context);
 
     /**
      * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
@@ -140,7 +140,7 @@ public interface ItemLevelRecoveryConnectionsClient {
      * @return target details for file / folder restore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InstantItemRecoveryTargetInner listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
+    InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         InstantItemRecoveryOperationResultRequest body);
 }

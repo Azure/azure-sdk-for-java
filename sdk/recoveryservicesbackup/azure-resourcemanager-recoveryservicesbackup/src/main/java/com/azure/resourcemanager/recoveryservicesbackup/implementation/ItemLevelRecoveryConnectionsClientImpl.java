@@ -23,9 +23,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryOperationResultRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
 import reactor.core.publisher.Mono;
 
 /**
@@ -109,7 +109,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/listInstantItemRecoveryOperationResult")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InstantItemRecoveryTargetInner>> listInstantItemRecoveryOperationResult(
+        Mono<Response<InstantItemRecoveryTarget>> listInstantItemRecoveryOperationResult(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
@@ -122,7 +122,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/listInstantItemRecoveryOperationResult")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultSync(
+        Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
@@ -352,7 +352,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InstantItemRecoveryTargetInner>> listInstantItemRecoveryOperationResultWithResponseAsync(
+    private Mono<Response<InstantItemRecoveryTarget>> listInstantItemRecoveryOperationResultWithResponseAsync(
         String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
         String recoveryPointId, InstantItemRecoveryOperationResultRequest body) {
         final String contentType = "application/json";
@@ -382,7 +382,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @return target details for file / folder restore on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultAsync(String resourceGroupName,
+    private Mono<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultAsync(String resourceGroupName,
         String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         InstantItemRecoveryOperationResultRequest body) {
         return listInstantItemRecoveryOperationResultWithResponseAsync(resourceGroupName, vaultName, fabricName,
@@ -408,7 +408,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @return target details for file / folder restore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InstantItemRecoveryTargetInner> listInstantItemRecoveryOperationResultWithResponse(
+    public Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(
         String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
         String recoveryPointId, InstantItemRecoveryOperationResultRequest body, Context context) {
         final String contentType = "application/json";
@@ -436,8 +436,8 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @return target details for file / folder restore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstantItemRecoveryTargetInner listInstantItemRecoveryOperationResult(String resourceGroupName,
-        String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+    public InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         InstantItemRecoveryOperationResultRequest body) {
         return listInstantItemRecoveryOperationResultWithResponse(resourceGroupName, vaultName, fabricName,
             containerName, protectedItemName, recoveryPointId, body, Context.NONE).getValue();

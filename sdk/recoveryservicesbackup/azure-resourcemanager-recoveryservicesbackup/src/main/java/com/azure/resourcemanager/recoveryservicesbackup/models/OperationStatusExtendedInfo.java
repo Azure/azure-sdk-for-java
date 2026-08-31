@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusProvisionIlrExtendedInfoInner;
 import java.io.IOException;
 
 /**
@@ -78,7 +77,7 @@ public class OperationStatusExtendedInfo implements JsonSerializable<OperationSt
                 } else if ("OperationStatusJobsExtendedInfo".equals(discriminatorValue)) {
                     return OperationStatusJobsExtendedInfo.fromJson(readerToUse.reset());
                 } else if ("OperationStatusProvisionILRExtendedInfo".equals(discriminatorValue)) {
-                    return OperationStatusProvisionIlrExtendedInfoInner.fromJson(readerToUse.reset());
+                    return OperationStatusProvisionIlrExtendedInfo.fromJson(readerToUse.reset());
                 } else if ("OperationStatusValidateOperationExtendedInfo".equals(discriminatorValue)) {
                     return OperationStatusValidateOperationExtendedInfo.fromJson(readerToUse.reset());
                 } else {

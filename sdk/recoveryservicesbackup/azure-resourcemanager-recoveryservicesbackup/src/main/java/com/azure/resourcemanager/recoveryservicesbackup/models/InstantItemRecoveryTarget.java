@@ -4,25 +4,74 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of InstantItemRecoveryTarget.
+ * Target details for file / folder restore.
  */
-public interface InstantItemRecoveryTarget {
+@Immutable
+public final class InstantItemRecoveryTarget implements JsonSerializable<InstantItemRecoveryTarget> {
+    /*
+     * List of client scripts.
+     */
+    private List<ClientScriptForConnect> clientScripts;
+
     /**
-     * Gets the clientScripts property: List of client scripts.
+     * Creates an instance of InstantItemRecoveryTarget class.
+     */
+    private InstantItemRecoveryTarget() {
+    }
+
+    /**
+     * Get the clientScripts property: List of client scripts.
      * 
      * @return the clientScripts value.
      */
-    List<ClientScriptForConnect> clientScripts();
+    public List<ClientScriptForConnect> clientScripts() {
+        return this.clientScripts;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.recoveryservicesbackup.fluent.models.InstantItemRecoveryTargetInner
-     * object.
-     * 
-     * @return the inner object.
+     * {@inheritDoc}
      */
-    InstantItemRecoveryTargetInner innerModel();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("clientScripts", this.clientScripts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstantItemRecoveryTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstantItemRecoveryTarget if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstantItemRecoveryTarget.
+     */
+    public static InstantItemRecoveryTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstantItemRecoveryTarget deserializedInstantItemRecoveryTarget = new InstantItemRecoveryTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientScripts".equals(fieldName)) {
+                    List<ClientScriptForConnect> clientScripts
+                        = reader.readArray(reader1 -> ClientScriptForConnect.fromJson(reader1));
+                    deserializedInstantItemRecoveryTarget.clientScripts = clientScripts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstantItemRecoveryTarget;
+        });
+    }
 }
