@@ -21,7 +21,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObj
  */
 public final class BackupInstancesValidateForRestoreSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ValidateRestore.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/ValidateRestore.json
      */
     /**
      * Sample code: Validate Restore.
@@ -61,7 +61,7 @@ public final class BackupInstancesValidateForRestoreSamples {
                             "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
                         .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
                             .withUserAssignedIdentityArmUrl(
-                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
+                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                         .withRecoveryPointId("hardcodedRP")),
                 com.azure.core.util.Context.NONE);
     }

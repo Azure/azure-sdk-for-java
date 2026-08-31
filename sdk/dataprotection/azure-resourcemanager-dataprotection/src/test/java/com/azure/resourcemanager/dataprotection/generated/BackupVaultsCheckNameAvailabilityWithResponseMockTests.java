@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class BackupVaultsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"message\":\"vuhrylni\",\"nameAvailable\":false,\"reason\":\"gbzjedmstkv\"}";
+        String responseStr = "{\"message\":\"ihclafzv\",\"nameAvailable\":false,\"reason\":\"trsqqw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class BackupVaultsCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResult response = manager.backupVaults()
-            .checkNameAvailabilityWithResponse("isdju", "ggbqi",
-                new CheckNameAvailabilityRequest().withName("xkbsazgakgac").withType("cmjdmspof"),
+            .checkNameAvailabilityWithResponse("yls", "crpfbcunez",
+                new CheckNameAvailabilityRequest().withName("e").withType("lfwyfwlwxjwetn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vuhrylni", response.message());
+        Assertions.assertEquals("ihclafzv", response.message());
         Assertions.assertFalse(response.nameAvailable());
-        Assertions.assertEquals("gbzjedmstkv", response.reason());
+        Assertions.assertEquals("trsqqw", response.reason());
     }
 }

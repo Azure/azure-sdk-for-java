@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesValidateForRestoreMockTests {
     @Test
     public void testValidateForRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"a\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"oxgsgbpfgzdjtx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,17 +37,17 @@ public final class BackupInstancesValidateForRestoreMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperationJobExtendedInfo response = manager.backupInstances()
-            .validateForRestore("guwpi", "r", "jcivmmg",
+            .validateForRestore("zxfpxtgqsc", "avft", "uhdqazk",
                 new ValidateRestoreRequestObject().withRestoreRequestObject(new AzureBackupRestoreRequest()
                     .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("fiwrxgkn"))
-                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
-                    .withSourceResourceId("yinzqodfvpgs")
-                    .withResourceGuardOperationRequests(Arrays.asList("gsgbpfgzdjt"))
-                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                        .withUserAssignedIdentityArmUrl("bqvgaqv"))),
+                        .withRestoreLocation("guwpi"))
+                    .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
+                    .withSourceResourceId("jcivmmg")
+                    .withResourceGuardOperationRequests(Arrays.asList("fiwrxgkn"))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(true)
+                        .withUserAssignedIdentityArmUrl("nzqodfvpg"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("a", response.jobId());
+        Assertions.assertEquals("oxgsgbpfgzdjtx", response.jobId());
     }
 }

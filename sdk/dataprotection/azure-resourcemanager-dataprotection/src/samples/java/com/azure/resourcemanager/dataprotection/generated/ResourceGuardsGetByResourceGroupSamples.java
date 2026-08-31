@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ResourceGuardsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ResourceGuardCRUD/GetResourceGuard.json
+     * x-ms-original-file: 2026-04-01-preview/ResourceGuardCRUD/GetResourceGuard.json
      */
     /**
      * Sample code: Get ResourceGuard.

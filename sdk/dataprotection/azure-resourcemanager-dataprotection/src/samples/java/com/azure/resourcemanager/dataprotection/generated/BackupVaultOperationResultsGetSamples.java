@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupVaultOperationResultsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/VaultCRUD/GetOperationResultPatch.json
+     * x-ms-original-file: 2026-04-01-preview/VaultCRUD/GetOperationResultPatch.json
      */
     /**
      * Sample code: GetOperationResult Patch.

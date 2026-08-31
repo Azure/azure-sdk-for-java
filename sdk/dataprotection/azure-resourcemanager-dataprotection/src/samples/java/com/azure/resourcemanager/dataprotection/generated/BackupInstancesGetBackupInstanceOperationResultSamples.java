@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupInstancesGetBackupInstanceOperationResultSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/GetBackupInstanceOperationResult.json
      */
     /**
      * Sample code: Get BackupInstanceOperationResult.

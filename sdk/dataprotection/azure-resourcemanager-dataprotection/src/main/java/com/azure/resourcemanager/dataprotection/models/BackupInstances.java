@@ -313,12 +313,14 @@ public interface BackupInstances {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        ResumeProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
