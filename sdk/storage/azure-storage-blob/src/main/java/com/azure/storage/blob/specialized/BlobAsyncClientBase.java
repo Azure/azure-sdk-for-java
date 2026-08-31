@@ -1909,7 +1909,7 @@ public class BlobAsyncClientBase {
      * Returns the ranges that describe the blob's physical layout.
      *
      * <p>Each {@link BlobLayoutRange} is emitted as a paged item. Blob properties returned with a service page are
-     * available through {@link PagedResponse#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
+     * available through {@link Response#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
      * </p>
      *
      * @param options {@link BlobGetLayoutOptions}
@@ -1924,7 +1924,7 @@ public class BlobAsyncClientBase {
      * Returns the ranges that describe the blob's physical layout.
      *
      * <p>Each {@link BlobLayoutRange} is emitted as a paged item. Blob properties returned with a service page are
-     * available through {@link PagedResponse#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
+     * available through {@link Response#getHeaders()} when consuming the result with {@link PagedFlux#byPage()}.
      * </p>
      *
      * @param options {@link BlobGetLayoutOptions}

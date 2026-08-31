@@ -174,7 +174,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Returns the ranges that describe the file's physical layout.
      *
      * <p>Each {@link DataLakeFileLayoutRange} is emitted as a paged item. File properties returned with a service page
-     * are available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * are available through {@link Response#getHeaders()} when consuming the result with
      * {@link PagedFlux#byPage()}.</p>
      * <p>
      * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API

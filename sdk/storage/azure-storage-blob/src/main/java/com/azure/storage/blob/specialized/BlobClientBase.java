@@ -1887,7 +1887,7 @@ public class BlobClientBase {
      * Returns the ranges that describe the blob's physical layout.
      *
      * <p>Each {@link BlobLayoutRange} is returned as a paged item. Blob properties returned with a service page are
-     * available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * available through {@link Response#getHeaders()} when consuming the result with
      * {@link PagedIterable#iterableByPage()}.</p>
      *
      * @param options {@link BlobGetLayoutOptions}
@@ -1902,7 +1902,7 @@ public class BlobClientBase {
      * Returns the ranges that describe the blob's physical layout.
      *
      * <p>Each {@link BlobLayoutRange} is returned as a paged item. Blob properties returned with a service page are
-     * available through {@link PagedResponse#getHeaders()} when consuming the result with
+     * available through {@link Response#getHeaders()} when consuming the result with
      * {@link PagedIterable#iterableByPage()}.</p>
      *
      * @param options {@link BlobGetLayoutOptions}
