@@ -359,10 +359,21 @@ jobs:
             Paths: $(SparseCheckoutDirectories)
             SkipCheckoutNone: true
 
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
+
+      # Authenticate npm to Azure Artifacts before any npm-backed Analyze steps run.
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+        parameters:
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
+
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
           CspellConfigPath: .vscode/cspell.json
           ContinueOnError: false
+          NpmConfigUserConfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - ${{ if eq(parameters.TestPipeline, true) }}:
         - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
@@ -415,15 +426,6 @@ jobs:
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
-
-      - task: UseNode@1
-        inputs:
-          version: 22.x
-        displayName: Use Node.js 22.x
-
-      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
-        parameters:
-          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - task: PowerShell@2
         displayName: Verify Swagger and TypeSpec Code Generation
