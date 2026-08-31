@@ -78,4 +78,10 @@ public final class RealtimeConversationItemType extends ExpandableStringEnum<Rea
     public static Collection<RealtimeConversationItemType> values() {
         return values(RealtimeConversationItemType.class);
     }
+
+    /**
+     * Static value message for RealtimeConversationItemType.
+     */
+    @Generated
+    public static final RealtimeConversationItemType MESSAGE = fromString("message");
 }

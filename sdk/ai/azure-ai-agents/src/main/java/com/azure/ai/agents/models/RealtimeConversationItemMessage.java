@@ -7,29 +7,34 @@ import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A single item within a Realtime conversation.
+ * The RealtimeConversationItemMessage model.
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public class RealtimeConversationItem implements JsonSerializable<RealtimeConversationItem> {
+public class RealtimeConversationItemMessage extends RealtimeConversationItem {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeConversationItemType type = RealtimeConversationItemType.fromString("RealtimeConversationItem");
+    private final RealtimeConversationItemType type = RealtimeConversationItemType.MESSAGE;
 
-    /**
-     * Creates an instance of RealtimeConversationItem class.
+    /*
+     * The role property.
      */
     @Generated
-    public RealtimeConversationItem() {
+    private RealtimeConversationItemMessageType role = RealtimeConversationItemMessageType.fromString("message");
+
+    /**
+     * Creates an instance of RealtimeConversationItemMessage class.
+     */
+    @Generated
+    public RealtimeConversationItemMessage() {
     }
 
     /**
@@ -38,8 +43,19 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
      * @return the type value.
      */
     @Generated
+    @Override
     public RealtimeConversationItemType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the role property: The role property.
+     *
+     * @return the role value.
+     */
+    @Generated
+    public RealtimeConversationItemMessageType getRole() {
+        return this.role;
     }
 
     /**
@@ -50,19 +66,20 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RealtimeConversationItem from the JsonReader.
+     * Reads an instance of RealtimeConversationItemMessage from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeConversationItem if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RealtimeConversationItem.
+     * @return An instance of RealtimeConversationItemMessage if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RealtimeConversationItemMessage.
      */
     @Generated
-    public static RealtimeConversationItem fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeConversationItemMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -71,7 +88,7 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                 while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = readerToUse.getFieldName();
                     readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
+                    if ("role".equals(fieldName)) {
                         discriminatorValue = readerToUse.getString();
                         break;
                     } else {
@@ -79,20 +96,12 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("message".equals(discriminatorValue)) {
-                    return RealtimeConversationItemMessage.fromJson(readerToUse.reset());
-                } else if ("function_call".equals(discriminatorValue)) {
-                    return RealtimeConversationItemFunctionCall.fromJson(readerToUse.reset());
-                } else if ("function_call_output".equals(discriminatorValue)) {
-                    return RealtimeConversationItemFunctionCallOutput.fromJson(readerToUse.reset());
-                } else if ("mcp_approval_response".equals(discriminatorValue)) {
-                    return RealtimeMCPApprovalResponse.fromJson(readerToUse.reset());
-                } else if ("mcp_list_tools".equals(discriminatorValue)) {
-                    return RealtimeMCPListTools.fromJson(readerToUse.reset());
-                } else if ("mcp_call".equals(discriminatorValue)) {
-                    return RealtimeMCPToolCall.fromJson(readerToUse.reset());
-                } else if ("mcp_approval_request".equals(discriminatorValue)) {
-                    return RealtimeMCPApprovalRequest.fromJson(readerToUse.reset());
+                if ("system".equals(discriminatorValue)) {
+                    return RealtimeConversationItemMessageSystem.fromJson(readerToUse.reset());
+                } else if ("user".equals(discriminatorValue)) {
+                    return RealtimeConversationItemMessageUser.fromJson(readerToUse.reset());
+                } else if ("assistant".equals(discriminatorValue)) {
+                    return RealtimeConversationItemMessageAssistant.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -101,20 +110,21 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
     }
 
     @Generated
-    static RealtimeConversationItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static RealtimeConversationItemMessage fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RealtimeConversationItem deserializedRealtimeConversationItem = new RealtimeConversationItem();
+            RealtimeConversationItemMessage deserializedRealtimeConversationItemMessage
+                = new RealtimeConversationItemMessage();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedRealtimeConversationItem.type
-                        = RealtimeConversationItemType.fromString(reader.getString());
+                if ("role".equals(fieldName)) {
+                    deserializedRealtimeConversationItemMessage.role
+                        = RealtimeConversationItemMessageType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedRealtimeConversationItem;
+            return deserializedRealtimeConversationItemMessage;
         });
     }
 }

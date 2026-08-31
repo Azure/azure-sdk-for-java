@@ -39,7 +39,7 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
      * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
      */
     @Generated
-    private RealtimeConversationItemFunctionCallObject1 object;
+    private RealtimeConversationItemObject object;
 
     /*
      * The status of the item. Has no effect on the conversation.
@@ -130,21 +130,8 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
      * @return the object value.
      */
     @Generated
-    public RealtimeConversationItemFunctionCallObject1 getObject() {
+    public RealtimeConversationItemObject getObject() {
         return this.object;
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemFunctionCallOutput object itself.
-     */
-    @Generated
-    public RealtimeConversationItemFunctionCallOutput setObject(RealtimeConversationItemFunctionCallObject1 object) {
-        this.object = object;
-        return this;
     }
 
     /**
@@ -271,7 +258,7 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
             String output = null;
             RealtimeConversationItemType type = RealtimeConversationItemType.FUNCTION_CALL_OUTPUT;
             String id = null;
-            RealtimeConversationItemFunctionCallObject1 object = null;
+            RealtimeConversationItemObject object = null;
             RealtimeConversationItemFunctionCallOutputStatus status = null;
             Long createdAt = null;
             String responseId = null;
@@ -288,7 +275,7 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("object".equals(fieldName)) {
-                    object = RealtimeConversationItemFunctionCallObject1.fromString(reader.getString());
+                    object = RealtimeConversationItemObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = RealtimeConversationItemFunctionCallOutputStatus.fromString(reader.getString());
                 } else if ("created_at".equals(fieldName)) {
@@ -312,5 +299,18 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
             deserializedRealtimeConversationItemFunctionCallOutput.name = name;
             return deserializedRealtimeConversationItemFunctionCallOutput;
         });
+    }
+
+    /**
+     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param object the object value to set.
+     * @return the RealtimeConversationItemFunctionCallOutput object itself.
+     */
+    @Generated
+    public RealtimeConversationItemFunctionCallOutput setObject(RealtimeConversationItemObject object) {
+        this.object = object;
+        return this;
     }
 }

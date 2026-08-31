@@ -310,7 +310,7 @@ public final class BetaAgentEndpointConversationsAsyncClient {
      *     max_output_tokens: BinaryData (Optional)
      *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request) (Required)
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
      *     audio (Optional): {
@@ -397,7 +397,7 @@ public final class BetaAgentEndpointConversationsAsyncClient {
      *     max_output_tokens: BinaryData (Optional)
      *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request) (Required)
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
      *     audio (Optional): {
@@ -473,7 +473,7 @@ public final class BetaAgentEndpointConversationsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request) (Required)
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      * }
      * }
      * </pre>
@@ -527,7 +527,7 @@ public final class BetaAgentEndpointConversationsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request) (Required)
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      * }
      * }
      * </pre>
@@ -561,7 +561,7 @@ public final class BetaAgentEndpointConversationsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request) (Required)
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      * }
      * }
      * </pre>

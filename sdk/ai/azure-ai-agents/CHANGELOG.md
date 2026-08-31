@@ -4,12 +4,24 @@
 
 ### Features Added
 
+- Added persisted realtime message items for voice-agent conversations:
+  `RealtimeConversationItemMessageSystem`, `RealtimeConversationItemMessageUser`, and
+  `RealtimeConversationItemMessageAssistant`, including role-specific content models and
+  `RealtimeConversationItemType.MESSAGE`.
+- Added `VoiceAgentInputTranscription.setLanguages(...)` and `setKeywords(...)`.
+- Added `WebSearchTool.setExternalWebAccess(...)` and `WebSearchToolboxTool.setExternalWebAccess(...)`.
+- Added `ImageGenToolModel.GPT_IMAGE_2` and `GPT_IMAGE_2_2026_04_21`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed realtime message deserialization through `RealtimeConversationItem` and `VoiceResponse.getOutput()` so
+  concrete message roles and the persisted `created_at` and `response_id` values are preserved.
+
 ### Other Changes
 
+- Updated the OpenAI TypeSpec model dependency to 1.26.0.
 - Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
 - Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
   advanced memory-store workflows, and agent optimization.

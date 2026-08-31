@@ -225,6 +225,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("prompt", this.prompt);
         jsonWriter.writeStringField("delay", this.delay == null ? null : this.delay.toString());
         jsonWriter.writeMapField("custom_speech", this.customSpeech, (writer, element) -> writer.writeString(element));
@@ -246,6 +248,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
         return jsonReader.readObject(reader -> {
             VoiceAgentInputTranscriptionModel model = null;
             String language = null;
+            List<String> languages = null;
+            List<String> keywords = null;
             String prompt = null;
             VoiceAgentAudioInputConfigTranscriptionDelay delay = null;
             Map<String, String> customSpeech = null;
@@ -257,6 +261,10 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
                     model = VoiceAgentInputTranscriptionModel.fromString(reader.getString());
                 } else if ("language".equals(fieldName)) {
                     language = reader.getString();
+                } else if ("languages".equals(fieldName)) {
+                    languages = reader.readArray(reader1 -> reader1.getString());
+                } else if ("keywords".equals(fieldName)) {
+                    keywords = reader.readArray(reader1 -> reader1.getString());
                 } else if ("prompt".equals(fieldName)) {
                     prompt = reader.getString();
                 } else if ("delay".equals(fieldName)) {
@@ -272,11 +280,77 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
             VoiceAgentInputTranscription deserializedVoiceAgentInputTranscription
                 = new VoiceAgentInputTranscription(model);
             deserializedVoiceAgentInputTranscription.language = language;
+            deserializedVoiceAgentInputTranscription.languages = languages;
+            deserializedVoiceAgentInputTranscription.keywords = keywords;
             deserializedVoiceAgentInputTranscription.prompt = prompt;
             deserializedVoiceAgentInputTranscription.delay = delay;
             deserializedVoiceAgentInputTranscription.customSpeech = customSpeech;
             deserializedVoiceAgentInputTranscription.phraseList = phraseList;
             return deserializedVoiceAgentInputTranscription;
         });
+    }
+
+    /*
+     * Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+     * format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.
+     */
+    @Generated
+    private List<String> languages;
+
+    /*
+     * Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and
+     * `gpt-live-transcribe`.
+     */
+    @Generated
+    private List<String> keywords;
+
+    /**
+     * Get the languages property: Possible languages of the input audio, in
+     * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and
+     * `gpt-live-transcribe`.
+     *
+     * @return the languages value.
+     */
+    @Generated
+    public List<String> getLanguages() {
+        return this.languages;
+    }
+
+    /**
+     * Set the languages property: Possible languages of the input audio, in
+     * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and
+     * `gpt-live-transcribe`.
+     *
+     * @param languages the languages value to set.
+     * @return the VoiceAgentInputTranscription object itself.
+     */
+    @Generated
+    public VoiceAgentInputTranscription setLanguages(List<String> languages) {
+        this.languages = languages;
+        return this;
+    }
+
+    /**
+     * Get the keywords property: Words or phrases to guide transcription of the input audio. Supported by
+     * `gpt-transcribe` and `gpt-live-transcribe`.
+     *
+     * @return the keywords value.
+     */
+    @Generated
+    public List<String> getKeywords() {
+        return this.keywords;
+    }
+
+    /**
+     * Set the keywords property: Words or phrases to guide transcription of the input audio. Supported by
+     * `gpt-transcribe` and `gpt-live-transcribe`.
+     *
+     * @param keywords the keywords value to set.
+     * @return the VoiceAgentInputTranscription object itself.
+     */
+    @Generated
+    public VoiceAgentInputTranscription setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+        return this;
     }
 }

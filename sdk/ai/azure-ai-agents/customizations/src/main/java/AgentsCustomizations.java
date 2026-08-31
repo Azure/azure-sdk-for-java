@@ -2,12 +2,15 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -28,8 +31,39 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void makeRealtimeMessageDiscriminatorsFinal(LibraryCustomization customization) {
+        for (String className : new String[] {
+            "RealtimeConversationItemMessage",
+            "RealtimeConversationItemMessageSystem",
+            "RealtimeConversationItemMessageUser",
+            "RealtimeConversationItemMessageAssistant" }) {
+            customization.getClass("com.azure.ai.agents.models", className)
+                .customizeAst(ast -> ast.getClassByName(className)
+                    .flatMap(clazz -> clazz.getFieldByName("type"))
+                    .ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL)));
+        }
+
+        for (String className : new String[] {
+            "RealtimeConversationItemMessageSystem",
+            "RealtimeConversationItemMessageUser",
+            "RealtimeConversationItemMessageAssistant" }) {
+            customization.getClass("com.azure.ai.agents.models", className).customizeAst(ast -> ast
+                .getClassByName(className)
+                .ifPresent(clazz -> {
+                    clazz.getFieldByName("role")
+                        .ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL));
+                    clazz.getMethodsByName("fromJson")
+                        .forEach(method -> method.findAll(AssignExpr.class).stream()
+                            .filter(assignment -> assignment.getTarget().toString().endsWith(".role"))
+                            .forEach(assignment -> assignment.findAncestor(ExpressionStmt.class)
+                                .ifPresent(ExpressionStmt::remove)));
+                }));
+        }
     }
 
     private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
