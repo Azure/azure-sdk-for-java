@@ -183,25 +183,41 @@ class VertxHttpClient implements HttpClient {
 
         if (body == null) {
             vertxRequest.send().onFailure(promise::fail);
+            return;
+        }
+
+        if ("100-continue".equalsIgnoreCase(azureRequest.getHeaders().getValue(HttpHeaderName.EXPECT))) {
+            // Send the headers and hold the body until the service accepts the expectation. If it answers with a
+            // final status instead, that response completes the request and the body is never written.
+            vertxRequest.continueHandler(
+                ignored -> writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, true));
+            vertxRequest.sendHead().onFailure(promise::fail);
         } else {
-            BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-            if (bodyContent instanceof ByteArrayContent
-                || bodyContent instanceof ByteBufferContent
-                || bodyContent instanceof StringContent
-                || bodyContent instanceof SerializableContent) {
-                // This cannot produce a NullPointerException for the BinaryDataContent types that trigger this as they
-                // are in-memory and have a length.
-                long contentLength = bodyContent.getLength();
-                vertxRequest.send(Buffer.buffer(bodyContent.toBytes()))
-                    .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
-                    .onFailure(promise::fail);
-            } else {
-                // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-                azureRequest.getBody()
-                    .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler,
-                        vertxRequest::drainHandler, vertxRequest::write, vertxRequest::writeQueueFull,
-                        vertxRequest::reset, vertxRequest::end, promise, progressReporter, contextView));
-            }
+            writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, false);
+        }
+    }
+
+    private void writeBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, BinaryData body, boolean headAlreadySent) {
+        BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+        if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof ByteBufferContent
+            || bodyContent instanceof StringContent
+            || bodyContent instanceof SerializableContent) {
+            // This cannot produce a NullPointerException for the BinaryDataContent types that trigger this as they
+            // are in-memory and have a length.
+            long contentLength = bodyContent.getLength();
+            Buffer buffer = Buffer.buffer(bodyContent.toBytes());
+            // Once the head has been sent the body must be written onto the open request rather than sent as a
+            // whole new request.
+            Future<Void> written = headAlreadySent ? vertxRequest.end(buffer) : vertxRequest.send(buffer).mapEmpty();
+            written.onSuccess(ignored -> reportProgress(contentLength, progressReporter)).onFailure(promise::fail);
+        } else {
+            // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
+            azureRequest.getBody()
+                .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler, vertxRequest::drainHandler,
+                    vertxRequest::write, vertxRequest::writeQueueFull, vertxRequest::reset, vertxRequest::end, promise,
+                    progressReporter, contextView));
         }
     }
 

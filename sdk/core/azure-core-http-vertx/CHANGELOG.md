@@ -3,6 +3,9 @@
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
+- Requests carrying the `Expect: 100-continue` header now perform the handshake: the headers are sent with
+  `sendHead()` and the request body is written from `continueHandler()`, rather than sending headers and body
+  together.
 
 ### Breaking Changes
 
