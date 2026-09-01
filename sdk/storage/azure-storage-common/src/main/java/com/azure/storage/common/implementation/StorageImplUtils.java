@@ -166,7 +166,7 @@ public class StorageImplUtils {
 
     /**
      * Converts a potentially unquoted ETag into an RFC 9110 entity-tag value suitable for use in HTTP conditions.
-
+    
      * Storage historically exposed service-returned ETags without quotes, so both that legacy representation and the
      * RFC-compliant representation are accepted. Response values remain unchanged for customer compatibility.
      *
