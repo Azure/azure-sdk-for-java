@@ -1,4 +1,4 @@
 directory: specification/containerservice/resource-manager/Microsoft.ContainerService/aks
-commit: d61b3ec5903df09ae74c9b48cee3c6f1abc0d044
+commit: 036696689876be9b9eb9680494011244e41950d8
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
