@@ -6,6 +6,8 @@
 - Requests carrying the `Expect: 100-continue` header now perform the handshake: the headers are sent with
   `sendHead()` and the request body is written from `continueHandler()`, rather than sending headers and body
   together.
+  If the service does not answer the expectation the body is sent after a one second fallback, so the request does
+  not stall.
 
 ### Breaking Changes
 
