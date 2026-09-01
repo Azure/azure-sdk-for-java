@@ -402,12 +402,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                         // Per AMQP 1.0 section 2.7.3, an absent or zero max-message-size on the remote ATTACH
                         // means the peer imposes no message size limit. Fall back to a bounded client-side
                         // default rather than treating it as a zero-byte limit that fails every send.
-                        logger.info("Remote peer did not advertise a max-message-size on link attach. "
+                        logger.info("Remote peer did not advertise a positive max-message-size on link attach. "
                             + "Using default link size: {}.", MAX_MESSAGE_LENGTH_BYTES);
-                        linkSize = MAX_MESSAGE_LENGTH_BYTES;
-                    } else {
-                        linkSize = clampToInt(remoteMaxMessageSize);
                     }
+
+                    linkSize = getRemoteMaxMessageSizeOrDefault(remoteMaxMessageSize);
 
                     return linkSize;
                 }));
@@ -452,16 +451,20 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                         final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
                         logger.verbose(
                             "Vendor property '{}' not found, non-numeric, or non-positive on link, "
-                                + "falling back to max-message-size: {}.",
+                                + "falling back to max-message-size or client default: {}.",
                             AmqpConstants.MAX_MESSAGE_BATCH_SIZE, remoteMaxMessageSize);
-                        if (remoteMaxMessageSize != null) {
-                            maxBatchSize = clampToInt(remoteMaxMessageSize);
-                        }
+                        maxBatchSize = getRemoteMaxMessageSizeOrDefault(remoteMaxMessageSize);
                     }
 
                     return maxBatchSize;
                 }));
         }
+    }
+
+    private static int getRemoteMaxMessageSizeOrDefault(UnsignedLong remoteMaxMessageSize) {
+        return remoteMaxMessageSize == null || remoteMaxMessageSize.longValue() == 0
+            ? MAX_MESSAGE_LENGTH_BYTES
+            : clampToInt(remoteMaxMessageSize);
     }
 
     /**

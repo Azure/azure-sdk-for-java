@@ -377,11 +377,11 @@ public class ReactorSenderTest {
     }
 
     /**
-     * Verifies that getMaxBatchSize returns 0 when both the vendor property and max-message-size are absent.
-     * The caller (ServiceBusSenderAsyncClient) handles this with DEFAULT_MAX_BATCH_SIZE_BYTES.
+     * Verifies that getMaxBatchSize uses the bounded client default when both the vendor property and
+     * max-message-size are absent.
      */
     @Test
-    public void testMaxBatchSizeReturnsZeroWhenBothAbsent() {
+    public void testMaxBatchSizeUsesDefaultWhenBothAbsent() {
         // Arrange — no vendor property and no max-message-size
         when(sender.getRemoteProperties()).thenReturn(null);
         when(sender.getRemoteMaxMessageSize()).thenReturn(null);
@@ -389,8 +389,31 @@ public class ReactorSenderTest {
         reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
             messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
 
-        // Act & Assert — returns 0, caller must handle
-        StepVerifier.create(reactorSender.getMaxBatchSize()).expectNext(0).expectComplete().verify(VERIFY_TIMEOUT);
+        // Act & Assert
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(ClientConstants.MAX_MESSAGE_LENGTH_BYTES)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMaxBatchSize uses the bounded client default when the vendor property is absent and
+     * max-message-size is explicitly zero.
+     */
+    @Test
+    public void testMaxBatchSizeUsesDefaultWhenRemoteMaxMessageSizeZero() {
+        // Arrange
+        when(sender.getRemoteProperties()).thenReturn(null);
+        when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(0));
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(ClientConstants.MAX_MESSAGE_LENGTH_BYTES)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**

@@ -8,6 +8,13 @@
 
 ### Bugs Fixed
 
+- Fixed `ReactorSender` treating an absent `max-message-size` on the remote ATTACH frame as a zero-byte limit,
+  which failed every send with "Size of the payload exceeded maximum message size: 0 kb" against brokers that
+  do not advertise the field (for example ActiveMQ Artemis). Per AMQP 1.0 section 2.7.3, an absent or zero
+  value means the peer imposes no limit; the link and batch-size fallback now use a 256 KB client default in
+  that case. Remote values larger than `Integer.MAX_VALUE` are now clamped instead of overflowing.
+  ([#49847](https://github.com/Azure/azure-sdk-for-java/issues/49847))
+
 ### Other Changes
 
 ## 2.13.0-beta.1 (2026-08-27)
@@ -22,13 +29,6 @@
 
 ### Bugs Fixed
 
-- Fixed `ReactorSender` treating an absent `max-message-size` on the remote ATTACH frame as a zero-byte limit,
-  which failed every send with "Size of the payload exceeded maximum message size: 0 kb" against brokers that
-  do not advertise the field (for example ActiveMQ Artemis). Per AMQP 1.0 section 2.7.3, an absent or zero
-  value means the peer imposes no limit; the link now falls back to a 256 KB default in that case. Remote
-  values larger than `Integer.MAX_VALUE` are now clamped instead of overflowing the link size and the
-  max-message-size fallback of the batch size.
-  ([#49847](https://github.com/Azure/azure-sdk-for-java/issues/49847))
 - Fixed a memory leak in `RequestResponseChannel` (used by management/request-response operations such as
   lock renewal, peek, schedule, and session state). The channel's `SendLinkHandler` emits a link-credit value
   on every AMQP flow frame into a unicast, unbounded-buffer sink, but the channel never subscribed to it, so the
