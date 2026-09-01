@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -81,7 +82,7 @@ public final class BlobLeaseClient {
     private volatile String leaseId;
 
     BlobLeaseClient(HttpPipeline pipeline, String url, String containerName, String blobName, String leaseId,
-        boolean isBlob, String accountName, String serviceVersion) {
+        boolean isBlob, String accountName, BlobServiceVersion serviceVersion) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client

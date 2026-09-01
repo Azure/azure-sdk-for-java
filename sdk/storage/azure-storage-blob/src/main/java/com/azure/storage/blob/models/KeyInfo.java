@@ -5,13 +5,10 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
@@ -25,19 +22,19 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * The date-time the key is active.
      */
     @Generated
-    private OffsetDateTime start;
+    private String start;
 
     /*
      * The date-time the key expires.
      */
     @Generated
-    private OffsetDateTime expiry;
+    private String expiry;
 
     /*
      * The delegated user tenant ID in Entra ID.
      */
     @Generated
-    private String delegatedUserTid;
+    private String delegatedUserTenantId;
 
     /**
      * Get the start property: The date-time the key is active.
@@ -45,7 +42,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * @return the start value.
      */
     @Generated
-    public OffsetDateTime getStart() {
+    public String getStart() {
         return this.start;
     }
 
@@ -55,29 +52,29 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * @return the expiry value.
      */
     @Generated
-    public OffsetDateTime getExpiry() {
+    public String getExpiry() {
         return this.expiry;
     }
 
     /**
-     * Get the delegatedUserTid property: The delegated user tenant ID in Entra ID.
+     * Get the delegatedUserTenantId property: The delegated user tenant ID in Entra ID.
      *
-     * @return the delegatedUserTid value.
+     * @return the delegatedUserTenantId value.
      */
     @Generated
-    public String getDelegatedUserTid() {
-        return this.delegatedUserTid;
+    public String getDelegatedUserTenantId() {
+        return this.delegatedUserTenantId;
     }
 
     /**
-     * Set the delegatedUserTid property: The delegated user tenant ID in Entra ID.
+     * Set the delegatedUserTenantId property: The delegated user tenant ID in Entra ID.
      *
-     * @param delegatedUserTid the delegatedUserTid value to set.
+     * @param delegatedUserTenantId the delegatedUserTenantId value to set.
      * @return the KeyInfo object itself.
      */
     @Generated
-    public KeyInfo setDelegatedUserTid(String delegatedUserTid) {
-        this.delegatedUserTid = delegatedUserTid;
+    public KeyInfo setDelegatedUserTenantId(String delegatedUserTenantId) {
+        this.delegatedUserTenantId = delegatedUserTenantId;
         return this;
     }
 
@@ -92,11 +89,9 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "KeyInfo" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("Start",
-            this.start == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.start));
-        xmlWriter.writeStringElement("Expiry",
-            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
-        xmlWriter.writeStringElement("DelegatedUserTid", this.delegatedUserTid);
+        xmlWriter.writeStringElement("Start", this.start);
+        xmlWriter.writeStringElement("Expiry", this.expiry);
+        xmlWriter.writeStringElement("DelegatedUserTid", this.delegatedUserTenantId);
         return xmlWriter.writeEndElement();
     }
 
@@ -130,17 +125,17 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
         String finalRootElementName
             = rootElementName == null || rootElementName.isEmpty() ? "KeyInfo" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            OffsetDateTime start = null;
-            OffsetDateTime expiry = null;
-            String delegatedUserTid = null;
+            String start = null;
+            String expiry = null;
+            String delegatedUserTenantId = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
                 if ("Start".equals(elementName.getLocalPart())) {
-                    start = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
+                    start = reader.getStringElement();
                 } else if ("Expiry".equals(elementName.getLocalPart())) {
-                    expiry = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
+                    expiry = reader.getStringElement();
                 } else if ("DelegatedUserTid".equals(elementName.getLocalPart())) {
-                    delegatedUserTid = reader.getStringElement();
+                    delegatedUserTenantId = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }
@@ -148,7 +143,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
             KeyInfo deserializedKeyInfo = new KeyInfo();
             deserializedKeyInfo.start = start;
             deserializedKeyInfo.expiry = expiry;
-            deserializedKeyInfo.delegatedUserTid = delegatedUserTid;
+            deserializedKeyInfo.delegatedUserTenantId = delegatedUserTenantId;
             return deserializedKeyInfo;
         });
     }
@@ -167,7 +162,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * @return the KeyInfo object itself.
      */
     @Generated
-    public KeyInfo setStart(OffsetDateTime start) {
+    public KeyInfo setStart(String start) {
         this.start = start;
         return this;
     }
@@ -179,7 +174,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * @return the KeyInfo object itself.
      */
     @Generated
-    public KeyInfo setExpiry(OffsetDateTime expiry) {
+    public KeyInfo setExpiry(String expiry) {
         this.expiry = expiry;
         return this;
     }

@@ -4,6 +4,14 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.UrlBuilder;
+import com.azure.storage.common.Utility;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Builds the {@link RequestOptions} passed to the generated {@code implementation/*Impl} protocol methods.
@@ -47,5 +55,95 @@ public final class RequestOptionsHelper {
         if (value != null) {
             requestOptions.addQueryParam(name, String.valueOf(value));
         }
+    }
+
+    /**
+     * Adds a comma-joined query parameter when {@code values} is non-null and non-empty.
+     * <p>
+     * AutoRest omitted the parameter entirely when the collection was empty rather than sending an empty value, and
+     * recorded sessions depend on that: sending {@code include=} would not match.
+     *
+     * @param requestOptions The {@link RequestOptions} to mutate.
+     * @param name The query parameter name.
+     * @param values The values to join; when {@code null} or empty the parameter is not added.
+     */
+    public static void addOptionalCsvQueryParam(RequestOptions requestOptions, String name, List<?> values) {
+        if (values == null || values.isEmpty()) {
+            return;
+        }
+        StringBuilder joined = new StringBuilder();
+        for (Object value : values) {
+            if (joined.length() > 0) {
+                joined.append(',');
+            }
+            joined.append(Objects.toString(value, ""));
+        }
+        requestOptions.addQueryParam(name, joined.toString());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} scoped to a container-level operation ({@code {containerName}}).
+     *
+     * @param context The {@link Context} to thread through the pipeline.
+     * @param baseUrl The client's account-scoped base URL.
+     * @param containerName The container name.
+     * @return The scoped {@link RequestOptions}.
+     */
+    public static RequestOptions containerRequestOptions(Context context, String baseUrl, String containerName) {
+        RequestOptions requestOptions = requestOptions(context);
+        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, containerName));
+        return requestOptions;
+    }
+
+    /**
+     * Builds a {@link RequestOptions} scoped to a blob-level operation ({@code {containerName}/{blobName}}).
+     *
+     * @param context The {@link Context} to thread through the pipeline.
+     * @param baseUrl The client's account-scoped base URL.
+     * @param containerName The container name.
+     * @param blobName The blob name; may contain path separators and characters requiring encoding.
+     * @return The scoped {@link RequestOptions}.
+     */
+    public static RequestOptions blobRequestOptions(Context context, String baseUrl, String containerName,
+        String blobName) {
+        RequestOptions requestOptions = requestOptions(context);
+        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, containerName + "/" + blobName));
+        return requestOptions;
+    }
+
+    /**
+     * Prefixes the resource path with the base URL's account path, which is present for path-style endpoints (e.g.
+     * the Azurite emulator's {@code http://host/devstoreaccount1}) and empty for standard {@code account.blob.*}
+     * endpoints where the account is the host. Required because {@link #scopeRequestToResourcePath} sets the whole
+     * URL path, so the account segment must be reintroduced explicitly.
+     */
+    private static String resourcePath(String baseUrl, String resource) {
+        String accountPath = UrlBuilder.parse(baseUrl).getPath();
+        if (accountPath == null || accountPath.isEmpty() || "/".equals(accountPath)) {
+            return resource;
+        }
+        return accountPath.replaceAll("/+$", "") + "/" + resource;
+    }
+
+    /**
+     * The generated protocol methods target the account-scoped service URL; this appends the resource path to the
+     * request URL while preserving the route's query parameters.
+     * <p>
+     * The path is run through {@link Utility#encodeUrlPath(String)} because blob names, unlike queue names, may
+     * contain path separators and characters that must be percent-encoded on the wire.
+     *
+     * @param requestOptions The {@link RequestOptions} to scope.
+     * @param resourcePath The resource path to set on the request URL.
+     */
+    public static void scopeRequestToResourcePath(RequestOptions requestOptions, String resourcePath) {
+        requestOptions.addRequestCallback(request -> {
+            UrlBuilder urlBuilder = UrlBuilder.parse(request.getUrl());
+            urlBuilder.setPath(resourcePath);
+            try {
+                request.setUrl(new URL(Utility.encodeUrlPath(urlBuilder.toString())));
+            } catch (MalformedURLException e) {
+                throw new IllegalStateException(e);
+            }
+        });
     }
 }

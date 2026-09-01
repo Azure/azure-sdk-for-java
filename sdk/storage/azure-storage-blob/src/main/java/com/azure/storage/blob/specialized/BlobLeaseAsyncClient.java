@@ -13,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -77,7 +78,7 @@ public final class BlobLeaseAsyncClient {
     private volatile String leaseId;
 
     BlobLeaseAsyncClient(HttpPipeline pipeline, String url, String containerName, String blobName, String leaseId,
-        boolean isBlob, String accountName, String serviceVersion) {
+        boolean isBlob, String accountName, BlobServiceVersion serviceVersion) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client

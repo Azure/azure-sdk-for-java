@@ -46,7 +46,7 @@ public final class QueryFormat implements XmlSerializable<QueryFormat> {
      * The Parquet configuration.
      */
     @Generated
-    private ParquetTextConfiguration parquetTextConfiguration;
+    private Object parquetTextConfiguration;
 
     /**
      * Get the type property: The query type.
@@ -130,7 +130,7 @@ public final class QueryFormat implements XmlSerializable<QueryFormat> {
      * @return the parquetTextConfiguration value.
      */
     @Generated
-    public ParquetTextConfiguration getParquetTextConfiguration() {
+    public Object getParquetTextConfiguration() {
         return this.parquetTextConfiguration;
     }
 
@@ -141,7 +141,7 @@ public final class QueryFormat implements XmlSerializable<QueryFormat> {
      * @return the QueryFormat object itself.
      */
     @Generated
-    public QueryFormat setParquetTextConfiguration(ParquetTextConfiguration parquetTextConfiguration) {
+    public QueryFormat setParquetTextConfiguration(Object parquetTextConfiguration) {
         this.parquetTextConfiguration = parquetTextConfiguration;
         return this;
     }
@@ -161,7 +161,9 @@ public final class QueryFormat implements XmlSerializable<QueryFormat> {
         xmlWriter.writeXml(this.delimitedTextConfiguration, "DelimitedTextConfiguration");
         xmlWriter.writeXml(this.jsonTextConfiguration, "JsonTextConfiguration");
         xmlWriter.writeXml(this.arrowConfiguration, "ArrowConfiguration");
-        xmlWriter.writeXml(this.parquetTextConfiguration, "ParquetTextConfiguration");
+        if (this.parquetTextConfiguration != null) {
+            xmlWriter.writeStartElement("ParquetTextConfiguration").writeEndElement();
+        }
         return xmlWriter.writeEndElement();
     }
 
@@ -199,7 +201,7 @@ public final class QueryFormat implements XmlSerializable<QueryFormat> {
             DelimitedTextConfiguration delimitedTextConfiguration = null;
             JsonTextConfigurationInternal jsonTextConfiguration = null;
             ArrowTextConfigurationInternal arrowConfiguration = null;
-            ParquetTextConfiguration parquetTextConfiguration = null;
+            Object parquetTextConfiguration = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
                 if ("Type".equals(elementName.getLocalPart())) {
@@ -212,7 +214,8 @@ public final class QueryFormat implements XmlSerializable<QueryFormat> {
                 } else if ("ArrowConfiguration".equals(elementName.getLocalPart())) {
                     arrowConfiguration = ArrowTextConfigurationInternal.fromXml(reader, "ArrowConfiguration");
                 } else if ("ParquetTextConfiguration".equals(elementName.getLocalPart())) {
-                    parquetTextConfiguration = ParquetTextConfiguration.fromXml(reader, "ParquetTextConfiguration");
+                    parquetTextConfiguration = new Object();
+                    reader.skipElement();
                 } else {
                     reader.skipElement();
                 }

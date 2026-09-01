@@ -68,16 +68,22 @@ public class BlobStorageCustomizations extends Customization {
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
         "src/main/java/module-info.java");
 
+    // Multipart batch plumbing for the submitBatch operation. The blob package models that request body as
+    // BinaryData and the batch clients live in azure-storage-blob-batch, so nothing references these; the emitter
+    // also generates them with a JsonSerializable bound that does not compile for an XML model.
+    private static final List<String> GENERATED_MODELS_TO_REMOVE = Arrays.asList(
+        "SubmitBatchRequest", "BodyFileDetails");
+
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
         removeGeneratedFiles(editor, logger);
+        fixXmlSerializerRedundantCast(editor, logger);
+        customizeQueryFormat(editor, logger);
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         restoreFluentModels(customization, logger);
-        exposeSinglePageAccessors(customization.getPackage(IMPL_PACKAGE), logger);
+        exposeRawSegmentResponses(customization.getPackage(IMPL_PACKAGE), logger);
         // Follow-up stages (ported from the queue customization) build on this removal pass:
-        //   - fixXmlSerializerRedundantCast (generated XmlSerializer -Werror cast)
-        //   - retargetServiceVersionReferences (impl -> hand-written BlobServiceVersion)
         //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
         //   - updateImplToMapInternalException (BlobStorageExceptionInternal -> BlobStorageException)
         // Each is added once its stage is reconciled against the RevApi/compile report.
@@ -89,6 +95,9 @@ public class BlobStorageCustomizations extends Customization {
         }
         for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
             removeFileIfPresent(editor, path, logger);
+        }
+        for (String className : GENERATED_MODELS_TO_REMOVE) {
+            removeFileIfPresent(editor, PKG_ROOT + "implementation/models/" + className + ".java", logger);
         }
     }
 
@@ -319,41 +328,109 @@ public class BlobStorageCustomizations extends Customization {
             }));
     }
 
-    // The hand-written BlobServiceClient/BlobContainerClient build their own PagedFlux/PagedIterable so they can
-    // map the generated XML segment responses onto the shipped public item types and apply blob-specific paging
-    // behaviour. The emitter already generates exactly the single-page helpers they need, but keeps them private
-    // behind its own PagedFlux convenience methods, so widen them to public rather than injecting duplicates.
-    private static void exposeSinglePageAccessors(PackageCustomization implPackage, Logger logger) {
-        exposeSinglePageAccessors(implPackage, "ServicesImpl",
-            Arrays.asList("listContainersSegmentSinglePageAsync", "listContainersSegmentSinglePage",
-                "filterBlobsSinglePageAsync", "filterBlobsSinglePage"),
-            logger);
-        exposeSinglePageAccessors(implPackage, "ContainersImpl",
-            Arrays.asList("filterBlobsSinglePageAsync", "filterBlobsSinglePage",
-                "listBlobFlatSegmentSinglePageAsync", "listBlobFlatSegmentSinglePage",
-                "listBlobHierarchySegmentSinglePageAsync", "listBlobHierarchySegmentSinglePage"),
-            logger);
+
+    // The hand-written BlobServiceClient/BlobContainerClient build their own PagedFlux/PagedIterable so they can map
+    // the XML segment responses onto the shipped public item types. They need the whole segment response, because
+    // blob pages on the NextMarker element carried in the body: the emitter generates a getXmlNextLink helper but
+    // never calls it, so its own single-page helpers hard-code a null continuation token and would silently return
+    // only the first page. Inject raw whole-response accessors and let the hand-written clients read both the items
+    // and NextMarker, which is what the AutoRest single-page methods did
+    // (PagedResponseBase(..., res.getValue().getNextMarker(), ...)).
+    private static void exposeRawSegmentResponses(PackageCustomization implPackage, Logger logger) {
+        injectRawAccessor(implPackage, "ServicesImpl", "listContainersSegment", null, logger);
+        injectRawAccessor(implPackage, "ServicesImpl", "filterBlobs", "filterExpression", logger);
+        injectRawAccessor(implPackage, "ContainersImpl", "listBlobFlatSegment", null, logger);
+        injectRawAccessor(implPackage, "ContainersImpl", "listBlobHierarchySegment", "delimiter", logger);
+        injectRawAccessor(implPackage, "ContainersImpl", "filterBlobs", "filterExpression", logger);
     }
 
-    private static void exposeSinglePageAccessors(PackageCustomization implPackage, String className,
-        List<String> methodNames, Logger logger) {
+    // extraParam is the single non-RequestOptions argument the generated service interface takes for this operation
+    // (a @QueryParam), or null when the operation takes none.
+    private static void injectRawAccessor(PackageCustomization implPackage, String className, String operation,
+        String extraParam, Logger logger) {
         if (implPackage.getClass(className) == null) {
-            logger.info("{} not present; skipping single-page accessor exposure.", className);
+            logger.info("{} not present; skipping raw {} accessor injection.", className, operation);
             return;
         }
+        String param = extraParam == null ? "" : "String " + extraParam + ", ";
+        String arg = extraParam == null ? "" : extraParam + ", ";
+        String methodName = operation + "WithResponse";
         implPackage.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
-            for (String methodName : methodNames) {
-                List<MethodDeclaration> methods = clazz.getMethodsByName(methodName);
-                if (methods.isEmpty()) {
-                    logger.info("{}.{} not found; skipping.", className, methodName);
-                    continue;
-                }
-                for (MethodDeclaration method : methods) {
-                    method.setPrivate(false);
-                    method.setPublic(true);
-                }
-                logger.info("Exposed {}.{} as public.", className, methodName);
+            if (!clazz.getMethodsByName(methodName + "Async").isEmpty()) {
+                logger.info("{}.{}Async already present; skipping.", className, methodName);
+                return;
             }
+            clazz.addMember(StaticJavaParser.parseMethodDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                + "public Mono<Response<BinaryData>> " + methodName + "Async(" + param
+                + "RequestOptions requestOptions) {\n"
+                + "    final String accept = \"application/xml\";\n"
+                + "    return FluxUtil.withContext(context -> service." + operation + "(this.client.getUrl(),\n"
+                + "        this.client.getServiceVersion().getVersion(), " + arg
+                + "accept, requestOptions, context));\n"
+                + "}"));
+            clazz.addMember(StaticJavaParser.parseMethodDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                + "public Response<BinaryData> " + methodName + "(" + param + "RequestOptions requestOptions) {\n"
+                + "    final String accept = \"application/xml\";\n"
+                + "    return service." + operation + "Sync(this.client.getUrl(),\n"
+                + "        this.client.getServiceVersion().getVersion(), " + arg
+                + "accept, requestOptions, Context.NONE);\n"
+                + "}"));
+            logger.info("Injected raw {}.{}[Async] accessors.", className, methodName);
         }));
+    }
+
+    // The generated XmlSerializer casts typeReference.getJavaClass() to Class<T>, which javac reports as a redundant
+    // cast; the build runs with -Werror, so it fails compilation.
+    private static void fixXmlSerializerRedundantCast(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/XmlSerializer.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("XmlSerializer not present in editor; skipping cast fix.");
+            return;
+        }
+        String updated = content.replace("(Class<T>) typeReference.getJavaClass()", "typeReference.getJavaClass()");
+        if (!updated.equals(content)) {
+            editor.replaceFile(path, updated);
+            logger.info("Removed redundant cast in XmlSerializer.");
+        } else {
+            logger.info("XmlSerializer redundant cast not found; skipping.");
+        }
+    }
+
+    // ParquetConfiguration is `Record<unknown>` in the spec. typespec-java's XML path for a free-form record emits
+    // calls that do not exist (xmlWriter.writeUntypedElement) and a QName/String mismatch on read, so the generated
+    // ParquetTextConfiguration does not compile. The shipped SDK has no such model at all: QueryFormat exposes the
+    // property as Object and writes an empty <ParquetTextConfiguration/> element, which is what the AutoRest
+    // customizeQueryFormat customization produced. Reproduce that shape and drop the generated model.
+    private static void customizeQueryFormat(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/models/QueryFormat.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("QueryFormat not present; skipping parquet customization.");
+            return;
+        }
+        String updated = content.replace("private ParquetTextConfiguration parquetTextConfiguration;",
+            "private Object parquetTextConfiguration;")
+            .replace("public ParquetTextConfiguration getParquetTextConfiguration() {",
+                "public Object getParquetTextConfiguration() {")
+            .replace("public QueryFormat setParquetTextConfiguration(ParquetTextConfiguration parquetTextConfiguration) {",
+                "public QueryFormat setParquetTextConfiguration(Object parquetTextConfiguration) {")
+            .replace("xmlWriter.writeXml(this.parquetTextConfiguration, \"ParquetTextConfiguration\");",
+                "if (this.parquetTextConfiguration != null) {\n"
+                    + "            xmlWriter.writeStartElement(\"ParquetTextConfiguration\").writeEndElement();\n"
+                    + "        }")
+            .replace("ParquetTextConfiguration parquetTextConfiguration = null;",
+                "Object parquetTextConfiguration = null;")
+            .replace(
+                "parquetTextConfiguration = ParquetTextConfiguration.fromXml(reader, \"ParquetTextConfiguration\");",
+                "parquetTextConfiguration = new Object();\n"
+                    + "                    reader.skipElement();");
+        if (updated.equals(content)) {
+            logger.info("QueryFormat parquet references already customized; skipping.");
+            return;
+        }
+        editor.replaceFile(path, updated);
+        removeFileIfPresent(editor, PKG_ROOT + "implementation/models/ParquetTextConfiguration.java", logger);
+        logger.info("Retyped QueryFormat.parquetTextConfiguration to Object and removed the generated model.");
     }
 }

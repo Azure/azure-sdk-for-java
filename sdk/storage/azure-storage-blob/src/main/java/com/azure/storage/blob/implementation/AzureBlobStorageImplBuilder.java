@@ -10,6 +10,7 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
@@ -174,7 +175,7 @@ public final class AzureBlobStorageImplBuilder
      * Specifies the version of the operation to use for this request.
      */
     @Generated
-    private String version;
+    private BlobServiceVersion version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -183,7 +184,7 @@ public final class AzureBlobStorageImplBuilder
      * @return the AzureBlobStorageImplBuilder.
      */
     @Generated
-    public AzureBlobStorageImplBuilder version(String version) {
+    public AzureBlobStorageImplBuilder version(BlobServiceVersion version) {
         this.version = version;
         return this;
     }
@@ -232,7 +233,7 @@ public final class AzureBlobStorageImplBuilder
     @Generated
     public AzureBlobStorageImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localVersion = (version != null) ? version : "2024-08-04";
+        BlobServiceVersion localVersion = (version != null) ? version : BlobServiceVersion.getLatest();
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureBlobStorageImpl client

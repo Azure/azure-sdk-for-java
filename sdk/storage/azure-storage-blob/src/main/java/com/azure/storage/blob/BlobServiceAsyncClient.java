@@ -10,7 +10,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -20,6 +22,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.BlobContainersSegment;
+import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -122,7 +126,7 @@ public final class BlobServiceAsyncClient {
         }
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
             .url(url)
-            .version(serviceVersion.getVersion())
+            .version(serviceVersion)
             .buildClient();
         this.serviceVersion = serviceVersion;
 
@@ -546,10 +550,20 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getServices()
-            .listBlobContainersSegmentSinglePageAsync(options.getPrefix(), marker, options.getMaxResultsPerPage(),
-                ModelHelper.toIncludeTypes(options.getDetails()), null, null, Context.NONE),
-            timeout);
+        RequestOptions requestOptions = RequestOptionsHelper.requestOptions(Context.NONE);
+        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "prefix", options.getPrefix());
+        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "marker", marker);
+        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "maxresults", options.getMaxResultsPerPage());
+        RequestOptionsHelper.addOptionalCsvQueryParam(requestOptions, "include",
+            ModelHelper.toIncludeTypes(options.getDetails()));
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getServices().listContainersSegmentWithResponseAsync(requestOptions).map(response -> {
+                BlobContainersSegment segment
+                    = ModelHelper.deserializeXmlBody(response.getValue(), BlobContainersSegment::fromXml);
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    segment.getBlobContainerItems(), segment.getNextMarker(), null);
+            }), timeout);
     }
 
     /**
@@ -616,18 +630,23 @@ public final class BlobServiceAsyncClient {
         Duration timeout, Context context) {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getServices()
-            .filterBlobsWithResponseAsync(null, null, options.getQuery(), marker, options.getMaxResultsPerPage(), null,
-                context),
-            timeout).map(response -> {
-                List<TaggedBlobItem> value = response.getValue()
-                    .getBlobs()
+        RequestOptions requestOptions = RequestOptionsHelper.requestOptions(context);
+        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "marker", marker);
+        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "maxresults", options.getMaxResultsPerPage());
+
+        return StorageImplUtils
+            .applyOptionalTimeout(
+                this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(options.getQuery(), requestOptions),
+                timeout)
+            .map(response -> {
+                FilterBlobSegment segment
+                    = ModelHelper.deserializeXmlBody(response.getValue(), FilterBlobSegment::fromXml);
+                List<TaggedBlobItem> value = segment.getBlobs()
                     .stream()
                     .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
-
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+                    value, segment.getNextMarker(), null);
             });
     }
 
@@ -1244,9 +1263,19 @@ public final class BlobServiceAsyncClient {
             ? options.getDestinationContainerName()
             : options.getDeletedContainerName();
         context = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = RequestOptionsHelper.containerRequestOptions(context,
+            this.azureBlobStorage.getUrl(), finalDestinationContainerName);
+        if (options.getDeletedContainerName() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-name"),
+                options.getDeletedContainerName());
+        }
+        if (options.getDeletedContainerVersion() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-version"),
+                options.getDeletedContainerVersion());
+        }
+
         return this.azureBlobStorage.getContainers()
-            .restoreWithResponseAsync(finalDestinationContainerName, null, null, options.getDeletedContainerName(),
-                options.getDeletedContainerVersion(), context)
+            .restoreWithResponseAsync(requestOptions)
             .map(
                 response -> new SimpleResponse<>(response, getBlobContainerAsyncClient(finalDestinationContainerName)));
     }

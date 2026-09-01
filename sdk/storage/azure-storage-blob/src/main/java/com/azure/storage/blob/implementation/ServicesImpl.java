@@ -672,7 +672,7 @@ public final class ServicesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listContainersSegmentSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listContainersSegmentSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listContainersSegment(this.client.getUrl(),
@@ -680,8 +680,9 @@ public final class ServicesImpl {
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getXmlValues(res.getValue(), reader -> {
                     try {
-                        return BinaryData.fromObject(com.azure.storage.blob.implementation.models.ContainerItemInternal
-                            .fromXml(reader, "Container"), XML_SERIALIZER);
+                        return BinaryData.fromObject(
+                            com.azure.storage.blob.models.BlobContainerItem.fromXml(reader, "Container"),
+                            XML_SERIALIZER);
                     } catch (javax.xml.stream.XMLStreamException e) {
                         throw new IllegalStateException(e);
                     }
@@ -810,7 +811,7 @@ public final class ServicesImpl {
      * @return the result of the List Containers API along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BinaryData> listContainersSegmentSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listContainersSegmentSinglePage(RequestOptions requestOptions) {
         final String accept = "application/xml";
         Response<BinaryData> res = service.listContainersSegmentSync(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
@@ -818,8 +819,7 @@ public final class ServicesImpl {
             getXmlValues(res.getValue(), reader -> {
                 try {
                     return BinaryData.fromObject(
-                        com.azure.storage.blob.implementation.models.ContainerItemInternal.fromXml(reader, "Container"),
-                        XML_SERIALIZER);
+                        com.azure.storage.blob.models.BlobContainerItem.fromXml(reader, "Container"), XML_SERIALIZER);
                 } catch (javax.xml.stream.XMLStreamException e) {
                     throw new IllegalStateException(e);
                 }
@@ -907,8 +907,8 @@ public final class ServicesImpl {
      * <pre>
      * {@code
      * {
-     *     Start: OffsetDateTime (Required)
-     *     Expiry: OffsetDateTime (Required)
+     *     Start: String (Required)
+     *     Expiry: String (Required)
      *     DelegatedUserTid: String (Optional)
      * }
      * }
@@ -966,8 +966,8 @@ public final class ServicesImpl {
      * <pre>
      * {@code
      * {
-     *     Start: OffsetDateTime (Required)
-     *     Expiry: OffsetDateTime (Required)
+     *     Start: String (Required)
+     *     Expiry: String (Required)
      *     DelegatedUserTid: String (Optional)
      * }
      * }
@@ -1224,7 +1224,7 @@ public final class ServicesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> filterBlobsSinglePageAsync(String filterExpression,
+    private Mono<PagedResponse<BinaryData>> filterBlobsSinglePageAsync(String filterExpression,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
@@ -1344,7 +1344,7 @@ public final class ServicesImpl {
      * @return the result of the Find Blobs by Tags API along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BinaryData> filterBlobsSinglePage(String filterExpression, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> filterBlobsSinglePage(String filterExpression, RequestOptions requestOptions) {
         final String accept = "application/xml";
         Response<BinaryData> res = service.filterBlobsSync(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), filterExpression, accept, requestOptions, Context.NONE);
@@ -1488,5 +1488,34 @@ public final class ServicesImpl {
             }
         }
         return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listContainersSegmentWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(context -> service.listContainersSegment(this.client.getUrl(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listContainersSegmentWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return service.listContainersSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> filterBlobsWithResponseAsync(String filterExpression,
+        RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(context -> service.filterBlobs(this.client.getUrl(),
+            this.client.getServiceVersion().getVersion(), filterExpression, accept, requestOptions, context));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> filterBlobsWithResponse(String filterExpression, RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return service.filterBlobsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+            filterExpression, accept, requestOptions, Context.NONE);
     }
 }

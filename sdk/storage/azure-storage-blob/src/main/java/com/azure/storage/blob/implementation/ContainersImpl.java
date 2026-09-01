@@ -1275,7 +1275,7 @@ public final class ContainersImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> filterBlobsSinglePageAsync(String filterExpression,
+    private Mono<PagedResponse<BinaryData>> filterBlobsSinglePageAsync(String filterExpression,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
@@ -1395,7 +1395,7 @@ public final class ContainersImpl {
      * @return the result of the Find Blobs by Tags API along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BinaryData> filterBlobsSinglePage(String filterExpression, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> filterBlobsSinglePage(String filterExpression, RequestOptions requestOptions) {
         final String accept = "application/xml";
         Response<BinaryData> res = service.filterBlobsSync(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), filterExpression, accept, requestOptions, Context.NONE);
@@ -1968,7 +1968,7 @@ public final class ContainersImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listBlobFlatSegmentSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listBlobFlatSegmentSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listBlobFlatSegment(this.client.getUrl(),
@@ -2203,7 +2203,7 @@ public final class ContainersImpl {
      * @return the result of the List Blobs API along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BinaryData> listBlobFlatSegmentSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listBlobFlatSegmentSinglePage(RequestOptions requestOptions) {
         final String accept = "application/xml";
         Response<BinaryData> res = service.listBlobFlatSegmentSync(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
@@ -2442,7 +2442,7 @@ public final class ContainersImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listBlobHierarchySegmentSinglePageAsync(String delimiter,
+    private Mono<PagedResponse<BinaryData>> listBlobHierarchySegmentSinglePageAsync(String delimiter,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
@@ -2686,7 +2686,7 @@ public final class ContainersImpl {
      * @return the result of the List Blobs Hierarchical API along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BinaryData> listBlobHierarchySegmentSinglePage(String delimiter,
+    private PagedResponse<BinaryData> listBlobHierarchySegmentSinglePage(String delimiter,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         Response<BinaryData> res = service.listBlobHierarchySegmentSync(this.client.getUrl(),
@@ -2945,5 +2945,49 @@ public final class ContainersImpl {
             }
         }
         return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listBlobFlatSegmentWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(context -> service.listBlobFlatSegment(this.client.getUrl(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listBlobFlatSegmentWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return service.listBlobFlatSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listBlobHierarchySegmentWithResponseAsync(String delimiter,
+        RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(context -> service.listBlobHierarchySegment(this.client.getUrl(),
+            this.client.getServiceVersion().getVersion(), delimiter, accept, requestOptions, context));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listBlobHierarchySegmentWithResponse(String delimiter, RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return service.listBlobHierarchySegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+            delimiter, accept, requestOptions, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> filterBlobsWithResponseAsync(String filterExpression,
+        RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(context -> service.filterBlobs(this.client.getUrl(),
+            this.client.getServiceVersion().getVersion(), filterExpression, accept, requestOptions, context));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> filterBlobsWithResponse(String filterExpression, RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return service.filterBlobsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+            filterExpression, accept, requestOptions, Context.NONE);
     }
 }

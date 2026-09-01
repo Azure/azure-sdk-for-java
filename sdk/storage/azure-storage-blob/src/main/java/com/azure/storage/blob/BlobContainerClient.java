@@ -141,7 +141,7 @@ public final class BlobContainerClient {
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
             .url(url)
-            .version(serviceVersion.getVersion())
+            .version(serviceVersion)
             .buildClient();
         this.serviceVersion = serviceVersion;
 

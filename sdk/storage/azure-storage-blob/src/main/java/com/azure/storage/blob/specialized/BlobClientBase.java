@@ -216,7 +216,7 @@ public class BlobClientBase {
         this.client = client;
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
             .url(url)
-            .version(serviceVersion.getVersion())
+            .version(serviceVersion)
             .buildClient();
         this.serviceVersion = serviceVersion;
 
