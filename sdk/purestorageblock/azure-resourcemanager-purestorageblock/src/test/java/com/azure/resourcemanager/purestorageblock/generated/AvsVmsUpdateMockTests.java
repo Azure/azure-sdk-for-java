@@ -24,7 +24,7 @@ public final class AvsVmsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePoolInternalId\":\"itmhhei\",\"storagePoolResourceId\":\"aqh\",\"displayName\":\"eufuqyrxpdlcgql\",\"createdTimestamp\":\"smjqfrddgam\",\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"os\"},\"volumeContainerType\":\"avs\",\"avs\":{\"vmId\":\"ivfcdisyirnx\",\"vmName\":\"hcz\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"rxzbujr\"},\"space\":{\"totalUsed\":8450662333010351611,\"unique\":5948707880777970214,\"snapshots\":3272712647525819374,\"shared\":1671052929873472606},\"provisioningState\":\"Succeeded\"},\"id\":\"lnzonzlrpiqywn\",\"name\":\"vjtszcofize\",\"type\":\"tdhgbjkvrelj\"}";
+            = "{\"properties\":{\"storagePoolInternalId\":\"sl\",\"storagePoolResourceId\":\"iiovgqcgxu\",\"displayName\":\"qkctotiowlxte\",\"createdTimestamp\":\"ptjgwdt\",\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"anblwphqlkccu\"},\"volumeContainerType\":\"avs\",\"avs\":{\"vmId\":\"qwahoi\",\"vmName\":\"lwgniiprglvawu\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"d\"},\"space\":{\"totalUsed\":8701115908913428324,\"unique\":1633126950222224541,\"snapshots\":4670075267479378442,\"shared\":4020865096407527323},\"provisioningState\":\"Succeeded\"},\"id\":\"cubkmi\",\"name\":\"oxxkubvp\",\"type\":\"avp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class AvsVmsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsVm response = manager.avsVms()
-            .update("jaeukmrsieekpn", "zaapmudqmeqwi", "pibudqwyxebeybpm",
+            .update("pphkixkykxds", "j", "emmucfxh",
                 new AvsVmUpdate().withProperties(
-                    new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
+                    new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(false))),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertTrue(response.properties().softDeletion().destroyed());

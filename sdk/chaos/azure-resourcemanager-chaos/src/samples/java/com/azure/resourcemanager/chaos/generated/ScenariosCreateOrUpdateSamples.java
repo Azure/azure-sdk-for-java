@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ScenariosCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Scenarios_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Scenarios_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a scenario.

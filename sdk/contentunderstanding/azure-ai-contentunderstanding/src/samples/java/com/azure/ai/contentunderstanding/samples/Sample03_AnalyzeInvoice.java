@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
@@ -35,6 +36,14 @@ import java.util.Map;
  * 3. Accessing nested object fields (TotalAmount)
  * 4. Accessing array fields (LineItems)
  * 5. Working with field confidence and source information
+ *
+ * <p>{@code prebuilt-invoice} is a ready-to-use financial document analyzer for invoices and related documents such
+ * as utility bills, sales orders, and purchase orders. The fields shown here are examples; use
+ * {@link Sample06_GetAnalyzer} to inspect the complete analyzer schema.</p>
+ *
+ * <p>Confidence indicates extraction certainty, sources identify locations in the original document, and spans
+ * identify values by offset and length in the returned Markdown. The document unit defines the coordinate system for
+ * source polygons and bounding boxes; for many US documents it is inches.</p>
  */
 public class Sample03_AnalyzeInvoice {
 
@@ -76,14 +85,14 @@ public class Sample03_AnalyzeInvoice {
         //
         // - documentPagesStandard/Basic/Minimal: Pages processed at each extraction tier.
         //   Standard = layout + OCR (scanned docs), Basic = OCR only, Minimal = digital formats
-        //   (DOCX, XLSX, HTML, TXT) that need no OCR. Charged per 1,000 pages.
+        //   (DOCX, XLSX, HTML, TXT) that need no OCR.
         //
-        // - contextualizationTokens: Fixed-rate tokens charged by Content Understanding for
-        //   preparing context, generating confidence scores, source grounding, and formatting
-        //   output. Typically 1,000 tokens per page. Charged separately from LLM tokens.
+        // - contextualizationTokens: Tokens charged by Content Understanding for preparing context,
+        //   generating confidence scores, source grounding, and formatting output. Charged separately
+        //   from LLM tokens.
         //
         // - tokens: Map of "{model}-input" / "{model}-output" token counts consumed by your
-        //   Foundry model deployment (e.g. "gpt-4.1-input", "gpt-4.1-output"). These are
+        //   Foundry model deployment (e.g. "gpt-5.2-input", "gpt-5.2-output"). These are
         //   billed on your Foundry deployment, not on Content Understanding.
         //
         // For full pricing details, see:
@@ -91,6 +100,12 @@ public class Sample03_AnalyzeInvoice {
         UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
         if (usage != null) {
             System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesMinimal() != null) {
+                System.out.println("  Document pages (minimal): " + usage.getDocumentPagesMinimal());
+            }
+            if (usage.getDocumentPagesBasic() != null) {
+                System.out.println("  Document pages (basic): " + usage.getDocumentPagesBasic());
+            }
             if (usage.getDocumentPagesStandard() != null) {
                 System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
             }
@@ -121,10 +136,16 @@ public class Sample03_AnalyzeInvoice {
                 + (documentContent.getUnit() != null ? documentContent.getUnit().toString() : "unknown"));
             System.out.println(
                 "Pages: " + documentContent.getStartPageNumber() + " to " + documentContent.getEndPageNumber());
+            if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                DocumentPage page = documentContent.getPages().get(0);
+                String unit = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                System.out.println("Page dimensions: " + page.getWidth() + " x " + page.getHeight() + " " + unit);
+            }
             System.out.println();
 
             // Extract simple string fields using getValue() convenience method
-            // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
+            // getValue() returns the typed value regardless of field type
+            // (ContentStringField, ContentNumberField, ContentDateField, etc.)
             ContentField customerNameField
                 = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
             ContentField invoiceDateField
@@ -167,8 +188,16 @@ public class Sample03_AnalyzeInvoice {
                 System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
                     ? String.format("%.2f", invoiceDateField.getConfidence())
                     : "N/A"));
-                System.out.println(
-                    "  Source: " + (invoiceDateField.getSources() != null ? invoiceDateField.getSources() : "N/A"));
+                List<ContentSource> sources = invoiceDateField.getSources();
+                if (sources != null) {
+                    for (ContentSource src : sources) {
+                        if (src instanceof DocumentSource) {
+                            DocumentSource docSrc = (DocumentSource) src;
+                            System.out.println("  Source: page " + docSrc.getPageNumber()
+                                + ", bounding box " + docSrc.getBoundingBox());
+                        }
+                    }
+                }
                 List<ContentSpan> spans = invoiceDateField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -197,8 +226,15 @@ public class Sample03_AnalyzeInvoice {
                 if (totalAmountObj.getConfidence() != null) {
                     System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                 }
-                if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
-                    System.out.println("  Source: " + totalAmountObj.getSources());
+                List<ContentSource> sources = totalAmountObj.getSources();
+                if (sources != null) {
+                    for (ContentSource src : sources) {
+                        if (src instanceof DocumentSource) {
+                            DocumentSource docSrc = (DocumentSource) src;
+                            System.out.println("  Source: page " + docSrc.getPageNumber()
+                                + ", bounding box " + docSrc.getBoundingBox());
+                        }
+                    }
                 }
             }
 
@@ -227,11 +263,8 @@ public class Sample03_AnalyzeInvoice {
 
                         System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A"));
                         System.out.println("    Quantity: " + (quantity != null ? quantity : "N/A"));
-                        if (qtyField != null && qtyField.getConfidence() != null) {
-                            System.out.println("    Quantity Confidence: " + String.format("%.2f", qtyField.getConfidence()));
-                        } else {
-                            System.out.println("    Quantity Confidence: N/A");
-                        }
+                        System.out.println("    Confidence: "
+                            + (item.getConfidence() != null ? String.format("%.2f", item.getConfidence()) : "N/A"));
                     }
                 }
             }

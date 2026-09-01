@@ -13,19 +13,19 @@ public final class RaiTopicResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiTopicResult model = BinaryData.fromString(
-            "{\"nextLink\":\"it\",\"value\":[{\"properties\":{\"topicId\":\"moob\",\"topicName\":\"ft\",\"description\":\"gfcwqmpimaqxzhem\",\"sampleBlobUrl\":\"h\",\"status\":\"uj\",\"failedReason\":\"t\",\"createdAt\":\"2021-02-28T12:44:36Z\",\"lastModifiedAt\":\"2021-10-12T17:43:23Z\"},\"etag\":\"culkbawpfaj\",\"tags\":{\"vkcdmxzr\":\"ltlwtjjguktalhs\",\"aaomylweazu\":\"oaimlnw\",\"hwwn\":\"cse\",\"ousnfepgfewe\":\"jhlfzswpchwahf\"},\"id\":\"l\",\"name\":\"xgncxyk\",\"type\":\"hdjhlimmbcx\"},{\"properties\":{\"topicId\":\"cporxvxcjz\",\"topicName\":\"izxfpxt\",\"description\":\"scjavftju\",\"sampleBlobUrl\":\"qaz\",\"status\":\"tgguwpijrajcivmm\",\"failedReason\":\"f\",\"createdAt\":\"2021-01-23T22:13:23Z\",\"lastModifiedAt\":\"2021-08-19T01:45:54Z\"},\"etag\":\"gkn\",\"tags\":{\"oxgsgbpfgzdjtx\":\"yinzqodfvpgs\"},\"id\":\"flbqvgaq\",\"name\":\"lgafcqusrdve\",\"type\":\"nwsdtutnwlduyc\"}]}")
+            "{\"nextLink\":\"qbw\",\"value\":[{\"properties\":{\"topicId\":\"gsfjac\",\"topicName\":\"lhhxudbxvodhtnsi\",\"description\":\"dhzmmesckdlp\",\"sampleBlobUrl\":\"zrcxfailcfxwmdbo\",\"status\":\"fgsftufqob\",\"failedReason\":\"lnacgcc\",\"createdAt\":\"2021-02-22T05:42:06Z\",\"lastModifiedAt\":\"2021-08-14T20:34:23Z\"},\"etag\":\"izvy\",\"tags\":{\"aaeranokqgukk\":\"zvulj\",\"oylaxxul\":\"qnvb\"},\"id\":\"isdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"},{\"properties\":{\"topicId\":\"mbtmvpdvjdhttzae\",\"topicName\":\"dxihc\",\"description\":\"phkmcrjdqnsdfz\",\"sampleBlobUrl\":\"gtgkylkdghr\",\"status\":\"uutlwxezwzhok\",\"failedReason\":\"wnhhtqlgehgppip\",\"createdAt\":\"2021-04-06T03:44:21Z\",\"lastModifiedAt\":\"2021-01-02T20:54:57Z\"},\"etag\":\"oajvgcxtxjcs\",\"tags\":{\"resmkssjhoiftxfk\":\"fidltug\",\"tillucbiqtg\":\"wegprh\",\"hm\":\"q\"},\"id\":\"sldrizetpwbral\",\"name\":\"libph\",\"type\":\"qzmiza\"},{\"properties\":{\"topicId\":\"ankjpdnjzh\",\"topicName\":\"oylhjlmuoyxprimr\",\"description\":\"pteecjme\",\"sampleBlobUrl\":\"ls\",\"status\":\"asylwx\",\"failedReason\":\"aumweoohguufu\",\"createdAt\":\"2021-04-09T11:15:41Z\",\"lastModifiedAt\":\"2021-04-18T14:21:46Z\"},\"etag\":\"thwtzol\",\"tags\":{\"lxveabfqx\":\"mwmdxmebwjscjpa\",\"ijddtvqc\":\"mwmqtibx\",\"jaeukmrsieekpn\":\"tad\"},\"id\":\"aapm\",\"name\":\"dqmeqwigpibudq\",\"type\":\"yxeb\"}]}")
             .toObject(RaiTopicResult.class);
-        Assertions.assertEquals("it", model.nextLink());
-        Assertions.assertEquals("moob", model.value().get(0).properties().topicId());
-        Assertions.assertEquals("ft", model.value().get(0).properties().topicName());
-        Assertions.assertEquals("gfcwqmpimaqxzhem", model.value().get(0).properties().description());
-        Assertions.assertEquals("h", model.value().get(0).properties().sampleBlobUrl());
-        Assertions.assertEquals("uj", model.value().get(0).properties().status());
-        Assertions.assertEquals("t", model.value().get(0).properties().failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T12:44:36Z"),
+        Assertions.assertEquals("qbw", model.nextLink());
+        Assertions.assertEquals("gsfjac", model.value().get(0).properties().topicId());
+        Assertions.assertEquals("lhhxudbxvodhtnsi", model.value().get(0).properties().topicName());
+        Assertions.assertEquals("dhzmmesckdlp", model.value().get(0).properties().description());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.value().get(0).properties().sampleBlobUrl());
+        Assertions.assertEquals("fgsftufqob", model.value().get(0).properties().status());
+        Assertions.assertEquals("lnacgcc", model.value().get(0).properties().failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T05:42:06Z"),
             model.value().get(0).properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T17:43:23Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T20:34:23Z"),
             model.value().get(0).properties().lastModifiedAt());
-        Assertions.assertEquals("ltlwtjjguktalhs", model.value().get(0).tags().get("vkcdmxzr"));
+        Assertions.assertEquals("zvulj", model.value().get(0).tags().get("aaeranokqgukk"));
     }
 }

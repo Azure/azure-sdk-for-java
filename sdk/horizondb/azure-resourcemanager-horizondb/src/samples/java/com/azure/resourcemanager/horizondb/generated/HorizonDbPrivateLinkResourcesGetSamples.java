@@ -9,15 +9,15 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateLinkResources_Get.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateLinkResources_Get.json
      */
     /**
-     * Sample code: Gets a private link resource for HorizonDb.
+     * Sample code: Gets a private link resource for HorizonDB.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        getsAPrivateLinkResourceForHorizonDb(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        getsAPrivateLinkResourceForHorizonDB(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateLinkResources()
             .getWithResponse("exampleresourcegroup", "examplecluster", "default", com.azure.core.util.Context.NONE);
     }

@@ -32,6 +32,11 @@ public final class SourceSideScanSummary extends ExpandableStringEnum<SourceSide
     public static final SourceSideScanSummary HEALTHY = fromString("Healthy");
 
     /**
+     * No threats reported.
+     */
+    public static final SourceSideScanSummary NO_THREATS_REPORTED = fromString("NoThreatsReported");
+
+    /**
      * Creates a new instance of SourceSideScanSummary value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

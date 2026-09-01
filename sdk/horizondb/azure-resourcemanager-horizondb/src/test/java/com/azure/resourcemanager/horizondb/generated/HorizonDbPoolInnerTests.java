@@ -12,9 +12,9 @@ public final class HorizonDbPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbPoolInner model = BinaryData.fromString(
-            "{\"properties\":{\"location\":\"wyahuxinpmqnja\",\"state\":\"Healthy\",\"replicaCount\":1052966015,\"version\":\"prozvcputegjvwmf\",\"createMode\":\"Create\",\"provisioningState\":\"Failed\"},\"tags\":{\"kjozkrwfnd\":\"vpjhulsuuv\",\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\",\"hcrzevd\":\"gexpaojakhmsbz\"},\"id\":\"lxaolthqtrgqjbp\",\"name\":\"zfsinzgvf\",\"type\":\"jrwzox\"}")
+            "{\"properties\":{\"location\":\"podepoo\",\"state\":\"Ready\",\"replicaCount\":1290742637,\"version\":\"mihe\",\"createMode\":\"Update\",\"provisioningState\":\"InProgress\"},\"tags\":{\"o\":\"xth\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\",\"v\":\"xqeofjaeqjhqjba\"},\"id\":\"mjqulngsn\",\"name\":\"nbybkzgcwrwcl\",\"type\":\"xwrljdouskcqvkoc\"}")
             .toObject(HorizonDbPoolInner.class);
-        Assertions.assertEquals("wyahuxinpmqnja", model.properties().location());
-        Assertions.assertEquals("vpjhulsuuv", model.tags().get("kjozkrwfnd"));
+        Assertions.assertEquals("podepoo", model.properties().location());
+        Assertions.assertEquals("xth", model.tags().get("o"));
     }
 }
