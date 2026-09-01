@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -95,7 +96,7 @@ public class JdkHttpClientExpectContinueTests {
         }
 
         URL url() throws IOException {
-            return new URL("http://localhost:" + serverSocket.getLocalPort() + "/expect-continue");
+            return URI.create("http://localhost:" + serverSocket.getLocalPort() + "/expect-continue").toURL();
         }
 
         void start() {
