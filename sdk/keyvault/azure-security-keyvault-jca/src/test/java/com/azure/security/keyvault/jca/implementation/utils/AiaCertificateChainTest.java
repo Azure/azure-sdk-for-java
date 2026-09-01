@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -80,9 +81,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * only its leaf certificate in the secret bundle. The missing intermediate CA certificates
  * must be downloaded via the CA Issuers URL in the AIA extension of each certificate.
  *
- * <p>Tests must run sequentially because they share JVM-global state (system properties, the AIA response cache,
- * and the AIA response loader). Parallel execution would cause property-pollution flakiness.
+ * <p>Tests must run in isolation because they share JVM-global state (system properties, the AIA response cache,
+ * and the AIA response loader). Running another test class concurrently could make it use this class's response loader.
  */
+@Isolated("Mutates the global AIA response loader and cache")
 @Execution(ExecutionMode.SAME_THREAD)
 public class AiaCertificateChainTest {
 
