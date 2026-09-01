@@ -66,6 +66,7 @@ public class JreKeyStoreTest {
         HttpsURLConnection connection = null;
         try {
             connection = (HttpsURLConnection) URI.create("https://google.com:443").toURL().openConnection();
+            connection.setSSLSocketFactory(sslContext.getSocketFactory());
             connection.setRequestMethod("GET");
             if (connection.getResponseCode() == 200) {
                 result = "Success";

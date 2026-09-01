@@ -182,6 +182,7 @@ public class ServerSocketTest {
         try {
             connection = (HttpsURLConnection) URI.create("https://localhost:" + port).toURL().openConnection();
             connection.setSSLSocketFactory(sslContext.getSocketFactory());
+            connection.setHostnameVerifier((hostname, session) -> true);
             connection.setRequestMethod("GET");
             if (connection.getResponseCode() == 204) {
                 result = "Success";

@@ -50,6 +50,8 @@ import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_
 public class KeyVaultClientTest {
     private static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
 
+    private static final String TEST_ACCESS_TOKEN = "test-token";
+
     private static final String CERTIFICATE_ALIAS = "client-cert";
 
     private static final String CERTIFICATE_URI
@@ -62,12 +64,7 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetAliasWithCertificateInfoWith0Page() {
-        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
-            @Override
-            String httpGet(String uri, Map<String, String> headers) {
-                return "fakeValue";
-            }
-        };
+        KeyVaultClient keyVaultClient = new TestKeyVaultClient(TEST_ACCESS_TOKEN, false, (uri, headers) -> "fakeValue");
 
         assertEquals(0, keyVaultClient.getAliases().size());
     }
@@ -83,12 +80,8 @@ public class KeyVaultClientTest {
 
         String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
 
-        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
-            @Override
-            String httpGet(String uri, Map<String, String> headers) {
-                return certificateListResultString;
-            }
-        };
+        KeyVaultClient keyVaultClient
+            = new TestKeyVaultClient(TEST_ACCESS_TOKEN, false, (uri, headers) -> certificateListResultString);
 
         List<String> result = keyVaultClient.getAliases();
         assertEquals(1, result.size());
@@ -119,12 +112,8 @@ public class KeyVaultClientTest {
         String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
         String certificateListResultStringNext = JsonConverterUtil.toJson(certificateListResultNext);
 
-        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
-            @Override
-            String httpGet(String uri, Map<String, String> headers) {
-                return "fakeNextLink".equals(uri) ? certificateListResultStringNext : certificateListResultString;
-            }
-        };
+        KeyVaultClient keyVaultClient = new TestKeyVaultClient(TEST_ACCESS_TOKEN, false, (uri,
+            headers) -> "fakeNextLink".equals(uri) ? certificateListResultStringNext : certificateListResultString);
 
         List<String> result = keyVaultClient.getAliases();
         assertEquals(3, result.size());
@@ -153,12 +142,8 @@ public class KeyVaultClientTest {
 
         String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
 
-        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
-            @Override
-            String httpGet(String uri, Map<String, String> headers) {
-                return certificateListResultString;
-            }
-        };
+        KeyVaultClient keyVaultClient
+            = new TestKeyVaultClient(TEST_ACCESS_TOKEN, false, (uri, headers) -> certificateListResultString);
         List<String> result = keyVaultClient.getAliases();
 
         assertEquals(1, result.size());
@@ -184,12 +169,8 @@ public class KeyVaultClientTest {
 
         String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
 
-        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
-            @Override
-            String httpGet(String uri, Map<String, String> headers) {
-                return certificateListResultString;
-            }
-        };
+        KeyVaultClient keyVaultClient
+            = new TestKeyVaultClient(TEST_ACCESS_TOKEN, false, (uri, headers) -> certificateListResultString);
         List<String> result = keyVaultClient.getAliases();
 
         assertEquals(2, result.size());
@@ -206,12 +187,7 @@ public class KeyVaultClientTest {
                 + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-unused\","
                 + "\"attributes\":{\"enabled\":false,\"nbf\":1783324860,\"exp\":1814861460}}]," + "\"nextLink\":null}";
 
-        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
-            @Override
-            String httpGet(String uri, Map<String, String> headers) {
-                return rawResponse;
-            }
-        };
+        KeyVaultClient keyVaultClient = new TestKeyVaultClient(TEST_ACCESS_TOKEN, false, (uri, headers) -> rawResponse);
         List<String> result = keyVaultClient.getAliases();
 
         assertEquals(1, result.size());
