@@ -416,8 +416,8 @@ public class ExpectContinueTests {
         Object[][] clients = {
             { "netty", "com.azure.core.http.netty.NettyAsyncHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY },
             { "okhttp", "com.azure.core.http.okhttp.OkHttpAsyncClientProvider", ContinueSupport.DEFERS_BODY },
-            { "jdk", "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider", ContinueSupport.DROPS_HEADER },
-            { "vertx", "com.azure.core.http.vertx.VertxHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY } };
+            { "jdk", "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider", ContinueSupport.DEFERS_BODY },
+            { "vertx", "com.azure.core.http.vertx.VertxHttpClientProvider", ContinueSupport.DEFERS_BODY } };
 
         return Stream.of(clients)
             .flatMap(client -> Stream.of(Arguments.of(client[0] + " sync", client[1], client[2], true),
