@@ -11,7 +11,7 @@ public final class ManagedComputeCapacityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeCapacityProperties model = BinaryData.fromString(
-            "{\"acceleratorType\":\"yujlfyoumpckyecl\",\"availableAccelerators\":1922020394,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":564586998,\"totalAvailableCapacity\":2114479531,\"largestDeploymentCapacity\":241474802},{\"modelInstanceAcceleratorCount\":384723144,\"totalAvailableCapacity\":1663305898,\"largestDeploymentCapacity\":1302814584},{\"modelInstanceAcceleratorCount\":789295576,\"totalAvailableCapacity\":1657048191,\"largestDeploymentCapacity\":1990009612}]}")
+            "{\"acceleratorType\":\"olro\",\"availableAccelerators\":939213609,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":747691713,\"totalAvailableCapacity\":1765457014,\"largestDeploymentCapacity\":1608092819},{\"modelInstanceAcceleratorCount\":91707091,\"totalAvailableCapacity\":1622527750,\"largestDeploymentCapacity\":1114664926},{\"modelInstanceAcceleratorCount\":1458682570,\"totalAvailableCapacity\":819255519,\"largestDeploymentCapacity\":4557833}]}")
             .toObject(ManagedComputeCapacityProperties.class);
     }
 }
