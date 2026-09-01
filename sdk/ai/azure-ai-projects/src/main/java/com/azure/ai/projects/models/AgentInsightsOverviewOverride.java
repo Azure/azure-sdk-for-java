@@ -4,7 +4,6 @@
 package com.azure.ai.projects.models;
 
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -19,7 +18,6 @@ import java.util.Set;
  * A user-provided overview that becomes effective immediately and seeds the next generation.
  */
 @Fluent
-@Beta(warningText = "Preview API. AgentInsights=V1Preview")
 public final class AgentInsightsOverviewOverride implements JsonSerializable<AgentInsightsOverviewOverride> {
 
     /*

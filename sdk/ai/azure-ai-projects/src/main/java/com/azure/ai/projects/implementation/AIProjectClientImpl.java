@@ -87,7 +87,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaAgentInsightMonitorsImpl object to access its operations.
-     *
+     * 
      * @return the BetaAgentInsightMonitorsImpl object.
      */
     public BetaAgentInsightMonitorsImpl getBetaAgentInsightMonitors() {

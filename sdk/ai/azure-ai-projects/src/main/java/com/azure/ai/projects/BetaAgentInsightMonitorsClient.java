@@ -71,7 +71,7 @@ public final class BetaAgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -114,7 +114,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Create an Agent Insights monitor for an agent.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -125,9 +125,9 @@ public final class BetaAgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -158,7 +158,7 @@ public final class BetaAgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -184,7 +184,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Get an Agent Insights monitor.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -250,7 +250,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Update an Agent Insights monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -263,9 +263,9 @@ public final class BetaAgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -334,7 +334,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -342,9 +342,9 @@ public final class BetaAgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -432,7 +432,7 @@ public final class BetaAgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -500,7 +500,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Get an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -569,7 +569,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Cancel an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -659,7 +659,7 @@ public final class BetaAgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -738,7 +738,7 @@ public final class BetaAgentInsightMonitorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -811,7 +811,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * Update the lifecycle status of an insight.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -819,9 +819,9 @@ public final class BetaAgentInsightMonitorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

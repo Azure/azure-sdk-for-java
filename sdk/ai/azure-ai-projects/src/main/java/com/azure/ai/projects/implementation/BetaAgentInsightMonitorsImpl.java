@@ -62,7 +62,7 @@ public final class BetaAgentInsightMonitorsImpl {
 
     /**
      * Initializes an instance of BetaAgentInsightMonitorsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BetaAgentInsightMonitorsImpl(AIProjectClientImpl client) {
@@ -73,7 +73,7 @@ public final class BetaAgentInsightMonitorsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AIProjectsServiceVersion getServiceVersion() {
@@ -379,7 +379,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -405,7 +405,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -441,7 +441,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -467,7 +467,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -497,7 +497,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -523,7 +523,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -557,7 +557,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -583,7 +583,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -599,7 +599,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Create an Agent Insights monitor for an agent.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -610,9 +610,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -643,14 +643,14 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Location</td><td>String</td><td>URL of the created monitor.</td></tr>
      * </table>
-     *
+     * 
      * @param monitor The monitor to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -671,7 +671,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Create an Agent Insights monitor for an agent.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -682,9 +682,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -715,14 +715,14 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Location</td><td>String</td><td>URL of the created monitor.</td></tr>
      * </table>
-     *
+     * 
      * @param monitor The monitor to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -743,7 +743,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Get an Agent Insights monitor.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -774,7 +774,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -793,7 +793,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Get an Agent Insights monitor.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -824,7 +824,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -842,7 +842,7 @@ public final class BetaAgentInsightMonitorsImpl {
 
     /**
      * Delete an Agent Insights monitor and all of its runs, insights, and state.
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -859,7 +859,7 @@ public final class BetaAgentInsightMonitorsImpl {
 
     /**
      * Delete an Agent Insights monitor and all of its runs, insights, and state.
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -877,7 +877,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Update an Agent Insights monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -890,9 +890,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -923,7 +923,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param monitor The monitor fields to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -946,7 +946,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Update an Agent Insights monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -959,9 +959,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -992,7 +992,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param monitor The monitor fields to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1014,7 +1014,7 @@ public final class BetaAgentInsightMonitorsImpl {
 
     /**
      * Reset an Agent Insights monitor's overview, checkpoint, and active insight state.
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1031,7 +1031,7 @@ public final class BetaAgentInsightMonitorsImpl {
 
     /**
      * Reset an Agent Insights monitor's overview, checkpoint, and active insight state.
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1049,7 +1049,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1057,9 +1057,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1109,7 +1109,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1132,7 +1132,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1140,9 +1140,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1192,7 +1192,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1215,7 +1215,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1223,9 +1223,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1275,7 +1275,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1306,7 +1306,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1314,9 +1314,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1366,7 +1366,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1397,7 +1397,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1405,9 +1405,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1457,7 +1457,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1487,7 +1487,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Start an Agent Insights run for a monitor.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1495,9 +1495,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1547,7 +1547,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1594,7 +1594,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1644,7 +1644,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1684,7 +1684,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1734,7 +1734,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1768,7 +1768,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1818,7 +1818,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1856,7 +1856,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1906,7 +1906,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1923,7 +1923,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Get an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1973,7 +1973,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param runId The identifier of the run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1994,7 +1994,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Get an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2044,7 +2044,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param runId The identifier of the run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2064,7 +2064,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Cancel an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2114,7 +2114,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param runId The identifier of the run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2136,7 +2136,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Cancel an Agent Insights run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2186,7 +2186,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param runId The identifier of the run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2227,7 +2227,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2280,7 +2280,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2324,7 +2324,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2377,7 +2377,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2414,7 +2414,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2467,7 +2467,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2508,7 +2508,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2561,7 +2561,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2586,7 +2586,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2639,7 +2639,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2669,7 +2669,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2722,7 +2722,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2743,7 +2743,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Update the lifecycle status of an insight.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2751,9 +2751,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2806,7 +2806,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
      * @param update The insight fields to update.
@@ -2830,7 +2830,7 @@ public final class BetaAgentInsightMonitorsImpl {
     /**
      * Update the lifecycle status of an insight.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2838,9 +2838,9 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2893,7 +2893,7 @@ public final class BetaAgentInsightMonitorsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param monitorId The identifier of the monitor.
      * @param insightId The identifier of the insight.
      * @param update The insight fields to update.
