@@ -23,6 +23,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
@@ -683,8 +684,9 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
         return this.azureBlobStorage.getServices()
-            .getPropertiesWithResponseAsync(null, null, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+            .getPropertiesWithResponseAsync(RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb,
+                ModelHelper.deserializeXmlBody(rb.getValue(), BlobServiceProperties::fromXml)));
     }
 
     /**
@@ -832,7 +834,8 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context);
+            .setPropertiesWithResponseAsync(ModelHelper.serializeXmlBody(finalProperties),
+                RequestOptionsHelper.requestOptions(context));
     }
 
     /**
@@ -924,11 +927,13 @@ public final class BlobServiceAsyncClient {
 
         return this.azureBlobStorage.getServices()
             .getUserDelegationKeyWithResponseAsync(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                    .setDelegatedUserTenantId(delegatedUserTenantId),
-                null, null, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+                ModelHelper.serializeXmlBody(
+                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+                        .setDelegatedUserTenantId(delegatedUserTenantId)),
+                RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb,
+                ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml)));
     }
 
     /**
@@ -985,8 +990,9 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getServices()
-            .getStatisticsWithResponseAsync(null, null, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+            .getStatisticsWithResponseAsync(RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb,
+                ModelHelper.deserializeXmlBody(rb.getValue(), BlobServiceStatistics::fromXml)));
     }
 
     /**
@@ -1036,11 +1042,13 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(null, null, context).map(rb -> {
-            ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-            return new SimpleResponse<>(rb,
-                new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(), hd.isXMsIsHnsEnabled()));
-        });
+        return this.azureBlobStorage.getServices()
+            .getAccountInfoWithResponseAsync(RequestOptionsHelper.requestOptions(context))
+            .map(rb -> {
+                ServicesGetAccountInfoHeaders hd = new ServicesGetAccountInfoHeaders(rb.getHeaders());
+                return new SimpleResponse<>(rb,
+                    new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(), hd.isXMsIsHnsEnabled()));
+            });
     }
 
     /**

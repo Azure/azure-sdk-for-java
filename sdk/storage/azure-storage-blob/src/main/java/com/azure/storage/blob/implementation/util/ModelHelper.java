@@ -55,7 +55,10 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -706,6 +709,31 @@ public final class ModelHelper {
                 != StorageResponseSerializationFormat.ARROW) {
             throw new IllegalArgumentException(
                 "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.");
+        }
+    }
+
+    /**
+     * Serializes an {@link XmlSerializable} request body into XML {@link BinaryData} for the protocol layer.
+     * <p>
+     * The generated protocol methods take the request body as {@link BinaryData}; the hand-written clients use this
+     * to encode the typed model the same way the AutoRest convenience methods did.
+     *
+     * @param value The value to serialize; may be {@code null}.
+     * @return The XML-encoded {@link BinaryData}, or {@code null} when {@code value} is {@code null}.
+     */
+    public static BinaryData serializeXmlBody(XmlSerializable<?> value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try (XmlWriter xmlWriter = XmlWriter.toStream(stream)) {
+                value.toXml(xmlWriter);
+                xmlWriter.flush();
+            }
+            return BinaryData.fromBytes(stream.toByteArray());
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
