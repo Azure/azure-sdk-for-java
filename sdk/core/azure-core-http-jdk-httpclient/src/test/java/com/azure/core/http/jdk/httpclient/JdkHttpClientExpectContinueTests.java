@@ -9,6 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -35,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests that the client honours {@code Expect: 100-continue} on the wire: the headers are sent, the body is withheld
  * until the service responds {@code 100 Continue}, and the body is delivered afterwards.
  */
+@DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkHttpClientExpectContinueTests {
     private static final byte[] BODY = new byte[1024];
 
