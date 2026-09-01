@@ -3,6 +3,9 @@
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
+- Requests carrying the `Expect: 100-continue` header now perform the handshake: the headers are sent and the request
+  body is withheld until the service responds `100 Continue`. Previously the header was dropped and the body was sent
+  immediately.
 
 ### Breaking Changes
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.jdk.httpclient.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.implementation.util.HttpUtils;
@@ -32,6 +33,7 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
  * String comparisons performed.
  */
 public final class AzureJdkHttpRequest extends HttpRequest {
+    private final boolean expectContinue;
     private final BodyPublisher bodyPublisher;
     private final String method;
     private final URI uri;
@@ -56,6 +58,8 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .orElse(responseTimeout);
 
+        this.expectContinue
+            = "100-continue".equalsIgnoreCase(azureCoreRequest.getHeaders().getValue(HttpHeaderName.EXPECT));
         this.method = method.toString();
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
             ? noBody()
@@ -90,7 +94,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
 
     @Override
     public boolean expectContinue() {
-        return false;
+        return expectContinue;
     }
 
     @Override
