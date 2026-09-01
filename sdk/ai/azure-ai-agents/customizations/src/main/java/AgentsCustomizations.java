@@ -34,7 +34,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
-        makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
+        // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
@@ -113,17 +113,17 @@ public class AgentsCustomizations extends Customization {
             = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
                 modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
 
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "maxOutputTokens",
-            "The maximum output-token count for one response.", maxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
-            "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfig", "toolChoice",
-            "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
-            logger);
-        customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
-            allowedTools, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
-            "The require_approval property.", requireApproval, true, false, logger);
+        // customizeUnionProperty(customization, "VoiceAgentDefinition", "maxOutputTokens",
+        //     "The maximum output-token count for one response.", maxOutputTokens, true, false, logger);
+        // customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
+        //     "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
+        // customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfig", "toolChoice",
+        //     "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
+        //     logger);
+        // customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
+        //     allowedTools, true, false, logger);
+        // customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
+        //     "The require_approval property.", requireApproval, true, false, logger);
         customizeUnionProperty(customization, "WebIqPreviewTool", "requireApproval",
             "Whether the agent requires approval before executing actions. When omitted, the service defaults to"
                 + " \"always\".",
@@ -133,19 +133,19 @@ public class AgentsCustomizations extends Customization {
                 + " \"always\".",
             requireApproval, true, false, logger);
 
-        // VoiceResponseBase is an immutable output model: no public setters, and the typed getters read through the
-        // (overridable) BinaryData accessor so that VoiceResponse, which shadows the field, is handled by the same
-        // inherited public API.
-        customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            maxOutputTokens, false, true, logger);
-        // VoiceResponse only re-declares the shadowed accessor; the typed getters are inherited from
-        // VoiceResponseBase, so no public API is duplicated here.
-        customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
-            "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
-                + " in this response.",
-            new ArrayList<>(), false, false, logger);
+        // // VoiceResponseBase is an immutable output model: no public setters, and the typed getters read through the
+        // // (overridable) BinaryData accessor so that VoiceResponse, which shadows the field, is handled by the same
+        // // inherited public API.
+        // customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
+        //     "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
+        //         + " in this response.",
+        //     maxOutputTokens, false, true, logger);
+        // // VoiceResponse only re-declares the shadowed accessor; the typed getters are inherited from
+        // // VoiceResponseBase, so no public API is duplicated here.
+        // customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
+        //     "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
+        //         + " in this response.",
+        //     new ArrayList<>(), false, false, logger);
     }
 
     private void customizeUnionProperty(LibraryCustomization customization, String className, String property,

@@ -62,12 +62,10 @@ import java.util.stream.Stream;
     serviceClients = {
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
-        BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
-        BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
