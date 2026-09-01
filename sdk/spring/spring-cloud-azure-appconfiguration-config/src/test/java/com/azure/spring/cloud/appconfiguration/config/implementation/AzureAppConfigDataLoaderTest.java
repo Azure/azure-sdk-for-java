@@ -273,7 +273,7 @@ public class AzureAppConfigDataLoaderTest {
     }
 
     @Test
-    public void refreshOnlyAttemptsOnceOnFailureTest() throws IOException {
+    public void refreshOnlyAttemptsOnceAndThrowsOnFailureTest() {
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
         selector.setKeyFilter(KEY_FILTER);
@@ -286,12 +286,13 @@ public class AzureAppConfigDataLoaderTest {
         lenient().when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
         lenient().when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
 
-        // Test with refresh resource (isRefresh = true) - should NOT throw, just warn
+        // Test with refresh resource (isRefresh = true)
         AzureAppConfigDataLoader loader = new AzureAppConfigDataLoader(logFactoryMock);
-        ConfigData result = loader.load(configDataLoaderContextMock, refreshResource);
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> loader.load(configDataLoaderContextMock, refreshResource));
 
-        // Verify - only one findActiveClients call (no retry loop for refresh)
-        assertNotNull(result);
+        // Verify - refresh fails and only attempts once (no retry loop for refresh)
+        assertTrue(exception.getMessage().contains("Failed to refresh property sources"));
         verify(replicaClientFactoryMock, times(1)).findActiveClients(ENDPOINT);
     }
 
@@ -317,7 +318,7 @@ public class AzureAppConfigDataLoaderTest {
     }
 
     @Test
-    public void startupDoesNotRetryDuringRefreshTest() throws IOException {
+    public void refreshFailureDoesNotUseStartupRetryTest() {
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
         selector.setKeyFilter(KEY_FILTER);
@@ -330,13 +331,13 @@ public class AzureAppConfigDataLoaderTest {
         when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
         when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Test failure"));
 
-        // Test with refresh resource - should NOT throw, just warn and continue
+        // Test with refresh resource
         AzureAppConfigDataLoader loader = new AzureAppConfigDataLoader(logFactoryMock);
-        ConfigData result = loader.load(configDataLoaderContextMock, refreshResource);
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> loader.load(configDataLoaderContextMock, refreshResource));
 
-        // Verify - failure on first attempt, no retry
-        assertNotNull(result);
-        // Only one findActiveClients call (would be multiple in startup retry loop)
+        // Verify - refresh fails on the first attempt without entering the startup retry loop
+        assertTrue(exception.getMessage().contains("Failed to refresh property sources"));
         verify(replicaClientFactoryMock, times(1)).findActiveClients(ENDPOINT);
     }
 }
