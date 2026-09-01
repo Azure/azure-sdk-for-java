@@ -89,11 +89,22 @@ function Get-PathClassification {
 
     $normalizedPath = Normalize-RepositoryPath $Path
     $fileName = [System.IO.Path]::GetFileName($normalizedPath)
+    $knownDocumentNames = @(
+        'AGENTS.md',
+        'CHANGELOG.md',
+        'CODE_OF_CONDUCT.md',
+        'CONTRIBUTING.md',
+        'README.md',
+        'SAMPLE.md',
+        'SECURITY.md',
+        'SUPPORT.md',
+        'TROUBLESHOOTING.md'
+    )
 
     # These paths can affect shipped artifacts or test behavior regardless of extension.
-    if ($normalizedPath -match '(^|/)src/(main|test)(/|$)') {
+    if ($normalizedPath -match '(^|/)src/(main|test|test-shared)(/|$)') {
         return New-PathClassification $normalizedPath 'source-or-test-input' $true `
-            'Files under src/main or src/test can affect runtime artifacts or test behavior.'
+            'Files under src/main, src/test, or src/test-shared can affect runtime artifacts or test behavior.'
     }
 
     # Swagger Markdown is still a live AutoRest input for a small set of legacy packages.
@@ -103,12 +114,21 @@ function Get-PathClassification {
             'Code-generation inputs require generator validation and affected Java tests.'
     }
 
-    if ($normalizedPath -match '^eng/versioning/.*\.txt$' -or
-        $normalizedPath -match '^sdk/spring/scripts/.*managed_external_dependencies\.txt$' -or
-        $normalizedPath -match '^eng/bomgenerator/includes/.*\.txt$' -or
-        $normalizedPath -eq 'eng/pipelines/patch_release_client.txt') {
+    if ($normalizedPath -match '^eng/lintingconfigs/(checkstyle|spotbugs|revapi)/' -or
+        $fileName -match '(?i)^(checkstyle(-suppressions)?\.xml|spotbugs-(include|exclude)\.xml|revapi(-suppressions)?\.json|cspell\.(json|ya?ml))$') {
+        return New-PathClassification $normalizedPath 'validation-configuration' $false `
+            'Static-analysis and spelling configuration is validated by Analyze rather than Java tests.'
+    }
+
+    if ($normalizedPath -match '^sdk/spring/scripts/.*managed_external_dependencies\.txt$') {
         return New-PathClassification $normalizedPath 'version-or-dependency-input' $true `
             'Version, dependency, BOM, and release inputs require Java build validation.'
+    }
+
+    if ($normalizedPath -match '^sdk/cosmos/(pipeline|test-resources)(/|$)' -or
+        $normalizedPath -match '^sdk/spring/(pipeline|scripts)(/|$)') {
+        return New-PathClassification $normalizedPath 'engineering-input' $true `
+            'Service-specific engineering-system changes require full Java validation.'
     }
 
     # Keep engineering changes conservative because they can alter all CI behavior.
@@ -131,22 +151,9 @@ function Get-PathClassification {
             'The top-level docs tree does not affect Java runtime behavior.'
     }
 
-    if ($normalizedPath -in @(
-            'AGENTS.md',
-            'CODE_OF_CONDUCT.md',
-            'CONTRIBUTING.md',
-            'README.md',
-            'SECURITY.md',
-            'SUPPORT.md'
-        )) {
+    if ($fileName -in $knownDocumentNames) {
         return New-PathClassification $normalizedPath 'consumer-documentation' $false `
-            'This is a repository-level consumer or contributor document.'
-    }
-
-    if ($fileName -in @('README.md', 'CHANGELOG.md', 'SAMPLE.md', 'TROUBLESHOOTING.md', 'AGENTS.md') -and
-        $normalizedPath -match '^sdk/') {
-        return New-PathClassification $normalizedPath 'consumer-documentation' $false `
-            'This is SDK-area consumer documentation outside source and code-generation paths.'
+            'This is a known consumer, contributor, or policy document outside protected paths.'
     }
 
     if ($fileName -in @('LICENSE.txt', 'NOTICE.txt', 'THIRD-PARTY.txt')) {

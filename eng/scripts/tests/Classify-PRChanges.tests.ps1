@@ -12,8 +12,14 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         @{ Path = 'sdk/search/azure-search-documents/CHANGELOG.md' }
         @{ Path = 'sdk/storage/azure-storage-blob/README.md' }
         @{ Path = 'sdk/advisor/azure-resourcemanager-advisor/SAMPLE.md' }
+        @{ Path = 'sdk/communication/CONTRIBUTING.md' }
         @{ Path = 'LICENSE.txt' }
         @{ Path = '.github/workflows/management-autopr-review.md' }
+        @{ Path = 'eng/lintingconfigs/checkstyle/track2/checkstyle.xml' }
+        @{ Path = 'sdk/core/azure-core/checkstyle-suppressions.xml' }
+        @{ Path = 'sdk/ai/azure-ai-agents/revapi.json' }
+        @{ Path = 'sdk/storage/cspell.yml' }
+        @{ Path = 'sdk/cosmos/pipeline/cspell.json' }
     ) {
         param($Path)
 
@@ -27,8 +33,16 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         @{ Path = 'sdk/example/example/tsp-location.yaml' }
         @{ Path = 'sdk/spring/example/src/main/resources/runtime.txt' }
         @{ Path = 'sdk/core/azure-core/src/test/resources/upload.txt' }
+        @{ Path = 'sdk/example/example/src/test/resources/cspell.json' }
+        @{ Path = 'sdk/storage/azure-storage-common/src/test-shared/README.md' }
         @{ Path = 'eng/versioning/version_client.txt' }
         @{ Path = 'eng/common/scripts/Package-Properties.ps1' }
+        @{ Path = 'eng/common/spelling/Invoke-Cspell.ps1' }
+        @{ Path = 'sdk/cosmos/pipeline/README.md' }
+        @{ Path = 'sdk/cosmos/test-resources/README.md' }
+        @{ Path = 'sdk/spring/pipeline/CONTRIBUTING.md' }
+        @{ Path = 'sdk/spring/scripts/CONTRIBUTING.md' }
+        @{ Path = 'sdk/spring/scripts/spring_boot_4.1.0_managed_external_dependencies.txt' }
         @{ Path = 'sdk/example/example/notes.md' }
         @{ Path = 'sdk/example/example/pom.xml' }
         @{ Path = 'sdk/example/example/src/main/java/Example.java' }
