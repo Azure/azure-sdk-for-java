@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -92,7 +93,7 @@ public class NettyExpectContinueObservationTests {
         }
 
         URL url() throws IOException {
-            return new URL("http://localhost:" + serverSocket.getLocalPort() + "/resource");
+            return URI.create("http://localhost:" + serverSocket.getLocalPort() + "/resource").toURL();
         }
 
         void start() {
