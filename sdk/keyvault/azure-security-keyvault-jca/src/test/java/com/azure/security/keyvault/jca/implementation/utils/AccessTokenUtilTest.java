@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -82,5 +84,14 @@ public class AccessTokenUtilTest {
 
         assertFalse(loggedValues.contains(clientSecret), "The client secret must never be logged");
         assertTrue(loggedValues.contains("client-id"), "Non-secret parameters stay available for diagnostics");
+    }
+
+    @Test
+    void getLoginUriReturnsNullForEmptyAuthenticateHeader() {
+        Map<String, List<String>> headers = Collections.singletonMap("WWW-Authenticate", Collections.emptyList());
+
+        String result = AccessTokenUtil.getLoginUri("https://vault.azure.net", false, ignored -> headers);
+
+        assertNull(result);
     }
 }

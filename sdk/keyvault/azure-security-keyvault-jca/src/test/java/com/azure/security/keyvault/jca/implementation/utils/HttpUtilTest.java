@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -82,7 +83,7 @@ public class HttpUtilTest {
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> HttpUtil.get("https://example.test/value", null, ignored -> connection));
 
-        assertTrue(exception.getMessage().contains("429"));
+        assertTrue(exception.getMessage().contains("HTTP status code was 429"));
         assertTrue(connection.disconnected);
     }
 
@@ -144,6 +145,25 @@ public class HttpUtilTest {
         assertEquals(10_000, connection.getReadTimeout());
         assertEquals(HttpUtil.USER_AGENT_VALUE, connection.getRequestProperty(HttpUtil.USER_AGENT_KEY));
         assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void connectionOpeningFailuresReturnNull() {
+        String unsupportedUrl = "unsupported://example.test";
+
+        assertNull(HttpUtil.get(unsupportedUrl, null));
+        assertNull(HttpUtil.post(unsupportedUrl, null, "request", "application/json"));
+        assertNull(HttpUtil.getWithOnlyResponseHeaders(unsupportedUrl));
+    }
+
+    @Test
+    void binaryResponseHandlesConnectionOpeningFailure() {
+        HttpUtil.BinaryHttpResponse result
+            = HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> {
+                throw new IOException("Connection failed");
+            });
+
+        assertNull(result.getBody());
     }
 
     @Test

@@ -180,6 +180,16 @@ public final class AccessTokenUtil {
     }
 
     /**
+     * Functional interface for retrieving HTTP response headers.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP response headers to be mocked or overridden.
+     */
+    @FunctionalInterface
+    interface HttpHeaderRetriever {
+        Map<String, List<String>> get(String uri);
+    }
+
+    /**
      * Check if Azure Workload Identity environment is available.
      *
      * @return true if Workload Identity environment variables are present, false otherwise.
@@ -442,18 +452,25 @@ public final class AccessTokenUtil {
     }
 
     public static String getLoginUri(String resourceUri, boolean disableChallengeResourceVerification) {
+        return getLoginUri(resourceUri, disableChallengeResourceVerification, HttpUtil::getWithOnlyResponseHeaders);
+    }
+
+    // Overloaded method that allows specifying a custom HttpHeaderRetriever for testing.
+    static String getLoginUri(String resourceUri, boolean disableChallengeResourceVerification,
+        HttpHeaderRetriever httpHeaderRetriever) {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
         LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
-        Map<String, List<String>> headers = HttpUtil.getWithOnlyResponseHeaders(resourceUri);
+        Map<String, List<String>> headers = httpHeaderRetriever.get(resourceUri);
 
         if (headers == null) {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
         }
 
         List<String> wwwAuthenticates = headers.get(WWW_AUTHENTICATE);
-        Map<String, String> challengeAttributes
-            = extractChallengeAttributes(wwwAuthenticates == null ? null : wwwAuthenticates.get(0));
+        String wwwAuthenticate
+            = wwwAuthenticates == null || wwwAuthenticates.isEmpty() ? null : wwwAuthenticates.get(0);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(wwwAuthenticate);
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {

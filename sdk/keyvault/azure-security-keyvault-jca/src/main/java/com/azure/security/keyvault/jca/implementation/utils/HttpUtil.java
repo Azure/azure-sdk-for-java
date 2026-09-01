@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -221,7 +220,7 @@ public final class HttpUtil {
 
                 return new BinaryHttpResponse(readResponseBytes(connection.getInputStream(), currentUrl), cacheControl,
                     date, age, expires);
-            } catch (IOException | IllegalArgumentException | ClassCastException | UncheckedIOException e) {
+            } catch (IOException | IllegalArgumentException | ClassCastException e) {
                 // Catch all exceptions including IOException, IllegalArgumentException, and other runtime exceptions
                 // that may occur during HTTP execution. Gracefully return null to allow AIA completion to fail silently
                 // the entire jarsigner/signing operation.
@@ -384,8 +383,8 @@ public final class HttpUtil {
     }
 
     private static String createErrorMessage(int status) {
-        return "Failed to get response from Key Vault because return http status code is " + status + ". It can be "
-            + "caused by missing permissions or roles. To know how to add permissions or roles, see "
+        return "Failed to get a response from Key Vault because the HTTP status code was " + status + ". This may be "
+            + "caused by missing permissions or roles. For instructions on assigning permissions or roles, see "
             + "https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.";
     }
 
@@ -474,30 +473,26 @@ public final class HttpUtil {
         connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
     }
 
-    private static HttpURLConnection openConnection(String uri) {
-        try {
-            HttpURLConnection connection = (HttpURLConnection) URI.create(uri).toURL().openConnection();
+    private static HttpURLConnection openConnection(String uri) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) URI.create(uri).toURL().openConnection();
 
-            if (connection instanceof HttpsURLConnection) {
-                try {
-                    TrustManagerFactory trustManagerFactory
-                        = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        if (connection instanceof HttpsURLConnection) {
+            try {
+                TrustManagerFactory trustManagerFactory
+                    = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
-                    trustManagerFactory.init(JreKeyStoreFactory.getDefaultKeyStore());
+                trustManagerFactory.init(JreKeyStoreFactory.getDefaultKeyStore());
 
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
+                SSLContext sslContext = SSLContext.getInstance("TLS");
 
-                    sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
-                    ((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
-                } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
-                    LOGGER.log(WARNING, "Unable to build the SSL context.", e);
-                }
+                sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+                ((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+            } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
+                LOGGER.log(WARNING, "Unable to build the SSL context.", e);
             }
-
-            return connection;
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
         }
+
+        return connection;
     }
 
     public static String validateUri(String uri, String propertyName) {
