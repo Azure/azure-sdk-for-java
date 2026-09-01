@@ -68,7 +68,6 @@ public class DataGenerationJobWithEvaluationSample {
             .get("POLL_INTERVAL_SECONDS", String.valueOf(DEFAULT_POLL_INTERVAL_SECONDS)));
 
         AIProjectClientBuilder projectClientBuilder = new AIProjectClientBuilder()
-            .allowPreview(true)
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build());
 
@@ -81,8 +80,8 @@ public class DataGenerationJobWithEvaluationSample {
 
         try {
             System.out.println("Create a data generation job.");
-            job = dataGenerationJobsClient.createGenerationJob(createDataGenerationJob(modelName, datasetName),
-                UUID.randomUUID().toString());
+            job = dataGenerationJobsClient.beginCreateGenerationJob(createDataGenerationJob(modelName, datasetName),
+                UUID.randomUUID().toString()).poll().getValue();
             System.out.printf("Created data generation job `%s` (status: `%s`).%n", job.getId(), job.getStatus());
 
             job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), pollIntervalSeconds);

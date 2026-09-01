@@ -40,6 +40,8 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import com.azure.storage.common.policy.StorageContentValidationDecodingPolicy;
+import com.azure.storage.common.policy.StorageContentValidationEncodingPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
@@ -118,7 +120,11 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        // Must be after the retry policy so it is evaluated on every attempt, and before the credential policies.
+        policies.add(new StorageContentValidationEncodingPolicy());
+        policies.add(new StorageContentValidationDecodingPolicy());
+
+        // Must be after the retry policy so it is evaluated on every attempt, and after content validation so the
+        // Content-Length it reads is the encoded length actually sent. Before the credential policies.
         BuilderUtils.addExpectContinuePolicy(policies, expectContinueOptions);
 
         if (storageSharedKeyCredential != null) {

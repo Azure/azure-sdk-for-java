@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SettingsGatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsGatewayProperties model = BinaryData.fromString("{\"gatewayResourceId\":\"qtibxyijddtv\"}")
-            .toObject(SettingsGatewayProperties.class);
-        Assertions.assertEquals("qtibxyijddtv", model.gatewayResourceId());
+        SettingsGatewayProperties model
+            = BinaryData.fromString("{\"gatewayResourceId\":\"vizbfhfo\"}").toObject(SettingsGatewayProperties.class);
+        Assertions.assertEquals("vizbfhfo", model.gatewayResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsGatewayProperties model = new SettingsGatewayProperties().withGatewayResourceId("qtibxyijddtv");
+        SettingsGatewayProperties model = new SettingsGatewayProperties().withGatewayResourceId("vizbfhfo");
         model = BinaryData.fromObject(model).toObject(SettingsGatewayProperties.class);
-        Assertions.assertEquals("qtibxyijddtv", model.gatewayResourceId());
+        Assertions.assertEquals("vizbfhfo", model.gatewayResourceId());
     }
 }

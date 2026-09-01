@@ -40,6 +40,18 @@ public final class VirtualMachineImpl implements VirtualMachine {
         return this.innerModel().error();
     }
 
+    public String vmSize() {
+        return this.innerModel().vmSize();
+    }
+
+    public String zone() {
+        return this.innerModel().zone();
+    }
+
+    public String priority() {
+        return this.innerModel().priority();
+    }
+
     public VirtualMachineInner innerModel() {
         return this.innerObject;
     }

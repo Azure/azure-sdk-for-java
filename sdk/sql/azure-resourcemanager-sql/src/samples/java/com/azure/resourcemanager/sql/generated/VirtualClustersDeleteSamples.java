@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class VirtualClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/VirtualClusterDelete.json
+     * x-ms-original-file: 2025-01-01/VirtualClusterDelete.json
      */
     /**
      * Sample code: Delete virtual cluster.

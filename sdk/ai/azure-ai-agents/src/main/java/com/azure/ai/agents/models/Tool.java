@@ -97,6 +97,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
                     return A2APreviewTool.fromJson(readerToUse.reset());
+                } else if ("a2a".equals(discriminatorValue)) {
+                    return A2ATool.fromJson(readerToUse.reset());
                 } else if ("work_iq_preview".equals(discriminatorValue)) {
                     return WorkIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("fabric_iq_preview".equals(discriminatorValue)) {
@@ -115,6 +117,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return FunctionTool.fromJson(readerToUse.reset());
                 } else if ("computer_use_preview".equals(discriminatorValue)) {
                     return ComputerUsePreviewTool.fromJson(readerToUse.reset());
+                } else if ("programmatic_tool_calling".equals(discriminatorValue)) {
+                    return ProgrammaticToolCallingParameter.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {

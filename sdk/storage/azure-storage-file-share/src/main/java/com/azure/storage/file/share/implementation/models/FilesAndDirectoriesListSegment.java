@@ -32,6 +32,36 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
     @Generated
     private List<FileItem> fileItems = new ArrayList<>();
 
+    /*
+     * The SymLinkItems property.
+     */
+    @Generated
+    private List<SymLinkItem> symLinkItems = new ArrayList<>();
+
+    /*
+     * The BlockDeviceItems property.
+     */
+    @Generated
+    private List<BlockDeviceItem> blockDeviceItems = new ArrayList<>();
+
+    /*
+     * The CharDeviceItems property.
+     */
+    @Generated
+    private List<CharDeviceItem> charDeviceItems = new ArrayList<>();
+
+    /*
+     * The FifoItems property.
+     */
+    @Generated
+    private List<FifoItem> fifoItems = new ArrayList<>();
+
+    /*
+     * The SocketItems property.
+     */
+    @Generated
+    private List<SocketItem> socketItems = new ArrayList<>();
+
     /**
      * Creates an instance of FilesAndDirectoriesListSegment class.
      */
@@ -83,6 +113,116 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
         return this;
     }
 
+    /**
+     * Get the symLinkItems property: The SymLinkItems property.
+     * 
+     * @return the symLinkItems value.
+     */
+    @Generated
+    public List<SymLinkItem> getSymLinkItems() {
+        return this.symLinkItems;
+    }
+
+    /**
+     * Set the symLinkItems property: The SymLinkItems property.
+     * 
+     * @param symLinkItems the symLinkItems value to set.
+     * @return the FilesAndDirectoriesListSegment object itself.
+     */
+    @Generated
+    public FilesAndDirectoriesListSegment setSymLinkItems(List<SymLinkItem> symLinkItems) {
+        this.symLinkItems = symLinkItems;
+        return this;
+    }
+
+    /**
+     * Get the blockDeviceItems property: The BlockDeviceItems property.
+     * 
+     * @return the blockDeviceItems value.
+     */
+    @Generated
+    public List<BlockDeviceItem> getBlockDeviceItems() {
+        return this.blockDeviceItems;
+    }
+
+    /**
+     * Set the blockDeviceItems property: The BlockDeviceItems property.
+     * 
+     * @param blockDeviceItems the blockDeviceItems value to set.
+     * @return the FilesAndDirectoriesListSegment object itself.
+     */
+    @Generated
+    public FilesAndDirectoriesListSegment setBlockDeviceItems(List<BlockDeviceItem> blockDeviceItems) {
+        this.blockDeviceItems = blockDeviceItems;
+        return this;
+    }
+
+    /**
+     * Get the charDeviceItems property: The CharDeviceItems property.
+     * 
+     * @return the charDeviceItems value.
+     */
+    @Generated
+    public List<CharDeviceItem> getCharDeviceItems() {
+        return this.charDeviceItems;
+    }
+
+    /**
+     * Set the charDeviceItems property: The CharDeviceItems property.
+     * 
+     * @param charDeviceItems the charDeviceItems value to set.
+     * @return the FilesAndDirectoriesListSegment object itself.
+     */
+    @Generated
+    public FilesAndDirectoriesListSegment setCharDeviceItems(List<CharDeviceItem> charDeviceItems) {
+        this.charDeviceItems = charDeviceItems;
+        return this;
+    }
+
+    /**
+     * Get the fifoItems property: The FifoItems property.
+     * 
+     * @return the fifoItems value.
+     */
+    @Generated
+    public List<FifoItem> getFifoItems() {
+        return this.fifoItems;
+    }
+
+    /**
+     * Set the fifoItems property: The FifoItems property.
+     * 
+     * @param fifoItems the fifoItems value to set.
+     * @return the FilesAndDirectoriesListSegment object itself.
+     */
+    @Generated
+    public FilesAndDirectoriesListSegment setFifoItems(List<FifoItem> fifoItems) {
+        this.fifoItems = fifoItems;
+        return this;
+    }
+
+    /**
+     * Get the socketItems property: The SocketItems property.
+     * 
+     * @return the socketItems value.
+     */
+    @Generated
+    public List<SocketItem> getSocketItems() {
+        return this.socketItems;
+    }
+
+    /**
+     * Set the socketItems property: The SocketItems property.
+     * 
+     * @param socketItems the socketItems value to set.
+     * @return the FilesAndDirectoriesListSegment object itself.
+     */
+    @Generated
+    public FilesAndDirectoriesListSegment setSocketItems(List<SocketItem> socketItems) {
+        this.socketItems = socketItems;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -102,6 +242,31 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
         if (this.fileItems != null) {
             for (FileItem element : this.fileItems) {
                 xmlWriter.writeXml(element, "File");
+            }
+        }
+        if (this.symLinkItems != null) {
+            for (SymLinkItem element : this.symLinkItems) {
+                xmlWriter.writeXml(element, "SymLink");
+            }
+        }
+        if (this.blockDeviceItems != null) {
+            for (BlockDeviceItem element : this.blockDeviceItems) {
+                xmlWriter.writeXml(element, "BlockDevice");
+            }
+        }
+        if (this.charDeviceItems != null) {
+            for (CharDeviceItem element : this.charDeviceItems) {
+                xmlWriter.writeXml(element, "CharDevice");
+            }
+        }
+        if (this.fifoItems != null) {
+            for (FifoItem element : this.fifoItems) {
+                xmlWriter.writeXml(element, "Fifo");
+            }
+        }
+        if (this.socketItems != null) {
+            for (SocketItem element : this.socketItems) {
+                xmlWriter.writeXml(element, "Socket");
             }
         }
         return xmlWriter.writeEndElement();
@@ -146,6 +311,18 @@ public final class FilesAndDirectoriesListSegment implements XmlSerializable<Fil
                         .add(DirectoryItem.fromXml(reader, "Directory"));
                 } else if ("File".equals(elementName.getLocalPart())) {
                     deserializedFilesAndDirectoriesListSegment.fileItems.add(FileItem.fromXml(reader, "File"));
+                } else if ("SymLink".equals(elementName.getLocalPart())) {
+                    deserializedFilesAndDirectoriesListSegment.symLinkItems.add(SymLinkItem.fromXml(reader, "SymLink"));
+                } else if ("BlockDevice".equals(elementName.getLocalPart())) {
+                    deserializedFilesAndDirectoriesListSegment.blockDeviceItems
+                        .add(BlockDeviceItem.fromXml(reader, "BlockDevice"));
+                } else if ("CharDevice".equals(elementName.getLocalPart())) {
+                    deserializedFilesAndDirectoriesListSegment.charDeviceItems
+                        .add(CharDeviceItem.fromXml(reader, "CharDevice"));
+                } else if ("Fifo".equals(elementName.getLocalPart())) {
+                    deserializedFilesAndDirectoriesListSegment.fifoItems.add(FifoItem.fromXml(reader, "Fifo"));
+                } else if ("Socket".equals(elementName.getLocalPart())) {
+                    deserializedFilesAndDirectoriesListSegment.socketItems.add(SocketItem.fromXml(reader, "Socket"));
                 } else {
                     reader.skipElement();
                 }

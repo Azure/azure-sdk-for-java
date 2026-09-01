@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
  */
 public final class DatabasesRenameSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/RenameDatabase.json
+     * x-ms-original-file: 2025-01-01/RenameDatabase.json
      */
     /**
      * Sample code: Renames a database.

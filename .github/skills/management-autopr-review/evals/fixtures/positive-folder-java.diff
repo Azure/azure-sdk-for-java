@@ -1,0 +1,10 @@
+diff --git a/sdk/containerservice/azure-resourcemanager-containerservicepreparedimgspec/src/main/java/com/azure/resourcemanager/containerservicepreparedimgspec/PreparedImageSpecifications.java b/sdk/containerservice/azure-resourcemanager-containerservicepreparedimgspec/src/main/java/com/azure/resourcemanager/containerservicepreparedimgspec/PreparedImageSpecifications.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/containerservice/azure-resourcemanager-containerservicepreparedimgspec/src/main/java/com/azure/resourcemanager/containerservicepreparedimgspec/PreparedImageSpecifications.java
+@@ -0,0 +1,5 @@
++package com.azure.resourcemanager.containerservicepreparedimgspec;
++
++public interface PreparedImageSpecifications {
++    PreparedImageSpecification get(String resourceGroupName, String name);
++}

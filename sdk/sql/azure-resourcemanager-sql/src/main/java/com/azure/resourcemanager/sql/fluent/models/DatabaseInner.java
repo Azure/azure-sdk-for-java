@@ -1341,15 +1341,6 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Specifies the provisioning state for this resource.
-     * 
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

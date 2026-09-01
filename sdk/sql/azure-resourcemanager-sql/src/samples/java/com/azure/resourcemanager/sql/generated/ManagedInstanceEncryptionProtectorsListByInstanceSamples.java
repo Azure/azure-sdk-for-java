@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceEncryptionProtectorsListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceEncryptionProtectorList.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceEncryptionProtectorList.json
      */
     /**
      * Sample code: List encryption protectors by managed instance.

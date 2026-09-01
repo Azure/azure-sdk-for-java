@@ -23,7 +23,7 @@ public final class GatewaysListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"gatewayId\":\"twwgzwx\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"cvogygzyvne\",\"allowedFeatures\":[\"ifgh\",\"moqqtlffhzbk\",\"kjj\"]},\"location\":\"vfqnvhnqoewdo\",\"tags\":{\"b\":\"etesypvidbztjhqt\",\"etnjuhpsprkz\":\"vnynkb\"},\"id\":\"aupia\",\"name\":\"cxnafbwqrooh\",\"type\":\"uovmaonurjt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"gatewayId\":\"ttuiaclkiexhajl\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"iqfyuttdi\",\"allowedFeatures\":[\"pvn\"],\"gatewayBypass\":[\"mtx\",\"yctww\",\"zwxjlm\"]},\"location\":\"vogygzyvneez\",\"tags\":{\"moqqtlffhzbk\":\"gh\"},\"id\":\"kjj\",\"name\":\"avfqnvhnqoewdogi\",\"type\":\"etesypvidbztjhqt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,12 @@ public final class GatewaysListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Gateway> response
-            = manager.gateways().listByResourceGroup("yuttdiygbpvnwswm", com.azure.core.util.Context.NONE);
+            = manager.gateways().listByResourceGroup("ommpvfqaw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vfqnvhnqoewdo", response.iterator().next().location());
-        Assertions.assertEquals("etesypvidbztjhqt", response.iterator().next().tags().get("b"));
+        Assertions.assertEquals("vogygzyvneez", response.iterator().next().location());
+        Assertions.assertEquals("gh", response.iterator().next().tags().get("moqqtlffhzbk"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("ifgh", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("pvn", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("mtx", response.iterator().next().gatewayBypass().get(0));
     }
 }

@@ -22,8 +22,12 @@ import org.springframework.util.ClassUtils;
 
 import java.security.KeyStore;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -95,7 +99,8 @@ class AzureKeyVaultSslBundleRegistrarTests {
     void registerKeyVaultSslBundle(CapturedOutput capturedOutput) {
         AzureKeyVaultJcaProperties jcaProperties = new AzureKeyVaultJcaProperties();
         AzureKeyVaultSslBundleProperties sslBundleProperties = new AzureKeyVaultSslBundleProperties();
-        AzureKeyVaultSslBundleRegistrar registrar = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
+        AzureKeyVaultSslBundleRegistrar registrar
+            = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
         registrar.setResourceLoader(new DefaultResourceLoader());
         SslBundleRegistry registry = Mockito.mock(SslBundleRegistry.class);
 
@@ -206,6 +211,58 @@ class AzureKeyVaultSslBundleRegistrarTests {
                 String log = "Registered Azure Key Vault SSL bundle '" + bundleName + "'.";
                 assertTrue(allOutput.contains(log));
             });
+        }
+    }
+
+    @Test
+    void configureCertificateAliasFilterPatterns() {
+        AzureKeyVaultJcaProperties jcaProperties = new AzureKeyVaultJcaProperties();
+        AzureKeyVaultSslBundleProperties sslBundleProperties = new AzureKeyVaultSslBundleProperties();
+        AzureKeyVaultSslBundleRegistrar registrar = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
+        registrar.setResourceLoader(new DefaultResourceLoader());
+
+        try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
+            KeyStore keyStore = Mockito.mock(KeyStore.class);
+            List<List<String>> configuredFilterPatterns = new ArrayList<>();
+            keyStoreMockedStatic.when(() -> KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME))
+                .thenAnswer(invocation -> {
+                    configuredFilterPatterns.add(System.getProperties()
+                        .stringPropertyNames()
+                        .stream()
+                        .filter(name -> name.startsWith("azure.keyvault.jca.certificate-alias-filter-pattern."))
+                        .sorted()
+                        .map(System::getProperty)
+                        .collect(Collectors.toList()));
+                    return keyStore;
+                });
+
+            AzureKeyVaultJcaProperties.JcaVaultProperties vaultProperties
+                = new AzureKeyVaultJcaProperties.JcaVaultProperties();
+            vaultProperties.setEndpoint("https://test.vault.azure.net/");
+            jcaProperties.getVaults().put("keyvault1", vaultProperties);
+
+            AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties bundleProperties
+                = new AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties();
+            bundleProperties.getKeystore().setKeyvaultRef("keyvault1");
+            bundleProperties.getKeystore().getCertificateAliasFilterPatterns()
+                .addAll(Arrays.asList("^prod-\\d{1,5}$", "!^prod-deprecated$"));
+            bundleProperties.getTruststore().setKeyvaultRef("keyvault1");
+            bundleProperties.getTruststore().getCertificateAliasFilterPatterns()
+                .addAll(Arrays.asList("^partner-.*", "!^partner-deprecated$"));
+            sslBundleProperties.getKeyvault().put("testBundle", bundleProperties);
+
+            registrar.registerBundles(Mockito.mock(SslBundleRegistry.class));
+
+            assertThat(configuredFilterPatterns)
+                .containsExactly(
+                    Arrays.asList("^prod-\\d{1,5}$", "!^prod-deprecated$"),
+                    Arrays.asList("^partner-.*", "!^partner-deprecated$"));
+        } finally {
+            System.getProperties()
+                .stringPropertyNames()
+                .stream()
+                .filter(name -> name.startsWith("azure.keyvault.jca.certificate-alias-filter-pattern."))
+                .forEach(System::clearProperty);
         }
     }
 

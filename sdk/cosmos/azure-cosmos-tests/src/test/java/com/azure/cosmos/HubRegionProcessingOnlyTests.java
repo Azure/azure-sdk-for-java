@@ -57,7 +57,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
     private volatile CosmosAsyncContainer container;
     private List<String> preferredRegions;
     private Map<String, String> regionNameToEndpoint;
-    private String partitionKeyValue = "12345";
+    private final String partitionKeyValue = UUID.randomUUID().toString();
 
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor cosmosAsyncClientAccessor
         = ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
@@ -152,8 +152,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
         try {
 
-            String databaseId = "testDatabase";
-            String containerId = "testContainer";
+            String databaseId = this.database.getId();
+            String containerId = this.container.getId();
 
             // Step 1: Container is pre-created (using shared container)
             CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
@@ -241,7 +241,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      * Validates that when a Query operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
      * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
      *
-     * <p>The query is scoped to partition key "12345".</p>
+     * <p>The query is scoped to a unique logical partition.</p>
      *
      * @throws Exception if test setup fails or unexpected errors occur
      */
@@ -267,8 +267,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
         try {
 
-            String databaseId = "testDatabase";
-            String containerId = "testContainer";
+            String databaseId = this.database.getId();
+            String containerId = this.container.getId();
 
             CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
             CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
@@ -356,7 +356,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      * Validates that when a Change Feed operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
      * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
      *
-     * <p>The Change Feed is read from the beginning and scoped to partition key "12345".</p>
+     * <p>The Change Feed is read from the beginning and scoped to a unique logical partition.</p>
      *
      * @throws Exception if test setup fails or unexpected errors occur
      */
@@ -382,8 +382,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
         try {
 
-            String databaseId = "testDatabase";
-            String containerId = "testContainer";
+            String databaseId = this.database.getId();
+            String containerId = this.container.getId();
 
             CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
             CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
@@ -470,7 +470,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      * Validates that when a readMany operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
      * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
      *
-     * <p>The readMany operation is scoped to partition key "12345".</p>
+     * <p>The readMany operation is scoped to a unique logical partition.</p>
      *
      * @throws Exception if test setup fails or unexpected errors occur
      */
@@ -496,8 +496,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
         try {
 
-            String databaseId = "testDatabase";
-            String containerId = "testContainer";
+            String databaseId = this.database.getId();
+            String containerId = this.container.getId();
 
             CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
             CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
@@ -582,7 +582,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      * Validates that when a readAll operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
      * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
      *
-     * <p>The readAll operation is scoped to partition key "12345".</p>
+     * <p>The readAll operation is scoped to a unique logical partition.</p>
      *
      * @throws Exception if test setup fails or unexpected errors occur
      */
@@ -608,8 +608,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
         try {
 
-            String databaseId = "testDatabase";
-            String containerId = "testContainer";
+            String databaseId = this.database.getId();
+            String containerId = this.container.getId();
 
             CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
             CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);

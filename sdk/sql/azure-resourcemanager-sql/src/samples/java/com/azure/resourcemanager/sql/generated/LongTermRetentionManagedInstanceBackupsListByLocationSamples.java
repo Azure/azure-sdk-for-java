@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionManagedInstanceBackupsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByLocation.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceLongTermRetentionBackupListByLocation.json
      */
     /**
      * Sample code: Get all long term retention backups under the location.
@@ -24,7 +24,7 @@ public final class LongTermRetentionManagedInstanceBackupsListByLocationSamples 
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByLocationMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceLongTermRetentionBackupListByLocationMax.json
      */
     /**
      * Sample code: Get all long term retention backups under the location with maximal parameters.

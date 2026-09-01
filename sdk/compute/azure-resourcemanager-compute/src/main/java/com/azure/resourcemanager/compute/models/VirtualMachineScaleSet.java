@@ -1165,7 +1165,11 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
              *  Specifies an unmanaged disk to be attached to the virtual machine.
              *
              * @return the next stage of an unmanaged disk based virtual machine scale set definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithUnmanagedCreate withUnmanagedDisks();
         }
 
@@ -1210,7 +1214,11 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
              * Enables unmanaged disks.
              *
              * @return the next stage of the definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithWindowsCreateUnmanaged withUnmanagedDisks();
         }
 

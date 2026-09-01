@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class WorkloadGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DeleteWorkloadGroup.json
+     * x-ms-original-file: 2025-01-01/DeleteWorkloadGroup.json
      */
     /**
      * Sample code: Delete a workload group.

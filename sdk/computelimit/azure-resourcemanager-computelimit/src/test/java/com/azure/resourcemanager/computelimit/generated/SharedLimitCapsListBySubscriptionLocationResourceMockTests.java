@@ -22,7 +22,7 @@ public final class SharedLimitCapsListBySubscriptionLocationResourceMockTests {
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"defaultMemberCap\":79339755,\"isBoundedCap\":true,\"provisioningState\":\"Canceled\"},\"id\":\"myskpbhenbtkcxy\",\"name\":\"ny\",\"type\":\"nrs\"}]}";
+            = "{\"value\":[{\"properties\":{\"defaultMemberCap\":61387410,\"isBoundedCap\":false,\"provisioningState\":\"Succeeded\"},\"id\":\"nabckhsmtx\",\"name\":\"siebtfhvpesapskr\",\"type\":\"qmhjjdhtld\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SharedLimitCapsListBySubscriptionLocationResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SharedLimitCap> response
-            = manager.sharedLimitCaps().listBySubscriptionLocationResource("bh", com.azure.core.util.Context.NONE);
+        PagedIterable<SharedLimitCap> response = manager.sharedLimitCaps()
+            .listBySubscriptionLocationResource("kdwzbaiuebbaumny", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(79339755, response.iterator().next().properties().defaultMemberCap());
-        Assertions.assertTrue(response.iterator().next().properties().isBoundedCap());
+        Assertions.assertEquals(61387410, response.iterator().next().properties().defaultMemberCap());
+        Assertions.assertFalse(response.iterator().next().properties().isBoundedCap());
     }
 }

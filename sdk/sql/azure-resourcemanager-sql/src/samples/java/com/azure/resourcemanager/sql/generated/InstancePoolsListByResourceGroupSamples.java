@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstancePoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListInstancePoolsByResourceGroup.json
+     * x-ms-original-file: 2025-01-01/ListInstancePoolsByResourceGroup.json
      */
     /**
      * Sample code: List instance pools by resource group.

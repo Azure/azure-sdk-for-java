@@ -272,7 +272,7 @@ public interface EdgeActionVersionsClient {
         Context context);
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -288,7 +288,7 @@ public interface EdgeActionVersionsClient {
         beginDeployVersionCode(String resourceGroupName, String edgeActionName, String version, VersionCodeInner body);
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -305,7 +305,7 @@ public interface EdgeActionVersionsClient {
         String resourceGroupName, String edgeActionName, String version, VersionCodeInner body, Context context);
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -321,7 +321,7 @@ public interface EdgeActionVersionsClient {
         VersionCodeInner body);
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

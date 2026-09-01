@@ -86,6 +86,14 @@ public interface MachineProperties {
     LicenseProfileMachineInstanceView licenseProfile();
 
     /**
+     * Gets the statusReason property: Indicates whether the service has detected that this Arc machine is a clone of
+     * another onboarded machine. Service-computed; not settable by the user.
+     * 
+     * @return the statusReason value.
+     */
+    MachineStatusReason statusReason();
+
+    /**
      * Gets the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.

@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class FailoverGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/FailoverGroupCreateOrUpdateStandbySecondary.json
+     * x-ms-original-file: 2025-01-01/FailoverGroupCreateOrUpdateStandbySecondary.json
      */
     /**
      * Sample code: Create failover group with standby secondary database on partner server.
@@ -46,7 +46,7 @@ public final class FailoverGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/FailoverGroupCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/FailoverGroupCreateOrUpdate.json
      */
     /**
      * Sample code: Create failover group.

@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
+import com.azure.resourcemanager.iothub.models.ArmIdentity;
 import com.azure.resourcemanager.iothub.models.Capabilities;
 import com.azure.resourcemanager.iothub.models.CloudToDeviceProperties;
 import com.azure.resourcemanager.iothub.models.DefaultAction;
 import com.azure.resourcemanager.iothub.models.DeviceRegistry;
 import com.azure.resourcemanager.iothub.models.EventHubProperties;
+import com.azure.resourcemanager.iothub.models.EventStreamAuthenticationType;
 import com.azure.resourcemanager.iothub.models.FallbackRouteProperties;
 import com.azure.resourcemanager.iothub.models.FeedbackProperties;
 import com.azure.resourcemanager.iothub.models.IotHubProperties;
@@ -19,8 +21,10 @@ import com.azure.resourcemanager.iothub.models.MessagingEndpointProperties;
 import com.azure.resourcemanager.iothub.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.iothub.models.NetworkRuleSetIpRule;
 import com.azure.resourcemanager.iothub.models.NetworkRuleSetProperties;
+import com.azure.resourcemanager.iothub.models.ResourceIdentityType;
 import com.azure.resourcemanager.iothub.models.RootCertificateProperties;
 import com.azure.resourcemanager.iothub.models.RoutingEndpoints;
+import com.azure.resourcemanager.iothub.models.RoutingEventStreamProperties;
 import com.azure.resourcemanager.iothub.models.RoutingProperties;
 import com.azure.resourcemanager.iothub.models.RoutingSource;
 import com.azure.resourcemanager.iothub.models.StorageEndpointProperties;
@@ -34,7 +38,7 @@ import java.util.Map;
  */
 public final class IotHubResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrReplace_IoTHub_With_DeviceRegistry.json
+     * x-ms-original-file: 2026-05-01-preview/CreateOrReplace_IoTHub_With_DeviceRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_IoTHub_With_DeviceRegistry.
@@ -46,7 +50,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
             .define("testHub")
             .withRegion("centraluseuap")
             .withExistingResourceGroup("myResourceGroup")
-            .withSku(new IotHubSkuInfo().withName(IotHubSku.GEN2).withCapacity(1L))
+            .withSku(new IotHubSkuInfo().withName(IotHubSku.S1).withCapacity(1L))
             .withTags(mapOf())
             .withProperties(new IotHubProperties().withIpFilterRules(Arrays.asList())
                 .withNetworkRuleSets(new NetworkRuleSetProperties().withDefaultAction(DefaultAction.DENY)
@@ -65,7 +69,8 @@ public final class IotHubResourceCreateOrUpdateSamples {
                     .withEndpoints(new RoutingEndpoints().withServiceBusQueues(Arrays.asList())
                         .withServiceBusTopics(Arrays.asList())
                         .withEventHubs(Arrays.asList())
-                        .withStorageContainers(Arrays.asList()))
+                        .withStorageContainers(Arrays.asList())
+                        .withEventStreams(Arrays.asList()))
                     .withRoutes(Arrays.asList())
                     .withFallbackRoute(new FallbackRouteProperties().withName("$fallback")
                         .withSource(RoutingSource.DEVICE_MESSAGES)
@@ -99,7 +104,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_createOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/iothub_createOrUpdate.json
      */
     /**
      * Sample code: IotHubResource_CreateOrUpdate.
@@ -126,11 +131,18 @@ public final class IotHubResourceCreateOrUpdateSamples {
                 .withMinTlsVersion("1.2")
                 .withEventHubEndpoints(
                     mapOf("events", new EventHubProperties().withRetentionTimeInDays(1L).withPartitionCount(2)))
-                .withRouting(new RoutingProperties()
-                    .withEndpoints(new RoutingEndpoints().withServiceBusQueues(Arrays.asList())
-                        .withServiceBusTopics(Arrays.asList())
-                        .withEventHubs(Arrays.asList())
-                        .withStorageContainers(Arrays.asList()))
+                .withRouting(new RoutingProperties().withEndpoints(new RoutingEndpoints()
+                    .withServiceBusQueues(Arrays.asList())
+                    .withServiceBusTopics(Arrays.asList())
+                    .withEventHubs(Arrays.asList())
+                    .withStorageContainers(Arrays.asList())
+                    .withEventStreams(Arrays.asList(new RoutingEventStreamProperties().withName("eventstreamendpoint1")
+                        .withEndpointUri("sb://eventstreamcustomsourceehns.azure.servicebus.net")
+                        .withEntityPath("eventstreamcustomsourceeh")
+                        .withAuthenticationType(EventStreamAuthenticationType.IDENTITY_BASED)
+                        .withWorkspaceId("11111111-1111-1111-1111-111111111111")
+                        .withEventStreamId("22222222-2222-2222-2222-222222222222")
+                        .withSourceId("33333333-3333-3333-3333-333333333333"))))
                     .withRoutes(Arrays.asList())
                     .withFallbackRoute(new FallbackRouteProperties().withName("$fallback")
                         .withSource(RoutingSource.DEVICE_MESSAGES)
@@ -156,6 +168,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
                 .withRootCertificate(new RootCertificateProperties().withEnableRootCertificateV2(true))
                 .withIpVersion(IpVersion.IPV4IPV6))
             .withEtag("AAAAAAFD6M4=")
+            .withIdentity(new ArmIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
 

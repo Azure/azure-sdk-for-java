@@ -52,7 +52,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
      *   <tr><td>not set</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
      *   <tr><td>true</td><td>not set</td><td>JmsPoolConnectionFactory</td></tr>
      *   <tr><td>true</td><td>true</td><td>CachingConnectionFactory</td></tr>
-     *   <tr><td>true</td><td>false</td><td>JmsPoolConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
      *   <tr><td>false</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
      *   <tr><td>false</td><td>true</td><td>CachingConnectionFactory</td></tr>
      *   <tr><td>false</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
@@ -62,7 +62,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
         // pool: not set
         {SERVICE_BUS, CACHE, SERVICE_BUS}, // cache: not set, true, false
         // pool: true
-        {POOL, CACHE, POOL}, // cache: not set, true, false
+        {POOL, CACHE, SERVICE_BUS}, // cache: not set, true, false
         // pool: false
         {SERVICE_BUS, CACHE, SERVICE_BUS} // cache: not set, true, false
     };

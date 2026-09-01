@@ -17,7 +17,7 @@ public final class HybridComputePrivateLinkScopePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridComputePrivateLinkScopeProperties model = BinaryData.fromString(
-            "{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"kbunzoz\",\"privateLinkScopeId\":\"hcxgkmoyx\",\"privateEndpointConnections\":[{\"id\":\"ibhmfdn\",\"name\":\"ydvfvfcjnae\",\"type\":\"srvhmgorffuki\",\"properties\":{\"privateEndpoint\":{\"id\":\"mzhwplefaxvxi\"},\"privateLinkServiceConnectionState\":{\"status\":\"btgn\",\"description\":\"nzeyqxtjj\",\"actionsRequired\":\"qlqhycavodg\"},\"provisioningState\":\"dbeesmie\",\"groupIds\":[\"ra\",\"iaa\",\"iuagydwqfbylyrfg\"]}},{\"id\":\"gtcojocqwo\",\"name\":\"nzjvusfzldm\",\"type\":\"uxylfsbtkadpy\",\"properties\":{\"privateEndpoint\":{\"id\":\"btgkbugrjqctoj\"},\"privateLinkServiceConnectionState\":{\"status\":\"isofieypefojyqd\",\"description\":\"cuplcplcwkhih\",\"actionsRequired\":\"lhzdsqtzb\"},\"provisioningState\":\"gnowcjhfgmveca\",\"groupIds\":[\"mwotey\",\"wcluqovekqvgq\",\"uwifzmpjwyiv\",\"ikf\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"datarfsphuagrt\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"dataeusqczkvyklxu\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"dataff\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"}]}")
+            "{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"iwrxgkn\",\"privateLinkScopeId\":\"vyi\",\"privateEndpointConnections\":[{\"id\":\"dfvpg\",\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"flbqvgaq\",\"properties\":{\"privateEndpoint\":{\"id\":\"fcq\"},\"privateLinkServiceConnectionState\":{\"status\":\"rdve\",\"description\":\"nwsdtutnwlduyc\",\"actionsRequired\":\"zhyrmewipmve\"},\"provisioningState\":\"xukuqgsj\",\"groupIds\":[\"n\",\"xgketwz\",\"hzjhf\"]}},{\"id\":\"hvvmuvgpmun\",\"name\":\"sx\",\"type\":\"hfbuzjyihsasbhud\",\"properties\":{\"privateEndpoint\":{\"id\":\"yue\"},\"privateLinkServiceConnectionState\":{\"status\":\"lynsqyrpf\",\"description\":\"obrltt\",\"actionsRequired\":\"sjnygqdnfwqzdzgt\"},\"provisioningState\":\"axhnfh\",\"groupIds\":[\"vi\"]}}],\"serviceExtensions\":[{\"serviceExtensionType\":\"\\\"dataiv\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Disabled\"},{\"serviceExtensionType\":\"\\\"datazunbixx\\\"\",\"serviceExtensionPublicNetworkAccess\":\"Enabled\"}]}")
             .toObject(HybridComputePrivateLinkScopeProperties.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
         Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,
@@ -28,18 +28,16 @@ public final class HybridComputePrivateLinkScopePropertiesTests {
     public void testSerialize() throws Exception {
         HybridComputePrivateLinkScopeProperties model
             = new HybridComputePrivateLinkScopeProperties().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)
-                .withServiceExtensions(Arrays.asList(
-                    new ServiceExtension()
-                        .withServiceExtensionType(
-                            BinaryData.fromBytes("\"datarfsphuagrt\"".getBytes(StandardCharsets.UTF_8)))
-                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
-                    new ServiceExtension()
-                        .withServiceExtensionType(
-                            BinaryData.fromBytes("\"dataeusqczkvyklxu\"".getBytes(StandardCharsets.UTF_8)))
-                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
-                    new ServiceExtension()
-                        .withServiceExtensionType(BinaryData.fromBytes("\"dataff\"".getBytes(StandardCharsets.UTF_8)))
-                        .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.ENABLED)));
+                .withServiceExtensions(
+                    Arrays.asList(
+                        new ServiceExtension()
+                            .withServiceExtensionType(
+                                BinaryData.fromBytes("\"dataiv\"".getBytes(StandardCharsets.UTF_8)))
+                            .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.DISABLED),
+                        new ServiceExtension()
+                            .withServiceExtensionType(
+                                BinaryData.fromBytes("\"datazunbixx\"".getBytes(StandardCharsets.UTF_8)))
+                            .withServiceExtensionPublicNetworkAccess(ServiceExtensionPublicNetworkAccess.ENABLED)));
         model = BinaryData.fromObject(model).toObject(HybridComputePrivateLinkScopeProperties.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
         Assertions.assertEquals(ServiceExtensionPublicNetworkAccess.DISABLED,

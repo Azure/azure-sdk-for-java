@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ManagedShortTermRetentionPolicyName;
  */
 public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateManagedShortTermRetentionPolicyRestorableDropped.json
+     * x-ms-original-file: 2025-01-01/CreateManagedShortTermRetentionPolicyRestorableDropped.json
      */
     /**
      * Sample code: Update the short term retention policy for the restorable dropped database.

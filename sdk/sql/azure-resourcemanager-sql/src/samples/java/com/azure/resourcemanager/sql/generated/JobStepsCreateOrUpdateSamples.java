@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 public final class JobStepsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateJobStepMin.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateJobStepMin.json
      */
     /**
      * Sample code: Create or update a job step with minimal properties specified.
@@ -37,7 +37,7 @@ public final class JobStepsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateJobStepMax.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateJobStepMax.json
      */
     /**
      * Sample code: Create or update a job step with all properties specified.

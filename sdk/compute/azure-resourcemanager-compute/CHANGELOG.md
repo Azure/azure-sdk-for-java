@@ -1,6 +1,6 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.61.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,179 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.60.0 (2026-08-12)
+
+- Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2025-12-03, ComputeSku: 2021-07-01.
+
+### Features Added
+
+* `models.CapacityReservationType` was added
+
+* `models.UrgencyLevel` was added
+
+* `models.CapacityReservationStateInfo` was added
+
+* `models.DiskAvailabilityPolicy` was added
+
+* `models.ExtensionFeatureTag` was added
+
+* `models.MigrateVMAvailabilityZoneInput` was added
+
+* `models.ExtensionFeatureMetadata` was added
+
+* `models.VirtualMachineDiskNetworkAccessPolicy` was added
+
+* `models.ListVersionsExpandOptions` was added
+
+* `models.VirtualMachineDiskProperties` was added
+
+* `models.ReservationState` was added
+
+* `models.ProcessorMode` was added
+
+* `models.RunProfile` was added
+
+* `models.VirtualMachineDiskDelayAction` was added
+
+* `models.DiskApiVersion` was added
+
+* `models.ReleaseCategory` was added
+
+* `models.AdditionalDiskProperties` was added
+
+#### `models.VirtualMachineScaleSetStorageProfile` was modified
+
+* `diskApiVersion()` was added
+* `withDiskApiVersion(models.DiskApiVersion)` was added
+
+#### `models.ScheduleProfile` was modified
+
+* `withMinimumCommitmentDays(java.lang.Integer)` was added
+* `modifiableUntil()` was added
+* `minimumCommitmentDays()` was added
+
+#### `models.VirtualMachineScaleSetHardwareProfile` was modified
+
+* `processorMode()` was added
+* `withProcessorMode(models.ProcessorMode)` was added
+
+#### `models.VirtualMachinePriorityTypes` was modified
+
+* `SPOT_PLUS` was added
+
+#### `models.StorageProfile` was modified
+
+* `diskApiVersion()` was added
+* `withDiskApiVersion(models.DiskApiVersion)` was added
+
+#### `models.VirtualMachineScaleSetIpTag` was modified
+
+* `withFirstPartyServiceTagId(java.lang.String)` was added
+* `firstPartyServiceTagId()` was added
+
+#### `models.VirtualMachineScaleSetUpdateStorageProfile` was modified
+
+* `diskApiVersion()` was added
+* `withDiskApiVersion(models.DiskApiVersion)` was added
+
+#### `models.CapacityReservationInstanceViewWithName` was modified
+
+* `reservationStateInfo()` was added
+
+#### `models.HostEndpointSettings` was modified
+
+* `withUseLocalFileRules(java.lang.Boolean)` was added
+* `useLocalFileRules()` was added
+
+#### `models.CapacityReservationProfile` was modified
+
+* `disableCapacityReservationAssignment()` was added
+* `withDisableCapacityReservationAssignment(java.lang.Boolean)` was added
+
+#### `models.CapacityReservationInstanceView` was modified
+
+* `reservationStateInfo()` was added
+
+#### `models.VirtualMachineScaleSetManagedDiskParameters` was modified
+
+* `additionalDiskProperties()` was added
+* `withAdditionalDiskProperties(models.AdditionalDiskProperties)` was added
+
+#### `models.ReservationType` was modified
+
+* `OPEN` was added
+
+#### `models.VirtualMachineIpTag` was modified
+
+* `firstPartyServiceTagId()` was added
+* `withFirstPartyServiceTagId(java.lang.String)` was added
+
+#### `models.CapacityReservationUtilization` was modified
+
+* `usedReservedCountBySubscription()` was added
+
+#### `models.ManagedDiskParameters` was modified
+
+* `additionalDiskProperties()` was added
+* `withAdditionalDiskProperties(models.AdditionalDiskProperties)` was added
+
+#### `models.HardwareProfile` was modified
+
+* `withProcessorMode(models.ProcessorMode)` was added
+* `processorMode()` was added
+
+## 2.59.0 (2026-07-15)
+
+### Features Added
+
+* `models.ImmutabilityPolicyLockData` was added
+
+* `models.ImmutabilityPolicyData` was added
+
+* `models.ImmutabilityPolicyType` was added
+
+* `models.ConfidentialVMVersion` was added
+
+* `models.ImmutabilityPolicy` was added
+
+#### `models.RollingUpgradeStatusCode` was modified
+
+* `ROLLING_BACK` was added
+
+#### `models.DiskSecurityProfile` was modified
+
+* `confidentialVMVersion()` was added
+
+#### `models.UpgradeState` was modified
+
+* `ROLLING_BACK` was added
+
+### Other Changes
+
+- Updated `DiskRP api-version` to `2026-03-02`.
+
+## 2.58.2 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.58.3` to version `2.59.1`.
+
+## 2.58.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-network` from `2.58.2` to version `2.58.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+
+* Deprecated unmanaged disk related methods on `VirtualMachine`, `VirtualMachineScaleSet` and `VirtualMachineScaleSetVM`, as unmanaged disks are being retired by Azure. Use managed disks instead.
 
 ## 2.58.0 (2026-06-17)
 

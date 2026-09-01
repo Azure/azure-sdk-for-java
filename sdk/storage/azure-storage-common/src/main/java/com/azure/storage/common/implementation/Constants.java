@@ -253,6 +253,20 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        public static final String CONTENT_CRC64 = "x-ms-content-crc64";
+
+        public static final HttpHeaderName CONTENT_CRC64_HEADER_NAME = HttpHeaderName.fromString(CONTENT_CRC64);
+
+        public static final String STRUCTURED_BODY_TYPE = "x-ms-structured-body";
+
+        public static final HttpHeaderName STRUCTURED_BODY_TYPE_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_BODY_TYPE);
+
+        public static final String STRUCTURED_CONTENT_LENGTH = "x-ms-structured-content-length";
+
+        public static final HttpHeaderName STRUCTURED_CONTENT_LENGTH_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_CONTENT_LENGTH);
+
         /**
          * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
          *
@@ -276,6 +290,14 @@ public final class Constants {
         public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
 
         private HeaderConstants() {
+            // Private to prevent construction.
+        }
+    }
+
+    public static final class ContentTypeConstants {
+        public static final String APPLICATION_VND_APACHE_ARROW_STREAM = "application/vnd.apache.arrow.stream";
+
+        private ContentTypeConstants() {
             // Private to prevent construction.
         }
     }

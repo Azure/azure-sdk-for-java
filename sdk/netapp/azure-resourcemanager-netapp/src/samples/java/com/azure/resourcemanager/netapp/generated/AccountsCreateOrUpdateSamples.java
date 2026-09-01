@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -27,7 +27,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
@@ -54,7 +54,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdateLdapConfig.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateLdapConfig.
@@ -71,6 +71,10 @@ public final class AccountsCreateOrUpdateSamples {
                 .withLdapOverTLS(false)
                 .withServerCACertificate("<REDACTED>")
                 .withCertificateCNHost("ldap.krypton.com")
+                .withLdapPort(636)
+                .withUserDN("OU=subdirectory,OU=directory,DC=example,DC=com")
+                .withGroupDN("OU=subdirectory,OU=directory,DC=example,DC=com")
+                .withNetGroupDN("OU=subdirectory,OU=directory,DC=example,DC=com")
                 .withBindAuthenticationLevel(BindAuthenticationLevel.SIMPLE)
                 .withBindDN("cn=user,dc=domain,dc=com")
                 .withBindPasswordAkvConfig(new BindPasswordAkvConfig().withAzureKeyVaultUri("fakeTokenPlaceholder")

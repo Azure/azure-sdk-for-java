@@ -7,7 +7,6 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -299,7 +298,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<JsonNode> response = results.next();
             String diagnostics = response.getCosmosDiagnostics().toString();
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + generateHttp2OptedInUserAgentIfRequired(this.directClientUserAgent) + "\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.directClientUserAgent + "\"");
             assertThat(diagnostics).contains("\"requestOperationType\":\"ReadFeed\"");
         }
     }
@@ -897,7 +896,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-        assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
+        // With the shared partition-key-range cache, a sibling client/test targeting the same service
+        // endpoint may have already populated this container's routing map. When that happens this client
+        // serves the partition-key-range lookup from the shared cache without issuing a /pkranges network
+        // request, so no PARTITION_KEY_RANGE_LOOK_UP metadata diagnostic is recorded for this operation.
+        // Its presence is therefore not asserted here.
         assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");
@@ -1506,7 +1509,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void addressResolutionStatistics() {
         CosmosClient client1 = null;
         CosmosClient client2 = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
         String containerId = UUID.randomUUID().toString();
         CosmosDatabase cosmosDatabase = null;
         CosmosContainer cosmosContainer = null;
@@ -1588,7 +1591,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void responseStatisticRequestStartTimeUTCForDirectCall() {
         CosmosAsyncClient client = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
         FaultInjectionRule faultInjectionRule = null;
 
         try {
@@ -1652,6 +1655,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
             }
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1659,7 +1663,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void negativeE2ETimeoutWithPointOperation() {
         CosmosAsyncClient client = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
 
         try {
             client = new CosmosClientBuilder()
@@ -1686,6 +1690,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1693,7 +1698,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void negativeE2ETimeoutWithQueryOperation() {
         CosmosAsyncClient client = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
 
         try {
             client = new CosmosClientBuilder()
@@ -1725,6 +1730,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1983,16 +1989,23 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     private String generateHttp2OptedInUserAgentIfRequired(String userAgent) {
-        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
-        // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
-        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix.
+        // ThinClient is enabled-by-default (kept unless COSMOS.THINCLIENT_ENABLED is explicitly false), so its
+        // bit is set for every client. When HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is
+        // also effectively enabled (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
         // Tests here do not override Http2ConnectionConfig.setEnabled(...) so the per-client override branch
         // in addUserAgentSuffix is a no-op for this helper.
+        int featureValue = 0;
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled())) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
         if (Configs.isHttp2Enabled()) {
-            int featureValue = UserAgentFeatureFlags.Http2.getValue();
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
             if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
                 featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
             }
+        }
+        if (featureValue != 0) {
             userAgent = userAgent + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 

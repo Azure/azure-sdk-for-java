@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class GalleryInVMAccessControlProfileVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Update.json
+     * x-ms-original-file: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Update.json
      */
     /**
      * Sample code: Update a Gallery InVMAccessControlProfile Version.

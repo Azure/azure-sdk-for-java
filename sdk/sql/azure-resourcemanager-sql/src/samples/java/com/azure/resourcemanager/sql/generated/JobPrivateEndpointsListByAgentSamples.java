@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobPrivateEndpointsListByAgentSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListJobPrivateEndpointsByAgent.json
+     * x-ms-original-file: 2025-01-01/ListJobPrivateEndpointsByAgent.json
      */
     /**
      * Sample code: List private endpoints in a job agent.

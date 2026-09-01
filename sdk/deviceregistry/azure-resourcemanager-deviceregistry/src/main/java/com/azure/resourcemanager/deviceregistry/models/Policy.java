@@ -188,7 +188,7 @@ public interface Policy {
     Policy refresh(Context context);
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,7 +196,7 @@ public interface Policy {
     void revokeIssuer();
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

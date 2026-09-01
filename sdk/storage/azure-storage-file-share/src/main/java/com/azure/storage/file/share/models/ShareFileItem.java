@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileItemConstructorProxy;
 
 import java.util.EnumSet;
 
@@ -19,6 +20,15 @@ public final class ShareFileItem {
     private final EnumSet<NtfsFileAttributes> fileAttributes;
     private final String permissionKey;
     private final Long fileSize;
+    private final Long linkCount;
+    private final NfsFileType fileType;
+    private final String linkText;
+    private final Long deviceMajor;
+    private final Long deviceMinor;
+
+    static {
+        ShareFileItemConstructorProxy.setAccessor(ShareFileItem::new);
+    }
 
     /**
      * Creates an instance of file or directory reference information about a specific Share.
@@ -28,7 +38,7 @@ public final class ShareFileItem {
      * @param fileSize Size of a file. Pass {@code null} if the reference is a directory.
      */
     public ShareFileItem(String name, boolean isDirectory, Long fileSize) {
-        this(name, isDirectory, null, null, null, null, fileSize);
+        this(name, isDirectory, null, null, null, null, fileSize, null, null, null, null, null);
     }
 
     /**
@@ -44,6 +54,12 @@ public final class ShareFileItem {
      */
     public ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
         EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize) {
+        this(name, isDirectory, id, properties, fileAttributes, permissionKey, fileSize, null, null, null, null, null);
+    }
+
+    private ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
+        EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize, Long linkCount,
+        NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
         this.name = name;
         this.isDirectory = isDirectory;
         this.id = id;
@@ -51,6 +67,11 @@ public final class ShareFileItem {
         this.fileAttributes = fileAttributes;
         this.permissionKey = permissionKey;
         this.fileSize = fileSize;
+        this.linkCount = linkCount;
+        this.fileType = fileType;
+        this.linkText = linkText;
+        this.deviceMajor = deviceMajor;
+        this.deviceMinor = deviceMinor;
     }
 
     /**
@@ -114,5 +135,63 @@ public final class ShareFileItem {
      */
     public String getPermissionKey() {
         return permissionKey;
+    }
+
+    /**
+     * Gets the count of hard links for this item.
+     * Applicable to all item types in NFS shares: files, directories, symbolic links, block devices, character
+     * devices, FIFOs, and sockets.
+     * Supported in version 2026-12-06 and above.
+     *
+     * @return The count of hard links for this item.
+     */
+    public Long getLinkCount() {
+        return linkCount;
+    }
+
+    /**
+     * Gets the file type for this item.
+     * In SMB shares, this field is populated for files and directories.
+     * In NFS-enabled shares, this field is populated for files, directories, symbolic links, block devices,
+     * character devices, FIFOs, and sockets.
+     * Supported in version 2026-12-06 and above.
+     *
+     * @return The file type for this item.
+     */
+    public NfsFileType getFileType() {
+        return fileType;
+    }
+
+    /**
+     * Gets the link text for this item.
+     * Only applicable to symbolic links in NFS shares.
+     * Supported in version 2026-12-06 and above.
+     *
+     * @return The link text for this item.
+     */
+    public String getLinkText() {
+        return linkText;
+    }
+
+    /**
+     * Gets the major device number for this item.
+     * Only applicable to block devices and character devices in NFS shares.
+     * Supported in version 2026-12-06 and above.
+     *
+     * @return The major device number for this item.
+     */
+    public Long getDeviceMajor() {
+        return deviceMajor;
+    }
+
+    /**
+     * Gets the minor device number for this item.
+     * Only applicable to block devices and character devices in NFS shares.
+     * Supported in version 2026-12-06 and above.
+     *
+     * @return The minor device number for this item.
+     */
+    public Long getDeviceMinor() {
+        return deviceMinor;
     }
 }

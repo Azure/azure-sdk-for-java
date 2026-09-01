@@ -1,6 +1,6 @@
 # Release History
 
-## 12.36.0-beta.1 (Unreleased)
+## 12.36.0-beta.2 (Unreleased)
 
 ### Features Added
 - Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
@@ -8,6 +8,20 @@
   requires an HTTP client that withholds the request body until the service responds.
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.36.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for retrieving `AccessTier` headers to `BlobDownloadHeaders`.
+- Added support for `PutBlob` operations returning both the existing MD5 content hash and the new CRC64 checksum.
+- Added support for Apache Arrow response format for `ListBlobs` flat and `ListBlobs` hierarchical options.
+- Added support for content validation with structured message and CRC64 via `ContentValidationAlgorithm`. Supported for
+`GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
 
 ### Bugs Fixed
 - Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
@@ -20,6 +34,12 @@
   logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
 
 ### Other Changes
+- Deprecated `AppendBlobAsyncClient.appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)` and
+  `AppendBlobClient.appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions, Duration, Context)`
+  in favor of the new `appendBlockWithResponse` overloads that accept an `AppendBlobAppendBlockOptions` options bag.
+- Deprecated `PageBlobAsyncClient.uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobRequestConditions)` and
+  `PageBlobClient.uploadPagesWithResponse(PageRange, InputStream, byte[], PageBlobRequestConditions, Duration, Context)`
+  in favor of the new `uploadPagesWithResponse` overloads that accept a `PageBlobUploadPagesOptions` options bag.
 
 ## 12.35.0 (2026-06-11)
 

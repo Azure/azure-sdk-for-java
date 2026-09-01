@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetDatabaseWithAvailabilityZone.json
+     * x-ms-original-file: 2025-01-01/GetDatabaseWithAvailabilityZone.json
      */
     /**
      * Sample code: Gets a database with Availability zone specified.
@@ -25,7 +25,7 @@ public final class DatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
+     * x-ms-original-file: 2025-01-01/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
      */
     /**
      * Sample code: Gets a database with database level keys expanded using versionless keys.
@@ -41,7 +41,7 @@ public final class DatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetVCoreDatabase.json
+     * x-ms-original-file: 2025-01-01/GetVCoreDatabase.json
      */
     /**
      * Sample code: Gets a database.
@@ -56,7 +56,7 @@ public final class DatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
+     * x-ms-original-file: 2025-01-01/GetVCoreDatabaseWithExpandEqualsKeys.json
      */
     /**
      * Sample code: Gets a database with database level keys expanded.
@@ -72,7 +72,7 @@ public final class DatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetVCoreDatabaseDefaultEnclave.json
+     * x-ms-original-file: 2025-01-01/GetVCoreDatabaseDefaultEnclave.json
      */
     /**
      * Sample code: Gets a database configured with Default enclave type.
@@ -88,7 +88,7 @@ public final class DatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetVCoreDatabaseVBSEnclave.json
+     * x-ms-original-file: 2025-01-01/GetVCoreDatabaseVBSEnclave.json
      */
     /**
      * Sample code: Gets a database configured with VBS enclave type.

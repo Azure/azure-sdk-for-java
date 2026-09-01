@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-03-01-preview/DPSListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.

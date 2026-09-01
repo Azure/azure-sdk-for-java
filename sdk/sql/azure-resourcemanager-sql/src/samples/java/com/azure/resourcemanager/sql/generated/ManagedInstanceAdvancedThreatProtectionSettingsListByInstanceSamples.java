@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceAdvancedThreatProtectionSettingsListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsListByInstance.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsListByInstance.json
      */
     /**
      * Sample code: List the managed instance's Advanced Threat Protection settings.

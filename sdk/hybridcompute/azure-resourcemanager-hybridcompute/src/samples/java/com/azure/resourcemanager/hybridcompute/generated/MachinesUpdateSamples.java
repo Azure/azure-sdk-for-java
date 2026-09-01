@@ -19,7 +19,7 @@ import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
  */
 public final class MachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Update.json
+     * x-ms-original-file: 2026-07-15/machine/Machines_Update.json
      */
     /**
      * Sample code: Update a Machine.
@@ -42,9 +42,9 @@ public final class MachinesUpdateSamples {
                     new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
                         .withPatchMode(PatchModeTypes.MANUAL)))
             .withParentClusterResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
             .withPrivateLinkScopeResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
             .withIdentityKeyStore("TPM")
             .withTpmEkCertificate("string")
             .apply();

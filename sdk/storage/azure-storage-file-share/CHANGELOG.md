@@ -1,14 +1,29 @@
 # Release History
 
-## 12.32.0-beta.1 (Unreleased)
+## 12.32.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for NFS List Files and Directories V2. `ShareDirectoryClient.listFilesAndDirectories` now returns
+  symbolic links, block devices, character devices, FIFOs and sockets in addition to files and directories.
+- Added `ShareFileItem.getLinkCount()`, `ShareFileItem.getFileType()`, `ShareFileItem.getLinkText()`,
+  `ShareFileItem.getDeviceMajor()` and `ShareFileItem.getDeviceMinor()`.
+- Added `ShareFileItemProperties.getOwner()`, `ShareFileItemProperties.getGroup()` and
+  `ShareFileItemProperties.getFileMode()`.
+- Added `NfsFileType.BLOCK_DEVICE`, `NfsFileType.CHARACTER_DEVICE`, `NfsFileType.SOCKET` and `NfsFileType.FIFO`.
+- Added `ShareListFilesAndDirectoriesOptions.setIncludePermissions`, `setIncludeLinkCount`, `setIncludeNfsAttributes`
+  and `setIncludeAll`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.32.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs.
 
 ## 12.31.0 (2026-06-11)
 

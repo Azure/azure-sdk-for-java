@@ -12,20 +12,20 @@ public final class ReplicationUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationUsageInner model = BinaryData.fromString(
-            "{\"monitoringSummary\":{\"unHealthyVmCount\":1005526147,\"unHealthyProviderCount\":1589441162,\"eventsCount\":749525568,\"deprecatedProviderCount\":615517918,\"supportedProviderCount\":1787736845,\"unsupportedProviderCount\":215474399},\"jobsSummary\":{\"failedJobs\":1543510738,\"suspendedJobs\":1229145222,\"inProgressJobs\":1083472425},\"protectedItemCount\":1534633799,\"recoveryPlanCount\":1976417253,\"registeredServersCount\":1592452117,\"recoveryServicesProviderAuthType\":1121895539}")
+            "{\"monitoringSummary\":{\"unHealthyVmCount\":1358891927,\"unHealthyProviderCount\":197964626,\"eventsCount\":1452176185,\"deprecatedProviderCount\":949474495,\"supportedProviderCount\":898184523,\"unsupportedProviderCount\":1418382226},\"jobsSummary\":{\"failedJobs\":59412891,\"suspendedJobs\":789098072,\"inProgressJobs\":492744230},\"protectedItemCount\":1350088002,\"recoveryPlanCount\":597860603,\"registeredServersCount\":1564311717,\"recoveryServicesProviderAuthType\":963875156}")
             .toObject(ReplicationUsageInner.class);
-        Assertions.assertEquals(1005526147, model.monitoringSummary().unHealthyVmCount());
-        Assertions.assertEquals(1589441162, model.monitoringSummary().unHealthyProviderCount());
-        Assertions.assertEquals(749525568, model.monitoringSummary().eventsCount());
-        Assertions.assertEquals(615517918, model.monitoringSummary().deprecatedProviderCount());
-        Assertions.assertEquals(1787736845, model.monitoringSummary().supportedProviderCount());
-        Assertions.assertEquals(215474399, model.monitoringSummary().unsupportedProviderCount());
-        Assertions.assertEquals(1543510738, model.jobsSummary().failedJobs());
-        Assertions.assertEquals(1229145222, model.jobsSummary().suspendedJobs());
-        Assertions.assertEquals(1083472425, model.jobsSummary().inProgressJobs());
-        Assertions.assertEquals(1534633799, model.protectedItemCount());
-        Assertions.assertEquals(1976417253, model.recoveryPlanCount());
-        Assertions.assertEquals(1592452117, model.registeredServersCount());
-        Assertions.assertEquals(1121895539, model.recoveryServicesProviderAuthType());
+        Assertions.assertEquals(1358891927, model.monitoringSummary().unHealthyVmCount());
+        Assertions.assertEquals(197964626, model.monitoringSummary().unHealthyProviderCount());
+        Assertions.assertEquals(1452176185, model.monitoringSummary().eventsCount());
+        Assertions.assertEquals(949474495, model.monitoringSummary().deprecatedProviderCount());
+        Assertions.assertEquals(898184523, model.monitoringSummary().supportedProviderCount());
+        Assertions.assertEquals(1418382226, model.monitoringSummary().unsupportedProviderCount());
+        Assertions.assertEquals(59412891, model.jobsSummary().failedJobs());
+        Assertions.assertEquals(789098072, model.jobsSummary().suspendedJobs());
+        Assertions.assertEquals(492744230, model.jobsSummary().inProgressJobs());
+        Assertions.assertEquals(1350088002, model.protectedItemCount());
+        Assertions.assertEquals(597860603, model.recoveryPlanCount());
+        Assertions.assertEquals(1564311717, model.registeredServersCount());
+        Assertions.assertEquals(963875156, model.recoveryServicesProviderAuthType());
     }
 }

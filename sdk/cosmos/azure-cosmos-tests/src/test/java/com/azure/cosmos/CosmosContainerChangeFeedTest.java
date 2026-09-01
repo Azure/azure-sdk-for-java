@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
@@ -26,7 +27,6 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
@@ -52,6 +52,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -1141,7 +1142,15 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
-            result.add(container.createItem(docs.get(i)));
+            result.add(
+                container.createItem(docs.get(i)).retryWhen(
+                    Retry
+                        .max(40)
+                        .filter(throwable ->
+                            throwable instanceof CosmosException
+                                && ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.TOO_MANY_REQUESTS)
+                )
+            );
         }
 
         List<ObjectNode> insertedDocs = Flux.merge(

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedDatabaseMoveDefinition;
  */
 public final class ManagedDatabasesCancelMoveSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCancelMove.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCancelMove.json
      */
     /**
      * Sample code: Cancels a managed database move.

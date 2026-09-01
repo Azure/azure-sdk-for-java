@@ -13,21 +13,21 @@ public final class DeviceRegistryNamespaceDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceRegistryNamespaceDescription model = BinaryData.fromString(
-            "{\"resourceId\":\"po\",\"authenticationType\":\"UserAssigned\",\"selectedUserAssignedIdentityResourceId\":\"aajrm\"}")
+            "{\"resourceId\":\"xg\",\"authenticationType\":\"SystemAssigned\",\"selectedUserAssignedIdentityResourceId\":\"gcpo\"}")
             .toObject(DeviceRegistryNamespaceDescription.class);
-        Assertions.assertEquals("po", model.resourceId());
-        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.USER_ASSIGNED, model.authenticationType());
-        Assertions.assertEquals("aajrm", model.selectedUserAssignedIdentityResourceId());
+        Assertions.assertEquals("xg", model.resourceId());
+        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.SYSTEM_ASSIGNED, model.authenticationType());
+        Assertions.assertEquals("gcpo", model.selectedUserAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceRegistryNamespaceDescription model = new DeviceRegistryNamespaceDescription().withResourceId("po")
-            .withAuthenticationType(DeviceRegistryNamespaceAuthenticationType.USER_ASSIGNED)
-            .withSelectedUserAssignedIdentityResourceId("aajrm");
+        DeviceRegistryNamespaceDescription model = new DeviceRegistryNamespaceDescription().withResourceId("xg")
+            .withAuthenticationType(DeviceRegistryNamespaceAuthenticationType.SYSTEM_ASSIGNED)
+            .withSelectedUserAssignedIdentityResourceId("gcpo");
         model = BinaryData.fromObject(model).toObject(DeviceRegistryNamespaceDescription.class);
-        Assertions.assertEquals("po", model.resourceId());
-        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.USER_ASSIGNED, model.authenticationType());
-        Assertions.assertEquals("aajrm", model.selectedUserAssignedIdentityResourceId());
+        Assertions.assertEquals("xg", model.resourceId());
+        Assertions.assertEquals(DeviceRegistryNamespaceAuthenticationType.SYSTEM_ASSIGNED, model.authenticationType());
+        Assertions.assertEquals("gcpo", model.selectedUserAssignedIdentityResourceId());
     }
 }

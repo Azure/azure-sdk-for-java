@@ -36,6 +36,8 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
+import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
@@ -913,6 +915,150 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(fileListItem.getProperties().getLastModified());
         assertNotNull(fileListItem.getProperties().getETag());
         assertFalse(FileShareTestHelper.isAllWhitespace(fileListItem.getProperties().getETag()));
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
+    public void listFilesAndDirectoriesAllTraitsSmb() {
+        ShareDirectoryClient parentDir = primaryDirectoryClient;
+        parentDir.create();
+        ShareFileClient file = parentDir.createFile(generatePathName(), Constants.KB);
+        ShareDirectoryClient subDir = parentDir.createSubdirectory(generatePathName());
+        ShareListFilesAndDirectoriesOptions allOptions
+            = new ShareListFilesAndDirectoriesOptions().setIncludeExtendedInfo(true).setIncludeAll(true);
+
+        List<ShareFileItem> listResults
+            = parentDir.listFilesAndDirectories(allOptions, null, null).stream().collect(Collectors.toList());
+
+        String expectedFileName = new File(file.getFilePath()).getName();
+        ShareFileItem fileItem = listResults.stream()
+            .filter(item -> expectedFileName.equals(item.getName()))
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Expected listed item not found: " + expectedFileName));
+
+        assertEquals(2, listResults.size());
+        assertFalse(fileItem.isDirectory());
+        assertNotNull(fileItem.getId());
+        assertEquals(EnumSet.of(NtfsFileAttributes.ARCHIVE), fileItem.getFileAttributes());
+        assertNotNull(fileItem.getPermissionKey());
+        assertNotNull(fileItem.getProperties());
+        assertNotNull(fileItem.getProperties().getCreatedOn());
+        assertNotNull(fileItem.getProperties().getLastAccessedOn());
+        assertNotNull(fileItem.getProperties().getLastWrittenOn());
+        assertNotNull(fileItem.getProperties().getChangedOn());
+        assertNotNull(fileItem.getProperties().getLastModified());
+        assertNotNull(fileItem.getProperties().getETag());
+
+        assertNull(fileItem.getLinkCount());
+        assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
+        assertNull(fileItem.getProperties().getOwner());
+        assertNull(fileItem.getProperties().getGroup());
+        assertNull(fileItem.getProperties().getFileMode());
+
+        String expectedDirectoryName = new File(subDir.getDirectoryPath()).getName();
+        ShareFileItem dirItem = listResults.stream()
+            .filter(item -> expectedDirectoryName.equals(item.getName()))
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Expected listed item not found: " + expectedDirectoryName));
+        assertTrue(dirItem.isDirectory());
+        assertNotNull(dirItem.getId());
+        assertEquals(EnumSet.of(NtfsFileAttributes.DIRECTORY), dirItem.getFileAttributes());
+        assertNotNull(dirItem.getPermissionKey());
+        assertNotNull(dirItem.getProperties());
+        assertNotNull(dirItem.getProperties().getCreatedOn());
+        assertNotNull(dirItem.getProperties().getLastAccessedOn());
+        assertNotNull(dirItem.getProperties().getLastWrittenOn());
+        assertNotNull(dirItem.getProperties().getChangedOn());
+        assertNotNull(dirItem.getProperties().getLastModified());
+        assertNotNull(dirItem.getProperties().getETag());
+
+        assertNull(dirItem.getLinkCount());
+        assertNull(dirItem.getProperties().getOwner());
+        assertNull(dirItem.getProperties().getGroup());
+        assertNull(dirItem.getProperties().getFileMode());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
+    @Test
+    public void listFilesAndDirectoriesNfs() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        try {
+            ShareDirectoryClient parent = premiumShareClient.getDirectoryClient(generatePathName());
+            parent.create();
+
+            String owner = "345";
+            String group = "123";
+            String fileMode = "7777";
+            FilePosixProperties posixProperties
+                = new FilePosixProperties().setOwner(owner).setGroup(group).setFileMode(fileMode);
+
+            String fileName = generatePathName();
+            ShareFileClient file = parent.getFileClient(fileName);
+            file.createWithResponse(new ShareFileCreateOptions(Constants.MB).setPosixProperties(posixProperties), null,
+                null);
+
+            String subdirName = generatePathName();
+            ShareDirectoryClient subdir = parent.getSubdirectoryClient(subdirName);
+            subdir.createWithResponse(new ShareDirectoryCreateOptions().setPosixProperties(posixProperties), null,
+                null);
+
+            String symlinkName = generatePathName();
+            ShareFileClient symlink = parent.getFileClient(symlinkName);
+            symlink.createSymbolicLinkWithResponse(
+                new ShareFileCreateSymbolicLinkOptions(file.getFileUrl()).setOwner(owner).setGroup(group), null, null);
+
+            ShareListFilesAndDirectoriesOptions options
+                = new ShareListFilesAndDirectoriesOptions().setIncludeExtendedInfo(true)
+                    .setIncludeTimestamps(true)
+                    .setIncludeETag(true)
+                    .setIncludePermissions(true)
+                    .setIncludeLinkCount(true)
+                    .setIncludeNfsAttributes(true);
+            List<ShareFileItem> items
+                = parent.listFilesAndDirectories(options, null, null).stream().collect(Collectors.toList());
+
+            assertEquals(3, items.size());
+
+            ShareFileItem fileItem = items.stream()
+                .filter(item -> fileName.equals(item.getName()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Expected listed item not found: " + fileName));
+            assertFalse(fileItem.isDirectory());
+            assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
+            assertNotNull(fileItem.getLinkCount());
+            assertNotNull(fileItem.getProperties());
+            assertEquals(owner, fileItem.getProperties().getOwner());
+            assertEquals(group, fileItem.getProperties().getGroup());
+            assertEquals(fileMode, fileItem.getProperties().getFileMode());
+
+            ShareFileItem dirItem = items.stream()
+                .filter(item -> subdirName.equals(item.getName()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Expected listed item not found: " + subdirName));
+            assertTrue(dirItem.isDirectory());
+            assertEquals(NfsFileType.DIRECTORY, dirItem.getFileType());
+            assertNotNull(dirItem.getLinkCount());
+            assertNotNull(dirItem.getProperties());
+            assertEquals(owner, dirItem.getProperties().getOwner());
+            assertEquals(group, dirItem.getProperties().getGroup());
+            assertEquals(fileMode, dirItem.getProperties().getFileMode());
+
+            ShareFileItem symlinkItem = items.stream()
+                .filter(item -> symlinkName.equals(item.getName()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Expected listed item not found: " + symlinkName));
+            assertFalse(symlinkItem.isDirectory());
+            assertEquals(NfsFileType.SYM_LINK, symlinkItem.getFileType());
+            assertNotNull(symlinkItem.getLinkCount());
+            assertNotNull(symlinkItem.getLinkText());
+            assertFalse(FileShareTestHelper.isAllWhitespace(symlinkItem.getLinkText()));
+            assertNotNull(symlinkItem.getProperties());
+            assertEquals(owner, symlinkItem.getProperties().getOwner());
+            assertEquals(group, symlinkItem.getProperties().getGroup());
+        } finally {
+            premiumShareClient.delete();
+        }
     }
 
     @Test
