@@ -12,18 +12,18 @@ public final class ConnectionManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionManagedIdentity model
-            = BinaryData.fromString("{\"clientId\":\"uzzjgnrefq\",\"resourceId\":\"qotoihiqakydiwfb\"}")
+            = BinaryData.fromString("{\"clientId\":\"mbscbbx\",\"resourceId\":\"dhxiidlopedbwd\"}")
                 .toObject(ConnectionManagedIdentity.class);
-        Assertions.assertEquals("uzzjgnrefq", model.clientId());
-        Assertions.assertEquals("qotoihiqakydiwfb", model.resourceId());
+        Assertions.assertEquals("mbscbbx", model.clientId());
+        Assertions.assertEquals("dhxiidlopedbwd", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionManagedIdentity model
-            = new ConnectionManagedIdentity().withClientId("uzzjgnrefq").withResourceId("qotoihiqakydiwfb");
+            = new ConnectionManagedIdentity().withClientId("mbscbbx").withResourceId("dhxiidlopedbwd");
         model = BinaryData.fromObject(model).toObject(ConnectionManagedIdentity.class);
-        Assertions.assertEquals("uzzjgnrefq", model.clientId());
-        Assertions.assertEquals("qotoihiqakydiwfb", model.resourceId());
+        Assertions.assertEquals("mbscbbx", model.clientId());
+        Assertions.assertEquals("dhxiidlopedbwd", model.resourceId());
     }
 }
