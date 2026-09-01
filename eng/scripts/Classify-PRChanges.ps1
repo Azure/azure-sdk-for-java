@@ -12,6 +12,7 @@ specialized non-Java validation route, it clears the job-local PackageInfo direc
 so Create-PrJobMatrix produces an empty matrix.
 
 Build and Analyze remain enabled in this phase so their unique validation is preserved.
+Successful test suppression adds the JavaTestsSuppressed build tag for reporting.
 
 .PARAMETER DiffPath
 Path to the diff.json file produced by Generate-PR-Diff.ps1. ChangedFiles and
@@ -269,6 +270,7 @@ if (-not $result.RunTests -and $PackageInfoDirectory) {
         Remove-Item -LiteralPath $packageInfoFile.FullName -Force
     }
     Write-Host "Removed $($packageInfoFiles.Count) job-local PackageInfo file(s) so the Java test matrix is empty."
+    Write-Host '##vso[build.addbuildtag]JavaTestsSuppressed'
 }
 
 if ($PassThru) {

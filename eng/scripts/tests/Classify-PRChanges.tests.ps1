@@ -136,9 +136,13 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         Set-Content -LiteralPath (Join-Path $testDirectory 'template-two.json') -Value '{}'
 
         try {
-            & $script:ClassifierPath -ChangedFiles 'README.md' -PackageInfoDirectory $testDirectory
+            $output = & $script:ClassifierPath `
+                -ChangedFiles 'README.md' `
+                -PackageInfoDirectory $testDirectory `
+                6>&1
 
             @(Get-ChildItem -LiteralPath $testDirectory -Filter '*.json' -File).Count | Should -Be 0
+            ($output -join "`n") | Should -Match '##vso\[build\.addbuildtag\]JavaTestsSuppressed'
         } finally {
             Remove-Item -LiteralPath $testDirectory -Recurse -Force
         }
@@ -151,11 +155,13 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         Set-Content -LiteralPath $packageInfoPath -Value '{}'
 
         try {
-            & $script:ClassifierPath `
+            $output = & $script:ClassifierPath `
                 -ChangedFiles 'sdk/example/example/src/main/java/Example.java' `
-                -PackageInfoDirectory $testDirectory
+                -PackageInfoDirectory $testDirectory `
+                6>&1
 
             Test-Path -LiteralPath $packageInfoPath | Should -Be $true
+            ($output -join "`n") | Should -Not -Match '##vso\[build\.addbuildtag\]JavaTestsSuppressed'
         } finally {
             Remove-Item -LiteralPath $testDirectory -Recurse -Force
         }
