@@ -54,6 +54,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaAgentInsightMonitorsClient.class,
         BetaModelsClient.class,
         BetaRedTeamsClient.class,
         BetaEvaluationTaxonomiesClient.class,
@@ -68,6 +69,7 @@ import java.util.Objects;
         IndexesClient.class,
         DeploymentsClient.class,
         EvaluationRulesClient.class,
+        BetaAgentInsightMonitorsAsyncClient.class,
         BetaModelsAsyncClient.class,
         BetaRedTeamsAsyncClient.class,
         BetaEvaluationTaxonomiesAsyncClient.class,
@@ -1082,5 +1084,25 @@ public final class AIProjectClientBuilder
         public BetaDatasetsClient buildBetaDatasetsClient() {
             return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
         }
+    }
+
+    /**
+     * Builds an instance of BetaAgentInsightMonitorsAsyncClient class.
+     *
+     * @return an instance of BetaAgentInsightMonitorsAsyncClient.
+     */
+    @Generated
+    public BetaAgentInsightMonitorsAsyncClient buildBetaAgentInsightMonitorsAsyncClient() {
+        return new BetaAgentInsightMonitorsAsyncClient(buildInnerClient().getBetaAgentInsightMonitors());
+    }
+
+    /**
+     * Builds an instance of BetaAgentInsightMonitorsClient class.
+     *
+     * @return an instance of BetaAgentInsightMonitorsClient.
+     */
+    @Generated
+    public BetaAgentInsightMonitorsClient buildBetaAgentInsightMonitorsClient() {
+        return new BetaAgentInsightMonitorsClient(buildInnerClient().getBetaAgentInsightMonitors());
     }
 }

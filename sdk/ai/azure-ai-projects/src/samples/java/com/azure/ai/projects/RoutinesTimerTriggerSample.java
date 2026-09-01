@@ -5,6 +5,8 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
+import com.azure.ai.projects.models.RoutineDispatchIdentity;
 import com.azure.ai.projects.models.RoutineRun;
 import com.azure.ai.projects.models.RoutineTrigger;
 import com.azure.ai.projects.models.TimerRoutineTrigger;
@@ -54,6 +56,8 @@ public class RoutinesTimerTriggerSample {
         try {
             // BEGIN:com.azure.ai.projects.RoutinesTimerTriggerSample.createRoutine
             RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
+            RoutineAuthorization authorization
+                = new RoutineAuthorization().setIdentity(RoutineDispatchIdentity.AGENT);
 
             OffsetDateTime fireAt = OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(20);
             TimerRoutineTrigger trigger = new TimerRoutineTrigger().setAt(fireAt);
@@ -61,7 +65,7 @@ public class RoutinesTimerTriggerSample {
             triggers.put("once", trigger);
 
             Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by the timer-trigger sample.", true, triggers, action);
+                "Routine used by the timer-trigger sample.", true, triggers, action, authorization);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
             System.out.printf("Fire at: %s%n", trigger.getAt());
             // END:com.azure.ai.projects.RoutinesTimerTriggerSample.createRoutine

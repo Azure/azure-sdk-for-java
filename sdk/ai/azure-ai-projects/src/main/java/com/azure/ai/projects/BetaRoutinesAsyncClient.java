@@ -11,6 +11,7 @@ import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
 import com.azure.ai.projects.models.RoutineDispatchPayload;
 import com.azure.ai.projects.models.RoutineRun;
 import com.azure.ai.projects.models.RoutineTrigger;
@@ -59,7 +60,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -73,12 +74,15 @@ public final class BetaRoutinesAsyncClient {
      *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
+     *     authorization (Optional): {
+     *         identity: String(agent/creator) (Optional)
+     *     }
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -122,7 +126,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Retrieves the specified routine and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -165,7 +169,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Enables the specified routine so it can be dispatched.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -206,7 +210,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Disables the specified routine so it no longer runs.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -259,7 +263,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -331,7 +335,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -383,7 +387,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -393,9 +397,9 @@ public final class BetaRoutinesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -422,41 +426,6 @@ public final class BetaRoutinesAsyncClient {
         BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions) {
         return this.serviceClient.dispatchRoutineWithResponseAsync(routineName, dispatchRoutineAsyncRequest,
             requestOptions);
-    }
-
-    /**
-     * Create or update a routine
-     *
-     * Creates a new routine or replaces an existing routine with the supplied definition.
-     *
-     * @param routineName The unique name of the routine.
-     * @param description A human-readable description of the routine.
-     * @param enabled Whether the routine is enabled.
-     * @param triggers The triggers configured for the routine. In v1, exactly one trigger entry is supported.
-     * @param action The action executed when the routine fires.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Routine> createOrUpdateRoutine(String routineName, String description, Boolean enabled,
-        Map<String, RoutineTrigger> triggers, RoutineAction action) {
-        // Generated convenience method for createOrUpdateRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateOrUpdateRoutineRequest createOrUpdateRoutineRequestObj
-            = new CreateOrUpdateRoutineRequest().setDescription(description)
-                .setEnabled(enabled)
-                .setTriggers(triggers)
-                .setAction(action);
-        BinaryData createOrUpdateRoutineRequest = BinaryData.fromObject(createOrUpdateRoutineRequestObj);
-        return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
     }
 
     /**
@@ -796,5 +765,43 @@ public final class BetaRoutinesAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Create or update a routine
+     *
+     * Creates a new routine or replaces an existing routine with the supplied definition.
+     *
+     * @param routineName The unique name of the routine.
+     * @param description A human-readable description of the routine.
+     * @param enabled Whether the routine is enabled.
+     * @param triggers The triggers configured for the routine. In v1, exactly one trigger entry is supported.
+     * @param action The action executed when the routine fires.
+     * @param authorization Optional authorization configuration for dispatching a newly created routine. Ignored when
+     * updating an existing routine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a routine definition returned by the service on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Routine> createOrUpdateRoutine(String routineName, String description, Boolean enabled,
+        Map<String, RoutineTrigger> triggers, RoutineAction action, RoutineAuthorization authorization) {
+        // Generated convenience method for createOrUpdateRoutineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateOrUpdateRoutineRequest createOrUpdateRoutineRequestObj
+            = new CreateOrUpdateRoutineRequest().setDescription(description)
+                .setEnabled(enabled)
+                .setTriggers(triggers)
+                .setAction(action)
+                .setAuthorization(authorization);
+        BinaryData createOrUpdateRoutineRequest = BinaryData.fromObject(createOrUpdateRoutineRequestObj);
+        return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
     }
 }

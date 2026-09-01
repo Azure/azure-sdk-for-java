@@ -13,6 +13,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -61,7 +62,7 @@ public class OpenApiAsync {
             .setInstructions("You are a helpful assistant. Use the OpenAPI tool when asked to call an API.")
             .setTools(Collections.singletonList(openApiTool));
 
-        agentsAsyncClient.createAgentVersion("openapi-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("openapi-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

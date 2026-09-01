@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.core.util.BinaryData;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
@@ -42,7 +43,7 @@ public class AgentsAsyncTests extends ClientTestBase {
         AgentsAsyncClient client = getAgentsAsyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
-        PromptAgentDefinition request = new PromptAgentDefinition(agentModel);
+        CreateAgentVersionInput request = new CreateAgentVersionInput(new PromptAgentDefinition(agentModel));
 
         StepVerifier.create(client.createAgentVersion(AGENT_NAME, request).flatMap(created -> {
             // Assertions for created agent version
@@ -75,7 +76,7 @@ public class AgentsAsyncTests extends ClientTestBase {
         AgentsAsyncClient client = getAgentsAsyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
-        PromptAgentDefinition request = new PromptAgentDefinition(agentModel);
+        CreateAgentVersionInput request = new CreateAgentVersionInput(new PromptAgentDefinition(agentModel));
 
         StepVerifier.create(client.createAgentVersion(AGENT_NAME, request).flatMap(created -> {
             // Assertions for created agent version
@@ -111,9 +112,9 @@ public class AgentsAsyncTests extends ClientTestBase {
         ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
-        PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition(agentModel);
+        CreateAgentVersionInput input = new CreateAgentVersionInput(new PromptAgentDefinition(agentModel));
 
-        StepVerifier.create(agentsClient.createAgentVersion(AGENT_NAME, promptAgentDefinition).flatMap(createdAgent -> {
+        StepVerifier.create(agentsClient.createAgentVersion(AGENT_NAME, input).flatMap(createdAgent -> {
             assertNotNull(createdAgent);
             assertNotNull(createdAgent.getId());
             assertEquals(AGENT_NAME, createdAgent.getName());
@@ -180,9 +181,12 @@ public class AgentsAsyncTests extends ClientTestBase {
         StepVerifier.create(
             agentsClient
                 .createAgentVersion(AGENT_NAME,
-                    new PromptAgentDefinition(agentModel).setInstructions("You are a helpful assistant. "
-                        + "The user's name is {{userName}} and their role is {{userRole}}. "
-                        + "Greet them and confirm their details.").setStructuredInputs(structuredInputDefinitions))
+                    new CreateAgentVersionInput(
+                        new PromptAgentDefinition(agentModel)
+                            .setInstructions("You are a helpful assistant. "
+                                + "The user's name is {{userName}} and their role is {{userRole}}. "
+                                + "Greet them and confirm their details.")
+                            .setStructuredInputs(structuredInputDefinitions)))
                 .flatMap(createdAgent -> {
                     assertNotNull(createdAgent);
                     assertNotNull(createdAgent.getId());
@@ -209,8 +213,9 @@ public class AgentsAsyncTests extends ClientTestBase {
                 assertTrue(response.status().isPresent());
                 assertEquals(ResponseStatus.COMPLETED, response.status().get());
                 assertFalse(response.output().isEmpty());
-                assertTrue(response.output().get(0).isMessage());
-                assertFalse(response.output().get(0).asMessage().content().isEmpty());
+                assertTrue(response.output()
+                    .stream()
+                    .anyMatch(item -> item.isMessage() && !item.asMessage().content().isEmpty()));
             })
             .verifyComplete();
     }

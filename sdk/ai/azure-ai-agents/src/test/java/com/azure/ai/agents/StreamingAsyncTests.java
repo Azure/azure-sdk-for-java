@@ -7,6 +7,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
@@ -58,38 +59,40 @@ public class StreamingAsyncTests extends ClientTestBase {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        StepVerifier
-            .create(agentsClient.createAgentVersion("streaming-async-test-agent", agentDefinition).flatMap(agent -> {
-                agentRef.set(agent);
+        StepVerifier.create(
+            agentsClient.createAgentVersion("streaming-async-test-agent", new CreateAgentVersionInput(agentDefinition))
+                .flatMap(agent -> {
+                    agentRef.set(agent);
 
-                AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+                    AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                ResponseAccumulator accumulator = ResponseAccumulator.create();
-                List<String> textDeltas = new ArrayList<>();
+                    ResponseAccumulator accumulator = ResponseAccumulator.create();
+                    List<String> textDeltas = new ArrayList<>();
 
-                Flux<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder().input("Say hello."));
+                    Flux<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                        ResponseCreateParams.builder().input("Say hello."));
 
-                return events.doOnNext(event -> {
-                    accumulator.accumulate(event);
-                    event.outputTextDelta().ifPresent(textEvent -> textDeltas.add(textEvent.delta()));
-                }).then(Mono.fromCallable(() -> {
-                    assertFalse(textDeltas.isEmpty(), "Should have received at least one text delta");
+                    return events.doOnNext(event -> {
+                        accumulator.accumulate(event);
+                        event.outputTextDelta().ifPresent(textEvent -> textDeltas.add(textEvent.delta()));
+                    }).then(Mono.fromCallable(() -> {
+                        assertFalse(textDeltas.isEmpty(), "Should have received at least one text delta");
 
-                    Response response = accumulator.response();
-                    assertNotNull(response.id());
-                    assertTrue(response.status().isPresent());
-                    assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        Response response = accumulator.response();
+                        assertNotNull(response.id());
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
 
-                    String streamedText = String.join("", textDeltas);
-                    assertFalse(streamedText.isEmpty());
-                    return response;
-                }));
-            }).flatMap(response -> {
-                AgentVersionDetails agent = agentRef.get();
-                return agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).thenReturn(response);
-            }))
+                        String streamedText = String.join("", textDeltas);
+                        assertFalse(streamedText.isEmpty());
+                        return response;
+                    }));
+                })
+                .flatMap(response -> {
+                    AgentVersionDetails agent = agentRef.get();
+                    return agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).thenReturn(response);
+                }))
             .assertNext(response -> assertNotNull(response.id()))
             .verifyComplete();
     }
@@ -113,8 +116,9 @@ public class StreamingAsyncTests extends ClientTestBase {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        StepVerifier.create(
-            agentsClient.createAgentVersion("function-streaming-async-test-agent", agentDefinition).flatMap(agent -> {
+        StepVerifier.create(agentsClient
+            .createAgentVersion("function-streaming-async-test-agent", new CreateAgentVersionInput(agentDefinition))
+            .flatMap(agent -> {
                 agentRef.set(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -147,7 +151,8 @@ public class StreamingAsyncTests extends ClientTestBase {
                     assertTrue(hasFunctionCall, "Response should contain a function call output item");
                     return response;
                 }));
-            }).flatMap(response -> {
+            })
+            .flatMap(response -> {
                 AgentVersionDetails agent = agentRef.get();
                 return agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).thenReturn(response);
             })).assertNext(response -> assertNotNull(response.id())).verifyComplete();
@@ -171,8 +176,10 @@ public class StreamingAsyncTests extends ClientTestBase {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        StepVerifier
-            .create(agentsClient.createAgentVersion("code-interpreter-streaming-async-test-agent", agentDefinition)
+        StepVerifier.create(
+            agentsClient
+                .createAgentVersion("code-interpreter-streaming-async-test-agent",
+                    new CreateAgentVersionInput(agentDefinition))
                 .flatMap(agent -> {
                     agentRef.set(agent);
 
@@ -227,12 +234,15 @@ public class StreamingAsyncTests extends ClientTestBase {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        StepVerifier
-            .create(agentsClient
+        StepVerifier.create(
+            agentsClient
                 .createAgentVersion("structured-input-streaming-async-test-agent",
-                    new PromptAgentDefinition(AGENT_MODEL).setInstructions("You are a helpful assistant. "
-                        + "The user's name is {{userName}} and their role is {{userRole}}. "
-                        + "Greet them and confirm their details.").setStructuredInputs(structuredInputDefinitions))
+                    new CreateAgentVersionInput(
+                        new PromptAgentDefinition(AGENT_MODEL)
+                            .setInstructions("You are a helpful assistant. "
+                                + "The user's name is {{userName}} and their role is {{userRole}}. "
+                                + "Greet them and confirm their details.")
+                            .setStructuredInputs(structuredInputDefinitions)))
                 .flatMap(agent -> {
                     agentRef.set(agent);
 

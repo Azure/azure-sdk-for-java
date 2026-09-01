@@ -228,4 +228,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType A2A = fromString("a2a");
+
+    /**
+     * Static value web_iq_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType WEB_IQ_PREVIEW = fromString("web_iq_preview");
 }

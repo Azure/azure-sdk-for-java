@@ -8,6 +8,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.core.util.IterableStream;
@@ -42,7 +43,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.ai.agents.create_prompt_agent
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
-        AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", new CreateAgentVersionInput(promptAgentDefinition));
         // END: com.azure.ai.agents.create_prompt_agent
 
         // BEGIN: com.azure.ai.agents.create_conversation
