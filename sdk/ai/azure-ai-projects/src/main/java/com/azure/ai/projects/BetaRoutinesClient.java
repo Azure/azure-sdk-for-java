@@ -422,6 +422,43 @@ public final class BetaRoutinesClient {
      * Creates a new routine or replaces an existing routine with the supplied definition.
      *
      * @param routineName The unique name of the routine.
+     * @param description A human-readable description of the routine.
+     * @param enabled Whether the routine is enabled.
+     * @param triggers The triggers configured for the routine. In v1, exactly one trigger entry is supported.
+     * @param action The action executed when the routine fires.
+     * @param authorization Optional authorization configuration for dispatching a newly created routine. Ignored when
+     * updating an existing routine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a routine definition returned by the service.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Routine createOrUpdateRoutine(String routineName, String description, Boolean enabled,
+        Map<String, RoutineTrigger> triggers, RoutineAction action, RoutineAuthorization authorization) {
+        // Generated convenience method for createOrUpdateRoutineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateOrUpdateRoutineRequest createOrUpdateRoutineRequestObj
+            = new CreateOrUpdateRoutineRequest().setDescription(description)
+                .setEnabled(enabled)
+                .setTriggers(triggers)
+                .setAction(action)
+                .setAuthorization(authorization);
+        BinaryData createOrUpdateRoutineRequest = BinaryData.fromObject(createOrUpdateRoutineRequestObj);
+        return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions).getValue()
+            .toObject(Routine.class);
+    }
+
+    /**
+     * Create or update a routine
+     *
+     * Creates a new routine or replaces an existing routine with the supplied definition.
+     *
+     * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -514,6 +551,42 @@ public final class BetaRoutinesClient {
      *
      * Returns the routines available in the current project.
      *
+     * @param limit The maximum number of routines to return.
+     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
+     * returned by the previous response, which embeds this value.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Routine> listRoutines(Integer limit, String after, PageOrder order) {
+        // Generated convenience method for listRoutines
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        return serviceClient.listRoutines(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Routine.class));
+    }
+
+    /**
+     * List routines
+     *
+     * Returns the routines available in the current project.
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -549,6 +622,48 @@ public final class BetaRoutinesClient {
         // Generated convenience method for deleteRoutineWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteRoutineWithResponse(routineName, requestOptions).getValue();
+    }
+
+    /**
+     * List prior runs for a routine
+     *
+     * Returns prior runs recorded for the specified routine.
+     *
+     * @param routineName The unique name of the routine.
+     * @param filter An optional MLflow search-runs filter expression applied within the routine's experiment.
+     * @param limit The maximum number of runs to return.
+     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
+     * returned by the previous response, which embeds this value.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoutineRun> listRoutineRuns(String routineName, String filter, Integer limit, String after,
+        PageOrder order) {
+        // Generated convenience method for listRoutineRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        return serviceClient.listRoutineRuns(routineName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(RoutineRun.class));
     }
 
     /**
@@ -627,117 +742,18 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List routines
-     *
-     * Returns the routines available in the current project.
-     *
-     * @param limit The maximum number of routines to return.
-     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
-     * returned by the previous response, which embeds this value.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Routine> listRoutines(Integer limit, String after, PageOrder order) {
-        // Generated convenience method for listRoutines
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        return serviceClient.listRoutines(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Routine.class));
-    }
-
-    /**
-     * List prior runs for a routine
-     *
-     * Returns prior runs recorded for the specified routine.
+     * Creates a new routine or replaces an existing routine without authorization.
      *
      * @param routineName The unique name of the routine.
-     * @param filter An optional MLflow search-runs filter expression applied within the routine's experiment.
-     * @param limit The maximum number of runs to return.
-     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
-     * returned by the previous response, which embeds this value.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoutineRun> listRoutineRuns(String routineName, String filter, Integer limit, String after,
-        PageOrder order) {
-        // Generated convenience method for listRoutineRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        return serviceClient.listRoutineRuns(routineName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RoutineRun.class));
-    }
-
-    /**
-     * Create or update a routine
-     *
-     * Creates a new routine or replaces an existing routine with the supplied definition.
-     *
-     * @param routineName The unique name of the routine.
-     * @param description A human-readable description of the routine.
+     * @param description The routine description.
      * @param enabled Whether the routine is enabled.
-     * @param triggers The triggers configured for the routine. In v1, exactly one trigger entry is supported.
-     * @param action The action executed when the routine fires.
-     * @param authorization Optional authorization configuration for dispatching a newly created routine. Ignored when
-     * updating an existing routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service.
+     * @param triggers The triggers that invoke the routine.
+     * @param action The action performed by the routine.
+     * @return The created or updated routine.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = com.azure.core.annotation.ReturnType.SINGLE)
     public Routine createOrUpdateRoutine(String routineName, String description, Boolean enabled,
-        Map<String, RoutineTrigger> triggers, RoutineAction action, RoutineAuthorization authorization) {
-        // Generated convenience method for createOrUpdateRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateOrUpdateRoutineRequest createOrUpdateRoutineRequestObj
-            = new CreateOrUpdateRoutineRequest().setDescription(description)
-                .setEnabled(enabled)
-                .setTriggers(triggers)
-                .setAction(action)
-                .setAuthorization(authorization);
-        BinaryData createOrUpdateRoutineRequest = BinaryData.fromObject(createOrUpdateRoutineRequestObj);
-        return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions).getValue()
-            .toObject(Routine.class);
+        Map<String, RoutineTrigger> triggers, RoutineAction action) {
+        return createOrUpdateRoutine(routineName, description, enabled, triggers, action, null);
     }
 }
