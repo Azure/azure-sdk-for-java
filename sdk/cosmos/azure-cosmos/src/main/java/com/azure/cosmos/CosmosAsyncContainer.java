@@ -1341,14 +1341,14 @@ public class CosmosAsyncContainer {
      * @param <TContext> The context for the bulk processing.
      * @param operations Flux of operation which will be executed by this container.
      *
-     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and its response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
-     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     its response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
      *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
      * </p>
@@ -1370,14 +1370,14 @@ public class CosmosAsyncContainer {
      * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
      *                    concurrency, batching size, interval and context.
      *
-     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and its response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
-     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     its response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
      *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
      * </p>

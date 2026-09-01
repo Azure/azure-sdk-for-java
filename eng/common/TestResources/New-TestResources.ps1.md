@@ -172,7 +172,7 @@ Limit $BaseName to enough characters to be under limit plus prefixes specified i
 the ARM template.
 See also https://docs.microsoft.com/azure/architecture/best-practices/resource-naming
 
-Note: The value specified for this parameter will be overriden and generated
+Note: The value specified for this parameter will be overridden and generated
 by New-TestResources.ps1 if $CI is specified.
 
 ```yaml

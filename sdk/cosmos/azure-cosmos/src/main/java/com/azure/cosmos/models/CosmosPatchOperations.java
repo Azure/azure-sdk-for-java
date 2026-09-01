@@ -26,7 +26,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  *      key, the CosmosPatchOperations instance, any CosmosItemRequestOptions and the class type for which response will be parsed.
  *  2. Add CosmosPatchOperations instance in TransactionalBatch using batch.patchItemOperation() which requires the id of the item
  *      to be patched, cosmos patch instance and TransactionalBatchItemRequestOptions(if-any) and follow remaining
- *      steps for batch for it's execution.
+ *      steps for batch for its execution.
  *  3. Create a bulk item using {@link CosmosBulkOperations#getPatchItemOperation(String, PartitionKey, CosmosPatchOperations)} which requires the id of the item to be patched,
  *      cosmos patch instance, partition key and {@link CosmosBulkItemRequestOptions}(if-any) and follow remaining steps to
  *      execute bulk operations.

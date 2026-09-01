@@ -89,7 +89,7 @@ These will be introduced by way of the examples presented below.
 
 ### Accessing HTTP Response Details Using `Response<T>`
 
-_Service clients_ have methods that call Azure services, we refer call these methods _service methods_.
+_Service clients_ have methods that call Azure services, we call these methods _service methods_.
 
 _Service methods_ can return a shared Azure Core type `Response<T>`. This type provides access to both the
 deserialized result of the service call and to the details of the HTTP response returned from the server.
@@ -106,12 +106,12 @@ sequentially to prepare it being sent by an `HttpClient`.
 
 ### Pagination with `ContinuablePagedFlux<T>`
 
-`ContinuablePageFlux` manages sending an initial page request to a service and retrieving additional pages as the
+`ContinuablePagedFlux` manages sending an initial page request to a service and retrieving additional pages as the
 consumer requests more data until the consumer finishes processing or all pages have been consumed.
 
 ### Long Running Operations with `PollerFlux<T>`
 
-`PollerFlux` manages sending an initial service request and requesting processing updates on a fix interval until
+`PollerFlux` manages sending an initial service request and requesting processing updates on a fixed interval until
 polling is cancelled or reaches a terminal state.
 
 ### Configuring Builders

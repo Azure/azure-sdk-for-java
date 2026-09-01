@@ -44,8 +44,8 @@ public class MacPoolTest {
         MacPool.ReUsableMac secondMac = macPool.take();
         assertThat(secondMac).isNotNull();
 
-        // expect 3 MACs to be created via the MacProvider - first is teh rootMac
-        // it isn't cloneable - so each of teh two calls to take (if no mac has been returned) would instantiate yet
+        // expect 3 MACs to be created via the MacProvider - first is the rootMac
+        // it isn't cloneable - so each of the two calls to take (if no mac has been returned) would instantiate yet
         // another Mac bad for performance - but functionally correct and necessary because not every MacSpi is
         // guaranteed to support cloning
         // - see https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/HowToImplAProvider.html#Step11
