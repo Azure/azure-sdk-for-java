@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -53,6 +54,7 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.xml.XmlReader;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -66,6 +68,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -703,6 +707,47 @@ public final class ModelHelper {
             throw new IllegalArgumentException(
                 "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.");
         }
+    }
+
+    /**
+     * Deserializes an XML protocol-response body into the given model.
+     * <p>
+     * The generated protocol methods return the response body as {@link BinaryData}; the hand-written clients use
+     * this to reconstruct the typed model via its generated {@code fromXml(XmlReader)} factory, matching the value
+     * the AutoRest convenience methods returned directly.
+     *
+     * @param data The raw XML body; may be {@code null}.
+     * @param deserializer The model's {@code fromXml} factory.
+     * @param <T> The deserialized type.
+     * @return The deserialized model, or {@code null} when {@code data} is {@code null}.
+     */
+    public static <T> T deserializeXmlBody(BinaryData data, XmlDeserializer<T> deserializer) {
+        if (data == null) {
+            return null;
+        }
+        try (XmlReader xmlReader = XmlReader.fromBytes(data.toBytes())) {
+            return deserializer.deserialize(xmlReader);
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Functional interface matching the generated {@code fromXml(XmlReader)} factory methods so protocol responses
+     * can be deserialized generically.
+     *
+     * @param <T> The deserialized type.
+     */
+    @FunctionalInterface
+    public interface XmlDeserializer<T> {
+        /**
+         * Deserializes an instance of {@code T} from the reader.
+         *
+         * @param reader The {@link XmlReader} positioned at the body.
+         * @return The deserialized instance.
+         * @throws XMLStreamException If deserialization fails.
+         */
+        T deserialize(XmlReader reader) throws XMLStreamException;
     }
 
     private ModelHelper() {
