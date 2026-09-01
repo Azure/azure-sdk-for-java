@@ -58,8 +58,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .orElse(responseTimeout);
 
-        this.expectContinue
-            = "100-continue".equalsIgnoreCase(azureCoreRequest.getHeaders().getValue(HttpHeaderName.EXPECT));
+        this.expectContinue = expectsContinue(azureCoreRequest.getHeaders().getValue(HttpHeaderName.EXPECT));
         this.method = method.toString();
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
             ? noBody()
@@ -90,6 +89,24 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     @Override
     public Optional<Duration> timeout() {
         return responseTimeout;
+    }
+
+    /*
+     * Expect is a comma separated list of expectations and values may carry surrounding whitespace, so the
+     * header cannot be compared as a whole.
+     */
+    private static boolean expectsContinue(String expectHeader) {
+        if (expectHeader == null) {
+            return false;
+        }
+
+        for (String expectation : expectHeader.split(",")) {
+            if ("100-continue".equalsIgnoreCase(expectation.trim())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

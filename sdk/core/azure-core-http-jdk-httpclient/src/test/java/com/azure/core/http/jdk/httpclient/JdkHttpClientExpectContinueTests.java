@@ -9,6 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -35,17 +38,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class JdkHttpClientExpectContinueTests {
     private static final byte[] BODY = new byte[1024];
 
-    // How long the server waits after the headers arrive before answering. A client that does not defer the body will
-    // have sent it well within this window.
-    private static final long BODY_SETTLE_MILLIS = 500;
-
-    @Test
-    public void withholdsBodyUntilContinue() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = { "100-continue", "100-Continue", " 100-continue ", "100-continue, foo" })
+    public void withholdsBodyUntilContinue(String expectHeaderValue) throws Exception {
         try (ExpectContinueServer server = new ExpectContinueServer()) {
             server.start();
 
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
-            request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+            request.getHeaders().set(HttpHeaderName.EXPECT, expectHeaderValue);
 
             HttpClient client = new JdkHttpClientProvider().createInstance();
             HttpResponse response = client.send(request).block();
@@ -54,7 +54,7 @@ public class JdkHttpClientExpectContinueTests {
             assertEquals(201, response.getStatusCode());
             assertTrue(server.awaitRequest(), "the request never reached the server");
 
-            assertEquals("100-continue", server.expectHeader, "the Expect header did not reach the wire");
+            assertNotNull(server.expectHeader, "the Expect header did not reach the wire");
             assertEquals(0, server.bodyBytesBeforeContinue, "the body was sent before the service answered");
             assertEquals(BODY.length, server.bodyBytesAfterContinue, "the body was not delivered after 100 Continue");
         }
@@ -83,6 +83,12 @@ public class JdkHttpClientExpectContinueTests {
      * arrived before it responded.
      */
     private static final class ExpectContinueServer implements AutoCloseable {
+        // How long the server keeps reading before deciding the client is not going to send the body unprompted.
+        private static final long BODY_SETTLE_MILLIS = 500;
+
+        // Short enough that the settle window is made up of many read attempts rather than one long block.
+        private static final int POLL_TIMEOUT_MILLIS = 50;
+
         private final ServerSocket serverSocket;
         private final CountDownLatch requestHandled = new CountDownLatch(1);
         private volatile Thread thread;
@@ -117,19 +123,22 @@ public class JdkHttpClientExpectContinueTests {
 
                 int contentLength = readHeaders(in);
 
-                Thread.sleep(BODY_SETTLE_MILLIS);
-                bodyBytesBeforeContinue = in.available();
+                // Actively read for the whole settle window rather than sampling available(), so a body that is on
+                // its way is counted rather than missed.
+                socket.setSoTimeout(POLL_TIMEOUT_MILLIS);
+                bodyBytesBeforeContinue = readFor(in, contentLength, BODY_SETTLE_MILLIS);
 
                 if (expectHeader != null) {
                     out.write("HTTP/1.1 100 Continue\r\n\r\n".getBytes(StandardCharsets.UTF_8));
                     out.flush();
                 }
 
+                socket.setSoTimeout((int) TimeUnit.SECONDS.toMillis(10));
                 bodyBytesAfterContinue = readBody(in, contentLength - bodyBytesBeforeContinue);
 
                 out.write("HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n".getBytes(StandardCharsets.UTF_8));
                 out.flush();
-            } catch (IOException | InterruptedException ex) {
+            } catch (IOException ex) {
                 // Leave the recorded values as they are; the test assertions report the failure.
             } finally {
                 requestHandled.countDown();
@@ -166,6 +175,28 @@ public class JdkHttpClientExpectContinueTests {
             }
 
             return contentLength;
+        }
+
+        /*
+         * Keeps attempting reads until the window elapses, so the count reflects what actually arrived rather than
+         * what happened to be buffered at one instant.
+         */
+        private static int readFor(InputStream in, int max, long windowMillis) throws IOException {
+            byte[] buffer = new byte[8192];
+            int read = 0;
+            long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(windowMillis);
+            while (System.nanoTime() < deadline && read < max) {
+                try {
+                    int count = in.read(buffer, 0, Math.min(buffer.length, max - read));
+                    if (count < 0) {
+                        break;
+                    }
+                    read += count;
+                } catch (SocketTimeoutException ex) {
+                    // Nothing arrived in this slice; keep waiting until the window closes.
+                }
+            }
+            return read;
         }
 
         private static int readBody(InputStream in, int remaining) throws IOException {
