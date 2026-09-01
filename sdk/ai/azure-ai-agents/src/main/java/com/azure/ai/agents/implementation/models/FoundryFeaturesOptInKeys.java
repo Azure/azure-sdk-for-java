@@ -29,6 +29,11 @@ public enum FoundryFeaturesOptInKeys {
     INSIGHTS_V1_PREVIEW("Insights=V1Preview"),
 
     /**
+     * Enum value AgentInsights=V1Preview.
+     */
+    AGENT_INSIGHTS_V1_PREVIEW("AgentInsights=V1Preview"),
+
+    /**
      * Enum value MemoryStores=V1Preview.
      */
     MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview"),
@@ -56,7 +61,12 @@ public enum FoundryFeaturesOptInKeys {
     /**
      * Enum value AgentsOptimization=V2Preview.
      */
-    AGENTS_OPTIMIZATION_V2_PREVIEW("AgentsOptimization=V2Preview");
+    AGENTS_OPTIMIZATION_V2_PREVIEW("AgentsOptimization=V2Preview"),
+
+    /**
+     * Enum value ModelRouterControls=V1Preview.
+     */
+    MODEL_ROUTER_CONTROLS_V1_PREVIEW("ModelRouterControls=V1Preview");
 
     /**
      * The actual serialized value for a FoundryFeaturesOptInKeys instance.
@@ -69,7 +79,7 @@ public enum FoundryFeaturesOptInKeys {
 
     /**
      * Parses a serialized value to a FoundryFeaturesOptInKeys instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed FoundryFeaturesOptInKeys object, or null if unable to parse.
      */

@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -57,7 +58,7 @@ public class CustomCodeInterpreterAsync {
             .setInstructions("You are a helpful assistant that can run Python code to analyze data and solve problems.")
             .setTools(Collections.singletonList(customCodeInterpreter));
 
-        agentsAsyncClient.createAgentVersion("CustomCodeInterpreterAgent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("CustomCodeInterpreterAgent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

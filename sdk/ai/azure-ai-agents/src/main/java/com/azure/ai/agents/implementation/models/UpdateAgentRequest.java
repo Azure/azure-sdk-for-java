@@ -24,7 +24,7 @@ public final class UpdateAgentRequest implements JsonSerializable<UpdateAgentReq
      * Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
-     * 
+     *
      * Keys are strings with a maximum length of 64 characters. Values are strings
      * with a maximum length of 512 characters.
      */
@@ -38,7 +38,7 @@ public final class UpdateAgentRequest implements JsonSerializable<UpdateAgentReq
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
     private final AgentDefinition definition;
@@ -108,8 +108,8 @@ public final class UpdateAgentRequest implements JsonSerializable<UpdateAgentReq
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */

@@ -14,6 +14,7 @@ import com.azure.ai.agents.models.AzureFunctionDefinition;
 import com.azure.ai.agents.models.AzureFunctionDefinitionDetails;
 import com.azure.ai.agents.models.AzureFunctionStorageQueue;
 import com.azure.ai.agents.models.AzureFunctionTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -85,7 +86,7 @@ public class AzureFunctionAsync {
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(azureFunctionTool));
 
-        agentsAsyncClient.createAgentVersion("azure-function-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("azure-function-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

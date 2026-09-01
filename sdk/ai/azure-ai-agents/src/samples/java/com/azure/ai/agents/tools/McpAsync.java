@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -63,7 +64,7 @@ public class McpAsync {
                 + "Use the available MCP tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("mcp-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("mcp-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

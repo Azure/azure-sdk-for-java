@@ -12,6 +12,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BrowserAutomationPreviewTool;
 import com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;
 import com.azure.ai.agents.models.BrowserAutomationToolParameters;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -58,7 +59,7 @@ public class BrowserAutomationAsync {
             .setInstructions("You are a helpful assistant that can interact with web pages.")
             .setTools(Collections.singletonList(browserTool));
 
-        agentsAsyncClient.createAgentVersion("browser-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("browser-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

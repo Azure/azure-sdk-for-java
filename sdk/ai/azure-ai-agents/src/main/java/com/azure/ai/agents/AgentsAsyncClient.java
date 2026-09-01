@@ -14,6 +14,8 @@ import com.azure.ai.agents.implementation.models.CreateAgentRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
+import com.azure.ai.agents.implementation.models.GetMicrosoft365AppPackageRequest;
+import com.azure.ai.agents.implementation.models.PublishAgentToMicrosoft365Request;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.implementation.utils.FileUtils;
@@ -24,11 +26,16 @@ import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeFileDetails;
+import com.azure.ai.agents.models.ConversationResource;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.GetMicrosoft365AppPackageOptions;
 import com.azure.ai.agents.models.HostedAgentDefinition;
+import com.azure.ai.agents.models.Microsoft365PublishDefaults;
+import com.azure.ai.agents.models.Microsoft365PublishResponse;
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.PublishAgentToMicrosoft365Options;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.ai.agents.models.SessionFileWriteResult;
 import com.azure.ai.agents.models.SessionLogEvent;
@@ -72,7 +79,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -93,7 +100,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -124,6 +131,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -141,7 +151,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -188,7 +200,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -197,7 +209,7 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -205,13 +217,14 @@ public final class AgentsAsyncClient {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -225,7 +238,7 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -343,7 +356,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -357,7 +370,7 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -485,41 +498,11 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create an agent version
-     *
-     * Creates a new version for the specified agent and returns the created version resource.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
      * Create an agent
      *
      * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -530,7 +513,7 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -538,6 +521,7 @@ public final class AgentsAsyncClient {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
@@ -551,6 +535,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -568,6 +555,7 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -589,9 +577,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -612,7 +600,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -643,6 +631,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -660,7 +651,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -705,7 +698,7 @@ public final class AgentsAsyncClient {
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -714,7 +707,7 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -725,9 +718,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -748,7 +741,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -779,6 +772,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -796,7 +792,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -844,7 +842,8 @@ public final class AgentsAsyncClient {
      * If no changes, returns the existing agent version.
      *
      * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param definition The agent definition. This can be a prompt, workflow, hosted, external, or voice agent
+     * definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -879,7 +878,7 @@ public final class AgentsAsyncClient {
      *
      * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -895,9 +894,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -918,7 +917,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -949,6 +948,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -966,7 +968,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1013,7 +1017,7 @@ public final class AgentsAsyncClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1028,9 +1032,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1051,7 +1055,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -1082,6 +1086,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1099,7 +1106,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1146,7 +1155,7 @@ public final class AgentsAsyncClient {
      *
      * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1161,9 +1170,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1177,7 +1186,7 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1402,7 +1411,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1416,7 +1425,7 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1552,7 +1561,7 @@ public final class AgentsAsyncClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external", "voice".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1570,7 +1579,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1591,7 +1600,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -1622,6 +1631,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1639,7 +1651,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1756,7 +1770,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1799,7 +1813,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversation> listAgentConversations() {
+    public PagedFlux<ConversationResource> listAgentConversations() {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
@@ -1807,13 +1821,14 @@ public final class AgentsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, ConversationResource>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(ConversationResource.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -1878,7 +1893,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1919,7 +1934,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1971,6 +1986,7 @@ public final class AgentsAsyncClient {
                 .setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
                 .setBlueprintReference(options.getBlueprintReference())
+                .setDigitalWorkerType(options.getDigitalWorkerType())
                 .setDraft(options.isDraft())
                 .setAgentEndpoint(options.getAgentEndpoint())
                 .setAgentCard(options.getAgentCard());
@@ -2074,8 +2090,8 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
-        String agentName, String agentId, String userIdentity) {
+    public PagedFlux<ConversationResource> listAgentConversations(Integer limit, PageOrder order, String after,
+        String before, String agentName, String agentId, String userIdentity) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2104,13 +2120,14 @@ public final class AgentsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, ConversationResource>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(ConversationResource.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -2184,7 +2201,8 @@ public final class AgentsAsyncClient {
      * If no changes, returns the existing agent version.
      *
      * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param definition The agent definition. This can be a prompt, workflow, hosted, external, or voice agent
+     * definition.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -2225,7 +2243,7 @@ public final class AgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2246,7 +2264,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -2277,6 +2295,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2294,7 +2315,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2350,7 +2373,7 @@ public final class AgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2371,7 +2394,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -2402,6 +2425,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2419,7 +2445,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2473,7 +2501,7 @@ public final class AgentsAsyncClient {
      *
      * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2489,6 +2517,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2506,6 +2537,7 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -2527,9 +2559,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2550,7 +2582,7 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -2581,6 +2613,9 @@ public final class AgentsAsyncClient {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2598,7 +2633,9 @@ public final class AgentsAsyncClient {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2652,7 +2689,7 @@ public final class AgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2666,7 +2703,7 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -2732,13 +2769,13 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2835,7 +2872,7 @@ public final class AgentsAsyncClient {
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided user identity for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2846,9 +2883,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2886,7 +2923,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2989,7 +3026,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3050,7 +3087,7 @@ public final class AgentsAsyncClient {
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3087,15 +3124,15 @@ public final class AgentsAsyncClient {
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3182,7 +3219,7 @@ public final class AgentsAsyncClient {
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -3300,7 +3337,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4292,5 +4329,491 @@ public final class AgentsAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateAgentWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.generateAgentWithResponseAsync(body, requestOptions);
+    }
+
+    /**
+     * Publish an agent to Microsoft 365
+     *
+     * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
+     * Teams app ids.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to publish.
+     * @param publishAgentToMicrosoft365Request The publishAgentToMicrosoft365Request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from publishing an agent to Microsoft 365 / Microsoft Teams along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> publishAgentToMicrosoft365WithResponse(String agentName,
+        BinaryData publishAgentToMicrosoft365Request, RequestOptions requestOptions) {
+        return this.serviceClient.publishAgentToMicrosoft365WithResponseAsync(agentName,
+            publishAgentToMicrosoft365Request, requestOptions);
+    }
+
+    /**
+     * Generate a Microsoft 365 app package
+     *
+     * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
+     * request, without publishing it. Returns the app package as `application/zip`.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to generate the app package for.
+     * @param getMicrosoft365AppPackageRequest The getMicrosoft365AppPackageRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMicrosoft365AppPackageWithResponse(String agentName,
+        BinaryData getMicrosoft365AppPackageRequest, RequestOptions requestOptions) {
+        return this.serviceClient.getMicrosoft365AppPackageWithResponseAsync(agentName,
+            getMicrosoft365AppPackageRequest, requestOptions);
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>publishAsDigitalWorker</td><td>Boolean</td><td>No</td><td>When true, returns defaults for publishing the
+     * agent as an autopilot (digital worker) agent.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     appPublishScope: String(Personal/Shared/Tenant) (Optional)
+     *     agentName: String (Optional)
+     *     agentDisplayName: String (Optional)
+     *     appRegistrationClientId: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     appVersion: String (Optional)
+     *     recommendedNextAppVersion: String (Optional)
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to get publish defaults for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMicrosoft365PublishDefaultsWithResponse(String agentName,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getMicrosoft365PublishDefaultsWithResponseAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> generateAgent(BinaryData body) {
+        // Generated convenience method for generateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return generateAgentWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * Publish an agent to Microsoft 365
+     *
+     * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
+     * Teams app ids.
+     *
+     * @param options Options for publishAgentToMicrosoft365 API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from publishing an agent to Microsoft 365 / Microsoft Teams on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Microsoft365PublishResponse> publishAgentToMicrosoft365(PublishAgentToMicrosoft365Options options) {
+        // Generated convenience method for publishAgentToMicrosoft365WithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String agentName = options.getAgentName();
+        PublishAgentToMicrosoft365Request publishAgentToMicrosoft365RequestObj
+            = new PublishAgentToMicrosoft365Request(options.getPublishScope())
+                .setAgentDisplayName(options.getAgentDisplayName())
+                .setBotServiceArmId(options.getBotServiceArmId())
+                .setPublishAsAutopilot(options.isPublishAsAutopilot())
+                .setAccessBoundaries(options.getAccessBoundaries())
+                .setOptionalPermissionScopes(options.getOptionalPermissionScopes())
+                .setCanRespondWithoutMention(options.isCanRespondWithoutMention())
+                .setAppVersion(options.getAppVersion())
+                .setShortDescription(options.getShortDescription())
+                .setFullDescription(options.getFullDescription())
+                .setDeveloperName(options.getDeveloperName())
+                .setDeveloperWebsiteUrl(options.getDeveloperWebsiteUrl())
+                .setPrivacyUrl(options.getPrivacyUrl())
+                .setTermsOfUseUrl(options.getTermsOfUseUrl())
+                .setColorIconBase64(options.getColorIconBase64())
+                .setOutlineIconBase64(options.getOutlineIconBase64());
+        BinaryData publishAgentToMicrosoft365Request = BinaryData.fromObject(publishAgentToMicrosoft365RequestObj);
+        return publishAgentToMicrosoft365WithResponse(agentName, publishAgentToMicrosoft365Request, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Microsoft365PublishResponse.class));
+    }
+
+    /**
+     * Generate a Microsoft 365 app package
+     *
+     * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
+     * request, without publishing it. Returns the app package as `application/zip`.
+     *
+     * @param options Options for getMicrosoft365AppPackage API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getMicrosoft365AppPackage(GetMicrosoft365AppPackageOptions options) {
+        // Generated convenience method for getMicrosoft365AppPackageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String agentName = options.getAgentName();
+        GetMicrosoft365AppPackageRequest getMicrosoft365AppPackageRequestObj
+            = new GetMicrosoft365AppPackageRequest(options.getPublishScope())
+                .setAgentDisplayName(options.getAgentDisplayName())
+                .setBotServiceArmId(options.getBotServiceArmId())
+                .setPublishAsAutopilot(options.isPublishAsAutopilot())
+                .setAccessBoundaries(options.getAccessBoundaries())
+                .setOptionalPermissionScopes(options.getOptionalPermissionScopes())
+                .setCanRespondWithoutMention(options.isCanRespondWithoutMention())
+                .setAppVersion(options.getAppVersion())
+                .setShortDescription(options.getShortDescription())
+                .setFullDescription(options.getFullDescription())
+                .setDeveloperName(options.getDeveloperName())
+                .setDeveloperWebsiteUrl(options.getDeveloperWebsiteUrl())
+                .setPrivacyUrl(options.getPrivacyUrl())
+                .setTermsOfUseUrl(options.getTermsOfUseUrl())
+                .setColorIconBase64(options.getColorIconBase64())
+                .setOutlineIconBase64(options.getOutlineIconBase64());
+        BinaryData getMicrosoft365AppPackageRequest = BinaryData.fromObject(getMicrosoft365AppPackageRequestObj);
+        return getMicrosoft365AppPackageWithResponse(agentName, getMicrosoft365AppPackageRequest, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     *
+     * @param agentName The name of the agent to get publish defaults for.
+     * @param publishAsDigitalWorker When true, returns defaults for publishing the agent as an autopilot (digital
+     * worker) agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Microsoft365PublishDefaults> getMicrosoft365PublishDefaults(String agentName,
+        Boolean publishAsDigitalWorker) {
+        // Generated convenience method for getMicrosoft365PublishDefaultsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (publishAsDigitalWorker != null) {
+            requestOptions.addQueryParam("publishAsDigitalWorker", String.valueOf(publishAsDigitalWorker), false);
+        }
+        return getMicrosoft365PublishDefaultsWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Microsoft365PublishDefaults.class));
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     *
+     * @param agentName The name of the agent to get publish defaults for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return microsoft 365 publish defaults
+     *
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Microsoft365PublishDefaults> getMicrosoft365PublishDefaults(String agentName) {
+        // Generated convenience method for getMicrosoft365PublishDefaultsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMicrosoft365PublishDefaultsWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Microsoft365PublishDefaults.class));
     }
 }
