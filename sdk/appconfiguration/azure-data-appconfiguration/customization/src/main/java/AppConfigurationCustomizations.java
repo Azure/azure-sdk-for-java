@@ -13,7 +13,8 @@ import com.azure.autorest.customization.LibraryCustomization;
 /**
  * Removes generated public client surface so the hand-written ConfigurationClient,
  * ConfigurationAsyncClient, ConfigurationClientBuilder, and ConfigurationServiceVersion
- * in com.azure.data.appconfiguration are not overwritten by tsp-client update.
+ * in com.azure.data.appconfiguration are not overwritten by tsp-client update and new
+ * protocol clients aren't exposed as unsupported convenience APIs.
  * The generated implementation client under com.azure.data.appconfiguration.implementation
  * is preserved and used by the hand-written public classes.
  *
@@ -39,12 +40,12 @@ public class AppConfigurationCustomizations extends Customization {
         "AzureAppConfigurationServiceVersion.java",
         "AzureAppConfigurationClient.java",
         "AzureAppConfigurationAsyncClient.java",
-        "AzureAppConfigurationBuilder.java"
+        "AzureAppConfigurationBuilder.java",
+        "FeatureFlagClient.java",
+        "FeatureFlagAsyncClient.java"
     };
 
     private static final String[] FILES_WITH_GENERATED_CLIENT_REFERENCES = new String[] {
-        "FeatureFlagClient.java",
-        "FeatureFlagAsyncClient.java",
         "implementation/FeatureFlagClientsImpl.java"
     };
 
