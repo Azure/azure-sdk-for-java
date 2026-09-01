@@ -174,7 +174,7 @@
 * `association()` was added
 * `securityPolicyConfigurations()` was added
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1
 
 - Azure Resource Manager Traffic Controller client library for Java. This package contains Microsoft Azure SDK for Traffic Controller Management SDK. Traffic Controller Provider management API. Package api-version 2025-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
