@@ -115,12 +115,6 @@ function Get-PathClassification {
             'Code-generation inputs require generator validation and affected Java tests.'
     }
 
-    if ($normalizedPath -match '^eng/lintingconfigs/(checkstyle|spotbugs|revapi)/' -or
-        $fileName -match '(?i)^(checkstyle(-suppressions)?\.xml|spotbugs-(include|exclude)\.xml|revapi(-suppressions)?\.json|cspell\.(json|ya?ml))$') {
-        return New-PathClassification $normalizedPath 'validation-configuration' $false `
-            'Static-analysis and spelling configuration is validated by Analyze rather than Java tests.'
-    }
-
     if ($normalizedPath -match '^sdk/spring/scripts/.*managed_external_dependencies\.txt$') {
         return New-PathClassification $normalizedPath 'version-or-dependency-input' $true `
             'Version, dependency, BOM, and release inputs require Java build validation.'
@@ -130,6 +124,16 @@ function Get-PathClassification {
         $normalizedPath -match '^sdk/spring/(pipeline|scripts)(/|$)') {
         return New-PathClassification $normalizedPath 'engineering-input' $true `
             'Service-specific engineering-system changes require full Java validation.'
+    }
+
+    $isCspellConfiguration = $normalizedPath -eq '.vscode/cspell.json' -or
+        $normalizedPath -match '^sdk/[^/]+/cspell\.(json|ya?ml)$' -or
+        $normalizedPath -match '^sdk/[^/]+/[^/]+/cspell\.(json|ya?ml)$'
+    if ($normalizedPath -match '^eng/lintingconfigs/(checkstyle|spotbugs|revapi)/' -or
+        $fileName -match '(?i)^(checkstyle(-suppressions)?\.xml|spotbugs-(include|exclude)\.xml|revapi(-suppressions)?\.json)$' -or
+        $isCspellConfiguration) {
+        return New-PathClassification $normalizedPath 'validation-configuration' $false `
+            'Static-analysis and spelling configuration does not require Java tests; Build and Analyze remain enabled.'
     }
 
     # Keep engineering changes conservative because they can alter all CI behavior.

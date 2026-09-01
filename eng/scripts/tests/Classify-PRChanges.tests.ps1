@@ -18,8 +18,9 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         @{ Path = 'eng/lintingconfigs/checkstyle/track2/checkstyle.xml' }
         @{ Path = 'sdk/core/azure-core/checkstyle-suppressions.xml' }
         @{ Path = 'sdk/ai/azure-ai-agents/revapi.json' }
+        @{ Path = '.vscode/cspell.json' }
         @{ Path = 'sdk/storage/cspell.yml' }
-        @{ Path = 'sdk/cosmos/pipeline/cspell.json' }
+        @{ Path = 'sdk/voicelive/azure-ai-voicelive/cspell.json' }
     ) {
         param($Path)
 
@@ -39,6 +40,7 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         @{ Path = 'eng/common/scripts/Package-Properties.ps1' }
         @{ Path = 'eng/common/spelling/Invoke-Cspell.ps1' }
         @{ Path = 'sdk/cosmos/pipeline/README.md' }
+        @{ Path = 'sdk/cosmos/pipeline/cspell.json' }
         @{ Path = 'sdk/cosmos/test-resources/README.md' }
         @{ Path = 'sdk/spring/pipeline/CONTRIBUTING.md' }
         @{ Path = 'sdk/spring/scripts/CONTRIBUTING.md' }
@@ -46,6 +48,7 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         @{ Path = 'sdk/example/example/notes.md' }
         @{ Path = 'sdk/example/example/pom.xml' }
         @{ Path = 'sdk/example/example/src/main/java/Example.java' }
+        @{ Path = 'tools/example/cspell.json' }
         @{ Path = 'docs/tools/validate.ps1' }
     ) {
         param($Path)
