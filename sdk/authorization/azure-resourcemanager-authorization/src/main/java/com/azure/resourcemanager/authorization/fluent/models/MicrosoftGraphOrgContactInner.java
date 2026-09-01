@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents an org contact.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -100,7 +100,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     private List<MicrosoftGraphDirectoryObjectInner> directReports;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private MicrosoftGraphDirectoryObjectInner manager;
@@ -116,7 +116,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -429,7 +429,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Get the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * Get the manager property: Represents an Microsoft Entra ID object. The directoryObject type is the base type
      * for many other directory entity types.
      * 
      * @return the manager value.
@@ -439,7 +439,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Set the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * Set the manager property: Represents an Microsoft Entra ID object. The directoryObject type is the base type
      * for many other directory entity types.
      * 
      * @param manager the manager value to set.
@@ -492,7 +492,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -502,7 +502,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

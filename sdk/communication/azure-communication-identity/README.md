@@ -63,7 +63,7 @@ add the direct dependency to your project as follows.
 
 There are two forms of authentication to use the Identity SDK:
 
-### Azure Active Directory Token Authentication
+### Microsoft Entra ID Token Authentication
 A `DefaultAzureCredential` object must be passed to the `CommunicationIdentityClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables

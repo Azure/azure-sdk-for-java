@@ -44,7 +44,7 @@ public class SqlServerSqlMISyncTaskInput implements JsonSerializable<SqlServerSq
     private MiSqlConnectionInfo targetConnectionInfo;
 
     /*
-     * Azure Active Directory Application the DMS (classic) instance will use to connect to the target instance of Azure
+     * Microsoft Entra ID Application the DMS (classic) instance will use to connect to the target instance of Azure
      * SQL Database Managed Instance and the Azure Storage Account
      */
     private AzureActiveDirectoryApp azureApp;
@@ -157,7 +157,7 @@ public class SqlServerSqlMISyncTaskInput implements JsonSerializable<SqlServerSq
     }
 
     /**
-     * Get the azureApp property: Azure Active Directory Application the DMS (classic) instance will use to connect to
+     * Get the azureApp property: Microsoft Entra ID Application the DMS (classic) instance will use to connect to
      * the target instance of Azure SQL Database Managed Instance and the Azure Storage Account.
      * 
      * @return the azureApp value.
@@ -167,7 +167,7 @@ public class SqlServerSqlMISyncTaskInput implements JsonSerializable<SqlServerSq
     }
 
     /**
-     * Set the azureApp property: Azure Active Directory Application the DMS (classic) instance will use to connect to
+     * Set the azureApp property: Microsoft Entra ID Application the DMS (classic) instance will use to connect to
      * the target instance of Azure SQL Database Managed Instance and the Azure Storage Account.
      * 
      * @param azureApp the azureApp value to set.

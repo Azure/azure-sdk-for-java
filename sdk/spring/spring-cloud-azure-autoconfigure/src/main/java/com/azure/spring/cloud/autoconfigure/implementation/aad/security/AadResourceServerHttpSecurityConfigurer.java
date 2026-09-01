@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 import java.util.Collection;
 
 /**
- * HTTP security configurer class for Azure Active Directory resource server scenario, used to
+ * HTTP security configurer class for Microsoft Entra ID resource server scenario, used to
  * make {@link OAuth2ResourceServerConfigurer.JwtConfigurer } and {@link AadJwtGrantedAuthoritiesConverter} take effect.
  *
  */

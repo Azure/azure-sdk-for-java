@@ -554,9 +554,9 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * Sets the Audience to use for authentication with Microsoft Entra ID (AAD). The audience is not considered
      * when using a shared key.
-     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @param audience {@link DataLakeAudience} to be used when requesting a token from Microsoft Entra ID (AAD).
      * @return the updated DataLakeFileSystemClientBuilder object
      */
     public DataLakeFileSystemClientBuilder audience(DataLakeAudience audience) {

@@ -31,7 +31,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     private String keyVersion;
 
     /*
-     * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
+     * Optional Microsoft Entra ID credentials used for accessing your Azure Key Vault. Not required if using
      * managed identity instead.
      */
     @Generated
@@ -90,7 +90,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     }
 
     /**
-     * Get the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Get the accessCredentials property: Optional Microsoft Entra ID credentials used for accessing your Azure Key
      * Vault. Not required if using managed identity instead.
      *
      * @return the accessCredentials value.
@@ -101,7 +101,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     }
 
     /**
-     * Set the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Set the accessCredentials property: Optional Microsoft Entra ID credentials used for accessing your Azure Key
      * Vault. Not required if using managed identity instead.
      *
      * @param accessCredentials the accessCredentials value to set.

@@ -36,7 +36,7 @@ public final class MicrosoftGraphDeviceCategory extends MicrosoftGraphEntity {
      * Device categories provides a way to organize your devices. Using device categories, company administrators can
      * define their own categories that make sense to their company. These categories can then be applied to a device in
      * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
-     * dynamic Azure Active Directory device groups based on device categories.
+     * dynamic Microsoft Entra ID device groups based on device categories.
      */
     private Map<String, Object> additionalProperties;
 
@@ -90,7 +90,7 @@ public final class MicrosoftGraphDeviceCategory extends MicrosoftGraphEntity {
      * Get the additionalProperties property: Device categories provides a way to organize your devices. Using device
      * categories, company administrators can define their own categories that make sense to their company. These
      * categories can then be applied to a device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
+     * enrollment. You can filter reports and create dynamic Microsoft Entra ID device groups based on device
      * categories.
      * 
      * @return the additionalProperties value.
@@ -103,7 +103,7 @@ public final class MicrosoftGraphDeviceCategory extends MicrosoftGraphEntity {
      * Set the additionalProperties property: Device categories provides a way to organize your devices. Using device
      * categories, company administrators can define their own categories that make sense to their company. These
      * categories can then be applied to a device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
+     * enrollment. You can filter reports and create dynamic Microsoft Entra ID device groups based on device
      * categories.
      * 
      * @param additionalProperties the additionalProperties value to set.

@@ -137,7 +137,7 @@ public final class IdentityProviderUpdateParameters implements JsonSerializable<
     }
 
     /**
-     * Get the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     * Get the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID login.
      * 
      * @return the allowedTenants value.
      */
@@ -146,7 +146,7 @@ public final class IdentityProviderUpdateParameters implements JsonSerializable<
     }
 
     /**
-     * Set the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     * Set the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID login.
      * 
      * @param allowedTenants the allowedTenants value to set.
      * @return the IdentityProviderUpdateParameters object itself.

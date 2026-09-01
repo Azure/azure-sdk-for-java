@@ -78,7 +78,7 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-Azure Monitor Query supports Azure Active Directory authentication. Both LogsQueryClientBuilder and
+Azure Monitor Query supports Microsoft Entra ID authentication. Both LogsQueryClientBuilder and
 MetricsQueryClientBuilder have methods to set the `credential`. To provide a valid credential, you can use
 `azure-identity` dependency. For more details on getting started, refer to
 the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#create-the-client)

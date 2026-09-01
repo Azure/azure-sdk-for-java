@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * AADProfile specifies attributes for Azure Active Directory integration. For more details see [managed AAD on
+ * AADProfile specifies attributes for Microsoft Entra ID integration. For more details see [managed AAD on
  * AKS](https://docs.microsoft.com/azure/aks/managed-aad).
  */
 @Fluent

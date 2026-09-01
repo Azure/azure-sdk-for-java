@@ -117,7 +117,7 @@ Authentication with AAD requires some initial setup:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-* [Register a new Azure Active Directory application][register_AAD_application]
+* [Register a new Microsoft Entra ID application][register_AAD_application]
 * [Grant access][grant_access] to Metrics Advisor by assigning the `"Cognitive Services User"` role to your service principal.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.

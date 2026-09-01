@@ -10,34 +10,34 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Azure Active Directory identity configuration for a resource. */
+/** Microsoft Entra ID identity configuration for a resource. */
 @Fluent
 public class ResourceIdentity {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
 
     /*
-     * The Azure Active Directory principal id.
+     * The Microsoft Entra ID principal id.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
      * The identity type. Set this to 'SystemAssigned' in order to
-     * automatically create and assign an Azure Active Directory principal for
+     * automatically create and assign an Microsoft Entra ID principal for
      * the resource.
      */
     @JsonProperty(value = "type")
     private IdentityType type;
 
     /*
-     * The Azure Active Directory tenant id.
+     * The Microsoft Entra ID tenant id.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /**
-     * Get the principalId property: The Azure Active Directory principal id.
+     * Get the principalId property: The Microsoft Entra ID principal id.
      *
      * @return the principalId value.
      */
@@ -47,7 +47,7 @@ public class ResourceIdentity {
 
     /**
      * Get the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
-     * assign an Azure Active Directory principal for the resource.
+     * assign an Microsoft Entra ID principal for the resource.
      *
      * @return the type value.
      */
@@ -57,7 +57,7 @@ public class ResourceIdentity {
 
     /**
      * Set the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
-     * assign an Azure Active Directory principal for the resource.
+     * assign an Microsoft Entra ID principal for the resource.
      *
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
@@ -68,7 +68,7 @@ public class ResourceIdentity {
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant id.
+     * Get the tenantId property: The Microsoft Entra ID tenant id.
      *
      * @return the tenantId value.
      */

@@ -66,9 +66,9 @@ public interface Vault extends GroupableResource<KeyVaultManager, VaultInner>, R
     String vaultUri();
 
     /**
-     * Gets the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Gets the Microsoft Entra ID tenant ID that should be used for authenticating requests to the key vault.
      *
-     * @return the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * @return the Microsoft Entra ID tenant ID that should be used for authenticating requests to the key vault.
      */
     String tenantId();
 

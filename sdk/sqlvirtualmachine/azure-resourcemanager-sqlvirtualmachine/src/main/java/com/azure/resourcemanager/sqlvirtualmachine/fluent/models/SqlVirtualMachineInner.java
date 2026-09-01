@@ -32,7 +32,7 @@ import java.util.Map;
 @Fluent
 public final class SqlVirtualMachineInner extends Resource {
     /*
-     * Azure Active Directory identity of the server.
+     * Microsoft Entra ID identity of the server.
      */
     private ResourceIdentity identity;
 
@@ -68,7 +68,7 @@ public final class SqlVirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the identity property: Azure Active Directory identity of the server.
+     * Get the identity property: Microsoft Entra ID identity of the server.
      * 
      * @return the identity value.
      */
@@ -77,7 +77,7 @@ public final class SqlVirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the identity property: Azure Active Directory identity of the server.
+     * Set the identity property: Microsoft Entra ID identity of the server.
      * 
      * @param identity the identity value to set.
      * @return the SqlVirtualMachineInner object itself.

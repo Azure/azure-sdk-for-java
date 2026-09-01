@@ -82,7 +82,7 @@ DocumentIntelligenceAdministrationClient documentIntelligenceAsyncClient = new D
     .buildClient();
 ```
 
-#### Create an Azure DocumentIntelligence client with Azure Active Directory credential
+#### Create an Azure DocumentIntelligence client with Microsoft Entra ID credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform.
 

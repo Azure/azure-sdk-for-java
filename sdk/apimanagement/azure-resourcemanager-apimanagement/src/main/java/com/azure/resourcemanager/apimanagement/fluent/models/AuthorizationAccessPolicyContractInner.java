@@ -83,7 +83,7 @@ public final class AuthorizationAccessPolicyContractInner extends ProxyResource 
     }
 
     /**
-     * Get the appIds property: The allowed Azure Active Directory Application IDs.
+     * Get the appIds property: The allowed Microsoft Entra ID Application IDs.
      * 
      * @return the appIds value.
      */
@@ -92,7 +92,7 @@ public final class AuthorizationAccessPolicyContractInner extends ProxyResource 
     }
 
     /**
-     * Set the appIds property: The allowed Azure Active Directory Application IDs.
+     * Set the appIds property: The allowed Microsoft Entra ID Application IDs.
      * 
      * @param appIds the appIds value to set.
      * @return the AuthorizationAccessPolicyContractInner object itself.

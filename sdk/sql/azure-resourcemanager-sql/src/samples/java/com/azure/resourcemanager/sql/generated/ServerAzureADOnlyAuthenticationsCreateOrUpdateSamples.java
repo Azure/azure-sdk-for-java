@@ -15,7 +15,7 @@ public final class ServerAzureADOnlyAuthenticationsCreateOrUpdateSamples {
      * x-ms-original-file: 2025-01-01/AzureADOnlyAuthCreateOrUpdate.json
      */
     /**
-     * Sample code: Creates or updates Azure Active Directory only authentication object.
+     * Sample code: Creates or updates Microsoft Entra ID only authentication object.
      * 
      * @param manager Entry point to SqlServerManager.
      */

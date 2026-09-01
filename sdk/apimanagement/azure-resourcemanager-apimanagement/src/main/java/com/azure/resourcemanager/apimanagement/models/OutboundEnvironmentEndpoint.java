@@ -36,7 +36,7 @@ public final class OutboundEnvironmentEndpoint implements JsonSerializable<Outbo
 
     /**
      * Get the category property: The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure
-     * SQL Database, and Azure Active Directory.
+     * SQL Database, and Microsoft Entra ID.
      * 
      * @return the category value.
      */
@@ -46,7 +46,7 @@ public final class OutboundEnvironmentEndpoint implements JsonSerializable<Outbo
 
     /**
      * Set the category property: The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure
-     * SQL Database, and Azure Active Directory.
+     * SQL Database, and Microsoft Entra ID.
      * 
      * @param category the category value to set.
      * @return the OutboundEnvironmentEndpoint object itself.

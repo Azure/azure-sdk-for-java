@@ -41,7 +41,7 @@ public final class AccessPolicyCreateOrUpdateParameters
     }
 
     /**
-     * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Get the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @return the principalObjectId value.
      */
@@ -50,7 +50,7 @@ public final class AccessPolicyCreateOrUpdateParameters
     }
 
     /**
-     * Set the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Set the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @param principalObjectId the principalObjectId value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.

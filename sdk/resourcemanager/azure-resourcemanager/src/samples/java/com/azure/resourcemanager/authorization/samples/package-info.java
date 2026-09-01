@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Microsoft Entra ID (Azure Active Directory) samples.
+ * Microsoft Entra ID (Microsoft Entra ID) samples.
  */
 package com.azure.resourcemanager.authorization.samples;

@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * AadConfiguration represents the Azure Active Directory Integration properties.
+ * AadConfiguration represents the Microsoft Entra ID Integration properties.
  */
 @Fluent
 public final class AadConfiguration implements JsonSerializable<AadConfiguration> {
     /*
-     * The list of Azure Active Directory group object IDs that will have an administrative role on the Kubernetes
+     * The list of Microsoft Entra ID group object IDs that will have an administrative role on the Kubernetes
      * cluster.
      */
     private List<String> adminGroupObjectIds;
@@ -30,7 +30,7 @@ public final class AadConfiguration implements JsonSerializable<AadConfiguration
     }
 
     /**
-     * Get the adminGroupObjectIds property: The list of Azure Active Directory group object IDs that will have an
+     * Get the adminGroupObjectIds property: The list of Microsoft Entra ID group object IDs that will have an
      * administrative role on the Kubernetes cluster.
      * 
      * @return the adminGroupObjectIds value.
@@ -40,7 +40,7 @@ public final class AadConfiguration implements JsonSerializable<AadConfiguration
     }
 
     /**
-     * Set the adminGroupObjectIds property: The list of Azure Active Directory group object IDs that will have an
+     * Set the adminGroupObjectIds property: The list of Microsoft Entra ID group object IDs that will have an
      * administrative role on the Kubernetes cluster.
      * 
      * @param adminGroupObjectIds the adminGroupObjectIds value to set.

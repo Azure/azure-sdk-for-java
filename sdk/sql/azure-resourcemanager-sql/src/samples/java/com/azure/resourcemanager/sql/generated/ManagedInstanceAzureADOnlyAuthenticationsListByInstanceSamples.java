@@ -12,7 +12,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsListByInstanceSample
      * x-ms-original-file: 2025-01-01/ManagedInstanceAzureADOnlyAuthListByInstance.json
      */
     /**
-     * Sample code: Gets a list of Azure Active Directory only authentication object.
+     * Sample code: Gets a list of Microsoft Entra ID only authentication object.
      * 
      * @param manager Entry point to SqlServerManager.
      */

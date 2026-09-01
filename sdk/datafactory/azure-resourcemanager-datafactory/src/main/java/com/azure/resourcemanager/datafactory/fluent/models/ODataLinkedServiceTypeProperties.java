@@ -52,7 +52,7 @@ public final class ODataLinkedServiceTypeProperties implements JsonSerializable<
     private Object tenant;
 
     /*
-     * Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression
+     * Specify the application id of your application registered in Microsoft Entra ID. Type: string (or Expression
      * with resultType string).
      */
     private Object servicePrincipalId;
@@ -76,13 +76,13 @@ public final class ODataLinkedServiceTypeProperties implements JsonSerializable<
     private ODataAadServicePrincipalCredentialType aadServicePrincipalCredentialType;
 
     /*
-     * Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * Specify the secret of your application registered in Microsoft Entra ID. Type: string (or Expression with
      * resultType string).
      */
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Specify the base64 encoded certificate of your application registered in Microsoft Entra ID. Type: string (or
      * Expression with resultType string).
      */
     private SecretBase servicePrincipalEmbeddedCert;
@@ -344,7 +344,7 @@ public final class ODataLinkedServiceTypeProperties implements JsonSerializable<
 
     /**
      * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalEmbeddedCert value.
      */
@@ -354,7 +354,7 @@ public final class ODataLinkedServiceTypeProperties implements JsonSerializable<
 
     /**
      * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
      * @return the ODataLinkedServiceTypeProperties object itself.

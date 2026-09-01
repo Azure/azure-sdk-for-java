@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  * When using Azure services that require authentication, such as Azure Storage or Azure Key Vault, the library
  * handles the acquisition and management of access tokens. By default, each request made to an Azure service triggers
  * a token request, which involves authentication and token retrieval from the authentication provider
- * (e.g., Azure Active Directory).
+ * (e.g., Microsoft Entra ID).
  * </p>
  *
  * <p>

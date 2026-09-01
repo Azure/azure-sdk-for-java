@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Azure Active Directory only authentication.
+ * Microsoft Entra ID only authentication.
  */
 @Fluent
 public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
@@ -97,7 +97,7 @@ public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
     }
 
     /**
-     * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Get the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @return the azureADOnlyAuthentication value.
      */
@@ -106,7 +106,7 @@ public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
     }
 
     /**
-     * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Set the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the ServerAzureADOnlyAuthenticationInner object itself.

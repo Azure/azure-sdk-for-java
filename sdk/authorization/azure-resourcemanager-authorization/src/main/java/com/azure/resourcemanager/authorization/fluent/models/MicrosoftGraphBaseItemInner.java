@@ -66,12 +66,12 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     private String webUrl;
 
     /*
-     * Represents an Azure Active Directory user object.
+     * Represents an Microsoft Entra ID user object.
      */
     private MicrosoftGraphUserInner createdByUser;
 
     /*
-     * Represents an Azure Active Directory user object.
+     * Represents an Microsoft Entra ID user object.
      */
     private MicrosoftGraphUserInner lastModifiedByUser;
 
@@ -267,7 +267,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the createdByUser property: Represents an Azure Active Directory user object.
+     * Get the createdByUser property: Represents an Microsoft Entra ID user object.
      * 
      * @return the createdByUser value.
      */
@@ -276,7 +276,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the createdByUser property: Represents an Azure Active Directory user object.
+     * Set the createdByUser property: Represents an Microsoft Entra ID user object.
      * 
      * @param createdByUser the createdByUser value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
@@ -287,7 +287,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the lastModifiedByUser property: Represents an Azure Active Directory user object.
+     * Get the lastModifiedByUser property: Represents an Microsoft Entra ID user object.
      * 
      * @return the lastModifiedByUser value.
      */
@@ -296,7 +296,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the lastModifiedByUser property: Represents an Azure Active Directory user object.
+     * Set the lastModifiedByUser property: Represents an Microsoft Entra ID user object.
      * 
      * @param lastModifiedByUser the lastModifiedByUser value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.

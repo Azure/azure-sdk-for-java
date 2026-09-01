@@ -50,7 +50,7 @@ public interface SqlVirtualMachine {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: Azure Active Directory identity of the server.
+     * Gets the identity property: Microsoft Entra ID identity of the server.
      * 
      * @return the identity value.
      */
@@ -322,9 +322,9 @@ public interface SqlVirtualMachine {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Azure Active Directory identity of the server..
+             * Specifies the identity property: Microsoft Entra ID identity of the server..
              * 
-             * @param identity Azure Active Directory identity of the server.
+             * @param identity Microsoft Entra ID identity of the server.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ResourceIdentity identity);

@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * An access policy is used to grant users and applications access to the environment. Roles are assigned to service
- * principals in Azure Active Directory. These roles define the actions the principal can perform through the Time
+ * principals in Microsoft Entra ID. These roles define the actions the principal can perform through the Time
  * Series Insights data plane APIs.
  */
 @Fluent
@@ -86,7 +86,7 @@ public final class AccessPolicyResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Get the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @return the principalObjectId value.
      */
@@ -95,7 +95,7 @@ public final class AccessPolicyResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Set the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @param principalObjectId the principalObjectId value to set.
      * @return the AccessPolicyResourceInner object itself.

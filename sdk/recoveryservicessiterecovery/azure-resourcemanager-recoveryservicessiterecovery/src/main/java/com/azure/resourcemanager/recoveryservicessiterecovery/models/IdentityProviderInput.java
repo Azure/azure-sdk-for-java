@@ -42,7 +42,7 @@ public final class IdentityProviderInput implements JsonSerializable<IdentityPro
     private String audience;
 
     /*
-     * The base authority for Azure Active Directory authentication.
+     * The base authority for Microsoft Entra ID authentication.
      */
     private String aadAuthority;
 
@@ -141,7 +141,7 @@ public final class IdentityProviderInput implements JsonSerializable<IdentityPro
     }
 
     /**
-     * Get the aadAuthority property: The base authority for Azure Active Directory authentication.
+     * Get the aadAuthority property: The base authority for Microsoft Entra ID authentication.
      * 
      * @return the aadAuthority value.
      */
@@ -150,7 +150,7 @@ public final class IdentityProviderInput implements JsonSerializable<IdentityPro
     }
 
     /**
-     * Set the aadAuthority property: The base authority for Azure Active Directory authentication.
+     * Set the aadAuthority property: The base authority for Microsoft Entra ID authentication.
      * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the IdentityProviderInput object itself.

@@ -176,7 +176,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private ContainerServiceNetworkProfile networkProfile;
 
     /*
-     * The Azure Active Directory configuration.
+     * The Microsoft Entra ID configuration.
      */
     private ManagedClusterAadProfile aadProfile;
 
@@ -712,7 +712,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the aadProfile property: The Azure Active Directory configuration.
+     * Get the aadProfile property: The Microsoft Entra ID configuration.
      * 
      * @return the aadProfile value.
      */
@@ -721,7 +721,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the aadProfile property: The Azure Active Directory configuration.
+     * Set the aadProfile property: The Microsoft Entra ID configuration.
      * 
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterProperties object itself.

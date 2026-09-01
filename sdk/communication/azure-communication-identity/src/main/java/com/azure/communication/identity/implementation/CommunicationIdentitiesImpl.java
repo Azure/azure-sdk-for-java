@@ -413,7 +413,7 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * Exchange an Microsoft Entra ID (Azure AD) access token of a Teams user for a new Communication Identity
      * access token with a matching expiration time.
      * 
      * @param body Request payload for the token exchange.
@@ -429,7 +429,7 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * Exchange an Microsoft Entra ID (Azure AD) access token of a Teams user for a new Communication Identity
      * access token with a matching expiration time.
      * 
      * @param body Request payload for the token exchange.
@@ -448,7 +448,7 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * Exchange an Microsoft Entra ID (Azure AD) access token of a Teams user for a new Communication Identity
      * access token with a matching expiration time.
      * 
      * @param body Request payload for the token exchange.
@@ -463,7 +463,7 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * Exchange an Microsoft Entra ID (Azure AD) access token of a Teams user for a new Communication Identity
      * access token with a matching expiration time.
      * 
      * @param body Request payload for the token exchange.
@@ -481,7 +481,7 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * Exchange an Microsoft Entra ID (Azure AD) access token of a Teams user for a new Communication Identity
      * access token with a matching expiration time.
      * 
      * @param body Request payload for the token exchange.
@@ -500,7 +500,7 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * Exchange an Microsoft Entra ID (Azure AD) access token of a Teams user for a new Communication Identity
      * access token with a matching expiration time.
      * 
      * @param body Request payload for the token exchange.

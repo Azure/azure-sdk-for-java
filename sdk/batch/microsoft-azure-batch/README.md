@@ -19,7 +19,7 @@ BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(batchUri, batchAc
 BatchClient client = BatchClient.open(cred);
 ```
 
-* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for detail.
+* The other way is using AAD (Microsoft Entra ID) authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for detail.
 
 ```java
 BatchApplicationTokenCredentials cred = new BatchApplicationTokenCredentials(batchEndpoint, clientId, applicationSecret, applicationDomain, null, null);

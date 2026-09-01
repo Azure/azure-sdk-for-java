@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The audience to be used when requesting a token from Azure Active Directory (AAD).
+ * The audience to be used when requesting a token from Microsoft Entra ID (AAD).
  * Note: This audience only has an effect when authenticating a TokenCredential.
  */
 public class BlobAudience extends ExpandableStringEnum<BlobAudience> {
@@ -42,14 +42,14 @@ public class BlobAudience extends ExpandableStringEnum<BlobAudience> {
     }
 
     /**
-     * The Azure Active Directory audience to use when forming authorization scopes.
+     * The Microsoft Entra ID audience to use when forming authorization scopes.
      * For the Language service, this value corresponds to a URL that identifies the Azure cloud where the resource is
      * located.
      * For more information see
      * <a href="https://learn.microsoft.com/azure/storage/blobs/authorize-access-azure-active-directory">
-     *     Authorize access to Azure blobs using Azure Active Directory</a>.
+     *     Authorize access to Azure blobs using Microsoft Entra ID</a>.
      *
-     * @param audience The Azure Active Directory audience to use when forming authorization scopes.
+     * @param audience The Microsoft Entra ID audience to use when forming authorization scopes.
      * @return the corresponding BlobAudience.
      */
     public static BlobAudience fromString(String audience) {

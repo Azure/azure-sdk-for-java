@@ -1134,8 +1134,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * @param recursive Specifies if the call should recursively include all paths.
      * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
-     * and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.
-     * If "false", the values will be returned as Azure Active Directory Object IDs.
+     * and x-ms-acl response headers will be transformed from Microsoft Entra ID Object IDs to User Principal Names.
+     * If "false", the values will be returned as Microsoft Entra ID Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      * @param maxResults Specifies the maximum number of blobs to return per page, including all BlobPrefix elements. If

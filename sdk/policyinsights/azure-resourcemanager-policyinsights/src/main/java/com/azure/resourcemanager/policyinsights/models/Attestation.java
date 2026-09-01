@@ -76,7 +76,7 @@ public interface Attestation {
 
     /**
      * Gets the owner property: The person responsible for setting the state of the resource. This value is typically an
-     * Azure Active Directory object ID.
+     * Microsoft Entra ID object ID.
      * 
      * @return the owner value.
      */
@@ -259,10 +259,10 @@ public interface Attestation {
         interface WithOwner {
             /**
              * Specifies the owner property: The person responsible for setting the state of the resource. This value is
-             * typically an Azure Active Directory object ID..
+             * typically an Microsoft Entra ID object ID..
              * 
              * @param owner The person responsible for setting the state of the resource. This value is typically an
-             * Azure Active Directory object ID.
+             * Microsoft Entra ID object ID.
              * @return the next definition stage.
              */
             WithCreate withOwner(String owner);
@@ -420,10 +420,10 @@ public interface Attestation {
         interface WithOwner {
             /**
              * Specifies the owner property: The person responsible for setting the state of the resource. This value is
-             * typically an Azure Active Directory object ID..
+             * typically an Microsoft Entra ID object ID..
              * 
              * @param owner The person responsible for setting the state of the resource. This value is typically an
-             * Azure Active Directory object ID.
+             * Microsoft Entra ID object ID.
              * @return the next definition stage.
              */
             Update withOwner(String owner);

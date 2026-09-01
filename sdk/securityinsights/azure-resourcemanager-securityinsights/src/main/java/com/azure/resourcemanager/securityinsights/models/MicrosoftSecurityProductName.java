@@ -29,7 +29,7 @@ public final class MicrosoftSecurityProductName extends ExpandableStringEnum<Mic
         = fromString("Azure Advanced Threat Protection");
 
     /**
-     * Static value Azure Active Directory Identity Protection for MicrosoftSecurityProductName.
+     * Static value Microsoft Entra ID Identity Protection for MicrosoftSecurityProductName.
      */
     public static final MicrosoftSecurityProductName AZURE_ACTIVE_DIRECTORY_IDENTITY_PROTECTION
         = fromString("Azure Active Directory Identity Protection");

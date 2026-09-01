@@ -38,7 +38,7 @@ public final class ProviderProperties implements JsonSerializable<ProviderProper
     private String defaultEndpoint;
 
     /*
-     * Azure Active Directory info.
+     * Microsoft Entra ID info.
      */
     private ProviderPropertiesAad aad;
 
@@ -110,7 +110,7 @@ public final class ProviderProperties implements JsonSerializable<ProviderProper
     }
 
     /**
-     * Get the aad property: Azure Active Directory info.
+     * Get the aad property: Microsoft Entra ID info.
      * 
      * @return the aad value.
      */
@@ -119,7 +119,7 @@ public final class ProviderProperties implements JsonSerializable<ProviderProper
     }
 
     /**
-     * Set the aad property: Azure Active Directory info.
+     * Set the aad property: Microsoft Entra ID info.
      * 
      * @param aad the aad value to set.
      * @return the ProviderProperties object itself.

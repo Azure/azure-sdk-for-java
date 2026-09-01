@@ -560,7 +560,7 @@ blobClient.generateSas(serviceSasValues);
 
 ### Authenticate with Azure Identity
 
-The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
+The [Azure Identity library][identity] provides Microsoft Entra ID support for authenticating with Azure Storage.
 
 ```java readme-sample-authWithIdentity
 BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()

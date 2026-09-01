@@ -21,7 +21,7 @@ import java.util.UUID;
 @Fluent
 public final class VaultProperties implements JsonSerializable<VaultProperties> {
     /*
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * The Microsoft Entra ID tenant ID that should be used for authenticating requests to the key vault.
      */
     private UUID tenantId;
 
@@ -127,7 +127,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Get the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the key vault.
      * 
      * @return the tenantId value.
@@ -137,7 +137,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     }
 
     /**
-     * Set the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Set the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the key vault.
      * 
      * @param tenantId the tenantId value to set.

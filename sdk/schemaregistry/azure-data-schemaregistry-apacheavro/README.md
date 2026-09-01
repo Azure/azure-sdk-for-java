@@ -34,12 +34,12 @@ The `SchemaRegistryApacheAvroSerializer` instance is the main class that provide
 deserializing avro data format. The avro schema is stored and retrieved from the Schema Registry service
 through the `SchemaRegistryAsyncClient`. So, before we create the serializer, we should create the client.
 
-#### Create `SchemaRegistryAsyncClient` with Azure Active Directory Credential
+#### Create `SchemaRegistryAsyncClient` with Microsoft Entra ID Credential
 
 In order to interact with the Azure Schema Registry service, you'll need to create an instance of the
 `SchemaRegistryAsyncClient` class through the `SchemaRegistryClientBuilder`. You will need the Schema Registry **endpoint**.
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional
+You can authenticate with Microsoft Entra ID using the [Azure Identity library][azure_identity]. Note that regional
 endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to
 use this type of authentication.
 

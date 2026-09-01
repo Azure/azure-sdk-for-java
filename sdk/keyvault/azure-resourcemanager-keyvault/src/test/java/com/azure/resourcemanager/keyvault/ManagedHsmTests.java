@@ -59,7 +59,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             ManagedHsm hsm = keyVaultManager.managedHsms().getByResourceGroup(rgName, managedHsm.name());
 
             // ManagedHsm properties
-            // The Azure Active Directory tenant ID that should be used for authenticating requests to the managed HSM pool.
+            // The Microsoft Entra ID tenant ID that should be used for authenticating requests to the managed HSM pool.
             String tenantId = hsm.tenantId();
             Assertions.assertNotNull(tenantId);
 

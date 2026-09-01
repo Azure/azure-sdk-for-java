@@ -63,7 +63,7 @@ public interface GroupContract {
 
     /**
      * Gets the externalId property: For external groups, this property contains the id of the group from the external
-     * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
+     * identity provider, e.g. for Microsoft Entra ID `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
      * 
      * @return the externalId value.
@@ -182,11 +182,11 @@ public interface GroupContract {
         interface WithExternalId {
             /**
              * Specifies the externalId property: Identifier of the external groups, this property contains the id of
-             * the group from the external identity provider, e.g. for Azure Active Directory
+             * the group from the external identity provider, e.g. for Microsoft Entra ID
              * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null..
              * 
              * @param externalId Identifier of the external groups, this property contains the id of the group from the
-             * external identity provider, e.g. for Azure Active Directory
+             * external identity provider, e.g. for Microsoft Entra ID
              * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
              * @return the next definition stage.
              */
@@ -286,11 +286,11 @@ public interface GroupContract {
         interface WithExternalId {
             /**
              * Specifies the externalId property: Identifier of the external groups, this property contains the id of
-             * the group from the external identity provider, e.g. for Azure Active Directory
+             * the group from the external identity provider, e.g. for Microsoft Entra ID
              * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null..
              * 
              * @param externalId Identifier of the external groups, this property contains the id of the group from the
-             * external identity provider, e.g. for Azure Active Directory
+             * external identity provider, e.g. for Microsoft Entra ID
              * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
              * @return the next definition stage.
              */

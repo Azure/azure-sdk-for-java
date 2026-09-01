@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The external Identity Providers like Facebook, Google, Microsoft, Twitter or Azure Active Directory which can be used
+ * The external Identity Providers like Facebook, Google, Microsoft, Twitter or Microsoft Entra ID which can be used
  * to enable access to the API Management service developer portal for all users.
  */
 @Fluent

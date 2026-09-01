@@ -89,7 +89,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string
+     * The client ID of the application in Microsoft Entra ID used for Server-To-Server authentication. Type: string
      * (or Expression with resultType string).
      */
     @Generated
@@ -102,7 +102,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     private Object servicePrincipalCredentialType;
 
     /*
-     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * The credential of the service principal object in Microsoft Entra ID. If servicePrincipalCredentialType is
      * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
@@ -364,7 +364,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
+     * Get the servicePrincipalId property: The client ID of the application in Microsoft Entra ID used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
@@ -375,7 +375,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
+     * Set the servicePrincipalId property: The client ID of the application in Microsoft Entra ID used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.

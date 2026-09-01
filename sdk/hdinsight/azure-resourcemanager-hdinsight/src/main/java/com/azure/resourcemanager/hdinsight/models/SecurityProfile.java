@@ -53,7 +53,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     private List<String> clusterUsersGroupDNs;
 
     /*
-     * The resource ID of the user's Azure Active Directory Domain Service.
+     * The resource ID of the user's Microsoft Entra ID Domain Service.
      */
     private String aaddsResourceId;
 
@@ -211,7 +211,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     }
 
     /**
-     * Get the aaddsResourceId property: The resource ID of the user's Azure Active Directory Domain Service.
+     * Get the aaddsResourceId property: The resource ID of the user's Microsoft Entra ID Domain Service.
      * 
      * @return the aaddsResourceId value.
      */
@@ -220,7 +220,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     }
 
     /**
-     * Set the aaddsResourceId property: The resource ID of the user's Azure Active Directory Domain Service.
+     * Set the aaddsResourceId property: The resource ID of the user's Microsoft Entra ID Domain Service.
      * 
      * @param aaddsResourceId the aaddsResourceId value to set.
      * @return the SecurityProfile object itself.

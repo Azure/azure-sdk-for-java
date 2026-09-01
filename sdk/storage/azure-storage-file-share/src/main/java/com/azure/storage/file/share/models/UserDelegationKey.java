@@ -22,13 +22,13 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class UserDelegationKey implements XmlSerializable<UserDelegationKey> {
     /*
-     * The Azure Active Directory object ID in GUID format.
+     * The Microsoft Entra ID object ID in GUID format.
      */
     @Generated
     private String signedObjectId;
 
     /*
-     * The Azure Active Directory tenant ID in GUID format
+     * The Microsoft Entra ID tenant ID in GUID format
      */
     @Generated
     private String signedTenantId;
@@ -77,7 +77,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Get the signedObjectId property: The Microsoft Entra ID object ID in GUID format.
      * 
      * @return the signedObjectId value.
      */
@@ -87,7 +87,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Set the signedObjectId property: The Microsoft Entra ID object ID in GUID format.
      * 
      * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
@@ -99,7 +99,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Get the signedTenantId property: The Microsoft Entra ID tenant ID in GUID format.
      * 
      * @return the signedTenantId value.
      */
@@ -109,7 +109,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Set the signedTenantId property: The Microsoft Entra ID tenant ID in GUID format.
      * 
      * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.

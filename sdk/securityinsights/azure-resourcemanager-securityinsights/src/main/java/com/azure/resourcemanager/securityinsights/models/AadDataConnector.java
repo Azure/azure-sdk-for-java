@@ -14,7 +14,7 @@ import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInn
 import java.io.IOException;
 
 /**
- * Represents AAD (Azure Active Directory) data connector.
+ * Represents AAD (Microsoft Entra ID) data connector.
  */
 @Fluent
 public final class AadDataConnector extends DataConnectorInner {
@@ -24,7 +24,7 @@ public final class AadDataConnector extends DataConnectorInner {
     private DataConnectorKind kind = DataConnectorKind.AZURE_ACTIVE_DIRECTORY;
 
     /*
-     * AAD (Azure Active Directory) data connector properties.
+     * AAD (Microsoft Entra ID) data connector properties.
      */
     private AadDataConnectorProperties innerProperties;
 
@@ -65,7 +65,7 @@ public final class AadDataConnector extends DataConnectorInner {
     }
 
     /**
-     * Get the innerProperties property: AAD (Azure Active Directory) data connector properties.
+     * Get the innerProperties property: AAD (Microsoft Entra ID) data connector properties.
      * 
      * @return the innerProperties value.
      */

@@ -28,7 +28,7 @@ public final class UserSecurityContext implements JsonSerializable<UserSecurityC
     private String applicationName;
 
     /*
-     * This identifier is the Microsoft Entra ID (formerly Azure Active Directory) user object ID used to authenticate
+     * This identifier is the Microsoft Entra ID user object ID used to authenticate
      * end-users within the generative AI application. Sensitive personal information should not be included in this
      * field.
      */
@@ -80,7 +80,7 @@ public final class UserSecurityContext implements JsonSerializable<UserSecurityC
     }
 
     /**
-     * Get the endUserId property: This identifier is the Microsoft Entra ID (formerly Azure Active Directory) user
+     * Get the endUserId property: This identifier is the Microsoft Entra ID user
      * object ID used to authenticate end-users within the generative AI application. Sensitive personal information
      * should not be included in this field.
      *
@@ -92,7 +92,7 @@ public final class UserSecurityContext implements JsonSerializable<UserSecurityC
     }
 
     /**
-     * Set the endUserId property: This identifier is the Microsoft Entra ID (formerly Azure Active Directory) user
+     * Set the endUserId property: This identifier is the Microsoft Entra ID user
      * object ID used to authenticate end-users within the generative AI application. Sensitive personal information
      * should not be included in this field.
      *

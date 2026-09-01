@@ -26,7 +26,7 @@ import java.util.List;
 @Fluent
 public final class BareMetalMachineKeySetProperties implements JsonSerializable<BareMetalMachineKeySetProperties> {
     /*
-     * The object ID of Azure Active Directory group that all users in the list must be in for access to be granted.
+     * The object ID of Microsoft Entra ID group that all users in the list must be in for access to be granted.
      * Users that are not in the group will not have access.
      */
     private String azureGroupId;
@@ -94,7 +94,7 @@ public final class BareMetalMachineKeySetProperties implements JsonSerializable<
     }
 
     /**
-     * Get the azureGroupId property: The object ID of Azure Active Directory group that all users in the list must be
+     * Get the azureGroupId property: The object ID of Microsoft Entra ID group that all users in the list must be
      * in for access to be granted. Users that are not in the group will not have access.
      * 
      * @return the azureGroupId value.
@@ -104,7 +104,7 @@ public final class BareMetalMachineKeySetProperties implements JsonSerializable<
     }
 
     /**
-     * Set the azureGroupId property: The object ID of Azure Active Directory group that all users in the list must be
+     * Set the azureGroupId property: The object ID of Microsoft Entra ID group that all users in the list must be
      * in for access to be granted. Users that are not in the group will not have access.
      * 
      * @param azureGroupId the azureGroupId value to set.

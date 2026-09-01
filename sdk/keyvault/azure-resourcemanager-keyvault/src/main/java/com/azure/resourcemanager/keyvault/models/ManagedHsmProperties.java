@@ -23,7 +23,7 @@ import java.util.UUID;
 @Fluent
 public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmProperties> {
     /*
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the managed HSM pool.
+     * The Microsoft Entra ID tenant ID that should be used for authenticating requests to the managed HSM pool.
      */
     private UUID tenantId;
 
@@ -108,7 +108,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Get the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the managed HSM pool.
      * 
      * @return the tenantId value.
@@ -118,7 +118,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
     }
 
     /**
-     * Set the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Set the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the managed HSM pool.
      * 
      * @param tenantId the tenantId value to set.

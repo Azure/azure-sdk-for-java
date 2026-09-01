@@ -17,7 +17,7 @@ import java.util.Map;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 /**
- * Configuration properties for Azure Active Directory B2C.
+ * Configuration properties for Microsoft Entra ID B2C.
  */
 public class AadB2cProperties implements InitializingBean {
 
