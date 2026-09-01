@@ -14,7 +14,7 @@ import java.io.IOException;
  * Realtime MCP HTTP error.
  */
 @Immutable
-public final class RealtimeMCPHTTPError extends RealtimeMCPError {
+public final class RealtimeMCPHttpError extends RealtimeMCPError {
 
     /*
      * The type property.
@@ -35,13 +35,13 @@ public final class RealtimeMCPHTTPError extends RealtimeMCPError {
     private final String message;
 
     /**
-     * Creates an instance of RealtimeMCPHTTPError class.
+     * Creates an instance of RealtimeMCPHttpError class.
      *
      * @param code the code value to set.
      * @param message the message value to set.
      */
     @Generated
-    public RealtimeMCPHTTPError(long code, String message) {
+    public RealtimeMCPHttpError(long code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -91,16 +91,16 @@ public final class RealtimeMCPHTTPError extends RealtimeMCPError {
     }
 
     /**
-     * Reads an instance of RealtimeMCPHTTPError from the JsonReader.
+     * Reads an instance of RealtimeMCPHttpError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeMCPHTTPError if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of RealtimeMCPHttpError if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeMCPHTTPError.
+     * @throws IOException If an error occurs while reading the RealtimeMCPHttpError.
      */
     @Generated
-    public static RealtimeMCPHTTPError fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeMCPHttpError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             long code = 0L;
             String message = null;
@@ -118,9 +118,9 @@ public final class RealtimeMCPHTTPError extends RealtimeMCPError {
                     reader.skipChildren();
                 }
             }
-            RealtimeMCPHTTPError deserializedRealtimeMCPHTTPError = new RealtimeMCPHTTPError(code, message);
-            deserializedRealtimeMCPHTTPError.type = type;
-            return deserializedRealtimeMCPHTTPError;
+            RealtimeMCPHttpError deserializedRealtimeMCPHttpError = new RealtimeMCPHttpError(code, message);
+            deserializedRealtimeMCPHttpError.type = type;
+            return deserializedRealtimeMCPHttpError;
         });
     }
 }

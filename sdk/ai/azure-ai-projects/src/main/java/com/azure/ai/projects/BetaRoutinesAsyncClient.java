@@ -434,6 +434,44 @@ public final class BetaRoutinesAsyncClient {
      * Creates a new routine or replaces an existing routine with the supplied definition.
      *
      * @param routineName The unique name of the routine.
+     * @param description A human-readable description of the routine.
+     * @param enabled Whether the routine is enabled.
+     * @param triggers The triggers configured for the routine. In v1, exactly one trigger entry is supported.
+     * @param action The action executed when the routine fires.
+     * @param authorization Optional authorization configuration for dispatching a newly created routine. Ignored when
+     * updating an existing routine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a routine definition returned by the service on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Routine> createOrUpdateRoutine(String routineName, String description, Boolean enabled,
+        Map<String, RoutineTrigger> triggers, RoutineAction action, RoutineAuthorization authorization) {
+        // Generated convenience method for createOrUpdateRoutineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateOrUpdateRoutineRequest createOrUpdateRoutineRequestObj
+            = new CreateOrUpdateRoutineRequest().setDescription(description)
+                .setEnabled(enabled)
+                .setTriggers(triggers)
+                .setAction(action)
+                .setAuthorization(authorization);
+        BinaryData createOrUpdateRoutineRequest = BinaryData.fromObject(createOrUpdateRoutineRequestObj);
+        return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
+    }
+
+    /**
+     * Create or update a routine
+     *
+     * Creates a new routine or replaces an existing routine with the supplied definition.
+     *
+     * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -530,6 +568,53 @@ public final class BetaRoutinesAsyncClient {
      *
      * Returns the routines available in the current project.
      *
+     * @param limit The maximum number of routines to return.
+     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
+     * returned by the previous response, which embeds this value.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Routine> listRoutines(Integer limit, String after, PageOrder order) {
+        // Generated convenience method for listRoutines
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRoutines(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Routine>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Routine.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List routines
+     *
+     * Returns the routines available in the current project.
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -577,6 +662,59 @@ public final class BetaRoutinesAsyncClient {
         // Generated convenience method for deleteRoutineWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteRoutineWithResponse(routineName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * List prior runs for a routine
+     *
+     * Returns prior runs recorded for the specified routine.
+     *
+     * @param routineName The unique name of the routine.
+     * @param filter An optional MLflow search-runs filter expression applied within the routine's experiment.
+     * @param limit The maximum number of runs to return.
+     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
+     * returned by the previous response, which embeds this value.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RoutineRun> listRoutineRuns(String routineName, String filter, Integer limit, String after,
+        PageOrder order) {
+        // Generated convenience method for listRoutineRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRoutineRuns(routineName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RoutineRun>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(RoutineRun.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -668,140 +806,18 @@ public final class BetaRoutinesAsyncClient {
     }
 
     /**
-     * List routines
-     *
-     * Returns the routines available in the current project.
-     *
-     * @param limit The maximum number of routines to return.
-     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
-     * returned by the previous response, which embeds this value.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Routine> listRoutines(Integer limit, String after, PageOrder order) {
-        // Generated convenience method for listRoutines
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listRoutines(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Routine>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Routine.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List prior runs for a routine
-     *
-     * Returns prior runs recorded for the specified routine.
+     * Creates a new routine or replaces an existing routine without authorization.
      *
      * @param routineName The unique name of the routine.
-     * @param filter An optional MLflow search-runs filter expression applied within the routine's experiment.
-     * @param limit The maximum number of runs to return.
-     * @param after An opaque continuation token identifying where to resume the list. Prefer following the `next_link`
-     * returned by the previous response, which embeds this value.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RoutineRun> listRoutineRuns(String routineName, String filter, Integer limit, String after,
-        PageOrder order) {
-        // Generated convenience method for listRoutineRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listRoutineRuns(routineName, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, RoutineRun>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(RoutineRun.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Create or update a routine
-     *
-     * Creates a new routine or replaces an existing routine with the supplied definition.
-     *
-     * @param routineName The unique name of the routine.
-     * @param description A human-readable description of the routine.
+     * @param description The routine description.
      * @param enabled Whether the routine is enabled.
-     * @param triggers The triggers configured for the routine. In v1, exactly one trigger entry is supported.
-     * @param action The action executed when the routine fires.
-     * @param authorization Optional authorization configuration for dispatching a newly created routine. Ignored when
-     * updating an existing routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service on successful completion of {@link Mono}.
+     * @param triggers The triggers that invoke the routine.
+     * @param action The action performed by the routine.
+     * @return The created or updated routine.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = com.azure.core.annotation.ReturnType.SINGLE)
     public Mono<Routine> createOrUpdateRoutine(String routineName, String description, Boolean enabled,
-        Map<String, RoutineTrigger> triggers, RoutineAction action, RoutineAuthorization authorization) {
-        // Generated convenience method for createOrUpdateRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateOrUpdateRoutineRequest createOrUpdateRoutineRequestObj
-            = new CreateOrUpdateRoutineRequest().setDescription(description)
-                .setEnabled(enabled)
-                .setTriggers(triggers)
-                .setAction(action)
-                .setAuthorization(authorization);
-        BinaryData createOrUpdateRoutineRequest = BinaryData.fromObject(createOrUpdateRoutineRequestObj);
-        return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
+        Map<String, RoutineTrigger> triggers, RoutineAction action) {
+        return createOrUpdateRoutine(routineName, description, enabled, triggers, action, null);
     }
 }

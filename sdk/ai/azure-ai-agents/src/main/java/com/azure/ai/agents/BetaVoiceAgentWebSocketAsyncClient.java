@@ -4,7 +4,6 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaVoiceAgentWebSocketsImpl;
-import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentWebSocketSubprotocol;
 import com.azure.core.annotation.Generated;
@@ -112,16 +111,6 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      * `error.code = agent_disabled`. This failure is terminal until the caller enables the agent.
      *
      * @param agentName The name of the voice agent.
-     * @param foundryFeaturesQuery A query alternative to the `Foundry-Features` header for clients that cannot set
-     * headers during a
-     * WebSocket handshake. Set this to `VoiceAgents=V1Preview`. Either this query parameter or the header is
-     * required.
-     * @param store Whether to persist the conversation created by this WebSocket session. If omitted, the service
-     * honors the
-     * persisted voice agent definition's configured `store` value. If supplied, this value overrides the
-     * definition's `store` setting for this session only.
-     * @param agentVersionOverride Selects a specific version of the voice agent for this session.
-     * @param websocketSubprotocol The requested WebSocket subprotocol. Omit this header or request exactly `realtime`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -132,23 +121,9 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> connectVoiceAgent(String agentName, AgentDefinitionOptInKeys foundryFeaturesQuery, Boolean store,
-        String agentVersionOverride, VoiceAgentWebSocketSubprotocol websocketSubprotocol) {
+    public Mono<Void> connectVoiceAgent(String agentName) {
         // Generated convenience method for connectVoiceAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeaturesQuery != null) {
-            requestOptions.addQueryParam("foundry_features", foundryFeaturesQuery.toString(), false);
-        }
-        if (store != null) {
-            requestOptions.addQueryParam("store", String.valueOf(store), false);
-        }
-        if (agentVersionOverride != null) {
-            requestOptions.addQueryParam("x-agent-version-override", agentVersionOverride, false);
-        }
-        if (websocketSubprotocol != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Sec-WebSocket-Protocol"),
-                websocketSubprotocol.toString());
-        }
         return connectVoiceAgentWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -165,6 +140,12 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      * `error.code = agent_disabled`. This failure is terminal until the caller enables the agent.
      *
      * @param agentName The name of the voice agent.
+     * @param store Whether to persist the conversation created by this WebSocket session. If omitted, the service
+     * honors the
+     * persisted voice agent definition's configured `store` value. If supplied, this value overrides the
+     * definition's `store` setting for this session only.
+     * @param agentVersionOverride Selects a specific version of the voice agent for this session.
+     * @param websocketSubprotocol The requested WebSocket subprotocol. Omit this header or request exactly `realtime`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -175,9 +156,20 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> connectVoiceAgent(String agentName) {
+    public Mono<Void> connectVoiceAgent(String agentName, Boolean store, String agentVersionOverride,
+        VoiceAgentWebSocketSubprotocol websocketSubprotocol) {
         // Generated convenience method for connectVoiceAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (store != null) {
+            requestOptions.addQueryParam("store", String.valueOf(store), false);
+        }
+        if (agentVersionOverride != null) {
+            requestOptions.addQueryParam("x-agent-version-override", agentVersionOverride, false);
+        }
+        if (websocketSubprotocol != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sec-WebSocket-Protocol"),
+                websocketSubprotocol.toString());
+        }
         return connectVoiceAgentWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

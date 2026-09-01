@@ -26,7 +26,6 @@ import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeFileDetails;
-import com.azure.ai.agents.models.ConversationResource;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -1813,7 +1812,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConversationResource> listAgentConversations() {
+    public PagedFlux<Conversation> listAgentConversations() {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
@@ -1821,14 +1820,13 @@ public final class AgentsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, ConversationResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(ConversationResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -2090,8 +2088,8 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConversationResource> listAgentConversations(Integer limit, PageOrder order, String after,
-        String before, String agentName, String agentId, String userIdentity) {
+    public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
+        String agentName, String agentId, String userIdentity) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2120,14 +2118,13 @@ public final class AgentsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, ConversationResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(ConversationResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
         });
     }
 

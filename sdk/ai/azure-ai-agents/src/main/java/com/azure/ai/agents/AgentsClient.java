@@ -26,7 +26,6 @@ import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeFileDetails;
-import com.azure.ai.agents.models.ConversationResource;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -1760,11 +1759,11 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConversationResource> listAgentConversations() {
+    public PagedIterable<Conversation> listAgentConversations() {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAgentConversations(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ConversationResource.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
     /**
@@ -2018,7 +2017,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConversationResource> listAgentConversations(Integer limit, PageOrder order, String after,
+    public PagedIterable<Conversation> listAgentConversations(Integer limit, PageOrder order, String after,
         String before, String agentName, String agentId, String userIdentity) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
@@ -2044,7 +2043,7 @@ public final class AgentsClient {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-identity"), userIdentity);
         }
         return serviceClient.listAgentConversations(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ConversationResource.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
     /**
