@@ -291,7 +291,7 @@ public class AzureAppConfigDataLoaderTest {
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> loader.load(configDataLoaderContextMock, refreshResource));
 
-        // Verify - refresh fails and only attempts once (no retry loop for refresh)
+        // Verify - refresh fails and does not enter the startup retry/backoff loop
         assertTrue(exception.getMessage().contains("Failed to refresh property sources"));
         verify(replicaClientFactoryMock, times(1)).findActiveClients(ENDPOINT);
     }
