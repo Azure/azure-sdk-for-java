@@ -151,6 +151,8 @@ extends:
   parameters:
     ServiceDirectory: cosmos
     SDKType: client
+    MatrixFilters:
+      - TestFromSource=^(?!true).*
     Artifacts:
       - name: azure-cosmos
         groupId: com.azure
