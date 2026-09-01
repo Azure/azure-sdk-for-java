@@ -90,6 +90,9 @@ public final class Constants {
     public static final String SAS_SERVICE_VERSION
         = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2027-03-07");
 
+    public static final String PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER
+        = "AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER";
+
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
     public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
