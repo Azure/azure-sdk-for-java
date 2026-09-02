@@ -341,7 +341,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             // step1: create container
             String testContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), 10100);
+            container = createCollectionWithFreshProbeClient(containerProperties, 10100);
 
             // Step2: execute func
             validateFunc.accept(container);
@@ -352,7 +352,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
             // step4: recreate the container with same id as step1
             containerProperties = getCollectionDefinition(testContainerId);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions());
+            container = createCollectionWithFreshProbeClient(containerProperties);
 
             // step5: same as step2.
             // This part will confirm the cache refreshed correctly
@@ -370,7 +370,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             // step1: create feed container and lease container
             String feedContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties feedContainerProperties = getCollectionDefinition(feedContainerId);
-            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions());
+            feedContainer = createCollectionWithFreshProbeClient(feedContainerProperties);
 
             String leaseContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties leaseContainerProperties = getCollectionDefinition(leaseContainerId);
@@ -393,6 +393,38 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(feedContainer);
             safeDeleteCollection(leaseContainer);
+        }
+    }
+
+    private CosmosAsyncContainer createCollectionWithFreshProbeClient(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
+
+        CosmosAsyncClient probeClient = getClientBuilder().buildAsyncClient();
+        try {
+            return createCollection(
+                this.createdDatabase,
+                containerProperties,
+                new CosmosContainerRequestOptions(),
+                throughput,
+                probeClient);
+        } finally {
+            safeClose(probeClient);
+        }
+    }
+
+    private CosmosAsyncContainer createCollectionWithFreshProbeClient(
+        CosmosContainerProperties containerProperties) {
+
+        CosmosAsyncClient probeClient = getClientBuilder().buildAsyncClient();
+        try {
+            return createCollection(
+                this.createdDatabase,
+                containerProperties,
+                new CosmosContainerRequestOptions(),
+                probeClient);
+        } finally {
+            safeClose(probeClient);
         }
     }
 

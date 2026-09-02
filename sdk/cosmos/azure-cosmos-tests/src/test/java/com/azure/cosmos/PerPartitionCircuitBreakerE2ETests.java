@@ -27,6 +27,8 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealth
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.guava25.base.Function;
@@ -34,6 +36,8 @@ import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -93,6 +97,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor
         = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
+    private static final Duration TRANSIENT_404_1002_RETRY_DELAY = Duration.ofSeconds(5);
+
+    private static final Duration TRANSIENT_404_1002_MAX_RETRY_DURATION = Duration.ofMinutes(5);
     private List<String> writeRegions;
     private List<String> readRegions;
 
@@ -109,48 +116,208 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         .build();
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstPreferredRegionOnly = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
+        String firstPreferredRegionName = getExpectedRegionNameForAssertion(this.firstPreferredRegion);
+        assertExpectedContactedRegionCount(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include only the first preferred region <%s>",
+                firstPreferredRegionName));
+        assertExpectedContactedRegionsContain(
+            ctx,
+            firstPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the first preferred region <%s>",
+                firstPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasSecondPreferredRegionOnly = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        String secondPreferredRegionName = getExpectedRegionNameForAssertion(this.secondPreferredRegion);
+
+        assertExpectedContactedRegionCount(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include only the second preferred region <%s>",
+                secondPreferredRegionName));
+        assertExpectedContactedRegionsContain(
+            ctx,
+            secondPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the second preferred region <%s>",
+                secondPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndSecondPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-        assertThat(ctx.getContactedRegionNames()).contains(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
-        assertThat(ctx.getContactedRegionNames()).contains(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        String firstPreferredRegionName = getExpectedRegionNameForAssertion(this.firstPreferredRegion);
+        String secondPreferredRegionName = getExpectedRegionNameForAssertion(this.secondPreferredRegion);
+        assertExpectedContactedRegionCount(
+            ctx,
+            2,
+            String.format(
+                "Expected diagnostics context to include the first and second preferred regions <%s> and <%s>",
+                firstPreferredRegionName,
+                secondPreferredRegionName));
+        assertExpectedContactedRegionsContain(
+            ctx,
+            firstPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the first preferred region <%s>",
+                firstPreferredRegionName));
+        assertExpectedContactedRegionsContain(
+            ctx,
+            secondPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the second preferred region <%s>",
+                secondPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAtMostTwoPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(2);
+        assertContactedRegionCountAtMost(
+            ctx,
+            2,
+            String.format(
+                "Expected diagnostics context to include at most two preferred regions; "
+                    + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
+                this.firstPreferredRegion,
+                this.secondPreferredRegion));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasOnePreferredRegion = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(1);
+        assertContactedRegionCountAtMost(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include at most one preferred region; "
+                    + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
+                this.firstPreferredRegion,
+                this.secondPreferredRegion));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAllRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(this.writeRegions.size());
+        List<String> writeRegionsForAssertion = getExpectedRegionsForAssertion(
+            ctx,
+            this.writeRegions,
+            "Expected diagnostics context to include all write regions");
 
-        for (String region : this.writeRegions) {
-            assertThat(ctx.getContactedRegionNames()).contains(region.toLowerCase(Locale.ROOT));
+        assertExpectedContactedRegionCount(
+            ctx,
+            writeRegionsForAssertion.size(),
+            String.format("Expected diagnostics context to include all write regions <%s>", writeRegionsForAssertion));
+
+        for (String region : writeRegionsForAssertion) {
+            String writeRegionName = getExpectedRegionNameForAssertion(region);
+            assertExpectedContactedRegionsContain(
+                ctx,
+                writeRegionName,
+                String.format(
+                    "Expected diagnostics context to include write region <%s> from all write regions <%s>",
+                    writeRegionName,
+                    this.writeRegions));
         }
     };
+
+    private String getExpectedRegionNameForAssertion(String regionName) {
+        return regionName == null ? null : regionName.toLowerCase(Locale.ROOT);
+    }
+
+    private List<String> getExpectedRegionsForAssertion(
+        CosmosDiagnosticsContext ctx,
+        List<String> expectedRegions,
+        String expectation) {
+
+        if (expectedRegions == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null expected regions",
+                ctx == null ? null : ctx.getContactedRegionNames(),
+                ctx));
+        }
+
+        return expectedRegions;
+    }
+
+    private void assertExpectedContactedRegionCount(
+        CosmosDiagnosticsContext ctx,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private void assertContactedRegionCountAtMost(
+        CosmosDiagnosticsContext ctx,
+        int maxCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (contactedRegionNames.size() > maxCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count at most <%d>", maxCount),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private void assertExpectedContactedRegionsContain(
+        CosmosDiagnosticsContext ctx,
+        String expectedRegion,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (!contactedRegionNames.contains(expectedRegion)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain <%s>", expectedRegion),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnosticsContext ctx, String expectation) {
+        if (ctx == null) {
+            fail(expectation + ". Diagnostics context was null.");
+        }
+
+        Set<String> contactedRegionNames = ctx.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                ctx));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private String formatContactedRegionsAssertionMessage(
+        String expectation,
+        String expected,
+        Set<String> contactedRegionNames,
+        CosmosDiagnosticsContext ctx) {
+
+        return String.format(
+            "%s. Expected %s but actual contacted regions were <%s>. "
+                + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>, writeRegions=<%s>, readRegions=<%s>, "
+                + "diagnosticsContext=<%s>",
+            expectation,
+            expected,
+            contactedRegionNames,
+            this.firstPreferredRegion,
+            this.secondPreferredRegion,
+            this.writeRegions,
+            this.readRegions,
+            ctx == null ? null : ctx.toJson());
+    }
 
     Consumer<ResponseWrapper<?>> validateResponseHasSuccess = (responseWrapper) -> {
 
@@ -261,7 +428,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.sharedMultiPartitionAsyncContainerIdWhereMyPkIsPartitionKey = sharedAsyncMultiPartitionContainerWithMyPkAsPartitionKey.getId();
 
             this.singlePartitionAsyncContainerId = UUID.randomUUID().toString();
-            sharedAsyncDatabase.createContainerIfNotExists(this.singlePartitionAsyncContainerId, "/id").block();
+            createCollection(
+                sharedAsyncDatabase,
+                new CosmosContainerProperties(this.singlePartitionAsyncContainerId, "/id"),
+                new CosmosContainerRequestOptions());
 
             ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.DIRECT);
             ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.GATEWAY);
@@ -3010,7 +3180,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3120,7 +3292,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3232,7 +3406,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             deleteAllDocuments(asyncContainer);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3343,7 +3519,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             deleteAllDocuments(asyncContainer);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3569,7 +3747,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
                     assertPpcbSnapshotsPopulated(response, PpcbDiagnosticsPhase.FAILURE, false);
                     logPpcbDiagnosticsOnce(response, PpcbDiagnosticsPhase.FAILURE, loggedPpcbDiagnosticsPhases);
 
@@ -3654,7 +3835,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
                     assertPpcbSnapshotsPopulated(
                         response,
@@ -3888,6 +4072,126 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return queryPlanStatisticFound;
     }
 
+    private ResponseWrapper<?> executeDataPlaneOperationWithTransient4041002Retry(
+        String testId,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        int retryAttempt = 0;
+        ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+        while (hasNonFaultInjected404RetryableResponse(response)) {
+            Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+            if (elapsed.compareTo(TRANSIENT_404_1002_MAX_RETRY_DURATION) >= 0) {
+                logger.warn(
+                    "Detected non-fault-injected retryable 404 in diagnostics for test {} for {}. "
+                        + "Continuing with latest response so normal assertions can report diagnostics.",
+                    testId,
+                    elapsed);
+                return response;
+            }
+
+            retryAttempt++;
+            logger.warn(
+                "Detected non-fault-injected retryable 404 in diagnostics for test {}. "
+                    + "Waiting {} before retry attempt {}.",
+                testId,
+                TRANSIENT_404_1002_RETRY_DELAY,
+                retryAttempt);
+            Thread.sleep(TRANSIENT_404_1002_RETRY_DELAY.toMillis());
+            response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+        }
+
+        return response;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableResponse(ResponseWrapper<?> response) {
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        if (diagnosticsContext == null || diagnosticsContext.getDiagnostics() == null) {
+            return false;
+        }
+
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (clientSideRequestStatisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+                if (clientSideRequestStatistics == null) {
+                    continue;
+                }
+
+                if (hasNonFaultInjected404RetryableGatewayResponse(clientSideRequestStatistics.getGatewayStatisticsList())) {
+                    return true;
+                }
+
+                if (hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getResponseStatisticsList())
+                    || hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableGatewayResponse(
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
+
+        if (gatewayStatisticsList == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics : gatewayStatisticsList) {
+            if (gatewayStatistics != null
+                && isRetryable404(gatewayStatistics.getStatusCode(), gatewayStatistics.getSubStatusCode())
+                && isNullOrEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableStoreResponse(
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatisticsCollection) {
+
+        if (storeResponseStatisticsCollection == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseStatisticsCollection) {
+            StoreResultDiagnostics storeResultDiagnostics =
+                storeResponseStatistics == null ? null : storeResponseStatistics.getStoreResult();
+            StoreResponseDiagnostics storeResponseDiagnostics =
+                storeResultDiagnostics == null ? null : storeResultDiagnostics.getStoreResponseDiagnostics();
+
+            if (storeResponseDiagnostics != null
+                && isRetryable404(storeResponseDiagnostics.getStatusCode(), storeResponseDiagnostics.getSubStatusCode())
+                && isNullOrEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isRetryable404(int statusCode, int subStatusCode) {
+        return statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && (subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
         switch (faultInjectionOperationType) {
             case READ_ITEM:
@@ -4053,7 +4357,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
