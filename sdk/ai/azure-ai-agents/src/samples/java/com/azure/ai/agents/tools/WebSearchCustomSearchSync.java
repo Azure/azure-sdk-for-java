@@ -8,32 +8,32 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.ApproximateLocation;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.WebSearchPreviewTool;
+import com.azure.ai.agents.models.WebSearchConfiguration;
+import com.azure.ai.agents.models.WebSearchTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.core.util.IterableStream;
-import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.models.responses.ToolChoiceOptions;
 
 import java.util.Collections;
 
 /**
- * Demonstrates streaming a response from the preview Web Search tool with approximate location and citations.
+ * Demonstrates configuring Web Search with a Bing Custom Search connection.
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - The Azure AI Project endpoint.</li>
  *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
+ *   <li>{@code BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID} - The Bing Custom Search project connection ID.</li>
+ *   <li>{@code BING_CUSTOM_SEARCH_INSTANCE_NAME} - The Bing Custom Search instance name.</li>
+ *   <li>{@code BING_CUSTOM_USER_INPUT} - Optional. The question submitted to Bing Custom Search. Defaults to {@code What are the latest product updates?}.</li>
  * </ul>
  */
-public class WebSearchSync {
+public class WebSearchCustomSearchSync {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
@@ -47,30 +47,20 @@ public class WebSearchSync {
         AgentVersionDetails agent = null;
 
         try {
-            // BEGIN: com.azure.ai.agents.define_web_search
-            WebSearchPreviewTool tool = new WebSearchPreviewTool()
-                .setUserLocation(new ApproximateLocation()
-                    .setCountry("GB")
-                    .setRegion("London")
-                    .setCity("London"));
-            // END: com.azure.ai.agents.define_web_search
-            agent = agentsClient.createAgentVersion("web-search-preview-agent",
+            WebSearchTool tool = new WebSearchTool().setCustomSearchConfiguration(
+                new WebSearchConfiguration(
+                    configuration.get("BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID"),
+                    configuration.get("BING_CUSTOM_SEARCH_INSTANCE_NAME")));
+            agent = agentsClient.createAgentVersion("web-search-custom-agent",
                 new CreateAgentVersionInput(new PromptAgentDefinition(model)
-                    .setInstructions("Search the web for current information and cite sources.")
+                    .setInstructions("Use the configured custom search source and cite results.")
                     .setTools(Collections.singletonList(tool))));
-
-            ResponseAccumulator accumulator = ResponseAccumulator.create();
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+            Response response = responsesClient.createAzureResponse(
                 new AzureCreateResponseOptions().setAgentReference(SampleUtils.toAgentReference(agent)),
                 ResponseCreateParams.builder()
-                    .input("Show the latest London Underground service updates.")
+                    .input(configuration.get("BING_CUSTOM_USER_INPUT", "What are the latest product updates?"))
                     .toolChoice(ToolChoiceOptions.REQUIRED));
-            for (ResponseStreamEvent event : events) {
-                accumulator.accumulate(event);
-                event.outputTextDelta().ifPresent(delta -> System.out.print(delta.delta()));
-            }
-            System.out.println();
-            Response response = accumulator.response();
+            SampleUtils.printResponseText(response);
             ToolSampleUtils.printUrlCitations(response);
         } finally {
             if (agent != null) {

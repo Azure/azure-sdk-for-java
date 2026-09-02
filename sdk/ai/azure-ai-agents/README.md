@@ -339,8 +339,11 @@ See the full sample in [ImageGenerationSync.java](https://github.com/Azure/azure
 Search the web for current information:
 
 ```java com.azure.ai.agents.define_web_search
-// Create a WebSearchPreviewTool
-WebSearchPreviewTool tool = new WebSearchPreviewTool();
+WebSearchPreviewTool tool = new WebSearchPreviewTool()
+    .setUserLocation(new ApproximateLocation()
+        .setCountry("GB")
+        .setRegion("London")
+        .setCity("London"));
 ```
 
 See the full sample in [WebSearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WebSearchSync.java).
@@ -680,25 +683,14 @@ Toolbox tools are defined in toolbox versions and managed through `ToolboxesClie
 Toolbox Search lets an agent search the available toolbox tools at runtime. The GA implementation is `ToolSearchToolboxTool` (`toolbox_search`), and the preview implementation `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is maintained alongside it for backward compatibility.
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
-
-ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool()
-    .setName("search_tools")
-    .setDescription("Search over available toolbox tools at runtime.");
-
-ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
-    toolboxName,
-    Collections.singletonList(toolboxSearchTool),
-    "Toolbox version with a Toolbox Search tool.",
-    null,
-    null,
-    null);
-
-System.out.printf("Created toolbox: %s%n", version.getName());
-System.out.printf("Toolbox version: %s%n", version.getVersion());
-for (ToolboxTool tool : version.getTools()) {
-    System.out.printf("Tool type: %s%n", tool.getType());
-}
-
+McpToolboxTool innerMcp = new McpToolboxTool("github")
+    .setServerUrl("https://api.githubcopilot.com/mcp")
+    .setProjectConnectionId(configuration.get("MCP_PROJECT_CONNECTION_ID"))
+    .setRequireApproval(BinaryData.fromString("\"never\""))
+    .setDeferLoading(true);
+ToolSearchToolboxTool search = new ToolSearchToolboxTool();
+ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(toolboxName,
+    Arrays.<ToolboxTool>asList(innerMcp, search), "Tool-search toolbox", null, null, null);
 ```
 
 See the full sample in [ToolboxSearchToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ToolboxSearchToolboxSample.java).
@@ -877,6 +869,21 @@ Response response = responsesClient.createAzureResponse(
 Streaming is also supported via `createStreamingAzureResponse`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
 
 See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
+
+---
+
+### Additional end-to-end samples
+
+All agent samples use `FOUNDRY_PROJECT_ENDPOINT`. Prompt-agent samples also use `FOUNDRY_MODEL_NAME`, while voice-agent samples use `FOUNDRY_VOICE_MODEL` and optionally `FOUNDRY_VOICE_AGENT_NAME`.
+
+- **Agent lifecycle and structured output:** [AgentBasicAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/AgentBasicAsyncSample.java), [AgentRetrieveBasicAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/AgentRetrieveBasicAsyncSample.java), and the `AgentStructuredOutput*` samples.
+- **Workflow agents:** `WorkflowMultiAgentSample`, `WorkflowMultiAgentAsyncSample`, and `WorkflowMultiAgentMcpApprovalSample` demonstrate CSDL workflows and MCP approval handling.
+- **Optimization jobs:** the [optimization samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization) cover SDK polling, application-managed polling, cancellation, listing, retrieval, and deletion.
+- **Telemetry:** the [telemetry samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/telemetry) demonstrate console tracing, custom span attributes, and Azure Monitor export.
+- **Advanced tools:** additional samples cover structured inputs, generated-file download, File Search streaming, non-preview Web Search, custom search, and end-to-end toolbox search.
+- **Voice agents:** the [voice samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice) cover lifecycle, versions and drafts, guided generation, tool-rich definitions, persisted conversation readback, and audio download.
+
+Live voice text/audio sessions are not included because the current Java client exposes the WebSocket handshake but not the bidirectional realtime event-session abstraction required by those scenarios.
 
 ---
 
