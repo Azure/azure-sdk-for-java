@@ -10,10 +10,12 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,12 +24,16 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Level.WARNING;
@@ -36,7 +42,8 @@ import static java.util.logging.Level.WARNING;
  * The REST client that uses the JDK {@link HttpURLConnection} class.
  *
  * <p>HTTPS connections reject hostname mismatches independently of the JVM-wide default hostname verifier and fail
- * if their trust configuration cannot be initialized.
+ * if their trust configuration cannot be initialized. Responses compressed with gzip, x-gzip, or deflate are decoded
+ * before being returned to callers.
  */
 public final class HttpUtil {
     public static final String DEFAULT_VERSION = "unknown";
@@ -50,6 +57,8 @@ public final class HttpUtil {
     public static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
 
     static final String USER_AGENT_KEY = "User-Agent";
+    static final String ACCEPT_ENCODING_KEY = "Accept-Encoding";
+    static final String ACCEPT_ENCODING_VALUE = "gzip, x-gzip, deflate";
     static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
 
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
@@ -59,6 +68,13 @@ public final class HttpUtil {
     static final int MAX_AIA_RESPONSE_SIZE_IN_BYTES = 10 * 1024 * 1024;
     private static final int AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS = 30_000;
     private static final int MAX_AIA_REDIRECTS = 5;
+    private static final int ZLIB_HEADER_LENGTH = 2;
+    private static final int ZLIB_COMPRESSION_METHOD_MASK = 0x0F;
+    private static final int ZLIB_DEFLATE_COMPRESSION_METHOD = 8;
+    private static final int ZLIB_COMPRESSION_INFO_SHIFT = 4;
+    private static final int ZLIB_MAX_COMPRESSION_INFO = 7;
+    private static final int ZLIB_HEADER_BYTE_SHIFT = 8;
+    private static final int ZLIB_HEADER_CHECK_DIVISOR = 31;
     private static final HostnameVerifier REJECT_MISMATCHED_HOSTNAMES = (hostname, session) -> false;
 
     /**
@@ -187,6 +203,7 @@ public final class HttpUtil {
                 connection.setConnectTimeout(AIA_HTTP_TIMEOUT_IN_MILLISECONDS);
                 connection.setReadTimeout(AIA_HTTP_TIMEOUT_IN_MILLISECONDS);
                 connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+                connection.setRequestProperty(ACCEPT_ENCODING_KEY, ACCEPT_ENCODING_VALUE);
 
                 int status = connection.getResponseCode();
                 String cacheControl = getCombinedHeaderValue(connection, "Cache-Control");
@@ -223,8 +240,8 @@ public final class HttpUtil {
                     return new BinaryHttpResponse(null, cacheControl, date, age, expires);
                 }
 
-                return new BinaryHttpResponse(readResponseBytes(connection.getInputStream(), currentUrl), cacheControl,
-                    date, age, expires);
+                return new BinaryHttpResponse(readResponseBytes(connection, currentUrl), cacheControl, date, age,
+                    expires);
             } catch (IOException | RuntimeException exception) {
                 // AIA chain completion is best effort. Treat connection and response handling failures as an empty
                 // response so they don't abort certificate loading. JVM errors are intentionally not caught.
@@ -274,10 +291,11 @@ public final class HttpUtil {
         return uri.toString();
     }
 
-    private static byte[] readResponseBytes(InputStream inputStream, String url) throws IOException {
+    private static byte[] readResponseBytes(HttpURLConnection connection, String url) throws IOException {
         long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS);
 
-        try (InputStream responseBody = inputStream; ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+        try (InputStream responseBody = getDecodedResponseBody(connection, MAX_AIA_RESPONSE_SIZE_IN_BYTES, deadline);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[4096];
             int totalBytesRead = 0;
             int read;
@@ -293,7 +311,7 @@ public final class HttpUtil {
 
                 totalBytesRead += read;
 
-                if (System.nanoTime() > deadline) {
+                if (isDeadlineExceeded(deadline)) {
                     LOGGER.log(WARNING, "AIA response exceeded the maximum download time for URL: {0}", url);
 
                     return null;
@@ -305,30 +323,23 @@ public final class HttpUtil {
     }
 
     private static String getCombinedHeaderValue(HttpURLConnection connection, String name) {
-        Map<String, List<String>> headers = connection.getHeaderFields();
-
-        if (headers == null) {
-            return null;
-        }
-
         StringBuilder value = new StringBuilder();
 
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            if (entry.getKey() == null || !name.equalsIgnoreCase(entry.getKey()) || entry.getValue() == null) {
+        for (int index = 0;; index++) {
+            String headerName = connection.getHeaderFieldKey(index);
+            String headerValue = connection.getHeaderField(index);
+            if (headerName == null && headerValue == null) {
+                break;
+            }
+            if (!name.equalsIgnoreCase(headerName) || headerValue == null) {
                 continue;
             }
 
-            for (String headerValue : entry.getValue()) {
-                if (headerValue == null) {
-                    continue;
-                }
-
-                if (value.length() > 0) {
-                    value.append(", ");
-                }
-
-                value.append(headerValue);
+            if (value.length() > 0) {
+                value.append(", ");
             }
+
+            value.append(headerValue);
         }
 
         return value.length() == 0 ? null : value.toString();
@@ -402,7 +413,7 @@ public final class HttpUtil {
 
     @SuppressWarnings("StringOperationCanBeSimplified")
     private static String readResponseBody(HttpURLConnection connection) throws IOException {
-        try (InputStream responseBody = connection.getInputStream();
+        try (InputStream responseBody = getDecodedResponseBody(connection);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
             if (responseBody == null) {
@@ -418,6 +429,214 @@ public final class HttpUtil {
             }
 
             return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Gets the response body and decodes supported content encodings.
+     *
+     * @param connection the connection containing the response
+     * @return the decoded response body
+     * @throws IOException if the response body cannot be opened or decoded
+     */
+    private static InputStream getDecodedResponseBody(HttpURLConnection connection) throws IOException {
+        return getDecodedResponseBody(connection, -1, Long.MAX_VALUE);
+    }
+
+    /**
+     * Gets a decoded response body with optional size and time limits.
+     *
+     * @param connection the connection containing the response
+     * @param maximumEncodedSize the maximum encoded response size, or a negative value to disable the limit
+     * @param deadline the {@link System#nanoTime()} deadline, or {@link Long#MAX_VALUE} to disable the deadline
+     * @return the decoded response body, or the encoded body if any content encoding is unsupported
+     * @throws IOException if the response body cannot be opened, decoded, or read within the configured limits
+     */
+    static InputStream getDecodedResponseBody(HttpURLConnection connection, long maximumEncodedSize, long deadline)
+        throws IOException {
+        InputStream responseBody = connection.getInputStream();
+
+        if (maximumEncodedSize >= 0) {
+            responseBody = new SizeLimitedInputStream(responseBody, maximumEncodedSize);
+        }
+        if (deadline != Long.MAX_VALUE) {
+            responseBody = new DeadlineInputStream(responseBody, deadline);
+        }
+
+        String contentEncoding = getCombinedHeaderValue(connection, "Content-Encoding");
+        if (contentEncoding == null) {
+            return responseBody;
+        }
+
+        String[] encodings = contentEncoding.split(",", -1);
+        for (String encoding : encodings) {
+            if (!isSupportedContentEncoding(encoding)) {
+                return responseBody;
+            }
+        }
+
+        InputStream decodedBody = responseBody;
+        try {
+            for (int index = encodings.length - 1; index >= 0; index--) {
+                String encoding = encodings[index].trim().toLowerCase(Locale.ROOT);
+                if ("gzip".equals(encoding) || "x-gzip".equals(encoding)) {
+                    decodedBody = new GZIPInputStream(decodedBody);
+                } else if ("deflate".equals(encoding)) {
+                    decodedBody = createDeflateInputStream(decodedBody);
+                }
+            }
+            return decodedBody;
+        } catch (IOException | RuntimeException exception) {
+            decodedBody.close();
+            throw exception;
+        }
+    }
+
+    /**
+     * Checks whether a content encoding can be decoded by this client.
+     *
+     * @param encoding the content encoding token
+     * @return {@code true} for identity, gzip, x-gzip, and deflate; otherwise {@code false}
+     */
+    private static boolean isSupportedContentEncoding(String encoding) {
+        String normalizedEncoding = encoding.trim().toLowerCase(Locale.ROOT);
+        return "identity".equals(normalizedEncoding)
+            || "gzip".equals(normalizedEncoding)
+            || "x-gzip".equals(normalizedEncoding)
+            || "deflate".equals(normalizedEncoding);
+    }
+
+    /** Creates a stream that decodes zlib-wrapped or raw DEFLATE data. */
+    private static InputStream createDeflateInputStream(InputStream responseBody) throws IOException {
+        PushbackInputStream pushbackInputStream = new PushbackInputStream(responseBody, ZLIB_HEADER_LENGTH);
+        int firstByte = pushbackInputStream.read();
+        int secondByte = pushbackInputStream.read();
+
+        if (secondByte != -1) {
+            pushbackInputStream.unread(secondByte);
+        }
+        if (firstByte != -1) {
+            pushbackInputStream.unread(firstByte);
+        }
+
+        return new DeflateInputStream(pushbackInputStream, new Inflater(!hasZlibHeader(firstByte, secondByte)));
+    }
+
+    /**
+     * Checks whether two bytes form a valid RFC 1950 zlib header for DEFLATE data.
+     *
+     * @param firstByte the compression method and information byte, or {@code -1} at end of stream
+     * @param secondByte the flags byte, or {@code -1} at end of stream
+     * @return {@code true} if the bytes contain a valid zlib DEFLATE header
+     */
+    private static boolean hasZlibHeader(int firstByte, int secondByte) {
+        return firstByte != -1
+            && secondByte != -1
+            && (firstByte & ZLIB_COMPRESSION_METHOD_MASK) == ZLIB_DEFLATE_COMPRESSION_METHOD
+            && (firstByte >> ZLIB_COMPRESSION_INFO_SHIFT) <= ZLIB_MAX_COMPRESSION_INFO
+            && ((firstByte << ZLIB_HEADER_BYTE_SHIFT) + secondByte) % ZLIB_HEADER_CHECK_DIVISOR == 0;
+    }
+
+    private static boolean isDeadlineExceeded(long deadline) {
+        return System.nanoTime() - deadline > 0;
+    }
+
+    /**
+     * An inflater stream that explicitly releases an externally created {@link Inflater} when closed.
+     */
+    private static final class DeflateInputStream extends InflaterInputStream {
+        private final Inflater inflater;
+        private boolean closed;
+
+        private DeflateInputStream(InputStream inputStream, Inflater inflater) {
+            super(inputStream, inflater);
+            this.inflater = inflater;
+        }
+
+        @Override
+        public void close() throws IOException {
+            if (!closed) {
+                closed = true;
+                try {
+                    super.close();
+                } finally {
+                    inflater.end();
+                }
+            }
+        }
+    }
+
+    /**
+     * An input stream that rejects content exceeding a configured byte limit.
+     */
+    private static final class SizeLimitedInputStream extends FilterInputStream {
+        private final long maximumSize;
+        private long bytesRead;
+
+        private SizeLimitedInputStream(InputStream inputStream, long maximumSize) {
+            super(inputStream);
+            this.maximumSize = maximumSize;
+        }
+
+        @Override
+        public int read() throws IOException {
+            int value = in.read();
+            if (value != -1) {
+                recordBytesRead(1);
+            }
+            return value;
+        }
+
+        @Override
+        public int read(byte[] buffer, int offset, int length) throws IOException {
+            long remaining = maximumSize - bytesRead;
+            int permittedLength = (int) Math.min(length, remaining + 1);
+            int read = in.read(buffer, offset, permittedLength);
+            if (read > 0) {
+                recordBytesRead(read);
+            }
+            return read;
+        }
+
+        private void recordBytesRead(int read) throws IOException {
+            bytesRead += read;
+            if (bytesRead > maximumSize) {
+                throw new IOException("Encoded response exceeded the maximum size.");
+            }
+        }
+    }
+
+    /**
+     * An input stream that checks a configured {@link System#nanoTime()} deadline before and after each read.
+     */
+    private static final class DeadlineInputStream extends FilterInputStream {
+        private final long deadline;
+
+        private DeadlineInputStream(InputStream inputStream, long deadline) {
+            super(inputStream);
+            this.deadline = deadline;
+        }
+
+        @Override
+        public int read() throws IOException {
+            checkDeadline();
+            int value = in.read();
+            checkDeadline();
+            return value;
+        }
+
+        @Override
+        public int read(byte[] buffer, int offset, int length) throws IOException {
+            checkDeadline();
+            int read = in.read(buffer, offset, length);
+            checkDeadline();
+            return read;
+        }
+
+        private void checkDeadline() throws IOException {
+            if (isDeadlineExceeded(deadline)) {
+                throw new IOException("AIA response exceeded the maximum download time.");
+            }
         }
     }
 
@@ -475,6 +694,9 @@ public final class HttpUtil {
             headers.forEach(connection::setRequestProperty);
         }
         connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+        if (connection.getRequestProperty(ACCEPT_ENCODING_KEY) == null) {
+            connection.setRequestProperty(ACCEPT_ENCODING_KEY, ACCEPT_ENCODING_VALUE);
+        }
     }
 
     static HttpURLConnection openConnection(String uri) throws IOException {

@@ -6,6 +6,8 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -19,12 +21,18 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPOutputStream;
 
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.ACCEPT_ENCODING_KEY;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.ACCEPT_ENCODING_VALUE;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_USER_AGENT_VALUE_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.VERSION;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -72,15 +80,106 @@ public class HttpUtilTest {
         Map<String, String> requestHeaders = new LinkedHashMap<>();
         requestHeaders.put("x-test", "value");
         requestHeaders.put(HttpUtil.USER_AGENT_KEY, "caller-value");
+        requestHeaders.put(ACCEPT_ENCODING_KEY, "identity");
 
         String result = HttpUtil.get("https://example.test/value", requestHeaders, ignored -> connection);
 
         assertEquals("response", result);
         assertEquals("value", connection.getRequestProperty("x-test"));
         assertEquals(HttpUtil.USER_AGENT_VALUE, connection.getRequestProperty(HttpUtil.USER_AGENT_KEY));
+        assertEquals("identity", connection.getRequestProperty(ACCEPT_ENCODING_KEY));
         assertEquals(HttpUtil.HTTP_TIMEOUT_IN_MILLISECONDS, connection.getConnectTimeout());
         assertEquals(HttpUtil.HTTP_TIMEOUT_IN_MILLISECONDS, connection.getReadTimeout());
         assertTrue(connection.disconnected);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "gzip", "x-gzip", "deflate", "deflate-raw" })
+    void textGetRequestsAndDecodesCompressedResponse(String encoding) throws Exception {
+        byte[] body = compress("response".getBytes(StandardCharsets.UTF_8), encoding);
+        String contentEncoding = "deflate-raw".equals(encoding) ? "deflate" : encoding;
+        Map<String, List<String>> responseHeaders
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList(contentEncoding));
+        TestHttpURLConnection connection
+            = new TestHttpURLConnection("https://example.test/value", 200, body, responseHeaders);
+
+        String result = HttpUtil.get("https://example.test/value", null, ignored -> connection);
+
+        assertEquals("response", result);
+        assertEquals(ACCEPT_ENCODING_VALUE, connection.getRequestProperty(ACCEPT_ENCODING_KEY));
+        assertTrue(connection.disconnected);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "identity", "custom" })
+    void textGetLeavesIdentityAndUnknownEncodingUnchanged(String encoding) throws Exception {
+        byte[] body = "response".getBytes(StandardCharsets.UTF_8);
+        Map<String, List<String>> responseHeaders
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList(encoding));
+        TestHttpURLConnection connection
+            = new TestHttpURLConnection("https://example.test/value", 200, body, responseHeaders);
+
+        String result = HttpUtil.get("https://example.test/value", null, ignored -> connection);
+
+        assertEquals("response", result);
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void textGetDecodesChainedContentEncodingsInReverseOrder() throws Exception {
+        byte[] body = deflate(gzip("response".getBytes(StandardCharsets.UTF_8)), false);
+        Map<String, List<String>> responseHeaders
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList("gzip, deflate"));
+        TestHttpURLConnection connection
+            = new TestHttpURLConnection("https://example.test/value", 200, body, responseHeaders);
+
+        String result = HttpUtil.get("https://example.test/value", null, ignored -> connection);
+
+        assertEquals("response", result);
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void textGetPreservesWireOrderForRepeatedContentEncodingHeaders() throws Exception {
+        byte[] body = deflate(gzip("response".getBytes(StandardCharsets.UTF_8)), false);
+        Map<String, List<String>> responseHeaders
+            = Collections.singletonMap("Content-Encoding", Arrays.asList("gzip", "deflate"));
+        TestHttpURLConnection connection
+            = new TestHttpURLConnection("https://example.test/value", 200, body, responseHeaders);
+        connection.reverseHeaderMapValues = true;
+
+        String result = HttpUtil.get("https://example.test/value", null, ignored -> connection);
+
+        assertEquals("response", result);
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void textGetClosesResponseAfterMalformedGzipHeader() throws Exception {
+        Map<String, List<String>> responseHeaders
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList("gzip"));
+        TestHttpURLConnection connection = new TestHttpURLConnection("https://example.test/value", 200,
+            "not-gzip".getBytes(StandardCharsets.UTF_8), responseHeaders);
+
+        String result = HttpUtil.get("https://example.test/value", null, ignored -> connection);
+
+        assertNull(result);
+        assertTrue(connection.inputStreamClosed);
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void compressedResponseChecksDeadlineWhileReadingEncodingHeader() throws Exception {
+        Map<String, List<String>> responseHeaders
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList("gzip"));
+        TestHttpURLConnection connection
+            = new TestHttpURLConnection(200, gzip("response".getBytes(StandardCharsets.UTF_8)), responseHeaders);
+
+        IOException exception = assertThrows(IOException.class, () -> HttpUtil.getDecodedResponseBody(connection,
+            HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES, System.nanoTime() - 1));
+
+        assertEquals("AIA response exceeded the maximum download time.", exception.getMessage());
+        assertTrue(connection.inputStreamClosed);
     }
 
     @Test
@@ -152,6 +251,21 @@ public class HttpUtilTest {
         assertEquals(10_000, connection.getConnectTimeout());
         assertEquals(10_000, connection.getReadTimeout());
         assertEquals(HttpUtil.USER_AGENT_VALUE, connection.getRequestProperty(HttpUtil.USER_AGENT_KEY));
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void binaryResponseRequestsAndDecodesGzipResponse() throws Exception {
+        byte[] expectedBody = new byte[] { 1, 2, 3 };
+        Map<String, List<String>> headers
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList("gzip"));
+        TestHttpURLConnection connection = new TestHttpURLConnection(200, gzip(expectedBody), headers);
+
+        HttpUtil.BinaryHttpResponse result
+            = HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+
+        assertArrayEquals(expectedBody, result.getBody());
+        assertEquals(ACCEPT_ENCODING_VALUE, connection.getRequestProperty(ACCEPT_ENCODING_KEY));
         assertTrue(connection.disconnected);
     }
 
@@ -289,13 +403,28 @@ public class HttpUtilTest {
 
     @Test
     void binaryResponseRejectsStreamThatExceedsMaximumSize() throws Exception {
-        byte[] body = new byte[HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES + 1];
+        byte[] body = new byte[HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES + 4096];
         TestHttpURLConnection connection = new TestHttpURLConnection(200, body, Collections.emptyMap());
 
         HttpUtil.BinaryHttpResponse result
             = HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
 
         assertNull(result.getBody());
+        assertEquals(HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES + 1, connection.inputStreamBytesRead);
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void binaryResponseRejectsGzipBodyWhoseDecodedSizeExceedsMaximum() throws Exception {
+        byte[] oversizedBody = new byte[HttpUtil.MAX_AIA_RESPONSE_SIZE_IN_BYTES + 1];
+        Map<String, List<String>> headers
+            = Collections.singletonMap("Content-Encoding", Collections.singletonList("gzip"));
+        TestHttpURLConnection connection = new TestHttpURLConnection(200, gzip(oversizedBody), headers);
+
+        HttpUtil.BinaryHttpResponse result
+            = HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+
+        assertEmptyBinaryResponse(result);
         assertTrue(connection.disconnected);
     }
 
@@ -358,6 +487,33 @@ public class HttpUtilTest {
         assertNull(response.getExpires());
     }
 
+    private static byte[] gzip(byte[] value) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipStream = new GZIPOutputStream(outputStream)) {
+            gzipStream.write(value);
+        }
+        return outputStream.toByteArray();
+    }
+
+    private static byte[] compress(byte[] value, String encoding) throws IOException {
+        if ("gzip".equals(encoding) || "x-gzip".equals(encoding)) {
+            return gzip(value);
+        }
+
+        return deflate(value, "deflate-raw".equals(encoding));
+    }
+
+    private static byte[] deflate(byte[] value, boolean raw) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Deflater deflater = new Deflater(Deflater.DEFAULT_COMPRESSION, raw);
+        try (DeflaterOutputStream deflateStream = new DeflaterOutputStream(outputStream, deflater)) {
+            deflateStream.write(value);
+        } finally {
+            deflater.end();
+        }
+        return outputStream.toByteArray();
+    }
+
     private static final class TestHttpURLConnection extends HttpURLConnection {
         private final int status;
         private final byte[] body;
@@ -365,6 +521,9 @@ public class HttpUtilTest {
         private final RuntimeException responseFailure;
         private final ByteArrayOutputStream requestBody = new ByteArrayOutputStream();
         private boolean disconnected;
+        private boolean inputStreamClosed;
+        private boolean reverseHeaderMapValues;
+        private int inputStreamBytesRead;
 
         private TestHttpURLConnection(int status, byte[] body, Map<String, List<String>> headers) throws Exception {
             this("https://example.test/cert.crt", status, body, headers, null);
@@ -399,7 +558,31 @@ public class HttpUtilTest {
 
         @Override
         public InputStream getInputStream() {
-            return new ByteArrayInputStream(body);
+            return new ByteArrayInputStream(body) {
+                @Override
+                public synchronized int read() {
+                    int value = super.read();
+                    if (value != -1) {
+                        inputStreamBytesRead++;
+                    }
+                    return value;
+                }
+
+                @Override
+                public synchronized int read(byte[] buffer, int offset, int length) {
+                    int read = super.read(buffer, offset, length);
+                    if (read > 0) {
+                        inputStreamBytesRead += read;
+                    }
+                    return read;
+                }
+
+                @Override
+                public void close() throws IOException {
+                    inputStreamClosed = true;
+                    super.close();
+                }
+            };
         }
 
         @Override
@@ -409,7 +592,38 @@ public class HttpUtilTest {
 
         @Override
         public Map<String, List<String>> getHeaderFields() {
+            if (reverseHeaderMapValues) {
+                Map<String, List<String>> reversedHeaders = new LinkedHashMap<>();
+                headers.forEach((name, values) -> {
+                    List<String> reversedValues = new ArrayList<>(values);
+                    Collections.reverse(reversedValues);
+                    reversedHeaders.put(name, reversedValues);
+                });
+                return reversedHeaders;
+            }
             return headers;
+        }
+
+        @Override
+        public String getHeaderFieldKey(int index) {
+            return getIndexedHeader(index, true);
+        }
+
+        @Override
+        public String getHeaderField(int index) {
+            return index == 0 ? "HTTP/1.1 " + status : getIndexedHeader(index, false);
+        }
+
+        private String getIndexedHeader(int index, boolean returnName) {
+            int currentIndex = 1;
+            for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+                for (String headerValue : entry.getValue()) {
+                    if (currentIndex++ == index) {
+                        return returnName ? entry.getKey() : headerValue;
+                    }
+                }
+            }
+            return null;
         }
 
         @Override
