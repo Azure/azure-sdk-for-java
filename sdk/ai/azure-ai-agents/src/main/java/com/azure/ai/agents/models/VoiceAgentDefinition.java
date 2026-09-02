@@ -28,20 +28,21 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private AgentKind kind = AgentKind.VOICE;
 
     /*
-     * How the model backing this agent is served. Together with `model`, this selects the model up front. `managed`
-     * uses a service-managed model; `self_deployed` uses the customer's own Foundry deployment. This is independent of
-     * the architecture (realtime or cascaded), which the service derives from the selected model.
+     * How the voice agent obtains its conversational backend. `managed` uses the service-managed model named by
+     * `model`; `self_deployed` uses the customer's Foundry deployment named by `model`; `hosted_agent` fronts the
+     * hosted text agent referenced by `target_agent`. This is independent of the architecture (realtime or cascaded),
+     * which the service derives from the selected backend.
      */
     @Generated
     private final VoiceModelType modelType;
 
     /*
-     * The model to use for this agent, paired with `model_type`: the service-managed model name when `model_type` is
-     * `managed`, or the customer's Foundry deployment name when `model_type` is `self_deployed`. The model must support
-     * realtime or cascaded voice. The service derives the architecture from the selected model.
+     * The model to use for this agent. Required when `model_type` is `managed` (the service-managed model name) or
+     * `self_deployed` (the customer's Foundry deployment name). Omit this property when `model_type` is `hosted_agent`;
+     * `target_agent` identifies the conversational backend. The model must support realtime or cascaded voice.
      */
     @Generated
-    private final String model;
+    private String model;
 
     /*
      * A system (or developer) message inserted into the model's context. Supports template substitution via
@@ -137,18 +138,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private Boolean store;
 
     /**
-     * Creates an instance of VoiceAgentDefinition class.
-     *
-     * @param modelType the modelType value to set.
-     * @param model the model value to set.
-     */
-    @Generated
-    public VoiceAgentDefinition(VoiceModelType modelType, String model) {
-        this.modelType = modelType;
-        this.model = model;
-    }
-
-    /**
      * Get the kind property: The kind property.
      *
      * @return the kind value.
@@ -160,10 +149,10 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the modelType property: How the model backing this agent is served. Together with `model`, this selects the
-     * model up front. `managed` uses a service-managed model; `self_deployed` uses the customer's own Foundry
-     * deployment. This is independent of the architecture (realtime or cascaded), which the service derives from the
-     * selected model.
+     * Get the modelType property: How the voice agent obtains its conversational backend. `managed` uses the
+     * service-managed model named by `model`; `self_deployed` uses the customer's Foundry deployment named by `model`;
+     * `hosted_agent` fronts the hosted text agent referenced by `target_agent`. This is independent of the architecture
+     * (realtime or cascaded), which the service derives from the selected backend.
      *
      * @return the modelType value.
      */
@@ -173,9 +162,10 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the model property: The model to use for this agent, paired with `model_type`: the service-managed model name
-     * when `model_type` is `managed`, or the customer's Foundry deployment name when `model_type` is `self_deployed`.
-     * The model must support realtime or cascaded voice. The service derives the architecture from the selected model.
+     * Get the model property: The model to use for this agent. Required when `model_type` is `managed` (the
+     * service-managed model name) or `self_deployed` (the customer's Foundry deployment name). Omit this property when
+     * `model_type` is `hosted_agent`; `target_agent` identifies the conversational backend. The model must support
+     * realtime or cascaded voice.
      *
      * @return the model value.
      */
@@ -531,8 +521,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("model_type", this.modelType == null ? null : this.modelType.toString());
-        jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeJsonField("target_agent", this.targetAgent);
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
@@ -554,6 +545,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("subagent_config", this.subagentConfig);
         jsonWriter.writeBooleanField("store", this.store);
         return jsonWriter.writeEndObject();
     }
@@ -572,8 +564,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         return jsonReader.readObject(reader -> {
             RaiConfig raiConfig = null;
             VoiceModelType modelType = null;
-            String model = null;
             AgentKind kind = AgentKind.VOICE;
+            String model = null;
+            VoiceAgentTargetAgent targetAgent = null;
             String instructions = null;
             VoiceAgentGreetingConfig greeting = null;
             VoiceAgentAudioConfig audio = null;
@@ -586,6 +579,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             BinaryData toolChoice = null;
             Boolean parallelToolCalls = null;
             Map<String, StructuredInputDefinition> structuredInputs = null;
+            VoiceAgentSubAgentConfig subagentConfig = null;
             Boolean store = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -594,10 +588,12 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                     raiConfig = RaiConfig.fromJson(reader);
                 } else if ("model_type".equals(fieldName)) {
                     modelType = VoiceModelType.fromString(reader.getString());
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = AgentKind.fromString(reader.getString());
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("target_agent".equals(fieldName)) {
+                    targetAgent = VoiceAgentTargetAgent.fromJson(reader);
                 } else if ("instructions".equals(fieldName)) {
                     instructions = reader.getString();
                 } else if ("greeting".equals(fieldName)) {
@@ -625,15 +621,19 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                     parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("structured_inputs".equals(fieldName)) {
                     structuredInputs = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
+                } else if ("subagent_config".equals(fieldName)) {
+                    subagentConfig = VoiceAgentSubAgentConfig.fromJson(reader);
                 } else if ("store".equals(fieldName)) {
                     store = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentDefinition deserializedVoiceAgentDefinition = new VoiceAgentDefinition(modelType, model);
+            VoiceAgentDefinition deserializedVoiceAgentDefinition = new VoiceAgentDefinition(modelType);
             deserializedVoiceAgentDefinition.setRaiConfig(raiConfig);
             deserializedVoiceAgentDefinition.kind = kind;
+            deserializedVoiceAgentDefinition.model = model;
+            deserializedVoiceAgentDefinition.targetAgent = targetAgent;
             deserializedVoiceAgentDefinition.instructions = instructions;
             deserializedVoiceAgentDefinition.greeting = greeting;
             deserializedVoiceAgentDefinition.audio = audio;
@@ -646,8 +646,105 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             deserializedVoiceAgentDefinition.toolChoice = toolChoice;
             deserializedVoiceAgentDefinition.parallelToolCalls = parallelToolCalls;
             deserializedVoiceAgentDefinition.structuredInputs = structuredInputs;
+            deserializedVoiceAgentDefinition.subagentConfig = subagentConfig;
             deserializedVoiceAgentDefinition.store = store;
             return deserializedVoiceAgentDefinition;
         });
+    }
+
+    /*
+     * The hosted text agent that this voice agent fronts. Required when `model_type` is `hosted_agent` and not
+     * applicable otherwise. In this mode, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
+     * `greeting.tool_choice` cannot be `required`, because the target agent owns the conversation logic. The target
+     * must be in the same project and support the `invocations_ws` protocol, Voice Live compatibility, and Bridge
+     * Protocol 1.0.
+     */
+    @Generated
+    private VoiceAgentTargetAgent targetAgent;
+
+    /*
+     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
+     * specialists.
+     */
+    @Generated
+    private VoiceAgentSubAgentConfig subagentConfig;
+
+    /**
+     * Creates an instance of VoiceAgentDefinition class.
+     *
+     * @param modelType the modelType value to set.
+     */
+    @Generated
+    public VoiceAgentDefinition(VoiceModelType modelType) {
+        this.modelType = modelType;
+    }
+
+    /**
+     * Set the model property: The model to use for this agent. Required when `model_type` is `managed` (the
+     * service-managed model name) or `self_deployed` (the customer's Foundry deployment name). Omit this property when
+     * `model_type` is `hosted_agent`; `target_agent` identifies the conversational backend. The model must support
+     * realtime or cascaded voice.
+     *
+     * @param model the model value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the targetAgent property: The hosted text agent that this voice agent fronts. Required when `model_type` is
+     * `hosted_agent` and not applicable otherwise. In this mode, `model`, `instructions`, `tools`, and `tool_choice`
+     * must be omitted, and `greeting.tool_choice` cannot be `required`, because the target agent owns the conversation
+     * logic. The target must be in the same project and support the `invocations_ws` protocol, Voice Live
+     * compatibility, and Bridge Protocol 1.0.
+     *
+     * @return the targetAgent value.
+     */
+    @Generated
+    public VoiceAgentTargetAgent getTargetAgent() {
+        return this.targetAgent;
+    }
+
+    /**
+     * Set the targetAgent property: The hosted text agent that this voice agent fronts. Required when `model_type` is
+     * `hosted_agent` and not applicable otherwise. In this mode, `model`, `instructions`, `tools`, and `tool_choice`
+     * must be omitted, and `greeting.tool_choice` cannot be `required`, because the target agent owns the conversation
+     * logic. The target must be in the same project and support the `invocations_ws` protocol, Voice Live
+     * compatibility, and Bridge Protocol 1.0.
+     *
+     * @param targetAgent the targetAgent value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setTargetAgent(VoiceAgentTargetAgent targetAgent) {
+        this.targetAgent = targetAgent;
+        return this;
+    }
+
+    /**
+     * Get the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
+     * consult as background specialists.
+     *
+     * @return the subagentConfig value.
+     */
+    @Generated
+    public VoiceAgentSubAgentConfig getSubagentConfig() {
+        return this.subagentConfig;
+    }
+
+    /**
+     * Set the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
+     * consult as background specialists.
+     *
+     * @param subagentConfig the subagentConfig value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSubagentConfig(VoiceAgentSubAgentConfig subagentConfig) {
+        this.subagentConfig = subagentConfig;
+        return this;
     }
 }

@@ -72,13 +72,13 @@ public class VoiceAgentWithToolsSample {
             .setDescription("Get the current weather for a city.")
             .setParameters(new RealtimeFunctionToolParameters());
         VoiceAgentSystemTool endCall = new VoiceAgentSystemTool(VoiceAgentSystemToolName.END_CONVERSATION);
-        VoiceAgentDefinition definition = new VoiceAgentDefinition(
-            modelType, model)
-                .setInstructions("Use tools when they help answer the caller.")
-                .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
-                .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
-                .setTools(Arrays.<VoiceAgentTool>asList(weather, endCall))
-                .setStore(true);
+        VoiceAgentDefinition definition = new VoiceAgentDefinition(modelType)
+            .setModel(model)
+            .setInstructions("Use tools when they help answer the caller.")
+            .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
+            .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
+            .setTools(Arrays.<VoiceAgentTool>asList(weather, endCall))
+            .setStore(true);
 
         try {
             AgentVersionDetails created = client.createAgentVersion(agentName,

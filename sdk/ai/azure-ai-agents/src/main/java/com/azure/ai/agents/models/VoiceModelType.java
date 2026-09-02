@@ -55,4 +55,10 @@ public final class VoiceModelType extends ExpandableStringEnum<VoiceModelType> {
     public static Collection<VoiceModelType> values() {
         return values(VoiceModelType.class);
     }
+
+    /**
+     * The service fronts a hosted text agent referenced by `target_agent`; `model` is not applicable in this mode.
+     */
+    @Generated
+    public static final VoiceModelType HOSTED_AGENT = fromString("hosted_agent");
 }

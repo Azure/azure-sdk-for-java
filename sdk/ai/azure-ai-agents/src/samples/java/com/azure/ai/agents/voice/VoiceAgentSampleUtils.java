@@ -20,7 +20,8 @@ final class VoiceAgentSampleUtils {
         VoiceAgentAudioOutputConfig output = new VoiceAgentAudioOutputConfig()
             .setVoice("en-US-AvaNeural")
             .setVoiceType(VoiceType.AZURE_STANDARD);
-        return new VoiceAgentDefinition(modelType, model)
+        return new VoiceAgentDefinition(modelType)
+            .setModel(model)
             .setInstructions(instructions)
             .setAudio(new VoiceAgentAudioConfig().setOutput(output))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
