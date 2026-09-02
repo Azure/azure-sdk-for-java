@@ -101,7 +101,7 @@ public final class TranscriptionClient {
         RequestOptions requestOptions) {
         AudioFileDetails audio = options.getFileDetails();
         RequestOptions effectiveRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-        Response<BinaryData> response = transcribeWithResponse(
+        Response<BinaryData> response = transcribeWithResponseInternal(
             new MultipartFormDataHelper(effectiveRequestOptions).serializeJsonField("definition", options)
                 .serializeFileField("audio", audio == null ? null : audio.getContent(),
                     audio == null ? null : audio.getContentType(), audio == null ? null : audio.getFilename())
