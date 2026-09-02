@@ -5,4 +5,5 @@
 <suppressions>
   <suppress files="com.azure.ai.speech.transcription.TranscriptionAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.speech.transcription.TranscriptionClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
 </suppressions>
