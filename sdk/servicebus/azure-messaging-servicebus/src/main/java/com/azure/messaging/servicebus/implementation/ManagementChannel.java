@@ -23,6 +23,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -57,6 +58,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_BATCH_DELETE_MESSAGES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
@@ -468,6 +470,63 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             return sendWithVerify(channel, message, transactionalState);
         })).then();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<DeleteMessagesResult> deleteMessages(int maxMessages, OffsetDateTime enqueueTimeUtcOlderThan,
+        String sessionId, String associatedLinkName) {
+        if (maxMessages < 1) {
+            return monoError(logger,
+                new IllegalArgumentException("'maxMessages' must be positive; got " + maxMessages + "."));
+        }
+        if (enqueueTimeUtcOlderThan == null) {
+            return monoError(logger, new NullPointerException("'enqueueTimeUtcOlderThan' cannot be null."));
+        }
+
+        return isAuthorized(OPERATION_BATCH_DELETE_MESSAGES).then(channelCache.get().flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_BATCH_DELETE_MESSAGES, associatedLinkName);
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.MESSAGE_COUNT_KEY, maxMessages);
+            body.put(ManagementConstants.ENQUEUED_TIME_UTC, Date.from(enqueueTimeUtcOlderThan.toInstant()));
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                body.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message, null);
+        })).flatMap(response -> {
+            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+            if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                return Mono.just(new DeleteMessagesResult(0));
+            }
+            final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+            final boolean messageNotFound = statusCode == AmqpResponseCode.NOT_FOUND
+                && AmqpErrorCondition.MESSAGE_NOT_FOUND.getErrorCondition().equals(errorCondition);
+            if (statusCode != AmqpResponseCode.OK && !messageNotFound) {
+                return monoError(logger,
+                    new IllegalStateException("Batch delete returned unexpected status code: " + statusCode + "."));
+            }
+
+            final Object responseBody = response.getBody();
+            if (!(responseBody instanceof AmqpValue) || !(((AmqpValue) responseBody).getValue() instanceof Map)) {
+                return monoError(logger,
+                    new IllegalStateException("Batch delete returned a successful response with an invalid body."));
+            }
+
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) responseBody).getValue();
+            final Object deletedCount = body.get(ManagementConstants.MESSAGE_COUNT_KEY);
+            if (!(deletedCount instanceof Integer)
+                || (Integer) deletedCount < 0
+                || (Integer) deletedCount > maxMessages) {
+                return monoError(logger,
+                    new IllegalStateException("Batch delete response did not contain a valid message-count."));
+            }
+            return Mono.just(new DeleteMessagesResult((Integer) deletedCount));
+        });
     }
 
     /**

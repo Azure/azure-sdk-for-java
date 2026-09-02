@@ -45,6 +45,9 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -111,6 +114,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
@@ -1646,6 +1650,141 @@ class ServiceBusReceiverAsyncClientTest {
         Map<String, Object> attributes = measurement.getAttributes();
         assertEquals(2, attributes.size());
         assertCommonMetricAttributes(attributes, null);
+    }
+
+    @Test
+    void deleteMessagesReturnsActualCount() {
+        final OffsetDateTime cutoff = OffsetDateTime.of(2026, 8, 27, 12, 30, 0, 0, ZoneOffset.UTC);
+        when(managementNode.deleteMessages(4000, cutoff, null, null))
+            .thenReturn(Mono.just(new DeleteMessagesResult(7)));
+
+        StepVerifier
+            .create(receiver.deleteMessages(4000, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff)))
+            .assertNext(result -> assertEquals(7, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @Test
+    void deleteMessagesCapturesDefaultCutoffOnSubscription() {
+        final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);
+        when(managementNode.deleteMessages(eq(10), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        final Mono<DeleteMessagesResult> operation = receiver.deleteMessages(10);
+        final OffsetDateTime operationStart = OffsetDateTime.now();
+
+        StepVerifier.create(operation).expectNextCount(1).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode).deleteMessages(eq(10), cutoffCaptor.capture(), isNull(), isNull());
+        Assertions.assertFalse(cutoffCaptor.getValue().isBefore(operationStart));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0 })
+    void deleteMessagesRejectsCountOutsideServiceRange(int maxMessages) {
+        StepVerifier.create(receiver.deleteMessages(maxMessages))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+
+        verifyNoInteractions(managementNode);
+    }
+
+    @Test
+    void purgeMessagesAccumulatesShortPositiveBatchAndUsesOneCutoff() {
+        final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(500)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(2)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        StepVerifier.create(receiver.purgeMessages())
+            .assertNext(result -> assertEquals(502, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode, times(3)).deleteMessages(eq(500), cutoffCaptor.capture(), isNull(), isNull());
+        assertEquals(3, cutoffCaptor.getAllValues().size());
+        assertTrue(cutoffCaptor.getAllValues().stream().allMatch(cutoffCaptor.getValue()::equals));
+    }
+
+    @Test
+    void purgeMessagesSupportsPremiumBatchSize() {
+        final ArgumentCaptor<OffsetDateTime> cutoffCaptor = ArgumentCaptor.forClass(OffsetDateTime.class);
+        when(managementNode.deleteMessages(eq(4000), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(4000)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(2)))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        final PurgeMessagesOptions options = new PurgeMessagesOptions().setMaxMessagesPerBatch(4000);
+        StepVerifier.create(receiver.purgeMessages(options))
+            .assertNext(result -> assertEquals(4002, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode, times(3)).deleteMessages(eq(4000), cutoffCaptor.capture(), isNull(), isNull());
+        assertTrue(cutoffCaptor.getAllValues().stream().allMatch(cutoffCaptor.getValue()::equals));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0 })
+    void purgeMessagesRejectsInvalidBatchSize(int maxMessagesPerBatch) {
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new PurgeMessagesOptions().setMaxMessagesPerBatch(maxMessagesPerBatch));
+        verifyNoInteractions(managementNode);
+    }
+
+    @Test
+    void purgeMessagesAllowsServiceToEnforceBatchSize() {
+        when(managementNode.deleteMessages(eq(4001), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.just(new DeleteMessagesResult(0)));
+
+        final PurgeMessagesOptions options = new PurgeMessagesOptions().setMaxMessagesPerBatch(4001);
+        StepVerifier.create(receiver.purgeMessages(options))
+            .assertNext(result -> assertEquals(0, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode).deleteMessages(eq(4001), any(OffsetDateTime.class), isNull(), isNull());
+    }
+
+    @Test
+    void purgeMessagesDispatchesOnceWhenRequestFails() {
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull()))
+            .thenReturn(Mono.error(new IllegalStateException("request failed")));
+
+        StepVerifier.create(receiver.purgeMessages(new PurgeMessagesOptions()))
+            .expectError(ServiceBusException.class)
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode).deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull());
+    }
+
+    @Test
+    void deleteMessagesForSessionForwardsSessionAndLinkName() {
+        final String linkName = "session-link";
+        final OffsetDateTime cutoff = OffsetDateTime.of(2026, 8, 27, 12, 30, 0, 0, ZoneOffset.UTC);
+        final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
+        when(sessionManager.getLinkName(SESSION_ID)).thenReturn(linkName);
+        when(managementNode.deleteMessages(5, cutoff, SESSION_ID, linkName))
+            .thenReturn(Mono.just(new DeleteMessagesResult(3)));
+
+        final ServiceBusReceiverAsyncClient client
+            = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+                createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID),
+                connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose,
+                sessionManager);
+        try {
+            StepVerifier
+                .create(client.deleteMessages(5, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff)))
+                .assertNext(result -> assertEquals(3, result.getDeletedCount()))
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
+        } finally {
+            client.close();
+        }
+
+        verify(managementNode).deleteMessages(5, cutoff, SESSION_ID, linkName);
     }
 
     private ServiceBusReceivedMessage mockReceivedMessage(Instant enqueuedTime) {

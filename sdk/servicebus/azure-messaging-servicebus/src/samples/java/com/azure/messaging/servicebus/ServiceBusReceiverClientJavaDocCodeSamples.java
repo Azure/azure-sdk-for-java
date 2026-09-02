@@ -9,6 +9,9 @@ import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesResult;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -595,6 +599,100 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         if (!disposable.isDisposed()) {
             disposable.dispose();
         }
+    }
+
+    /**
+     * Deletes a batch and then purges the remaining messages synchronously.
+     */
+    @Test
+    public void deleteAndPurgeMessages() {
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .receiver()
+            .queueName(queueName)
+            .buildClient();
+
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.deleteAndPurgeMessages
+        int requestedCount = 100;
+        DeleteMessagesResult deleteResult = receiver.deleteMessages(requestedCount);
+        // Any request can delete fewer messages than requested, especially when messages are large.
+        System.out.printf("Requested %d; the service deleted %d.%n", requestedCount, deleteResult.getDeletedCount());
+
+        PurgeMessagesResult purgeResult = receiver.purgeMessages();
+        System.out.printf("The service purged %d remaining messages.%n", purgeResult.getDeletedCount());
+        // END: com.azure.messaging.servicebus.servicebusreceiverclient.deleteAndPurgeMessages
+
+        receiver.close();
+    }
+
+    /**
+     * Purges messages with a fixed cutoff and a Premium batch size.
+     */
+    @Test
+    public void purgeMessagesWithPremiumBatchSize() {
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .receiver()
+            .queueName(queueName)
+            .buildClient();
+
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.purgeMessagesWithPremiumBatchSize
+        OffsetDateTime enqueueTimeThreshold = OffsetDateTime.now();
+        PurgeMessagesOptions options = new PurgeMessagesOptions()
+            .setEnqueueTimeUtcOlderThan(enqueueTimeThreshold)
+            // Premium supports up to 4,000 messages per request.
+            .setMaxMessagesPerBatch(4000);
+
+        PurgeMessagesResult result = receiver.purgeMessages(options);
+        System.out.printf("Purged %d messages enqueued before %s.%n", result.getDeletedCount(), enqueueTimeThreshold);
+        // END: com.azure.messaging.servicebus.servicebusreceiverclient.purgeMessagesWithPremiumBatchSize
+
+        receiver.close();
+    }
+
+    /**
+     * Purges messages from one named session.
+     */
+    @Test
+    public void purgeMessagesFromSession() {
+        String sessionId = "session-1";
+        ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .sessionReceiver()
+            .queueName(sessionEnabledQueueName)
+            .buildClient();
+        ServiceBusReceiverClient sessionReceiver = sessionClient.acceptSession(sessionId);
+
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.purgeMessagesFromSession
+        PurgeMessagesResult result = sessionReceiver.purgeMessages();
+        System.out.printf("Removed %d messages from session %s.%n", result.getDeletedCount(), sessionId);
+        // END: com.azure.messaging.servicebus.servicebusreceiverclient.purgeMessagesFromSession
+
+        sessionReceiver.close();
+        sessionClient.close();
+    }
+
+    /**
+     * Deletes a batch and then purges the remaining messages asynchronously.
+     */
+    @Test
+    public void deleteAndPurgeMessagesAsync() {
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .receiver()
+            .queueName(queueName)
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.deleteAndPurgeMessages
+        receiver.deleteMessages(100)
+            .doOnNext(result -> System.out.printf("Deleted %d messages from the first batch.%n",
+                result.getDeletedCount()))
+            .then(receiver.purgeMessages())
+            .doOnNext(result -> System.out.printf("Purged %d remaining messages.%n", result.getDeletedCount()))
+            .block();
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.deleteAndPurgeMessages
+
+        receiver.close();
     }
 
     @Test

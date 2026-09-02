@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -123,6 +124,19 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
+
+    /**
+     * Deletes up to {@code maxMessages} messages enqueued before the given cutoff.
+     *
+    * @param maxMessages The maximum number of messages to delete. The service limit is 500 for Basic and Standard
+    * and 4,000 for Premium.
+     * @param enqueueTimeUtcOlderThan Only messages enqueued before this time are deleted.
+     * @param sessionId The session identifier, or {@code null} for a non-session entity.
+     * @param associatedLinkName The associated receive-link name, or {@code null} if no link is open.
+     * @return The number of messages actually deleted by the service.
+     */
+    Mono<DeleteMessagesResult> deleteMessages(int maxMessages, OffsetDateTime enqueueTimeUtcOlderThan, String sessionId,
+        String associatedLinkName);
 
     /**
      * Create a rule with the {@link CreateRuleOptions} for Service Bus subscription.
