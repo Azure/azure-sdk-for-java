@@ -138,10 +138,6 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
         assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
-
-        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
-        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
-        assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
     }
 
     @Test

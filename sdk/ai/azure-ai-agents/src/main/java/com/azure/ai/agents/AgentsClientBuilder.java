@@ -92,9 +92,6 @@ public final class AgentsClientBuilder
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
 
-    private static final String VOICE_AGENTS_PREVIEW_FEATURES
-        = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
-
     private boolean allowPreview;
 
     @Generated
@@ -532,8 +529,7 @@ public final class AgentsClientBuilder
      * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
      * policies, retry settings, logging options, client options, and service version. Use this method
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
-     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
-     * {@link BetaAgentEndpointConversationsClient}, or {@link BetaAgentEndpointConversationsAsyncClient}.
+     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient}
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
@@ -559,7 +555,7 @@ public final class AgentsClientBuilder
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
             BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class})
+            BetaMemoryStoresAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
