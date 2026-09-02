@@ -82,6 +82,30 @@ public class VertxHttpClientExpectContinueTests {
     }
 
     @Test
+    public void doesNotSendBodyWhenTheServiceRejectsTheHeaders() throws Exception {
+        // The point of the expectation: a rejected request must not upload its body. The fallback must not fire
+        // afterwards and write onto a finished exchange.
+        try (ExpectContinueServer server = new ExpectContinueServer(false, 401)) {
+            server.start();
+
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+            request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+
+            HttpClient client = new VertxHttpClientProvider().createInstance();
+            HttpResponse response = client.send(request).block();
+
+            assertNotNull(response, "the request did not complete");
+            assertEquals(401, response.getStatusCode());
+            assertTrue(server.awaitRequest(), "the request never reached the server");
+
+            // Outlast the fallback, then confirm it did not wake up and send the body.
+            Thread.sleep(1500);
+            assertEquals(0, server.bodyBytesBeforeContinue + server.bodyBytesAfterContinue,
+                "the body was sent even though the service rejected the request");
+        }
+    }
+
+    @Test
     public void sendsBodyImmediatelyWithoutTheHeader() throws Exception {
         try (ExpectContinueServer server = new ExpectContinueServer()) {
             server.start();
@@ -119,14 +143,20 @@ public class VertxHttpClientExpectContinueTests {
         private volatile int bodyBytesAfterContinue = -1;
 
         private final boolean sendContinue;
+        private final int rejectWithStatus;
 
         ExpectContinueServer() throws IOException {
-            this(true);
+            this(true, 0);
         }
 
         ExpectContinueServer(boolean sendContinue) throws IOException {
+            this(sendContinue, 0);
+        }
+
+        ExpectContinueServer(boolean sendContinue, int rejectWithStatus) throws IOException {
             this.serverSocket = new ServerSocket(0);
             this.sendContinue = sendContinue;
+            this.rejectWithStatus = rejectWithStatus;
         }
 
         URL url() throws IOException {
@@ -150,6 +180,16 @@ public class VertxHttpClientExpectContinueTests {
                 OutputStream out = socket.getOutputStream();
 
                 int contentLength = readHeaders(in);
+
+                if (rejectWithStatus != 0) {
+                    // Answer the headers with a final status and never read the body.
+                    bodyBytesBeforeContinue = 0;
+                    bodyBytesAfterContinue = 0;
+                    out.write(("HTTP/1.1 " + rejectWithStatus + " Unauthorized\r\nContent-Length: 0\r\n\r\n")
+                        .getBytes(StandardCharsets.UTF_8));
+                    out.flush();
+                    return;
+                }
 
                 // Actively read for the whole settle window rather than sampling available(), so a body that is on
                 // its way is counted rather than missed.

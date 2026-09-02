@@ -208,11 +208,22 @@ class VertxHttpClient implements HttpClient {
             Long fallbackTimerId = vertxContext == null
                 ? null
                 : vertxContext.owner().setTimer(EXPECT_CONTINUE_TIMEOUT.toMillis(), ignored -> writeOnce.run());
-
-            vertxRequest.continueHandler(ignored -> {
+            Runnable cancelFallback = () -> {
                 if (fallbackTimerId != null && vertxContext != null) {
                     vertxContext.owner().cancelTimer(fallbackTimerId);
                 }
+            };
+
+            // Once the exchange is terminal, for example the service rejected the headers outright or sending them
+            // failed, there is nothing left to send. Claim the write so neither the fallback nor a late interim
+            // response can subscribe the body onto a finished request.
+            promise.future().onComplete(ignored -> {
+                cancelFallback.run();
+                bodyWritten.set(true);
+            });
+
+            vertxRequest.continueHandler(ignored -> {
+                cancelFallback.run();
                 writeOnce.run();
             });
             vertxRequest.sendHead().onFailure(promise::fail);
