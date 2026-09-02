@@ -597,6 +597,22 @@ az role assignment create \
              -J-Dazure.keyvault.client-secret=${CLIENT_SECRET}
  ```
 
+If you run either `jarsigner` command above behind a proxy, append the standard JVM proxy system
+properties that apply to your environment:
+
+```bash
+-J-Dhttps.proxyHost=proxy.company.local \
+-J-Dhttps.proxyPort=8080 \
+-J-Dhttp.proxyHost=proxy.company.local \
+-J-Dhttp.proxyPort=8080 \
+'-J-Dhttp.nonProxyHosts=169.254.169.254|localhost|127.*'
+```
+
+`https.*` properties configure HTTPS requests, such as those to Key Vault. `http.*` properties configure
+HTTP requests, such as those to a managed identity endpoint. `http.nonProxyHosts` may be needed for local
+or managed identity endpoints, such as `169.254.169.254`, that should bypass the proxy. The single quotes
+around `-J-Dhttp.nonProxyHosts` prevent the shell from interpreting `|` as a pipe.
+
 replace ${PARAM_YOUR_JAR_FILE_PATH} with the path of your jar file, replace ${PARAM_JCA_PROVIDER_JAR_PATH} with the path of the jca provider jar.
 
 Check your output, if you see the `jar signed` message, it means the jar is signed successfully.
@@ -734,5 +750,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-
-
