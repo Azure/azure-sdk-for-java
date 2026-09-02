@@ -996,7 +996,7 @@ public final class OpenAIAsyncClient {
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
+            : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseInternalAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions);
         return response.map(responseBinaryData -> new SimpleResponse<>(responseBinaryData,
             responseBinaryData.getValue().toObject(AudioTranscription.class)));
@@ -1079,7 +1079,7 @@ public final class OpenAIAsyncClient {
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseInternalAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions);
         return response.map(dataResponse -> new SimpleResponse<>(dataResponse, dataResponse.getValue().toString()));
     }
@@ -1158,7 +1158,7 @@ public final class OpenAIAsyncClient {
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
+            : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseInternalAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions);
         return response.map(responseBinaryData -> new SimpleResponse<>(responseBinaryData,
             responseBinaryData.getValue().toObject(AudioTranslation.class)));
@@ -1238,7 +1238,7 @@ public final class OpenAIAsyncClient {
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
+            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseInternalAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions);
         return response.map(
             responseBinaryData -> new SimpleResponse<>(responseBinaryData, responseBinaryData.getValue().toString()));
@@ -1264,7 +1264,7 @@ public final class OpenAIAsyncClient {
     public Mono<String> getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
+        return getAudioTranscriptionAsPlainTextWithResponseInternal(deploymentOrModelName,
             BinaryData.fromObject(audioTranscriptionOptions), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
@@ -1288,7 +1288,7 @@ public final class OpenAIAsyncClient {
     public Mono<String> getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
+        return getAudioTranslationAsPlainTextWithResponseInternal(deploymentOrModelName,
             BinaryData.fromObject(audioTranslationOptions), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
@@ -1656,18 +1656,19 @@ public final class OpenAIAsyncClient {
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
-            uploadedFileWithResponse = this.serviceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions)
-                .onErrorResume(HttpResponseException.class,
-                    (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
-                        HttpResponseException ex = (HttpResponseException) throwable;
-                        HttpResponse httpResponse = ex.getResponse();
-                        if (httpResponse.getStatusCode() == 201) {
-                            return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
-                                httpResponse.getStatusCode(), httpResponse.getHeaders(),
-                                BinaryData.fromObject(ex.getValue()), null));
-                        }
-                        return Mono.error(throwable);
-                    });
+            uploadedFileWithResponse
+                = this.serviceClient.uploadFileWithResponseInternalAsync(uploadFileRequest, requestOptions)
+                    .onErrorResume(HttpResponseException.class,
+                        (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                            HttpResponseException ex = (HttpResponseException) throwable;
+                            HttpResponse httpResponse = ex.getResponse();
+                            if (httpResponse.getStatusCode() == 201) {
+                                return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                                    httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                                    BinaryData.fromObject(ex.getValue()), null));
+                            }
+                            return Mono.error(throwable);
+                        });
         }
         return uploadedFileWithResponse
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(OpenAIFile.class)));
@@ -2455,7 +2456,7 @@ public final class OpenAIAsyncClient {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
             addUploadPartWithResponse
-                = this.serviceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+                = this.serviceClient.addUploadPartWithResponseInternalAsync(uploadId, requestBody, requestOptions);
         }
         return addUploadPartWithResponse
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(UploadPart.class)));

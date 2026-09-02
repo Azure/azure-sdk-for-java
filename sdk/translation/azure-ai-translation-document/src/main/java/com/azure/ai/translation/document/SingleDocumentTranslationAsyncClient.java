@@ -212,7 +212,7 @@ public final class SingleDocumentTranslationAsyncClient {
             requestOptions.addQueryParam("translateTextWithinImage",
                 String.valueOf(translateOptions.isTranslateTextWithinImage()), false);
         }
-        return translateWithResponse(targetLanguage,
+        return translateWithResponseInternal(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
                     documentTranslateContent.getDocument().getContentType(),

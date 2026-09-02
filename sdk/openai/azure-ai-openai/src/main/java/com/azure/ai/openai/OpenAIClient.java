@@ -981,8 +981,8 @@ public final class OpenAIClient {
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions);
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseInternal(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
     }
 
@@ -1057,8 +1057,8 @@ public final class OpenAIClient {
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions);
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseInternal(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
     }
 
@@ -1132,8 +1132,8 @@ public final class OpenAIClient {
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions);
+            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseInternal(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranslation.class));
     }
 
@@ -1206,8 +1206,8 @@ public final class OpenAIClient {
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
-            : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions);
+            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseInternal(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
     }
 
@@ -1230,7 +1230,7 @@ public final class OpenAIClient {
     public String getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
+        return getAudioTranscriptionAsPlainTextWithResponseInternal(deploymentOrModelName,
             BinaryData.fromObject(audioTranscriptionOptions), requestOptions).getValue().toObject(String.class);
     }
 
@@ -1252,7 +1252,7 @@ public final class OpenAIClient {
     public String getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
+        return getAudioTranslationAsPlainTextWithResponseInternal(deploymentOrModelName,
             BinaryData.fromObject(audioTranslationOptions), requestOptions).getValue().toObject(String.class);
     }
 
@@ -1613,7 +1613,8 @@ public final class OpenAIClient {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
             try {
-                uploadedFileWithResponse = this.serviceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
+                uploadedFileWithResponse
+                    = this.serviceClient.uploadFileWithResponseInternal(uploadFileRequest, requestOptions);
             } catch (HttpResponseException ex) {
                 final HttpResponse httpResponse = ex.getResponse();
                 if (httpResponse.getStatusCode() == 201) {
@@ -2397,7 +2398,7 @@ public final class OpenAIClient {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
             addUploadPartWithResponse
-                = this.serviceClient.addUploadPartWithResponse(uploadId, requestBody, requestOptions);
+                = this.serviceClient.addUploadPartWithResponseInternal(uploadId, requestBody, requestOptions);
         }
         return new SimpleResponse<>(addUploadPartWithResponse,
             addUploadPartWithResponse.getValue().toObject(UploadPart.class));
