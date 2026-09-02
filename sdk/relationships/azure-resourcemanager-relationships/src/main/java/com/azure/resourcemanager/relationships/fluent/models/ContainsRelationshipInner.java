@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.relationships.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipPropertiesV2;
+import com.azure.resourcemanager.relationships.models.ContainsRelationshipProperties;
 import java.io.IOException;
 
 /**
- * Defines a ServiceGroupMember relationship resource.
+ * Defines a contains relationship resource.
  */
-@Fluent
-public final class ServiceGroupMemberRelationshipInner extends ProxyResource {
+@Immutable
+public final class ContainsRelationshipInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    private ServiceGroupMemberRelationshipPropertiesV2 properties;
+    private ContainsRelationshipProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -44,9 +44,9 @@ public final class ServiceGroupMemberRelationshipInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of ServiceGroupMemberRelationshipInner class.
+     * Creates an instance of ContainsRelationshipInner class.
      */
-    public ServiceGroupMemberRelationshipInner() {
+    private ContainsRelationshipInner() {
     }
 
     /**
@@ -54,19 +54,8 @@ public final class ServiceGroupMemberRelationshipInner extends ProxyResource {
      * 
      * @return the properties value.
      */
-    public ServiceGroupMemberRelationshipPropertiesV2 properties() {
+    public ContainsRelationshipProperties properties() {
         return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the ServiceGroupMemberRelationshipInner object itself.
-     */
-    public ServiceGroupMemberRelationshipInner withProperties(ServiceGroupMemberRelationshipPropertiesV2 properties) {
-        this.properties = properties;
-        return this;
     }
 
     /**
@@ -119,39 +108,37 @@ public final class ServiceGroupMemberRelationshipInner extends ProxyResource {
     }
 
     /**
-     * Reads an instance of ServiceGroupMemberRelationshipInner from the JsonReader.
+     * Reads an instance of ContainsRelationshipInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ServiceGroupMemberRelationshipInner if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of ContainsRelationshipInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ServiceGroupMemberRelationshipInner.
+     * @throws IOException If an error occurs while reading the ContainsRelationshipInner.
      */
-    public static ServiceGroupMemberRelationshipInner fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainsRelationshipInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ServiceGroupMemberRelationshipInner deserializedServiceGroupMemberRelationshipInner
-                = new ServiceGroupMemberRelationshipInner();
+            ContainsRelationshipInner deserializedContainsRelationshipInner = new ContainsRelationshipInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipInner.id = reader.getString();
+                    deserializedContainsRelationshipInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipInner.name = reader.getString();
+                    deserializedContainsRelationshipInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipInner.type = reader.getString();
+                    deserializedContainsRelationshipInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipInner.properties
-                        = ServiceGroupMemberRelationshipPropertiesV2.fromJson(reader);
+                    deserializedContainsRelationshipInner.properties = ContainsRelationshipProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipInner.systemData = SystemData.fromJson(reader);
+                    deserializedContainsRelationshipInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedServiceGroupMemberRelationshipInner;
+            return deserializedContainsRelationshipInner;
         });
     }
 }

@@ -12,18 +12,18 @@ public final class DependencyOfRelationshipPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DependencyOfRelationshipProperties model = BinaryData.fromString(
-            "{\"sourceId\":\"vd\",\"targetId\":\"mjgr\",\"targetTenant\":\"wvukx\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"dcc\"},\"metadata\":{\"sourceType\":\"nhsjcnyej\",\"targetType\":\"kryhtnapczwlokj\"},\"provisioningState\":\"Provisioning\"}")
+            "{\"sourceId\":\"audccsnhs\",\"targetId\":\"cnyejhkryhtnapcz\",\"targetTenant\":\"okjye\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"ni\"},\"metadata\":{\"sourceType\":\"oxzjnchgejspod\",\"targetType\":\"ailzydehojwyahu\"},\"provisioningState\":\"Canceled\"}")
             .toObject(DependencyOfRelationshipProperties.class);
-        Assertions.assertEquals("mjgr", model.targetId());
-        Assertions.assertEquals("wvukx", model.targetTenant());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.targetId());
+        Assertions.assertEquals("okjye", model.targetTenant());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DependencyOfRelationshipProperties model
-            = new DependencyOfRelationshipProperties().withTargetId("mjgr").withTargetTenant("wvukx");
+            = new DependencyOfRelationshipProperties().withTargetId("cnyejhkryhtnapcz").withTargetTenant("okjye");
         model = BinaryData.fromObject(model).toObject(DependencyOfRelationshipProperties.class);
-        Assertions.assertEquals("mjgr", model.targetId());
-        Assertions.assertEquals("wvukx", model.targetTenant());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.targetId());
+        Assertions.assertEquals("okjye", model.targetTenant());
     }
 }
