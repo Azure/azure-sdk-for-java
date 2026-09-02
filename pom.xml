@@ -27,7 +27,6 @@
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/artifactsigning</module>
-    <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/authorization</module>
     <module>sdk/automanage</module>
