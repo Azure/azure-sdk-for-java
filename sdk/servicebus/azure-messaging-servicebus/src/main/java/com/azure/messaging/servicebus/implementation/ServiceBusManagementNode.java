@@ -128,8 +128,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     /**
      * Deletes up to {@code maxMessages} messages enqueued before the given cutoff.
      *
-    * @param maxMessages The maximum number of messages to delete. The service limit is 500 for Basic and Standard
-    * and 4,000 for Premium.
+        * @param maxMessages The maximum number of messages to delete. The service limit is 500 for Basic and Standard
+        * and 4,000 for Premium.
      * @param enqueueTimeUtcOlderThan Only messages enqueued before this time are deleted.
      * @param sessionId The session identifier, or {@code null} for a non-session entity.
      * @param associatedLinkName The associated receive-link name, or {@code null} if no link is open.

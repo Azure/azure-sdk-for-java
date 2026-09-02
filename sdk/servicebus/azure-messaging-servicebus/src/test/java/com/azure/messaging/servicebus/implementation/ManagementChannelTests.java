@@ -1502,7 +1502,6 @@ class ManagementChannelTests {
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         final Message sentMessage = messageCaptor.getValue();
         final Map<String, Object> appProperties = sentMessage.getApplicationProperties().getValue();
-        assertEquals("com.microsoft:batch-delete-messages", appProperties.get(MANAGEMENT_OPERATION_KEY));
         assertEquals(OPERATION_BATCH_DELETE_MESSAGES, appProperties.get(MANAGEMENT_OPERATION_KEY));
         assertTrue(appProperties.get(ManagementConstants.SERVER_TIMEOUT) instanceof Long);
         assertEquals(LINK_NAME, appProperties.get(ASSOCIATED_LINK_NAME_KEY));

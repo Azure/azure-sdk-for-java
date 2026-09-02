@@ -19,7 +19,7 @@ public final class PurgeMessagesOptions {
     }
 
     /**
-    * Gets the enqueue-time threshold that stays unchanged for every purge request.
+        * Gets the enqueue-time threshold that stays unchanged for every purge request.
      *
     * @return The enqueue-time threshold, or {@code null} to use the time the purge starts.
      */
@@ -28,10 +28,10 @@ public final class PurgeMessagesOptions {
     }
 
     /**
-    * Sets the enqueue-time threshold. Only messages enqueued before this time can be deleted, and the value stays
-    * unchanged for every purge request.
+        * Sets the enqueue-time threshold. Only messages enqueued before this time can be deleted, and the value stays
+        * unchanged for every purge request.
      *
-    * @param enqueueTimeUtcOlderThan The enqueue-time threshold.
+        * @param enqueueTimeUtcOlderThan The enqueue-time threshold.
      * @return The updated {@link PurgeMessagesOptions}.
      */
     public PurgeMessagesOptions setEnqueueTimeUtcOlderThan(OffsetDateTime enqueueTimeUtcOlderThan) {
@@ -49,12 +49,12 @@ public final class PurgeMessagesOptions {
     }
 
     /**
-    * Sets the maximum number of messages requested in each batch-delete call. The service limit is 500 for Basic and
-    * Standard and 4,000 for Premium.
+        * Sets the maximum number of messages requested in each batch-delete call. The service limit is 500 for Basic and
+        * Standard and 4,000 for Premium.
      *
      * @param maxMessagesPerBatch The positive maximum number of messages per batch.
      * @return The updated {@link PurgeMessagesOptions}.
-    * @throws IllegalArgumentException if {@code maxMessagesPerBatch} is less than one.
+        * @throws IllegalArgumentException if {@code maxMessagesPerBatch} is less than one.
      */
     public PurgeMessagesOptions setMaxMessagesPerBatch(int maxMessagesPerBatch) {
         if (maxMessagesPerBatch < 1) {
