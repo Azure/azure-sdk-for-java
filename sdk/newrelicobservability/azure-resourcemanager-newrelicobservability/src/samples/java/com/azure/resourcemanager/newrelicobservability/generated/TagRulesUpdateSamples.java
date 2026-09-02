@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class TagRulesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TagRules_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/TagRules_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MaximumSet_Gen.
@@ -48,7 +48,7 @@ public final class TagRulesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/TagRules_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/TagRules_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MinimumSet_Gen.

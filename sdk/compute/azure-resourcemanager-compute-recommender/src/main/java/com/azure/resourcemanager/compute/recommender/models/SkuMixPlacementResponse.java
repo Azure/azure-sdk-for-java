@@ -13,6 +13,15 @@ import java.util.List;
  */
 public interface SkuMixPlacementResponse {
     /**
+     * Gets the id property: Unique identifier for this placement response, including responses that contain no
+     * placement choices.
+     * Replaces the per-choice id that was present on placementChoices in earlier API versions.
+     * 
+     * @return the id value.
+     */
+    String id();
+
+    /**
      * Gets the placementChoices property: List of placement choice recommendations.
      * 
      * @return the placementChoices value.
@@ -33,6 +42,16 @@ public interface SkuMixPlacementResponse {
      * @return the partialFulfillmentReason value.
      */
     SkuMixPlacementPartialFulfillmentReason partialFulfillmentReason();
+
+    /**
+     * Gets the capacityLimits property: Capacity availability for each requested (VM size, zone) combination,
+     * independent of the recommended
+     * placement. An entry is present for every requested combination, including those excluded by capacity
+     * or quota. Only returned for requests that describe instances by VM sizes.
+     * 
+     * @return the capacityLimits value.
+     */
+    List<SkuMixPlacementCapacityLimit> capacityLimits();
 
     /**
      * Gets the inner com.azure.resourcemanager.compute.recommender.fluent.models.SkuMixPlacementResponseInner object.

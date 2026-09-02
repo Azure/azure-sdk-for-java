@@ -32,7 +32,7 @@ public final class SkuMixPlacementCapacityProfile implements JsonSerializable<Sk
     private SkuMixPlacementPriority priority;
 
     /*
-     * Required when priority is Spot. Contains spot-specific configuration.
+     * Contains spot-specific configuration.
      */
     private SkuMixPlacementSpotPriorityProfile spotPriorityProfile;
 
@@ -118,7 +118,7 @@ public final class SkuMixPlacementCapacityProfile implements JsonSerializable<Sk
     }
 
     /**
-     * Get the spotPriorityProfile property: Required when priority is Spot. Contains spot-specific configuration.
+     * Get the spotPriorityProfile property: Contains spot-specific configuration.
      * 
      * @return the spotPriorityProfile value.
      */
@@ -127,7 +127,7 @@ public final class SkuMixPlacementCapacityProfile implements JsonSerializable<Sk
     }
 
     /**
-     * Set the spotPriorityProfile property: Required when priority is Spot. Contains spot-specific configuration.
+     * Set the spotPriorityProfile property: Contains spot-specific configuration.
      * 
      * @param spotPriorityProfile the spotPriorityProfile value to set.
      * @return the SkuMixPlacementCapacityProfile object itself.
