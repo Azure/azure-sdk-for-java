@@ -188,7 +188,39 @@ public class HttpUtilTest {
                 throw new IOException("Connection failed");
             });
 
-        assertNull(result.getBody());
+        assertEmptyBinaryResponse(result);
+    }
+
+    @Test
+    void binaryResponseHandlesConnectionSecurityFailure() {
+        HttpUtil.BinaryHttpResponse result
+            = HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> {
+                throw new SecurityException("Connection blocked");
+            });
+
+        assertEmptyBinaryResponse(result);
+    }
+
+    @Test
+    void binaryResponseDisconnectsAfterRuntimeFailure() throws Exception {
+        TestHttpURLConnection connection = new TestHttpURLConnection(200, new byte[0], Collections.emptyMap(),
+            new SecurityException("Response blocked"));
+
+        HttpUtil.BinaryHttpResponse result
+            = HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> connection);
+
+        assertEmptyBinaryResponse(result);
+        assertTrue(connection.disconnected);
+    }
+
+    @Test
+    void binaryResponseDoesNotCatchJvmErrors() {
+        AssertionError error = assertThrows(AssertionError.class,
+            () -> HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt", ignored -> {
+                throw new AssertionError("Fatal failure");
+            }));
+
+        assertEquals("Fatal failure", error.getMessage());
     }
 
     @Test
@@ -295,27 +327,50 @@ public class HttpUtilTest {
         assertTrue(response.disconnected);
     }
 
+    private static void assertEmptyBinaryResponse(HttpUtil.BinaryHttpResponse response) {
+        assertNull(response.getBody());
+        assertNull(response.getCacheControl());
+        assertNull(response.getDate());
+        assertNull(response.getAge());
+        assertNull(response.getExpires());
+    }
+
     private static final class TestHttpURLConnection extends HttpURLConnection {
         private final int status;
         private final byte[] body;
         private final Map<String, List<String>> headers;
+        private final RuntimeException responseFailure;
         private final ByteArrayOutputStream requestBody = new ByteArrayOutputStream();
         private boolean disconnected;
 
         private TestHttpURLConnection(int status, byte[] body, Map<String, List<String>> headers) throws Exception {
-            this("https://example.test/cert.crt", status, body, headers);
+            this("https://example.test/cert.crt", status, body, headers, null);
+        }
+
+        private TestHttpURLConnection(int status, byte[] body, Map<String, List<String>> headers,
+            RuntimeException responseFailure) throws Exception {
+            this("https://example.test/cert.crt", status, body, headers, responseFailure);
         }
 
         private TestHttpURLConnection(String url, int status, byte[] body, Map<String, List<String>> headers)
             throws Exception {
+            this(url, status, body, headers, null);
+        }
+
+        private TestHttpURLConnection(String url, int status, byte[] body, Map<String, List<String>> headers,
+            RuntimeException responseFailure) throws Exception {
             super(new URL(url));
             this.status = status;
             this.body = body;
             this.headers = headers;
+            this.responseFailure = responseFailure;
         }
 
         @Override
         public int getResponseCode() {
+            if (responseFailure != null) {
+                throw responseFailure;
+            }
             return status;
         }
 

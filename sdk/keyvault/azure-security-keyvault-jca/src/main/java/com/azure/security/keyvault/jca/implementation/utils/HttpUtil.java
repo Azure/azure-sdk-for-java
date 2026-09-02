@@ -224,11 +224,10 @@ public final class HttpUtil {
 
                 return new BinaryHttpResponse(readResponseBytes(connection.getInputStream(), currentUrl), cacheControl,
                     date, age, expires);
-            } catch (IOException | IllegalArgumentException | ClassCastException e) {
-                // Catch all exceptions including IOException, IllegalArgumentException, and other runtime exceptions
-                // that may occur during HTTP execution. Gracefully return null to allow AIA completion to fail silently
-                // the entire jarsigner/signing operation.
-                LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: " + currentUrl, e);
+            } catch (IOException | RuntimeException exception) {
+                // AIA chain completion is best effort. Treat connection and response handling failures as an empty
+                // response so they don't abort certificate loading. JVM errors are intentionally not caught.
+                LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: " + currentUrl, exception);
 
                 return BinaryHttpResponse.empty();
             } finally {

@@ -16,7 +16,7 @@
 ### Other Changes
 - Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. The value is captured when each Key Vault client is initialized and retained for lazy certificate-chain loading, so multiple keystores can use different settings without overwriting one another. Set to `true` to disable (defaults to `false`).
 - Added `KeyVaultJcaPropertyNames` as the central source for the system property names supported by the Azure Key Vault JCA provider. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
-- Replaced Apache HttpClient 5 with the JDK `HttpURLConnection`, removing the Apache HttpClient and SLF4J runtime dependencies while preventing JVM-wide default hostname verifier overrides from weakening JCA HTTPS connections.
+- Replaced Apache HttpClient 5 with the JDK `HttpURLConnection`, removing the Apache HttpClient and SLF4J runtime dependencies while preserving strict HTTPS hostname verification and non-fatal AIA download failures.
 
 ## 2.12.0 (2026-07-24)
 
