@@ -9,7 +9,7 @@ class;com.azure.ai.agents.models.AgentOptimizationDatasetCriterion;Preview API. 
 class;com.azure.ai.agents.models.AgentOptimizationDatasetInput;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationDatasetInputType;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationDatasetItem;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationEvaluatorRef;Preview API. AgentsOptimization=V2Preview;
+class;com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationInlineDatasetInput;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationJob;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationJobInputs;Preview API. AgentsOptimization=V2Preview;
@@ -73,6 +73,7 @@ class;com.azure.ai.agents.models.ModelSelectionDetails;Preview API. ModelRouterC
 class;com.azure.ai.agents.models.OptimizedAgentIdentifier;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.ProceduralMemoryItem;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.PromotionInfo;Preview API. AgentsOptimization=V2Preview;
+class;com.azure.ai.agents.models.RealtimeConversationItemMessage;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.ReminderPreviewToolboxTool;Preview API. preview_tool;
 field;com.azure.ai.agents.models.Response;Preview API. ModelRouterControls=V1Preview;model_selection_details
 class;com.azure.ai.agents.models.RoutingTraceEntry;Preview API. ModelRouterControls=V1Preview;

@@ -6,7 +6,7 @@ package com.azure.ai.agents.optimization;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.models.AgentOptimizationCandidate;
-import com.azure.ai.agents.models.AgentOptimizationEvaluatorRef;
+import com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;
 import com.azure.ai.agents.models.AgentOptimizationJob;
 import com.azure.ai.agents.models.AgentOptimizationJobInputs;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
@@ -82,7 +82,7 @@ public class AgentOptimizationSample {
 
     private static AgentOptimizationJob createOptimizationJob(Configuration configuration) {
         String evaluatorVersion = configuration.get("EVALUATOR_VERSION");
-        AgentOptimizationEvaluatorRef evaluator = new AgentOptimizationEvaluatorRef(
+        AgentOptimizationEvaluatorReference evaluator = new AgentOptimizationEvaluatorReference(
             configuration.get("EVALUATOR_NAME", "task_adherence"));
         if (evaluatorVersion != null) {
             evaluator.setVersion(evaluatorVersion);
