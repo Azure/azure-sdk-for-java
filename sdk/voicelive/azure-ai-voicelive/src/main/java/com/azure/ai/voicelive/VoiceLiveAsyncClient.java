@@ -3,8 +3,12 @@
 
 package com.azure.ai.voicelive;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,22 +38,26 @@ public final class VoiceLiveAsyncClient {
     private final KeyCredential keyCredential;
     private final TokenCredential tokenCredential;
     private final String apiVersion;
+    private final String userAgent;
     private final HttpHeaders additionalHeaders;
 
-    VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, HttpHeaders additionalHeaders) {
+    VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, String userAgent,
+        HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null");
+        this.userAgent = Objects.requireNonNull(userAgent, "'userAgent' cannot be null");
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
     }
 
-    VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion,
+    VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion, String userAgent,
         HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null");
+        this.userAgent = Objects.requireNonNull(userAgent, "'userAgent' cannot be null");
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
     }
 
@@ -229,17 +237,20 @@ public final class VoiceLiveAsyncClient {
             Map<String, String> queryParams = new LinkedHashMap<>();
 
             // Start with existing query parameters from the endpoint URL
-            if (httpEndpoint.getQuery() != null && !httpEndpoint.getQuery().isEmpty()) {
-                String[] pairs = httpEndpoint.getQuery().split("&");
+            if (httpEndpoint.getRawQuery() != null && !httpEndpoint.getRawQuery().isEmpty()) {
+                String[] pairs = httpEndpoint.getRawQuery().split("&");
                 for (String pair : pairs) {
                     int idx = pair.indexOf("=");
                     if (idx > 0) {
-                        String key = pair.substring(0, idx);
-                        String value = pair.substring(idx + 1);
+                        String key = decodeQueryParameter(pair.substring(0, idx));
+                        String value = decodeQueryParameter(pair.substring(idx + 1));
                         queryParams.put(key, value);
                     }
                 }
             }
+
+            // Identify the SDK when headers aren't available to the service. Request options may override this value.
+            queryParams.put("x-ms-client-sdk", userAgent);
 
             // Add/override with custom query parameters from request options
             if (additionalQueryParams != null && !additionalQueryParams.isEmpty()) {
@@ -260,14 +271,41 @@ public final class VoiceLiveAsyncClient {
                 if (queryBuilder.length() > 0) {
                     queryBuilder.append("&");
                 }
-                queryBuilder.append(entry.getKey()).append("=").append(entry.getValue());
+                queryBuilder.append(encodeQueryParameter(entry.getKey()))
+                    .append("=")
+                    .append(encodeQueryParameter(entry.getValue()));
             }
 
-            return new URI(scheme, httpEndpoint.getUserInfo(), httpEndpoint.getHost(), httpEndpoint.getPort(), path,
-                queryBuilder.length() > 0 ? queryBuilder.toString() : null, httpEndpoint.getFragment());
+            URI uriWithoutQuery = new URI(scheme, httpEndpoint.getUserInfo(), httpEndpoint.getHost(),
+                httpEndpoint.getPort(), path, null, httpEndpoint.getFragment());
+            if (queryBuilder.length() == 0) {
+                return uriWithoutQuery;
+            }
+
+            String uri = uriWithoutQuery.toASCIIString();
+            int fragmentIndex = uri.indexOf('#');
+            return URI.create(fragmentIndex < 0
+                ? uri + "?" + queryBuilder
+                : uri.substring(0, fragmentIndex) + "?" + queryBuilder + uri.substring(fragmentIndex));
         } catch (URISyntaxException e) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Failed to convert endpoint to WebSocket URI", e));
+        }
+    }
+
+    private static String encodeQueryParameter(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.name()).replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("UTF-8 encoding is not supported", e);
+        }
+    }
+
+    private static String decodeQueryParameter(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("UTF-8 encoding is not supported", e);
         }
     }
 }

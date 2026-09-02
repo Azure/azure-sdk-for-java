@@ -42,14 +42,15 @@ class VoiceLiveAsyncClientTest {
     void setUp() throws Exception {
         testEndpoint = new URI("https://test.cognitiveservices.azure.com");
         keyCredentialConstructor = VoiceLiveAsyncClient.class.getDeclaredConstructor(URI.class, KeyCredential.class,
-            String.class, HttpHeaders.class);
+            String.class, String.class, HttpHeaders.class);
         keyCredentialConstructor.setAccessible(true);
         toQueryParameters = VoiceLiveAsyncClient.class.getDeclaredMethod("toQueryParameters", AgentSessionConfig.class);
         toQueryParameters.setAccessible(true);
     }
 
     private VoiceLiveAsyncClient newClient(URI endpoint, KeyCredential credential) throws Exception {
-        return keyCredentialConstructor.newInstance(endpoint, credential, "2024-10-01-preview", mockHeaders);
+        return keyCredentialConstructor.newInstance(endpoint, credential, "2024-10-01-preview", "test-user-agent",
+            mockHeaders);
     }
 
     @SuppressWarnings("unchecked")

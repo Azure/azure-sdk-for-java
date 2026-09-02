@@ -14,10 +14,12 @@ import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
-
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -128,12 +130,22 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
         }
 
         VoiceLiveServiceVersion version = serviceVersion != null ? serviceVersion : VoiceLiveServiceVersion.getLatest();
-        HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        String applicationId = CoreUtils.getApplicationId(clientOptions, null);
+        String userAgent = UserAgentUtil.toUserAgentString(applicationId, SDK_NAME, SDK_VERSION, null);
+        HttpHeaders additionalHeaders = new HttpHeaders().set(HttpHeaderName.USER_AGENT, userAgent);
+        HttpHeaders clientOptionHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (clientOptionHeaders != null) {
+            for (HttpHeader header : clientOptionHeaders) {
+                additionalHeaders.set(HttpHeaderName.fromString(header.getName()), header.getValue());
+            }
+        }
 
         if (keyCredential != null) {
-            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders);
+            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), userAgent,
+                additionalHeaders);
         } else {
-            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders);
+            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), userAgent,
+                additionalHeaders);
         }
     }
 }

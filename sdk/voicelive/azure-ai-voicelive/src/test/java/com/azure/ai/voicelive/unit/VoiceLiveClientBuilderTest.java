@@ -8,13 +8,22 @@ import com.azure.ai.voicelive.VoiceLiveClientBuilder;
 import com.azure.ai.voicelive.VoiceLiveServiceVersion;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Header;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -208,14 +217,35 @@ class VoiceLiveClientBuilderTest {
     }
 
     @Test
-    void testBuilderWithDefaultTelemetry() {
-        String endpoint = "https://test.cognitiveservices.azure.com";
+    void testBuilderWithDefaultTelemetry() throws Exception {
+        VoiceLiveAsyncClient client = clientBuilder.endpoint("https://test.cognitiveservices.azure.com")
+            .credential(mockKeyCredential)
+            .clientOptions(new ClientOptions().setApplicationId("test-application"))
+            .buildAsyncClient();
 
-        assertDoesNotThrow(() -> {
-            VoiceLiveAsyncClient client
-                = clientBuilder.endpoint(endpoint).credential(mockKeyCredential).buildAsyncClient();
+        String userAgent = getField(client, "userAgent", String.class);
+        HttpHeaders headers = getField(client, "additionalHeaders", HttpHeaders.class);
+        assertTrue(userAgent.startsWith("test-application azsdk-java-azure-ai-voicelive/"));
+        assertEquals(userAgent, headers.getValue(HttpHeaderName.USER_AGENT));
+    }
 
-            assertNotNull(client);
-        });
+    @Test
+    void testBuilderCustomUserAgentOverridesDefaultHeader() throws Exception {
+        VoiceLiveAsyncClient client = clientBuilder.endpoint("https://test.cognitiveservices.azure.com")
+            .credential(mockKeyCredential)
+            .clientOptions(new ClientOptions()
+                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom-user-agent"))))
+            .buildAsyncClient();
+
+        String userAgent = getField(client, "userAgent", String.class);
+        HttpHeaders headers = getField(client, "additionalHeaders", HttpHeaders.class);
+        assertTrue(userAgent.startsWith("azsdk-java-azure-ai-voicelive/"));
+        assertEquals("custom-user-agent", headers.getValue(HttpHeaderName.USER_AGENT));
+    }
+
+    private static <T> T getField(VoiceLiveAsyncClient client, String fieldName, Class<T> type) throws Exception {
+        Field field = VoiceLiveAsyncClient.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return type.cast(field.get(client));
     }
 }

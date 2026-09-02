@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Added the Azure SDK identifier to the WebSocket `User-Agent` header and `x-ms-client-sdk` query parameter.
+
 ### Other Changes
 
 ## 1.1.0 (2026-08-03)
