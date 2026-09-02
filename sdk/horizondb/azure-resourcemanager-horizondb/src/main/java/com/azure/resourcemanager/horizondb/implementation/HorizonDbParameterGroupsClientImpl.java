@@ -295,14 +295,14 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response} on successful completion of
+     * @return information about a HorizonDB parameter group along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -316,14 +316,14 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group on successful completion of {@link Mono}.
+     * @return information about a HorizonDB parameter group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbParameterGroupInner> getByResourceGroupAsync(String resourceGroupName,
@@ -333,15 +333,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response}.
+     * @return information about a HorizonDB parameter group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HorizonDbParameterGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
@@ -352,14 +352,14 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group.
+     * @return information about a HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbParameterGroupInner getByResourceGroup(String resourceGroupName, String parameterGroupName) {
@@ -367,15 +367,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response} on successful completion of
+     * @return represents the HorizonDB parameter group along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -391,15 +391,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response}.
+     * @return represents the HorizonDB parameter group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String parameterGroupName,
@@ -412,16 +412,16 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response}.
+     * @return represents the HorizonDB parameter group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String parameterGroupName,
@@ -434,15 +434,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb parameter group.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginCreateOrUpdateAsync(
@@ -455,15 +455,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginCreateOrUpdate(
@@ -474,16 +474,16 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginCreateOrUpdate(
@@ -495,15 +495,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group on successful completion of {@link Mono}.
+     * @return represents the HorizonDB parameter group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbParameterGroupInner> createOrUpdateAsync(String resourceGroupName, String parameterGroupName,
@@ -513,15 +513,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbParameterGroupInner createOrUpdate(String resourceGroupName, String parameterGroupName,
@@ -530,16 +530,16 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbParameterGroupInner createOrUpdate(String resourceGroupName, String parameterGroupName,
@@ -548,15 +548,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response} on successful completion of
+     * @return represents the HorizonDB parameter group along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -572,15 +572,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response}.
+     * @return represents the HorizonDB parameter group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String parameterGroupName,
@@ -593,16 +593,16 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response}.
+     * @return represents the HorizonDB parameter group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String parameterGroupName,
@@ -615,15 +615,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb parameter group.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginUpdateAsync(
@@ -636,15 +636,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginUpdate(
@@ -655,16 +655,16 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginUpdate(
@@ -676,15 +676,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group on successful completion of {@link Mono}.
+     * @return represents the HorizonDB parameter group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbParameterGroupInner> updateAsync(String resourceGroupName, String parameterGroupName,
@@ -694,15 +694,15 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbParameterGroupInner update(String resourceGroupName, String parameterGroupName,
@@ -711,16 +711,16 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbParameterGroupInner update(String resourceGroupName, String parameterGroupName,
@@ -729,10 +729,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -748,10 +748,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -764,10 +764,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -782,10 +782,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -799,10 +799,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -815,10 +815,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -833,10 +833,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -849,10 +849,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -863,10 +863,10 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -878,7 +878,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -900,7 +900,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -915,7 +915,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -933,7 +933,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -953,7 +953,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -969,7 +969,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -986,7 +986,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1005,7 +1005,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1018,7 +1018,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1034,7 +1034,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1052,7 +1052,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1065,7 +1065,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
     }
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1084,7 +1084,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1108,7 +1108,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1125,7 +1125,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1146,7 +1146,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1168,7 +1168,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1185,7 +1185,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1203,7 +1203,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1227,7 +1227,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1245,7 +1245,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1263,7 +1263,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1285,7 +1285,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1308,7 +1308,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1327,7 +1327,7 @@ public final class HorizonDbParameterGroupsClientImpl implements HorizonDbParame
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

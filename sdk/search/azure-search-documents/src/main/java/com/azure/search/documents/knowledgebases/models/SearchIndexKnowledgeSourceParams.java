@@ -9,6 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
+import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceQueryHints;
 import java.io.IOException;
 
 /**
@@ -113,12 +115,16 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("neverQuerySource", isNeverQuerySource());
         jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
         jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("filterAddOn", this.filterAddOn);
+        jsonWriter.writeJsonField("queryHintOverrides", this.queryHintOverrides);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,12 +144,15 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean neverQuerySource = null;
             Boolean failOnError = null;
             Float rerankerThreshold = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             Integer maxOutputDocuments = null;
             Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.SEARCH_INDEX;
             String filterAddOn = null;
+            SearchIndexKnowledgeSourceQueryHints queryHintOverrides = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,10 +164,14 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("neverQuerySource".equals(fieldName)) {
+                    neverQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("failOnError".equals(fieldName)) {
                     failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("maxOutputDocuments".equals(fieldName)) {
                     maxOutputDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("enableImageServing".equals(fieldName)) {
@@ -167,6 +180,8 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("filterAddOn".equals(fieldName)) {
                     filterAddOn = reader.getString();
+                } else if ("queryHintOverrides".equals(fieldName)) {
+                    queryHintOverrides = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -176,12 +191,15 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             deserializedSearchIndexKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedSearchIndexKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedSearchIndexKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedSearchIndexKnowledgeSourceParams.setNeverQuerySource(neverQuerySource);
             deserializedSearchIndexKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedSearchIndexKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedSearchIndexKnowledgeSourceParams.setResultsProcessing(resultsProcessing);
             deserializedSearchIndexKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
             deserializedSearchIndexKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedSearchIndexKnowledgeSourceParams.kind = kind;
             deserializedSearchIndexKnowledgeSourceParams.filterAddOn = filterAddOn;
+            deserializedSearchIndexKnowledgeSourceParams.queryHintOverrides = queryHintOverrides;
             return deserializedSearchIndexKnowledgeSourceParams;
         });
     }
@@ -223,6 +241,58 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
     @Override
     public SearchIndexKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
         super.setEnableImageServing(enableImageServing);
+        return this;
+    }
+
+    /*
+     * Hints that guide query planning toward useful filters and boosts. If specified, this object replaces the complete
+     * set of query hints configured on the knowledge source.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceQueryHints queryHintOverrides;
+
+    /**
+     * Get the queryHintOverrides property: Hints that guide query planning toward useful filters and boosts. If
+     * specified, this object replaces the complete set of query hints configured on the knowledge source.
+     *
+     * @return the queryHintOverrides value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceQueryHints getQueryHintOverrides() {
+        return this.queryHintOverrides;
+    }
+
+    /**
+     * Set the queryHintOverrides property: Hints that guide query planning toward useful filters and boosts. If
+     * specified, this object replaces the complete set of query hints configured on the knowledge source.
+     *
+     * @param queryHintOverrides the queryHintOverrides value to set.
+     * @return the SearchIndexKnowledgeSourceParams object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceParams
+        setQueryHintOverrides(SearchIndexKnowledgeSourceQueryHints queryHintOverrides) {
+        this.queryHintOverrides = queryHintOverrides;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SearchIndexKnowledgeSourceParams setNeverQuerySource(Boolean neverQuerySource) {
+        super.setNeverQuerySource(neverQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SearchIndexKnowledgeSourceParams setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
         return this;
     }
 }
