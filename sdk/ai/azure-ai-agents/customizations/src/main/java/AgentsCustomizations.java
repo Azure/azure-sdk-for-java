@@ -33,6 +33,7 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeTimeZoneModels(libraryCustomization);
+        customizeVoiceAgentWebSocketClients(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
@@ -125,6 +126,60 @@ public class AgentsCustomizations extends Customization {
                     + " return timezone;"
                     + " }"));
         }
+    }
+
+    private void customizeVoiceAgentWebSocketClients(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
+            ast.addImport("com.azure.core.util.UserAgentUtil");
+
+            customizeMethodBody(builder, "buildBetaVoiceAgentWebSocketAsyncClient",
+                "{ return new BetaVoiceAgentWebSocketAsyncClient(buildInnerClient().getBetaVoiceAgentWebSockets()); }",
+                "{ return new BetaVoiceAgentWebSocketAsyncClient(buildVoiceAgentInnerClient().getBetaVoiceAgentWebSockets()); }");
+            customizeMethodBody(builder, "buildBetaVoiceAgentWebSocketClient",
+                "{ return new BetaVoiceAgentWebSocketClient(buildInnerClient().getBetaVoiceAgentWebSockets()); }",
+                "{ return new BetaVoiceAgentWebSocketClient(buildVoiceAgentInnerClient().getBetaVoiceAgentWebSockets()); }");
+
+            if (builder.getMethodsByName("buildVoiceAgentInnerClient").isEmpty()) {
+                builder.addMember(StaticJavaParser.parseMethodDeclaration(
+                    "private AgentsClientImpl buildVoiceAgentInnerClient() {"
+                        + " this.validateClient();"
+                        + " Configuration buildConfiguration = (configuration == null)"
+                        + " ? Configuration.getGlobalConfiguration() : configuration;"
+                        + " ClientOptions localClientOptions = this.clientOptions == null"
+                        + " ? new ClientOptions() : this.clientOptions;"
+                        + " String clientName = PROPERTIES.getOrDefault(SDK_NAME, \"UnknownName\");"
+                        + " String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, \"UnknownVersion\");"
+                        + " String applicationId = CoreUtils.getApplicationId(localClientOptions, this.httpLogOptions);"
+                        + " String userAgent = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion,"
+                        + " buildConfiguration);"
+                        + " HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();"
+                        + " HttpPipelinePolicy clientSdkQueryPolicy ="
+                        + " FoundryPolicyHelper.createClientSdkQueryPolicy(userAgent);"
+                        + " localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline, clientSdkQueryPolicy);"
+                        + " AgentsServiceVersion localServiceVersion = (serviceVersion != null)"
+                        + " ? serviceVersion : AgentsServiceVersion.getLatest();"
+                        + " return new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),"
+                        + " this.endpoint, localServiceVersion);"
+                        + " }"));
+            }
+        });
+    }
+
+    private static void customizeMethodBody(ClassOrInterfaceDeclaration clazz, String methodName,
+        String generatedBody, String customizedBody) {
+        MethodDeclaration method = getSingleMethod(clazz, methodName);
+        String currentBody = method.getBody()
+            .orElseThrow(() -> new IllegalStateException(clazz.getNameAsString() + "." + methodName + " has no body."))
+            .toString();
+        String expectedBody = StaticJavaParser.parseBlock(generatedBody).toString();
+        String replacementBody = StaticJavaParser.parseBlock(customizedBody).toString();
+        if (!currentBody.equals(expectedBody) && !currentBody.equals(replacementBody)) {
+            throw new IllegalStateException(
+                clazz.getNameAsString() + "." + methodName + " no longer has the expected generated body.");
+        }
+        method.setBody(StaticJavaParser.parseBlock(customizedBody));
     }
 
     private static MethodDeclaration getSingleMethod(ClassOrInterfaceDeclaration model, String methodName) {
