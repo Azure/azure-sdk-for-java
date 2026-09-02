@@ -673,7 +673,7 @@ public interface MonitorsClient {
 
     /**
      * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     *
+     * 
      * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -689,7 +689,7 @@ public interface MonitorsClient {
 
     /**
      * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     *
+     * 
      * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -707,7 +707,7 @@ public interface MonitorsClient {
 
     /**
      * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     *
+     * 
      * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -722,7 +722,7 @@ public interface MonitorsClient {
 
     /**
      * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     *
+     * 
      * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

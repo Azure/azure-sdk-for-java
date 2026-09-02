@@ -804,7 +804,7 @@ public interface NewRelicMonitorResource {
 
     /**
      * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     *
+     * 
      * A long-running resource action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -815,7 +815,7 @@ public interface NewRelicMonitorResource {
 
     /**
      * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
-     *
+     * 
      * A long-running resource action.
      * 
      * @param body Resubscribe Properties.
