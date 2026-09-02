@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0 (2026-09-02)
+## 3.0.0 (2026-09-02)
 
 - Azure Resource Manager ProviderHub client library for Java. This package contains Microsoft Azure SDK for ProviderHub Management SDK. Provider Hub. Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
