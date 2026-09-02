@@ -4034,5 +4034,4 @@ public final class AssistantsAsyncClient {
         return getRunStepWithResponse(threadId, runId, stepId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class));
     }
-
 }

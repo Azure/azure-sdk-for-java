@@ -4042,5 +4042,4 @@ public final class AssistantsClient {
         }
         return getRunStepWithResponse(threadId, runId, stepId, requestOptions).getValue().toObject(RunStep.class);
     }
-
 }
