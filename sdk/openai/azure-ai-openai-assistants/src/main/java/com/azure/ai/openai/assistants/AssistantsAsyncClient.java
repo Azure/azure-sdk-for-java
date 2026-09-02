@@ -4034,4 +4034,41 @@ public final class AssistantsAsyncClient {
         return getRunStepWithResponse(threadId, runId, stepId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class));
     }
+
+    /**
+     * Uploads a file for use by other operations.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param uploadFileRequest The file data to upload and its purpose.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> uploadFileWithResponseInternal(BinaryData uploadFileRequest,
+        RequestOptions requestOptions) {
+        // Operation 'uploadFile' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
+        // generated.
+        return this.serviceClient.uploadFileWithResponseInternalAsync(uploadFileRequest, requestOptions);
+    }
 }
