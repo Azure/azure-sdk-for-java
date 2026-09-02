@@ -28,6 +28,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -333,6 +334,14 @@ public final class BetaAgentInsightMonitorsClient {
 
     /**
      * Start an Agent Insights run for a monitor.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1340,5 +1349,33 @@ public final class BetaAgentInsightMonitorsClient {
         JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, false);
         return updateInsightWithResponse(monitorId, insightId, updateInBinaryData, requestOptions).getValue()
             .toObject(AgentInsight.class);
+    }
+
+    /**
+     * Start an Agent Insights run for a monitor.
+     *
+     * @param monitorId The identifier of the monitor.
+     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
+     * unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long-running run that analyzes one agent's traces and updates
+     * that agent's insights.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateRun(String monitorId,
+        AgentInsightRunCreate run, String operationId) {
+        // Generated convenience method for beginCreateRunWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (operationId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
+        }
+        return serviceClient.beginCreateRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
     }
 }
