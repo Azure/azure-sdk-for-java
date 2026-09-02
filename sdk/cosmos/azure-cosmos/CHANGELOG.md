@@ -3,6 +3,7 @@
 ### 4.83.0-beta.1 (Unreleased)
 
 #### Features Added
+* Promoted the Throughput Bucket related `@Beta` APIs (`ThroughputControlGroupConfigBuilder.throughputBucket(int)`, `ThroughputControlGroupConfig.getThroughputBucket()`, and `Cosmos(Async)Container.enableServerThroughputControlGroup(ThroughputControlGroupConfig)`) to GA. - See [PR 50335](https://github.com/Azure/azure-sdk-for-java/pull/50335)
 
 #### Breaking Changes
 
