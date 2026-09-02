@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class RelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Relationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01-preview/Relationships_CreateOrUpdate.json
      */
     /**
      * Sample code: Relationships_CreateOrUpdate.

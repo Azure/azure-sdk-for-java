@@ -22,7 +22,7 @@ public final class HealthModelsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"cbslhhx\",\"tenantId\":\"bxv\",\"type\":\"None\",\"userAssignedIdentities\":{\"dfgsftufqobrj\":{\"principalId\":\"sirudhzmmesckdlp\",\"clientId\":\"zrcxfailcfxwmdbo\"}}},\"location\":\"acgcckknhx\",\"tags\":{\"tnrzvuljra\":\"v\",\"roylaxxu\":\"eranokqgukkjqnv\",\"sfjbjsvg\":\"cdisd\",\"lxgccknfnwmbtm\":\"rwhryvycytd\"},\"id\":\"pdvjdhttzaefedx\",\"name\":\"hchrphkmcrjdqn\",\"type\":\"dfzpbgtgkylkdg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"ftjuh\",\"tenantId\":\"azkmtgguwp\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wrxgkneuvy\":{\"principalId\":\"civmmg\",\"clientId\":\"cf\"}}},\"location\":\"zqodfvpgshox\",\"tags\":{\"xvzflbqv\":\"bpfgzdj\",\"vetnwsdtutn\":\"aqvlgafcqusr\"},\"id\":\"lduycv\",\"name\":\"zhyrmewipmve\",\"type\":\"dxukuqgsjjxundxg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class HealthModelsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HealthModel response = manager.healthModels()
-            .getByResourceGroupWithResponse("ecdmdqbwpy", "q", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("orxvxcjzhqiz", "fpxtg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("acgcckknhx", response.location());
-        Assertions.assertEquals("v", response.tags().get("tnrzvuljra"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("zqodfvpgshox", response.location());
+        Assertions.assertEquals("bpfgzdj", response.tags().get("xvzflbqv"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }
