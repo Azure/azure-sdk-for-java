@@ -5160,15 +5160,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    private static List<FeedRange> getFeedRangesWithRetry(
-        CosmosAsyncContainer asyncContainer,
-        String description) {
-
-        List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
-        assertThat(feedRanges).as(description).isNotNull();
-        return feedRanges;
-    }
-
     private String resolveContainerIdByFaultInjectionOperationType(FaultInjectionOperationType faultInjectionOperationType) {
         switch (faultInjectionOperationType) {
             case READ_ITEM:

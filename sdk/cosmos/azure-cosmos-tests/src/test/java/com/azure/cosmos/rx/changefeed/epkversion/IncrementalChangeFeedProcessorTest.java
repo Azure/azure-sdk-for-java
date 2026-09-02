@@ -391,11 +391,16 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             cosmosAsyncClient.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
             cosmosAsyncDatabase = cosmosAsyncClient.getDatabase(MULTI_WRITE_DATABASE_NAME);
-            cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
-            cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
-
-            createdFeedCollection = cosmosAsyncDatabase.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
-            createdLeaseCollection = cosmosAsyncDatabase.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
+            createdFeedCollection = createCollection(
+                cosmosAsyncDatabase,
+                new CosmosContainerProperties(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
+            createdLeaseCollection = createCollection(
+                cosmosAsyncDatabase,
+                new CosmosContainerProperties(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
 
             try {
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
@@ -513,11 +518,16 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             cosmosAsyncClientForLocalRegion.createDatabaseIfNotExists(dbId).block();
             cosmosAsyncDatabaseRegionOne = cosmosAsyncClientForLocalRegion.getDatabase(dbId);
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(feedCollectionId, "/id", ThroughputProperties.createManualThroughput(400)).block();
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(leaseCollectionId, "/id", ThroughputProperties.createManualThroughput(400)).block();
-
-            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(feedCollectionId);
-            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(leaseCollectionId);
+            createdFeedCollectionLocalRegion = createCollection(
+                cosmosAsyncDatabaseRegionOne,
+                new CosmosContainerProperties(feedCollectionId, "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
+            createdLeaseCollectionLocalRegion = createCollection(
+                cosmosAsyncDatabaseRegionOne,
+                new CosmosContainerProperties(leaseCollectionId, "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
 
             CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientForSatelliteRegion.getDatabase(dbId);
             createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(feedCollectionId);
@@ -642,11 +652,16 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             cosmosAsyncClientLocalRegion.createDatabaseIfNotExists(dbId).block();
             cosmosAsyncDatabaseRegionOne = cosmosAsyncClientLocalRegion.getDatabase(dbId);
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(feedContainerId, "/id", ThroughputProperties.createManualThroughput(400)).block();
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(leaseContainerId, "/id", ThroughputProperties.createManualThroughput(400)).block();
-
-            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(feedContainerId);
-            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(leaseContainerId);
+            createdFeedCollectionLocalRegion = createCollection(
+                cosmosAsyncDatabaseRegionOne,
+                new CosmosContainerProperties(feedContainerId, "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
+            createdLeaseCollectionLocalRegion = createCollection(
+                cosmosAsyncDatabaseRegionOne,
+                new CosmosContainerProperties(leaseContainerId, "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
 
             CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientRemoteRegion.getDatabase(dbId);
             createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(feedContainerId);

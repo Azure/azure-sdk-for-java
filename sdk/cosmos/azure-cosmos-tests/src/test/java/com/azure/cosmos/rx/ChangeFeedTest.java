@@ -42,6 +42,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -63,6 +64,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
     private static final int TIMEOUT = 30000;
+    private static final int SETUP_CREATE_RETRY_ATTEMPTS = 5;
+    private static final Duration SETUP_CREATE_RETRY_DELAY = Duration.ofSeconds(2);
     private static final String PartitionKeyFieldName = "mypk";
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -492,6 +495,9 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         Document createdDocument = client
                 .createDocument(getCollectionLink(), docDefinition, null, false)
+                .retryWhen(Retry.fixedDelay(SETUP_CREATE_RETRY_ATTEMPTS, SETUP_CREATE_RETRY_DELAY)
+                    .filter(ChangeFeedTest::isTransientSetupCreateFailure)
+                    .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()))
                 .block()
                 .getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
@@ -515,7 +521,10 @@ public class ChangeFeedTest extends TestSuiteBase {
                     "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(),
                     docs.get(i),
                     null,
-                    false));
+                    false)
+                .retryWhen(Retry.fixedDelay(SETUP_CREATE_RETRY_ATTEMPTS, SETUP_CREATE_RETRY_DELAY)
+                    .filter(ChangeFeedTest::isTransientSetupCreateFailure)
+                    .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure())));
         }
 
         return Flux.merge(
@@ -594,6 +603,16 @@ public class ChangeFeedTest extends TestSuiteBase {
         doc.set("mypk", partitionKey);
         doc.set("prop", uuid);
         return doc;
+    }
+
+    private static boolean isTransientSetupCreateFailure(Throwable error) {
+        Throwable unwrapped = reactor.core.Exceptions.unwrap(error);
+        if (!(unwrapped instanceof com.azure.cosmos.CosmosException)) {
+            return false;
+        }
+
+        int statusCode = ((com.azure.cosmos.CosmosException) unwrapped).getStatusCode();
+        return statusCode == 408 || statusCode == 429 || statusCode == 500 || statusCode == 503;
     }
 
     private static void waitAtleastASecond(Instant befTime) throws InterruptedException {
