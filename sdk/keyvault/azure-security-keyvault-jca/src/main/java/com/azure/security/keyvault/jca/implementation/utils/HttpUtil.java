@@ -172,7 +172,7 @@ public final class HttpUtil {
      * extensions.
      *
      * @param url the URL to fetch
-     * @return the response body bytes, or {@code null} if the request fails or returns non-2xx
+    * @return the response body and cache metadata; the body is {@code null} when unavailable
      */
     public static BinaryHttpResponse getAiaBytesWithMetadata(String url) {
         return getAiaBytesWithMetadata(url, HttpUtil::openConnection);
@@ -345,7 +345,10 @@ public final class HttpUtil {
         return value.length() == 0 ? null : value.toString();
     }
 
-    static final class BinaryHttpResponse {
+    /**
+     * Contains a decoded binary response body and the HTTP cache metadata used by AIA certificate downloads.
+     */
+    public static final class BinaryHttpResponse {
         private final byte[] body;
         private final String cacheControl;
         private final String date;
@@ -364,23 +367,48 @@ public final class HttpUtil {
             return new BinaryHttpResponse(null, null, null, null, null);
         }
 
-        byte[] getBody() {
+        /**
+         * Gets the decoded response body.
+         *
+         * @return the response body, or {@code null} if no body is available
+         */
+        public byte[] getBody() {
             return body;
         }
 
-        String getCacheControl() {
+        /**
+         * Gets the combined Cache-Control response header.
+         *
+         * @return the Cache-Control value, or {@code null} if the header is absent
+         */
+        public String getCacheControl() {
             return cacheControl;
         }
 
-        String getDate() {
+        /**
+         * Gets the Date response header.
+         *
+         * @return the Date value, or {@code null} if the header is absent
+         */
+        public String getDate() {
             return date;
         }
 
-        String getAge() {
+        /**
+         * Gets the Age response header.
+         *
+         * @return the Age value, or {@code null} if the header is absent
+         */
+        public String getAge() {
             return age;
         }
 
-        String getExpires() {
+        /**
+         * Gets the Expires response header.
+         *
+         * @return the Expires value, or {@code null} if the header is absent
+         */
+        public String getExpires() {
             return expires;
         }
     }

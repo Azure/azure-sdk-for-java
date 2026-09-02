@@ -622,9 +622,7 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Functional interface for loading AIA responses.
-     *
-     * <p>Introduced to be used for testing purposes, allowing the HTTP POST behavior to be mocked or overridden.
+        * Loads AIA responses. This test seam allows the HTTP GET behavior to be replaced.
      */
     @FunctionalInterface
     interface AiaResponseLoader {
