@@ -1,14 +1,60 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2026-09-02)
 
-### Features Added
+- Azure Resource Manager ManagedOps client library for Java. This package contains Microsoft Azure SDK for ManagedOps Management SDK. Managed Operations API. Package api-version 2026-01-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Sku` was modified
 
-### Other Changes
+* `java.lang.String tier()` -> `models.SkuTier tier()`
+* `java.lang.String name()` -> `models.SkuName name()`
+
+### Features Added
+
+* `models.SkuName` was added
+
+* `models.ErrorDetails` was added
+
+* `models.SkuTier` was added
+
+#### `models.ChangeTrackingInformation` was modified
+
+* `errorDetails()` was added
+
+#### `models.DefenderForServersInformation` was modified
+
+* `errorDetails()` was added
+
+#### `models.ManagedOpsProperties` was modified
+
+* `withSku(models.Sku)` was added
+
+#### `models.ProvisioningState` was modified
+
+* `ACCEPTED` was added
+
+#### `models.DefenderCspmInformation` was modified
+
+* `errorDetails()` was added
+
+#### `models.GuestConfigurationInformation` was modified
+
+* `errorDetails()` was added
+
+#### `models.UpdateManagerInformation` was modified
+
+* `errorDetails()` was added
+
+#### `models.AzureMonitorInformation` was modified
+
+* `errorDetails()` was added
+
+#### `models.Sku` was modified
+
+* `withTier(models.SkuTier)` was added
+* `withName(models.SkuName)` was added
 
 ## 1.0.0-beta.2 (2026-03-06)
 
