@@ -85,7 +85,7 @@ import java.util.Objects;
  * <!-- end com.azure.messaging.eventgrid.EventGridEvent.fromString -->
  *
  * @see EventGridPublisherAsyncClient to send EventGridEvents asynchronously.
- * @see EventGridPublisherClient to send EventGridEvents sychronously.
+ * @see EventGridPublisherClient to send EventGridEvents synchronously.
  **/
 @Fluent
 public final class EventGridEvent implements JsonSerializable<EventGridEvent> {

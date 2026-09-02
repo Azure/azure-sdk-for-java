@@ -21,7 +21,7 @@ public final class ActionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"canonicalId\":\"kns\",\"displayName\":\"wushcdp\",\"description\":\"pn\",\"actionName\":\"mgjfbpkuwxeoio\",\"version\":\"izfavkjzwf\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"mmfz\",\"requiredPermissions\":[\"wxrzxmdewsrsxkrp\",\"bjazejwwviy\",\"y\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"brnnhjxsqw\",\"hqkb\"]},\"id\":\"etpozycyqiq\",\"name\":\"hgf\",\"type\":\"etzlexbsfledynoj\"}]}";
+            = "{\"value\":[{\"properties\":{\"canonicalId\":\"yqlkju\",\"displayName\":\"mbmslzoyov\",\"description\":\"dbpqvybefgvm\",\"actionName\":\"okcvtlubses\",\"version\":\"cua\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"lpi\",\"requiredPermissions\":[\"ycndzf\",\"ivjreuyk\",\"bmnwa\",\"ltbxoeeonqlnfw\"]},{\"targetType\":\"ymvqdbpbhfckdvez\",\"requiredPermissions\":[\"ssbzhddubbnqfbl\",\"kalehp\",\"vawu\"]},{\"targetType\":\"qjtiogqgdm\",\"requiredPermissions\":[\"ctteajohi\"]},{\"targetType\":\"spnbonhpcz\",\"requiredPermissions\":[\"ktpv\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"sehch\",\"hufmpq\",\"mqyjgy\"]},\"id\":\"ulodsaeuzanhsfnh\",\"name\":\"enwphpzfngq\",\"type\":\"clid\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class ActionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Action> response
-            = manager.actions().list("knlejjjkxybwfd", "kjbztensvkzykj", com.azure.core.util.Context.NONE);
+        PagedIterable<Action> response = manager.actions().list("x", "mmpuj", com.azure.core.util.Context.NONE);
 
     }
 }

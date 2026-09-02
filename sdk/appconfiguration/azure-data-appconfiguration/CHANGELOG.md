@@ -12,6 +12,15 @@
 
 - Updated to support `2026-05-01-preview`
 
+## 1.10.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+
 ## 1.10.0 (2026-06-15)
 
 ### Features Added

@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementAllocationStrategy;
+import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementCapacityLimitReason;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementCapacityProfile;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementCapacityType;
 import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementInstanceDescription;
@@ -35,7 +36,7 @@ public final class SkuMixPlacementScoresPostWithResponseMockTests {
     @Test
     public void testPostWithResponse() throws Exception {
         String responseStr
-            = "{\"placementChoices\":[{\"id\":\"nxqbzvddn\",\"score\":648028383,\"skuSplit\":[{\"name\":\"deicbtwnpzao\",\"priority\":\"Spot\",\"capacity\":1330155911,\"capacityMax\":114023042,\"zone\":\"cffcyddglmj\"}]},{\"id\":\"hjq\",\"score\":1652029285,\"skuSplit\":[{\"name\":\"yeicxmqciwqvhk\",\"priority\":\"Spot\",\"capacity\":1053923929,\"capacityMax\":213865408,\"zone\":\"dtopbob\"},{\"name\":\"og\",\"priority\":\"Regular\",\"capacity\":13446913,\"capacityMax\":115410873,\"zone\":\"m\"}]},{\"id\":\"uhrzayvvt\",\"score\":1432651590,\"skuSplit\":[{\"name\":\"dfgiot\",\"priority\":\"Spot\",\"capacity\":1659633182,\"capacityMax\":1205198165,\"zone\":\"xlngx\"},{\"name\":\"efgugnxk\",\"priority\":\"Spot\",\"capacity\":1788312026,\"capacityMax\":435751453,\"zone\":\"dt\"}]},{\"id\":\"hzrvqd\",\"score\":1635198846,\"skuSplit\":[{\"name\":\"hjybigehoqfbo\",\"priority\":\"Regular\",\"capacity\":1382683860,\"capacityMax\":465330089,\"zone\":\"ktzlcuiywg\"}]}],\"validUntil\":\"2021-06-17T20:14:54Z\",\"partialFulfillmentReason\":\"None\"}";
+            = "{\"id\":\"mmajtjaodx\",\"placementChoices\":[{\"score\":1341897858,\"skuSplit\":[{\"name\":\"dxkqpx\",\"priority\":\"Spot\",\"capacity\":1684749712,\"zone\":\"ionpimexg\"},{\"name\":\"txgcpodgmaajr\",\"priority\":\"Spot\",\"capacity\":1943379246,\"zone\":\"wzrlovmclwhij\"},{\"name\":\"oejctbzaqsqsy\",\"priority\":\"Spot\",\"capacity\":1302368966,\"zone\":\"fkgukdkexxppof\"}]},{\"score\":2119531336,\"skuSplit\":[{\"name\":\"x\",\"priority\":\"Spot\",\"capacity\":825369958,\"zone\":\"gddtocj\"},{\"name\":\"xhvpmoue\",\"priority\":\"Regular\",\"capacity\":1945947631,\"zone\":\"xibqeojnx\"},{\"name\":\"bzv\",\"priority\":\"Spot\",\"capacity\":1950210271,\"zone\":\"wndeicbtwnp\"},{\"name\":\"aoqvuh\",\"priority\":\"Spot\",\"capacity\":569590311,\"zone\":\"fcyddg\"}]},{\"score\":76474266,\"skuSplit\":[{\"name\":\"t\",\"priority\":\"Spot\",\"capacity\":1041112743,\"zone\":\"wpyeicxmqciwqvh\"},{\"name\":\"hix\",\"priority\":\"Spot\",\"capacity\":950690565,\"zone\":\"topbobjogh\"},{\"name\":\"e\",\"priority\":\"Regular\",\"capacity\":35431541,\"zone\":\"a\"}]},{\"score\":1242660761,\"skuSplit\":[{\"name\":\"z\",\"priority\":\"Spot\",\"capacity\":614962425,\"zone\":\"t\"},{\"name\":\"gvdfgiotkftutq\",\"priority\":\"Regular\",\"capacity\":2113328566,\"zone\":\"xlefgugnxkrx\"}]}],\"validUntil\":\"2021-01-18T17:02:06Z\",\"partialFulfillmentReason\":\"InsufficientCapacity\",\"capacityLimits\":[{\"name\":\"thz\",\"priority\":\"Regular\",\"zone\":\"drabhjybige\",\"limit\":823373191,\"reason\":\"InsufficientCapacity\"},{\"name\":\"fbowskanyk\",\"priority\":\"Spot\",\"zone\":\"cuiywgqyw\",\"limit\":23718852,\"reason\":\"InsufficientCapacity\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -44,48 +45,43 @@ public final class SkuMixPlacementScoresPostWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SkuMixPlacementResponse response
-            = manager.skuMixPlacementScores()
-                .postWithResponse("bcsglumma", new SkuMixPlacementRequest().withZones(Arrays.asList("aodxo"))
-                    .withCapacityProfile(new SkuMixPlacementCapacityProfile().withCapacity(1341897858)
+        SkuMixPlacementResponse response = manager.skuMixPlacementScores()
+            .postWithResponse("cyshurzafbljjgp",
+                new SkuMixPlacementRequest().withZones(Arrays.asList("qcjm"))
+                    .withCapacityProfile(new SkuMixPlacementCapacityProfile().withCapacity(2092000112)
                         .withCapacityType(SkuMixPlacementCapacityType.VCPU)
                         .withPriority(SkuMixPlacementPriority.REGULAR)
                         .withSpotPriorityProfile(
-                            new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(12.013875822180943D))
-                        .withAllocationStrategy(SkuMixPlacementAllocationStrategy.LOWEST_PRICE)
-                        .withOsType(SkuMixPlacementOSType.LINUX)
+                            new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(56.99206369319947D))
+                        .withAllocationStrategy(SkuMixPlacementAllocationStrategy.EVICTION_OPTIMIZED)
+                        .withOsType(SkuMixPlacementOSType.WINDOWS)
                         .withZoneAllocationPolicy(new SkuMixPlacementZoneAllocationPolicy()
-                            .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-                            .withZonePreferences(Arrays.asList(
-                                new SkuMixPlacementZonePreference().withZone("imexgstxgcpodgma")
-                                    .withRank(37175495)
-                                    .withTargetMaxCapacity(526357261),
-                                new SkuMixPlacementZonePreference().withZone("djwzrlov")
-                                    .withRank(1769717852)
-                                    .withTargetMaxCapacity(1130287748),
-                                new SkuMixPlacementZonePreference().withZone("ijcoejctb")
-                                    .withRank(1083194269)
-                                    .withTargetMaxCapacity(751291073),
-                                new SkuMixPlacementZonePreference().withZone("sycbkbfk")
-                                    .withRank(1619207085)
-                                    .withTargetMaxCapacity(2039357898)))))
+                            .withDistributionStrategy(SkuMixPlacementZonalDistributionStrategy.PRIORITIZED)
+                            .withZonePreferences(Arrays.asList(new SkuMixPlacementZonePreference().withZone("pku")
+                                .withRank(963090330)
+                                .withTargetMaxCapacity(1185115759)))))
                     .withInstanceDescription(new SkuMixPlacementInstanceDescription()
-                        .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("xxppofm").withRank(159547648),
-                            new SkuMixPlacementVMSize().withName("c").withRank(396023335),
-                            new SkuMixPlacementVMSize().withName("gddtocj").withRank(1680873734),
-                            new SkuMixPlacementVMSize().withName("vpmouexhdzxib").withRank(427127517)))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+                        .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("hbzhfepg").withRank(701234104),
+                            new SkuMixPlacementVMSize().withName("e").withRank(1025748151),
+                            new SkuMixPlacementVMSize().withName("ocxscpaierhhbcs").withRank(526297458)))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("nxqbzvddn", response.placementChoices().get(0).id());
-        Assertions.assertEquals(648028383, response.placementChoices().get(0).score());
-        Assertions.assertEquals("deicbtwnpzao", response.placementChoices().get(0).skuSplit().get(0).name());
+        Assertions.assertEquals("mmajtjaodx", response.id());
+        Assertions.assertEquals(1341897858, response.placementChoices().get(0).score());
+        Assertions.assertEquals("dxkqpx", response.placementChoices().get(0).skuSplit().get(0).name());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT,
             response.placementChoices().get(0).skuSplit().get(0).priority());
-        Assertions.assertEquals(1330155911, response.placementChoices().get(0).skuSplit().get(0).capacity());
-        Assertions.assertEquals(114023042, response.placementChoices().get(0).skuSplit().get(0).capacityMax());
-        Assertions.assertEquals("cffcyddglmj", response.placementChoices().get(0).skuSplit().get(0).zone());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T20:14:54Z"), response.validUntil());
-        Assertions.assertEquals(SkuMixPlacementPartialFulfillmentReason.NONE, response.partialFulfillmentReason());
+        Assertions.assertEquals(1684749712, response.placementChoices().get(0).skuSplit().get(0).capacity());
+        Assertions.assertEquals("ionpimexg", response.placementChoices().get(0).skuSplit().get(0).zone());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T17:02:06Z"), response.validUntil());
+        Assertions.assertEquals(SkuMixPlacementPartialFulfillmentReason.INSUFFICIENT_CAPACITY,
+            response.partialFulfillmentReason());
+        Assertions.assertEquals("thz", response.capacityLimits().get(0).name());
+        Assertions.assertEquals(SkuMixPlacementPriority.REGULAR, response.capacityLimits().get(0).priority());
+        Assertions.assertEquals("drabhjybige", response.capacityLimits().get(0).zone());
+        Assertions.assertEquals(823373191, response.capacityLimits().get(0).limit());
+        Assertions.assertEquals(SkuMixPlacementCapacityLimitReason.INSUFFICIENT_CAPACITY,
+            response.capacityLimits().get(0).reason());
     }
 }

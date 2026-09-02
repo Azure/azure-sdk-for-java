@@ -8,6 +8,7 @@ import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.BindAuthenticationLevel;
 import com.azure.resourcemanager.netapp.models.BindPasswordAkvConfig;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
+import com.azure.resourcemanager.netapp.models.SecureLdapType;
 import java.util.Arrays;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-15-preview/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -27,7 +28,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: 2026-06-15-preview/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
@@ -54,7 +55,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+     * x-ms-original-file: 2026-06-15-preview/Accounts_CreateOrUpdateLdapConfig.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateLdapConfig.
@@ -68,7 +69,7 @@ public final class AccountsCreateOrUpdateSamples {
             .withExistingResourceGroup("myRG")
             .withLdapConfiguration(new LdapConfiguration().withDomain("example.com")
                 .withLdapServers(Arrays.asList("192.0.2.1", "192.0.2.2"))
-                .withLdapOverTLS(false)
+                .withSecureLdapType(SecureLdapType.LDAP_OVER_TLS)
                 .withServerCACertificate("<REDACTED>")
                 .withCertificateCNHost("ldap.krypton.com")
                 .withLdapPort(636)
