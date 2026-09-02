@@ -37,6 +37,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -383,6 +384,25 @@ public final class AgentsClientBuilder
         return FoundryPolicyHelper.prependPolicy(localPipeline, foundryFeaturesPolicy);
     }
 
+    private AgentsClientImpl buildVoiceAgentInnerClient() {
+        this.validateClient();
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, this.httpLogOptions);
+        String userAgent
+            = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion, buildConfiguration);
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
+        HttpPipelinePolicy clientSdkQueryPolicy = FoundryPolicyHelper.createClientSdkQueryPolicy(userAgent);
+        localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline, clientSdkQueryPolicy);
+        AgentsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
+        return new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint,
+            localServiceVersion);
+    }
+
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
         return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
     }
@@ -695,7 +715,7 @@ public final class AgentsClientBuilder
      */
     @Generated
     public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
-        return new BetaVoiceAgentWebSocketAsyncClient(buildInnerClient().getBetaVoiceAgentWebSockets());
+        return new BetaVoiceAgentWebSocketAsyncClient(buildVoiceAgentInnerClient().getBetaVoiceAgentWebSockets());
     }
 
     /**
@@ -715,7 +735,7 @@ public final class AgentsClientBuilder
      */
     @Generated
     public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
-        return new BetaVoiceAgentWebSocketClient(buildInnerClient().getBetaVoiceAgentWebSockets());
+        return new BetaVoiceAgentWebSocketClient(buildVoiceAgentInnerClient().getBetaVoiceAgentWebSockets());
     }
 
     /**

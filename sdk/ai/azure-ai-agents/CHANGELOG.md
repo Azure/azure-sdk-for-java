@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Added the Azure SDK identifier to voice-agent WebSocket connection URLs through the `x-ms-client-sdk` query parameter.
+
 ### Other Changes
 
 - Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
