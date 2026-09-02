@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
@@ -60,6 +61,27 @@ public class JdkHttpClientExpectContinueTests {
             assertNotNull(server.expectHeader, "the Expect header did not reach the wire");
             assertEquals(0, server.bodyBytesBeforeContinue, "the body was sent before the service answered");
             assertEquals(BODY.length, server.bodyBytesAfterContinue, "the body was not delivered after 100 Continue");
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = HttpMethod.class, names = { "GET", "HEAD" })
+    public void bodylessRequestDoesNotExpectContinue(HttpMethod method) throws Exception {
+        // The wrapper replaces the body with noBody() for these methods, so opting in would make the client wait
+        // for a handshake it has nothing to complete.
+        try (ExpectContinueServer server = new ExpectContinueServer()) {
+            server.start();
+
+            HttpRequest request = new HttpRequest(method, server.url());
+            request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+
+            HttpClient client = new JdkHttpClientProvider().createInstance();
+            HttpResponse response = client.send(request).block();
+
+            assertNotNull(response, "the request did not complete");
+            assertEquals(201, response.getStatusCode());
+            assertTrue(server.awaitRequest(), "the request never reached the server");
+            assertNull(server.expectHeader, "a request with no body should not carry the expectation");
         }
     }
 

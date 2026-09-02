@@ -58,11 +58,15 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .orElse(responseTimeout);
 
-        this.expectContinue = expectsContinue(azureCoreRequest.getHeaders().getValue(HttpHeaderName.EXPECT));
         this.method = method.toString();
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
             ? noBody()
             : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, writeTimeout, progressReporter);
+
+        // The JDK enters its wait path on this flag alone, so only opt in when there is content to withhold.
+        // A zero length publisher means there is nothing to send and the expectation would be meaningless.
+        this.expectContinue = expectsContinue(azureCoreRequest.getHeaders().getValue(HttpHeaderName.EXPECT))
+            && bodyPublisher.contentLength() != 0;
 
         try {
             uri = azureCoreRequest.getUrl().toURI();
