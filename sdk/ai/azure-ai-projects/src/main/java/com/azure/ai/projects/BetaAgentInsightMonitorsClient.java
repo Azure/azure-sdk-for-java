@@ -108,8 +108,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listAgentInsightMonitors(RequestOptions requestOptions) {
+        return this.serviceClient.listAgentInsightMonitors(requestOptions);
     }
 
     /**
@@ -178,8 +178,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData monitor, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(monitor, requestOptions);
+    public Response<BinaryData> createAgentInsightMonitorWithResponse(BinaryData monitor,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentInsightMonitorWithResponse(monitor, requestOptions);
     }
 
     /**
@@ -227,8 +228,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(monitorId, requestOptions);
+    public Response<BinaryData> getAgentInsightMonitorWithResponse(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentInsightMonitorWithResponse(monitorId, requestOptions);
     }
 
     /**
@@ -244,8 +245,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(monitorId, requestOptions);
+    public Response<Void> deleteAgentInsightMonitorWithResponse(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteAgentInsightMonitorWithResponse(monitorId, requestOptions);
     }
 
     /**
@@ -310,9 +311,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String monitorId, BinaryData monitor,
+    public Response<BinaryData> updateAgentInsightMonitorWithResponse(String monitorId, BinaryData monitor,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(monitorId, monitor, requestOptions);
+        return this.serviceClient.updateAgentInsightMonitorWithResponse(monitorId, monitor, requestOptions);
     }
 
     /**
@@ -328,8 +329,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetWithResponse(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.resetWithResponse(monitorId, requestOptions);
+    public Response<Void> resetAgentInsightMonitorWithResponse(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.resetAgentInsightMonitorWithResponse(monitorId, requestOptions);
     }
 
     /**
@@ -416,9 +417,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateRun(String monitorId, BinaryData run,
+    public SyncPoller<BinaryData, BinaryData> beginCreateAgentInsightRun(String monitorId, BinaryData run,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateRun(monitorId, run, requestOptions);
+        return this.serviceClient.beginCreateAgentInsightRun(monitorId, run, requestOptions);
     }
 
     /**
@@ -502,8 +503,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listRuns(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.listRuns(monitorId, requestOptions);
+    public PagedIterable<BinaryData> listAgentInsightRuns(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentInsightRuns(monitorId, requestOptions);
     }
 
     /**
@@ -571,8 +572,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRunWithResponse(String monitorId, String runId, RequestOptions requestOptions) {
-        return this.serviceClient.getRunWithResponse(monitorId, runId, requestOptions);
+    public Response<BinaryData> getAgentInsightRunWithResponse(String monitorId, String runId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAgentInsightRunWithResponse(monitorId, runId, requestOptions);
     }
 
     /**
@@ -641,8 +643,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelRunWithResponse(String monitorId, String runId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelRunWithResponse(monitorId, runId, requestOptions);
+    public Response<BinaryData> cancelAgentInsightRunWithResponse(String monitorId, String runId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.cancelAgentInsightRunWithResponse(monitorId, runId, requestOptions);
     }
 
     /**
@@ -732,8 +735,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listInsights(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.listInsights(monitorId, requestOptions);
+    public PagedIterable<BinaryData> listAgentInsights(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentInsights(monitorId, requestOptions);
     }
 
     /**
@@ -812,9 +815,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getInsightWithResponse(String monitorId, String insightId,
+    public Response<BinaryData> getAgentInsightWithResponse(String monitorId, String insightId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getInsightWithResponse(monitorId, insightId, requestOptions);
+        return this.serviceClient.getAgentInsightWithResponse(monitorId, insightId, requestOptions);
     }
 
     /**
@@ -896,9 +899,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateInsightWithResponse(String monitorId, String insightId, BinaryData update,
+    public Response<BinaryData> updateAgentInsightWithResponse(String monitorId, String insightId, BinaryData update,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateInsightWithResponse(monitorId, insightId, update, requestOptions);
+        return this.serviceClient.updateAgentInsightWithResponse(monitorId, insightId, update, requestOptions);
     }
 
     /**
@@ -919,9 +922,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightMonitorListItem> list(String after, String before, Integer limit, PageOrder order,
-        String agentName) {
-        // Generated convenience method for list
+    public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before,
+        Integer limit, PageOrder order, String agentName) {
+        // Generated convenience method for listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -938,7 +941,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        return serviceClient.list(requestOptions)
+        return serviceClient.listAgentInsightMonitors(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
     }
 
@@ -954,10 +957,10 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightMonitorListItem> list() {
-        // Generated convenience method for list
+    public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors() {
+        // Generated convenience method for listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions)
+        return serviceClient.listAgentInsightMonitors(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
     }
 
@@ -975,10 +978,10 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightMonitor create(AgentInsightMonitorCreate monitor) {
-        // Generated convenience method for createWithResponse
+    public AgentInsightMonitor createAgentInsightMonitor(AgentInsightMonitorCreate monitor) {
+        // Generated convenience method for createAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(monitor), requestOptions).getValue()
+        return createAgentInsightMonitorWithResponse(BinaryData.fromObject(monitor), requestOptions).getValue()
             .toObject(AgentInsightMonitor.class);
     }
 
@@ -996,10 +999,11 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightMonitor get(String monitorId) {
-        // Generated convenience method for getWithResponse
+    public AgentInsightMonitor getAgentInsightMonitor(String monitorId) {
+        // Generated convenience method for getAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(monitorId, requestOptions).getValue().toObject(AgentInsightMonitor.class);
+        return getAgentInsightMonitorWithResponse(monitorId, requestOptions).getValue()
+            .toObject(AgentInsightMonitor.class);
     }
 
     /**
@@ -1015,10 +1019,10 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String monitorId) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteAgentInsightMonitor(String monitorId) {
+        // Generated convenience method for deleteAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(monitorId, requestOptions).getValue();
+        deleteAgentInsightMonitorWithResponse(monitorId, requestOptions).getValue();
     }
 
     /**
@@ -1036,15 +1040,15 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightMonitor update(String monitorId, AgentInsightMonitorUpdate monitor) {
-        // Generated convenience method for updateWithResponse
+    public AgentInsightMonitor updateAgentInsightMonitor(String monitorId, AgentInsightMonitorUpdate monitor) {
+        // Generated convenience method for updateAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getAgentInsightMonitorUpdateAccessor().prepareModelForJsonMergePatch(monitor, true);
         BinaryData monitorInBinaryData = BinaryData.fromObject(monitor);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         monitorInBinaryData.getLength();
         JsonMergePatchHelper.getAgentInsightMonitorUpdateAccessor().prepareModelForJsonMergePatch(monitor, false);
-        return updateWithResponse(monitorId, monitorInBinaryData, requestOptions).getValue()
+        return updateAgentInsightMonitorWithResponse(monitorId, monitorInBinaryData, requestOptions).getValue()
             .toObject(AgentInsightMonitor.class);
     }
 
@@ -1061,10 +1065,38 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reset(String monitorId) {
-        // Generated convenience method for resetWithResponse
+    public void resetAgentInsightMonitor(String monitorId) {
+        // Generated convenience method for resetAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        resetWithResponse(monitorId, requestOptions).getValue();
+        resetAgentInsightMonitorWithResponse(monitorId, requestOptions).getValue();
+    }
+
+    /**
+     * Start an Agent Insights run for a monitor.
+     *
+     * @param monitorId The identifier of the monitor.
+     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
+     * unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long-running run that analyzes one agent's traces and updates
+     * that agent's insights.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId,
+        AgentInsightRunCreate run, String operationId) {
+        // Generated convenience method for beginCreateAgentInsightRunWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (operationId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
+        }
+        return serviceClient.beginCreateAgentInsightRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
     }
 
     /**
@@ -1083,11 +1115,11 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateRun(String monitorId,
+    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId,
         AgentInsightRunCreate run) {
-        // Generated convenience method for beginCreateRunWithModel
+        // Generated convenience method for beginCreateAgentInsightRunWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
+        return serviceClient.beginCreateAgentInsightRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
     }
 
     /**
@@ -1110,9 +1142,9 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightRun> listRuns(String monitorId, String after, String before, Integer limit,
-        PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
-        // Generated convenience method for listRuns
+    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before,
+        Integer limit, PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
+        // Generated convenience method for listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -1132,7 +1164,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (trigger != null) {
             requestOptions.addQueryParam("trigger", trigger.toString(), false);
         }
-        return serviceClient.listRuns(monitorId, requestOptions)
+        return serviceClient.listAgentInsightRuns(monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
     }
 
@@ -1150,10 +1182,10 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightRun> listRuns(String monitorId) {
-        // Generated convenience method for listRuns
+    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId) {
+        // Generated convenience method for listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listRuns(monitorId, requestOptions)
+        return serviceClient.listAgentInsightRuns(monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
     }
 
@@ -1172,10 +1204,11 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightRun getRun(String monitorId, String runId) {
-        // Generated convenience method for getRunWithResponse
+    public AgentInsightRun getAgentInsightRun(String monitorId, String runId) {
+        // Generated convenience method for getAgentInsightRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRunWithResponse(monitorId, runId, requestOptions).getValue().toObject(AgentInsightRun.class);
+        return getAgentInsightRunWithResponse(monitorId, runId, requestOptions).getValue()
+            .toObject(AgentInsightRun.class);
     }
 
     /**
@@ -1193,10 +1226,11 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsightRun cancelRun(String monitorId, String runId) {
-        // Generated convenience method for cancelRunWithResponse
+    public AgentInsightRun cancelAgentInsightRun(String monitorId, String runId) {
+        // Generated convenience method for cancelAgentInsightRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelRunWithResponse(monitorId, runId, requestOptions).getValue().toObject(AgentInsightRun.class);
+        return cancelAgentInsightRunWithResponse(monitorId, runId, requestOptions).getValue()
+            .toObject(AgentInsightRun.class);
     }
 
     /**
@@ -1222,10 +1256,10 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsight> listInsights(String monitorId, String after, String before, Integer limit,
+    public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
         PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
         Boolean includeDetails) {
-        // Generated convenience method for listInsights
+        // Generated convenience method for listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -1251,7 +1285,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        return serviceClient.listInsights(monitorId, requestOptions)
+        return serviceClient.listAgentInsights(monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 
@@ -1269,10 +1303,10 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsight> listInsights(String monitorId) {
-        // Generated convenience method for listInsights
+    public PagedIterable<AgentInsight> listAgentInsights(String monitorId) {
+        // Generated convenience method for listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listInsights(monitorId, requestOptions)
+        return serviceClient.listAgentInsights(monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 
@@ -1293,13 +1327,14 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsight getInsight(String monitorId, String insightId, Boolean includeDetails) {
-        // Generated convenience method for getInsightWithResponse
+    public AgentInsight getAgentInsight(String monitorId, String insightId, Boolean includeDetails) {
+        // Generated convenience method for getAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        return getInsightWithResponse(monitorId, insightId, requestOptions).getValue().toObject(AgentInsight.class);
+        return getAgentInsightWithResponse(monitorId, insightId, requestOptions).getValue()
+            .toObject(AgentInsight.class);
     }
 
     /**
@@ -1317,10 +1352,11 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsight getInsight(String monitorId, String insightId) {
-        // Generated convenience method for getInsightWithResponse
+    public AgentInsight getAgentInsight(String monitorId, String insightId) {
+        // Generated convenience method for getAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getInsightWithResponse(monitorId, insightId, requestOptions).getValue().toObject(AgentInsight.class);
+        return getAgentInsightWithResponse(monitorId, insightId, requestOptions).getValue()
+            .toObject(AgentInsight.class);
     }
 
     /**
@@ -1339,43 +1375,15 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInsight updateInsight(String monitorId, String insightId, AgentInsightUpdate update) {
-        // Generated convenience method for updateInsightWithResponse
+    public AgentInsight updateAgentInsight(String monitorId, String insightId, AgentInsightUpdate update) {
+        // Generated convenience method for updateAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, true);
         BinaryData updateInBinaryData = BinaryData.fromObject(update);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         updateInBinaryData.getLength();
         JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, false);
-        return updateInsightWithResponse(monitorId, insightId, updateInBinaryData, requestOptions).getValue()
+        return updateAgentInsightWithResponse(monitorId, insightId, updateInBinaryData, requestOptions).getValue()
             .toObject(AgentInsight.class);
-    }
-
-    /**
-     * Start an Agent Insights run for a monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
-     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
-     * unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long-running run that analyzes one agent's traces and updates
-     * that agent's insights.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AgentInsightRun, AgentInsightRunResult> beginCreateRun(String monitorId,
-        AgentInsightRunCreate run, String operationId) {
-        // Generated convenience method for beginCreateRunWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        if (operationId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
-        }
-        return serviceClient.beginCreateRunWithModel(monitorId, BinaryData.fromObject(run), requestOptions);
     }
 }

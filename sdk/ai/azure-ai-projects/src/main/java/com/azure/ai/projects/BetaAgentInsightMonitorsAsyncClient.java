@@ -114,8 +114,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listAgentInsightMonitors(RequestOptions requestOptions) {
+        return this.serviceClient.listAgentInsightMonitorsAsync(requestOptions);
     }
 
     /**
@@ -184,8 +184,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(BinaryData monitor, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(monitor, requestOptions);
+    public Mono<Response<BinaryData>> createAgentInsightMonitorWithResponse(BinaryData monitor,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentInsightMonitorWithResponseAsync(monitor, requestOptions);
     }
 
     /**
@@ -233,8 +234,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(monitorId, requestOptions);
+    public Mono<Response<BinaryData>> getAgentInsightMonitorWithResponse(String monitorId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAgentInsightMonitorWithResponseAsync(monitorId, requestOptions);
     }
 
     /**
@@ -250,8 +252,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(monitorId, requestOptions);
+    public Mono<Response<Void>> deleteAgentInsightMonitorWithResponse(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteAgentInsightMonitorWithResponseAsync(monitorId, requestOptions);
     }
 
     /**
@@ -316,9 +318,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponse(String monitorId, BinaryData monitor,
+    public Mono<Response<BinaryData>> updateAgentInsightMonitorWithResponse(String monitorId, BinaryData monitor,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponseAsync(monitorId, monitor, requestOptions);
+        return this.serviceClient.updateAgentInsightMonitorWithResponseAsync(monitorId, monitor, requestOptions);
     }
 
     /**
@@ -334,8 +336,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetWithResponse(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.resetWithResponseAsync(monitorId, requestOptions);
+    public Mono<Response<Void>> resetAgentInsightMonitorWithResponse(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.resetAgentInsightMonitorWithResponseAsync(monitorId, requestOptions);
     }
 
     /**
@@ -422,9 +424,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateRun(String monitorId, BinaryData run,
+    public PollerFlux<BinaryData, BinaryData> beginCreateAgentInsightRun(String monitorId, BinaryData run,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateRunAsync(monitorId, run, requestOptions);
+        return this.serviceClient.beginCreateAgentInsightRunAsync(monitorId, run, requestOptions);
     }
 
     /**
@@ -508,8 +510,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listRuns(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.listRunsAsync(monitorId, requestOptions);
+    public PagedFlux<BinaryData> listAgentInsightRuns(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentInsightRunsAsync(monitorId, requestOptions);
     }
 
     /**
@@ -577,9 +579,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRunWithResponse(String monitorId, String runId,
+    public Mono<Response<BinaryData>> getAgentInsightRunWithResponse(String monitorId, String runId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getRunWithResponseAsync(monitorId, runId, requestOptions);
+        return this.serviceClient.getAgentInsightRunWithResponseAsync(monitorId, runId, requestOptions);
     }
 
     /**
@@ -648,9 +650,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelRunWithResponse(String monitorId, String runId,
+    public Mono<Response<BinaryData>> cancelAgentInsightRunWithResponse(String monitorId, String runId,
         RequestOptions requestOptions) {
-        return this.serviceClient.cancelRunWithResponseAsync(monitorId, runId, requestOptions);
+        return this.serviceClient.cancelAgentInsightRunWithResponseAsync(monitorId, runId, requestOptions);
     }
 
     /**
@@ -740,8 +742,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listInsights(String monitorId, RequestOptions requestOptions) {
-        return this.serviceClient.listInsightsAsync(monitorId, requestOptions);
+    public PagedFlux<BinaryData> listAgentInsights(String monitorId, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentInsightsAsync(monitorId, requestOptions);
     }
 
     /**
@@ -821,9 +823,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getInsightWithResponse(String monitorId, String insightId,
+    public Mono<Response<BinaryData>> getAgentInsightWithResponse(String monitorId, String insightId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getInsightWithResponseAsync(monitorId, insightId, requestOptions);
+        return this.serviceClient.getAgentInsightWithResponseAsync(monitorId, insightId, requestOptions);
     }
 
     /**
@@ -906,9 +908,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateInsightWithResponse(String monitorId, String insightId, BinaryData update,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateInsightWithResponseAsync(monitorId, insightId, update, requestOptions);
+    public Mono<Response<BinaryData>> updateAgentInsightWithResponse(String monitorId, String insightId,
+        BinaryData update, RequestOptions requestOptions) {
+        return this.serviceClient.updateAgentInsightWithResponseAsync(monitorId, insightId, update, requestOptions);
     }
 
     /**
@@ -929,9 +931,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsightMonitorListItem> list(String after, String before, Integer limit, PageOrder order,
-        String agentName) {
-        // Generated convenience method for list
+    public PagedFlux<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before, Integer limit,
+        PageOrder order, String agentName) {
+        // Generated convenience method for listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -948,7 +950,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightMonitors(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -975,10 +977,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsightMonitorListItem> list() {
-        // Generated convenience method for list
+    public PagedFlux<AgentInsightMonitorListItem> listAgentInsightMonitors() {
+        // Generated convenience method for listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightMonitors(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1008,10 +1010,11 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsightMonitor> create(AgentInsightMonitorCreate monitor) {
-        // Generated convenience method for createWithResponse
+    public Mono<AgentInsightMonitor> createAgentInsightMonitor(AgentInsightMonitorCreate monitor) {
+        // Generated convenience method for createAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(monitor), requestOptions).flatMap(FluxUtil::toMono)
+        return createAgentInsightMonitorWithResponse(BinaryData.fromObject(monitor), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsightMonitor.class));
     }
 
@@ -1029,10 +1032,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsightMonitor> get(String monitorId) {
-        // Generated convenience method for getWithResponse
+    public Mono<AgentInsightMonitor> getAgentInsightMonitor(String monitorId) {
+        // Generated convenience method for getAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(monitorId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentInsightMonitorWithResponse(monitorId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsightMonitor.class));
     }
 
@@ -1050,10 +1053,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String monitorId) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteAgentInsightMonitor(String monitorId) {
+        // Generated convenience method for deleteAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(monitorId, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteAgentInsightMonitorWithResponse(monitorId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1072,15 +1075,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsightMonitor> update(String monitorId, AgentInsightMonitorUpdate monitor) {
-        // Generated convenience method for updateWithResponse
+    public Mono<AgentInsightMonitor> updateAgentInsightMonitor(String monitorId, AgentInsightMonitorUpdate monitor) {
+        // Generated convenience method for updateAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getAgentInsightMonitorUpdateAccessor().prepareModelForJsonMergePatch(monitor, true);
         BinaryData monitorInBinaryData = BinaryData.fromObject(monitor);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         monitorInBinaryData.getLength();
         JsonMergePatchHelper.getAgentInsightMonitorUpdateAccessor().prepareModelForJsonMergePatch(monitor, false);
-        return updateWithResponse(monitorId, monitorInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+        return updateAgentInsightMonitorWithResponse(monitorId, monitorInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsightMonitor.class));
     }
 
@@ -1098,10 +1102,39 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reset(String monitorId) {
-        // Generated convenience method for resetWithResponse
+    public Mono<Void> resetAgentInsightMonitor(String monitorId) {
+        // Generated convenience method for resetAgentInsightMonitorWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return resetWithResponse(monitorId, requestOptions).flatMap(FluxUtil::toMono);
+        return resetAgentInsightMonitorWithResponse(monitorId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Start an Agent Insights run for a monitor.
+     *
+     * @param monitorId The identifier of the monitor.
+     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
+     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
+     * unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long-running run that analyzes one agent's traces and updates
+     * that agent's insights.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId,
+        AgentInsightRunCreate run, String operationId) {
+        // Generated convenience method for beginCreateAgentInsightRunWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (operationId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
+        }
+        return serviceClient.beginCreateAgentInsightRunWithModelAsync(monitorId, BinaryData.fromObject(run),
+            requestOptions);
     }
 
     /**
@@ -1120,11 +1153,12 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AgentInsightRun, AgentInsightRunResult> beginCreateRun(String monitorId,
+    public PollerFlux<AgentInsightRun, AgentInsightRunResult> beginCreateAgentInsightRun(String monitorId,
         AgentInsightRunCreate run) {
-        // Generated convenience method for beginCreateRunWithModel
+        // Generated convenience method for beginCreateAgentInsightRunWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateRunWithModelAsync(monitorId, BinaryData.fromObject(run), requestOptions);
+        return serviceClient.beginCreateAgentInsightRunWithModelAsync(monitorId, BinaryData.fromObject(run),
+            requestOptions);
     }
 
     /**
@@ -1147,9 +1181,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsightRun> listRuns(String monitorId, String after, String before, Integer limit,
+    public PagedFlux<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before, Integer limit,
         PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
-        // Generated convenience method for listRuns
+        // Generated convenience method for listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -1169,7 +1203,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (trigger != null) {
             requestOptions.addQueryParam("trigger", trigger.toString(), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listRuns(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightRuns(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1198,10 +1232,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsightRun> listRuns(String monitorId) {
-        // Generated convenience method for listRuns
+    public PagedFlux<AgentInsightRun> listAgentInsightRuns(String monitorId) {
+        // Generated convenience method for listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listRuns(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightRuns(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1231,10 +1265,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsightRun> getRun(String monitorId, String runId) {
-        // Generated convenience method for getRunWithResponse
+    public Mono<AgentInsightRun> getAgentInsightRun(String monitorId, String runId) {
+        // Generated convenience method for getAgentInsightRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRunWithResponse(monitorId, runId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentInsightRunWithResponse(monitorId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsightRun.class));
     }
 
@@ -1254,10 +1288,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsightRun> cancelRun(String monitorId, String runId) {
-        // Generated convenience method for cancelRunWithResponse
+    public Mono<AgentInsightRun> cancelAgentInsightRun(String monitorId, String runId) {
+        // Generated convenience method for cancelAgentInsightRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelRunWithResponse(monitorId, runId, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelAgentInsightRunWithResponse(monitorId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsightRun.class));
     }
 
@@ -1284,10 +1318,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsight> listInsights(String monitorId, String after, String before, Integer limit,
+    public PagedFlux<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
         PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
         Boolean includeDetails) {
-        // Generated convenience method for listInsights
+        // Generated convenience method for listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -1313,7 +1347,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listInsights(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsights(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1342,10 +1376,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsight> listInsights(String monitorId) {
-        // Generated convenience method for listInsights
+    public PagedFlux<AgentInsight> listAgentInsights(String monitorId) {
+        // Generated convenience method for listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listInsights(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsights(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1377,13 +1411,13 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsight> getInsight(String monitorId, String insightId, Boolean includeDetails) {
-        // Generated convenience method for getInsightWithResponse
+    public Mono<AgentInsight> getAgentInsight(String monitorId, String insightId, Boolean includeDetails) {
+        // Generated convenience method for getAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        return getInsightWithResponse(monitorId, insightId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentInsightWithResponse(monitorId, insightId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsight.class));
     }
 
@@ -1402,10 +1436,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsight> getInsight(String monitorId, String insightId) {
-        // Generated convenience method for getInsightWithResponse
+    public Mono<AgentInsight> getAgentInsight(String monitorId, String insightId) {
+        // Generated convenience method for getAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getInsightWithResponse(monitorId, insightId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentInsightWithResponse(monitorId, insightId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsight.class));
     }
 
@@ -1425,44 +1459,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentInsight> updateInsight(String monitorId, String insightId, AgentInsightUpdate update) {
-        // Generated convenience method for updateInsightWithResponse
+    public Mono<AgentInsight> updateAgentInsight(String monitorId, String insightId, AgentInsightUpdate update) {
+        // Generated convenience method for updateAgentInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, true);
         BinaryData updateInBinaryData = BinaryData.fromObject(update);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         updateInBinaryData.getLength();
         JsonMergePatchHelper.getAgentInsightUpdateAccessor().prepareModelForJsonMergePatch(update, false);
-        return updateInsightWithResponse(monitorId, insightId, updateInBinaryData, requestOptions)
+        return updateAgentInsightWithResponse(monitorId, insightId, updateInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentInsight.class));
-    }
-
-    /**
-     * Start an Agent Insights run for a monitor.
-     *
-     * @param monitorId The identifier of the monitor.
-     * @param run Run inputs. Send an empty object to use the default 168-hour lookback window.
-     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
-     * unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long-running run that analyzes one agent's traces and updates
-     * that agent's insights.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AgentInsightRun, AgentInsightRunResult> beginCreateRun(String monitorId,
-        AgentInsightRunCreate run, String operationId) {
-        // Generated convenience method for beginCreateRunWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        if (operationId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
-        }
-        return serviceClient.beginCreateRunWithModelAsync(monitorId, BinaryData.fromObject(run), requestOptions);
     }
 }
