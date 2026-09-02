@@ -4,6 +4,7 @@ package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -33,6 +34,8 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The REST client that uses the JDK {@link HttpURLConnection} class.
+ *
+ * <p>HTTPS connections reject hostname mismatches independently of the JVM-wide default hostname verifier.
  */
 public final class HttpUtil {
     public static final String DEFAULT_VERSION = "unknown";
@@ -55,6 +58,7 @@ public final class HttpUtil {
     static final int MAX_AIA_RESPONSE_SIZE_IN_BYTES = 10 * 1024 * 1024;
     private static final int AIA_HTTP_TOTAL_TIMEOUT_IN_MILLISECONDS = 30_000;
     private static final int MAX_AIA_REDIRECTS = 5;
+    private static final HostnameVerifier REJECT_MISMATCHED_HOSTNAMES = (hostname, session) -> false;
 
     /**
      * Functional interface for opening HTTP connections.
@@ -473,10 +477,15 @@ public final class HttpUtil {
         connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
     }
 
-    private static HttpURLConnection openConnection(String uri) throws IOException {
+    static HttpURLConnection openConnection(String uri) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) URI.create(uri).toURL().openConnection();
 
         if (connection instanceof HttpsURLConnection) {
+            HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
+            // The JDK calls this verifier after detecting a hostname mismatch. Reject it explicitly so a mutable
+            // JVM-wide default verifier cannot weaken JCA HTTPS connections.
+            httpsConnection.setHostnameVerifier(REJECT_MISMATCHED_HOSTNAMES);
+
             try {
                 TrustManagerFactory trustManagerFactory
                     = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -486,7 +495,7 @@ public final class HttpUtil {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
 
                 sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
-                ((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+                httpsConnection.setSSLSocketFactory(sslContext.getSocketFactory());
             } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
                 LOGGER.log(WARNING, "Unable to build the SSL context.", e);
             }

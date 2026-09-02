@@ -5,7 +5,10 @@ package com.azure.security.keyvault.jca.implementation.utils;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,10 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Isolated("Mutates the global HttpsURLConnection hostname verifier")
 public class HttpUtilTest {
 
     @Test
@@ -154,6 +159,26 @@ public class HttpUtilTest {
         assertNull(HttpUtil.get(unsupportedUrl, null));
         assertNull(HttpUtil.post(unsupportedUrl, null, "request", "application/json"));
         assertNull(HttpUtil.getWithOnlyResponseHeaders(unsupportedUrl));
+    }
+
+    @Test
+    void httpsConnectionDoesNotInheritPermissiveGlobalHostnameVerifier() throws Exception {
+        HostnameVerifier originalHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
+        HostnameVerifier permissiveHostnameVerifier = (hostname, session) -> true;
+        HttpsURLConnection connection = null;
+
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(permissiveHostnameVerifier);
+            connection = (HttpsURLConnection) HttpUtil.openConnection("https://example.test");
+
+            assertNotSame(permissiveHostnameVerifier, connection.getHostnameVerifier());
+            assertFalse(connection.getHostnameVerifier().verify("example.test", null));
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+            HttpsURLConnection.setDefaultHostnameVerifier(originalHostnameVerifier);
+        }
     }
 
     @Test
