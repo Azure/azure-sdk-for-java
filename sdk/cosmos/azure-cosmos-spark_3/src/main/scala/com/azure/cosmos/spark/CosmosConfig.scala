@@ -1657,7 +1657,7 @@ private object CosmosWriteConfig {
       "when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch " +
       "size is getting automatically tuned based on the throttling rate. By default the " +
       "max micro batch size is 100. Reduce this when you want to avoid that requests consume " +
-      "too many RUs and you cannot enable thoughput control. NOTE: using throuhgput control is preferred and will." +
+      "too many RUs and you cannot enable thoughput control. NOTE: using throughput control is preferred and will." +
       "result in better throughput while still limiting the RU/s used.")
 
   private val minTargetMicroBatchSize = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMinTargetBatchSize,
@@ -1818,9 +1818,9 @@ private object CosmosWriteConfig {
              // ([.]path[(](.*)[)])*: mapping path match, it is optional
              // [.]op[(](.*)[)]: patch operation mapping
              // (.rawJson$|$): optional .rawJson suffix to indicate that the col(column) contains raw json
-             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
+             val operationConfigRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
              columnConfigString match {
-               case operationConfigaRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
+               case operationConfigRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
                  assertNotNullOrEmpty(columnName, "columnName")
                  assertNotNullOrEmpty(operationTypeString, "operationTypeString")
 

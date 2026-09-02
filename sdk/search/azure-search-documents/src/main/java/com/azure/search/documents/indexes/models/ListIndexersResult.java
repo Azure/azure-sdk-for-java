@@ -70,11 +70,29 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
                 if ("value".equals(fieldName)) {
                     List<SearchIndexer> indexers = reader.readArray(reader1 -> SearchIndexer.fromJson(reader1));
                     deserializedListIndexersResult.indexers = indexers;
+                } else if ("@odata.nextLink".equals(fieldName)) {
+                    deserializedListIndexersResult.odataNextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedListIndexersResult;
         });
+    }
+
+    /*
+     * The URL that can be used to fetch the next set of results.
+     */
+    @Generated
+    private String odataNextLink;
+
+    /**
+     * Get the odataNextLink property: The URL that can be used to fetch the next set of results.
+     *
+     * @return the odataNextLink value.
+     */
+    @Generated
+    public String getOdataNextLink() {
+        return this.odataNextLink;
     }
 }

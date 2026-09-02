@@ -5,11 +5,14 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Base type for activity records. Tracks execution details, timing, and errors for knowledge base operations.
@@ -128,6 +131,10 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", this.id);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("startedAt",
+            this.startedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedAt));
+        jsonWriter.writeStringField("completedAt",
+            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
         jsonWriter.writeNumberField("elapsedMs", this.elapsedMs);
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeStringField("warning", this.warning);
@@ -205,6 +212,8 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
         return jsonReader.readObject(reader -> {
             int id = 0;
             KnowledgeBaseActivityRecordType type = null;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
@@ -215,6 +224,12 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     id = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -227,6 +242,8 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
             }
             KnowledgeBaseActivityRecord deserializedKnowledgeBaseActivityRecord = new KnowledgeBaseActivityRecord(id);
             deserializedKnowledgeBaseActivityRecord.type = type;
+            deserializedKnowledgeBaseActivityRecord.startedAt = startedAt;
+            deserializedKnowledgeBaseActivityRecord.completedAt = completedAt;
             deserializedKnowledgeBaseActivityRecord.elapsedMs = elapsedMs;
             deserializedKnowledgeBaseActivityRecord.error = error;
             deserializedKnowledgeBaseActivityRecord.warning = warning;
@@ -262,6 +279,62 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
     @Generated
     KnowledgeBaseActivityRecord setWarning(String warning) {
         this.warning = warning;
+        return this;
+    }
+
+    /*
+     * The time at which the activity started.
+     */
+    @Generated
+    private OffsetDateTime startedAt;
+
+    /*
+     * The time at which the activity completed.
+     */
+    @Generated
+    private OffsetDateTime completedAt;
+
+    /**
+     * Get the startedAt property: The time at which the activity started.
+     *
+     * @return the startedAt value.
+     */
+    @Generated
+    public OffsetDateTime getStartedAt() {
+        return this.startedAt;
+    }
+
+    /**
+     * Set the startedAt property: The time at which the activity started.
+     *
+     * @param startedAt the startedAt value to set.
+     * @return the KnowledgeBaseActivityRecord object itself.
+     */
+    @Generated
+    KnowledgeBaseActivityRecord setStartedAt(OffsetDateTime startedAt) {
+        this.startedAt = startedAt;
+        return this;
+    }
+
+    /**
+     * Get the completedAt property: The time at which the activity completed.
+     *
+     * @return the completedAt value.
+     */
+    @Generated
+    public OffsetDateTime getCompletedAt() {
+        return this.completedAt;
+    }
+
+    /**
+     * Set the completedAt property: The time at which the activity completed.
+     *
+     * @param completedAt the completedAt value to set.
+     * @return the KnowledgeBaseActivityRecord object itself.
+     */
+    @Generated
+    KnowledgeBaseActivityRecord setCompletedAt(OffsetDateTime completedAt) {
+        this.completedAt = completedAt;
         return this;
     }
 }

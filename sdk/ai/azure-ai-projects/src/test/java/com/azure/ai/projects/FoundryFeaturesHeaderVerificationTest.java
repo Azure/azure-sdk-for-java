@@ -62,7 +62,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals("Schedules=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaRoutinesClient().getRoutineWithResponse("routine", new RequestOptions());
-        assertEquals("Routines=V1Preview", foundryFeatures(httpClient));
+        assertEquals("Routines=V2Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
@@ -103,7 +103,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals("Schedules=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaRoutinesClient().getRoutineWithResponse("routine", new RequestOptions());
-        assertEquals("Routines=V1Preview", foundryFeatures(httpClient));
+        assertEquals("Routines=V2Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));

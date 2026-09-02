@@ -12,23 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model
-            = BinaryData.fromString("{\"status\":\"Approved\",\"description\":\"e\",\"actionsRequired\":\"a\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("e", model.description());
-        Assertions.assertEquals("a", model.actionsRequired());
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Pending\",\"description\":\"pxokajionp\",\"actionsRequired\":\"ex\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
+        Assertions.assertEquals("pxokajionp", model.description());
+        Assertions.assertEquals("ex", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                .withDescription("e")
-                .withActionsRequired("a");
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                .withDescription("pxokajionp")
+                .withActionsRequired("ex");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("e", model.description());
-        Assertions.assertEquals("a", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
+        Assertions.assertEquals("pxokajionp", model.description());
+        Assertions.assertEquals("ex", model.actionsRequired());
     }
 }

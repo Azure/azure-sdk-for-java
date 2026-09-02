@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.recommender.generated;
  */
 public final class SkuMixPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GetSkuMixPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GetSkuMixPlacementScores.json
      */
     /**
      * Sample code: Gets the metadata of SkuMixPlacement Scores.
