@@ -118,13 +118,11 @@ public class QueryValidationTests extends TestSuiteBase {
     @Test(groups = {"query"}, timeOut = TIMEOUT *2)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
             containerProperties,
-            ThroughputProperties.createManualThroughput(100000), // Create container with large number physical partitions
-            new CosmosContainerRequestOptions()
-        ).block();
-
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+            new CosmosContainerRequestOptions(),
+            100000); // Create container with large number physical partitions
 
         int partitionDocCount = 5;
         int pageSize = partitionDocCount + 1;
@@ -378,8 +376,10 @@ public class QueryValidationTests extends TestSuiteBase {
 
         //Create container
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
 
         //Insert some documents
@@ -488,9 +488,10 @@ public class QueryValidationTests extends TestSuiteBase {
         and make sure all the records are obtained
          */
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
-
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         CosmosContainerResponse containerResponse = container.read().block();
         assert (containerResponse != null);
         CosmosContainerProperties properties = containerResponse.getProperties();
@@ -576,8 +577,10 @@ public class QueryValidationTests extends TestSuiteBase {
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
         String containerId = "testContainer_" + UUID.randomUUID();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         //id as partitionkey > 100bytes
         String itemID1 = "cosmosdb" +
                              "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-0";

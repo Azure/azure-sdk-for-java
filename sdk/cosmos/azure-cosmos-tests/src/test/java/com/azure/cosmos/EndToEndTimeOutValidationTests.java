@@ -5,8 +5,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -57,22 +57,29 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     }
 
     public CosmosAsyncClient initializeClient(CosmosEndToEndOperationLatencyPolicyConfig e2eDefaultConfig) {
-        CosmosAsyncClient client = this
-            .getClientBuilder()
-            .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
-            .buildAsyncClient();
+        CosmosAsyncClient client = null;
+        CosmosAsyncClient setupClient = null;
 
         try {
-            createdContainer = getSharedMultiPartitionCosmosContainer(client);
-            truncateCollection(createdContainer);
+            setupClient = copyCosmosClientBuilder(getClientBuilder()).buildAsyncClient();
+            client = copyCosmosClientBuilder(getClientBuilder())
+                .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
+                .buildAsyncClient();
 
-            createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+            createdContainer = getSharedMultiPartitionCosmosContainer(client);
+            CosmosAsyncContainer setupContainer = getSharedMultiPartitionCosmosContainer(setupClient);
+            truncateCollection(setupContainer);
+
+            createdDocuments.clear();
+            createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, setupContainer));
 
             return client;
         } catch (Throwable t) {
             safeClose(client);
 
             throw t;
+        } finally {
+            safeClose(setupClient);
         }
     }
 
@@ -173,8 +180,14 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
+            CosmosItemRequestOptions setupOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .enable(false)
+                        .build());
+
             TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
-            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options).block();
+            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), setupOptions).block();
             rule = injectFailure(createdContainer, FaultInjectionOperationType.REPLACE_ITEM, null);
             inputObject.setName("replaceName");
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
@@ -296,7 +309,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldNotTimeoutWhenSuppressed() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -329,7 +342,8 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1L)
-                .verifyComplete();
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
         } finally {
             if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
@@ -345,91 +359,119 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
-        CosmosClientBuilder builder = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
-            .credential(credential);
 
-        try (CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient()) {
-            String dbname = "db_" + UUID.randomUUID();
+        FaultInjectionRule readItemFaultInjectionRule = null;
+        FaultInjectionRule queryItemFaultInjectionRule = null;
+        CosmosAsyncClient setupClient = null;
+        CosmosAsyncClient cosmosAsyncClient = null;
+        String dbname = "db_" + UUID.randomUUID();
+
+        try {
+            setupClient = copyCosmosClientBuilder(getClientBuilder()).buildAsyncClient();
+            cosmosAsyncClient = copyCosmosClientBuilder(getClientBuilder())
+                .endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                .buildAsyncClient();
+
             String containerName = "container_" + UUID.randomUUID();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
-            cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
-            cosmosAsyncClient.getDatabase(dbname)
-                .createContainerIfNotExists(properties).block();
+            setupClient.createDatabaseIfNotExists(dbname).block();
+            createCollection(
+                setupClient.getDatabase(dbname),
+                properties,
+                new CosmosContainerRequestOptions(),
+                setupClient);
             CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(dbname)
+                .getContainer(containerName);
+            CosmosAsyncContainer setupContainer = setupClient.getDatabase(dbname)
                 .getContainer(containerName);
 
             TestObject obj = new TestObject(UUID.randomUUID().toString(),
                 "name123",
                 2,
                 UUID.randomUUID().toString());
-            container.createItem(obj).block();
+            setupContainer.createItem(obj).block();
+
+            CosmosItemRequestOptions e2eDisabledItemRequestOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .enable(false)
+                        .build());
+
+            CosmosQueryRequestOptions e2eDisabledQueryRequestOptions = new CosmosQueryRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .enable(false)
+                        .build());
 
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-                container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
+                container.readItem(
+                    obj.id,
+                    new PartitionKey(obj.mypk),
+                    e2eDisabledItemRequestOptions,
+                    TestObject.class);
 
-            // Should read item properly before injecting failure
             StepVerifier.create(cosmosItemResponseMono)
                 .expectNextCount(1)
                 .expectComplete()
                 .verify();
 
-            injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
+            readItemFaultInjectionRule = injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
 
-            // Should timeout after injected delay
+            cosmosItemResponseMono = container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
             verifyExpectError(cosmosItemResponseMono);
 
             String queryText = "select top 1 * from c";
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-            CosmosPagedFlux<TestObject> queryPagedFlux = container.queryItems(sqlQuerySpec, TestObject.class);
+            CosmosPagedFlux<TestObject> queryPagedFlux =
+                container.queryItems(sqlQuerySpec, e2eDisabledQueryRequestOptions, TestObject.class);
 
-            // Should query item properly before injecting failure
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1)
                 .expectComplete()
                 .verify();
 
-            FaultInjectionRule faultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
+            queryItemFaultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
 
-            // Should timeout after injected delay
+            queryPagedFlux = container.queryItems(sqlQuerySpec, TestObject.class);
             StepVerifier.create(queryPagedFlux)
                 .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException)
                 .verify();
 
-            // Enabling at client level and disabling at the read item operation level should not fail the request even
-            // with injected delay
-            CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(
-                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .enable(false)
-                        .build());
             cosmosItemResponseMono =
-                container.readItem(obj.id, new PartitionKey(obj.mypk), options, TestObject.class);
+                container.readItem(
+                    obj.id,
+                    new PartitionKey(obj.mypk),
+                    e2eDisabledItemRequestOptions,
+                    TestObject.class);
             StepVerifier.create(cosmosItemResponseMono)
                 .expectNextCount(1)
                 .expectComplete()
                 .verify();
 
-            // Enabling at client level and disabling at the query item operation level should not fail the request even
-            // with injected delay
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(
-                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .enable(false)
-                        .build());
-            queryPagedFlux = container.queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class);
+            queryPagedFlux = container.queryItems(sqlQuerySpec, e2eDisabledQueryRequestOptions, TestObject.class);
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1)
                 .expectComplete()
                 .verify();
+        } finally {
+            if (readItemFaultInjectionRule != null) {
+                readItemFaultInjectionRule.disable();
+            }
+            if (queryItemFaultInjectionRule != null) {
+                queryItemFaultInjectionRule.disable();
+            }
 
-            faultInjectionRule.disable();
-            // delete the database
-            cosmosAsyncClient.getDatabase(dbname).delete().block();
+            CosmosAsyncClient cleanupClient = setupClient != null ? setupClient : cosmosAsyncClient;
+            if (cleanupClient != null) {
+                cleanupClient.getDatabase(dbname)
+                    .delete()
+                    .onErrorResume(throwable -> Mono.empty())
+                    .block();
+            }
+            safeClose(setupClient);
+            safeClose(cosmosAsyncClient);
         }
-
     }
 
 

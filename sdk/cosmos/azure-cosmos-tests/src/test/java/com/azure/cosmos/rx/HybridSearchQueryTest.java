@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.query.HybridSearchBadRequestException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
@@ -21,7 +22,6 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +44,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.rx.TestSuiteBase.createDatabase;
+import static com.azure.cosmos.rx.TestSuiteBase.createCollection;
 import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,8 +81,11 @@ public class HybridSearchQueryTest {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy());
         containerProperties.setFullTextPolicy(populateFullTextPolicy());
-        database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(10000)).block();
-        container = database.getContainer(containerId);
+        container = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions(),
+            10000);
 
         List<Document> documents = loadProductsFromJson();
         for (Document doc : documents) {
