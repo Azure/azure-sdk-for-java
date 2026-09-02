@@ -13,6 +13,7 @@
   <suppress files="com.azure.search.documents.SearchIndexingBufferedSenderBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.search.documents.SearchIndexingBufferedAsyncSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.SearchIndexingBufferedSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.search.documents.indexes.SearchIndexAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.indexes.SearchIndexClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.indexes.SearchIndexerClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.implementation.batching.SearchIndexingPublisher.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
