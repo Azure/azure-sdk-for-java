@@ -30,7 +30,7 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
      * Information about the Compute Node on which the subtask ran.
      */
     @Generated
-    private BatchNodeInfo nodeInfo;
+    private BatchNodeDetails nodeInfo;
 
     /*
      * The time at which the subtask started running. If the subtask has been restarted or retried, this is the most
@@ -61,14 +61,14 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
      * a container context.
      */
     @Generated
-    private BatchTaskContainerExecutionInfo containerInfo;
+    private BatchTaskContainerExecutionDetails containerInfo;
 
     /*
      * Information describing the Task failure, if any. This property is set only if the Task is in the completed state
      * and encountered a failure.
      */
     @Generated
-    private BatchTaskFailureInfo failureInfo;
+    private BatchTaskFailureDetails failureInfo;
 
     /*
      * The current state of the subtask.
@@ -125,7 +125,7 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
      * @return the nodeInfo value.
      */
     @Generated
-    public BatchNodeInfo getNodeInfo() {
+    public BatchNodeDetails getNodeInfo() {
         return this.nodeInfo;
     }
 
@@ -173,7 +173,7 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
      * @return the containerInfo value.
      */
     @Generated
-    public BatchTaskContainerExecutionInfo getContainerInfo() {
+    public BatchTaskContainerExecutionDetails getContainerInfo() {
         return this.containerInfo;
     }
 
@@ -184,7 +184,7 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
      * @return the failureInfo value.
      */
     @Generated
-    public BatchTaskFailureInfo getFailureInfo() {
+    public BatchTaskFailureDetails getFailureInfo() {
         return this.failureInfo;
     }
 
@@ -289,7 +289,7 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
                 if ("id".equals(fieldName)) {
                     deserializedBatchSubtask.id = reader.getNullable(JsonReader::getInt);
                 } else if ("nodeInfo".equals(fieldName)) {
-                    deserializedBatchSubtask.nodeInfo = BatchNodeInfo.fromJson(reader);
+                    deserializedBatchSubtask.nodeInfo = BatchNodeDetails.fromJson(reader);
                 } else if ("startTime".equals(fieldName)) {
                     deserializedBatchSubtask.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -299,9 +299,9 @@ public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
                 } else if ("exitCode".equals(fieldName)) {
                     deserializedBatchSubtask.exitCode = reader.getNullable(JsonReader::getInt);
                 } else if ("containerInfo".equals(fieldName)) {
-                    deserializedBatchSubtask.containerInfo = BatchTaskContainerExecutionInfo.fromJson(reader);
+                    deserializedBatchSubtask.containerInfo = BatchTaskContainerExecutionDetails.fromJson(reader);
                 } else if ("failureInfo".equals(fieldName)) {
-                    deserializedBatchSubtask.failureInfo = BatchTaskFailureInfo.fromJson(reader);
+                    deserializedBatchSubtask.failureInfo = BatchTaskFailureDetails.fromJson(reader);
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchSubtask.state = BatchSubtaskState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
