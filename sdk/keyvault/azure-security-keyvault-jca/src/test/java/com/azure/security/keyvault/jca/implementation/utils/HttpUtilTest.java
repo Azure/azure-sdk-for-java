@@ -17,6 +17,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -34,8 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Isolated("Mutates the global HttpsURLConnection hostname verifier")
+@Isolated("Mutates JVM-wide HTTPS and security configuration")
 public class HttpUtilTest {
+    private static final String TRUST_MANAGER_FACTORY_ALGORITHM_PROPERTY = "ssl.TrustManagerFactory.algorithm";
 
     @Test
     public void getUserAgentPrefixTest() {
@@ -178,6 +181,26 @@ public class HttpUtilTest {
                 connection.disconnect();
             }
             HttpsURLConnection.setDefaultHostnameVerifier(originalHostnameVerifier);
+        }
+    }
+
+    @Test
+    void httpsRequestsFailWhenTrustManagerCannotBeCreated() {
+        String originalAlgorithm = Security.getProperty(TRUST_MANAGER_FACTORY_ALGORITHM_PROPERTY);
+        assertNotNull(originalAlgorithm);
+
+        try {
+            Security.setProperty(TRUST_MANAGER_FACTORY_ALGORITHM_PROPERTY, "MissingTrustManagerAlgorithm");
+
+            IOException exception
+                = assertThrows(IOException.class, () -> HttpUtil.openConnection("https://example.test"));
+
+            assertEquals("Unable to build the SSL context.", exception.getMessage());
+            assertTrue(exception.getCause() instanceof NoSuchAlgorithmException);
+            assertNull(HttpUtil.get("https://example.test", null));
+            assertEmptyBinaryResponse(HttpUtil.getAiaBytesWithMetadata("https://example.test/cert.crt"));
+        } finally {
+            Security.setProperty(TRUST_MANAGER_FACTORY_ALGORITHM_PROPERTY, originalAlgorithm);
         }
     }
 

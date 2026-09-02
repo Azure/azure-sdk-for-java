@@ -35,7 +35,8 @@ import static java.util.logging.Level.WARNING;
 /**
  * The REST client that uses the JDK {@link HttpURLConnection} class.
  *
- * <p>HTTPS connections reject hostname mismatches independently of the JVM-wide default hostname verifier.
+ * <p>HTTPS connections reject hostname mismatches independently of the JVM-wide default hostname verifier and fail
+ * if their trust configuration cannot be initialized.
  */
 public final class HttpUtil {
     public static final String DEFAULT_VERSION = "unknown";
@@ -495,8 +496,8 @@ public final class HttpUtil {
 
                 sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
                 httpsConnection.setSSLSocketFactory(sslContext.getSocketFactory());
-            } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
-                LOGGER.log(WARNING, "Unable to build the SSL context.", e);
+            } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException exception) {
+                throw new IOException("Unable to build the SSL context.", exception);
             }
         }
 
