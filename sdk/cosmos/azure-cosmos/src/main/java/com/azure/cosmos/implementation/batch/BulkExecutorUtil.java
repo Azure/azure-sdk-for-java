@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
+import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
@@ -106,42 +106,13 @@ final class BulkExecutorUtil {
         return headers;
     }
 
-    /**
-     * Resolve partition key range id of a operation and set the partition key json value in operation.
-     *
-     * TODO(rakkuma): metaDataDiagnosticContext is passed null in tryLookupAsync function. Fix it while adding
-     *  support for an operation wise Diagnostic. The value here should be merged in the individual diagnostic.
-     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
-     */
-    static Mono<String> resolvePartitionKeyRangeId(
-        AsyncDocumentClient docClientWrapper,
-        CosmosAsyncContainer container,
-        CosmosItemOperation operation) {
-
-        checkNotNull(operation, "expected non-null operation");
-
-        AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
-
-        if (operation instanceof ItemBulkOperation<?, ?>) {
-            final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
-
-            return resolvePartitionKeyRangeId(
-                docClientWrapper,
-                container,
-                operation.getPartitionKeyValue(),
-                (partitionKeyInternal -> itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson())));
-
-        } else {
-            throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
-        }
-    }
-
     static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
         PartitionKey partitionKey,
-        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer) {
+        BiFunction<PartitionKeyDefinition, PartitionKeyInternal, PartitionKeyInternal> partitionKeyTransformer) {
 
+        checkNotNull(partitionKeyTransformer, "expected non-null partitionKeyTransformer");
         AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
 
         return Mono.defer(() ->
@@ -149,11 +120,10 @@ final class BulkExecutorUtil {
                            .getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                            .flatMap(collection -> {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
-                               final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
-                               if (partitionKeyInternalConsumer != null) {
-                                   partitionKeyInternalConsumer.accept(partitionKeyInternal);
-                               }
+                               PartitionKeyInternal partitionKeyInternal = partitionKeyTransformer.apply(
+                                   definition, getPartitionKeyInternal(partitionKey, definition));
 
+                               final PartitionKeyInternal effectivePartitionKeyInternal = partitionKeyInternal;
                                return docClientWrapper
                                    .getPartitionKeyRangeCache()
                                    .tryLookupAsync(null, collection.getResourceId(), null, null)
@@ -172,7 +142,7 @@ final class BulkExecutorUtil {
 
                                        return routingMap.v.getRangeByEffectivePartitionKey(
                                            getEffectivePartitionKeyString(
-                                               partitionKeyInternal,
+                                               effectivePartitionKeyInternal,
                                                definition)).getId();
                                    });
                            }))
