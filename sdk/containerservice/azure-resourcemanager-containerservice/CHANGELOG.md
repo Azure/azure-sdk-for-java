@@ -215,14 +215,14 @@
 
 #### `models.ContainerServiceNetworkProfile` was modified
 
-* `withPodLinkLocalAccess(models.PodLinkLocalAccess)` was added
-* `withKubeProxyConfig(models.ContainerServiceNetworkProfileKubeProxyConfig)` was added
-* `podLinkLocalAccess()` was added
-* `bastionProfile()` was added
-* `natGatewayId()` was added
-* `kubeProxyConfig()` was added
 * `withNatGatewayId(java.lang.String)` was added
+* `bastionProfile()` was added
+* `withKubeProxyConfig(models.ContainerServiceNetworkProfileKubeProxyConfig)` was added
+* `withPodLinkLocalAccess(models.PodLinkLocalAccess)` was added
+* `podLinkLocalAccess()` was added
 * `withBastionProfile(models.BastionProfile)` was added
+* `kubeProxyConfig()` was added
+* `natGatewayId()` was added
 
 #### `models.AgentPoolMode` was modified
 
@@ -243,8 +243,8 @@
 
 #### `models.ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler` was modified
 
-* `addonAutoscaling()` was added
 * `withAddonAutoscaling(models.AddonAutoscaling)` was added
+* `addonAutoscaling()` was added
 
 #### `models.IdentityBindingProperties` was modified
 
@@ -253,22 +253,22 @@
 
 #### `models.ManagedClusterAgentPoolProfile` was modified
 
-* `withUpgradeStrategy(models.UpgradeStrategy)` was added
-* `withPreparedImageSpecificationProfile(models.PreparedImageSpecificationProfile)` was added
-* `withUpgradeSettingsBlueGreen(models.AgentPoolBlueGreenUpgradeSettings)` was added
 * `withEnableOSDiskFullCaching(java.lang.Boolean)` was added
+* `withPreparedImageSpecificationProfile(models.PreparedImageSpecificationProfile)` was added
+* `withUpgradeStrategy(models.UpgradeStrategy)` was added
 * `withNodeInitializationTaints(java.util.List)` was added
+* `withUpgradeSettingsBlueGreen(models.AgentPoolBlueGreenUpgradeSettings)` was added
 
 #### `models.ManagedClusterSecurityProfile` was modified
 
-* `kubernetesResourceObjectEncryptionProfile()` was added
-* `withServiceAccountImagePullProfile(models.ServiceAccountImagePullProfile)` was added
-* `serviceAccountImagePullProfile()` was added
 * `nodeRestriction()` was added
+* `withImageIntegrity(models.ManagedClusterSecurityProfileImageIntegrity)` was added
+* `kubernetesResourceObjectEncryptionProfile()` was added
+* `serviceAccountImagePullProfile()` was added
+* `imageIntegrity()` was added
+* `withServiceAccountImagePullProfile(models.ServiceAccountImagePullProfile)` was added
 * `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was added
 * `withNodeRestriction(models.ManagedClusterSecurityProfileNodeRestriction)` was added
-* `withImageIntegrity(models.ManagedClusterSecurityProfileImageIntegrity)` was added
-* `imageIntegrity()` was added
 
 #### `models.AgentPoolType` was modified
 
@@ -281,8 +281,8 @@
 
 #### `models.ManagedClusterLoadBalancerProfile` was modified
 
-* `withClusterServiceLoadBalancerHealthProbeMode(models.ClusterServiceLoadBalancerHealthProbeMode)` was added
 * `clusterServiceLoadBalancerHealthProbeMode()` was added
+* `withClusterServiceLoadBalancerHealthProbeMode(models.ClusterServiceLoadBalancerHealthProbeMode)` was added
 
 #### `models.PublicNetworkAccess` was modified
 
@@ -298,10 +298,10 @@
 
 #### `models.AgentPoolNetworkProfile` was modified
 
-* `withNodePublicIPPrefixIDs(java.util.List)` was added
 * `withSecondaryNetworkInterfaces(java.util.List)` was added
 * `nodePublicIPPrefixIDs()` was added
 * `secondaryNetworkInterfaces()` was added
+* `withNodePublicIPPrefixIDs(java.util.List)` was added
 
 #### `models.LoadBalancerSku` was modified
 
@@ -310,15 +310,15 @@
 #### `models.MachineNetworkProperties` was modified
 
 * `vnetSubnetId()` was added
-* `nodePublicIpTags()` was added
-* `enableNodePublicIp()` was added
-* `nodePublicIpPrefixId()` was added
-* `withPodSubnetId(java.lang.String)` was added
-* `podSubnetId()` was added
 * `withEnableNodePublicIp(java.lang.Boolean)` was added
-* `withVnetSubnetId(java.lang.String)` was added
 * `withNodePublicIpTags(java.util.List)` was added
+* `podSubnetId()` was added
 * `withNodePublicIpPrefixId(java.lang.String)` was added
+* `nodePublicIpPrefixId()` was added
+* `withVnetSubnetId(java.lang.String)` was added
+* `withPodSubnetId(java.lang.String)` was added
+* `enableNodePublicIp()` was added
+* `nodePublicIpTags()` was added
 
 #### `models.WorkloadRuntime` was modified
 
@@ -337,15 +337,15 @@
 
 #### `models.GpuProfile` was modified
 
-* `withNvidia(models.NvidiaGPUProfile)` was added
 * `driverType()` was added
 * `nvidia()` was added
 * `withDriverType(models.DriverType)` was added
+* `withNvidia(models.NvidiaGPUProfile)` was added
 
 #### `models.AgentPoolUpgradeSettings` was modified
 
-* `maxBlockedNodes()` was added
 * `withMaxBlockedNodes(java.lang.String)` was added
+* `maxBlockedNodes()` was added
 
 #### `models.ManagedClusterPoolUpgradeProfile` was modified
 
@@ -353,48 +353,48 @@
 
 #### `models.KubeletConfig` was modified
 
-* `withSoftEvictionThreshold(models.SoftEvictionThreshold)` was added
-* `seccompDefault()` was added
-* `withHardEvictionThreshold(models.HardEvictionThreshold)` was added
-* `evictionMaxPodGracePeriodInSeconds()` was added
-* `softEvictionGracePeriod()` was added
-* `withSeccompDefault(models.SeccompDefault)` was added
-* `withKubeReserved(models.KubeReserved)` was added
 * `kubeReserved()` was added
-* `withSoftEvictionGracePeriod(models.SoftEvictionGracePeriod)` was added
+* `evictionMaxPodGracePeriodInSeconds()` was added
+* `withHardEvictionThreshold(models.HardEvictionThreshold)` was added
+* `withSeccompDefault(models.SeccompDefault)` was added
 * `hardEvictionThreshold()` was added
+* `withKubeReserved(models.KubeReserved)` was added
+* `withSoftEvictionThreshold(models.SoftEvictionThreshold)` was added
+* `withSoftEvictionGracePeriod(models.SoftEvictionGracePeriod)` was added
+* `seccompDefault()` was added
 * `softEvictionThreshold()` was added
+* `softEvictionGracePeriod()` was added
 * `withEvictionMaxPodGracePeriodInSeconds(java.lang.Integer)` was added
 
 #### `models.MachineProperties` was modified
 
-* `withMode(models.AgentPoolMode)` was added
-* `withLocalDNSProfile(models.LocalDnsProfile)` was added
-* `withNetwork(models.MachineNetworkProperties)` was added
-* `withOperatingSystem(models.MachineOSProfile)` was added
-* `withBilling(models.MachineBillingProfile)` was added
-* `withSecurity(models.MachineSecurityProfile)` was added
-* `billing()` was added
+* `withCapacityReservation(models.CapacityReservation)` was added
 * `status()` was added
-* `withKubernetes(models.MachineKubernetesProfile)` was added
-* `tags()` was added
-* `hardware()` was added
-* `kubernetes()` was added
-* `localDNSProfile()` was added
-* `withTags(java.util.Map)` was added
-* `security()` was added
-* `withEvictionPolicy(models.ScaleSetEvictionPolicy)` was added
-* `priority()` was added
-* `eTag()` was added
-* `nodeImageVersion()` was added
 * `withPriority(models.ScaleSetPriority)` was added
-* `mode()` was added
-* `evictionPolicy()` was added
-* `provisioningState()` was added
-* `withHardware(models.MachineHardwareProfile)` was added
+* `tags()` was added
+* `withLocalDNSProfile(models.LocalDnsProfile)` was added
+* `billing()` was added
+* `hardware()` was added
 * `operatingSystem()` was added
 * `capacityReservation()` was added
-* `withCapacityReservation(models.CapacityReservation)` was added
+* `evictionPolicy()` was added
+* `withTags(java.util.Map)` was added
+* `priority()` was added
+* `withMode(models.AgentPoolMode)` was added
+* `withEvictionPolicy(models.ScaleSetEvictionPolicy)` was added
+* `eTag()` was added
+* `mode()` was added
+* `withHardware(models.MachineHardwareProfile)` was added
+* `localDNSProfile()` was added
+* `provisioningState()` was added
+* `kubernetes()` was added
+* `withOperatingSystem(models.MachineOSProfile)` was added
+* `withKubernetes(models.MachineKubernetesProfile)` was added
+* `security()` was added
+* `withNetwork(models.MachineNetworkProperties)` was added
+* `withSecurity(models.MachineSecurityProfile)` was added
+* `nodeImageVersion()` was added
+* `withBilling(models.MachineBillingProfile)` was added
 
 ## 2.63.0 (2026-08-24)
 
