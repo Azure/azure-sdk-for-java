@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -57,7 +58,7 @@ public class CodeInterpreterSync {
                     + "When asked to perform calculations or data analysis, use the code interpreter to run Python code.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("code-interpreter-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion("code-interpreter-agent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName())

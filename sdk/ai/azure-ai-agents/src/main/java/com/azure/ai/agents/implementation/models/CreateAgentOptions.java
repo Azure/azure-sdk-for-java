@@ -8,6 +8,7 @@ import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentState;
+import com.azure.ai.agents.models.DigitalWorkerType;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import java.util.Map;
@@ -31,7 +32,7 @@ public final class CreateAgentOptions {
      * Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
-     * 
+     *
      * Keys are strings with a maximum length of 64 characters. Values are strings
      * with a maximum length of 512 characters.
      */
@@ -45,7 +46,7 @@ public final class CreateAgentOptions {
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
     private final AgentDefinition definition;
@@ -149,8 +150,8 @@ public final class CreateAgentOptions {
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */
@@ -286,6 +287,36 @@ public final class CreateAgentOptions {
     @Generated
     public CreateAgentOptions setDraft(Boolean draft) {
         this.draft = draft;
+        return this;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
+    }
+
+    /**
+     * Set the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @param digitalWorkerType the digitalWorkerType value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setDigitalWorkerType(DigitalWorkerType digitalWorkerType) {
+        this.digitalWorkerType = digitalWorkerType;
         return this;
     }
 }

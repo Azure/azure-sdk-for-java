@@ -11,6 +11,7 @@ import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FabricDataAgentToolParameters;
 import com.azure.ai.agents.models.MicrosoftFabricPreviewTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.ToolProjectConnection;
 import com.azure.core.util.Configuration;
@@ -60,7 +61,7 @@ public class FabricSync {
             .setInstructions("You are a data assistant that can query Microsoft Fabric data.")
             .setTools(Collections.singletonList(fabricTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("fabric-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("fabric-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

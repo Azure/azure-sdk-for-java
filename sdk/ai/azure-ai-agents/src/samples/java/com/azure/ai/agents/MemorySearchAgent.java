@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
@@ -71,7 +72,7 @@ public class MemorySearchAgent {
                     .setInstructions("You are a helpful assistant that answers general questions.")
                     .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion(agentName, agentDefinition);
+            agent = agentsClient.createAgentVersion(agentName, new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());

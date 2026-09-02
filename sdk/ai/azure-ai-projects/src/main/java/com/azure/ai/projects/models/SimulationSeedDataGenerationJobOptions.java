@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The options for a simulation seed data generation job. Use with multiturn evaluation scenarios and with prompt, file,
+ * The options for a task generation data generation job. Use with multiturn evaluation scenarios and with prompt, file,
  * or agent sources. Generated dataset rows include fields such as `id`, `category`, `test_case_description`, and
  * `desired_num_turns`.
  */

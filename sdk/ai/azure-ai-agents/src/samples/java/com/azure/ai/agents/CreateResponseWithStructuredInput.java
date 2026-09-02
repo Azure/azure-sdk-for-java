@@ -7,6 +7,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.util.BinaryData;
@@ -45,11 +46,11 @@ public class CreateResponseWithStructuredInput {
             new StructuredInputDefinition().setDescription("User's role").setRequired(true));
 
         AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
-            new PromptAgentDefinition(model)
+            new CreateAgentVersionInput(new PromptAgentDefinition(model)
                 .setInstructions("You are a helpful assistant. "
                     + "The user's name is {{userName}} and their role is {{userRole}}. "
                     + "Greet them and confirm their details.")
-                .setStructuredInputs(structuredInputDefinitions));
+                .setStructuredInputs(structuredInputDefinitions)));
         // END: com.azure.ai.agents.define_structured_inputs
 
         // BEGIN: com.azure.ai.agents.create_response_with_structured_input

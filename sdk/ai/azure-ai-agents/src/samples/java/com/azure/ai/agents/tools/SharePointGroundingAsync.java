@@ -9,6 +9,7 @@ import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.SharepointGroundingToolParameters;
 import com.azure.ai.agents.models.SharepointPreviewTool;
@@ -60,7 +61,7 @@ public class SharePointGroundingAsync {
             .setInstructions("You are a helpful assistant that can search through SharePoint documents.")
             .setTools(Collections.singletonList(sharepointTool));
 
-        agentsAsyncClient.createAgentVersion("sharepoint-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("sharepoint-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

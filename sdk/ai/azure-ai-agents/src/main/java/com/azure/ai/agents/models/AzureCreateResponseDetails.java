@@ -51,6 +51,7 @@ public final class AzureCreateResponseDetails implements JsonSerializable<AzureC
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("agent_reference", this.agentReference);
+        jsonWriter.writeJsonField("model_selection_details", this.modelSelectionDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,16 +68,40 @@ public final class AzureCreateResponseDetails implements JsonSerializable<AzureC
     public static AzureCreateResponseDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AgentReference agentReference = null;
+            ModelSelectionDetails modelSelectionDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("agent_reference".equals(fieldName)) {
                     agentReference = AgentReference.fromJson(reader);
+                } else if ("model_selection_details".equals(fieldName)) {
+                    modelSelectionDetails = ModelSelectionDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AzureCreateResponseDetails(agentReference);
+            AzureCreateResponseDetails deserializedAzureCreateResponseDetails
+                = new AzureCreateResponseDetails(agentReference);
+            deserializedAzureCreateResponseDetails.modelSelectionDetails = modelSelectionDetails;
+            return deserializedAzureCreateResponseDetails;
         });
+    }
+
+    /*
+     * Model selection metadata providing visibility into routing decisions. Present when the request was handled by
+     * Model Router.
+     */
+    @Generated
+    private ModelSelectionDetails modelSelectionDetails;
+
+    /**
+     * Get the modelSelectionDetails property: Model selection metadata providing visibility into routing decisions.
+     * Present when the request was handled by Model Router.
+     *
+     * @return the modelSelectionDetails value.
+     */
+    @Generated
+    public ModelSelectionDetails getModelSelectionDetails() {
+        return this.modelSelectionDetails;
     }
 }

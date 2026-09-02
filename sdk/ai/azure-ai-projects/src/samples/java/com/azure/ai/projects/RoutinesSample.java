@@ -6,6 +6,8 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.models.CustomRoutineTrigger;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
+import com.azure.ai.projects.models.RoutineDispatchIdentity;
 import com.azure.ai.projects.models.RoutineTrigger;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -50,6 +52,8 @@ public class RoutinesSample {
         try {
             // BEGIN:com.azure.ai.projects.RoutinesSample.createRoutine
             RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
+            RoutineAuthorization authorization
+                = new RoutineAuthorization().setIdentity(RoutineDispatchIdentity.AGENT);
 
             CustomRoutineTrigger trigger = new CustomRoutineTrigger("sample-provider",
                 Collections.singletonMap("source", BinaryData.fromString("\"sample_routines_crud\"")))
@@ -58,7 +62,7 @@ public class RoutinesSample {
             triggers.put("manual", trigger);
 
             Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine created by the azure-ai-projects sample.", true, triggers, action);
+                "Routine created by the azure-ai-projects sample.", true, triggers, action, authorization);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
             // END:com.azure.ai.projects.RoutinesSample.createRoutine
 

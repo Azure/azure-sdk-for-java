@@ -9,6 +9,7 @@ import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WebSearchPreviewTool;
 import com.azure.core.util.Configuration;
@@ -56,7 +57,7 @@ public class WebSearchSync {
                     + "When asked to find information, use the web search tool to gather relevant data.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("web-search-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion("web-search-agent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName())
