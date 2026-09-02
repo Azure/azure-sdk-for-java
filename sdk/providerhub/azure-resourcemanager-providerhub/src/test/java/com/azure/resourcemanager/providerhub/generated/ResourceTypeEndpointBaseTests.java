@@ -18,51 +18,51 @@ public final class ResourceTypeEndpointBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeEndpointBase model = BinaryData.fromString(
-            "{\"enabled\":false,\"apiVersions\":[\"epdfgkmtdherng\",\"tcjuahokqto\"],\"endpointUri\":\"kauxof\",\"locations\":[\"fphwpnu\",\"aiywzejywhsl\",\"koj\",\"llndnpd\"],\"requiredFeatures\":[\"pqafgfugsnnfhy\",\"tefypococtfjgti\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"Any\"},\"timeout\":\"PT144H47M53S\",\"endpointType\":\"Production\",\"dstsConfiguration\":{\"serviceName\":\"zuyt\",\"serviceDnsName\":\"mlmuowol\"},\"skuLink\":\"au\",\"apiVersion\":\"ropions\",\"zones\":[\"nw\",\"ngajinnixjawrtmj\"]}")
+            "{\"enabled\":true,\"apiVersions\":[\"oqhnlb\",\"nbldxeaclgschori\"],\"endpointUri\":\"krsrrmoucs\",\"locations\":[\"ldpuviy\",\"caab\",\"olhbhlvb\"],\"requiredFeatures\":[\"uqibsxtkcu\",\"fbsfarfsiow\",\"kjxnqpvwgfstmhq\",\"kizmdksaoafclu\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"Any\"},\"timeout\":\"PT12H10M33S\",\"endpointType\":\"TestInProduction\",\"dstsConfiguration\":{\"serviceName\":\"mycjimryvwgcwwp\",\"serviceDnsName\":\"zgwe\"},\"skuLink\":\"ydsx\",\"apiVersion\":\"efoh\",\"zones\":[\"bvopwndyqle\",\"llklmtk\",\"lowkxxpvb\",\"dfjmzsyzfhotlh\"]}")
             .toObject(ResourceTypeEndpointBase.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("epdfgkmtdherng", model.apiVersions().get(0));
-        Assertions.assertEquals("kauxof", model.endpointUri());
-        Assertions.assertEquals("fphwpnu", model.locations().get(0));
-        Assertions.assertEquals("pqafgfugsnnfhy", model.requiredFeatures().get(0));
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("oqhnlb", model.apiVersions().get(0));
+        Assertions.assertEquals("krsrrmoucs", model.endpointUri());
+        Assertions.assertEquals("ldpuviy", model.locations().get(0));
+        Assertions.assertEquals("uqibsxtkcu", model.requiredFeatures().get(0));
         Assertions.assertEquals(FeaturesPolicy.ANY, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT144H47M53S"), model.timeout());
-        Assertions.assertEquals(EndpointType.PRODUCTION, model.endpointType());
-        Assertions.assertEquals("zuyt", model.dstsConfiguration().serviceName());
-        Assertions.assertEquals("mlmuowol", model.dstsConfiguration().serviceDnsName());
-        Assertions.assertEquals("au", model.skuLink());
-        Assertions.assertEquals("ropions", model.apiVersion());
-        Assertions.assertEquals("nw", model.zones().get(0));
+        Assertions.assertEquals(Duration.parse("PT12H10M33S"), model.timeout());
+        Assertions.assertEquals(EndpointType.TEST_IN_PRODUCTION, model.endpointType());
+        Assertions.assertEquals("mycjimryvwgcwwp", model.dstsConfiguration().serviceName());
+        Assertions.assertEquals("zgwe", model.dstsConfiguration().serviceDnsName());
+        Assertions.assertEquals("ydsx", model.skuLink());
+        Assertions.assertEquals("efoh", model.apiVersion());
+        Assertions.assertEquals("bvopwndyqle", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceTypeEndpointBase model = new ResourceTypeEndpointBase().withEnabled(false)
-            .withApiVersions(Arrays.asList("epdfgkmtdherng", "tcjuahokqto"))
-            .withEndpointUri("kauxof")
-            .withLocations(Arrays.asList("fphwpnu", "aiywzejywhsl", "koj", "llndnpd"))
-            .withRequiredFeatures(Arrays.asList("pqafgfugsnnfhy", "tefypococtfjgti"))
+        ResourceTypeEndpointBase model = new ResourceTypeEndpointBase().withEnabled(true)
+            .withApiVersions(Arrays.asList("oqhnlb", "nbldxeaclgschori"))
+            .withEndpointUri("krsrrmoucs")
+            .withLocations(Arrays.asList("ldpuviy", "caab", "olhbhlvb"))
+            .withRequiredFeatures(Arrays.asList("uqibsxtkcu", "fbsfarfsiow", "kjxnqpvwgfstmhq", "kizmdksaoafclu"))
             .withFeaturesRule(new ResourceTypeEndpointBaseFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ANY))
-            .withTimeout(Duration.parse("PT144H47M53S"))
-            .withEndpointType(EndpointType.PRODUCTION)
-            .withDstsConfiguration(
-                new ResourceTypeEndpointBaseDstsConfiguration().withServiceName("zuyt").withServiceDnsName("mlmuowol"))
-            .withSkuLink("au")
-            .withApiVersion("ropions")
-            .withZones(Arrays.asList("nw", "ngajinnixjawrtmj"));
+            .withTimeout(Duration.parse("PT12H10M33S"))
+            .withEndpointType(EndpointType.TEST_IN_PRODUCTION)
+            .withDstsConfiguration(new ResourceTypeEndpointBaseDstsConfiguration().withServiceName("mycjimryvwgcwwp")
+                .withServiceDnsName("zgwe"))
+            .withSkuLink("ydsx")
+            .withApiVersion("efoh")
+            .withZones(Arrays.asList("bvopwndyqle", "llklmtk", "lowkxxpvb", "dfjmzsyzfhotlh"));
         model = BinaryData.fromObject(model).toObject(ResourceTypeEndpointBase.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("epdfgkmtdherng", model.apiVersions().get(0));
-        Assertions.assertEquals("kauxof", model.endpointUri());
-        Assertions.assertEquals("fphwpnu", model.locations().get(0));
-        Assertions.assertEquals("pqafgfugsnnfhy", model.requiredFeatures().get(0));
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("oqhnlb", model.apiVersions().get(0));
+        Assertions.assertEquals("krsrrmoucs", model.endpointUri());
+        Assertions.assertEquals("ldpuviy", model.locations().get(0));
+        Assertions.assertEquals("uqibsxtkcu", model.requiredFeatures().get(0));
         Assertions.assertEquals(FeaturesPolicy.ANY, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT144H47M53S"), model.timeout());
-        Assertions.assertEquals(EndpointType.PRODUCTION, model.endpointType());
-        Assertions.assertEquals("zuyt", model.dstsConfiguration().serviceName());
-        Assertions.assertEquals("mlmuowol", model.dstsConfiguration().serviceDnsName());
-        Assertions.assertEquals("au", model.skuLink());
-        Assertions.assertEquals("ropions", model.apiVersion());
-        Assertions.assertEquals("nw", model.zones().get(0));
+        Assertions.assertEquals(Duration.parse("PT12H10M33S"), model.timeout());
+        Assertions.assertEquals(EndpointType.TEST_IN_PRODUCTION, model.endpointType());
+        Assertions.assertEquals("mycjimryvwgcwwp", model.dstsConfiguration().serviceName());
+        Assertions.assertEquals("zgwe", model.dstsConfiguration().serviceDnsName());
+        Assertions.assertEquals("ydsx", model.skuLink());
+        Assertions.assertEquals("efoh", model.apiVersion());
+        Assertions.assertEquals("bvopwndyqle", model.zones().get(0));
     }
 }

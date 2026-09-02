@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ProviderRegistrationPropertiesPrivateResourceProviderConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderRegistrationPropertiesPrivateResourceProviderConfiguration model
-            = BinaryData.fromString("{\"allowedSubscriptions\":[\"eafidltugsresm\",\"ssjhoiftxfkf\"]}")
-                .toObject(ProviderRegistrationPropertiesPrivateResourceProviderConfiguration.class);
-        Assertions.assertEquals("eafidltugsresm", model.allowedSubscriptions().get(0));
+        ProviderRegistrationPropertiesPrivateResourceProviderConfiguration model = BinaryData
+            .fromString("{\"allowedSubscriptions\":[\"gh\",\"iypoqeyhlqhykprl\",\"yznuciqd\",\"mexiitdfuxt\"]}")
+            .toObject(ProviderRegistrationPropertiesPrivateResourceProviderConfiguration.class);
+        Assertions.assertEquals("gh", model.allowedSubscriptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProviderRegistrationPropertiesPrivateResourceProviderConfiguration model
             = new ProviderRegistrationPropertiesPrivateResourceProviderConfiguration()
-                .withAllowedSubscriptions(Arrays.asList("eafidltugsresm", "ssjhoiftxfkf"));
+                .withAllowedSubscriptions(Arrays.asList("gh", "iypoqeyhlqhykprl", "yznuciqd", "mexiitdfuxt"));
         model = BinaryData.fromObject(model)
             .toObject(ProviderRegistrationPropertiesPrivateResourceProviderConfiguration.class);
-        Assertions.assertEquals("eafidltugsresm", model.allowedSubscriptions().get(0));
+        Assertions.assertEquals("gh", model.allowedSubscriptions().get(0));
     }
 }

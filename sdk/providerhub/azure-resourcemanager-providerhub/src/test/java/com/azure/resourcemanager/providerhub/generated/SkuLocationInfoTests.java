@@ -16,34 +16,39 @@ public final class SkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuLocationInfo model = BinaryData.fromString(
-            "{\"location\":\"nlejjjkxybwf\",\"zones\":[\"jbzten\",\"vkzykjtjknsxf\",\"us\",\"cdp\"],\"zoneDetails\":[{\"name\":[\"rmgjfbpkuwx\",\"oiojfizfavkjzwfb\",\"yay\"],\"capabilities\":[{\"name\":\"fz\",\"value\":\"bfw\"},{\"name\":\"rzx\",\"value\":\"dew\"}]}],\"extendedLocations\":[\"xkrplbjaz\",\"jwwviy\"],\"type\":\"NotSpecified\"}")
+            "{\"location\":\"jiuazjc\",\"zones\":[\"itpfinzcpdl\"],\"zoneDetails\":[{\"name\":[\"jmtbd\",\"vcqguefzh\",\"mpheqdur\",\"lyujlfyoump\"],\"capabilities\":[{\"name\":\"eclcdigptajbrzm\",\"value\":\"xucycijoclxi\"}]},{\"name\":[\"jc\",\"z\",\"zjd\"],\"capabilities\":[{\"name\":\"jb\",\"value\":\"xjeaoqaqbzgyh\"},{\"name\":\"w\",\"value\":\"v\"},{\"name\":\"atbwbqam\",\"value\":\"e\"},{\"name\":\"liys\",\"value\":\"pkcvmwf\"}]}],\"extendedLocations\":[\"xe\"],\"type\":\"NotSpecified\"}")
             .toObject(SkuLocationInfo.class);
-        Assertions.assertEquals("nlejjjkxybwf", model.location());
-        Assertions.assertEquals("jbzten", model.zones().get(0));
-        Assertions.assertEquals("rmgjfbpkuwx", model.zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("fz", model.zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("bfw", model.zoneDetails().get(0).capabilities().get(0).value());
-        Assertions.assertEquals("xkrplbjaz", model.extendedLocations().get(0));
+        Assertions.assertEquals("jiuazjc", model.location());
+        Assertions.assertEquals("itpfinzcpdl", model.zones().get(0));
+        Assertions.assertEquals("jmtbd", model.zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("eclcdigptajbrzm", model.zoneDetails().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("xucycijoclxi", model.zoneDetails().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("xe", model.extendedLocations().get(0));
         Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuLocationInfo model = new SkuLocationInfo().withLocation("nlejjjkxybwf")
-            .withZones(Arrays.asList("jbzten", "vkzykjtjknsxf", "us", "cdp"))
-            .withZoneDetails(
-                Arrays.asList(new SkuZoneDetail().withName(Arrays.asList("rmgjfbpkuwx", "oiojfizfavkjzwfb", "yay"))
-                    .withCapabilities(Arrays.asList(new SkuCapability().withName("fz").withValue("bfw"),
-                        new SkuCapability().withName("rzx").withValue("dew")))))
-            .withExtendedLocations(Arrays.asList("xkrplbjaz", "jwwviy"))
+        SkuLocationInfo model = new SkuLocationInfo().withLocation("jiuazjc")
+            .withZones(Arrays.asList("itpfinzcpdl"))
+            .withZoneDetails(Arrays.asList(
+                new SkuZoneDetail().withName(Arrays.asList("jmtbd", "vcqguefzh", "mpheqdur", "lyujlfyoump"))
+                    .withCapabilities(
+                        Arrays.asList(new SkuCapability().withName("eclcdigptajbrzm").withValue("xucycijoclxi"))),
+                new SkuZoneDetail().withName(Arrays.asList("jc", "z", "zjd"))
+                    .withCapabilities(Arrays.asList(new SkuCapability().withName("jb").withValue("xjeaoqaqbzgyh"),
+                        new SkuCapability().withName("w").withValue("v"),
+                        new SkuCapability().withName("atbwbqam").withValue("e"),
+                        new SkuCapability().withName("liys").withValue("pkcvmwf")))))
+            .withExtendedLocations(Arrays.asList("xe"))
             .withType(ExtendedLocationType.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(SkuLocationInfo.class);
-        Assertions.assertEquals("nlejjjkxybwf", model.location());
-        Assertions.assertEquals("jbzten", model.zones().get(0));
-        Assertions.assertEquals("rmgjfbpkuwx", model.zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("fz", model.zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("bfw", model.zoneDetails().get(0).capabilities().get(0).value());
-        Assertions.assertEquals("xkrplbjaz", model.extendedLocations().get(0));
+        Assertions.assertEquals("jiuazjc", model.location());
+        Assertions.assertEquals("itpfinzcpdl", model.zones().get(0));
+        Assertions.assertEquals("jmtbd", model.zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("eclcdigptajbrzm", model.zoneDetails().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("xucycijoclxi", model.zoneDetails().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("xe", model.extendedLocations().get(0));
         Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED, model.type());
     }
 }

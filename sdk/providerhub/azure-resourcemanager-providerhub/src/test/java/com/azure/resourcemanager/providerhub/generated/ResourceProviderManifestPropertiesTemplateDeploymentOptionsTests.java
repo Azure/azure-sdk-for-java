@@ -13,21 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderManifestPropertiesTemplateDeploymentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestPropertiesTemplateDeploymentOptions model = BinaryData
-            .fromString("{\"preflightSupported\":false,\"preflightOptions\":[\"ContinueDeploymentOnFailure\"]}")
+        ResourceProviderManifestPropertiesTemplateDeploymentOptions model = BinaryData.fromString(
+            "{\"preflightSupported\":true,\"preflightOptions\":[\"ContinueDeploymentOnFailure\",\"None\",\"None\",\"None\"]}")
             .toObject(ResourceProviderManifestPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertFalse(model.preflightSupported());
+        Assertions.assertTrue(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesTemplateDeploymentOptions model
-            = new ResourceProviderManifestPropertiesTemplateDeploymentOptions().withPreflightSupported(false)
-                .withPreflightOptions(Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE));
+            = new ResourceProviderManifestPropertiesTemplateDeploymentOptions().withPreflightSupported(true)
+                .withPreflightOptions(Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE,
+                    PreflightOption.NONE, PreflightOption.NONE, PreflightOption.NONE));
         model
             = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertFalse(model.preflightSupported());
+        Assertions.assertTrue(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 }

@@ -18,53 +18,53 @@ public final class FrontloadPayloadPropertiesOverrideEndpointLevelFieldsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontloadPayloadPropertiesOverrideEndpointLevelFields model = BinaryData.fromString(
-            "{\"enabled\":true,\"apiVersions\":[\"cgwgcloxoebqinji\"],\"endpointUri\":\"nwjfu\",\"locations\":[\"lafcbahh\",\"zpofoiyjwpfilk\",\"kkholvdndvia\",\"ogphuartvtiu\"],\"requiredFeatures\":[\"efchn\",\"n\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"All\"},\"timeout\":\"PT137H27M29S\",\"endpointType\":\"Canary\",\"dstsConfiguration\":{\"serviceName\":\"xhk\",\"serviceDnsName\":\"qirwrweoox\"},\"skuLink\":\"fifhxwrsnew\",\"apiVersion\":\"ozqvbubqmam\",\"zones\":[\"ycxhxzgaztta\",\"o\",\"dvmfqhppub\"]}")
+            "{\"enabled\":false,\"apiVersions\":[\"rdddtfgxqbawpcb\"],\"endpointUri\":\"nzqcy\",\"locations\":[\"apqofyuicdhz\",\"dyb\"],\"requiredFeatures\":[\"gbdvibidmhmwff\",\"lfmu\",\"apckccrrvw\",\"yoxoy\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"All\"},\"timeout\":\"PT31H21M14S\",\"endpointType\":\"Canary\",\"dstsConfiguration\":{\"serviceName\":\"haim\",\"serviceDnsName\":\"iroqbosh\"},\"skuLink\":\"ragapyyrmfsvbp\",\"apiVersion\":\"vbopfppdbwnu\",\"zones\":[\"ahxku\",\"asjcaacfdmmcpu\",\"mehqepvufh\",\"zeh\"]}")
             .toObject(FrontloadPayloadPropertiesOverrideEndpointLevelFields.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("cgwgcloxoebqinji", model.apiVersions().get(0));
-        Assertions.assertEquals("nwjfu", model.endpointUri());
-        Assertions.assertEquals("lafcbahh", model.locations().get(0));
-        Assertions.assertEquals("efchn", model.requiredFeatures().get(0));
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("rdddtfgxqbawpcb", model.apiVersions().get(0));
+        Assertions.assertEquals("nzqcy", model.endpointUri());
+        Assertions.assertEquals("apqofyuicdhz", model.locations().get(0));
+        Assertions.assertEquals("gbdvibidmhmwff", model.requiredFeatures().get(0));
         Assertions.assertEquals(FeaturesPolicy.ALL, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT137H27M29S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT31H21M14S"), model.timeout());
         Assertions.assertEquals(EndpointType.CANARY, model.endpointType());
-        Assertions.assertEquals("xhk", model.dstsConfiguration().serviceName());
-        Assertions.assertEquals("qirwrweoox", model.dstsConfiguration().serviceDnsName());
-        Assertions.assertEquals("fifhxwrsnew", model.skuLink());
-        Assertions.assertEquals("ozqvbubqmam", model.apiVersion());
-        Assertions.assertEquals("ycxhxzgaztta", model.zones().get(0));
+        Assertions.assertEquals("haim", model.dstsConfiguration().serviceName());
+        Assertions.assertEquals("iroqbosh", model.dstsConfiguration().serviceDnsName());
+        Assertions.assertEquals("ragapyyrmfsvbp", model.skuLink());
+        Assertions.assertEquals("vbopfppdbwnu", model.apiVersion());
+        Assertions.assertEquals("ahxku", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FrontloadPayloadPropertiesOverrideEndpointLevelFields model
-            = new FrontloadPayloadPropertiesOverrideEndpointLevelFields().withEnabled(true)
-                .withApiVersions(Arrays.asList("cgwgcloxoebqinji"))
-                .withEndpointUri("nwjfu")
-                .withLocations(Arrays.asList("lafcbahh", "zpofoiyjwpfilk", "kkholvdndvia", "ogphuartvtiu"))
-                .withRequiredFeatures(Arrays.asList("efchn", "n"))
+            = new FrontloadPayloadPropertiesOverrideEndpointLevelFields().withEnabled(false)
+                .withApiVersions(Arrays.asList("rdddtfgxqbawpcb"))
+                .withEndpointUri("nzqcy")
+                .withLocations(Arrays.asList("apqofyuicdhz", "dyb"))
+                .withRequiredFeatures(Arrays.asList("gbdvibidmhmwff", "lfmu", "apckccrrvw", "yoxoy"))
                 .withFeaturesRule(
                     new ResourceTypeEndpointBaseFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ALL))
-                .withTimeout(Duration.parse("PT137H27M29S"))
+                .withTimeout(Duration.parse("PT31H21M14S"))
                 .withEndpointType(EndpointType.CANARY)
-                .withDstsConfiguration(new ResourceTypeEndpointBaseDstsConfiguration().withServiceName("xhk")
-                    .withServiceDnsName("qirwrweoox"))
-                .withSkuLink("fifhxwrsnew")
-                .withApiVersion("ozqvbubqmam")
-                .withZones(Arrays.asList("ycxhxzgaztta", "o", "dvmfqhppub"));
+                .withDstsConfiguration(new ResourceTypeEndpointBaseDstsConfiguration().withServiceName("haim")
+                    .withServiceDnsName("iroqbosh"))
+                .withSkuLink("ragapyyrmfsvbp")
+                .withApiVersion("vbopfppdbwnu")
+                .withZones(Arrays.asList("ahxku", "asjcaacfdmmcpu", "mehqepvufh", "zeh"));
         model = BinaryData.fromObject(model).toObject(FrontloadPayloadPropertiesOverrideEndpointLevelFields.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("cgwgcloxoebqinji", model.apiVersions().get(0));
-        Assertions.assertEquals("nwjfu", model.endpointUri());
-        Assertions.assertEquals("lafcbahh", model.locations().get(0));
-        Assertions.assertEquals("efchn", model.requiredFeatures().get(0));
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("rdddtfgxqbawpcb", model.apiVersions().get(0));
+        Assertions.assertEquals("nzqcy", model.endpointUri());
+        Assertions.assertEquals("apqofyuicdhz", model.locations().get(0));
+        Assertions.assertEquals("gbdvibidmhmwff", model.requiredFeatures().get(0));
         Assertions.assertEquals(FeaturesPolicy.ALL, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT137H27M29S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT31H21M14S"), model.timeout());
         Assertions.assertEquals(EndpointType.CANARY, model.endpointType());
-        Assertions.assertEquals("xhk", model.dstsConfiguration().serviceName());
-        Assertions.assertEquals("qirwrweoox", model.dstsConfiguration().serviceDnsName());
-        Assertions.assertEquals("fifhxwrsnew", model.skuLink());
-        Assertions.assertEquals("ozqvbubqmam", model.apiVersion());
-        Assertions.assertEquals("ycxhxzgaztta", model.zones().get(0));
+        Assertions.assertEquals("haim", model.dstsConfiguration().serviceName());
+        Assertions.assertEquals("iroqbosh", model.dstsConfiguration().serviceDnsName());
+        Assertions.assertEquals("ragapyyrmfsvbp", model.skuLink());
+        Assertions.assertEquals("vbopfppdbwnu", model.apiVersion());
+        Assertions.assertEquals("ahxku", model.zones().get(0));
     }
 }

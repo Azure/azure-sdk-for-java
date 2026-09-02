@@ -13,21 +13,20 @@ public final class LocationQuotaRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocationQuotaRule model
-            = BinaryData.fromString("{\"policy\":\"None\",\"quotaId\":\"lwckbasyypnddhs\",\"location\":\"bacphejko\"}")
+            = BinaryData.fromString("{\"policy\":\"Restricted\",\"quotaId\":\"b\",\"location\":\"tmut\"}")
                 .toObject(LocationQuotaRule.class);
-        Assertions.assertEquals(QuotaPolicy.NONE, model.policy());
-        Assertions.assertEquals("lwckbasyypnddhs", model.quotaId());
-        Assertions.assertEquals("bacphejko", model.location());
+        Assertions.assertEquals(QuotaPolicy.RESTRICTED, model.policy());
+        Assertions.assertEquals("b", model.quotaId());
+        Assertions.assertEquals("tmut", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocationQuotaRule model = new LocationQuotaRule().withPolicy(QuotaPolicy.NONE)
-            .withQuotaId("lwckbasyypnddhs")
-            .withLocation("bacphejko");
+        LocationQuotaRule model
+            = new LocationQuotaRule().withPolicy(QuotaPolicy.RESTRICTED).withQuotaId("b").withLocation("tmut");
         model = BinaryData.fromObject(model).toObject(LocationQuotaRule.class);
-        Assertions.assertEquals(QuotaPolicy.NONE, model.policy());
-        Assertions.assertEquals("lwckbasyypnddhs", model.quotaId());
-        Assertions.assertEquals("bacphejko", model.location());
+        Assertions.assertEquals(QuotaPolicy.RESTRICTED, model.policy());
+        Assertions.assertEquals("b", model.quotaId());
+        Assertions.assertEquals("tmut", model.location());
     }
 }

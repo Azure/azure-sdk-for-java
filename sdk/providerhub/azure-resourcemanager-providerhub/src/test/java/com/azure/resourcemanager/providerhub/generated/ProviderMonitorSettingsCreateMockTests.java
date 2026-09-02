@@ -24,7 +24,7 @@ public final class ProviderMonitorSettingsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"obrugejcvj\",\"tags\":{\"cmtagelajdyo\":\"c\",\"izzhravrcjkj\":\"jeqyxqfmz\"},\"id\":\"mgqbgcxhnq\",\"name\":\"gzxlermkmerghski\",\"type\":\"hnp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"i\",\"tags\":{\"zrn\":\"xclfrs\",\"wvpu\":\"u\",\"n\":\"fddtbfmekjcng\",\"aoy\":\"dv\"},\"id\":\"xf\",\"name\":\"gyxzmxynofxl\",\"type\":\"txoqxtdn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,15 @@ public final class ProviderMonitorSettingsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProviderMonitorSetting response = manager.providerMonitorSettings()
-            .define("lweeprne")
-            .withRegion("aszfjs")
-            .withExistingResourceGroup("paklw")
-            .withTags(mapOf("bmvrdjomlnwsbv", "bduxapgrcq", "lxkqesdfeds", "dls", "cqidkltvdhqnufbx", "gzancoinmphy",
-                "i", "e"))
+            .define("lonbzaowcahdkmb")
+            .withRegion("rije")
+            .withExistingResourceGroup("mwcgimmrimaabsq")
+            .withTags(mapOf("fczglkvbg", "sj", "tygnbknh", "kbsvbwy"))
             .withProperties(new ProviderMonitorSettingProperties())
             .create();
 
-        Assertions.assertEquals("obrugejcvj", response.location());
-        Assertions.assertEquals("c", response.tags().get("cmtagelajdyo"));
+        Assertions.assertEquals("i", response.location());
+        Assertions.assertEquals("xclfrs", response.tags().get("zrn"));
     }
 
     // Use "Map.of" if available

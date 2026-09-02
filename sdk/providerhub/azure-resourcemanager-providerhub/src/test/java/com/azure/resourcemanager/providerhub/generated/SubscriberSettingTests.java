@@ -16,48 +16,34 @@ public final class SubscriberSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriberSetting model = BinaryData.fromString(
-            "{\"filterRules\":[{\"filterQuery\":\"oyzunbixxr\",\"endpointInformation\":[{\"endpoint\":\"cpwpg\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"ivtsoxfrkenxpm\"},{\"endpoint\":\"efrp\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"qqs\"},{\"endpoint\":\"waoqvmmb\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"rtql\"}]},{\"filterQuery\":\"megni\",\"endpointInformation\":[{\"endpoint\":\"xlzyqd\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"cealzxwh\"},{\"endpoint\":\"nsymoyqhlwigd\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"bxgomfaj\"}]},{\"filterQuery\":\"asqvd\",\"endpointInformation\":[{\"endpoint\":\"guxak\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"hzbezkgi\"}]}]}")
+            "{\"filterRules\":[{\"filterQuery\":\"or\",\"endpointInformation\":[{\"endpoint\":\"lvizb\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"vvacqpb\"},{\"endpoint\":\"odxeszabbela\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"aslzkwr\"},{\"endpoint\":\"oycqucwy\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"omd\"}]}]}")
             .toObject(SubscriberSetting.class);
-        Assertions.assertEquals("oyzunbixxr", model.filterRules().get(0).filterQuery());
-        Assertions.assertEquals("cpwpg", model.filterRules().get(0).endpointInformation().get(0).endpoint());
-        Assertions.assertEquals(NotificationEndpointType.WEBHOOK,
+        Assertions.assertEquals("or", model.filterRules().get(0).filterQuery());
+        Assertions.assertEquals("lvizb", model.filterRules().get(0).endpointInformation().get(0).endpoint());
+        Assertions.assertEquals(NotificationEndpointType.EVENTHUB,
             model.filterRules().get(0).endpointInformation().get(0).endpointType());
-        Assertions.assertEquals("ivtsoxfrkenxpm",
-            model.filterRules().get(0).endpointInformation().get(0).schemaVersion());
+        Assertions.assertEquals("vvacqpb", model.filterRules().get(0).endpointInformation().get(0).schemaVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriberSetting model = new SubscriberSetting().withFilterRules(Arrays.asList(
-            new FilterRule().withFilterQuery("oyzunbixxr")
+        SubscriberSetting model
+            = new SubscriberSetting().withFilterRules(Arrays.asList(new FilterRule().withFilterQuery("or")
                 .withEndpointInformation(Arrays.asList(
-                    new EndpointInformation().withEndpoint("cpwpg")
-                        .withEndpointType(NotificationEndpointType.WEBHOOK)
-                        .withSchemaVersion("ivtsoxfrkenxpm"),
-                    new EndpointInformation().withEndpoint("efrp")
+                    new EndpointInformation().withEndpoint("lvizb")
                         .withEndpointType(NotificationEndpointType.EVENTHUB)
-                        .withSchemaVersion("qqs"),
-                    new EndpointInformation().withEndpoint("waoqvmmb")
+                        .withSchemaVersion("vvacqpb"),
+                    new EndpointInformation().withEndpoint("odxeszabbela")
                         .withEndpointType(NotificationEndpointType.WEBHOOK)
-                        .withSchemaVersion("rtql"))),
-            new FilterRule().withFilterQuery("megni")
-                .withEndpointInformation(Arrays.asList(
-                    new EndpointInformation().withEndpoint("xlzyqd")
-                        .withEndpointType(NotificationEndpointType.WEBHOOK)
-                        .withSchemaVersion("cealzxwh"),
-                    new EndpointInformation().withEndpoint("nsymoyqhlwigd")
+                        .withSchemaVersion("aslzkwr"),
+                    new EndpointInformation().withEndpoint("oycqucwy")
                         .withEndpointType(NotificationEndpointType.EVENTHUB)
-                        .withSchemaVersion("bxgomfaj"))),
-            new FilterRule().withFilterQuery("asqvd")
-                .withEndpointInformation(Arrays.asList(new EndpointInformation().withEndpoint("guxak")
-                    .withEndpointType(NotificationEndpointType.EVENTHUB)
-                    .withSchemaVersion("hzbezkgi")))));
+                        .withSchemaVersion("omd")))));
         model = BinaryData.fromObject(model).toObject(SubscriberSetting.class);
-        Assertions.assertEquals("oyzunbixxr", model.filterRules().get(0).filterQuery());
-        Assertions.assertEquals("cpwpg", model.filterRules().get(0).endpointInformation().get(0).endpoint());
-        Assertions.assertEquals(NotificationEndpointType.WEBHOOK,
+        Assertions.assertEquals("or", model.filterRules().get(0).filterQuery());
+        Assertions.assertEquals("lvizb", model.filterRules().get(0).endpointInformation().get(0).endpoint());
+        Assertions.assertEquals(NotificationEndpointType.EVENTHUB,
             model.filterRules().get(0).endpointInformation().get(0).endpointType());
-        Assertions.assertEquals("ivtsoxfrkenxpm",
-            model.filterRules().get(0).endpointInformation().get(0).schemaVersion());
+        Assertions.assertEquals("vvacqpb", model.filterRules().get(0).endpointInformation().get(0).schemaVersion());
     }
 }

@@ -15,20 +15,20 @@ public final class ProviderMonitorSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProviderMonitorSettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"gpxvkqmaupxvpi\",\"tags\":{\"l\":\"aifyzyzeyuubeids\"},\"id\":\"ytoithgygvfl\",\"name\":\"gvdihoynkrxwetwk\",\"type\":\"rcyrucpcunnu\"}")
+            "{\"properties\":{\"provisioningState\":\"Running\"},\"location\":\"eh\",\"tags\":{\"cbgydlqi\":\"dac\",\"qxvztpbnfnqtxjt\":\"ywmhmptyrilkfbnr\",\"lswbnf\":\"m\",\"qjn\":\"depld\"},\"id\":\"f\",\"name\":\"ygleexa\",\"type\":\"vmywhsbrcarycsjj\"}")
             .toObject(ProviderMonitorSettingInner.class);
-        Assertions.assertEquals("gpxvkqmaupxvpi", model.location());
-        Assertions.assertEquals("aifyzyzeyuubeids", model.tags().get("l"));
+        Assertions.assertEquals("eh", model.location());
+        Assertions.assertEquals("dac", model.tags().get("cbgydlqi"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProviderMonitorSettingInner model = new ProviderMonitorSettingInner().withLocation("gpxvkqmaupxvpi")
-            .withTags(mapOf("l", "aifyzyzeyuubeids"))
+        ProviderMonitorSettingInner model = new ProviderMonitorSettingInner().withLocation("eh")
+            .withTags(mapOf("cbgydlqi", "dac", "qxvztpbnfnqtxjt", "ywmhmptyrilkfbnr", "lswbnf", "m", "qjn", "depld"))
             .withProperties(new ProviderMonitorSettingProperties());
         model = BinaryData.fromObject(model).toObject(ProviderMonitorSettingInner.class);
-        Assertions.assertEquals("gpxvkqmaupxvpi", model.location());
-        Assertions.assertEquals("aifyzyzeyuubeids", model.tags().get("l"));
+        Assertions.assertEquals("eh", model.location());
+        Assertions.assertEquals("dac", model.tags().get("cbgydlqi"));
     }
 
     // Use "Map.of" if available

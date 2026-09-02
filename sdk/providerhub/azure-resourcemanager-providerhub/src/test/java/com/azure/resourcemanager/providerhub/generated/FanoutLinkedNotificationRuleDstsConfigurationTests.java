@@ -12,18 +12,19 @@ public final class FanoutLinkedNotificationRuleDstsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FanoutLinkedNotificationRuleDstsConfiguration model
-            = BinaryData.fromString("{\"serviceName\":\"nb\",\"serviceDnsName\":\"qabnmoc\"}")
+            = BinaryData.fromString("{\"serviceName\":\"lkhbz\",\"serviceDnsName\":\"epgzgqexz\"}")
                 .toObject(FanoutLinkedNotificationRuleDstsConfiguration.class);
-        Assertions.assertEquals("nb", model.serviceName());
-        Assertions.assertEquals("qabnmoc", model.serviceDnsName());
+        Assertions.assertEquals("lkhbz", model.serviceName());
+        Assertions.assertEquals("epgzgqexz", model.serviceDnsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FanoutLinkedNotificationRuleDstsConfiguration model
-            = new FanoutLinkedNotificationRuleDstsConfiguration().withServiceName("nb").withServiceDnsName("qabnmoc");
+            = new FanoutLinkedNotificationRuleDstsConfiguration().withServiceName("lkhbz")
+                .withServiceDnsName("epgzgqexz");
         model = BinaryData.fromObject(model).toObject(FanoutLinkedNotificationRuleDstsConfiguration.class);
-        Assertions.assertEquals("nb", model.serviceName());
-        Assertions.assertEquals("qabnmoc", model.serviceDnsName());
+        Assertions.assertEquals("lkhbz", model.serviceName());
+        Assertions.assertEquals("epgzgqexz", model.serviceDnsName());
     }
 }

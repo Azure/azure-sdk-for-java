@@ -12,18 +12,18 @@ public final class CustomRolloutSpecificationAutoProvisionConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomRolloutSpecificationAutoProvisionConfig model
-            = BinaryData.fromString("{\"storage\":false,\"resourceGraph\":false}")
+            = BinaryData.fromString("{\"storage\":true,\"resourceGraph\":false}")
                 .toObject(CustomRolloutSpecificationAutoProvisionConfig.class);
-        Assertions.assertFalse(model.storage());
+        Assertions.assertTrue(model.storage());
         Assertions.assertFalse(model.resourceGraph());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomRolloutSpecificationAutoProvisionConfig model
-            = new CustomRolloutSpecificationAutoProvisionConfig().withStorage(false).withResourceGraph(false);
+            = new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true).withResourceGraph(false);
         model = BinaryData.fromObject(model).toObject(CustomRolloutSpecificationAutoProvisionConfig.class);
-        Assertions.assertFalse(model.storage());
+        Assertions.assertTrue(model.storage());
         Assertions.assertFalse(model.resourceGraph());
     }
 }

@@ -13,10 +13,11 @@ public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecif
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model = BinaryData
-            .fromString("{\"enableDefaultValidation\":true,\"resourceTypesWithCustomValidation\":[\"fzzhmkdasv\"]}")
+            .fromString(
+                "{\"enableDefaultValidation\":true,\"resourceTypesWithCustomValidation\":[\"apjwogqqnobpudcd\"]}")
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
         Assertions.assertTrue(model.enableDefaultValidation());
-        Assertions.assertEquals("fzzhmkdasv", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertEquals("apjwogqqnobpudcd", model.resourceTypesWithCustomValidation().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -24,10 +25,10 @@ public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecif
         ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model
             = new ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications()
                 .withEnableDefaultValidation(true)
-                .withResourceTypesWithCustomValidation(Arrays.asList("fzzhmkdasv"));
+                .withResourceTypesWithCustomValidation(Arrays.asList("apjwogqqnobpudcd"));
         model = BinaryData.fromObject(model)
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
         Assertions.assertTrue(model.enableDefaultValidation());
-        Assertions.assertEquals("fzzhmkdasv", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertEquals("apjwogqqnobpudcd", model.resourceTypesWithCustomValidation().get(0));
     }
 }

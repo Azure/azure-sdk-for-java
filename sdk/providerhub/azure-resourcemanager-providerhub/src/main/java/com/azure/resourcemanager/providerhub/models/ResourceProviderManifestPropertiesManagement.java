@@ -163,6 +163,16 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestPropertiesManagement
+        withFeatureManagementOwners(List<String> featureManagementOwners) {
+        super.withFeatureManagementOwners(featureManagementOwners);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -211,6 +221,8 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("pcCode", pcCode());
         jsonWriter.writeStringField("profitCenterProgramId", profitCenterProgramId());
+        jsonWriter.writeArrayField("featureManagementOwners", featureManagementOwners(),
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -280,6 +292,10 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
                 } else if ("profitCenterProgramId".equals(fieldName)) {
                     deserializedResourceProviderManifestPropertiesManagement
                         .withProfitCenterProgramId(reader.getString());
+                } else if ("featureManagementOwners".equals(fieldName)) {
+                    List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestPropertiesManagement
+                        .withFeatureManagementOwners(featureManagementOwners);
                 } else {
                     reader.skipChildren();
                 }

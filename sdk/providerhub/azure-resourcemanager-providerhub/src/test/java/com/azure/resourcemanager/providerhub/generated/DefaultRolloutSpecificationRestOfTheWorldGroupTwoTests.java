@@ -13,20 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupTwoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationRestOfTheWorldGroupTwo model
-            = BinaryData.fromString("{\"waitDuration\":\"PT210H3M32S\",\"regions\":[\"vrehmrnjhvsujzt\"]}")
-                .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
-        Assertions.assertEquals("vrehmrnjhvsujzt", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT210H3M32S"), model.waitDuration());
+        DefaultRolloutSpecificationRestOfTheWorldGroupTwo model = BinaryData
+            .fromString("{\"waitDuration\":\"PT64H13M23S\",\"regions\":[\"mvcopexcmjurbuhh\",\"kyqltqsrogt\"]}")
+            .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
+        Assertions.assertEquals("mvcopexcmjurbuhh", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT64H13M23S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupTwo model
-            = new DefaultRolloutSpecificationRestOfTheWorldGroupTwo().withRegions(Arrays.asList("vrehmrnjhvsujzt"))
-                .withWaitDuration(Duration.parse("PT210H3M32S"));
+            = new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
+                .withRegions(Arrays.asList("mvcopexcmjurbuhh", "kyqltqsrogt"))
+                .withWaitDuration(Duration.parse("PT64H13M23S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
-        Assertions.assertEquals("vrehmrnjhvsujzt", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT210H3M32S"), model.waitDuration());
+        Assertions.assertEquals("mvcopexcmjurbuhh", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT64H13M23S"), model.waitDuration());
     }
 }

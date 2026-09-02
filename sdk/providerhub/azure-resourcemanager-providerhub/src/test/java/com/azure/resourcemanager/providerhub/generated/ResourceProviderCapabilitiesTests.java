@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderCapabilities model
-            = BinaryData.fromString("{\"quotaId\":\"jtckwhdso\",\"effect\":\"Allow\",\"requiredFeatures\":[\"i\"]}")
-                .toObject(ResourceProviderCapabilities.class);
-        Assertions.assertEquals("jtckwhdso", model.quotaId());
-        Assertions.assertEquals(ResourceProviderCapabilitiesEffect.ALLOW, model.effect());
-        Assertions.assertEquals("i", model.requiredFeatures().get(0));
+        ResourceProviderCapabilities model = BinaryData.fromString(
+            "{\"quotaId\":\"jxvsnbyxqabn\",\"effect\":\"Disallow\",\"requiredFeatures\":[\"cyshurzafbljjgp\",\"toqcjmklja\"]}")
+            .toObject(ResourceProviderCapabilities.class);
+        Assertions.assertEquals("jxvsnbyxqabn", model.quotaId());
+        Assertions.assertEquals(ResourceProviderCapabilitiesEffect.DISALLOW, model.effect());
+        Assertions.assertEquals("cyshurzafbljjgp", model.requiredFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderCapabilities model = new ResourceProviderCapabilities().withQuotaId("jtckwhdso")
-            .withEffect(ResourceProviderCapabilitiesEffect.ALLOW)
-            .withRequiredFeatures(Arrays.asList("i"));
+        ResourceProviderCapabilities model = new ResourceProviderCapabilities().withQuotaId("jxvsnbyxqabn")
+            .withEffect(ResourceProviderCapabilitiesEffect.DISALLOW)
+            .withRequiredFeatures(Arrays.asList("cyshurzafbljjgp", "toqcjmklja"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderCapabilities.class);
-        Assertions.assertEquals("jtckwhdso", model.quotaId());
-        Assertions.assertEquals(ResourceProviderCapabilitiesEffect.ALLOW, model.effect());
-        Assertions.assertEquals("i", model.requiredFeatures().get(0));
+        Assertions.assertEquals("jxvsnbyxqabn", model.quotaId());
+        Assertions.assertEquals(ResourceProviderCapabilitiesEffect.DISALLOW, model.effect());
+        Assertions.assertEquals("cyshurzafbljjgp", model.requiredFeatures().get(0));
     }
 }

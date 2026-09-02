@@ -68,6 +68,11 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
      */
     private DefaultRolloutSpecificationAutoProvisionConfig autoProvisionConfig;
 
+    /*
+     * The manifest checkin specification.
+     */
+    private ManifestCheckinSpecification manifestCheckinSpecification;
+
     /**
      * Creates an instance of DefaultRolloutSpecification class.
      */
@@ -281,6 +286,27 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
+     * Get the manifestCheckinSpecification property: The manifest checkin specification.
+     * 
+     * @return the manifestCheckinSpecification value.
+     */
+    public ManifestCheckinSpecification manifestCheckinSpecification() {
+        return this.manifestCheckinSpecification;
+    }
+
+    /**
+     * Set the manifestCheckinSpecification property: The manifest checkin specification.
+     * 
+     * @param manifestCheckinSpecification the manifestCheckinSpecification value to set.
+     * @return the DefaultRolloutSpecification object itself.
+     */
+    public DefaultRolloutSpecification
+        withManifestCheckinSpecification(ManifestCheckinSpecification manifestCheckinSpecification) {
+        this.manifestCheckinSpecification = manifestCheckinSpecification;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -316,6 +342,9 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
         if (autoProvisionConfig() != null) {
             autoProvisionConfig().validate();
         }
+        if (manifestCheckinSpecification() != null) {
+            manifestCheckinSpecification().validate();
+        }
     }
 
     /**
@@ -335,6 +364,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
         jsonWriter.writeArrayField("resourceTypeRegistrations", this.resourceTypeRegistrations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("autoProvisionConfig", this.autoProvisionConfig);
+        jsonWriter.writeJsonField("manifestCheckinSpecification", this.manifestCheckinSpecification);
         return jsonWriter.writeEndObject();
     }
 
@@ -383,6 +413,9 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
                 } else if ("autoProvisionConfig".equals(fieldName)) {
                     deserializedDefaultRolloutSpecification.autoProvisionConfig
                         = DefaultRolloutSpecificationAutoProvisionConfig.fromJson(reader);
+                } else if ("manifestCheckinSpecification".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.manifestCheckinSpecification
+                        = ManifestCheckinSpecification.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

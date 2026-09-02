@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Batch provisioning support.
@@ -21,6 +22,31 @@ public final class ResourceTypeRegistrationPropertiesResourceManagementOptionsBa
      * Supported operations.
      */
     private SupportedOperations supportedOperations;
+
+    /*
+     * The maximum batch size.
+     */
+    private Long maxBatchSize;
+
+    /*
+     * Batch contract version.
+     */
+    private String batchContractVersion;
+
+    /*
+     * The maximum nested batch size.
+     */
+    private Long maxNestedBatchSize;
+
+    /*
+     * The required features.
+     */
+    private List<String> requiredFeatures;
+
+    /*
+     * Action Configurations.
+     */
+    private List<ActionConfiguration> actionConfigurations;
 
     /**
      * Creates an instance of ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport class.
@@ -50,11 +76,119 @@ public final class ResourceTypeRegistrationPropertiesResourceManagementOptionsBa
     }
 
     /**
+     * Get the maxBatchSize property: The maximum batch size.
+     * 
+     * @return the maxBatchSize value.
+     */
+    public Long maxBatchSize() {
+        return this.maxBatchSize;
+    }
+
+    /**
+     * Set the maxBatchSize property: The maximum batch size.
+     * 
+     * @param maxBatchSize the maxBatchSize value to set.
+     * @return the ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport object itself.
+     */
+    public ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport
+        withMaxBatchSize(Long maxBatchSize) {
+        this.maxBatchSize = maxBatchSize;
+        return this;
+    }
+
+    /**
+     * Get the batchContractVersion property: Batch contract version.
+     * 
+     * @return the batchContractVersion value.
+     */
+    public String batchContractVersion() {
+        return this.batchContractVersion;
+    }
+
+    /**
+     * Set the batchContractVersion property: Batch contract version.
+     * 
+     * @param batchContractVersion the batchContractVersion value to set.
+     * @return the ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport object itself.
+     */
+    public ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport
+        withBatchContractVersion(String batchContractVersion) {
+        this.batchContractVersion = batchContractVersion;
+        return this;
+    }
+
+    /**
+     * Get the maxNestedBatchSize property: The maximum nested batch size.
+     * 
+     * @return the maxNestedBatchSize value.
+     */
+    public Long maxNestedBatchSize() {
+        return this.maxNestedBatchSize;
+    }
+
+    /**
+     * Set the maxNestedBatchSize property: The maximum nested batch size.
+     * 
+     * @param maxNestedBatchSize the maxNestedBatchSize value to set.
+     * @return the ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport object itself.
+     */
+    public ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport
+        withMaxNestedBatchSize(Long maxNestedBatchSize) {
+        this.maxNestedBatchSize = maxNestedBatchSize;
+        return this;
+    }
+
+    /**
+     * Get the requiredFeatures property: The required features.
+     * 
+     * @return the requiredFeatures value.
+     */
+    public List<String> requiredFeatures() {
+        return this.requiredFeatures;
+    }
+
+    /**
+     * Set the requiredFeatures property: The required features.
+     * 
+     * @param requiredFeatures the requiredFeatures value to set.
+     * @return the ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport object itself.
+     */
+    public ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport
+        withRequiredFeatures(List<String> requiredFeatures) {
+        this.requiredFeatures = requiredFeatures;
+        return this;
+    }
+
+    /**
+     * Get the actionConfigurations property: Action Configurations.
+     * 
+     * @return the actionConfigurations value.
+     */
+    public List<ActionConfiguration> actionConfigurations() {
+        return this.actionConfigurations;
+    }
+
+    /**
+     * Set the actionConfigurations property: Action Configurations.
+     * 
+     * @param actionConfigurations the actionConfigurations value to set.
+     * @return the ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport object itself.
+     */
+    public ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport
+        withActionConfigurations(List<ActionConfiguration> actionConfigurations) {
+        this.actionConfigurations = actionConfigurations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (actionConfigurations() != null) {
+            actionConfigurations().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -65,6 +199,13 @@ public final class ResourceTypeRegistrationPropertiesResourceManagementOptionsBa
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("supportedOperations",
             this.supportedOperations == null ? null : this.supportedOperations.toString());
+        jsonWriter.writeNumberField("maxBatchSize", this.maxBatchSize);
+        jsonWriter.writeStringField("batchContractVersion", this.batchContractVersion);
+        jsonWriter.writeNumberField("maxNestedBatchSize", this.maxNestedBatchSize);
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("actionConfigurations", this.actionConfigurations,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -90,6 +231,24 @@ public final class ResourceTypeRegistrationPropertiesResourceManagementOptionsBa
                 if ("supportedOperations".equals(fieldName)) {
                     deserializedResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport.supportedOperations
                         = SupportedOperations.fromString(reader.getString());
+                } else if ("maxBatchSize".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport.maxBatchSize
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("batchContractVersion".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport.batchContractVersion
+                        = reader.getString();
+                } else if ("maxNestedBatchSize".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport.maxNestedBatchSize
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport.requiredFeatures
+                        = requiredFeatures;
+                } else if ("actionConfigurations".equals(fieldName)) {
+                    List<ActionConfiguration> actionConfigurations
+                        = reader.readArray(reader1 -> ActionConfiguration.fromJson(reader1));
+                    deserializedResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport.actionConfigurations
+                        = actionConfigurations;
                 } else {
                     reader.skipChildren();
                 }

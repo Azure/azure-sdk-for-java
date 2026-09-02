@@ -14,27 +14,28 @@ public final class LinkedNotificationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedNotificationRule model = BinaryData.fromString(
-            "{\"actions\":[\"l\",\"ndlik\",\"yqkgfg\"],\"actionsOnFailedOperation\":[\"adgakeqsrxybz\",\"qedqytbciqfoufl\",\"mnkzsmod\",\"glougpbk\"],\"fastPathActions\":[\"utduqktapspwgcu\",\"rtumkdosvq\",\"hbmdgbbjfdd\"],\"fastPathActionsOnFailedOperation\":[\"mbe\",\"ppbhtqqrolfp\",\"psalgbqux\",\"gjyjgzjaoyfhrtxi\"],\"linkedNotificationTimeout\":\"PT4H18M15S\"}")
+            "{\"actions\":[\"spwgcuertumkdosv\",\"whbmd\",\"bbjfddgmbmbexp\"],\"actionsOnFailedOperation\":[\"tq\",\"rolfpfp\",\"algbquxigjyjg\"],\"fastPathActions\":[\"o\",\"fhrtxilnerkujysv\",\"eju\",\"fqawrlyxw\"],\"fastPathActionsOnFailedOperation\":[\"prbnwbxgjvtbv\"],\"linkedNotificationTimeout\":\"PT68H8M32S\"}")
             .toObject(LinkedNotificationRule.class);
-        Assertions.assertEquals("l", model.actions().get(0));
-        Assertions.assertEquals("adgakeqsrxybz", model.actionsOnFailedOperation().get(0));
-        Assertions.assertEquals("utduqktapspwgcu", model.fastPathActions().get(0));
-        Assertions.assertEquals("mbe", model.fastPathActionsOnFailedOperation().get(0));
-        Assertions.assertEquals(Duration.parse("PT4H18M15S"), model.linkedNotificationTimeout());
+        Assertions.assertEquals("spwgcuertumkdosv", model.actions().get(0));
+        Assertions.assertEquals("tq", model.actionsOnFailedOperation().get(0));
+        Assertions.assertEquals("o", model.fastPathActions().get(0));
+        Assertions.assertEquals("prbnwbxgjvtbv", model.fastPathActionsOnFailedOperation().get(0));
+        Assertions.assertEquals(Duration.parse("PT68H8M32S"), model.linkedNotificationTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedNotificationRule model = new LinkedNotificationRule().withActions(Arrays.asList("l", "ndlik", "yqkgfg"))
-            .withActionsOnFailedOperation(Arrays.asList("adgakeqsrxybz", "qedqytbciqfoufl", "mnkzsmod", "glougpbk"))
-            .withFastPathActions(Arrays.asList("utduqktapspwgcu", "rtumkdosvq", "hbmdgbbjfdd"))
-            .withFastPathActionsOnFailedOperation(Arrays.asList("mbe", "ppbhtqqrolfp", "psalgbqux", "gjyjgzjaoyfhrtxi"))
-            .withLinkedNotificationTimeout(Duration.parse("PT4H18M15S"));
+        LinkedNotificationRule model
+            = new LinkedNotificationRule().withActions(Arrays.asList("spwgcuertumkdosv", "whbmd", "bbjfddgmbmbexp"))
+                .withActionsOnFailedOperation(Arrays.asList("tq", "rolfpfp", "algbquxigjyjg"))
+                .withFastPathActions(Arrays.asList("o", "fhrtxilnerkujysv", "eju", "fqawrlyxw"))
+                .withFastPathActionsOnFailedOperation(Arrays.asList("prbnwbxgjvtbv"))
+                .withLinkedNotificationTimeout(Duration.parse("PT68H8M32S"));
         model = BinaryData.fromObject(model).toObject(LinkedNotificationRule.class);
-        Assertions.assertEquals("l", model.actions().get(0));
-        Assertions.assertEquals("adgakeqsrxybz", model.actionsOnFailedOperation().get(0));
-        Assertions.assertEquals("utduqktapspwgcu", model.fastPathActions().get(0));
-        Assertions.assertEquals("mbe", model.fastPathActionsOnFailedOperation().get(0));
-        Assertions.assertEquals(Duration.parse("PT4H18M15S"), model.linkedNotificationTimeout());
+        Assertions.assertEquals("spwgcuertumkdosv", model.actions().get(0));
+        Assertions.assertEquals("tq", model.actionsOnFailedOperation().get(0));
+        Assertions.assertEquals("o", model.fastPathActions().get(0));
+        Assertions.assertEquals("prbnwbxgjvtbv", model.fastPathActionsOnFailedOperation().get(0));
+        Assertions.assertEquals(Duration.parse("PT68H8M32S"), model.linkedNotificationTimeout());
     }
 }

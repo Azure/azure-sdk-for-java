@@ -12,11 +12,11 @@ public final class OperationsDefinitionDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationsDefinitionDisplay model = BinaryData.fromString(
-            "{\"provider\":\"c\",\"resource\":\"wnfnbacf\",\"operation\":\"onlebxetqgtzxdpn\",\"description\":\"bqqwxrj\"}")
+            "{\"provider\":\"h\",\"resource\":\"qfbow\",\"operation\":\"kanyktzlcuiywg\",\"description\":\"ywgndrv\"}")
             .toObject(OperationsDefinitionDisplay.class);
-        Assertions.assertEquals("c", model.provider());
-        Assertions.assertEquals("wnfnbacf", model.resource());
-        Assertions.assertEquals("onlebxetqgtzxdpn", model.operation());
-        Assertions.assertEquals("bqqwxrj", model.description());
+        Assertions.assertEquals("h", model.provider());
+        Assertions.assertEquals("qfbow", model.resource());
+        Assertions.assertEquals("kanyktzlcuiywg", model.operation());
+        Assertions.assertEquals("ywgndrv", model.description());
     }
 }

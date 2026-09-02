@@ -22,7 +22,7 @@ public final class ProviderMonitorSettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\"},\"location\":\"bjbhrpgiqsttc\",\"tags\":{\"f\":\"cmmaixpqjiw\",\"ldtt\":\"bk\",\"qikvllrhtpm\":\"hqclnaihtgs\"},\"id\":\"lxkoi\",\"name\":\"mtrawrqkza\",\"type\":\"bun\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\"},\"location\":\"m\",\"tags\":{\"gvxrktjcjigc\":\"lxkrk\"},\"id\":\"tspanbqxase\",\"name\":\"chefpgeed\",\"type\":\"ybruhola\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class ProviderMonitorSettingsListMockTests {
         PagedIterable<ProviderMonitorSetting> response
             = manager.providerMonitorSettings().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bjbhrpgiqsttc", response.iterator().next().location());
-        Assertions.assertEquals("cmmaixpqjiw", response.iterator().next().tags().get("f"));
+        Assertions.assertEquals("m", response.iterator().next().location());
+        Assertions.assertEquals("lxkrk", response.iterator().next().tags().get("gvxrktjcjigc"));
     }
 }

@@ -13,20 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationDataAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationDataAuthorization model = BinaryData
-            .fromString(
-                "{\"role\":\"LimitedOwner\",\"resourceTypes\":[\"qxaekqsykv\",\"jtqpkevmyltjcrsp\",\"klurccl\"]}")
+        ApplicationDataAuthorization model = BinaryData.fromString(
+            "{\"role\":\"ServiceOwner\",\"resourceTypes\":[\"dtsnxawqytllhdyz\",\"yckzex\",\"xak\",\"kywymxgaabj\"],\"excludeApplicationIdFromManifest\":false}")
             .toObject(ApplicationDataAuthorization.class);
-        Assertions.assertEquals(Role.LIMITED_OWNER, model.role());
-        Assertions.assertEquals("qxaekqsykv", model.resourceTypes().get(0));
+        Assertions.assertEquals(Role.SERVICE_OWNER, model.role());
+        Assertions.assertEquals("dtsnxawqytllhdyz", model.resourceTypes().get(0));
+        Assertions.assertFalse(model.excludeApplicationIdFromManifest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationDataAuthorization model = new ApplicationDataAuthorization().withRole(Role.LIMITED_OWNER)
-            .withResourceTypes(Arrays.asList("qxaekqsykv", "jtqpkevmyltjcrsp", "klurccl"));
+        ApplicationDataAuthorization model = new ApplicationDataAuthorization().withRole(Role.SERVICE_OWNER)
+            .withResourceTypes(Arrays.asList("dtsnxawqytllhdyz", "yckzex", "xak", "kywymxgaabj"))
+            .withExcludeApplicationIdFromManifest(false);
         model = BinaryData.fromObject(model).toObject(ApplicationDataAuthorization.class);
-        Assertions.assertEquals(Role.LIMITED_OWNER, model.role());
-        Assertions.assertEquals("qxaekqsykv", model.resourceTypes().get(0));
+        Assertions.assertEquals(Role.SERVICE_OWNER, model.role());
+        Assertions.assertEquals("dtsnxawqytllhdyz", model.resourceTypes().get(0));
+        Assertions.assertFalse(model.excludeApplicationIdFromManifest());
     }
 }

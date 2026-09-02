@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceGraphConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceGraphConfiguration model = BinaryData.fromString("{\"enabled\":true,\"apiVersion\":\"cwyhahno\"}")
+        ResourceGraphConfiguration model = BinaryData.fromString("{\"enabled\":false,\"apiVersion\":\"bimhtmwwinhe\"}")
             .toObject(ResourceGraphConfiguration.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("cwyhahno", model.apiVersion());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("bimhtmwwinhe", model.apiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceGraphConfiguration model
-            = new ResourceGraphConfiguration().withEnabled(true).withApiVersion("cwyhahno");
+            = new ResourceGraphConfiguration().withEnabled(false).withApiVersion("bimhtmwwinhe");
         model = BinaryData.fromObject(model).toObject(ResourceGraphConfiguration.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("cwyhahno", model.apiVersion());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("bimhtmwwinhe", model.apiVersion());
     }
 }

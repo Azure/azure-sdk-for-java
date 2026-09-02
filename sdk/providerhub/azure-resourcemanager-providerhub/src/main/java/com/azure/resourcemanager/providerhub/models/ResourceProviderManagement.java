@@ -92,6 +92,11 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
      */
     private String profitCenterProgramId;
 
+    /*
+     * List of feature management owners.
+     */
+    private List<String> featureManagementOwners;
+
     /**
      * Creates an instance of ResourceProviderManagement class.
      */
@@ -401,6 +406,26 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
+     * Get the featureManagementOwners property: List of feature management owners.
+     * 
+     * @return the featureManagementOwners value.
+     */
+    public List<String> featureManagementOwners() {
+        return this.featureManagementOwners;
+    }
+
+    /**
+     * Set the featureManagementOwners property: List of feature management owners.
+     * 
+     * @param featureManagementOwners the featureManagementOwners value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withFeatureManagementOwners(List<String> featureManagementOwners) {
+        this.featureManagementOwners = featureManagementOwners;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -448,6 +473,8 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("pcCode", this.pcCode);
         jsonWriter.writeStringField("profitCenterProgramId", this.profitCenterProgramId);
+        jsonWriter.writeArrayField("featureManagementOwners", this.featureManagementOwners,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -508,6 +535,9 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
                     deserializedResourceProviderManagement.pcCode = reader.getString();
                 } else if ("profitCenterProgramId".equals(fieldName)) {
                     deserializedResourceProviderManagement.profitCenterProgramId = reader.getString();
+                } else if ("featureManagementOwners".equals(fieldName)) {
+                    List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.featureManagementOwners = featureManagementOwners;
                 } else {
                     reader.skipChildren();
                 }

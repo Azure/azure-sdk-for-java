@@ -12,16 +12,16 @@ public final class AsyncTimeoutRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AsyncTimeoutRule model
-            = BinaryData.fromString("{\"actionName\":\"chrqb\",\"timeout\":\"jrcg\"}").toObject(AsyncTimeoutRule.class);
-        Assertions.assertEquals("chrqb", model.actionName());
-        Assertions.assertEquals("jrcg", model.timeout());
+            = BinaryData.fromString("{\"actionName\":\"c\",\"timeout\":\"iznk\"}").toObject(AsyncTimeoutRule.class);
+        Assertions.assertEquals("c", model.actionName());
+        Assertions.assertEquals("iznk", model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsyncTimeoutRule model = new AsyncTimeoutRule().withActionName("chrqb").withTimeout("jrcg");
+        AsyncTimeoutRule model = new AsyncTimeoutRule().withActionName("c").withTimeout("iznk");
         model = BinaryData.fromObject(model).toObject(AsyncTimeoutRule.class);
-        Assertions.assertEquals("chrqb", model.actionName());
-        Assertions.assertEquals("jrcg", model.timeout());
+        Assertions.assertEquals("c", model.actionName());
+        Assertions.assertEquals("iznk", model.timeout());
     }
 }

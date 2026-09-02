@@ -15,11 +15,12 @@ public final class ResourceTypeRegistrationPropertiesTemplateDeploymentPolicyTes
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy model = BinaryData.fromString(
-            "{\"capabilities\":\"Default\",\"preflightOptions\":\"ValidationRequests\",\"preflightNotifications\":\"None\"}")
+            "{\"capabilities\":\"Default\",\"preflightOptions\":\"DeploymentRequests\",\"preflightNotifications\":\"UnregisteredSubscriptions\"}")
             .toObject(ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy.class);
         Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.VALIDATION_REQUESTS, model.preflightOptions());
-        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.NONE, model.preflightNotifications());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.DEPLOYMENT_REQUESTS, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
+            model.preflightNotifications());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +28,12 @@ public final class ResourceTypeRegistrationPropertiesTemplateDeploymentPolicyTes
         ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy model
             = new ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy()
                 .withCapabilities(TemplateDeploymentCapabilities.DEFAULT)
-                .withPreflightOptions(TemplateDeploymentPreflightOptions.VALIDATION_REQUESTS)
-                .withPreflightNotifications(TemplateDeploymentPreflightNotifications.NONE);
+                .withPreflightOptions(TemplateDeploymentPreflightOptions.DEPLOYMENT_REQUESTS)
+                .withPreflightNotifications(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy.class);
         Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.VALIDATION_REQUESTS, model.preflightOptions());
-        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.NONE, model.preflightNotifications());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.DEPLOYMENT_REQUESTS, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
+            model.preflightNotifications());
     }
 }

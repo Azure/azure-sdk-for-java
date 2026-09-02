@@ -27,7 +27,7 @@ public final class ProviderRegistrationsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.providerRegistrations().deleteWithResponse("aadusrexxfa", com.azure.core.util.Context.NONE);
+        manager.providerRegistrations().deleteWithResponse("iqbuou", com.azure.core.util.Context.NONE);
 
     }
 }

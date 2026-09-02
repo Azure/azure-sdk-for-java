@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationHighTrafficTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationHighTraffic model = BinaryData
-            .fromString("{\"waitDuration\":\"PT75H11M55S\",\"regions\":[\"lbyvictctbrxkjzw\",\"gxffmshkwf\"]}")
-            .toObject(DefaultRolloutSpecificationHighTraffic.class);
-        Assertions.assertEquals("lbyvictctbrxkjzw", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT75H11M55S"), model.waitDuration());
+        DefaultRolloutSpecificationHighTraffic model
+            = BinaryData.fromString("{\"waitDuration\":\"PT225H58M3S\",\"regions\":[\"gdirazf\"]}")
+                .toObject(DefaultRolloutSpecificationHighTraffic.class);
+        Assertions.assertEquals("gdirazf", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT225H58M3S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationHighTraffic model
-            = new DefaultRolloutSpecificationHighTraffic().withRegions(Arrays.asList("lbyvictctbrxkjzw", "gxffmshkwf"))
-                .withWaitDuration(Duration.parse("PT75H11M55S"));
+            = new DefaultRolloutSpecificationHighTraffic().withRegions(Arrays.asList("gdirazf"))
+                .withWaitDuration(Duration.parse("PT225H58M3S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationHighTraffic.class);
-        Assertions.assertEquals("lbyvictctbrxkjzw", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT75H11M55S"), model.waitDuration());
+        Assertions.assertEquals("gdirazf", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT225H58M3S"), model.waitDuration());
     }
 }

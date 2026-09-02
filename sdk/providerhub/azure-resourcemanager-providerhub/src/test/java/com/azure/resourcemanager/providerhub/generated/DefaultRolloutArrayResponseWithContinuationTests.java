@@ -6,6 +6,7 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.implementation.models.DefaultRolloutArrayResponseWithContinuation;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.SubscriptionReregistrationResult;
 import com.azure.resourcemanager.providerhub.models.TrafficRegionCategory;
@@ -17,48 +18,68 @@ public final class DefaultRolloutArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"xrdcqtj\",\"idttgepus\",\"vyjtcvu\"],\"regions\":[\"s\"]},\"lowTraffic\":{\"waitDuration\":\"PT44H12M52S\",\"regions\":[\"uughtuqfecjxeyg\",\"uhxu\",\"cbuewmrswnjlxuz\"]},\"mediumTraffic\":{\"waitDuration\":\"PT179H33M54S\",\"regions\":[\"xjbaqehgpdohzjq\"]},\"highTraffic\":{\"waitDuration\":\"PT221H40M18S\",\"regions\":[\"gebx\",\"cnwfepbnwgfmxjg\",\"g\",\"jbgdlfgtdysnaquf\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT214H56M33S\",\"regions\":[\"hamzjrwdkqze\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT186H38M45S\",\"regions\":[\"iunjxdf\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"cegyamlbnseqacj\",\"name\":\"vpilg\",\"type\":\"ooqjagmditgueio\"},\"resourceTypeRegistrations\":[{\"id\":\"bsahrtd\",\"name\":\"pdelqa\",\"type\":\"slmot\"},{\"id\":\"ebnfxofvc\",\"name\":\"k\",\"type\":\"dirazf\"},{\"id\":\"xejw\",\"name\":\"bmdujtmvcopexc\",\"type\":\"jurbuhhlkyqltqsr\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":true}},\"status\":{\"nextTrafficRegion\":\"Canary\",\"nextTrafficRegionScheduledTime\":\"2021-02-16T13:39:33Z\",\"subscriptionReregistrationResult\":\"Failed\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"idfv\",\"pullRequest\":\"g\",\"commitId\":\"n\"},\"completedRegions\":[\"jtkbusqogsfika\"],\"failedOrSkippedRegions\":{\"nsharujtjiqxfzyj\":{},\"ttvwkpqh\":{},\"penuy\":{},\"bqeqqekewvnqvcd\":{}}}},\"id\":\"uaucmf\",\"name\":\"jwnlax\",\"type\":\"un\"},{\"properties\":{\"provisioningState\":\"Failed\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"cgx\",\"fcsserxhtvsox\",\"lwntsjgqrs\"],\"regions\":[\"ruuuybnch\"]},\"lowTraffic\":{\"waitDuration\":\"PT149H27M11S\",\"regions\":[\"yuel\",\"etndnbfqyggagf\",\"nlgmtrwahzjmu\"]},\"mediumTraffic\":{\"waitDuration\":\"PT167H9M1S\",\"regions\":[\"plrohkpigq\"]},\"highTraffic\":{\"waitDuration\":\"PT48H47M40S\",\"regions\":[\"zmkw\",\"lsnoxaxmqeqalh\",\"jnhgwydyyn\",\"svkhgbv\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT225H46M8S\",\"regions\":[\"fdlpukhpyr\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT178H59M22S\",\"regions\":[\"pe\",\"gkhnmgbrouxddbh\",\"hpfpazjzoywjxhp\",\"ulontacnpqwteht\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"ljyoogwx\",\"name\":\"nsduugwbsre\",\"type\":\"rfqkfuar\"},\"resourceTypeRegistrations\":[{\"id\":\"vhhtklnvnaf\",\"name\":\"vkyfedevjbosl\",\"type\":\"qxypokkhminq\"},{\"id\":\"ymc\",\"name\":\"ngnbdxxew\",\"type\":\"ninvudbchaqdt\"},{\"id\":\"qecrqctmxx\",\"name\":\"tddmf\",\"type\":\"huytxzvtzn\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":false}},\"status\":{\"nextTrafficRegion\":\"RestOfTheWorldGroupOne\",\"nextTrafficRegionScheduledTime\":\"2021-12-03T13:55:09Z\",\"subscriptionReregistrationResult\":\"ConditionalUpdate\",\"manifestCheckinStatus\":{\"isCheckedIn\":true,\"statusMessage\":\"tprwnw\",\"pullRequest\":\"oevytlyokr\",\"commitId\":\"o\"},\"completedRegions\":[\"vnsasbcrymodi\"],\"failedOrSkippedRegions\":{\"klobdxnazpmk\":{}}}},\"id\":\"mv\",\"name\":\"vfxzopjh\",\"type\":\"zxlioh\"},{\"properties\":{\"provisioningState\":\"Creating\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"wpcbbnzqcy\",\"napqo\",\"yuicdhzbdy\",\"wwgbdv\"],\"regions\":[\"dmhm\",\"ffplfmuvapckcc\"]},\"lowTraffic\":{\"waitDuration\":\"PT239H28M33S\",\"regions\":[\"oxoyyukp\",\"aimmoiroqb\"]},\"mediumTraffic\":{\"waitDuration\":\"PT156H19M37S\",\"regions\":[\"gapyyrmfsv\"]},\"highTraffic\":{\"waitDuration\":\"PT147H30M36S\",\"regions\":[\"pfppd\",\"wnupgahxku\",\"asjcaacfdmmcpu\",\"mehqepvufh\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT232H16M38S\",\"regions\":[\"hoqhnl\",\"qnbldxe\",\"clgsc\",\"orim\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT170H56M18S\",\"regions\":[\"oucs\",\"fldpuviyfc\",\"abeolhbhlvbm\",\"uqibsxtkcu\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Direct\",\"id\":\"rfsiowlkjxn\",\"name\":\"pvwgfstmhqykizmd\",\"type\":\"saoafcluqvox\"},\"resourceTypeRegistrations\":[{\"id\":\"jimryvwgcwwpbmz\",\"name\":\"w\",\"type\":\"sydsxwefohe\"},{\"id\":\"bvopwndyqle\",\"name\":\"llklmtk\",\"type\":\"lowkxxpvb\"},{\"id\":\"dfjmzsyzfhotlh\",\"name\":\"k\",\"type\":\"yych\"},{\"id\":\"nsjlpjrtws\",\"name\":\"hv\",\"type\":\"uic\"}],\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":false}},\"status\":{\"nextTrafficRegion\":\"None\",\"nextTrafficRegionScheduledTime\":\"2021-10-22T16:16:45Z\",\"subscriptionReregistrationResult\":\"ForcedUpdate\",\"manifestCheckinStatus\":{\"isCheckedIn\":true,\"statusMessage\":\"f\",\"pullRequest\":\"bhvjglr\",\"commitId\":\"uyzlw\"},\"completedRegions\":[\"emhooclutnpq\",\"emc\",\"jk\",\"mykyujxsglhs\"],\"failedOrSkippedRegions\":{\"yejylmbkzudnigrf\":{}}}},\"id\":\"otjewlpxuzzjgnre\",\"name\":\"qyhqo\",\"type\":\"oihiqak\"},{\"properties\":{\"provisioningState\":\"Failed\",\"specification\":{\"expeditedRollout\":{\"enabled\":true},\"canary\":{\"skipRegions\":[\"dqtvhcsp\"],\"regions\":[\"qaxsipietgbebjf\"]},\"lowTraffic\":{\"waitDuration\":\"PT71H8M53S\",\"regions\":[\"chdlpnfpubn\",\"nbatzvi\"]},\"mediumTraffic\":{\"waitDuration\":\"PT13H5M14S\",\"regions\":[\"aelcat\",\"cjuhplrvkm\",\"cwmjvlg\"]},\"highTraffic\":{\"waitDuration\":\"PT198H1M50S\",\"regions\":[\"yylizrz\",\"jpsfxsfu\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT62H55M45S\",\"regions\":[\"vagbwidqlvhukove\",\"fizr\",\"jfnmjmvlwyz\",\"iblkujr\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT121H19M25S\",\"regions\":[\"idjpuuyju\",\"ejikzoeovvtzejet\",\"kl\",\"tikyj\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Direct\",\"id\":\"zolxrzvhqjwtr\",\"name\":\"tgvgzp\",\"type\":\"rrkolawjmjs\"},\"resourceTypeRegistrations\":[{\"id\":\"okcdxfzzzwyjaf\",\"name\":\"tlhguynuchl\",\"type\":\"mltx\"},{\"id\":\"whmozusgzvlnsnnj\",\"name\":\"fpafolpymwamxq\",\"type\":\"rag\"},{\"id\":\"gdphtvdula\",\"name\":\"vl\",\"type\":\"jchcsrlzknmzla\"},{\"id\":\"rupdwvnphcnzq\",\"name\":\"pjhmqrhvthl\",\"type\":\"iwdcxsmlzzhzd\"}],\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":false}},\"status\":{\"nextTrafficRegion\":\"RestOfTheWorldGroupOne\",\"nextTrafficRegionScheduledTime\":\"2021-01-14T04:52:52Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"xybafiqgea\",\"pullRequest\":\"bgj\",\"commitId\":\"glklb\"},\"completedRegions\":[\"idwcwvmzegjon\",\"hj\",\"rwgdnqzbrfks\",\"zhzmtksjci\"],\"failedOrSkippedRegions\":{\"gsxcdgljplkeua\":{},\"htomflrytswfp\":{},\"mdgycxn\":{}}}},\"id\":\"kwhqj\",\"name\":\"yslu\",\"type\":\"lpshhkvpedwqslsr\"}],\"nextLink\":\"pq\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"ubhvj\",\"lrocuyzlwh\"],\"regions\":[\"mhoocl\",\"tnpqmemczjk\",\"mykyujxsglhs\"]},\"lowTraffic\":{\"waitDuration\":\"PT111H52M33S\",\"regions\":[\"ylmbkzudni\",\"rfih\",\"tjewlpxuzzj\",\"nrefqyh\"]},\"mediumTraffic\":{\"waitDuration\":\"PT150H34M37S\",\"regions\":[\"iqakydiwfbr\",\"wpzdqtvhcspo\",\"aqa\",\"sipi\"]},\"highTraffic\":{\"waitDuration\":\"PT231H50M38S\",\"regions\":[\"jfulbmoic\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT239H15M9S\",\"regions\":[\"pubntnbatz\",\"iqsowsaaelc\",\"ttcjuhplrvkmjc\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT22H51M7S\",\"regions\":[\"fggc\",\"kyylizr\",\"bjpsfxsfuztlvtm\",\"agb\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"hukoveofizrv\",\"name\":\"f\",\"type\":\"mjm\"},\"resourceTypeRegistrations\":[{\"id\":\"yzgib\",\"name\":\"kujrllfojui\",\"type\":\"jpu\"},{\"id\":\"yjucejikzoeo\",\"name\":\"vtzejetjklnti\",\"type\":\"yjuzkdb\"},{\"id\":\"zolxrzvhqjwtr\",\"name\":\"tgvgzp\",\"type\":\"rrkolawjmjs\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":true},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"zz\",\"baselineArmManifestLocation\":\"yjaf\"}}},\"status\":{\"nextTrafficRegion\":\"RestOfTheWorldGroupTwo\",\"nextTrafficRegionScheduledTime\":\"2021-12-08T12:52:22Z\",\"subscriptionReregistrationResult\":\"Failed\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"hlgmltxdwhmoz\",\"pullRequest\":\"gzvlnsnn\",\"commitId\":\"fpafolpymwamxq\"},\"completedRegions\":[\"gpgdphtvdulaj\",\"lejchcsr\"],\"failedOrSkippedRegions\":{\"nmzlanru\":{},\"dwv\":{},\"phcnzqtpj\":{},\"mqrhvthl\":{}}}},\"id\":\"wdcxsmlzzhz\",\"name\":\"txetlgydl\",\"type\":\"qvlnnpxybafiqgea\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"specification\":{\"expeditedRollout\":{\"enabled\":false},\"canary\":{\"skipRegions\":[\"byu\",\"idwcwvmzegjon\",\"hj\",\"rwgdnqzbrfks\"],\"regions\":[\"zmtksjci\",\"digsxcdgl\"]},\"lowTraffic\":{\"waitDuration\":\"PT39H56M9S\",\"regions\":[\"acht\"]},\"mediumTraffic\":{\"waitDuration\":\"PT226H14M3S\",\"regions\":[\"tswfpfmdgycxnms\",\"whqjjyslurlpshhk\"]},\"highTraffic\":{\"waitDuration\":\"PT211H5M40S\",\"regions\":[\"slsrhmpq\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT236H11M4S\",\"regions\":[\"ndcbrwi\",\"uvqejosovyrrle\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT182H15M22S\",\"regions\":[\"qtljqobbpihehc\",\"cy\",\"mrqbrjbbmpxdlv\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"crse\",\"name\":\"wjksghudgzhxo\",\"type\":\"jggsvo\"},\"resourceTypeRegistrations\":[{\"id\":\"xibdafhrkmdyo\",\"name\":\"kxfbvfbhdyirhp\",\"type\":\"pgddeimawz\"},{\"id\":\"vgkk\",\"name\":\"muikjcjcaztbws\",\"type\":\"sqowxwc\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":true},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"AttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"zc\",\"baselineArmManifestLocation\":\"wka\"}}},\"status\":{\"nextTrafficRegion\":\"MediumTraffic\",\"nextTrafficRegionScheduledTime\":\"2021-10-15T02:43:56Z\",\"subscriptionReregistrationResult\":\"Failed\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"hbwrnfxtgddpqth\",\"pullRequest\":\"n\",\"commitId\":\"aoyankcoeqswa\"},\"completedRegions\":[\"t\",\"tmhdroznnhdr\"],\"failedOrSkippedRegions\":{\"gjc\":{},\"gguxhemlwyw\":{},\"eeczgfbu\":{},\"klelssxb\":{}}}},\"id\":\"c\",\"name\":\"xzujksrlsm\",\"type\":\"esqplp\"}],\"nextLink\":\"jcdoewb\"}")
             .toObject(DefaultRolloutArrayResponseWithContinuation.class);
         Assertions.assertFalse(model.value().get(0).properties().specification().expeditedRollout().enabled());
-        Assertions.assertEquals("xrdcqtj",
+        Assertions.assertEquals("ubhvj",
             model.value().get(0).properties().specification().canary().skipRegions().get(0));
-        Assertions.assertEquals("s", model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("uughtuqfecjxeyg",
+        Assertions.assertEquals("mhoocl", model.value().get(0).properties().specification().canary().regions().get(0));
+        Assertions.assertEquals("ylmbkzudni",
             model.value().get(0).properties().specification().lowTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT44H12M52S"),
+        Assertions.assertEquals(Duration.parse("PT111H52M33S"),
             model.value().get(0).properties().specification().lowTraffic().waitDuration());
-        Assertions.assertEquals("xjbaqehgpdohzjq",
+        Assertions.assertEquals("iqakydiwfbr",
             model.value().get(0).properties().specification().mediumTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT179H33M54S"),
+        Assertions.assertEquals(Duration.parse("PT150H34M37S"),
             model.value().get(0).properties().specification().mediumTraffic().waitDuration());
-        Assertions.assertEquals("gebx",
+        Assertions.assertEquals("jfulbmoic",
             model.value().get(0).properties().specification().highTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT221H40M18S"),
+        Assertions.assertEquals(Duration.parse("PT231H50M38S"),
             model.value().get(0).properties().specification().highTraffic().waitDuration());
-        Assertions.assertEquals("hamzjrwdkqze",
+        Assertions.assertEquals("pubntnbatz",
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT214H56M33S"),
+        Assertions.assertEquals(Duration.parse("PT239H15M9S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().waitDuration());
-        Assertions.assertEquals("iunjxdf",
+        Assertions.assertEquals("fggc",
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT186H38M45S"),
+        Assertions.assertEquals(Duration.parse("PT22H51M7S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().waitDuration());
         Assertions.assertEquals(ProviderRegistrationKind.MANAGED,
             model.value().get(0).properties().specification().providerRegistration().kind());
         Assertions.assertTrue(model.value().get(0).properties().specification().autoProvisionConfig().storage());
         Assertions.assertTrue(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
-        Assertions.assertEquals("jtkbusqogsfika", model.value().get(0).properties().status().completedRegions().get(0));
-        Assertions.assertEquals(TrafficRegionCategory.CANARY,
+        Assertions.assertEquals(ManifestCheckinOption.DO_NOT_ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
+            model.value().get(0).properties().specification().manifestCheckinSpecification().manifestCheckinOption());
+        Assertions.assertEquals("zz",
+            model.value()
+                .get(0)
+                .properties()
+                .specification()
+                .manifestCheckinSpecification()
+                .manifestCheckinParams()
+                .environment());
+        Assertions.assertEquals("yjaf",
+            model.value()
+                .get(0)
+                .properties()
+                .specification()
+                .manifestCheckinSpecification()
+                .manifestCheckinParams()
+                .baselineArmManifestLocation());
+        Assertions.assertEquals("gpgdphtvdulaj", model.value().get(0).properties().status().completedRegions().get(0));
+        Assertions.assertEquals(TrafficRegionCategory.REST_OF_THE_WORLD_GROUP_TWO,
             model.value().get(0).properties().status().nextTrafficRegion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T13:39:33Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T12:52:22Z"),
             model.value().get(0).properties().status().nextTrafficRegionScheduledTime());
         Assertions.assertEquals(SubscriptionReregistrationResult.FAILED,
             model.value().get(0).properties().status().subscriptionReregistrationResult());
         Assertions.assertFalse(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
-        Assertions.assertEquals("idfv",
+        Assertions.assertEquals("hlgmltxdwhmoz",
             model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
-        Assertions.assertEquals("g", model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
-        Assertions.assertEquals("n", model.value().get(0).properties().status().manifestCheckinStatus().commitId());
-        Assertions.assertEquals("pq", model.nextLink());
+        Assertions.assertEquals("gzvlnsnn",
+            model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
+        Assertions.assertEquals("fpafolpymwamxq",
+            model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("jcdoewb", model.nextLink());
     }
 }

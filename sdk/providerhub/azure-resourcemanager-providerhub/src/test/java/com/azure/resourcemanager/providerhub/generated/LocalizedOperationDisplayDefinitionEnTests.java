@@ -12,25 +12,25 @@ public final class LocalizedOperationDisplayDefinitionEnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocalizedOperationDisplayDefinitionEn model = BinaryData.fromString(
-            "{\"provider\":\"payakkud\",\"resource\":\"px\",\"operation\":\"wjplma\",\"description\":\"stcyohpfkyrkdbd\"}")
+            "{\"provider\":\"petogebjox\",\"resource\":\"lhvnhlab\",\"operation\":\"q\",\"description\":\"kkzjcjbtrga\"}")
             .toObject(LocalizedOperationDisplayDefinitionEn.class);
-        Assertions.assertEquals("payakkud", model.provider());
-        Assertions.assertEquals("px", model.resource());
-        Assertions.assertEquals("wjplma", model.operation());
-        Assertions.assertEquals("stcyohpfkyrkdbd", model.description());
+        Assertions.assertEquals("petogebjox", model.provider());
+        Assertions.assertEquals("lhvnhlab", model.resource());
+        Assertions.assertEquals("q", model.operation());
+        Assertions.assertEquals("kkzjcjbtrga", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LocalizedOperationDisplayDefinitionEn model
-            = new LocalizedOperationDisplayDefinitionEn().withProvider("payakkud")
-                .withResource("px")
-                .withOperation("wjplma")
-                .withDescription("stcyohpfkyrkdbd");
+            = new LocalizedOperationDisplayDefinitionEn().withProvider("petogebjox")
+                .withResource("lhvnhlab")
+                .withOperation("q")
+                .withDescription("kkzjcjbtrga");
         model = BinaryData.fromObject(model).toObject(LocalizedOperationDisplayDefinitionEn.class);
-        Assertions.assertEquals("payakkud", model.provider());
-        Assertions.assertEquals("px", model.resource());
-        Assertions.assertEquals("wjplma", model.operation());
-        Assertions.assertEquals("stcyohpfkyrkdbd", model.description());
+        Assertions.assertEquals("petogebjox", model.provider());
+        Assertions.assertEquals("lhvnhlab", model.resource());
+        Assertions.assertEquals("q", model.operation());
+        Assertions.assertEquals("kkzjcjbtrga", model.description());
     }
 }

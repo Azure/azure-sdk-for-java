@@ -40,7 +40,7 @@ import java.util.Arrays;
  */
 public final class ProviderRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DirectProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectProviderRegistrations_CreateOrUpdate.
@@ -108,7 +108,7 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ProviderRegistrations_CreateOrUpdate.

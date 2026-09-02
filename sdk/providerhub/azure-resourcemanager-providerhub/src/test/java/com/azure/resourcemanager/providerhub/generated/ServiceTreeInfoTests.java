@@ -13,21 +13,21 @@ public final class ServiceTreeInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTreeInfo model = BinaryData
-            .fromString("{\"serviceId\":\"lxxwrljdouskc\",\"componentId\":\"kocrcjdkwtnhx\",\"readiness\":\"GA\"}")
+            .fromString("{\"serviceId\":\"feusnhut\",\"componentId\":\"ltmrldh\",\"readiness\":\"RemovedFromARM\"}")
             .toObject(ServiceTreeInfo.class);
-        Assertions.assertEquals("lxxwrljdouskc", model.serviceId());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.componentId());
-        Assertions.assertEquals(Readiness.GA, model.readiness());
+        Assertions.assertEquals("feusnhut", model.serviceId());
+        Assertions.assertEquals("ltmrldh", model.componentId());
+        Assertions.assertEquals(Readiness.REMOVED_FROM_ARM, model.readiness());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTreeInfo model = new ServiceTreeInfo().withServiceId("lxxwrljdouskc")
-            .withComponentId("kocrcjdkwtnhx")
-            .withReadiness(Readiness.GA);
+        ServiceTreeInfo model = new ServiceTreeInfo().withServiceId("feusnhut")
+            .withComponentId("ltmrldh")
+            .withReadiness(Readiness.REMOVED_FROM_ARM);
         model = BinaryData.fromObject(model).toObject(ServiceTreeInfo.class);
-        Assertions.assertEquals("lxxwrljdouskc", model.serviceId());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.componentId());
-        Assertions.assertEquals(Readiness.GA, model.readiness());
+        Assertions.assertEquals("feusnhut", model.serviceId());
+        Assertions.assertEquals("ltmrldh", model.componentId());
+        Assertions.assertEquals(Readiness.REMOVED_FROM_ARM, model.readiness());
     }
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.providerhub.models.ProviderMonitorSettingProper
 public final class ProviderMonitorSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderMonitorSettingProperties model = BinaryData.fromString("{\"provisioningState\":\"Creating\"}")
+        ProviderMonitorSettingProperties model = BinaryData.fromString("{\"provisioningState\":\"TransientFailure\"}")
             .toObject(ProviderMonitorSettingProperties.class);
     }
 

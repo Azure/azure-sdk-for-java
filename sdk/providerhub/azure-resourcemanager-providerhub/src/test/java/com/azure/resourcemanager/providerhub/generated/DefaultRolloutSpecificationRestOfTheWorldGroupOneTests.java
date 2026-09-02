@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupOneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne model = BinaryData.fromString(
-            "{\"waitDuration\":\"PT96H15M10S\",\"regions\":[\"xwopdbydpizqa\",\"lnapxbiygn\",\"gjkn\",\"smfcttuxuuyilfl\"]}")
-            .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
-        Assertions.assertEquals("xwopdbydpizqa", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT96H15M10S"), model.waitDuration());
+        DefaultRolloutSpecificationRestOfTheWorldGroupOne model
+            = BinaryData.fromString("{\"waitDuration\":\"PT125H39M41S\",\"regions\":[\"ab\"]}")
+                .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
+        Assertions.assertEquals("ab", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT125H39M41S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupOne model
-            = new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                .withRegions(Arrays.asList("xwopdbydpizqa", "lnapxbiygn", "gjkn", "smfcttuxuuyilfl"))
-                .withWaitDuration(Duration.parse("PT96H15M10S"));
+            = new DefaultRolloutSpecificationRestOfTheWorldGroupOne().withRegions(Arrays.asList("ab"))
+                .withWaitDuration(Duration.parse("PT125H39M41S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
-        Assertions.assertEquals("xwopdbydpizqa", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT96H15M10S"), model.waitDuration());
+        Assertions.assertEquals("ab", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT125H39M41S"), model.waitDuration());
     }
 }
