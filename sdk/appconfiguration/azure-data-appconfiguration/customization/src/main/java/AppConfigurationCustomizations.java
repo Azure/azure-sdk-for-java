@@ -13,7 +13,8 @@ import com.azure.autorest.customization.LibraryCustomization;
 /**
  * Removes generated public client surface so the hand-written ConfigurationClient,
  * ConfigurationAsyncClient, ConfigurationClientBuilder, and ConfigurationServiceVersion
- * in com.azure.data.appconfiguration are not overwritten by tsp-client update.
+ * in com.azure.data.appconfiguration are not overwritten by tsp-client update and new
+ * protocol clients aren't exposed as unsupported convenience APIs.
  * The generated implementation client under com.azure.data.appconfiguration.implementation
  * is preserved and used by the hand-written public classes.
  *
@@ -39,7 +40,13 @@ public class AppConfigurationCustomizations extends Customization {
         "AzureAppConfigurationServiceVersion.java",
         "AzureAppConfigurationClient.java",
         "AzureAppConfigurationAsyncClient.java",
-        "AzureAppConfigurationBuilder.java"
+        "AzureAppConfigurationBuilder.java",
+        "FeatureFlagClient.java",
+        "FeatureFlagAsyncClient.java"
+    };
+
+    private static final String[] FILES_WITH_GENERATED_CLIENT_REFERENCES = new String[] {
+        "implementation/FeatureFlagClientsImpl.java"
     };
 
     // Matches: "    private Mono<PagedResponse<BinaryData>> fooSinglePageAsync("
@@ -67,6 +74,7 @@ public class AppConfigurationCustomizations extends Customization {
             }
         }
         renameGeneratedImpl(editor, logger);
+        patchGeneratedClientReferences(editor, logger);
         promoteSinglePageMethodsToPublic(editor, logger);
         patchModuleInfo(editor, logger);
         addKeyValueSetKey(editor, logger);
@@ -92,6 +100,26 @@ public class AppConfigurationCustomizations extends Customization {
         editor.removeFile(GENERATED_IMPL_PATH);
         logger.info("Renamed generated impl {} -> {} (class AzureAppConfigurationImpl -> ConfigurationClientImpl).",
             GENERATED_IMPL_PATH, IMPL_CLIENT_PATH);
+    }
+
+    private static void patchGeneratedClientReferences(Editor editor, Logger logger) {
+        for (String fileName : FILES_WITH_GENERATED_CLIENT_REFERENCES) {
+            String path = ROOT_FILE_PATH + fileName;
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                logger.info("{} not present; skipping generated client reference patch.", path);
+                continue;
+            }
+
+            String updated = content
+                .replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion")
+                .replace("AzureAppConfigurationImpl", "ConfigurationClientImpl")
+                .replace("AzureAppConfigurationBuilder", "ConfigurationClientBuilder");
+            if (!updated.equals(content)) {
+                editor.replaceFile(path, updated);
+                logger.info("Updated generated client references in {}.", path);
+            }
+        }
     }
 
     // The TypeSpec @key decorator drops the setter for KeyValue.key. We still need to populate it on

@@ -18,6 +18,7 @@ import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
@@ -171,6 +172,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
+        ignoreApiVersionDuringPlayback();
         TokenCredential tokenCredential = getTokenCredential(interceptorManager);
 
         String endpoint = interceptorManager.isPlaybackMode()
@@ -204,6 +206,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     public void defaultPipeline() {
+        ignoreApiVersionDuringPlayback();
         TokenCredential tokenCredential = TestHelper.getTokenCredential(interceptorManager);
 
         String endpoint = interceptorManager.isPlaybackMode()
@@ -236,6 +239,27 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
+    }
+
+    private void ignoreApiVersionDuringPlayback() {
+        interceptorManager
+            .addMatchers(new CustomMatcher().setIgnoredQueryParameters(Collections.singletonList("api-version"))
+                .setComparingBodies(true));
+    }
+
+    @Test
+    @DoNotRecord
+    public void defaultServiceVersionIsUsed() {
+        ConfigurationClient configurationClient
+            = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+                .httpClient(request -> {
+                    assertTrue(request.getUrl().getQuery().contains("api-version=2026-05-01-preview"));
+                    return Mono.just(new MockHttpResponse(request, 400));
+                })
+                .buildClient();
+
+        assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
     @Test
