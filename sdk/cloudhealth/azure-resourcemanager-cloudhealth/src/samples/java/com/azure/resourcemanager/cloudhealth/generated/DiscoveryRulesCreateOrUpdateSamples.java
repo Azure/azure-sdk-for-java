@@ -15,7 +15,7 @@ import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilitySt
  */
 public final class DiscoveryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/DiscoveryRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01-preview/DiscoveryRules_CreateOrUpdate.json
      */
     /**
      * Sample code: DiscoveryRules_CreateOrUpdate.

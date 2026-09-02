@@ -36,7 +36,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomListResult;
+import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomOperationStatusListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -166,6 +168,26 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             @PathParam("name") String name, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BulkCreateCustomOperationStatusListResult>> virtualMachinesGetOperationStatus(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BulkCreateCustomOperationStatusListResult> virtualMachinesGetOperationStatusSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -198,6 +220,22 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
         Response<BulkCreateCustomListResult> listBySubscriptionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BulkCreateCustomOperationStatusListResult>> virtualMachinesGetOperationStatusNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BulkCreateCustomOperationStatusListResult> virtualMachinesGetOperationStatusNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -958,6 +996,138 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     }
 
     /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceOperationInner>>
+        virtualMachinesGetOperationStatusSinglePageAsync(String resourceGroupName, String location, String name) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.virtualMachinesGetOperationStatus(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, name, accept,
+                context))
+            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ResourceOperationInner> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
+        String location, String name) {
+        return new PagedFlux<>(
+            () -> virtualMachinesGetOperationStatusSinglePageAsync(resourceGroupName, location, name),
+            nextLink -> virtualMachinesGetOperationStatusNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+        String location, String name) {
+        final String accept = "application/json";
+        Response<BulkCreateCustomOperationStatusListResult> res
+            = service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, location, name, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().results(), res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+        String location, String name, Context context) {
+        final String accept = "application/json";
+        Response<BulkCreateCustomOperationStatusListResult> res
+            = service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, location, name, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().results(), res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
+        String location, String name) {
+        return new PagedIterable<>(() -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name),
+            nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink));
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
+        String location, String name, Context context) {
+        return new PagedIterable<>(
+            () -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name, context),
+            nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink, context));
+    }
+
+    /**
      * List BulkCreateCustom resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1177,6 +1347,68 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     public PagedIterable<LocationBasedBulkCreateCustomInner> listBySubscription(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(location, context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceOperationInner>>
+        virtualMachinesGetOperationStatusNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.virtualMachinesGetOperationStatusNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<BulkCreateCustomOperationStatusListResult> res = service
+            .virtualMachinesGetOperationStatusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().results(), res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        Response<BulkCreateCustomOperationStatusListResult> res
+            = service.virtualMachinesGetOperationStatusNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().results(), res.getValue().nextLink(), null);
     }
 
     /**

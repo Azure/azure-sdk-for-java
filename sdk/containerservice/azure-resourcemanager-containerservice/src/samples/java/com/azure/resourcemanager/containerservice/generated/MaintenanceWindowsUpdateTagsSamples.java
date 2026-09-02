@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class MaintenanceWindowsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceWindowsUpdateTags.json
+     * x-ms-original-file: 2026-06-02-preview/MaintenanceWindowsUpdateTags.json
      */
     /**
      * Sample code: Update Maintenance Window Tags.

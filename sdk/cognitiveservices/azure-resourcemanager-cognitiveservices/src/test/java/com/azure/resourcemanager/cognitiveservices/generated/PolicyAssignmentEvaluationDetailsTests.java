@@ -13,19 +13,19 @@ public final class PolicyAssignmentEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyAssignmentEvaluationDetails model = BinaryData.fromString(
-            "{\"assignmentId\":\"indoygmifthnzd\",\"policyDefinitionId\":\"sl\",\"policySetDefinitionId\":\"ayqigynduhav\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"thuma\",\"effect\":\"lbg\",\"expressionEvaluations\":[{\"expression\":\"iertgccymvaolp\",\"expressionKind\":\"lqlfm\",\"operator\":\"n\",\"result\":\"glzpswiydm\",\"targetValue\":\"yhz\",\"expressionValue\":\"ss\"},{\"expression\":\"bzmnvdfznud\",\"expressionKind\":\"dvxzbncblylpst\",\"operator\":\"hh\",\"result\":\"rzdzucerscdnt\",\"targetValue\":\"vfiwjmygtdss\",\"expressionValue\":\"wtmwerio\"},{\"expression\":\"pyqs\",\"expressionKind\":\"wab\",\"operator\":\"tshhszhedp\",\"result\":\"wiwubm\",\"targetValue\":\"besldnkwwtppjflc\",\"expressionValue\":\"gaokonzmnsikv\"}]}")
+            "{\"assignmentId\":\"zjf\",\"policyDefinitionId\":\"vjfdx\",\"policySetDefinitionId\":\"vetvt\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"tdo\",\"effect\":\"cbxvwvxyslqbh\",\"expressionEvaluations\":[{\"expression\":\"blytk\",\"expressionKind\":\"mpew\",\"operator\":\"fbkrvrnsvs\",\"result\":\"johxcrsb\",\"targetValue\":\"vasrruvwb\",\"expressionValue\":\"qfsubcgjbirx\"},{\"expression\":\"ybsrfbjfdtwss\",\"expressionKind\":\"ftpvjzbexil\",\"operator\":\"nfqqnvwp\",\"result\":\"taruoujmkcj\",\"targetValue\":\"qytjrybnwjewgd\",\"expressionValue\":\"ervnaenqpehi\"},{\"expression\":\"oygmift\",\"expressionKind\":\"zdnds\",\"operator\":\"nayqi\",\"result\":\"nduhavhqlkthum\",\"targetValue\":\"olbgycduiertgccy\",\"expressionValue\":\"aolps\"}]}")
             .toObject(PolicyAssignmentEvaluationDetails.class);
-        Assertions.assertEquals("indoygmifthnzd", model.assignmentId());
-        Assertions.assertEquals("sl", model.policyDefinitionId());
-        Assertions.assertEquals("ayqigynduhav", model.policySetDefinitionId());
-        Assertions.assertEquals(PolicyEvaluationOutcome.NON_COMPLIANT, model.evaluationOutcome());
-        Assertions.assertEquals("thuma", model.nonComplianceReason());
-        Assertions.assertEquals("lbg", model.effect());
-        Assertions.assertEquals("iertgccymvaolp", model.expressionEvaluations().get(0).expression());
-        Assertions.assertEquals("lqlfm", model.expressionEvaluations().get(0).expressionKind());
-        Assertions.assertEquals("n", model.expressionEvaluations().get(0).operator());
-        Assertions.assertEquals("glzpswiydm", model.expressionEvaluations().get(0).result());
-        Assertions.assertEquals("yhz", model.expressionEvaluations().get(0).targetValue());
-        Assertions.assertEquals("ss", model.expressionEvaluations().get(0).expressionValue());
+        Assertions.assertEquals("zjf", model.assignmentId());
+        Assertions.assertEquals("vjfdx", model.policyDefinitionId());
+        Assertions.assertEquals("vetvt", model.policySetDefinitionId());
+        Assertions.assertEquals(PolicyEvaluationOutcome.ERROR, model.evaluationOutcome());
+        Assertions.assertEquals("tdo", model.nonComplianceReason());
+        Assertions.assertEquals("cbxvwvxyslqbh", model.effect());
+        Assertions.assertEquals("blytk", model.expressionEvaluations().get(0).expression());
+        Assertions.assertEquals("mpew", model.expressionEvaluations().get(0).expressionKind());
+        Assertions.assertEquals("fbkrvrnsvs", model.expressionEvaluations().get(0).operator());
+        Assertions.assertEquals("johxcrsb", model.expressionEvaluations().get(0).result());
+        Assertions.assertEquals("vasrruvwb", model.expressionEvaluations().get(0).targetValue());
+        Assertions.assertEquals("qfsubcgjbirx", model.expressionEvaluations().get(0).expressionValue());
     }
 }

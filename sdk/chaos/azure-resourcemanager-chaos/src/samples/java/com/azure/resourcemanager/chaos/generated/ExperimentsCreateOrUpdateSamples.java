@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class ExperimentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a Experiment in a resource group.

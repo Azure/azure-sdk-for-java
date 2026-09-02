@@ -47,12 +47,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.17.19</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.20</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>7.0.8</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+      <version>7.0.9</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.17.1</version> <!-- {x-version-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -89,13 +89,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.6.6</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.6.7</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -158,10 +158,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.17.0]</include> <!-- {x-include-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework:spring-tx:[7.0.8]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.17.1]</include> <!-- {x-include-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
+                <include>org.springframework:spring-tx:[7.0.9]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.13]</include> <!-- {x-include-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -170,7 +170,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
