@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Added public single-event send methods to the producer clients: `EventHubProducerClient.send(EventData)`,
+  `EventHubProducerClient.send(EventData, SendOptions)`, `EventHubProducerAsyncClient.send(EventData)`, and
+  `EventHubProducerAsyncClient.send(EventData, SendOptions)`. These methods were present but package-private. You no
+  longer need to wrap a single event in an `EventDataBatch` or a list. For high throughput, continue to use
+  `EventDataBatch`. ([#41395](https://github.com/Azure/azure-sdk-for-java/issues/41395))
+
 ### Breaking Changes
 
 ### Bugs Fixed
