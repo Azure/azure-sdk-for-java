@@ -3,7 +3,8 @@
 ### 4.83.0-beta.1 (Unreleased)
 
 #### Features Added
-* Promoted the Throughput Bucket related `@Beta` APIs (`ThroughputControlGroupConfigBuilder.throughputBucket(int)`, `ThroughputControlGroupConfig.getThroughputBucket()`, and `Cosmos(Async)Container.enableServerThroughputControlGroup(ThroughputControlGroupConfig)`) to GA. - See [PR 50335](https://github.com/Azure/azure-sdk-for-java/pull/50335)
+* Promoted the Throughput Bucket related `@Beta` APIs (`ThroughputControlGroupConfigBuilder.throughputBucket(int)`, `ThroughputControlGroupConfig.getThroughputBucket()`, and `Cosmos(Async)Container.enableServerThroughputControlGroup(ThroughputControlGroupConfig)`) to GA. - See [PR 50339](https://github.com/Azure/azure-sdk-for-java/pull/50339)
+* Added support for hierarchical (sub)partition keys whose last path is `/id`. When the last partition key path is `/id`, point operations, bulk operations and `readMany` now automatically append the item's `id` to the partition key. - See [PR 49709](https://github.com/Azure/azure-sdk-for-java/pull/49709)
 
 #### Breaking Changes
 
