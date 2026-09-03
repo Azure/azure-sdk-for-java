@@ -61,6 +61,13 @@ public interface RelationshipsManagementClient {
     DependencyOfRelationshipsClient getDependencyOfRelationships();
 
     /**
+     * Gets the DependencyOfRelationshipsByServiceGroupsClient object to access its operations.
+     * 
+     * @return the DependencyOfRelationshipsByServiceGroupsClient object.
+     */
+    DependencyOfRelationshipsByServiceGroupsClient getDependencyOfRelationshipsByServiceGroups();
+
+    /**
      * Gets the ServiceGroupMemberRelationshipsClient object to access its operations.
      * 
      * @return the ServiceGroupMemberRelationshipsClient object.

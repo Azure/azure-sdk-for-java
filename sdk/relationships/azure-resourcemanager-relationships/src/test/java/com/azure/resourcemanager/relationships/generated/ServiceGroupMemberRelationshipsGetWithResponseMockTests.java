@@ -21,7 +21,7 @@ public final class ServiceGroupMemberRelationshipsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceId\":\"c\",\"targetId\":\"efovgmk\",\"sourceTenant\":\"leyyvx\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"k\"},\"metadata\":{\"sourceType\":\"t\",\"targetType\":\"pngjcrcczsqpjhvm\"},\"provisioningState\":\"Deleting\"},\"id\":\"nysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}";
+            = "{\"properties\":{\"sourceId\":\"hxdeoejz\",\"targetId\":\"w\",\"sourceTenant\":\"sjttgzfbish\",\"originInformation\":{\"relationshipOriginType\":\"ServiceExplicitlyCreated\",\"discoveryEngine\":\"ajdeyeamdphaga\"},\"metadata\":{\"sourceType\":\"buxwgip\",\"targetType\":\"honowkgshwank\"},\"provisioningState\":\"Accepted\"},\"id\":\"injep\",\"name\":\"ttmrywnuzoqf\",\"type\":\"iyqzrnk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ServiceGroupMemberRelationshipsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceGroupMemberRelationship response = manager.serviceGroupMemberRelationships()
-            .getWithResponse("nnaamdectehfiqsc", "eypvhezrkg", com.azure.core.util.Context.NONE)
+            .getWithResponse("mrbpizcdrqj", "dpydn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("c", response.properties().sourceId());
-        Assertions.assertEquals("leyyvx", response.properties().sourceTenant());
+        Assertions.assertEquals("hxdeoejz", response.properties().sourceId());
+        Assertions.assertEquals("sjttgzfbish", response.properties().sourceTenant());
     }
 }

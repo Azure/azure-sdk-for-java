@@ -11,7 +11,7 @@ import com.azure.resourcemanager.relationships.models.DependencyOfRelationshipPr
  */
 public final class DependencyOfRelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/DependencyOfRelationships_CreateOrUpdate.json
      */
     /**
      * Sample code: DependencyOfRelationships_CreateOrUpdate.

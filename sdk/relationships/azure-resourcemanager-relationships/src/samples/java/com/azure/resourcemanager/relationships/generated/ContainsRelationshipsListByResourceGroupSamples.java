@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relationships.generated;
  */
 public final class ContainsRelationshipsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ContainsRelationships_ListByResourceGroup.json
+     * x-ms-original-file: 2026-08-01/ContainsRelationships_ListByResourceGroup.json
      */
     /**
      * Sample code: ContainsRelationships_ListByResourceGroup.

@@ -21,7 +21,7 @@ public final class ContainsRelationshipsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sourceId\":\"koen\",\"targetId\":\"ou\",\"targetTenant\":\"vudwtiukbldng\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"ipazyxoegukgjnpi\"},\"metadata\":{\"sourceType\":\"gygev\",\"targetType\":\"zntypmrb\"},\"provisioningState\":\"Succeeded\"},\"id\":\"drqjsdpy\",\"name\":\"nfyhx\",\"type\":\"eoejzic\"}]}";
+            = "{\"value\":[{\"properties\":{\"sourceId\":\"na\",\"targetId\":\"zmhjrunmp\",\"targetTenant\":\"tdbhrbnla\",\"originInformation\":{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"yskpbhen\"},\"metadata\":{\"sourceType\":\"kcxywnyt\",\"targetType\":\"rsyn\"},\"provisioningState\":\"Provisioning\"},\"id\":\"ybyxc\",\"name\":\"fclhaaxdbabphlwr\",\"type\":\"lfktsths\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ContainsRelationshipsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ContainsRelationship> response
-            = manager.containsRelationships().list("burvjxxjnspy", com.azure.core.util.Context.NONE);
+            = manager.containsRelationships().list("fsiarbutr", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -26,12 +26,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relationships.fluent.RelationshipsManagementClient;
 import com.azure.resourcemanager.relationships.implementation.ContainsRelationshipsImpl;
+import com.azure.resourcemanager.relationships.implementation.DependencyOfRelationshipsByServiceGroupsImpl;
 import com.azure.resourcemanager.relationships.implementation.DependencyOfRelationshipsImpl;
 import com.azure.resourcemanager.relationships.implementation.OperationsImpl;
 import com.azure.resourcemanager.relationships.implementation.RelationshipsManagementClientBuilder;
 import com.azure.resourcemanager.relationships.implementation.ServiceGroupMemberRelationshipsImpl;
 import com.azure.resourcemanager.relationships.models.ContainsRelationships;
 import com.azure.resourcemanager.relationships.models.DependencyOfRelationships;
+import com.azure.resourcemanager.relationships.models.DependencyOfRelationshipsByServiceGroups;
 import com.azure.resourcemanager.relationships.models.Operations;
 import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationships;
 import java.time.Duration;
@@ -50,6 +52,8 @@ public final class RelationshipsManager {
     private Operations operations;
 
     private DependencyOfRelationships dependencyOfRelationships;
+
+    private DependencyOfRelationshipsByServiceGroups dependencyOfRelationshipsByServiceGroups;
 
     private ServiceGroupMemberRelationships serviceGroupMemberRelationships;
 
@@ -293,6 +297,19 @@ public final class RelationshipsManager {
                 = new DependencyOfRelationshipsImpl(clientObject.getDependencyOfRelationships(), this);
         }
         return dependencyOfRelationships;
+    }
+
+    /**
+     * Gets the resource collection API of DependencyOfRelationshipsByServiceGroups.
+     * 
+     * @return Resource collection API of DependencyOfRelationshipsByServiceGroups.
+     */
+    public DependencyOfRelationshipsByServiceGroups dependencyOfRelationshipsByServiceGroups() {
+        if (this.dependencyOfRelationshipsByServiceGroups == null) {
+            this.dependencyOfRelationshipsByServiceGroups = new DependencyOfRelationshipsByServiceGroupsImpl(
+                clientObject.getDependencyOfRelationshipsByServiceGroups(), this);
+        }
+        return dependencyOfRelationshipsByServiceGroups;
     }
 
     /**

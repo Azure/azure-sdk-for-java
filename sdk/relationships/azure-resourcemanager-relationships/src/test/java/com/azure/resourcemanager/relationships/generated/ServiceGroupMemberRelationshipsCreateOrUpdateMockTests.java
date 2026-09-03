@@ -22,7 +22,7 @@ public final class ServiceGroupMemberRelationshipsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceId\":\"hsauuimjmvxied\",\"targetId\":\"gidyjrrf\",\"sourceTenant\":\"aos\",\"originInformation\":{\"relationshipOriginType\":\"ServiceExplicitlyCreated\",\"discoveryEngine\":\"sonpclhocohs\"},\"metadata\":{\"sourceType\":\"ev\",\"targetType\":\"eggzfb\"},\"provisioningState\":\"Succeeded\"},\"id\":\"vfaxkffeiith\",\"name\":\"vmezy\",\"type\":\"shxmzsbbzoggigrx\"}";
+            = "{\"properties\":{\"sourceId\":\"cxgod\",\"targetId\":\"fqkkr\",\"sourceTenant\":\"pukgriwflzlfb\",\"originInformation\":{\"relationshipOriginType\":\"ServiceExplicitlyCreated\",\"discoveryEngine\":\"zycispn\"},\"metadata\":{\"sourceType\":\"ahmgkbrp\",\"targetType\":\"y\"},\"provisioningState\":\"Succeeded\"},\"id\":\"nuqqkpikadrgvt\",\"name\":\"agnb\",\"type\":\"ynhijggme\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ServiceGroupMemberRelationshipsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceGroupMemberRelationship response = manager.serviceGroupMemberRelationships()
-            .define("vkd")
-            .withExistingResourceUri("czvyifq")
-            .withProperties(
-                new ServiceGroupMemberRelationshipPropertiesV2().withSourceId("sllr").withSourceTenant("lexxbczwtru"))
+            .define("ctq")
+            .withExistingResourceUri("fcivfsnkym")
+            .withProperties(new ServiceGroupMemberRelationshipPropertiesV2().withSourceId("fbebrjcxer")
+                .withSourceTenant("hxepcyvahfnlj"))
             .create();
 
-        Assertions.assertEquals("hsauuimjmvxied", response.properties().sourceId());
-        Assertions.assertEquals("aos", response.properties().sourceTenant());
+        Assertions.assertEquals("cxgod", response.properties().sourceId());
+        Assertions.assertEquals("pukgriwflzlfb", response.properties().sourceTenant());
     }
 }

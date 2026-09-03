@@ -21,7 +21,7 @@ public final class ContainsRelationshipsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sourceId\":\"pbuxwgipwhon\",\"targetId\":\"wkgshwa\",\"targetTenant\":\"ixzbinjeputtmryw\",\"originInformation\":{\"relationshipOriginType\":\"UserDiscoveredByRule\",\"discoveryEngine\":\"qftiy\"},\"metadata\":{\"sourceType\":\"rnkcqvyxlw\",\"targetType\":\"zlsico\"},\"provisioningState\":\"Succeeded\"},\"id\":\"nwvlryavwhheunmm\",\"name\":\"hgyxzkonoc\",\"type\":\"koklya\"}]}";
+            = "{\"value\":[{\"properties\":{\"sourceId\":\"ckzywbiexzfeyue\",\"targetId\":\"xibxujwbhqwalm\",\"targetTenant\":\"yoxa\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"zjancuxr\"},\"metadata\":{\"sourceType\":\"wbavxbniwdj\",\"targetType\":\"wz\"},\"provisioningState\":\"Accepted\"},\"id\":\"pgn\",\"name\":\"ytxhp\",\"type\":\"xbzpfzab\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ContainsRelationshipsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ContainsRelationship> response = manager.containsRelationships()
-            .listByResourceGroup("ifsjttgzfbishcb", "hajdeyeamdpha", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("cocmnyyaztt", "twwrqp", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -11,18 +11,18 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.relationships.RelationshipsManager;
-import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationship;
+import com.azure.resourcemanager.relationships.models.DependencyOfRelationship;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class ServiceGroupMemberRelationshipsListByParentMockTests {
+public final class DependencyOfRelationshipsByServiceGroupsListMockTests {
     @Test
-    public void testListByParent() throws Exception {
+    public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sourceId\":\"nwvlryavwhheunmm\",\"targetId\":\"gyxzk\",\"sourceTenant\":\"ocukoklyax\",\"originInformation\":{\"relationshipOriginType\":\"ServiceExplicitlyCreated\",\"discoveryEngine\":\"uqszfk\"},\"metadata\":{\"sourceType\":\"ypewrmjmwvvjekt\",\"targetType\":\"xsenhwlr\"},\"provisioningState\":\"Provisioning\"},\"id\":\"zpwv\",\"name\":\"qdqgbi\",\"type\":\"ylihkaetckt\"}]}";
+            = "{\"value\":[{\"properties\":{\"sourceId\":\"m\",\"targetId\":\"zy\",\"targetTenant\":\"hxmzsbbzoggig\",\"originInformation\":{\"relationshipOriginType\":\"UserDiscoveredByRule\",\"discoveryEngine\":\"ur\"},\"metadata\":{\"sourceType\":\"xxjnspydptk\",\"targetType\":\"enkouknvudw\"},\"provisioningState\":\"Accepted\"},\"id\":\"bldngkpoc\",\"name\":\"pazyxoegukg\",\"type\":\"npiucgygevqznty\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ServiceGroupMemberRelationshipsListByParentMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ServiceGroupMemberRelationship> response = manager.serviceGroupMemberRelationships()
-            .listByParent("qvyxlwhzlsicoho", com.azure.core.util.Context.NONE);
+        PagedIterable<DependencyOfRelationship> response = manager.dependencyOfRelationshipsByServiceGroups()
+            .list("buhfmvfaxkffeiit", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nwvlryavwhheunmm", response.iterator().next().properties().sourceId());
-        Assertions.assertEquals("ocukoklyax", response.iterator().next().properties().sourceTenant());
+        Assertions.assertEquals("zy", response.iterator().next().properties().targetId());
+        Assertions.assertEquals("hxmzsbbzoggig", response.iterator().next().properties().targetTenant());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relationships.generated;
  */
 public final class DependencyOfRelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_Delete.json
+     * x-ms-original-file: 2026-08-01/DependencyOfRelationships_Delete.json
      */
     /**
      * Sample code: DependencyOfRelationships_Delete.

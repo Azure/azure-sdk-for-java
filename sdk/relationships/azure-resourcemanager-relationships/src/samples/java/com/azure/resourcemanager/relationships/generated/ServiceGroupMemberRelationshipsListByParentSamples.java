@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relationships.generated;
  */
 public final class ServiceGroupMemberRelationshipsListByParentSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ServiceGroupMemberRelationships_ListByParent.json
+     * x-ms-original-file: 2026-08-01/ServiceGroupMemberRelationships_ListByParent.json
      */
     /**
      * Sample code: ServiceGroupMemberRelationships_ListByParent.

@@ -27,6 +27,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.relationships.fluent.ContainsRelationshipsClient;
+import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsByServiceGroupsClient;
 import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsClient;
 import com.azure.resourcemanager.relationships.fluent.OperationsClient;
 import com.azure.resourcemanager.relationships.fluent.RelationshipsManagementClient;
@@ -158,6 +159,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
     }
 
     /**
+     * The DependencyOfRelationshipsByServiceGroupsClient object to access its operations.
+     */
+    private final DependencyOfRelationshipsByServiceGroupsClient dependencyOfRelationshipsByServiceGroups;
+
+    /**
+     * Gets the DependencyOfRelationshipsByServiceGroupsClient object to access its operations.
+     * 
+     * @return the DependencyOfRelationshipsByServiceGroupsClient object.
+     */
+    public DependencyOfRelationshipsByServiceGroupsClient getDependencyOfRelationshipsByServiceGroups() {
+        return this.dependencyOfRelationshipsByServiceGroups;
+    }
+
+    /**
      * The ServiceGroupMemberRelationshipsClient object to access its operations.
      */
     private final ServiceGroupMemberRelationshipsClient serviceGroupMemberRelationships;
@@ -202,9 +217,10 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01-preview";
+        this.apiVersion = "2026-08-01";
         this.operations = new OperationsClientImpl(this);
         this.dependencyOfRelationships = new DependencyOfRelationshipsClientImpl(this);
+        this.dependencyOfRelationshipsByServiceGroups = new DependencyOfRelationshipsByServiceGroupsClientImpl(this);
         this.serviceGroupMemberRelationships = new ServiceGroupMemberRelationshipsClientImpl(this);
         this.containsRelationships = new ContainsRelationshipsClientImpl(this);
     }

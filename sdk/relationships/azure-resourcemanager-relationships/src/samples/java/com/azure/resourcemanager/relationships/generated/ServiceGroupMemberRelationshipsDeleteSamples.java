@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relationships.generated;
  */
 public final class ServiceGroupMemberRelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ServiceGroupMemberRelationships_Delete.json
+     * x-ms-original-file: 2026-08-01/ServiceGroupMemberRelationships_Delete.json
      */
     /**
      * Sample code: ServiceGroupMemberRelationships_Delete.

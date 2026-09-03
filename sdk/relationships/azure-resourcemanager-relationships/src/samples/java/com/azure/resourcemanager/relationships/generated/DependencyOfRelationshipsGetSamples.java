@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relationships.generated;
  */
 public final class DependencyOfRelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_Get.json
+     * x-ms-original-file: 2026-08-01/DependencyOfRelationships_Get.json
      */
     /**
      * Sample code: DependencyOfRelationships_Get.
