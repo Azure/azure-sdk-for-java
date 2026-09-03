@@ -5,24 +5,27 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
 import reactor.core.publisher.Mono;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates (using the async client) how to create an agent with an MCP tool
@@ -46,9 +49,6 @@ public class McpWithConnectionAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         McpTool mcpTool = new McpTool("api-specs")
             .setServerUrl("https://api.githubcopilot.com/mcp")
@@ -59,62 +59,54 @@ public class McpWithConnectionAsync {
             .setInstructions("Use MCP tools as needed")
             .setTools(Collections.singletonList(mcpTool));
 
-        agentsAsyncClient.createAgentVersion("mcp-connection-agent", agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
-                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+        String agentName = "mcp-connection-agent";
+        Mono.usingWhen(
+                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
+                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
+                            new UpdateAgentDetailsOptions().setAgentEndpoint(
+                                new AgentEndpointConfig()
+                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
+                        .thenReturn(agent)),
+                agent -> {
+                    OpenAIClientAsync openAIAsyncClient
+                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                    return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                            .input("What is my username in GitHub profile?")
+                            .build()))
+                        .flatMap(response -> {
+                            // Process MCP approval requests
+                            List<ResponseInputItem> approvals = new ArrayList<>();
+                            for (ResponseOutputItem item : response.output()) {
+                                if (item.isMcpApprovalRequest()) {
+                                    ResponseOutputItem.McpApprovalRequest request = item.asMcpApprovalRequest();
+                                    System.out.printf("MCP approval requested: server=%s, id=%s%n",
+                                        request.serverLabel(), request.id());
 
-                return responsesAsyncClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .input("What is my username in GitHub profile?"));
-            })
-            .flatMap(response -> {
-                AgentVersionDetails agent = agentRef.get();
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                                    approvals.add(ResponseInputItem.ofMcpApprovalResponse(
+                                        ResponseInputItem.McpApprovalResponse.builder()
+                                            .approvalRequestId(request.id())
+                                            .approve(true)
+                                            .build()));
+                                }
+                            }
 
-                // Process MCP approval requests
-                List<ResponseInputItem> approvals = new ArrayList<>();
-                for (ResponseOutputItem item : response.output()) {
-                    if (item.isMcpApprovalRequest()) {
-                        ResponseOutputItem.McpApprovalRequest request = item.asMcpApprovalRequest();
-                        System.out.printf("MCP approval requested: server=%s, id=%s%n",
-                            request.serverLabel(), request.id());
+                            if (!approvals.isEmpty()) {
+                                System.out.println("Sending " + approvals.size() + " approval(s)...");
+                                return Mono.fromFuture(openAIAsyncClient.responses().create(
+                                    ResponseCreateParams.builder()
+                                        .inputOfResponse(approvals)
+                                        .previousResponseId(response.id())
+                                        .build()));
+                            }
 
-                        approvals.add(ResponseInputItem.ofMcpApprovalResponse(
-                            ResponseInputItem.McpApprovalResponse.builder()
-                                .approvalRequestId(request.id())
-                                .approve(true)
-                                .build()));
-                    }
-                }
-
-                if (!approvals.isEmpty()) {
-                    System.out.println("Sending " + approvals.size() + " approval(s)...");
-                    return responsesAsyncClient.createAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder()
-                            .inputOfResponse(approvals)
-                            .previousResponseId(response.id()));
-                }
-
-                return Mono.just(response);
-            })
-            .doOnNext(response -> {
-                System.out.println("Response: " + response.output());
-            })
-            .then(Mono.defer(() -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"));
-                }
-                return Mono.empty();
-            }))
+                            return Mono.just(response);
+                        })
+                        .doOnNext(response -> System.out.println("Response: " + response.output()));
+                },
+                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .timeout(Duration.ofSeconds(300))
             .block();
