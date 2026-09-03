@@ -10,6 +10,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.file.share.models.LeaseDurationType;
+import com.azure.storage.file.share.models.LeaseStateType;
+import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.ShareRootSquash;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,19 +52,19 @@ public final class SharesGetPropertiesHeaders {
      * The x-ms-share-provisioned-iops property.
      */
     @Generated
-    private final Long provisionedIops;
+    private final Integer provisionedIops;
 
     /*
      * The x-ms-share-provisioned-ingress-mbps property.
      */
     @Generated
-    private final Long provisionedIngressMBps;
+    private final Integer provisionedIngressMBps;
 
     /*
      * The x-ms-share-provisioned-egress-mbps property.
      */
     @Generated
-    private final Long provisionedEgressMBps;
+    private final Integer provisionedEgressMBps;
 
     /*
      * The x-ms-share-next-allowed-quota-downgrade-time property.
@@ -72,25 +76,25 @@ public final class SharesGetPropertiesHeaders {
      * The x-ms-share-provisioned-bandwidth-mibps property.
      */
     @Generated
-    private final Long provisionedBandwidthMibps;
+    private final Integer provisionedBandwidthMibps;
 
     /*
      * The x-ms-lease-duration property.
      */
     @Generated
-    private final String leaseDuration;
+    private final LeaseDurationType leaseDuration;
 
     /*
      * The x-ms-lease-state property.
      */
     @Generated
-    private final String leaseState;
+    private final LeaseStateType leaseState;
 
     /*
      * The x-ms-lease-status property.
      */
     @Generated
-    private final String leaseStatus;
+    private final LeaseStatusType leaseStatus;
 
     /*
      * The x-ms-access-tier property.
@@ -120,7 +124,7 @@ public final class SharesGetPropertiesHeaders {
      * The x-ms-root-squash property.
      */
     @Generated
-    private final String rootSquash;
+    private final ShareRootSquash rootSquash;
 
     /*
      * The x-ms-enable-snapshot-virtual-directory-access property.
@@ -294,19 +298,19 @@ public final class SharesGetPropertiesHeaders {
         }
         String provisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
         if (provisionedIops != null) {
-            this.provisionedIops = Long.parseLong(provisionedIops);
+            this.provisionedIops = Integer.parseInt(provisionedIops);
         } else {
             this.provisionedIops = null;
         }
         String provisionedIngressMBps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_INGRESS_MBPS);
         if (provisionedIngressMBps != null) {
-            this.provisionedIngressMBps = Long.parseLong(provisionedIngressMBps);
+            this.provisionedIngressMBps = Integer.parseInt(provisionedIngressMBps);
         } else {
             this.provisionedIngressMBps = null;
         }
         String provisionedEgressMBps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_EGRESS_MBPS);
         if (provisionedEgressMBps != null) {
-            this.provisionedEgressMBps = Long.parseLong(provisionedEgressMBps);
+            this.provisionedEgressMBps = Integer.parseInt(provisionedEgressMBps);
         } else {
             this.provisionedEgressMBps = null;
         }
@@ -318,13 +322,28 @@ public final class SharesGetPropertiesHeaders {
         }
         String provisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
         if (provisionedBandwidthMibps != null) {
-            this.provisionedBandwidthMibps = Long.parseLong(provisionedBandwidthMibps);
+            this.provisionedBandwidthMibps = Integer.parseInt(provisionedBandwidthMibps);
         } else {
             this.provisionedBandwidthMibps = null;
         }
-        this.leaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
-        this.leaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
-        this.leaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        String leaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        if (leaseDuration != null) {
+            this.leaseDuration = LeaseDurationType.fromString(leaseDuration);
+        } else {
+            this.leaseDuration = null;
+        }
+        String leaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        if (leaseState != null) {
+            this.leaseState = LeaseStateType.fromString(leaseState);
+        } else {
+            this.leaseState = null;
+        }
+        String leaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        if (leaseStatus != null) {
+            this.leaseStatus = LeaseStatusType.fromString(leaseStatus);
+        } else {
+            this.leaseStatus = null;
+        }
         this.accessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
         String accessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
         if (accessTierChangeTime != null) {
@@ -334,7 +353,12 @@ public final class SharesGetPropertiesHeaders {
         }
         this.accessTierTransitionState = rawHeaders.getValue(X_MS_ACCESS_TIER_TRANSITION_STATE);
         this.enabledProtocols = rawHeaders.getValue(X_MS_ENABLED_PROTOCOLS);
-        this.rootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
+        String rootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
+        if (rootSquash != null) {
+            this.rootSquash = ShareRootSquash.fromString(rootSquash);
+        } else {
+            this.rootSquash = null;
+        }
         String enableSnapshotVirtualDirectoryAccess
             = rawHeaders.getValue(X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS);
         if (enableSnapshotVirtualDirectoryAccess != null) {
@@ -453,7 +477,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedIops value.
      */
     @Generated
-    public Long getProvisionedIops() {
+    public Integer getProvisionedIops() {
         return this.provisionedIops;
     }
 
@@ -463,7 +487,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedIngressMBps value.
      */
     @Generated
-    public Long getProvisionedIngressMBps() {
+    public Integer getProvisionedIngressMBps() {
         return this.provisionedIngressMBps;
     }
 
@@ -473,7 +497,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedEgressMBps value.
      */
     @Generated
-    public Long getProvisionedEgressMBps() {
+    public Integer getProvisionedEgressMBps() {
         return this.provisionedEgressMBps;
     }
 
@@ -496,7 +520,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the provisionedBandwidthMibps value.
      */
     @Generated
-    public Long getProvisionedBandwidthMibps() {
+    public Integer getProvisionedBandwidthMibps() {
         return this.provisionedBandwidthMibps;
     }
 
@@ -506,7 +530,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the leaseDuration value.
      */
     @Generated
-    public String getLeaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
 
@@ -516,7 +540,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the leaseState value.
      */
     @Generated
-    public String getLeaseState() {
+    public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
 
@@ -526,7 +550,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the leaseStatus value.
      */
     @Generated
-    public String getLeaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
 
@@ -579,7 +603,7 @@ public final class SharesGetPropertiesHeaders {
      * @return the rootSquash value.
      */
     @Generated
-    public String getRootSquash() {
+    public ShareRootSquash getRootSquash() {
         return this.rootSquash;
     }
 

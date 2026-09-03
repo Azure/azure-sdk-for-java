@@ -173,12 +173,12 @@ public final class ShareClientInternal {
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
      * <tr><td>x-ms-share-quota</td><td>int</td><td>Specifies the maximum size of the share, in gigabytes.</td></tr>
-     * <tr><td>x-ms-share-provisioned-iops</td><td>long</td><td>The provisioned IOPS for the share.</td></tr>
-     * <tr><td>x-ms-share-provisioned-ingress-mbps</td><td>long</td><td>The provisioned ingress for the share.</td></tr>
-     * <tr><td>x-ms-share-provisioned-egress-mbps</td><td>long</td><td>The provisioned egress for the share.</td></tr>
+     * <tr><td>x-ms-share-provisioned-iops</td><td>int</td><td>The provisioned IOPS for the share.</td></tr>
+     * <tr><td>x-ms-share-provisioned-ingress-mbps</td><td>int</td><td>The provisioned ingress for the share.</td></tr>
+     * <tr><td>x-ms-share-provisioned-egress-mbps</td><td>int</td><td>The provisioned egress for the share.</td></tr>
      * <tr><td>x-ms-share-next-allowed-quota-downgrade-time</td><td>OffsetDateTime</td><td>The next allowed quota
      * downgrade time.</td></tr>
-     * <tr><td>x-ms-share-provisioned-bandwidth-mibps</td><td>long</td><td>The share provisioned bandwidth in mebibytes
+     * <tr><td>x-ms-share-provisioned-bandwidth-mibps</td><td>int</td><td>The share provisioned bandwidth in mebibytes
      * per second.</td></tr>
      * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
      * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>

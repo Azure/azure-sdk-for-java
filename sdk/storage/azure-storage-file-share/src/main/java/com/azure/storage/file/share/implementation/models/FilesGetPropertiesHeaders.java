@@ -12,6 +12,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.LeaseDurationType;
+import com.azure.storage.file.share.models.LeaseStateType;
+import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NfsFileType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -172,19 +175,19 @@ public final class FilesGetPropertiesHeaders {
      * The x-ms-lease-duration property.
      */
     @Generated
-    private final String leaseDuration;
+    private final LeaseDurationType leaseDuration;
 
     /*
      * The x-ms-lease-state property.
      */
     @Generated
-    private final String leaseState;
+    private final LeaseStateType leaseState;
 
     /*
      * The x-ms-lease-status property.
      */
     @Generated
-    private final String leaseStatus;
+    private final LeaseStatusType leaseStatus;
 
     /*
      * The x-ms-mode property.
@@ -358,9 +361,24 @@ public final class FilesGetPropertiesHeaders {
         this.fileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         this.fileId = rawHeaders.getValue(X_MS_FILE_ID);
         this.fileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
-        this.leaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
-        this.leaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
-        this.leaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        String leaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        if (leaseDuration != null) {
+            this.leaseDuration = LeaseDurationType.fromString(leaseDuration);
+        } else {
+            this.leaseDuration = null;
+        }
+        String leaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        if (leaseState != null) {
+            this.leaseState = LeaseStateType.fromString(leaseState);
+        } else {
+            this.leaseState = null;
+        }
+        String leaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        if (leaseStatus != null) {
+            this.leaseStatus = LeaseStatusType.fromString(leaseStatus);
+        } else {
+            this.leaseStatus = null;
+        }
         this.fileMode = rawHeaders.getValue(X_MS_MODE);
         this.owner = rawHeaders.getValue(X_MS_OWNER);
         this.group = rawHeaders.getValue(X_MS_GROUP);
@@ -639,7 +657,7 @@ public final class FilesGetPropertiesHeaders {
      * @return the leaseDuration value.
      */
     @Generated
-    public String getLeaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
 
@@ -649,7 +667,7 @@ public final class FilesGetPropertiesHeaders {
      * @return the leaseState value.
      */
     @Generated
-    public String getLeaseState() {
+    public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
 
@@ -659,7 +677,7 @@ public final class FilesGetPropertiesHeaders {
      * @return the leaseStatus value.
      */
     @Generated
-    public String getLeaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
 

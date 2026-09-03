@@ -39,7 +39,7 @@ import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHead
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
+import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUrlHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
@@ -201,6 +201,8 @@ public class ModelHelper {
         item.setDeleted(shareItemInternal.isDeleted());
         item.setVersion(shareItemInternal.getVersion());
         item.setProperties(populateShareProperties(shareItemInternal.getProperties()));
+        // SharePropertiesInternal carries no metadata (unlike the AutoRest swagger); source it from the share item.
+        item.getProperties().setMetadata(shareItemInternal.getMetadata());
         item.setMetadata(shareItemInternal.getMetadata());
         return item;
     }
@@ -230,7 +232,6 @@ public class ModelHelper {
         properties.setLeaseDuration(sharePropertiesInternal.getLeaseDuration());
         properties.setProtocols(parseShareProtocols(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
-        properties.setMetadata(sharePropertiesInternal.getMetadata());
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
         properties
             .setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
@@ -303,7 +304,7 @@ public class ModelHelper {
             return null;
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
-            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
+            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getETag());
     }
 
     public static HandleItem
@@ -379,9 +380,9 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileInfo> createFileInfoResponse(ResponseBase<FilesCreateHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
@@ -392,10 +393,10 @@ public class ModelHelper {
     public static Response<ShareFileProperties>
         getPropertiesResponse(final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
         FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
+        String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
-        Map<String, String> metadata = headers.getXMsMeta();
-        String fileType = headers.getXMsType();
+        Map<String, String> metadata = headers.getMetadata();
+        String fileType = "File";
         Long contentLength = headers.getContentLength();
         String contentType = headers.getContentType();
         byte[] contentMD5 = headers.getContentMD5();
@@ -407,16 +408,16 @@ public class ModelHelper {
         String contentEncoding = headers.getContentEncoding();
         String cacheControl = headers.getCacheControl();
         String contentDisposition = headers.getContentDisposition();
-        LeaseStatusType leaseStatusType = headers.getXMsLeaseStatus();
-        LeaseStateType leaseStateType = headers.getXMsLeaseState();
-        LeaseDurationType leaseDurationType = headers.getXMsLeaseDuration();
-        OffsetDateTime copyCompletionTime = headers.getXMsCopyCompletionTime();
-        String copyStatusDescription = headers.getXMsCopyStatusDescription();
-        String copyId = headers.getXMsCopyId();
-        String copyProgress = headers.getXMsCopyProgress();
-        String copySource = headers.getXMsCopySource();
-        CopyStatusType copyStatus = headers.getXMsCopyStatus();
-        Boolean isServerEncrypted = headers.isXMsServerEncrypted();
+        LeaseStatusType leaseStatusType = headers.getLeaseStatus();
+        LeaseStateType leaseStateType = headers.getLeaseState();
+        LeaseDurationType leaseDurationType = headers.getLeaseDuration();
+        OffsetDateTime copyCompletionTime = headers.getCopyCompletionTime();
+        String copyStatusDescription = headers.getCopyStatusDescription();
+        String copyId = headers.getCopyId();
+        String copyProgress = headers.getCopyProgress();
+        String copySource = headers.getCopySource();
+        CopyStatusType copyStatus = headers.getCopyStatus();
+        Boolean isServerEncrypted = headers.isServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileProperties shareFileProperties = ShareFilePropertiesHelper.create(eTag, lastModified, metadata,
@@ -428,9 +429,9 @@ public class ModelHelper {
 
     public static Response<ShareFileInfo>
         setPropertiesResponse(final ResponseBase<FilesSetHttpHeadersHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
@@ -440,8 +441,8 @@ public class ModelHelper {
 
     public static Response<ShareFileMetadataInfo>
         setMetadataResponse(final ResponseBase<FilesSetMetadataHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        Boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        String eTag = response.getDeserializedHeaders().getEtag();
+        Boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
         ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, shareFileMetadataInfo);
     }
@@ -473,7 +474,7 @@ public class ModelHelper {
     public static Response<ShareFileUploadInfo>
         transformUploadResponse(ResponseBase<FilesUploadRangeHeaders, Void> response) {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
+        String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
         byte[] contentMD5 = headers.getContentMD5();
         //        try {
@@ -481,7 +482,7 @@ public class ModelHelper {
         //        } catch (NullPointerException e) {
         //            contentMD5 = null;
         //        }
-        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
+        Boolean isServerEncrypted = headers.isRequestServerEncrypted();
         ShareFileUploadInfo shareFileUploadInfo
             = new ShareFileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
         return new SimpleResponse<>(response, shareFileUploadInfo);
@@ -497,32 +498,35 @@ public class ModelHelper {
     public static Response<ShareProperties>
         mapGetPropertiesResponse(ResponseBase<SharesGetPropertiesHeaders, Void> response) {
         SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
-        ShareProperties shareProperties = new ShareProperties().setETag(headers.getETag())
+        ShareProperties shareProperties = new ShareProperties().setETag(headers.getEtag())
             .setLastModified(headers.getLastModified())
-            .setMetadata(headers.getXMsMeta())
-            .setQuota(headers.getXMsShareQuota())
-            .setNextAllowedQuotaDowngradeTime(headers.getXMsShareNextAllowedQuotaDowngradeTime())
-            .setProvisionedEgressMBps(headers.getXMsShareProvisionedEgressMbps())
-            .setProvisionedIngressMBps(headers.getXMsShareProvisionedIngressMbps())
-            .setProvisionedBandwidthMiBps(headers.getXMsShareProvisionedBandwidthMibps())
-            .setProvisionedIops(headers.getXMsShareProvisionedIops())
-            .setLeaseDuration(headers.getXMsLeaseDuration())
-            .setLeaseState(headers.getXMsLeaseState())
-            .setLeaseStatus(headers.getXMsLeaseStatus())
-            .setAccessTier(headers.getXMsAccessTier())
-            .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
-            .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
-            .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
-            .setSnapshotVirtualDirectoryAccessEnabled(headers.isXMsEnableSnapshotVirtualDirectoryAccess())
-            .setPaidBurstingEnabled(headers.isXMsSharePaidBurstingEnabled())
-            .setPaidBurstingMaxIops(headers.getXMsSharePaidBurstingMaxIops())
-            .setPaidBurstingMaxBandwidthMibps(headers.getXMsSharePaidBurstingMaxBandwidthMibps())
-            .setRootSquash(headers.getXMsRootSquash())
-            .setIncludedBurstIops(headers.getXMsShareIncludedBurstIops())
-            .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
-            .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
-            .setNextAllowedProvisionedBandwidthDowngradeTime(
-                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
+            .setMetadata(headers.getMetadata())
+            .setQuota(headers.getQuota())
+            .setNextAllowedQuotaDowngradeTime(headers.getNextAllowedQuotaDowngradeTime())
+            .setProvisionedEgressMBps(
+                headers.getProvisionedEgressMBps() == null ? null : headers.getProvisionedEgressMBps().intValue())
+            .setProvisionedIngressMBps(
+                headers.getProvisionedIngressMBps() == null ? null : headers.getProvisionedIngressMBps().intValue())
+            .setProvisionedBandwidthMiBps(headers.getProvisionedBandwidthMibps() == null
+                ? null
+                : headers.getProvisionedBandwidthMibps().intValue())
+            .setProvisionedIops(headers.getProvisionedIops() == null ? null : headers.getProvisionedIops().intValue())
+            .setLeaseDuration(headers.getLeaseDuration())
+            .setLeaseState(headers.getLeaseState())
+            .setLeaseStatus(headers.getLeaseStatus())
+            .setAccessTier(headers.getAccessTier())
+            .setAccessTierChangeTime(headers.getAccessTierChangeTime())
+            .setAccessTierTransitionState(headers.getAccessTierTransitionState())
+            .setProtocols(ModelHelper.parseShareProtocols(headers.getEnabledProtocols()))
+            .setSnapshotVirtualDirectoryAccessEnabled(headers.isEnableSnapshotVirtualDirectoryAccess())
+            .setPaidBurstingEnabled(headers.isPaidBurstingEnabled())
+            .setPaidBurstingMaxIops(headers.getPaidBurstingMaxIops())
+            .setPaidBurstingMaxBandwidthMibps(headers.getPaidBurstingMaxBandwidthMibps())
+            .setRootSquash(headers.getRootSquash())
+            .setIncludedBurstIops(headers.getIncludedBurstIops())
+            .setMaxBurstCreditsForIops(headers.getMaxBurstCreditsForIops())
+            .setNextAllowedProvisionedIopsDowngradeTime(headers.getNextAllowedProvisionedIopsDowngradeTime())
+            .setNextAllowedProvisionedBandwidthDowngradeTime(headers.getNextAllowedProvisionedBandwidthDowngradeTime());
 
         return new SimpleResponse<>(response, shareProperties);
     }
@@ -534,7 +538,7 @@ public class ModelHelper {
     public static Response<ShareFileUploadInfo>
         uploadRangeHeadersToShareFileInfo(ResponseBase<FilesUploadRangeHeaders, Void> response) {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
+        String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
         byte[] contentMD5 = headers.getContentMD5();
         //        try {
@@ -542,18 +546,18 @@ public class ModelHelper {
         //        } catch (NullPointerException e) {
         //            contentMD5 = null;
         //        }
-        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
+        Boolean isServerEncrypted = headers.isRequestServerEncrypted();
         ShareFileUploadInfo shareFileUploadInfo
             = new ShareFileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
         return new SimpleResponse<>(response, shareFileUploadInfo);
     }
 
     public static Response<ShareFileUploadRangeFromUrlInfo>
-        mapUploadRangeFromUrlResponse(final ResponseBase<FilesUploadRangeFromURLHeaders, Void> response) {
-        FilesUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
+        mapUploadRangeFromUrlResponse(final ResponseBase<FilesUploadRangeFromUrlHeaders, Void> response) {
+        FilesUploadRangeFromUrlHeaders headers = response.getDeserializedHeaders();
+        String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
-        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
+        Boolean isServerEncrypted = headers.isRequestServerEncrypted();
         ShareFileUploadRangeFromUrlInfo shareFileUploadRangeFromUrlInfo
             = new ShareFileUploadRangeFromUrlInfo(eTag, lastModified, isServerEncrypted);
         return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
@@ -563,14 +567,14 @@ public class ModelHelper {
         mapCreateSnapshotResponse(ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
         SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
         ShareSnapshotInfo snapshotInfo
-            = new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
+            = new ShareSnapshotInfo(headers.getSnapshot(), headers.getEtag(), headers.getLastModified());
 
         return new SimpleResponse<>(response, snapshotInfo);
     }
 
     public static Response<ShareDirectoryInfo>
         mapShareDirectoryInfo(final ResponseBase<DirectoriesCreateHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
@@ -581,10 +585,10 @@ public class ModelHelper {
 
     public static Response<ShareDirectoryProperties>
         mapShareDirectoryPropertiesResponse(ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
-        String eTag = response.getDeserializedHeaders().getETag();
+        Map<String, String> metadata = response.getDeserializedHeaders().getMetadata();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties = ShareDirectoryPropertiesHelper.create(metadata, eTag,
@@ -594,7 +598,7 @@ public class ModelHelper {
 
     public static Response<ShareDirectoryInfo>
         mapSetPropertiesResponse(final ResponseBase<DirectoriesSetPropertiesHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
@@ -605,8 +609,8 @@ public class ModelHelper {
 
     public static Response<ShareDirectorySetMetadataInfo>
         setShareDirectoryMetadataResponse(final ResponseBase<DirectoriesSetMetadataHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        String eTag = response.getDeserializedHeaders().getEtag();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo
             = new ShareDirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
@@ -640,7 +644,7 @@ public class ModelHelper {
 
     public static Response<ShareFileInfo>
         createHardLinkResponse(final ResponseBase<FilesCreateHardLinkHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
@@ -651,7 +655,7 @@ public class ModelHelper {
 
     public static Response<ShareFileInfo>
         createSymbolicLinkResponse(final ResponseBase<FilesCreateSymbolicLinkHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
@@ -662,9 +666,9 @@ public class ModelHelper {
 
     public static Response<ShareFileSymbolicLinkInfo>
         getSymbolicLinkResponse(final ResponseBase<FilesGetSymbolicLinkHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
+        String eTag = response.getDeserializedHeaders().getEtag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        String linkText = response.getDeserializedHeaders().getXMsLinkText();
+        String linkText = response.getDeserializedHeaders().getLinkText();
         ShareFileSymbolicLinkInfo shareFileSymbolicLinkInfo
             = ShareFileSymbolicLinkInfoHelper.create(eTag, lastModified, linkText);
         return new SimpleResponse<>(response, shareFileSymbolicLinkInfo);
