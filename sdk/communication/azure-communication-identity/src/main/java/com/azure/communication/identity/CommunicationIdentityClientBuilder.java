@@ -5,7 +5,7 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
-import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
+import com.azure.communication.identity.implementation.IdentityClientImpl;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -364,7 +364,7 @@ public final class CommunicationIdentityClientBuilder implements
         return new CommunicationIdentityClient(createServiceImpl());
     }
 
-    private CommunicationIdentityClientImpl createServiceImpl() {
+    private IdentityClientImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
 
         HttpPipeline builderPipeline = this.pipeline;
@@ -375,7 +375,27 @@ public final class CommunicationIdentityClientBuilder implements
         CommunicationIdentityServiceVersion apiVersion
             = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
 
-        return new CommunicationIdentityClientImpl(builderPipeline, endpoint, apiVersion.getVersion());
+        return new IdentityClientImpl(builderPipeline, endpoint, mapServiceVersion(apiVersion));
+    }
+
+    /**
+     * Maps the public {@link CommunicationIdentityServiceVersion} onto the generated
+     * {@link IdentityServiceVersion}.
+     *
+     * <p>The generated client accepts only api-versions declared in the TypeSpec {@code Versions} enum,
+     * which currently contains {@code 2025-06-30} alone. Older values remain part of the public API of
+     * this library but cannot be routed to the generated client until they are added upstream.</p>
+     */
+    private IdentityServiceVersion mapServiceVersion(CommunicationIdentityServiceVersion apiVersion) {
+        for (IdentityServiceVersion generated : IdentityServiceVersion.values()) {
+            if (generated.getVersion().equals(apiVersion.getVersion())) {
+                return generated;
+            }
+        }
+
+        throw logger.logExceptionAsError(new IllegalArgumentException("Service version " + apiVersion.getVersion()
+            + " is not supported by the generated client. Supported versions: "
+            + IdentityServiceVersion.values()[0].getVersion() + "."));
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {

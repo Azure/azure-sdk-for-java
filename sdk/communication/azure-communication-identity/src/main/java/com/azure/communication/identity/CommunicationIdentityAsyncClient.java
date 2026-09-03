@@ -3,8 +3,7 @@
 
 package com.azure.communication.identity;
 
-import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
+import com.azure.communication.identity.implementation.IdentityClientImpl;
 import com.azure.communication.identity.implementation.converters.IdentityErrorConverter;
 import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
@@ -19,8 +18,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -56,11 +57,34 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = true)
 public final class CommunicationIdentityAsyncClient {
 
-    private final CommunicationIdentitiesImpl client;
+    private final IdentityOperationsAsyncClient client;
+    private final TeamsUserOperationsAsyncClient teamsUserClient;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityAsyncClient.class);
 
-    CommunicationIdentityAsyncClient(CommunicationIdentityClientImpl communicationIdentityServiceClient) {
-        client = communicationIdentityServiceClient.getCommunicationIdentities();
+    CommunicationIdentityAsyncClient(IdentityClientImpl identityClient) {
+        client = new IdentityOperationsAsyncClient(identityClient.getIdentityOperations());
+        teamsUserClient = new TeamsUserOperationsAsyncClient(identityClient.getTeamsUserOperations());
+    }
+
+    /**
+     * Deserializes the {@link BinaryData} body returned by a generated protocol method, preserving the
+     * status code and headers of the original response.
+     */
+    private static <T> Response<T> mapResponse(Response<BinaryData> response, Class<T> type) {
+        BinaryData value = response.getValue();
+        return new SimpleResponse<>(response, value == null ? null : value.toObject(type));
+    }
+
+    /**
+     * Calls the generated create protocol method. The request body is carried on {@link RequestOptions}
+     * because the generated signature takes no body parameter.
+     */
+    private Mono<Response<CommunicationIdentityAccessTokenResult>>
+        createWithResponseInternal(CommunicationIdentityCreateRequest body) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setBody(BinaryData.fromObject(body));
+        return client.createWithResponse(requestOptions)
+            .map(response -> mapResponse(response, CommunicationIdentityAccessTokenResult.class));
     }
 
     /**
@@ -71,7 +95,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifier> createUser() {
         try {
-            return client.createAsync(new CommunicationIdentityCreateRequest())
+            return client.create(new CommunicationIdentityCreateRequest())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((CommunicationIdentityAccessTokenResult result) -> {
                     return Mono.just(new CommunicationUserIdentifier(result.getIdentity().getId()));
@@ -89,7 +113,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifier>> createUserWithResponse() {
         try {
-            return client.createWithResponseAsync(new CommunicationIdentityCreateRequest())
+            return createWithResponseInternal(new CommunicationIdentityCreateRequest())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((Response<CommunicationIdentityAccessTokenResult> response) -> {
                     String id = response.getValue().getIdentity().getId();
@@ -118,7 +142,7 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest = CommunicationIdentityClientUtils
                 .createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
-            return client.createAsync(communicationIdentityCreateRequest)
+            return client.create(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((CommunicationIdentityAccessTokenResult result) -> {
                     return Mono.just(userWithAccessTokenResultConverter(result));
@@ -156,7 +180,7 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest = CommunicationIdentityClientUtils
                 .createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
-            return client.createWithResponseAsync(communicationIdentityCreateRequest)
+            return createWithResponseInternal(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((Response<CommunicationIdentityAccessTokenResult> response) -> {
                     return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
@@ -190,7 +214,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Void> deleteUser(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.deleteAsync(communicationUser.getId())
+            return client.delete(communicationUser.getId())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -208,7 +232,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<Void>> deleteUserWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.deleteWithResponseAsync(communicationUser.getId())
+            return client.deleteWithResponse(communicationUser.getId(), new RequestOptions())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -225,7 +249,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Void> revokeTokens(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.revokeAccessTokensAsync(communicationUser.getId())
+            return client.revokeAccessTokens(communicationUser.getId())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -242,7 +266,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<Void>> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.revokeAccessTokensWithResponseAsync(communicationUser.getId())
+            return client.revokeAccessTokensWithResponse(communicationUser.getId(), new RequestOptions())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -269,7 +293,7 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityAccessTokenRequest tokenRequest = CommunicationIdentityClientUtils
                 .createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
-            return client.issueAccessTokenAsync(communicationUser.getId(), tokenRequest)
+            return client.issueAccessToken(communicationUser.getId(), tokenRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
@@ -313,7 +337,10 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityAccessTokenRequest tokenRequest = CommunicationIdentityClientUtils
                 .createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
-            return client.issueAccessTokenWithResponseAsync(communicationUser.getId(), tokenRequest)
+            return client
+                .issueAccessTokenWithResponse(communicationUser.getId(), BinaryData.fromObject(tokenRequest),
+                    new RequestOptions())
+                .map(response -> mapResponse(response, CommunicationIdentityAccessToken.class))
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
                     AccessToken token
@@ -363,7 +390,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
         try {
-            return client.exchangeTeamsUserAccessTokenAsync(options)
+            return teamsUserClient.exchangeTeamsUserAccessToken(options)
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
@@ -382,7 +409,9 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
         try {
-            return client.exchangeTeamsUserAccessTokenWithResponseAsync(options)
+            return teamsUserClient
+                .exchangeTeamsUserAccessTokenWithResponse(BinaryData.fromObject(options), new RequestOptions())
+                .map(response -> mapResponse(response, CommunicationIdentityAccessToken.class))
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
                     AccessToken token
