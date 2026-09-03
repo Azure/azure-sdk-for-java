@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ScriptSecureStringExecutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptSecureStringExecutionParameter model
-            = BinaryData.fromString("{\"type\":\"SecureValue\",\"secureValue\":\"fq\",\"name\":\"tmtdhtmdvypgik\"}")
-                .toObject(ScriptSecureStringExecutionParameter.class);
-        Assertions.assertEquals("tmtdhtmdvypgik", model.name());
-        Assertions.assertEquals("fq", model.secureValue());
+        ScriptSecureStringExecutionParameter model = BinaryData
+            .fromString("{\"type\":\"SecureValue\",\"secureValue\":\"wbtlhflsjcdh\",\"name\":\"zfjvfbgofe\"}")
+            .toObject(ScriptSecureStringExecutionParameter.class);
+        Assertions.assertEquals("zfjvfbgofe", model.name());
+        Assertions.assertEquals("wbtlhflsjcdh", model.secureValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScriptSecureStringExecutionParameter model
-            = new ScriptSecureStringExecutionParameter().withName("tmtdhtmdvypgik").withSecureValue("fq");
+            = new ScriptSecureStringExecutionParameter().withName("zfjvfbgofe").withSecureValue("wbtlhflsjcdh");
         model = BinaryData.fromObject(model).toObject(ScriptSecureStringExecutionParameter.class);
-        Assertions.assertEquals("tmtdhtmdvypgik", model.name());
-        Assertions.assertEquals("fq", model.secureValue());
+        Assertions.assertEquals("zfjvfbgofe", model.name());
+        Assertions.assertEquals("wbtlhflsjcdh", model.secureValue());
     }
 }

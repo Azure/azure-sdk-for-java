@@ -11,7 +11,7 @@ public final class ProvisionedNetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedNetworkProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"addressPrefix\":\"hnvpamqgxq\",\"networkType\":\"esxManagement\"}")
+            "{\"provisioningState\":\"Succeeded\",\"addressPrefix\":\"oruzfgsquyfxrxx\",\"networkType\":\"vmotion\"}")
             .toObject(ProvisionedNetworkProperties.class);
     }
 }

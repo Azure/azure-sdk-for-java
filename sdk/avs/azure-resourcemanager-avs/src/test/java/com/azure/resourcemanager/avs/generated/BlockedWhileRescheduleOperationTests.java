@@ -11,7 +11,7 @@ public final class BlockedWhileRescheduleOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlockedWhileRescheduleOperation model = BinaryData.fromString(
-            "{\"kind\":\"Blocked\",\"category\":\"HiPriorityEvent\",\"timeRanges\":[{\"startsAt\":\"2021-06-11T09:32:45Z\",\"endsAt\":\"2021-07-21T15:39:33Z\",\"reason\":\"veual\"},{\"startsAt\":\"2020-12-27T06:38:54Z\",\"endsAt\":\"2021-02-13T23:39:41Z\",\"reason\":\"khfxobbcswsrt\"}]}")
+            "{\"kind\":\"Blocked\",\"category\":\"HiPriorityEvent\",\"timeRanges\":[{\"startsAt\":\"2021-11-26T20:29:16Z\",\"endsAt\":\"2021-08-17T00:04:54Z\",\"reason\":\"lzdahzxctobgbkdm\"}]}")
             .toObject(BlockedWhileRescheduleOperation.class);
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListDnsZonesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_ListDnsZones.json
+     * x-ms-original-file: 2026-03-01/WorkloadNetworks_ListDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_ListDnsZones.

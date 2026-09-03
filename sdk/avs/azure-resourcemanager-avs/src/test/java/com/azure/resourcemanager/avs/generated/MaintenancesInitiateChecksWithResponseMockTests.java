@@ -20,7 +20,7 @@ public final class MaintenancesInitiateChecksWithResponseMockTests {
     @Test
     public void testInitiateChecksWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"component\":\"VCSA\",\"displayName\":\"arts\",\"clusterId\":933017494,\"infoLink\":\"ixkykxd\",\"impact\":\"j\",\"scheduledByMicrosoft\":false,\"state\":{\"name\":\"NotScheduled\",\"message\":\"xhikkflrmymyin\",\"startedAt\":\"2021-08-23T12:22:56Z\",\"endedAt\":\"2021-02-14T01:31:43Z\"},\"scheduledStartTime\":\"2021-07-16T22:11:36Z\",\"estimatedDurationInMinutes\":1275549097814878704,\"provisioningState\":\"Updating\",\"operations\":[{\"kind\":\"MaintenanceManagementOperation\"}],\"maintenanceReadiness\":{\"type\":\"Precheck\",\"status\":\"Ready\",\"message\":\"cgxuugqkctotiowl\",\"failedChecks\":[{\"name\":\"dptjgwdtgukranb\",\"impactedResources\":[{},{},{}]}],\"lastUpdated\":\"2021-09-20T05:19:05Z\"}},\"id\":\"kccuzgy\",\"name\":\"qwahoi\",\"type\":\"lwgniiprglvawu\"}";
+            = "{\"properties\":{\"component\":\"VCSA\",\"displayName\":\"muikjcjcaztbws\",\"clusterId\":1966996705,\"activities\":[{\"kind\":\"Upgrade\",\"component\":\"wcoml\",\"version\":\"kytwvcz\",\"infoLink\":\"wka\",\"impact\":\"ejyfdvlvhbwrnfx\"},{\"kind\":\"Downgrade\",\"component\":\"ddpqt\",\"version\":\"ehnmnaoyankco\",\"infoLink\":\"swankltytmh\",\"impact\":\"oznnhdrlktgj\"}],\"group\":{\"id\":\"gguxhemlwyw\",\"name\":\"eeczgfbu\",\"kind\":\"Logical\"},\"relationships\":{\"dependencies\":[\"s\",\"xblycsxzuj\",\"srlsmd\",\"sqplpvmjcd\"],\"prerequisites\":[\"bidyv\"]},\"infoLink\":\"owx\",\"impact\":\"piudeugfsxzecpa\",\"scheduledByMicrosoft\":false,\"state\":{\"name\":\"Scheduled\",\"message\":\"h\",\"startedAt\":\"2021-06-16T11:34:58Z\",\"endedAt\":\"2021-08-12T13:09:11Z\"},\"scheduledStartTime\":\"2021-06-09T22:18:19Z\",\"estimatedDurationInMinutes\":3061646079699640989,\"provisioningState\":\"Canceled\",\"operations\":[{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"}],\"maintenanceReadiness\":{\"type\":\"Precheck\",\"status\":\"DataNotAvailable\",\"message\":\"slujdjltym\",\"failedChecks\":[{\"name\":\"uihywart\",\"impactedResources\":[{},{},{},{}]},{\"name\":\"kixkykxdssjpemm\",\"impactedResources\":[{},{},{},{}]},{\"name\":\"hikkflrmy\",\"impactedResources\":[{},{},{}]}],\"lastUpdated\":\"2021-01-15T03:01:33Z\"}},\"id\":\"lhrisw\",\"name\":\"lmiiiovg\",\"type\":\"cgxuugqkctotiowl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class MaintenancesInitiateChecksWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Maintenance response = manager.maintenances()
-            .initiateChecksWithResponse("ufykhvuhxepmru", "znabaobns", "ujdjltymkmvg", com.azure.core.util.Context.NONE)
+            .initiateChecksWithResponse("rhpw", "gddeimaw", "o", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

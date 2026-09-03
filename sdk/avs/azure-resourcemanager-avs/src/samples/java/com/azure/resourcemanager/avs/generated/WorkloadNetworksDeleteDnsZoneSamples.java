@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksDeleteDnsZoneSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_DeleteDnsZone.json
+     * x-ms-original-file: 2026-03-01/WorkloadNetworks_DeleteDnsZone.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDnsZone.
