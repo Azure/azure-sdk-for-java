@@ -126,10 +126,4 @@ public final class GetTokenForTeamsUserOptions implements JsonSerializable<GetTo
             return new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
         });
     }
-
-    /**
-     * Private constructor for deserialization
-     */
-    private GetTokenForTeamsUserOptions() {
-    }
 }
