@@ -16,6 +16,7 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
 import com.azure.ai.agents.implementation.utils.FileUtils;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
@@ -62,6 +63,8 @@ public final class AgentsClient {
 
     @Generated
     private final AgentsImpl serviceClient;
+
+    private final GenAiAgentTracing tracer;
 
     /**
      * Get an agent
@@ -471,15 +474,16 @@ public final class AgentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -836,10 +840,11 @@ public final class AgentsClient {
      * Initializes an instance of AgentsClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param tracer the tracer used to emit GenAI spans for agent operations.
      */
-    @Generated
-    AgentsClient(AgentsImpl serviceClient) {
+    AgentsClient(AgentsImpl serviceClient, GenAiAgentTracing tracer) {
         this.serviceClient = serviceClient;
+        this.tracer = tracer;
     }
 
     /**
@@ -1937,13 +1942,15 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
         Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -1965,10 +1972,13 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, CreateAgentVersionInput createAgentVersionInput) {
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, createAgentVersionInput.getDefinition(),
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**

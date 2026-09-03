@@ -2,6 +2,13 @@
 
 ## 2.5.0-beta.1 (Unreleased)
 
+- Added experimental OpenTelemetry GenAI tracing for agent and response operations, following the OpenTelemetry GenAI semantic conventions. Set `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` to enable the experimental instrumentation; there is no programmatic opt-in call or process-global mutable state. Tracing/metrics are configured per client through `AgentsClientBuilder.clientOptions(...)` (`TracingOptions` / `MetricsOptions`), and message/agent content is only captured when `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` (off by default). The former `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` setting remains a compatibility fallback. Coverage:
+    - All current `AgentsClient.createAgentVersion` / `AgentsAsyncClient.createAgentVersion` convenience overloads — `create_agent` spans with prompt/hosted agent attributes and the created agent id/version. Retiring workflow-agent telemetry is intentionally excluded.
+    - `ResponsesClient.createAzureResponse` and `createStreamingAzureResponse`, including their asynchronous equivalents — `chat` / `invoke_agent` spans with request/response model, token usage, input/output messages, finish reasons, and conversation id (streaming spans stay open until completion, error, cancellation, or explicit close).
+    - Raw-response create and streaming protocol methods, including synchronous and asynchronous lifecycle handling and direct HTTP parenting.
+    - `ResponsesClient.createConversation` and `ResponsesAsyncClient.createConversation` — `create_conversation` spans that surround the service call and record its result or failure.
+    - Metrics: `gen_ai.client.operation.duration` and `gen_ai.client.token.usage`.
+
 ### Features Added
 
 ### Breaking Changes

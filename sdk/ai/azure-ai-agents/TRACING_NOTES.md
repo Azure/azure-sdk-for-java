@@ -1,0 +1,292 @@
+# GenAI Tracing — Design Notes, Open Questions & Ambiguities
+
+Status: **proof of concept** (branch `jpalvarezl/genai-tracing-poc`). This document captures the design
+decisions, open questions, and ambiguities encountered while re-implementing the tracing feature from
+PR [#49434](https://github.com/Azure/azure-sdk-for-java/pull/49434) in a way that follows azure-core and
+repository conventions.
+
+Behavioral reference: the current **Python Foundry telemetry implementation**,
+which was implemented first and is the baseline generally followed by the other
+languages. The historical tracing specification is useful context but is a
+living document and may be stale.
+
+Java integration reference: **`azure-ai-inference`**
+(`ChatCompletionClientTracer`, `ChatCompletionsClientBuilder.createTracer()`,
+`ChatCompletionsClient.complete()`), the in-repo example for integrating GenAI
+telemetry with `azure-core`. Cross-language behavior comes from Python; Java
+plumbing and conventions come from `azure-ai-inference`.
+
+---
+
+## 1. Should there be an `enableGenAiTracing()` / `disableGenAiTracing()` toggle?
+
+**Answer: No — this PoC removed it, and that matches every traced client we checked.**
+
+- The source PR exposed a global static toggle: `GenAiTracingConfiguration.enableGenAiTracing(options)` /
+  `disableGenAiTracing()`, plus a programmatic `setExperimental(true)` opt-in.
+- No other traced Azure client exposes such a toggle. In `azure-ai-inference`, tracing activates purely from
+  whether an OpenTelemetry implementation is configured — globally (`GlobalOpenTelemetry`) or per client via
+  `ClientOptions.getTracingOptions()`. There is no enable/disable method, and no "experimental" runtime flag.
+- The toggle is therefore **not indicative of any azure-core or OpenTelemetry spec** — it is a custom construct.
+  azure-core's tracing model is entirely configuration-driven; the client's `Tracer` is a no-op unless an OTel
+  provider is present. A boolean toggle duplicates (and can contradict) that state.
+- **Preview status** should be conveyed the repo way: the package version (`-beta.N`) and/or the internal
+  `@Beta` annotation (`com.azure.ai.agents.implementation.utils.Beta`) — not a runtime `setExperimental(true)`.
+- The implementation uses Python's internal
+  `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` feature gate without restoring a programmatic or mutable global API.
+- Content recording uses `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`, with the former
+  `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` setting retained as a compatibility fallback. Trace-context
+  propagation may require a separate privacy-sensitive opt-in if the approved cross-language contract requires
+  it; that decision must remain distinct from whether local GenAI spans are enabled.
+
+> Decision in this PoC: tracing activates automatically from the configured OpenTelemetry; there is no
+> enable/disable API. Sample usage becomes noticeably simpler (no opt-in/opt-out calls).
+
+---
+
+## 2. `traced*` methods vs. customizing generated convenience methods
+
+**Question raised:** rather than removing `@Generated` and editing the generated convenience methods, would it
+be more guideline-compliant to add `traced*` variants of every traceable method (e.g. `tracedCreateAgentVersion`)?
+
+**What the codebase does today:**
+- `azure-ai-inference` **customizes the generated convenience method**: `ChatCompletionsClient.complete(...)`
+  still carries the `// Generated convenience method for completeWithResponse` comment but the `@Generated`
+  annotation has been **removed**, and the body delegates to `tracer.traceSyncComplete(...)`. This is exactly
+  the approach used by the source PR and by this PoC (`AgentsClient.createAgentVersion`,
+  `ResponsesClient.createAzureResponse`, ...).
+- Both `azure-ai-agents/customizations` and `azure-ai-inference/customization` (the TypeSpec codegen
+  customization modules) exist, but **neither weaves tracing** — confirmed by search. So tracing is injected by
+  hand-editing the generated file, and the injection survives regeneration via the partial-update codegen
+  (non-`@Generated` members are preserved).
+
+**Assessment of the `traced*` approach:**
+- Pro: it never touches generated code, so there is no regen fragility.
+- Con: it makes tracing **opt-in per call** — the caller must choose `tracedCreateAgentVersion` over
+  `createAgentVersion` to get a span. This **breaks tracing transparency**, which is the whole point: a user who
+  has configured OpenTelemetry expects the normal methods to be traced. No Azure SDK client ships a parallel
+  `traced*` surface, so it would also be a consistency/discoverability regression.
+
+**Recommendation:**
+- For the **shipped API**, keep tracing transparent on the real methods (current approach). Do **not** add a
+  parallel `traced*` surface.
+- The legitimate concern behind the question — fragility of hand-editing generated files — is best addressed by
+  weaving the tracer through the **codegen customization module** (`customizations/AgentsCustomizations.java`,
+  AST-based) so the generated files stay generated and the injection is reapplied deterministically on every
+  regeneration. This is **not** currently done anywhere in-repo (inference lives with the manual edit), so it
+  would be new ground; it is the recommended production hardening, out of scope for this PoC draft.
+- If a `traced*` scaffold is desired purely to keep the PoC off the generated files during exploration, treat it
+  as temporary and fold it into the real methods (via the customization module) before shipping.
+
+**Regeneration verification (2026-08-26):** after temporarily renaming
+`tsp-location.yaml.hide` to `tsp-location.yaml`, `tsp-client update` completed
+successfully with `tsp-client` 0.31.0 and the tracing fields, constructors, and
+customized non-`@Generated` methods were preserved. The update also produced
+broad unrelated generated drift from the referenced specification; that drift
+was discarded to keep this tracing change focused. This validates the current
+fallback approach. [GAPS.md](GAPS.md) tracks the remaining long-term ownership
+decision about deterministic AST customization.
+
+---
+
+## 3. Async trace-context propagation on the openai-java Responses path
+
+- **azure-core path (`AgentsClient` / `AgentsAsyncClient`):** the span `Context` is threaded via
+  `RequestOptions.setContext(span)`, so the pipeline's built-in `InstrumentationPolicy` parents the HTTP span —
+  works for both sync and async.
+- **openai-java path (`ResponsesClient` / `ResponsesAsyncClient`):** the GenAI span is created and enriched, and
+  for **sync** we call `tracer.makeSpanCurrent()` (thread-local) around the blocking call so the underlying HTTP
+  span is parented.
+- **Confirmed async gap:** making the GenAI span current while invoking the operation supplier was insufficient.
+  openai-java prepares the request and invokes its HTTP client from a later `CompletableFuture.thenComposeAsync`
+  continuation, after the initiating thread-local scope has closed. Live output showed the GenAI and HTTP spans
+  as unrelated roots with different trace IDs.
+- **Implemented async bridge:** each Responses client owns an `OpenAITracingContextBridge`. Before invoking an
+  asynchronous response, stream, or conversation operation, the tracing wrapper registers the GenAI
+  `com.azure.core.util.Context` under an opaque one-time token and places that token in openai-java's additional
+  request headers. `HttpClientHelper` consumes the token, removes the internal header before constructing the
+  Azure request, and passes the original context to `HttpPipeline.send`. Reactor cleanup also discards
+  unconsumed tokens on completion, error, or cancellation.
+- The bridge is per-client rather than global, supports concurrent requests, and does not send the opaque token,
+  baggage, or customer content to the service. The Azure pipeline still creates and injects the normal HTTP
+  child span and W3C trace headers.
+- **Live verification (2026-08-26):** synchronous and asynchronous quick suites each passed 200/200 checks
+  against a live Foundry project across typed, raw-response, raw-streaming, and tool-call scenarios. Every
+  response HTTP span shared the GenAI span's trace ID and had the GenAI span ID as its direct `parentSpanId`;
+  content-disabled and content-enabled checks also passed. Foundry and Application Insights UI inspection
+  remains separate release work.
+
+---
+
+## 4. `gen_ai.system` vs `gen_ai.provider.name`
+
+- The source PR defined both `GEN_AI_SYSTEM` (`az.ai.agents`) and `GEN_AI_PROVIDER_NAME` (`microsoft.foundry`)
+  but set only `gen_ai.provider.name` on spans (the `gen_ai.system` constant was effectively unused on spans).
+- The GenAI semantic conventions renamed `gen_ai.system` → `gen_ai.provider.name` across versions. Java now matches
+  the current Python paths in scope by emitting `gen_ai.provider.name=microsoft.foundry` without unconditionally
+  emitting the legacy attribute.
+- Java now declares the same `1.34.0` schema as Python.
+
+---
+
+## 5. `az.namespace` resource-provider value
+
+- Set to `Microsoft.CognitiveServices` (via `LibraryTelemetryOptions.setResourceProviderNamespace(...)`),
+  matching `azure-ai-inference`.
+- **Open:** confirm the correct resource-provider namespace for Foundry Agents (it may differ from Cognitive
+  Services).
+
+---
+
+## 6. Metrics are implemented and unit-tested
+
+- `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` histograms are created per client from
+  `ClientOptions.getMetricsOptions()` and recorded on span close.
+- In-memory metric tests assert names, units, values, and dimensions for response duration, input/completion token
+  usage, response-model selection, request-model fallback, and errors.
+- Response metrics follow Python's `responses` operation name and `input` / `completion` token types.
+
+---
+
+## 7. Response-path unit-test coverage
+
+- `GenAiAgentTracing` (agent creation) and `GenAiMessageFormatter` are unit-tested against an in-memory OTel SDK.
+- `GenAiResponseTracing` has direct lifecycle tests for synchronous and asynchronous conversation creation,
+  error propagation, cancellation, returned conversation identity, async span activation, raw responses, and
+  raw stream ownership.
+- SDK-local fixtures exercise text and function-call response payloads with content recording enabled and
+  disabled. Formatter tests cover structured and malformed tool results and special-character escaping.
+- Streaming lifecycle is covered with synthetic streams; the maintained E2E app covers complete live typed and
+  raw streaming payloads.
+
+---
+
+## 8. Message/tool-call JSON uses structured serialization
+
+- GenAI message attributes are serialized with `azure-json`, following the established approach in
+  `azure-ai-inference`.
+- Structured serialization preserves the existing schema while handling escaping and nested tool results without
+  manual JSON concatenation.
+- Content-gated fields are omitted from the object model before serialization, keeping the privacy boundary
+  explicit and testable.
+
+---
+
+## 9. Content-recording environment variable name
+
+- Java now uses Python's `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` setting (default `false`).
+- `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` remains a compatibility fallback when the standard setting is
+  absent; an explicit standard setting takes precedence.
+
+---
+
+## 10. Which operations should be traced?
+
+- Traced in this PoC: all three current `createAgentVersion` convenience overloads (sync + async),
+  `createAzureResponse`, `createStreamingAzureResponse` (sync + async), and `createConversation`
+  (sync + async).
+- Also traced: synchronous and asynchronous raw-response create and raw-response streaming protocol methods.
+  Raw streaming spans remain open through exhaustion, failure, cancellation, or explicit close.
+- Not traced: `getAgent` / `listAgents` / `deleteAgent`, sessions, memory stores, toolboxes, and the other
+  `createAgentVersion*` methods with distinct names.
+- **Open:** decide the intended operation coverage and whether CRUD reads should emit spans at all.
+
+---
+
+## 11. Model-shape drift (hosted agents)
+
+- The source PR (built against an older model) read `HostedAgentDefinition.getContainerProtocolVersions()` and
+  `getImage()`. On `main` these are `getProtocolVersions()` (→ `ProtocolVersionRecord`) and
+  `getContainerConfiguration().getImage()`. This PoC uses the current getters.
+- **Open:** a codegen-customization-based weaving (see §2) would make this less brittle, since the attribute
+  extraction would live next to the generated model rather than in hand-maintained tracing code.
+
+---
+
+## 12. Outcomes from the August 25 Java tracing discussion
+
+The design discussion with the original implementation author clarified the
+following:
+
+- **Python is the behavioral baseline.** Follow the current Python telemetry
+  implementation before older specifications or prototypes, but filter out
+  Python-only legacy or deprecated functionality that is not in the approved
+  current Agents contract. Other languages remain useful for comparison, not as
+  equal sources of truth.
+- **Use Azure SDK abstractions first.** Prefer `azure-core` `Tracer`, `Meter`,
+  configuration, and pipeline facilities. Direct OpenTelemetry APIs are
+  acceptable only for a concrete capability gap, which must be documented and
+  included in the architecture review.
+- **Content-disabled means no customer-controlled content.** Prompts,
+  responses, message text, instructions, function arguments, tool results, and
+  equivalent fields must not be collected or emitted without explicit content
+  opt-in. Contract-approved identifiers and generic structural metadata may
+  remain. This privacy boundary is a release requirement, not optional
+  hardening.
+- **Live validation is required.** Connect a Foundry project to Application
+  Insights and use the existing end-to-end tracing application, or an
+  equivalent maintained sample, to verify that client spans appear in Foundry
+  and correlate correctly. Keep test agents alive until traces are inspected
+  because the current Foundry UI groups traces by agent and deletion can make
+  them inaccessible.
+- **Architecture review is required before merge.** The review should focus on
+  any direct OpenTelemetry usage and on the content-recording privacy boundary.
+- **Streaming scope remains open.** The meeting did not resolve whether all
+  prompt-agent streaming behavior is ready or which pieces belong in the first
+  tracing release.
+- **Service-side tracing reduces urgency, not correctness requirements.**
+  Client-side tracing is additive because service-side traces already exist,
+  but shipped client telemetry must still meet the approved contract and
+  privacy requirements.
+
+---
+
+## 13. Python-to-Java contract audit
+
+Audit performed against the current Python implementation under
+`sdk/ai/azure-ai-projects/azure/ai/projects/telemetry`. This table records
+observed differences and feeds the actionable tracker in [GAPS.md](GAPS.md).
+
+| Area | Python behavior | Current Java behavior | Disposition |
+| --- | --- | --- | --- |
+| Semantic-convention schema | Declares `1.34.0` | Declares `1.34.0` | Aligned. |
+| Provider identity | Emits `gen_ai.provider.name=microsoft.foundry`; conditionally retains `gen_ai.system` | Emits `gen_ai.provider.name=microsoft.foundry` for current Agents paths | Aligned for the supported paths. |
+| Experimental gate | Requires `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | Uses the same internal gate with per-client Azure Core configuration | Aligned without restoring global mutable APIs. |
+| Content gate | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` | Uses the same setting; former Azure setting is a fallback | Aligned with compatibility fallback. |
+| Service propagation | Separate trace-context gate, enabled by default; baggage separately disabled by default | Sync uses the current span; async uses a per-client, request-scoped Azure `Context` bridge. The pipeline injects W3C trace context; baggage is not propagated by this bridge. | P1 parity gap: confirm configuration controls; HTTP parenting is already live-validated. |
+| Agent creation | Instruments agent version creation | All current Java `createAgentVersion` convenience overloads are instrumented | Implemented; verify regeneration and E2E parity. |
+| Responses | Typed sync/async, streaming, and raw-response streaming wrappers | Typed and raw sync/async response paths are instrumented | Aligned for the current Java API. |
+| Conversations | Create and conversation-item listing | Create only | Intentional: listing is not exposed by the current Java Agents API. |
+| Streaming lifecycle | Explicit cleanup for regular and raw streams | Typed and raw streams close spans on exhaustion, error, cancellation, or explicit close | Aligned for the current Java API. |
+| Duration timing | Wall-clock timing | Monotonic `System.nanoTime()` | Intentional Java reliability improvement required by the roadmap. |
+| Workflow instrumentation | Present in Python | Excluded from Java instrumentation and the E2E scope | Intentional: workflow agents are retiring and are not a Java tracing requirement. |
+
+Confirmed Java correctness fixes from this audit:
+
+- Conversation spans now surround the network operation and record errors,
+  cancellation, duration, and the returned conversation ID.
+- Async OpenAI operation suppliers start while the GenAI span is current.
+- Async OpenAI response, streaming, and conversation requests carry their
+  GenAI parent through a per-client bridge to the Azure HTTP pipeline.
+- Duration metrics use monotonic elapsed time.
+- Every current sync and async `createAgentVersion` convenience overload uses
+  the same tracing wrapper.
+- Workflow-specific agent attributes and events are not emitted; workflow
+  agents are outside the supported Java tracing scope.
+
+---
+
+## Summary of decisions already taken in this PoC
+
+| Area | Decision |
+| --- | --- |
+| Enable/disable toggle | No public toggle; the Python-compatible internal experimental gate and configured OpenTelemetry both apply |
+| Configuration | Per-client `Tracer` + `Meter` from `ClientOptions` (`TracingOptions` / `MetricsOptions`) |
+| Placement | `com.azure.ai.agents.implementation.telemetry` (non-API) |
+| Behavioral reference | Current Python Foundry telemetry implementation |
+| Java abstractions | Prefer `azure-core`; use direct OpenTelemetry only for documented gaps |
+| Weaving | Customize the generated convenience methods (matches `azure-ai-inference`) |
+| Content gating | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`, off by default; former Azure key is a fallback |
+| Live validation | Foundry project connected to Application Insights, using the end-to-end tracing scenario |
+| Review gate | Azure SDK architecture review before merge |
+| Bugs fixed | `end(errorType, throwable)`; monotonic duration; conversation request lifecycle; async request initiation context; all `createAgentVersion` overloads; `formatToolCallOutput` content; histogram start gate; library version from `azure-ai-agents.properties` |
