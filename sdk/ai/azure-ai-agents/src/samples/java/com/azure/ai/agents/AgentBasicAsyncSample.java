@@ -71,7 +71,7 @@ public class AgentBasicAsyncSample {
                 return agentsClient.updateAgentDetails(agentName,
                     new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
             })
-            .then(Mono.fromFuture(conversations.create()))
+            .then(Mono.defer(() -> Mono.fromFuture(conversations.create())))
             .doOnNext(conversation -> {
                 conversationIdRef.set(conversation.id());
                 System.out.println("Conversation created: " + conversation.id());
@@ -90,15 +90,15 @@ public class AgentBasicAsyncSample {
                     .content("What is its capital city?")
                     .build())
                 .build())))
-            .then(responsesClient.createAzureResponse(
+            .then(Mono.defer(() -> responsesClient.createAzureResponse(
                 new AzureCreateResponseOptions().setAgentReference(
                     SampleUtils.toAgentReference(agentRef.get())),
-                ResponseCreateParams.builder().conversation(conversationIdRef.get())))
+                ResponseCreateParams.builder().conversation(conversationIdRef.get()))))
             .doOnNext(SampleUtils::printResponseText)
             .then();
 
-        sample.then(cleanup(agentsClient, conversations, agentName, agentRef, originalEndpointRef,
-                conversationIdRef))
+        sample.then(Mono.defer(() -> cleanup(agentsClient, conversations, agentName, agentRef, originalEndpointRef,
+                conversationIdRef)))
             .onErrorResume(error -> cleanup(agentsClient, conversations, agentName, agentRef,
                     originalEndpointRef, conversationIdRef)
                 .then(Mono.error(error)))
