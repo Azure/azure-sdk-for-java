@@ -28,7 +28,7 @@ public final class NotificationRegistrationsDeleteByResourceGroupWithResponseMoc
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.notificationRegistrations()
-            .deleteByResourceGroupWithResponse("bfe", "hldiuhzzgqlm", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("sqtaadusrexxfa", "sqwudohzilfmnli", com.azure.core.util.Context.NONE);
 
     }
 }

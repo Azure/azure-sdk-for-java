@@ -16,56 +16,43 @@ public final class ResourceProviderManifestPropertiesNotificationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesNotificationSettings model = BinaryData.fromString(
-            "{\"subscriberSettings\":[{\"filterRules\":[{\"filterQuery\":\"vekdxukuqgsjjxu\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"ketwzhhzjhfjmhv\",\"endpointInformation\":[{}]},{\"filterQuery\":\"gpmuneqsxvmhfbuz\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"sbhud\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"yue\",\"endpointInformation\":[{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"qyrp\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"rlttymsjnygqdnfw\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"gtilax\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"qlyvijo\",\"endpointInformation\":[{}]}]}]}")
+            "{\"subscriberSettings\":[{\"filterRules\":[{\"filterQuery\":\"mduvw\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"mygdxpgpqch\",\"endpointInformation\":[{}]},{\"filterQuery\":\"pnnbjc\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"bbdaxco\",\"endpointInformation\":[{},{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"orsukokwbqp\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"nuuepzlrp\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"oldweyuqdu\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"wrbiorkt\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"jhhgdnhxmsi\",\"endpointInformation\":[{}]},{\"filterQuery\":\"iloxggdufiq\",\"endpointInformation\":[{},{},{},{}]}]}]}")
             .toObject(ResourceProviderManifestPropertiesNotificationSettings.class);
-        Assertions.assertEquals("vekdxukuqgsjjxu",
-            model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
+        Assertions.assertEquals("mduvw", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesNotificationSettings model
-            = new ResourceProviderManifestPropertiesNotificationSettings()
-                .withSubscriberSettings(
-                    Arrays
-                        .asList(
-                            new SubscriberSetting()
-                                .withFilterRules(
-                                    Arrays
-                                        .asList(
-                                            new FilterRule().withFilterQuery("vekdxukuqgsjjxu")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("ketwzhhzjhfjmhv")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("gpmuneqsxvmhfbuz")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())))),
-                            new SubscriberSetting().withFilterRules(Arrays.asList(
-                                new FilterRule().withFilterQuery("sbhud")
-                                    .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                        new EndpointInformation(), new EndpointInformation())),
-                                new FilterRule().withFilterQuery("yue")
-                                    .withEndpointInformation(
-                                        Arrays.asList(new EndpointInformation(), new EndpointInformation(),
-                                            new EndpointInformation())))),
-                            new SubscriberSetting()
-                                .withFilterRules(
-                                    Arrays
-                                        .asList(
-                                            new FilterRule().withFilterQuery("qyrp")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("rlttymsjnygqdnfw")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("gtilax")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("qlyvijo")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation()))))));
+            = new ResourceProviderManifestPropertiesNotificationSettings().withSubscriberSettings(Arrays.asList(
+                new SubscriberSetting().withFilterRules(Arrays.asList(new FilterRule().withFilterQuery("mduvw")
+                    .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("mygdxpgpqch")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation())),
+                    new FilterRule().withFilterQuery("pnnbjc")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("bbdaxco")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation(), new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("orsukokwbqp")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())),
+                    new FilterRule().withFilterQuery("nuuepzlrp")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("oldweyuqdu")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("wrbiorkt")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())),
+                    new FilterRule().withFilterQuery("jhhgdnhxmsi")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation())),
+                    new FilterRule().withFilterQuery("iloxggdufiq")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation(), new EndpointInformation()))))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesNotificationSettings.class);
-        Assertions.assertEquals("vekdxukuqgsjjxu",
-            model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
+        Assertions.assertEquals("mduvw", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
     }
 }
