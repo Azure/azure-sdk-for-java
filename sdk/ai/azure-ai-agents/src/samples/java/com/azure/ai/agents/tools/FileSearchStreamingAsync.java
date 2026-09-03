@@ -81,7 +81,7 @@ public class FileSearchStreamingAsync {
                 System.out.println();
                 SampleUtils.printResponseText(accumulator.response());
             }))
-            .then(cleanup(agentsClient, openAIClient, agentRef, uploaded, vectorStore, document))
+            .then(Mono.defer(() -> cleanup(agentsClient, openAIClient, agentRef, uploaded, vectorStore, document)))
             .onErrorResume(error -> cleanup(agentsClient, openAIClient, agentRef, uploaded, vectorStore, document)
                 .then(Mono.error(error)))
             .block();

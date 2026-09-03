@@ -57,7 +57,7 @@ public class WorkflowMultiAgentAsyncSample {
                 new AzureCreateResponseOptions().setAgentReference(SampleUtils.toAgentReference(workflow)),
                 ResponseCreateParams.builder().input("What is 12 multiplied by 8?")))
             .doOnNext(SampleUtils::printResponseText)
-            .then(cleanup(agentsClient, workflowRef, studentRef, teacherRef))
+            .then(Mono.defer(() -> cleanup(agentsClient, workflowRef, studentRef, teacherRef)))
             .onErrorResume(error -> cleanup(agentsClient, workflowRef, studentRef, teacherRef)
                 .then(Mono.error(error)))
             .block();
