@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 /**
  * An {@link IterableStream} that owns a closeable resource.
  *
- * <p>Close this stream when iteration does not reach its natural end, for example by using it in a
- * try-with-resources statement. Closing the stream releases its owned resource and is safe to call more than once.</p>
+ * <p>This stream must be closed after use. Use it in a try-with-resources statement to ensure the owned resource is
+ * released whether iteration completes normally or ends early. Closing the stream is safe to do more than once.</p>
  *
  * @param <T> The type of values in this stream.
  */
