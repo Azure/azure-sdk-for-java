@@ -5,6 +5,13 @@
       "ignore": true,
       "differences": [
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded|attributeRemoved)",
+          "old": ".*com\\.azure\\.ai\\.projects\\..*",
+          "annotationType": "com\\.azure\\.ai\\.projects\\.implementation\\.utils\\.Beta",
+          "justification": "Adding or updating the preview @Beta annotation is metadata only and does not affect runtime behavior. Preview surface may still change between beta releases."
+        },
+        {
           "code": "java.method.removed",
           "old": "method com.azure.ai.projects.models.SystemDataV3 com.azure.ai.projects.models.ModelVersion::getSystemData()",
           "justification": "SystemDataV3 was removed from ModelVersion because the current service contract no longer exposes system data on model versions."
@@ -64,6 +71,12 @@
           "code": "java.class.removed",
           "old": "class com.azure.ai.projects.models.TaskGenerationDataGenerationJobOptions",
           "justification": "Breaking change in beta operation: TaskGenerationDataGenerationJobOptions was renamed to SimulationSeedDataGenerationJobOptions to align with the current DataGenerationJobs preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.numberOfParametersChanged",
+          "old": "method .* com\\.azure\\.ai\\.projects\\.BetaRoutines(Async)?Client::createOrUpdateRoutine\\(.*\\)",
+          "justification": "Breaking change in beta operation: BetaRoutines(Async)Client createOrUpdateRoutine takes an additional optional 'authorization' parameter to align with the current Routines preview contract."
         }
       ]
     }

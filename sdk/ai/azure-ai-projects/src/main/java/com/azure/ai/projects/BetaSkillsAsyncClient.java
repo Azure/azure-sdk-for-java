@@ -273,43 +273,6 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Create a skill version from uploaded files
-     *
-     * Creates a new version of a skill from uploaded files via multipart form data.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     skill_id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Required)
-     *     created_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skill.
-     * @param content The multipart request content.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponse(String name, BinaryData content,
-        RequestOptions requestOptions) {
-        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
-        // and hence not generated.
-        return this.serviceClient.createSkillVersionFromFilesWithResponseAsync(name, content, requestOptions);
-    }
-
-    /**
      * List skill versions
      *
      * Returns the available versions for the specified skill.
@@ -740,9 +703,9 @@ public final class BetaSkillsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SkillVersion> createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
-        // Generated convenience method for createSkillVersionFromFilesWithResponse
+        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillVersionFromFilesWithResponse(name,
+        return createSkillVersionFromFilesWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileFields("files",
                     content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
@@ -913,5 +876,42 @@ public final class BetaSkillsAsyncClient {
         // Generated convenience method for getSkillVersionContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSkillVersionContentWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a skill version from uploaded files
+     *
+     * Creates a new version of a skill from uploaded files via multipart form data.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param content The multipart request content.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
+        RequestOptions requestOptions) {
+        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.createSkillVersionFromFilesWithResponseInternalAsync(name, content, requestOptions);
     }
 }

@@ -726,6 +726,74 @@ public final class AgentsImpl {
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
+        @Post("/agents/{agent_name}/microsoft365/publish")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> publishAgentToMicrosoft365(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData publishAgentToMicrosoft365Request, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/agents/{agent_name}/microsoft365/publish")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> publishAgentToMicrosoft365Sync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData publishAgentToMicrosoft365Request, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/agents/{agent_name}/microsoft365/zip")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getMicrosoft365AppPackage(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData getMicrosoft365AppPackageRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/agents/{agent_name}/microsoft365/zip")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getMicrosoft365AppPackageSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData getMicrosoft365AppPackageRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/agents/{agent_name}/microsoft365/publishdefaults")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getMicrosoft365PublishDefaults(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/microsoft365/publishdefaults")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getMicrosoft365PublishDefaultsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
         @Get("/openai/v1/conversations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -802,6 +870,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -819,7 +890,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -919,6 +992,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -936,7 +1012,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1002,6 +1080,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
@@ -1015,6 +1094,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1032,6 +1114,7 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -1107,6 +1190,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1124,7 +1210,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1191,6 +1279,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
@@ -1204,6 +1293,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1221,6 +1313,7 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -1296,6 +1389,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1313,7 +1409,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1416,6 +1514,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1433,7 +1534,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1471,8 +1574,8 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentFromCodeWithResponseAsync(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createAgentFromCodeWithResponseInternalAsync(String agentName,
+        String codeZipSha256, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil
@@ -1542,6 +1645,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1559,7 +1665,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1597,7 +1705,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentFromCodeWithResponse(String agentName, String codeZipSha256,
+    public Response<BinaryData> createAgentFromCodeWithResponseInternal(String agentName, String codeZipSha256,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -1685,6 +1793,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1702,7 +1813,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1826,6 +1939,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1843,7 +1959,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -1948,6 +2066,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -1965,7 +2086,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2005,8 +2128,8 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentFromCodeWithResponseAsync(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateAgentFromCodeWithResponseInternalAsync(String agentName,
+        String codeZipSha256, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil
@@ -2075,6 +2198,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2092,7 +2218,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2132,7 +2260,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentFromCodeWithResponse(String agentName, String codeZipSha256,
+    public Response<BinaryData> updateAgentFromCodeWithResponseInternal(String agentName, String codeZipSha256,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -2215,6 +2343,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2232,7 +2363,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2350,6 +2483,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2367,7 +2503,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2485,6 +2623,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2502,7 +2643,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2621,6 +2764,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2638,7 +2784,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2846,6 +2994,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -2863,7 +3014,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -2985,6 +3138,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -3002,7 +3158,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -3118,6 +3276,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -3135,7 +3296,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -3255,6 +3418,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -3272,7 +3438,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -3331,6 +3499,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      * }
      * }
@@ -3416,6 +3585,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     draft: Boolean (Optional)
      * }
      * }
@@ -4182,6 +4352,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -4199,6 +4372,7 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -4274,6 +4448,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -4291,7 +4468,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -4358,6 +4537,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -4375,6 +4557,7 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
      *     agent_card (Optional): {
      *         version: String (Optional, Required on create)
@@ -4450,6 +4633,9 @@ public final class AgentsImpl {
      *         protocol_configuration (Optional): {
      *             activity (Optional): {
      *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
      *             }
      *             responses (Optional): {
      *             }
@@ -4467,7 +4653,9 @@ public final class AgentsImpl {
      *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
      *     }
+     *     digital_worker_type: String(m365) (Optional)
      *     instance_identity (Optional): (recursive schema, see instance_identity above)
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
@@ -4573,7 +4761,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentVersionFromCodeWithResponseAsync(String agentName,
+    public Mono<Response<BinaryData>> createAgentVersionFromCodeWithResponseInternalAsync(String agentName,
         String codeZipSha256, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -4642,7 +4830,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentVersionFromCodeWithResponse(String agentName, String codeZipSha256,
+    public Response<BinaryData> createAgentVersionFromCodeWithResponseInternal(String agentName, String codeZipSha256,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -5908,6 +6096,389 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         return service.deleteSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * Publish an agent to Microsoft 365
+     * 
+     * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
+     * Teams app ids.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent to publish.
+     * @param publishAgentToMicrosoft365Request The publishAgentToMicrosoft365Request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from publishing an agent to Microsoft 365 / Microsoft Teams along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> publishAgentToMicrosoft365WithResponseAsync(String agentName,
+        BinaryData publishAgentToMicrosoft365Request, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.publishAgentToMicrosoft365(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, publishAgentToMicrosoft365Request,
+            requestOptions, context));
+    }
+
+    /**
+     * Publish an agent to Microsoft 365
+     * 
+     * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
+     * Teams app ids.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent to publish.
+     * @param publishAgentToMicrosoft365Request The publishAgentToMicrosoft365Request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from publishing an agent to Microsoft 365 / Microsoft Teams along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> publishAgentToMicrosoft365WithResponse(String agentName,
+        BinaryData publishAgentToMicrosoft365Request, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.publishAgentToMicrosoft365Sync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, publishAgentToMicrosoft365Request,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Generate a Microsoft 365 app package
+     * 
+     * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
+     * request, without publishing it. Returns the app package as `application/zip`.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent to generate the app package for.
+     * @param getMicrosoft365AppPackageRequest The getMicrosoft365AppPackageRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMicrosoft365AppPackageWithResponseAsync(String agentName,
+        BinaryData getMicrosoft365AppPackageRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/zip";
+        return FluxUtil.withContext(context -> service.getMicrosoft365AppPackage(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, getMicrosoft365AppPackageRequest,
+            requestOptions, context));
+    }
+
+    /**
+     * Generate a Microsoft 365 app package
+     * 
+     * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
+     * request, without publishing it. Returns the app package as `application/zip`.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentDisplayName: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     publishAsAutopilot: Boolean (Optional)
+     *     accessBoundaries (Optional): [
+     *         String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *     ]
+     *     optionalPermissionScopes (Optional): [
+     *          (Optional){
+     *             resourceAppId: String (Required)
+     *             scopes (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     publishScope: String(Personal/Shared/Tenant) (Required)
+     *     canRespondWithoutMention: Boolean (Optional)
+     *     appVersion: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     *     colorIconBase64: String (Optional)
+     *     outlineIconBase64: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent to generate the app package for.
+     * @param getMicrosoft365AppPackageRequest The getMicrosoft365AppPackageRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMicrosoft365AppPackageWithResponse(String agentName,
+        BinaryData getMicrosoft365AppPackageRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/zip";
+        return service.getMicrosoft365AppPackageSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, getMicrosoft365AppPackageRequest,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     * 
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>publishAsDigitalWorker</td><td>Boolean</td><td>No</td><td>When true, returns defaults for publishing the
+     * agent as an autopilot (digital worker) agent.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     appPublishScope: String(Personal/Shared/Tenant) (Optional)
+     *     agentName: String (Optional)
+     *     agentDisplayName: String (Optional)
+     *     appRegistrationClientId: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     appVersion: String (Optional)
+     *     recommendedNextAppVersion: String (Optional)
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent to get publish defaults for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return microsoft 365 publish defaults
+     * 
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMicrosoft365PublishDefaultsWithResponseAsync(String agentName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getMicrosoft365PublishDefaults(this.client.getEndpoint(),
+            agentName, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get Microsoft 365 publish defaults
+     * 
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>publishAsDigitalWorker</td><td>Boolean</td><td>No</td><td>When true, returns defaults for publishing the
+     * agent as an autopilot (digital worker) agent.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     appPublishScope: String(Personal/Shared/Tenant) (Optional)
+     *     agentName: String (Optional)
+     *     agentDisplayName: String (Optional)
+     *     appRegistrationClientId: String (Optional)
+     *     botServiceArmId: String (Optional)
+     *     appVersion: String (Optional)
+     *     recommendedNextAppVersion: String (Optional)
+     *     titleId: String (Optional)
+     *     teamsAppId: String (Optional)
+     *     shortDescription: String (Optional)
+     *     fullDescription: String (Optional)
+     *     developerName: String (Optional)
+     *     developerWebsiteUrl: String (Optional)
+     *     privacyUrl: String (Optional)
+     *     termsOfUseUrl: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent to get publish defaults for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return microsoft 365 publish defaults
+     * 
+     * Returns default and previously-published values used to pre-populate a Microsoft 365 publish
+     * request for a Foundry agent along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMicrosoft365PublishDefaultsWithResponse(String agentName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getMicrosoft365PublishDefaultsSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**

@@ -308,6 +308,9 @@ public final class BetaRoutinesImpl {
      *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
+     *     authorization (Optional): {
+     *         identity: String(agent/creator) (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -372,6 +375,9 @@ public final class BetaRoutinesImpl {
      *     }
      *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
+     *     }
+     *     authorization (Optional): {
+     *         identity: String(agent/creator) (Optional)
      *     }
      * }
      * }

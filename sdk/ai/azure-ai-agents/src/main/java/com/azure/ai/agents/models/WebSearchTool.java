@@ -172,6 +172,7 @@ public final class WebSearchTool extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("external_web_access", this.externalWebAccess);
         jsonWriter.writeJsonField("filters", this.filters);
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
@@ -200,6 +201,8 @@ public final class WebSearchTool extends Tool {
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedWebSearchTool.type = ToolType.fromString(reader.getString());
+                } else if ("external_web_access".equals(fieldName)) {
+                    deserializedWebSearchTool.externalWebAccess = reader.getNullable(JsonReader::getBoolean);
                 } else if ("filters".equals(fieldName)) {
                     deserializedWebSearchTool.filters = WebSearchToolFilters.fromJson(reader);
                 } else if ("user_location".equals(fieldName)) {
@@ -305,6 +308,37 @@ public final class WebSearchTool extends Tool {
     @Generated
     public WebSearchTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
+        return this;
+    }
+
+    /*
+     * Allow live internet access for web search. Defaults to true when omitted. When false, the web search tool runs in
+     * offline/cache-only mode and will not fetch new external content.
+     */
+    @Generated
+    private Boolean externalWebAccess;
+
+    /**
+     * Get the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @return the externalWebAccess value.
+     */
+    @Generated
+    public Boolean isExternalWebAccess() {
+        return this.externalWebAccess;
+    }
+
+    /**
+     * Set the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @param externalWebAccess the externalWebAccess value to set.
+     * @return the WebSearchTool object itself.
+     */
+    @Generated
+    public WebSearchTool setExternalWebAccess(Boolean externalWebAccess) {
+        this.externalWebAccess = externalWebAccess;
         return this;
     }
 }

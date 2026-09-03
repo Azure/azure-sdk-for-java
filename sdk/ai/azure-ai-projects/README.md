@@ -9,6 +9,7 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `BetaDatasetsClient`.
 * **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
 * **Create and dispatch routines** using the preview `BetaRoutinesClient`.
+* **Monitor deployed agents for issues** and review the resulting insights using the preview `BetaAgentInsightMonitorsClient`.
 * **Create and manage skills** using the preview `BetaSkillsClient`.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
@@ -41,7 +42,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,6 +61,8 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 // Beta* clients automatically opt in to their preview service area.
+BetaAgentInsightMonitorsClient agentInsightMonitorsClient
+    = builder.beta().buildBetaAgentInsightMonitorsClient();
 BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
@@ -137,6 +140,7 @@ Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
+| `BetaAgentInsightMonitorsClient` | `AgentInsights=V1Preview` |
 | `BetaDatasetsClient` | `DataGenerationJobs=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
@@ -861,7 +865,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/
-[docs]: https://learn.microsoft.com/rest/api/aifoundry/aiproject/
+[docs]: https://aka.ms/azsdk/azure-ai-projects-v2/api-reference-v1
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

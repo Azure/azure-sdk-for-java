@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -936,7 +936,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [product_documentation]: https://aka.ms/azsdk/azure-ai-agents/product-doc
-[docs]: https://azure.github.io/azure-sdk-for-java/
+[docs]: https://aka.ms/azsdk/azure-ai-projects-v2/api-reference-v1
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

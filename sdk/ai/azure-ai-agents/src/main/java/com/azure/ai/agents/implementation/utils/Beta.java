@@ -21,7 +21,7 @@ import static java.lang.annotation.ElementType.TYPE;
  * version.
  */
 @Documented
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 @Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR, FIELD })
 @Inherited
 public @interface Beta {

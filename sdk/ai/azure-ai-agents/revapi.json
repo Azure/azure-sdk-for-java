@@ -5,6 +5,13 @@
       "ignore": true,
       "differences": [
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded|attributeRemoved)",
+          "old": ".*com\\.azure\\.ai\\.agents\\..*",
+          "annotationType": "com\\.azure\\.ai\\.agents\\.implementation\\.utils\\.Beta",
+          "justification": "Adding or updating the preview @Beta annotation is metadata only and does not affect runtime behavior. Preview surface may still change between beta releases."
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",
@@ -22,8 +29,8 @@
         },
         {
           "regex": true,
-          "code": "java\\.method\\.(numberOfParametersChanged|removed|returnTypeChanged|returnTypeTypeParametersChanged|visibilityIncreased)",
-          "old": "method .* com\\.azure\\.ai\\.agents\\.models\\.Optimization(Candidate|Job|JobInputs|JobProgress|JobResult|Options)::.*",
+          "code": "java\\.method\\.(numberOfParametersChanged|parameterTypeParameterChanged|removed|returnTypeChanged|returnTypeTypeParametersChanged|visibilityIncreased)",
+          "old": "(method|parameter) .* com\\.azure\\.ai\\.agents\\.models\\.(Agent)?Optimization(Candidate|DatasetItem|Job|JobInputs|JobProgress|JobResult|Options)::.*",
           "justification": "Breaking change in beta operation: optimization models were restructured to align with the current AgentsOptimization preview contract."
         },
         {
@@ -86,7 +93,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.removed",
-          "old": "class com\\.azure\\.ai\\.agents\\.models\\.(OptimizationAgentIdentifier|OptimizationCandidate|OptimizationDatasetCriterion|OptimizationDatasetInput|OptimizationDatasetInputType|OptimizationDatasetItem|OptimizationEvaluatorRef|OptimizationInlineDatasetInput|OptimizationJob|OptimizationJobInputs|OptimizationJobListItem|OptimizationJobProgress|OptimizationJobResult|OptimizationOptions|OptimizationReferenceDatasetInput|ProgrammaticToolCallingParameter)",
+          "old": "class com\\.azure\\.ai\\.agents\\.models\\.(AgentOptimizationEvaluatorRef|OptimizationAgentIdentifier|OptimizationCandidate|OptimizationDatasetCriterion|OptimizationDatasetInput|OptimizationDatasetInputType|OptimizationDatasetItem|OptimizationEvaluatorRef|OptimizationInlineDatasetInput|OptimizationJob|OptimizationJobInputs|OptimizationJobListItem|OptimizationJobProgress|OptimizationJobResult|OptimizationOptions|OptimizationReferenceDatasetInput|ProgrammaticToolCallingParameter)",
           "justification": "Breaking change in beta operation: legacy optimization and programmatic tool-calling models were removed or replaced while aligning with the current preview service contract."
         }
       ]

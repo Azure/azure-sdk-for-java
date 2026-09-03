@@ -903,8 +903,8 @@ public final class BetaSkillsImpl {
      * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseAsync(String name, BinaryData content,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseInternalAsync(String name,
+        BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createSkillVersionFromFiles(this.client.getEndpoint(), name,
@@ -940,7 +940,7 @@ public final class BetaSkillsImpl {
      * @return a specific version of a skill along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSkillVersionFromFilesWithResponse(String name, BinaryData content,
+    public Response<BinaryData> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
