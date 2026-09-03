@@ -244,7 +244,7 @@ public final class ServicesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setPropertiesWithResponseAsync(BinaryData storageServiceProperties,
+    public Mono<Response<Void>> setPropertiesWithResponseInternalAsync(BinaryData storageServiceProperties,
         RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return FluxUtil
@@ -330,7 +330,7 @@ public final class ServicesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setPropertiesWithResponse(BinaryData storageServiceProperties,
+    public Response<Void> setPropertiesWithResponseInternal(BinaryData storageServiceProperties,
         RequestOptions requestOptions) {
         try {
             final String contentType = "application/xml";
@@ -419,7 +419,7 @@ public final class ServicesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(
@@ -504,7 +504,7 @@ public final class ServicesImpl {
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -606,7 +606,7 @@ public final class ServicesImpl {
      * @return an enumeration of shares along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listSharesSegmentWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(
@@ -707,7 +707,7 @@ public final class ServicesImpl {
      * @return an enumeration of shares along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listSharesSegmentWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -778,7 +778,7 @@ public final class ServicesImpl {
      * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUserDelegationKeyWithResponseAsync(BinaryData keyInfo,
+    public Mono<Response<BinaryData>> getUserDelegationKeyWithResponseInternalAsync(BinaryData keyInfo,
         RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/xml";
@@ -849,7 +849,8 @@ public final class ServicesImpl {
      * @return a user delegation key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUserDelegationKeyWithResponse(BinaryData keyInfo, RequestOptions requestOptions) {
+    public Response<BinaryData> getUserDelegationKeyWithResponseInternal(BinaryData keyInfo,
+        RequestOptions requestOptions) {
         try {
             final String contentType = "application/xml";
             final String accept = "application/xml";
@@ -858,5 +859,24 @@ public final class ServicesImpl {
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
+    }
+
+    public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {
+        try {
+            final String accept = "application/xml";
+            return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(
+                context -> service.listSharesSegment(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 }

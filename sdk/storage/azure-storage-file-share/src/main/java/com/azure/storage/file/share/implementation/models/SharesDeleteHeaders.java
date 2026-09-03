@@ -12,10 +12,22 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The FilesListHandlesHeaders model.
+ * The SharesDeleteHeaders model.
  */
 @Immutable
-public final class FilesListHandlesHeaders {
+public final class SharesDeleteHeaders {
+    /*
+     * The x-ms-file-share-usage-bytes property.
+     */
+    @Generated
+    private final Long shareUsageBytes;
+
+    /*
+     * The x-ms-file-share-snapshot-usage-bytes property.
+     */
+    @Generated
+    private final Long shareSnapshotUsageBytes;
+
     /*
      * The x-ms-version property.
      */
@@ -40,15 +52,33 @@ public final class FilesListHandlesHeaders {
     @Generated
     private final DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_FILE_SHARE_USAGE_BYTES
+        = HttpHeaderName.fromString("x-ms-file-share-usage-bytes");
+
+    private static final HttpHeaderName X_MS_FILE_SHARE_SNAPSHOT_USAGE_BYTES
+        = HttpHeaderName.fromString("x-ms-file-share-snapshot-usage-bytes");
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of FilesListHandlesHeaders class.
+     * Creates an instance of SharesDeleteHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public FilesListHandlesHeaders(HttpHeaders rawHeaders) {
+    public SharesDeleteHeaders(HttpHeaders rawHeaders) {
+        String shareUsageBytes = rawHeaders.getValue(X_MS_FILE_SHARE_USAGE_BYTES);
+        if (shareUsageBytes != null) {
+            this.shareUsageBytes = Long.parseLong(shareUsageBytes);
+        } else {
+            this.shareUsageBytes = null;
+        }
+        String shareSnapshotUsageBytes = rawHeaders.getValue(X_MS_FILE_SHARE_SNAPSHOT_USAGE_BYTES);
+        if (shareSnapshotUsageBytes != null) {
+            this.shareSnapshotUsageBytes = Long.parseLong(shareSnapshotUsageBytes);
+        } else {
+            this.shareSnapshotUsageBytes = null;
+        }
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
@@ -58,6 +88,26 @@ public final class FilesListHandlesHeaders {
         } else {
             this.date = null;
         }
+    }
+
+    /**
+     * Get the shareUsageBytes property: The x-ms-file-share-usage-bytes property.
+     * 
+     * @return the shareUsageBytes value.
+     */
+    @Generated
+    public Long getShareUsageBytes() {
+        return this.shareUsageBytes;
+    }
+
+    /**
+     * Get the shareSnapshotUsageBytes property: The x-ms-file-share-snapshot-usage-bytes property.
+     * 
+     * @return the shareSnapshotUsageBytes value.
+     */
+    @Generated
+    public Long getShareSnapshotUsageBytes() {
+        return this.shareSnapshotUsageBytes;
     }
 
     /**

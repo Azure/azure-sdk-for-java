@@ -12,10 +12,16 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The FilesListHandlesHeaders model.
+ * The FilesDeleteHeaders model.
  */
 @Immutable
-public final class FilesListHandlesHeaders {
+public final class FilesDeleteHeaders {
+    /*
+     * The x-ms-link-count property.
+     */
+    @Generated
+    private final Integer linkCount;
+
     /*
      * The x-ms-version property.
      */
@@ -40,15 +46,23 @@ public final class FilesListHandlesHeaders {
     @Generated
     private final DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_LINK_COUNT = HttpHeaderName.fromString("x-ms-link-count");
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of FilesListHandlesHeaders class.
+     * Creates an instance of FilesDeleteHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public FilesListHandlesHeaders(HttpHeaders rawHeaders) {
+    public FilesDeleteHeaders(HttpHeaders rawHeaders) {
+        String linkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
+        if (linkCount != null) {
+            this.linkCount = Integer.parseInt(linkCount);
+        } else {
+            this.linkCount = null;
+        }
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
@@ -58,6 +72,16 @@ public final class FilesListHandlesHeaders {
         } else {
             this.date = null;
         }
+    }
+
+    /**
+     * Get the linkCount property: The x-ms-link-count property.
+     * 
+     * @return the linkCount value.
+     */
+    @Generated
+    public Integer getLinkCount() {
+        return this.linkCount;
     }
 
     /**

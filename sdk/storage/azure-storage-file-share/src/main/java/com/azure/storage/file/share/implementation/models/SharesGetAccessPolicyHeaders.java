@@ -12,10 +12,22 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The FilesListHandlesHeaders model.
+ * The SharesGetAccessPolicyHeaders model.
  */
 @Immutable
-public final class FilesListHandlesHeaders {
+public final class SharesGetAccessPolicyHeaders {
+    /*
+     * The ETag property.
+     */
+    @Generated
+    private final String etag;
+
+    /*
+     * The Last-Modified property.
+     */
+    @Generated
+    private final DateTimeRfc1123 lastModified;
+
     /*
      * The x-ms-version property.
      */
@@ -44,11 +56,18 @@ public final class FilesListHandlesHeaders {
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of FilesListHandlesHeaders class.
+     * Creates an instance of SharesGetAccessPolicyHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public FilesListHandlesHeaders(HttpHeaders rawHeaders) {
+    public SharesGetAccessPolicyHeaders(HttpHeaders rawHeaders) {
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
+        }
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
@@ -58,6 +77,29 @@ public final class FilesListHandlesHeaders {
         } else {
             this.date = null;
         }
+    }
+
+    /**
+     * Get the etag property: The ETag property.
+     * 
+     * @return the etag value.
+     */
+    @Generated
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the lastModified property: The Last-Modified property.
+     * 
+     * @return the lastModified value.
+     */
+    @Generated
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
     }
 
     /**

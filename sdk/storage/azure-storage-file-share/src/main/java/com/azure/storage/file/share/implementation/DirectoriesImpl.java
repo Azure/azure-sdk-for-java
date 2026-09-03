@@ -299,7 +299,8 @@ public final class DirectoriesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-permission</td><td>String</td><td>No</td><td>If specified the permission (security descriptor)
      * shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else
      * x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must
@@ -369,7 +370,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, context))
@@ -389,7 +390,8 @@ public final class DirectoriesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-permission</td><td>String</td><td>No</td><td>If specified the permission (security descriptor)
      * shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else
      * x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must
@@ -459,7 +461,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(RequestOptions requestOptions) {
+    public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
@@ -484,7 +486,8 @@ public final class DirectoriesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
      * resource.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
@@ -521,7 +524,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.getProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -545,7 +548,8 @@ public final class DirectoriesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
      * resource.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
@@ -582,7 +586,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
@@ -622,7 +626,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, context))
@@ -660,7 +664,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
@@ -748,7 +752,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.setProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -835,7 +839,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -857,7 +861,8 @@ public final class DirectoriesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -888,7 +893,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setMetadataWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.setMetadata(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -909,7 +914,8 @@ public final class DirectoriesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -940,7 +946,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setMetadataWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -1048,7 +1054,8 @@ public final class DirectoriesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listFilesAndDirectoriesSegmentWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>>
+        listFilesAndDirectoriesSegmentWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listFilesAndDirectoriesSegment(this.client.getUrl(),
@@ -1155,7 +1162,7 @@ public final class DirectoriesImpl {
      * @return an enumeration of directories and files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listFilesAndDirectoriesSegmentWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listFilesAndDirectoriesSegmentWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.listFilesAndDirectoriesSegmentSync(this.client.getUrl(),
@@ -1239,7 +1246,7 @@ public final class DirectoriesImpl {
      * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listHandlesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listHandles(this.client.getUrl(),
@@ -1321,7 +1328,7 @@ public final class DirectoriesImpl {
      * @return an enumeration of handles along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listHandlesWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1382,7 +1389,8 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> forceCloseHandlesWithResponseAsync(String handleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> forceCloseHandlesWithResponseInternalAsync(String handleId,
+        RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.forceCloseHandles(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), handleId, this.client.isAllowTrailingDot(),
@@ -1440,7 +1448,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> forceCloseHandlesWithResponse(String handleId, RequestOptions requestOptions) {
+    public Response<Void> forceCloseHandlesWithResponseInternal(String handleId, RequestOptions requestOptions) {
         try {
             return service.forceCloseHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 handleId, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions,
@@ -1482,7 +1490,8 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-format</td><td>String</td><td>No</td><td>Optional. Used to set permission format.
      * Allowed values: "Sddl", "Binary".</td></tr>
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>No</td><td>Key of the permission to be set.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1522,7 +1531,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renameWithResponseAsync(String renameSource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> renameWithResponseInternalAsync(String renameSource, RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.rename(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 renameSource, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
@@ -1562,7 +1571,8 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-format</td><td>String</td><td>No</td><td>Optional. Used to set permission format.
      * Allowed values: "Sddl", "Binary".</td></tr>
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>No</td><td>Key of the permission to be set.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1602,7 +1612,7 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameWithResponse(String renameSource, RequestOptions requestOptions) {
+    public Response<Void> renameWithResponseInternal(String renameSource, RequestOptions requestOptions) {
         try {
             return service.renameSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), renameSource,
                 this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
@@ -1610,5 +1620,25 @@ public final class DirectoriesImpl {
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
+    }
+
+    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
+        try {
+            final String accept = "application/xml";
+            return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
+                Context.NONE);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.listHandles(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 }

@@ -455,7 +455,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-share-quota</td><td>Integer</td><td>No</td><td>Specifies the maximum size of the share, in
      * gigabytes.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>Specifies the access tier of the share. Allowed
@@ -514,7 +515,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, context))
@@ -535,7 +536,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-share-quota</td><td>Integer</td><td>No</td><td>Specifies the maximum size of the share, in
      * gigabytes.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>Specifies the access tier of the share. Allowed
@@ -594,7 +596,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(RequestOptions requestOptions) {
+    public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -626,7 +628,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
      * resource.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
@@ -678,7 +681,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.getProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -709,7 +712,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
      * resource.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
@@ -761,7 +765,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -818,7 +822,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, context))
@@ -873,7 +877,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -934,7 +938,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> acquireLeaseWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> acquireLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
         final String action = "acquire";
         return FluxUtil
             .withContext(
@@ -995,7 +999,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> acquireLeaseWithResponse(RequestOptions requestOptions) {
+    public Response<Void> acquireLeaseWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String action = "acquire";
             return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
@@ -1044,7 +1048,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> releaseLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "release";
         return FluxUtil
             .withContext(
@@ -1092,7 +1096,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> releaseLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> releaseLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         try {
             final String action = "release";
             return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
@@ -1152,7 +1156,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> changeLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> changeLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "change";
         return FluxUtil
             .withContext(
@@ -1211,7 +1215,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> changeLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> changeLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         try {
             final String action = "change";
             return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
@@ -1262,7 +1266,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renewLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> renewLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "renew";
         return FluxUtil
             .withContext(
@@ -1312,7 +1316,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renewLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> renewLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         try {
             final String action = "renew";
             return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
@@ -1377,7 +1381,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> breakLeaseWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> breakLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
         final String action = "break";
         return FluxUtil
             .withContext(
@@ -1441,7 +1445,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> breakLeaseWithResponse(RequestOptions requestOptions) {
+    public Response<Void> breakLeaseWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String action = "break";
             return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
@@ -1464,7 +1468,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1496,7 +1501,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createSnapshotWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> createSnapshotWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.createSnapshot(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1517,7 +1522,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1549,7 +1555,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createSnapshotWithResponse(RequestOptions requestOptions) {
+    public Response<Void> createSnapshotWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.createSnapshotSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -1603,7 +1609,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createPermissionWithResponseAsync(BinaryData permission,
+    public Mono<Response<Void>> createPermissionWithResponseInternalAsync(BinaryData permission,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         return FluxUtil
@@ -1658,7 +1664,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createPermissionWithResponse(BinaryData permission, RequestOptions requestOptions) {
+    public Response<Void> createPermissionWithResponseInternal(BinaryData permission, RequestOptions requestOptions) {
         try {
             final String contentType = "application/json";
             return service.createPermissionSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1722,7 +1728,7 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPermissionWithResponseAsync(String filePermissionKey,
+    public Mono<Response<BinaryData>> getPermissionWithResponseInternalAsync(String filePermissionKey,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
@@ -1785,7 +1791,8 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPermissionWithResponse(String filePermissionKey, RequestOptions requestOptions) {
+    public Response<BinaryData> getPermissionWithResponseInternal(String filePermissionKey,
+        RequestOptions requestOptions) {
         try {
             final String accept = "application/json";
             return service.getPermissionSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1872,7 +1879,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.setProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1957,7 +1964,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -1979,7 +1986,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
      * file.</td></tr>
      * </table>
@@ -2010,7 +2018,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setMetadataWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.setMetadata(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -2031,7 +2039,8 @@ public final class SharesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
      * file.</td></tr>
      * </table>
@@ -2062,7 +2071,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setMetadataWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -2135,7 +2144,7 @@ public final class SharesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAccessPolicyWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAccessPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(
@@ -2207,7 +2216,7 @@ public final class SharesImpl {
      * @return represents an array of signed identifiers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAccessPolicyWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getAccessPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -2281,7 +2290,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setAccessPolicyWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -2359,7 +2368,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setAccessPolicyWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
         try {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
             requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -2428,7 +2437,7 @@ public final class SharesImpl {
      * @return stats for the share along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStatisticsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getStatisticsWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(
@@ -2490,7 +2499,7 @@ public final class SharesImpl {
      * @return stats for the share along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStatisticsWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getStatisticsWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getStatisticsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -2551,7 +2560,7 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> restoreWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> restoreWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.restore(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, context))
@@ -2609,7 +2618,7 @@ public final class SharesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> restoreWithResponse(RequestOptions requestOptions) {
+    public Response<Void> restoreWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.restoreSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);

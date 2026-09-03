@@ -640,7 +640,8 @@ public final class FilesImpl {
      * verify the integrity of the file during transport.</td></tr>
      * <tr><td>x-ms-content-disposition</td><td>String</td><td>No</td><td>Sets the file's Content-Disposition
      * header.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-permission</td><td>String</td><td>No</td><td>If specified the permission (security descriptor)
      * shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else
      * x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must
@@ -737,7 +738,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponseAsync(long fileContentLength, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseInternalAsync(long fileContentLength, RequestOptions requestOptions) {
         final String fileType = "file";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -779,7 +780,8 @@ public final class FilesImpl {
      * verify the integrity of the file during transport.</td></tr>
      * <tr><td>x-ms-content-disposition</td><td>String</td><td>No</td><td>Sets the file's Content-Disposition
      * header.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-permission</td><td>String</td><td>No</td><td>If specified the permission (security descriptor)
      * shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else
      * x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must
@@ -876,7 +878,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(long fileContentLength, RequestOptions requestOptions) {
+    public Response<Void> createWithResponseInternal(long fileContentLength, RequestOptions requestOptions) {
         try {
             final String fileType = "file";
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -931,7 +933,8 @@ public final class FilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>Content-Length</td><td>long</td><td>Content length of the file.</td></tr>
      * <tr><td>Content-Range</td><td>String</td><td>The Content-Range response header.</td></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
@@ -992,7 +995,7 @@ public final class FilesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return FluxUtil
             .withContext(context -> service.download(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1037,7 +1040,8 @@ public final class FilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>Content-Length</td><td>long</td><td>Content length of the file.</td></tr>
      * <tr><td>Content-Range</td><td>String</td><td>The Content-Range response header.</td></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
@@ -1098,7 +1102,7 @@ public final class FilesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> downloadWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/octet-stream";
             return service.downloadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1134,7 +1138,54 @@ public final class FilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>Content length of the file.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>The Content-Type response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
+     * resource.</td></tr>
+     * <tr><td>Content-MD5</td><td>byte[]</td><td>An MD5 hash returned for the content.</td></tr>
+     * <tr><td>Content-Encoding</td><td>String</td><td>The content encoding of the file.</td></tr>
+     * <tr><td>Cache-Control</td><td>String</td><td>The cache control of the file.</td></tr>
+     * <tr><td>Content-Disposition</td><td>String</td><td>The content disposition of the file.</td></tr>
+     * <tr><td>Content-Language</td><td>String</td><td>The content language of the file.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>Conclusion time of the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>Only appears when x-ms-copy-status is failed or
+     * pending.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>String identifier for the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>Contains the number of bytes copied and the total bytes in the
+     * source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>URL up to 2 KB in length that specifies the source blob or
+     * file.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>State of the copy operation identified by x-ms-copy-id.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
+     * and application metadata are completely encrypted.</td></tr>
+     * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
+     * directory/file.</td></tr>
+     * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
+     * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
+     * <tr><td>x-ms-owner</td><td>String</td><td>NFS only. The owner.</td></tr>
+     * <tr><td>x-ms-group</td><td>String</td><td>NFS only. The owning group.</td></tr>
+     * <tr><td>x-ms-file-file-type</td><td>String</td><td>NFS only. The file type.</td></tr>
+     * <tr><td>x-ms-link-count</td><td>int</td><td>NFS only. The link count.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>A GMT date/time value generated by the service that indicates the
+     * time the response was initiated.</td></tr>
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1145,7 +1196,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.getProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1178,7 +1229,54 @@ public final class FilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>Content length of the file.</td></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>The Content-Type response header.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag contains a value that represents the version of the
+     * resource.</td></tr>
+     * <tr><td>Content-MD5</td><td>byte[]</td><td>An MD5 hash returned for the content.</td></tr>
+     * <tr><td>Content-Encoding</td><td>String</td><td>The content encoding of the file.</td></tr>
+     * <tr><td>Cache-Control</td><td>String</td><td>The cache control of the file.</td></tr>
+     * <tr><td>Content-Disposition</td><td>String</td><td>The content disposition of the file.</td></tr>
+     * <tr><td>Content-Language</td><td>String</td><td>The content language of the file.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>Conclusion time of the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>Only appears when x-ms-copy-status is failed or
+     * pending.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>String identifier for the last attempted Copy File
+     * operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>Contains the number of bytes copied and the total bytes in the
+     * source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>URL up to 2 KB in length that specifies the source blob or
+     * file.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>State of the copy operation identified by x-ms-copy-id.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
+     * and application metadata are completely encrypted.</td></tr>
+     * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
+     * directory/file.</td></tr>
+     * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status.</td></tr>
+     * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
+     * <tr><td>x-ms-owner</td><td>String</td><td>NFS only. The owner.</td></tr>
+     * <tr><td>x-ms-group</td><td>String</td><td>NFS only. The owning group.</td></tr>
+     * <tr><td>x-ms-file-file-type</td><td>String</td><td>NFS only. The file type.</td></tr>
+     * <tr><td>x-ms-link-count</td><td>int</td><td>NFS only. The link count.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>A GMT date/time value generated by the service that indicates the
+     * time the response was initiated.</td></tr>
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1189,7 +1287,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -1238,7 +1336,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, context))
@@ -1285,7 +1383,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -1390,7 +1488,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setHttpHeadersWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setHttpHeadersWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.setHttpHeaders(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1494,7 +1592,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setHttpHeadersWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setHttpHeadersWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setHttpHeadersSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -1516,7 +1614,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
      * file.</td></tr>
      * </table>
@@ -1549,7 +1648,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setMetadataWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.setMetadata(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -1570,7 +1669,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
      * file.</td></tr>
      * </table>
@@ -1603,7 +1703,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setMetadataWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), this.client.isAllowTrailingDot(), requestOptions, Context.NONE);
@@ -1661,7 +1761,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> acquireLeaseWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> acquireLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
         final String action = "acquire";
         return FluxUtil
             .withContext(context -> service.acquireLease(this.client.getUrl(),
@@ -1719,7 +1819,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> acquireLeaseWithResponse(RequestOptions requestOptions) {
+    public Response<Void> acquireLeaseWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String action = "acquire";
             return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
@@ -1765,7 +1865,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> releaseLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "release";
         return FluxUtil
             .withContext(context -> service.releaseLease(this.client.getUrl(),
@@ -1810,7 +1910,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> releaseLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> releaseLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         try {
             final String action = "release";
             return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
@@ -1868,7 +1968,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> changeLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> changeLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "change";
         return FluxUtil
             .withContext(context -> service.changeLease(this.client.getUrl(),
@@ -1924,7 +2024,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> changeLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> changeLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         try {
             final String action = "change";
             return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
@@ -1981,7 +2081,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> breakLeaseWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> breakLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
         final String action = "break";
         return FluxUtil
             .withContext(context -> service.breakLease(this.client.getUrl(),
@@ -2036,7 +2136,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> breakLeaseWithResponse(RequestOptions requestOptions) {
+    public Response<Void> breakLeaseWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String action = "break";
             return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
@@ -2119,8 +2219,8 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadRangeWithResponseAsync(String range, String fileRangeWrite, long contentLength,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> uploadRangeWithResponseInternalAsync(String range, String fileRangeWrite,
+        long contentLength, RequestOptions requestOptions) {
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -2207,7 +2307,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadRangeWithResponse(String range, String fileRangeWrite, long contentLength,
+    public Response<Void> uploadRangeWithResponseInternal(String range, String fileRangeWrite, long contentLength,
         RequestOptions requestOptions) {
         try {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2289,7 +2389,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadRangeFromUrlWithResponseAsync(String range, String copySource,
+    public Mono<Response<Void>> uploadRangeFromUrlWithResponseInternalAsync(String range, String copySource,
         String fileRangeWriteFromUrl, long contentLength, RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.uploadRangeFromUrl(this.client.getUrl(),
@@ -2363,8 +2463,8 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadRangeFromUrlWithResponse(String range, String copySource, String fileRangeWriteFromUrl,
-        long contentLength, RequestOptions requestOptions) {
+    public Response<Void> uploadRangeFromUrlWithResponseInternal(String range, String copySource,
+        String fileRangeWriteFromUrl, long contentLength, RequestOptions requestOptions) {
         try {
             return service.uploadRangeFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 range, copySource, fileRangeWriteFromUrl, contentLength, this.client.isAllowTrailingDot(),
@@ -2448,7 +2548,7 @@ public final class FilesImpl {
      * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRangeListWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getRangeListWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getRangeList(this.client.getUrl(),
@@ -2530,7 +2630,7 @@ public final class FilesImpl {
      * @return the list of file ranges along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRangeListWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getRangeListWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getRangeListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -2654,7 +2754,7 @@ public final class FilesImpl {
      * @return the paginated list of file ranges as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAllRangesAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAllRangesInternalAsync(RequestOptions requestOptions) {
         return new PagedFlux<>(() -> listAllRangesSinglePageAsync(requestOptions));
     }
 
@@ -2772,7 +2872,7 @@ public final class FilesImpl {
      * @return the paginated list of file ranges as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAllRanges(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listAllRangesInternal(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listAllRangesSinglePage(requestOptions));
     }
 
@@ -2789,7 +2889,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-permission</td><td>String</td><td>No</td><td>If specified the permission shall be set for the
      * file.</td></tr>
      * <tr><td>x-ms-file-permission-format</td><td>String</td><td>No</td><td>Optional. Used to set permission format.
@@ -2850,7 +2951,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startCopyWithResponseAsync(String copySource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> startCopyWithResponseInternalAsync(String copySource, RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.startCopy(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), copySource, this.client.isAllowTrailingDot(),
@@ -2871,7 +2972,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-permission</td><td>String</td><td>No</td><td>If specified the permission shall be set for the
      * file.</td></tr>
      * <tr><td>x-ms-file-permission-format</td><td>String</td><td>No</td><td>Optional. Used to set permission format.
@@ -2932,7 +3034,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startCopyWithResponse(String copySource, RequestOptions requestOptions) {
+    public Response<Void> startCopyWithResponseInternal(String copySource, RequestOptions requestOptions) {
         try {
             return service.startCopySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), copySource,
                 this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
@@ -2982,7 +3084,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> abortCopyWithResponseAsync(String copyid, RequestOptions requestOptions) {
+    public Mono<Response<Void>> abortCopyWithResponseInternalAsync(String copyid, RequestOptions requestOptions) {
         final String copyActionAbortConstant = "abort";
         return FluxUtil
             .withContext(context -> service.abortCopy(this.client.getUrl(),
@@ -3031,7 +3133,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> abortCopyWithResponse(String copyid, RequestOptions requestOptions) {
+    public Response<Void> abortCopyWithResponseInternal(String copyid, RequestOptions requestOptions) {
         try {
             final String copyActionAbortConstant = "abort";
             return service.abortCopySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -3107,7 +3209,7 @@ public final class FilesImpl {
      * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listHandlesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listHandles(this.client.getUrl(),
@@ -3181,7 +3283,7 @@ public final class FilesImpl {
      * @return an enumeration of handles along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listHandlesWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -3234,7 +3336,8 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> forceCloseHandlesWithResponseAsync(String handleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> forceCloseHandlesWithResponseInternalAsync(String handleId,
+        RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.forceCloseHandles(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), handleId, this.client.isAllowTrailingDot(),
@@ -3284,7 +3387,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> forceCloseHandlesWithResponse(String handleId, RequestOptions requestOptions) {
+    public Response<Void> forceCloseHandlesWithResponseInternal(String handleId, RequestOptions requestOptions) {
         try {
             return service.forceCloseHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 handleId, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), requestOptions,
@@ -3326,7 +3429,8 @@ public final class FilesImpl {
      * <tr><td>x-ms-file-permission-format</td><td>String</td><td>No</td><td>Optional. Used to set permission format.
      * Allowed values: "Sddl", "Binary".</td></tr>
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>No</td><td>Key of the permission to be set.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-content-type</td><td>String</td><td>No</td><td>Sets the MIME content type of the file.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -3367,7 +3471,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renameWithResponseAsync(String renameSource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> renameWithResponseInternalAsync(String renameSource, RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.rename(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 renameSource, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
@@ -3407,7 +3511,8 @@ public final class FilesImpl {
      * <tr><td>x-ms-file-permission-format</td><td>String</td><td>No</td><td>Optional. Used to set permission format.
      * Allowed values: "Sddl", "Binary".</td></tr>
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>No</td><td>Key of the permission to be set.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-content-type</td><td>String</td><td>No</td><td>Sets the MIME content type of the file.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -3448,7 +3553,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameWithResponse(String renameSource, RequestOptions requestOptions) {
+    public Response<Void> renameWithResponseInternal(String renameSource, RequestOptions requestOptions) {
         try {
             return service.renameSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), renameSource,
                 this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
@@ -3471,7 +3576,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-creation-time</td><td>String</td><td>No</td><td>Creation time for the file.</td></tr>
      * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>No</td><td>Last write time for the file.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
@@ -3518,7 +3624,8 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createSymbolicLinkWithResponseAsync(String linkText, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createSymbolicLinkWithResponseInternalAsync(String linkText,
+        RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.createSymbolicLink(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), linkText, this.client.getFileRequestIntent(),
@@ -3539,7 +3646,8 @@ public final class FilesImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>Optional. User-defined metadata for the resource.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>Optional. User-defined metadata for the
+     * resource.</td></tr>
      * <tr><td>x-ms-file-creation-time</td><td>String</td><td>No</td><td>Creation time for the file.</td></tr>
      * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>No</td><td>Last write time for the file.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
@@ -3586,7 +3694,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createSymbolicLinkWithResponse(String linkText, RequestOptions requestOptions) {
+    public Response<Void> createSymbolicLinkWithResponseInternal(String linkText, RequestOptions requestOptions) {
         try {
             return service.createSymbolicLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 linkText, this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -3634,7 +3742,7 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getSymbolicLinkWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getSymbolicLinkWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(
                 context -> service.getSymbolicLink(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -3681,7 +3789,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getSymbolicLinkWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getSymbolicLinkWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getSymbolicLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 this.client.getFileRequestIntent(), requestOptions, Context.NONE);
@@ -3745,7 +3853,8 @@ public final class FilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createHardLinkWithResponseAsync(String targetFile, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createHardLinkWithResponseInternalAsync(String targetFile,
+        RequestOptions requestOptions) {
         final String fileType = "file";
         return FluxUtil
             .withContext(
@@ -3809,7 +3918,7 @@ public final class FilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createHardLinkWithResponse(String targetFile, RequestOptions requestOptions) {
+    public Response<Void> createHardLinkWithResponseInternal(String targetFile, RequestOptions requestOptions) {
         try {
             final String fileType = "file";
             return service.createHardLinkSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -3918,5 +4027,25 @@ public final class FilesImpl {
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
+    }
+
+    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
+        try {
+            final String accept = "application/xml";
+            return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
+                Context.NONE);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.listHandles(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 }

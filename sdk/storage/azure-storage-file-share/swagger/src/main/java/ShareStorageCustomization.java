@@ -45,14 +45,12 @@ public class ShareStorageCustomization extends Customization {
         "FileRange", "ClearRange", "ShareCorsRule", "ShareFileRangeList", "ShareMetrics", "ShareRetentionPolicy",
         "ShareSignedIdentifier", "UserDelegationKey");
 
-    // Generated convenience clients + builders emitted by typespec-java on top of the
-    // implementation/*Impl operation layer. The public surface is the hand-written Share*-prefixed
-    // clients, so delete the generated ones.
+    // Generated builders / main service-client surface emitted by typespec-java on top of the
+    // implementation/*Impl operation layer. These are deleted; the shipped public surface is the
+    // hand-written Share*-prefixed clients. (The per-resource convenience clients are NOT deleted —
+    // they are relocated into the implementation package as the internal typed layer; see
+    // CONVENIENCE_CLIENTS_TO_RELOCATE / relocateConvenienceClientsToImplementation.)
     private static final List<String> GENERATED_CLIENTS_TO_REMOVE = Arrays.asList(
-        "ServiceClient", "ServiceAsyncClient",
-        "DirectoryClient", "DirectoryAsyncClient",
-        "FileClient", "FileAsyncClient",
-        "ShareClient", "ShareAsyncClient",
         // Main service-client public surface — the impl (AzureFileStorageImpl) is kept; only the
         // public client/async-client/builder are removed. Both naming variants are listed because
         // removeFile is a no-op when absent.
@@ -63,6 +61,18 @@ public class ShareStorageCustomization extends Customization {
         // versions are added by hand. To instead generate it, remove this entry and restore the @clientApiVersions
         // block in client.tsp + the FileServiceVersion->ShareServiceVersion rename customization.
         "FileServiceVersion");
+
+    // Per-resource convenience clients emitted by typespec-java. They carry the typed WithResponse
+    // methods (ResponseBase<XxxHeaders, Model> / Response<XxxHeaders>) that wrap the protocol
+    // *WithResponseInternal methods, so they are RETAINED as the internal typed layer. They are moved
+    // out of the public package into implementation so they add no public API, and the hand-written
+    // Share* clients delegate to them. The generated ShareClient/ShareAsyncClient names collide with
+    // the hand-written public ShareClient/ShareAsyncClient; relocating into implementation resolves it.
+    private static final List<String> CONVENIENCE_CLIENTS_TO_RELOCATE = Arrays.asList(
+        "ServiceClient", "ServiceAsyncClient",
+        "DirectoryClient", "DirectoryAsyncClient",
+        "FileClient", "FileAsyncClient",
+        "ShareClient", "ShareAsyncClient");
 
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
         "src/main/java/module-info.java",
@@ -75,9 +85,19 @@ public class ShareStorageCustomization extends Customization {
     private static final List<String> IMPLS_USING_SERVICE_VERSION
         = Arrays.asList("AzureFileStorageImpl", "DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl");
 
+    // Generated response-header models that expose user metadata (x-ms-meta-*). typespec-java types the getter as
+    // Map<String, String> (via @alternateType(Record<string>, "java")) but deserializes a single "x-ms-meta" header
+    // instead of the x-ms-meta-* header collection, so the map is always empty. fixMetadataHeaderCollection rewrites
+    // the parsing to the prefix-collection form. Remove this (and the @alternateType java flavor) once typespec-java
+    // supports a header-collection-prefix client option for Java.
+    private static final List<String> METADATA_HEADER_CLASSES = Arrays.asList("DirectoriesGetPropertiesHeaders",
+        "FilesDownloadHeaders", "FilesGetPropertiesHeaders", "SharesGetPropertiesHeaders");
+
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         removeGeneratedConvenienceClients(customization, logger);
+
+        relocateConvenienceClientsToImplementation(customization, logger);
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
 
@@ -89,6 +109,8 @@ public class ShareStorageCustomization extends Customization {
 
         restoreFluentModels(customization, logger);
 
+        fixMetadataHeaderCollection(customization, logger);
+
         customization.getClass("com.azure.storage.file.share.models", "ShareTokenIntent")
             .customizeAst(ast -> ast.getClassByName("ShareTokenIntent").ifPresent(clazz -> clazz.setJavadocComment(
                 "The request intent specifies requests that are intended for backup/admin type operations, meaning "
@@ -99,10 +121,9 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Deletes the generated convenience clients / builder / service version so the shipped public
-     * surface is limited to the hand-written Share*-prefixed clients. The generated
-     * {@code implementation/*Impl} operation layer is retained and continues to be wrapped by the
-     * hand-written clients.
+     * Deletes the generated builders / main service-client surface and descriptor files so the shipped
+     * public surface is limited to the hand-written Share*-prefixed clients. The generated
+     * {@code implementation/*Impl} operation layer and the relocated convenience clients are retained.
      *
      * @param customization The library customization.
      * @param logger The logger.
@@ -116,6 +137,116 @@ public class ShareStorageCustomization extends Customization {
         for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
             customization.getRawEditor().removeFile(path);
             logger.info("Removed generated descriptor file (hand-written version preserved): {}", path);
+        }
+    }
+
+    /**
+     * Moves the generated per-resource convenience clients from the public
+     * {@code com.azure.storage.file.share} package into {@code com.azure.storage.file.share.implementation} and
+     * renames them to the hand-written {@code Share*} naming with an {@code Internal} suffix (e.g. {@code FileClient}
+     * -> {@code ShareFileClientInternal}, {@code ShareClient} -> {@code ShareClientInternal}).
+     * They carry the typed {@code WithResponse} methods (e.g.
+     * {@code ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(...)}) that wrap the
+     * protocol {@code *WithResponseInternal} methods, so they are kept as the internal typed layer instead of being
+     * hand-written. Relocating them (1) keeps them off the public API surface (implementation is not exported) and
+     * (2) resolves the name collision between the generated {@code ShareClient}/{@code ShareAsyncClient} and the
+     * hand-written public ones. The package-private constructors are made public so the hand-written Share* clients
+     * (now in a different package) can construct them from {@code AzureFileStorageImpl.get*()}. The
+     * {@code @ServiceClient} marker annotation is dropped because its {@code AzureFileStorageBuilder} is deleted.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void relocateConvenienceClientsToImplementation(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        for (String className : CONVENIENCE_CLIENTS_TO_RELOCATE) {
+            String newName = internalClientName(className);
+            String oldPath = PKG_ROOT + className + ".java";
+            String content = editor.getFileContent(oldPath);
+            // Move to the implementation package.
+            content = content.replace("package com.azure.storage.file.share;",
+                "package com.azure.storage.file.share.implementation;");
+            // Drop the @ServiceClient marker annotation (its builder AzureFileStorageBuilder is deleted). The
+            // class literally named ServiceClient carries the annotation fully-qualified to avoid the name clash,
+            // so match both @ServiceClient(...) and @com.azure.core.annotation.ServiceClient(...).
+            content = content.replaceAll("(?m)^@(com\\.azure\\.core\\.annotation\\.)?ServiceClient\\([^)]*\\)\\r?\\n", "");
+            content = content.replace("import com.azure.core.annotation.ServiceClient;" + System.lineSeparator(), "");
+            content = content.replace("import com.azure.core.annotation.ServiceClient;\n", "");
+            // Make the package-private constructor public; callers now live in a different package.
+            content = content.replaceFirst("(?m)^(\\s*)" + className + "\\(", "$1public " + className + "(");
+            // Rename the class (declaration, constructor, self-references) to the Share*-Internal name.
+            content = content.replaceAll("\\b" + className + "\\b", newName);
+            editor.removeFile(oldPath);
+            editor.addFile(PKG_ROOT + "implementation/" + newName + ".java", content);
+            logger.info("Relocated convenience client {} -> implementation/{}", className, newName);
+        }
+    }
+
+    /**
+     * Maps a generated per-resource convenience client name to its internal name: the hand-written {@code Share*}
+     * naming with an {@code Internal} suffix. E.g. {@code FileClient} -> {@code ShareFileClientInternal},
+     * {@code DirectoryAsyncClient} -> {@code ShareDirectoryAsyncClientInternal}, {@code ShareClient} ->
+     * {@code ShareClientInternal}.
+     *
+     * @param generatedName The generated convenience client name.
+     * @return The internal client name.
+     */
+    private static String internalClientName(String generatedName) {
+        String withSharePrefix = generatedName.startsWith("Share") ? generatedName : "Share" + generatedName;
+        return withSharePrefix + "Internal";
+    }
+
+    /**
+     * Rewrites the metadata deserialization in the generated response-header models from the (broken) single
+     * {@code x-ms-meta} header read to an {@code x-ms-meta-*} prefix-collection loop, matching the generator's own
+     * header-collection deserialization. typespec-java types the getter as {@code Map<String, String>} (via
+     * {@code @alternateType(Record<string>, "java")}) but does not yet honor a header-collection-prefix client option,
+     * so the emitted parsing reads a lone {@code x-ms-meta} header and always yields an empty map. Also drops the
+     * now-unused serializer/IO imports and the {@code X_MS_META} constant, and adds the header-iteration imports.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void fixMetadataHeaderCollection(LibraryCustomization customization, Logger logger) {
+        for (String className : METADATA_HEADER_CLASSES) {
+            customization.getClass("com.azure.storage.file.share.implementation.models", className).customizeAst(ast -> {
+                ast.addImport("com.azure.core.http.HttpHeader");
+                ast.addImport("java.util.LinkedHashMap");
+                ast.getImports().removeIf(imp -> {
+                    String n = imp.getNameAsString();
+                    return n.equals("com.azure.core.util.serializer.JacksonAdapter")
+                        || n.equals("com.azure.core.util.serializer.TypeReference") || n.equals("java.io.IOException")
+                        || n.equals("java.io.UncheckedIOException");
+                });
+                ast.getClassByName(className).ifPresent(clazz -> {
+                    clazz.getFieldByName("X_MS_META").ifPresent(field -> field.remove());
+                    clazz.getConstructors().forEach(ctor -> {
+                        NodeList<Statement> stmts = ctor.getBody().getStatements();
+                        for (int i = 0; i < stmts.size(); i++) {
+                            Statement s = stmts.get(i);
+                            if (s.isTryStmt() && s.toString().contains("this.metadata")) {
+                                // Drop the preceding `String metadata = rawHeaders.getValue(X_MS_META);` declaration.
+                                if (i > 0 && stmts.get(i - 1).toString().contains("X_MS_META")) {
+                                    stmts.remove(i - 1);
+                                    i--;
+                                }
+                                stmts.set(i, StaticJavaParser
+                                    .parseStatement("Map<String, String> metadataHeaderCollection = new LinkedHashMap<>();"));
+                                stmts.add(i + 1,
+                                    StaticJavaParser.parseStatement("for (HttpHeader header : rawHeaders) {"
+                                        + " String headerName = header.getName();"
+                                        + " if (headerName.startsWith(\"x-ms-meta-\")) {"
+                                        + " metadataHeaderCollection.put(headerName.substring(10), header.getValue()); }"
+                                        + "}"));
+                                stmts.add(i + 2, StaticJavaParser.parseStatement(
+                                    "this.metadata = metadataHeaderCollection.isEmpty() ? null : metadataHeaderCollection;"));
+                                break;
+                            }
+                        }
+                    });
+                });
+                logger.info("Fixed metadata header-collection deserialization in {}", className);
+            });
         }
     }
 

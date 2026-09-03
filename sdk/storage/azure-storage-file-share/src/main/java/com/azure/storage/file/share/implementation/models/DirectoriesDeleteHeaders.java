@@ -12,10 +12,10 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The FilesListHandlesHeaders model.
+ * The DirectoriesDeleteHeaders model.
  */
 @Immutable
-public final class FilesListHandlesHeaders {
+public final class DirectoriesDeleteHeaders {
     /*
      * The x-ms-version property.
      */
@@ -44,11 +44,11 @@ public final class FilesListHandlesHeaders {
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of FilesListHandlesHeaders class.
+     * Creates an instance of DirectoriesDeleteHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public FilesListHandlesHeaders(HttpHeaders rawHeaders) {
+    public DirectoriesDeleteHeaders(HttpHeaders rawHeaders) {
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
