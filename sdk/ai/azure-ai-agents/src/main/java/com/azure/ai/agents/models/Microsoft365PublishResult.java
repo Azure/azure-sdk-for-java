@@ -15,7 +15,7 @@ import java.io.IOException;
  * Response from publishing an agent to Microsoft 365 / Microsoft Teams.
  */
 @Immutable
-public final class Microsoft365PublishResponse implements JsonSerializable<Microsoft365PublishResponse> {
+public final class Microsoft365PublishResult implements JsonSerializable<Microsoft365PublishResult> {
 
     /*
      * The Microsoft 365 title id of the published app.
@@ -30,10 +30,10 @@ public final class Microsoft365PublishResponse implements JsonSerializable<Micro
     private String teamsAppId;
 
     /**
-     * Creates an instance of Microsoft365PublishResponse class.
+     * Creates an instance of Microsoft365PublishResult class.
      */
     @Generated
-    private Microsoft365PublishResponse() {
+    private Microsoft365PublishResult() {
     }
 
     /**
@@ -69,29 +69,29 @@ public final class Microsoft365PublishResponse implements JsonSerializable<Micro
     }
 
     /**
-     * Reads an instance of Microsoft365PublishResponse from the JsonReader.
+     * Reads an instance of Microsoft365PublishResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Microsoft365PublishResponse if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the Microsoft365PublishResponse.
+     * @return An instance of Microsoft365PublishResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Microsoft365PublishResult.
      */
     @Generated
-    public static Microsoft365PublishResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static Microsoft365PublishResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Microsoft365PublishResponse deserializedMicrosoft365PublishResponse = new Microsoft365PublishResponse();
+            Microsoft365PublishResult deserializedMicrosoft365PublishResult = new Microsoft365PublishResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("titleId".equals(fieldName)) {
-                    deserializedMicrosoft365PublishResponse.titleId = reader.getString();
+                    deserializedMicrosoft365PublishResult.titleId = reader.getString();
                 } else if ("teamsAppId".equals(fieldName)) {
-                    deserializedMicrosoft365PublishResponse.teamsAppId = reader.getString();
+                    deserializedMicrosoft365PublishResult.teamsAppId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedMicrosoft365PublishResponse;
+            return deserializedMicrosoft365PublishResult;
         });
     }
 }

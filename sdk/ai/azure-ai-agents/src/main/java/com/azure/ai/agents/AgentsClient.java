@@ -32,7 +32,7 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.GetMicrosoft365AppPackageOptions;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.Microsoft365PublishDefaults;
-import com.azure.ai.agents.models.Microsoft365PublishResponse;
+import com.azure.ai.agents.models.Microsoft365PublishResult;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PublishAgentToMicrosoft365Options;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
@@ -4063,7 +4063,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Microsoft365PublishResponse publishAgentToMicrosoft365(PublishAgentToMicrosoft365Options options) {
+    public Microsoft365PublishResult publishAgentToMicrosoft365(PublishAgentToMicrosoft365Options options) {
         // Generated convenience method for publishAgentToMicrosoft365WithResponse
         RequestOptions requestOptions = new RequestOptions();
         String agentName = options.getAgentName();
@@ -4087,7 +4087,7 @@ public final class AgentsClient {
         BinaryData publishAgentToMicrosoft365Request = BinaryData.fromObject(publishAgentToMicrosoft365RequestObj);
         return publishAgentToMicrosoft365WithResponse(agentName, publishAgentToMicrosoft365Request, requestOptions)
             .getValue()
-            .toObject(Microsoft365PublishResponse.class);
+            .toObject(Microsoft365PublishResult.class);
     }
 
     /**

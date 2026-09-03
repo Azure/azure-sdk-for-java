@@ -32,7 +32,7 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.GetMicrosoft365AppPackageOptions;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.Microsoft365PublishDefaults;
-import com.azure.ai.agents.models.Microsoft365PublishResponse;
+import com.azure.ai.agents.models.Microsoft365PublishResult;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PublishAgentToMicrosoft365Options;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
@@ -4231,7 +4231,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Microsoft365PublishResponse> publishAgentToMicrosoft365(PublishAgentToMicrosoft365Options options) {
+    public Mono<Microsoft365PublishResult> publishAgentToMicrosoft365(PublishAgentToMicrosoft365Options options) {
         // Generated convenience method for publishAgentToMicrosoft365WithResponse
         RequestOptions requestOptions = new RequestOptions();
         String agentName = options.getAgentName();
@@ -4255,7 +4255,7 @@ public final class AgentsAsyncClient {
         BinaryData publishAgentToMicrosoft365Request = BinaryData.fromObject(publishAgentToMicrosoft365RequestObj);
         return publishAgentToMicrosoft365WithResponse(agentName, publishAgentToMicrosoft365Request, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Microsoft365PublishResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(Microsoft365PublishResult.class));
     }
 
     /**
