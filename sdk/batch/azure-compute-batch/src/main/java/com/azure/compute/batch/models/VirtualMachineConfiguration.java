@@ -98,7 +98,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * installed on each node.
      */
     @Generated
-    private List<VMExtension> extensions;
+    private List<VirtualMachineExtension> extensions;
 
     /*
      * Settings for the operating system disk of the Virtual Machine.
@@ -314,7 +314,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @return the extensions value.
      */
     @Generated
-    public List<VMExtension> getExtensions() {
+    public List<VirtualMachineExtension> getExtensions() {
         return this.extensions;
     }
 
@@ -326,7 +326,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @return the VirtualMachineConfiguration object itself.
      */
     @Generated
-    public VirtualMachineConfiguration setExtensions(List<VMExtension> extensions) {
+    public VirtualMachineConfiguration setExtensions(List<VirtualMachineExtension> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -435,7 +435,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
             BatchContainerConfiguration containerConfiguration = null;
             DiskEncryptionConfiguration diskEncryptionConfiguration = null;
             BatchNodePlacementConfiguration nodePlacementConfiguration = null;
-            List<VMExtension> extensions = null;
+            List<VirtualMachineExtension> extensions = null;
             BatchOsDisk osDisk = null;
             SecurityProfile securityProfile = null;
             ServiceArtifactReference serviceArtifactReference = null;
@@ -459,7 +459,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
                 } else if ("nodePlacementConfiguration".equals(fieldName)) {
                     nodePlacementConfiguration = BatchNodePlacementConfiguration.fromJson(reader);
                 } else if ("extensions".equals(fieldName)) {
-                    extensions = reader.readArray(reader1 -> VMExtension.fromJson(reader1));
+                    extensions = reader.readArray(reader1 -> VirtualMachineExtension.fromJson(reader1));
                 } else if ("osDisk".equals(fieldName)) {
                     osDisk = BatchOsDisk.fromJson(reader);
                 } else if ("securityProfile".equals(fieldName)) {

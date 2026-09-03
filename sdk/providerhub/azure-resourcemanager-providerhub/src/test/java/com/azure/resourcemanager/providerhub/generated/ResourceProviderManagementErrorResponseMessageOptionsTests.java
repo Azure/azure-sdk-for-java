@@ -13,9 +13,9 @@ public final class ResourceProviderManagementErrorResponseMessageOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManagementErrorResponseMessageOptions model
-            = BinaryData.fromString("{\"serverFailureResponseMessageType\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"serverFailureResponseMessageType\":\"OutageReporting\"}")
                 .toObject(ResourceProviderManagementErrorResponseMessageOptions.class);
-        Assertions.assertEquals(ServerFailureResponseMessageType.NOT_SPECIFIED,
+        Assertions.assertEquals(ServerFailureResponseMessageType.OUTAGE_REPORTING,
             model.serverFailureResponseMessageType());
     }
 
@@ -23,9 +23,9 @@ public final class ResourceProviderManagementErrorResponseMessageOptionsTests {
     public void testSerialize() throws Exception {
         ResourceProviderManagementErrorResponseMessageOptions model
             = new ResourceProviderManagementErrorResponseMessageOptions()
-                .withServerFailureResponseMessageType(ServerFailureResponseMessageType.NOT_SPECIFIED);
+                .withServerFailureResponseMessageType(ServerFailureResponseMessageType.OUTAGE_REPORTING);
         model = BinaryData.fromObject(model).toObject(ResourceProviderManagementErrorResponseMessageOptions.class);
-        Assertions.assertEquals(ServerFailureResponseMessageType.NOT_SPECIFIED,
+        Assertions.assertEquals(ServerFailureResponseMessageType.OUTAGE_REPORTING,
             model.serverFailureResponseMessageType());
     }
 }

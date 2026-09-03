@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
@@ -13,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
  */
 public final class ProjectsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/CreateProjectMin.json
+     * x-ms-original-file: 2026-07-15-preview/CreateProjectMin.json
      */
     /**
      * Sample code: Create Project Min.
@@ -31,7 +32,7 @@ public final class ProjectsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/CreateProject.json
+     * x-ms-original-file: 2026-07-15-preview/CreateProject.json
      */
     /**
      * Sample code: Create Project.
@@ -43,8 +44,12 @@ public final class ProjectsCreateSamples {
             .define("testProject1")
             .withExistingAccount("myResourceGroup", "testCreate1")
             .withRegion("West US")
-            .withProperties(
-                new ProjectProperties().withDisplayName("p1").withDescription("Description of this project"))
+            .withProperties(new ProjectProperties().withDisplayName("p1")
+                .withDescription("Description of this project")
+                .withCapabilitySettings(new CapabilitySettings().withDocumentStore(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myProjectCosmosAccount")
+                    .withVectorStore(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/myProjectSearchService")))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }

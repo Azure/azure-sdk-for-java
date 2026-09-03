@@ -86,7 +86,7 @@ com.azure:azure-communication-messages;1.1.12;1.2.0-beta.2
 com.azure:azure-communication-phonenumbers;1.4.6;1.5.0-beta.1
 com.azure:azure-communication-rooms;1.2.9;1.3.0-beta.1
 com.azure:azure-communication-sms;1.1.41;1.2.0-beta.1
-com.azure:azure-compute-batch;1.0.0-beta.5;1.0.0-beta.6
+com.azure:azure-compute-batch;1.0.0-beta.6;1.0.0
 com.azure:azure-containers-containerregistry;1.2.25;1.3.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.59.1;1.60.0-beta.1
@@ -284,7 +284,7 @@ com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.10;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.60.0;2.61.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.13;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.55.4;2.56.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.63.0;2.64.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.63.0;2.64.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.55.1;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.10;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.11;2.54.0-beta.1
@@ -348,7 +348,7 @@ com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.4.0;1.5.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.4.0;1.5.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-databox;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-datamigration;1.2.0;1.3.0-beta.1
@@ -436,14 +436,14 @@ com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.1.0;1.
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-providerhub;2.1.0;2.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-providerhub;2.1.0;3.0.0
 com.azure.resourcemanager:azure-resourcemanager-reservations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storagemover;1.5.0;1.6.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-graphservices;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.3.0;1.4.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.2.0;1.3.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.2.0;1.3.0
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-networkcloud;2.1.0;2.2.0-beta.2
@@ -461,7 +461,6 @@ com.azure.resourcemanager:azure-resourcemanager-playwrighttesting;1.0.0;1.1.0-be
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesdatareplication;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-networkanalytics;1.0.1;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-springappdiscovery;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-astro;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.2;1.0.0-beta.3
@@ -507,7 +506,7 @@ com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0;1.1.0-be
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
@@ -540,7 +539,9 @@ com.azure.resourcemanager:azure-resourcemanager-billing-trust;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-containerservicepreparedimgspec;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-enclave;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerserviceaimanager;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-redhatopenshifthcp;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagesync;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-resources-policy;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2

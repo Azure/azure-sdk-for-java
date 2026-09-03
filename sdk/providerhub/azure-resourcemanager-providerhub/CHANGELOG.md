@@ -1,14 +1,300 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 3.0.0 (2026-09-02)
 
-### Features Added
+- Azure Resource Manager ProviderHub client library for Java. This package contains Microsoft Azure SDK for ProviderHub Management SDK. Provider Hub. Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FanoutLinkedNotificationRuleDstsConfiguration` was removed
 
-### Other Changes
+#### `models.ResourceTypeEndpointBaseDstsConfiguration` was removed
+
+#### `models.ResourceProviderManifestPropertiesDstsConfiguration` was removed
+
+#### `models.ResourceTypeEndpointBaseFeaturesRule` was removed
+
+#### `models.ManifestLevelPropertyBag` was removed
+
+#### `models.ServiceFeatureFlagAction` was removed
+
+#### `models.ServiceTreeInfo` was removed
+
+#### `models.FrontloadPayloadProperties` was removed
+
+#### `models.FrontloadPayload` was removed
+
+#### `models.NewRegionFrontloadReleases` was removed
+
+#### `models.ResourceTypeEndpointDstsConfiguration` was removed
+
+#### `models.Readiness` was removed
+
+#### `models.FrontloadPayloadPropertiesOverrideEndpointLevelFields` was removed
+
+#### `models.DstsConfiguration` was removed
+
+#### `models.ResourceTypeEndpointBase` was removed
+
+#### `models.ManifestResourceDeletionPolicy` was removed
+
+#### `models.AvailableCheckInManifestEnvironment` was removed
+
+#### `models.FrontloadPayloadPropertiesOverrideManifestLevelFields` was removed
+
+#### `models.ResourceTypeRegistrationPropertiesDstsConfiguration` was removed
+
+#### `models.ResourceProviderManagement` was modified
+
+* `withServiceTreeInfos(java.util.List)` was removed
+* `serviceTreeInfos()` was removed
+
+#### `models.ResourceProviderManifestPropertiesManagement` was modified
+
+* `withServiceTreeInfos(java.util.List)` was removed
+
+#### `models.ResourceProviderManifestProperties` was modified
+
+* `dstsConfiguration()` was removed
+* `withDstsConfiguration(models.ResourceProviderManifestPropertiesDstsConfiguration)` was removed
+
+#### `models.ResourceAccessPolicy` was modified
+
+* `ACIS_ACTION_ALLOWED` was removed
+* `ACIS_READ_ALLOWED` was removed
+* `models.ResourceAccessPolicy[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+
+#### `ProviderHubManager` was modified
+
+* `newRegionFrontloadReleases()` was removed
+
+#### `models.ResourceDeletionPolicy` was modified
+
+* `CASCADE_DELETE_ALL` was removed
+* `CASCADE_DELETE_PROXY_ONLY_CHILDREN` was removed
+
+#### `models.ResourceTypeEndpoint` was modified
+
+* `dstsConfiguration()` was removed
+* `withDstsConfiguration(models.ResourceTypeEndpointDstsConfiguration)` was removed
+
+#### `models.ResourceType` was modified
+
+* `serviceTreeInfos()` was removed
+* `models.ManifestResourceDeletionPolicy resourceDeletionPolicy()` -> `models.ResourceDeletionPolicy resourceDeletionPolicy()`
+
+#### `models.ProviderRegistrationProperties` was modified
+
+* `withDstsConfiguration(models.ResourceProviderManifestPropertiesDstsConfiguration)` was removed
+
+#### `models.Operations` was modified
+
+* `java.util.List listByProviderRegistration(java.lang.String)` -> `models.OperationsPutContent listByProviderRegistration(java.lang.String)`
+
+#### `models.ResourceTypeRegistrationProperties` was modified
+
+* `withResourceDeletionPolicy(models.ResourceDeletionPolicy)` was removed
+* `serviceTreeInfos()` was removed
+* `dstsConfiguration()` was removed
+* `models.ResourceDeletionPolicy resourceDeletionPolicy()` -> `models.RPaaSResourceDeletionPolicy resourceDeletionPolicy()`
+* `withDstsConfiguration(models.ResourceTypeRegistrationPropertiesDstsConfiguration)` was removed
+* `withServiceTreeInfos(java.util.List)` was removed
+
+#### `models.FanoutLinkedNotificationRule` was modified
+
+* `dstsConfiguration()` was removed
+* `withDstsConfiguration(models.FanoutLinkedNotificationRuleDstsConfiguration)` was removed
+
+#### `models.ResourceTypeRegistrationPropertiesManagement` was modified
+
+* `withServiceTreeInfos(java.util.List)` was removed
+
+### Features Added
+
+* `models.ManifestInfo$Definition` was added
+
+* `models.ResourceDeletionPolicyProperties` was added
+
+* `models.ManifestCheckinSpecification` was added
+
+* `models.ResourceDeletionPolicyAndProperties` was added
+
+* `models.ResourceTypeManagedResourceGroupConfiguration` was added
+
+* `models.ManifestInfo$DefinitionStages` was added
+
+* `models.ManifestInfo$Update` was added
+
+* `models.Manifests` was added
+
+* `models.ManifestInfo` was added
+
+* `models.RPaaSResourceDeletionPolicy` was added
+
+* `models.WriteLockState` was added
+
+* `models.GroupConnectivityInformation` was added
+
+* `models.ManagedResourceGroupDenyAssignmentConfiguration` was added
+
+* `models.AppliedManifestInfo` was added
+
+* `models.ActionConfiguration` was added
+
+* `models.WriteLockConfiguration` was added
+
+* `models.ManifestInfoProperties` was added
+
+* `models.LocalizedOperationDisplayDefinitionQpsPloc` was added
+
+* `models.ManifestCheckinOption` was added
+
+* `models.ManifestInfo$UpdateStages` was added
+
+* `models.LinkedAccessCheckOptions` was added
+
+* `models.PrivateEndpointConfiguration` was added
+
+#### `models.ResourceProviderManagement` was modified
+
+* `featureManagementOwners()` was added
+* `withFeatureManagementOwners(java.util.List)` was added
+
+#### `models.LocalizedOperationDefinition` was modified
+
+* `properties()` was added
+* `withProperties(java.lang.Object)` was added
+
+#### `models.LinkedAccessCheck` was modified
+
+* `options()` was added
+
+#### `models.ResourceProviderManifestPropertiesManagement` was modified
+
+* `withFeatureManagementOwners(java.util.List)` was added
+
+#### `models.DefaultRolloutPropertiesSpecification` was modified
+
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
+
+#### `models.LocalizedOperationDefinitionDisplay` was modified
+
+* `withQpsPloc(models.LocalizedOperationDisplayDefinitionQpsPloc)` was added
+
+#### `models.CustomRolloutPropertiesStatus` was modified
+
+* `withCompletedRegionsInfo(java.util.List)` was added
+
+#### `models.ResourceProviderManifest` was modified
+
+* `tokenAuthConfiguration()` was added
+
+#### `models.CustomRolloutStatus` was modified
+
+* `withCompletedRegionsInfo(java.util.List)` was added
+* `completedRegionsInfo()` was added
+
+#### `models.ResourceAccessPolicy` was modified
+
+* `ResourceAccessPolicy()` was added
+
+#### `ProviderHubManager` was modified
+
+* `manifests()` was added
+
+#### `models.ResourceDeletionPolicy` was modified
+
+* `SOFT_DELETE` was added
+* `FORCE` was added
+* `CASCADE` was added
+
+#### `models.ApplicationDataAuthorization` was modified
+
+* `withExcludeApplicationIdFromManifest(java.lang.Boolean)` was added
+* `excludeApplicationIdFromManifest()` was added
+
+#### `models.CustomRolloutPropertiesSpecification` was modified
+
+* `withRolloutId(java.lang.String)` was added
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
+
+#### `models.ResourceType` was modified
+
+* `resourceDeletionPolicies()` was added
+
+#### `models.CustomRolloutSpecification` was modified
+
+* `withRolloutId(java.lang.String)` was added
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
+* `rolloutId()` was added
+* `manifestCheckinSpecification()` was added
+
+#### `models.ProviderRegistrationProperties` was modified
+
+* `oboSubscriptionId()` was added
+* `withOboSubscriptionId(java.lang.String)` was added
+* `enablePresetResourceTypes()` was added
+* `withEnablePresetResourceTypes(java.lang.Boolean)` was added
+
+#### `models.ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport` was modified
+
+* `withRequiredFeatures(java.util.List)` was added
+* `actionConfigurations()` was added
+* `maxBatchSize()` was added
+* `withMaxBatchSize(java.lang.Long)` was added
+* `batchContractVersion()` was added
+* `withMaxNestedBatchSize(java.lang.Long)` was added
+* `requiredFeatures()` was added
+* `maxNestedBatchSize()` was added
+* `withActionConfigurations(java.util.List)` was added
+* `withBatchContractVersion(java.lang.String)` was added
+
+#### `models.LocalizedOperationDisplayDefinition` was modified
+
+* `withQpsPloc(models.LocalizedOperationDisplayDefinitionQpsPloc)` was added
+* `qpsPloc()` was added
+
+#### `models.ResourceProviderType` was modified
+
+* `DECOMMISSIONED` was added
+
+#### `models.ResourceTypeRegistrationProperties` was modified
+
+* `resourceDeletionPolicies()` was added
+* `privateEndpointConfiguration()` was added
+* `withManagedResourceGroupConfiguration(models.ResourceTypeManagedResourceGroupConfiguration)` was added
+* `withWriteLock(models.WriteLockConfiguration)` was added
+* `withResourceDeletionPolicies(java.util.List)` was added
+* `withSuperScaleEnabled(java.lang.Boolean)` was added
+* `superScaleEnabled()` was added
+* `withResourceDeletionPolicy(models.RPaaSResourceDeletionPolicy)` was added
+* `withPrivateEndpointConfiguration(models.PrivateEndpointConfiguration)` was added
+* `writeLock()` was added
+* `managedResourceGroupConfiguration()` was added
+
+#### `models.ThrottlingMetric` was modified
+
+* `bucketSize()` was added
+* `withBucketSize(java.lang.String)` was added
+
+#### `models.ExtensionCategory` was modified
+
+* `RESOURCE_BILLING_NOTIFICATION` was added
+
+#### `models.MarketplaceType` was modified
+
+* `PROVIDER_HUB` was added
+
+#### `models.ResourceTypeRegistrationPropertiesManagement` was modified
+
+* `withFeatureManagementOwners(java.util.List)` was added
+
+#### `models.DefaultRolloutSpecification` was modified
+
+* `manifestCheckinSpecification()` was added
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
 
 ## 2.1.0 (2026-03-03)
 

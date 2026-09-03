@@ -11,7 +11,7 @@ import com.azure.resourcemanager.newrelicobservability.models.ActivateSaaSParame
  */
 public final class SaaSActivateResourceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ActivateSaaS.json
+     * x-ms-original-file: 2026-06-01/ActivateSaaS.json
      */
     /**
      * Sample code: ActivateSaaS.
