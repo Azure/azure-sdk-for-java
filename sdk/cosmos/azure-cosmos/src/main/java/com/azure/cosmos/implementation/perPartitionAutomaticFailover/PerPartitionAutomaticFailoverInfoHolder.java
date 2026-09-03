@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -14,34 +15,52 @@ import java.io.Serializable;
 @JsonSerialize(using = PerPartitionAutomaticFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
 public class PerPartitionAutomaticFailoverInfoHolder implements Serializable {
 
-    public static final PerPartitionAutomaticFailoverInfoHolder EMPTY = new PerPartitionAutomaticFailoverInfoHolder();
+    public static final PerPartitionAutomaticFailoverInfoHolder EMPTY
+        = new PerPartitionAutomaticFailoverInfoHolder(PerPartitionAutomaticFailoverDiagnostics.EMPTY);
 
-    private final Utils.ValueHolder<PartitionLevelAutomaticFailoverInfo> partitionLevelFailoverInfoValueHolder = new Utils.ValueHolder<>();
+    private final Utils.ValueHolder<PerPartitionAutomaticFailoverDiagnostics> diagnosticsSnapshotValueHolder
+        = new Utils.ValueHolder<>();
 
-    public synchronized PartitionLevelAutomaticFailoverInfo getPartitionLevelFailoverInfo() {
-        return partitionLevelFailoverInfoValueHolder.v;
+    public PerPartitionAutomaticFailoverInfoHolder() {
+        this(PerPartitionAutomaticFailoverDiagnostics.EMPTY);
+    }
+
+    private PerPartitionAutomaticFailoverInfoHolder(PerPartitionAutomaticFailoverDiagnostics diagnosticsSnapshot) {
+        this.diagnosticsSnapshotValueHolder.v = diagnosticsSnapshot;
+    }
+
+    synchronized PerPartitionAutomaticFailoverDiagnostics getDiagnosticsSnapshot() {
+        return this.diagnosticsSnapshotValueHolder.v;
     }
 
     public synchronized void setPartitionLevelFailoverInfo(PartitionLevelAutomaticFailoverInfo partitionLevelAutomaticFailoverInfo) {
-        this.partitionLevelFailoverInfoValueHolder.v = partitionLevelAutomaticFailoverInfo;
+        if (this == EMPTY) {
+            return;
+        }
+
+        this.diagnosticsSnapshotValueHolder.v = partitionLevelAutomaticFailoverInfo == null
+            ? PerPartitionAutomaticFailoverDiagnostics.EMPTY
+            : partitionLevelAutomaticFailoverInfo.snapshot();
+    }
+
+    public synchronized PerPartitionAutomaticFailoverInfoHolder snapshot() {
+        PerPartitionAutomaticFailoverDiagnostics snapshot = this.diagnosticsSnapshotValueHolder.v;
+        return snapshot == PerPartitionAutomaticFailoverDiagnostics.EMPTY
+            ? EMPTY
+            : new PerPartitionAutomaticFailoverInfoHolder(snapshot);
     }
 
     public static class PerPartitionFailoverInfoHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PerPartitionAutomaticFailoverInfoHolder> {
 
         @Override
         public void serialize(PerPartitionAutomaticFailoverInfoHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-
-            PartitionLevelAutomaticFailoverInfo partitionLevelAutomaticFailoverInfo = value.getPartitionLevelFailoverInfo();
-
-            if (partitionLevelAutomaticFailoverInfo != null) {
-                gen.writeStartObject();
-
-                gen.writeObjectField("perPartitionAutomaticFailoverCtx", value.getPartitionLevelFailoverInfo());
-
-                gen.writeEndObject();
-            } else {
-                gen.writeNull();
+            PerPartitionAutomaticFailoverDiagnostics snapshot = value.getDiagnosticsSnapshot();
+            gen.writeStartObject();
+            if (snapshot != PerPartitionAutomaticFailoverDiagnostics.EMPTY) {
+                gen.writeStringField("currWriteRegion", snapshot.getCurrentWriteRegion());
+                gen.writeStringField("since", DiagnosticsInstantSerializer.fromInstant(snapshot.getSince()));
             }
+            gen.writeEndObject();
         }
     }
 }

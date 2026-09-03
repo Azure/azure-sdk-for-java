@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +26,7 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
 
     // The current URI corresponds to the regional endpoint to use as an override
     private RegionalRoutingContext current;
+    private Instant currentWriteRegionSince;
     private final GlobalEndpointManager globalEndpointManager;
 
     PartitionLevelAutomaticFailoverInfo(RegionalRoutingContext current, GlobalEndpointManager globalEndpointManager) {
@@ -52,6 +54,7 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
 
             this.failedRegionalRoutingContexts.add(failedRegionalRoutingContext);
             this.current = regionalRoutingContext;
+            this.currentWriteRegionSince = Instant.now();
 
             return true;
         }
@@ -59,41 +62,35 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
         return false;
     }
 
-    public RegionalRoutingContext getCurrent() {
+    public synchronized RegionalRoutingContext getCurrent() {
         return this.current;
+    }
+
+    synchronized PerPartitionAutomaticFailoverDiagnostics snapshot() {
+        if (this.current == null || this.currentWriteRegionSince == null) {
+            return PerPartitionAutomaticFailoverDiagnostics.EMPTY;
+        }
+
+        URI gatewayRegionalEndpoint = this.current.getGatewayRegionalEndpoint();
+        String currentWriteRegion = this.globalEndpointManager.getRegionName(
+            gatewayRegionalEndpoint,
+            OperationType.Read);
+
+        return new PerPartitionAutomaticFailoverDiagnostics(
+            currentWriteRegion,
+            this.currentWriteRegionSince);
     }
 
     static class PartitionLevelFailoverInfoSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PartitionLevelAutomaticFailoverInfo> {
 
         @Override
         public void serialize(PartitionLevelAutomaticFailoverInfo value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-
+            PerPartitionAutomaticFailoverDiagnostics snapshot = value.snapshot();
             gen.writeStartObject();
-
-            if (!value.failedRegionalRoutingContexts.isEmpty()) {
-
-                StringBuilder sb = new StringBuilder("[");
-
-                for (RegionalRoutingContext location : value.failedRegionalRoutingContexts) {
-
-                    URI gatewayRegionalEndpoint = location.getGatewayRegionalEndpoint();
-
-                    sb.append(value.globalEndpointManager.getRegionName(gatewayRegionalEndpoint, OperationType.Read)).append(",");
-                }
-
-                sb.deleteCharAt(sb.length() - 1);
-                sb.append("]");
-
-                gen.writePOJOField("failedRegions", sb.toString());
-            } else {
-                gen.writePOJOField("failedRegions", "[]");
+            if (snapshot != PerPartitionAutomaticFailoverDiagnostics.EMPTY) {
+                gen.writeStringField("currWriteRegion", snapshot.getCurrentWriteRegion());
+                gen.writeStringField("since", snapshot.getSince().toString());
             }
-
-            if (value.current != null) {
-                URI gatewayRegionalEndpoint = value.current.getGatewayRegionalEndpoint();
-                gen.writePOJOField("overrideRegion", value.globalEndpointManager.getRegionName(gatewayRegionalEndpoint, OperationType.Read));
-            }
-
             gen.writeEndObject();
         }
     }
