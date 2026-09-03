@@ -1,4 +1,4 @@
 directory: specification/webpubsub/data-plane/WebPubSubChat
-commit: 690177cbd9f00529bb3350857044504ce66852f6
+commit: c89aaf41901a10fbc0ba6ff25a5f5778cf2c245a
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
