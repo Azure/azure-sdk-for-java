@@ -17,7 +17,7 @@ public final class ListMessagesTests extends WebPubSubChatServiceClientTestBase 
     @Disabled
     public void testListMessagesTests() {
         // method invocation
-        PagedIterable<ChatMessage> response = webPubSubChatServiceClient.listMessages("c.room1.abcd1234");
+        PagedIterable<ChatMessage> response = webPubSubChatServiceClient.listMessages("c.room1.abcd1234", null, null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

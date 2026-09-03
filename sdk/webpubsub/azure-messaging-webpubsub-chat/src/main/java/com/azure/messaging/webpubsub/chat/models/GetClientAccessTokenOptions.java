@@ -10,6 +10,10 @@ public final class GetClientAccessTokenOptions {
     private Duration expiresAfter = Duration.ofHours(1);
     private String userId;
 
+    /** Creates an instance of {@link GetClientAccessTokenOptions}. */
+    public GetClientAccessTokenOptions() {
+    }
+
     /**
      * Sets the duration after which the client access token expires.
      *

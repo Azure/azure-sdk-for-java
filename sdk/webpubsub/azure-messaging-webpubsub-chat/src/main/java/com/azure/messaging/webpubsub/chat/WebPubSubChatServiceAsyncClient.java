@@ -58,7 +58,7 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Get conversation information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -97,7 +97,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -169,7 +169,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -184,9 +184,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -201,6 +201,13 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
      *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
@@ -230,7 +237,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -259,7 +266,7 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Get role information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -299,7 +306,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -311,9 +318,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -325,6 +332,13 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
      *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param resource The resource instance.
@@ -387,7 +401,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -398,9 +412,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -411,6 +425,13 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
      *
      * @param roomId Room identifier.
      * @param resource The resource instance.
@@ -431,7 +452,7 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Get room information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -495,7 +516,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -533,7 +554,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -543,9 +564,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -555,6 +576,13 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
      *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
@@ -608,7 +636,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Get a user's profile. The response is a polymorphic `ChatUser` (e.g. `HumanChatUser`) selected by the `kind`
      * discriminator.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -652,7 +680,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -663,9 +691,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -676,6 +704,13 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
      *
      * @param userId User identifier.
      * @param resource The resource instance.
@@ -1578,7 +1613,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Creates a client access token for connecting to Azure Web PubSub Chat.
      *
      * @param options Options for creating the client access token.
-    * @return A publisher containing the client access token.
+     * @return A publisher containing the client access token.
      */
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         return WebPubSubClientAccessTokenFactory.createAsync(serviceClient, keyCredential, options);

@@ -378,7 +378,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
      * Sets the Azure key credential used to authenticate requests.
      *
      * @param credential The Azure key credential.
-    * @return The updated builder.
+     * @return The updated builder.
      */
     @Override
     public WebPubSubChatServiceClientBuilder credential(AzureKeyCredential credential) {
@@ -390,7 +390,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
      * Sets the Web PubSub connection string used to configure the endpoint and access key.
      *
      * @param connectionString The Web PubSub connection string.
-    * @return The updated builder.
+     * @return The updated builder.
      */
     @Override
     public WebPubSubChatServiceClientBuilder connectionString(String connectionString) {
@@ -421,7 +421,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
      * Sets the reverse proxy endpoint.
      *
      * @param reverseProxyEndpoint The reverse proxy endpoint.
-    * @return The updated builder.
+     * @return The updated builder.
      */
     public WebPubSubChatServiceClientBuilder reverseProxyEndpoint(String reverseProxyEndpoint) {
         this.reverseProxyEndpoint = reverseProxyEndpoint;

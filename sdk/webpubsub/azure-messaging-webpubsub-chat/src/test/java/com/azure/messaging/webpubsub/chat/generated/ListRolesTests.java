@@ -18,7 +18,7 @@ public final class ListRolesTests extends WebPubSubChatServiceClientTestBase {
     @Disabled
     public void testListRolesTests() {
         // method invocation
-        PagedIterable<ChatRole> response = webPubSubChatServiceClient.listRoles();
+        PagedIterable<ChatRole> response = webPubSubChatServiceClient.listRoles(null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

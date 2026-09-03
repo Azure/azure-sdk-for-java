@@ -19,7 +19,7 @@ public class ListRoomMembers {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.messaging.webpubsub.chat.generated.list-room-members.list-room-members
-        PagedIterable<ChatRoomMember> response = webPubSubChatServiceClient.listRoomMembers("room1");
+        PagedIterable<ChatRoomMember> response = webPubSubChatServiceClient.listRoomMembers("room1", null);
         // END:com.azure.messaging.webpubsub.chat.generated.list-room-members.list-room-members
     }
 }
