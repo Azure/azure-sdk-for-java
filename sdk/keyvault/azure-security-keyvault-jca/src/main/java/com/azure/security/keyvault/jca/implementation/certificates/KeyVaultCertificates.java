@@ -115,7 +115,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @param parameter The Key Vault load-store configuration.
      */
     public KeyVaultCertificates(KeyVaultLoadStoreParameter parameter) {
-        this(parameter, parameter.getUri() == null ? null : new KeyVaultClient(parameter));
+        this(Objects.requireNonNull(parameter, "'parameter' cannot be null."),
+            parameter.getUri() == null ? null : new KeyVaultClient(parameter));
     }
 
     KeyVaultCertificates(KeyVaultLoadStoreParameter parameter, KeyVaultClient keyVaultClient) {
