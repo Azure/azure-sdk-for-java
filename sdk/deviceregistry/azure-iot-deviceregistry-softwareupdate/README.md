@@ -150,7 +150,7 @@ Review the [API reference documentation][api_reference] for all available client
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 <!-- LINKS -->
-[api_reference]: https://learn.microsoft.com/java/api/com.azure.iot.deviceregistry.softwareupdate?view=azure-java-preview
+[api_reference]: https://azure.github.io/azure-sdk-for-java/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_subscription]: https://azure.microsoft.com/free/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/java-jdk-install
