@@ -81,20 +81,6 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The BetaVoiceAgentWebSocketsImpl object to access its operations.
-     */
-    private final BetaVoiceAgentWebSocketsImpl betaVoiceAgentWebSockets;
-
-    /**
-     * Gets the BetaVoiceAgentWebSocketsImpl object to access its operations.
-     * 
-     * @return the BetaVoiceAgentWebSocketsImpl object.
-     */
-    public BetaVoiceAgentWebSocketsImpl getBetaVoiceAgentWebSockets() {
-        return this.betaVoiceAgentWebSockets;
-    }
-
-    /**
      * The BetaAgentEndpointConversationsImpl object to access its operations.
      */
     private final BetaAgentEndpointConversationsImpl betaAgentEndpointConversations;
@@ -212,7 +198,6 @@ public final class AgentsClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.betaVoiceAgentWebSockets = new BetaVoiceAgentWebSocketsImpl(this);
         this.betaAgentEndpointConversations = new BetaAgentEndpointConversationsImpl(this);
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
         this.betaAgents = new BetaAgentsImpl(this);

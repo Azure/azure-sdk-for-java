@@ -5,35 +5,35 @@
 package com.azure.ai.agents.models;
 
 /**
- * The WebSocket subprotocol supported by a voice-agent connection.
+ * Defines values for VoiceResponseBaseObject1.
  */
-public enum VoiceAgentWebSocketSubprotocol {
+public enum VoiceResponseBaseObject1 {
     /**
-     * Enum value realtime.
+     * Enum value realtime.response.
      */
-    REALTIME("realtime");
+    REALTIME_RESPONSE("realtime.response");
 
     /**
-     * The actual serialized value for a VoiceAgentWebSocketSubprotocol instance.
+     * The actual serialized value for a VoiceResponseBaseObject1 instance.
      */
     private final String value;
 
-    VoiceAgentWebSocketSubprotocol(String value) {
+    VoiceResponseBaseObject1(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a VoiceAgentWebSocketSubprotocol instance.
+     * Parses a serialized value to a VoiceResponseBaseObject1 instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed VoiceAgentWebSocketSubprotocol object, or null if unable to parse.
+     * @return the parsed VoiceResponseBaseObject1 object, or null if unable to parse.
      */
-    public static VoiceAgentWebSocketSubprotocol fromString(String value) {
+    public static VoiceResponseBaseObject1 fromString(String value) {
         if (value == null) {
             return null;
         }
-        VoiceAgentWebSocketSubprotocol[] items = VoiceAgentWebSocketSubprotocol.values();
-        for (VoiceAgentWebSocketSubprotocol item : items) {
+        VoiceResponseBaseObject1[] items = VoiceResponseBaseObject1.values();
+        for (VoiceResponseBaseObject1 item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
