@@ -450,7 +450,7 @@ public class CosmosAsyncContainer {
 
                 Mono<CosmosItemResponse<T>> readMono =
                     this.getDatabase().getDocClientWrapper()
-                        .readDocument(getItemLink(itemId), requestOptions)
+                        .readDocument(getItemLink(itemId), itemId, requestOptions)
                         .map(response -> {
                             mergeDiagnostics(response, cosmosException);
                             return itemResponseAccessor()
@@ -530,7 +530,7 @@ public class CosmosAsyncContainer {
                                     .toPartitionKey(partitionKeyInternal);
                             readRequestOptions.setPartitionKey(partitionKey);
 
-                            return clientWrapper.readDocument(getItemLink(itemId), readRequestOptions)
+                            return clientWrapper.readDocument(getItemLink(itemId), itemId, readRequestOptions)
                                                 .map(response -> {
                                                     mergeDiagnostics(response, cosmosException);
                                                     return itemResponseAccessor()
@@ -2000,7 +2000,7 @@ public class CosmosAsyncContainer {
      * @param item the item to replace (containing the item id).
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request comosItemRequestOptions (Optional).
+     * @param options the request cosmosItemRequestOptions (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
@@ -2447,7 +2447,7 @@ public class CosmosAsyncContainer {
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
+            .deleteDocument(getItemLink(itemId), itemId, internalObjectNode, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, Object.class, CosmosItemSerializer.DEFAULT_SERIALIZER))
             .single();
         CosmosAsyncClient client = database.getClient();
@@ -2504,7 +2504,7 @@ public class CosmosAsyncContainer {
 
         return this.getDatabase()
                    .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), item, requestOptions)
+                   .replaceDocument(getItemLink(itemId), itemId, item, requestOptions)
                    .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
                    .single();
     }
@@ -2593,7 +2593,7 @@ public class CosmosAsyncContainer {
 
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .patchDocument(getItemLink(itemId), cosmosPatchOperations, requestOptions)
+            .patchDocument(getItemLink(itemId), itemId, cosmosPatchOperations, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()));
 
         CosmosAsyncClient client = database
@@ -2663,7 +2663,7 @@ public class CosmosAsyncContainer {
         requestOptions.setEffectiveItemSerializer(database.getClient().getEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer()));
         applyPolicies(OperationType.Read, ResourceType.Document, requestOptions, this.readItemSpanName);
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
-            .readDocument(getItemLink(itemId), requestOptions)
+            .readDocument(getItemLink(itemId), itemId, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database

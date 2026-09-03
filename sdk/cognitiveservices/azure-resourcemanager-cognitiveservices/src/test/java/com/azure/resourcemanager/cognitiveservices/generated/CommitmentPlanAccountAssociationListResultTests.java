@@ -12,8 +12,8 @@ public final class CommitmentPlanAccountAssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"t\",\"value\":[{\"properties\":{\"accountId\":\"y\"},\"etag\":\"tronzmyhgfi\",\"tags\":{\"fxtsgum\":\"xkmcwaekrrjre\"},\"id\":\"glikkxwslolb\",\"name\":\"pvuzlmv\",\"type\":\"elfk\"}]}")
+            "{\"nextLink\":\"eznoig\",\"value\":[{\"properties\":{\"accountId\":\"mw\"},\"etag\":\"nbsazejjoqkag\",\"tags\":{\"xdtnkdmkqjjlw\":\"xttaugzxnfaaz\",\"aysjkixqtnqttez\":\"envrkpyouaibrebq\"},\"id\":\"fffiak\",\"name\":\"jpqqmted\",\"type\":\"tmmjihyeozph\"},{\"properties\":{\"accountId\":\"uyqncygupkvipmd\"},\"etag\":\"wx\",\"tags\":{\"xhojuj\":\"evzhfsto\",\"hixbjxyfwnyl\":\"ypelmcu\"},\"id\":\"ool\",\"name\":\"ttpkiwkkbnujrywv\",\"type\":\"y\"},{\"properties\":{\"accountId\":\"pncur\"},\"etag\":\"iwii\",\"tags\":{\"cbihwqk\":\"ywub\",\"umwctondz\":\"fdntwjchrdgoih\",\"tov\":\"luudfdlwggytsb\"},\"id\":\"gseinq\",\"name\":\"iufxqknpir\",\"type\":\"nepttwqmsni\"},{\"properties\":{\"accountId\":\"dmqnrojlpij\"},\"etag\":\"rxfrddhc\",\"tags\":{\"hftwesgog\":\"izzronasxiftozqy\",\"sxkkg\":\"zhonnxkrlgnyhmo\",\"rghxjb\":\"h\"},\"id\":\"qxvcxgfrpdsofb\",\"name\":\"hrnsvbu\",\"type\":\"wdvzyy\"}]}")
             .toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("t", model.nextLink());
+        Assertions.assertEquals("eznoig", model.nextLink());
     }
 }

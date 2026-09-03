@@ -1117,14 +1117,14 @@ class ManagementChannelTests {
     }
 
     /**
-     * Verifies getMessageSessions in active-messages mode uses the Track 1 active-messages sentinel.
+     * Verifies getMessageSessions in default listing mode uses the Track 1 default-listing sentinel.
      * Track 1's {@code SessionBrowser.MAXDATE} is {@code new Date(253402300800000L)}
      * (10000-01-01T00:00:00Z UTC, 1 ms past 9999-12-31T23:59:59.999Z), which the broker recognizes
-     * as the "list sessions with active messages" mode.
+     * as the mode that lists sessions with active messages or stored session state.
      */
     @Test
-    void getMessageSessionsActiveMessagesMode() {
-        // Arrange - Track 1 active-messages sentinel (10000-01-01T00:00:00Z UTC).
+    void getMessageSessionsDefaultListingMode() {
+        // Arrange - Track 1 default-listing sentinel (10000-01-01T00:00:00Z UTC).
         final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final String[] sessionIds = new String[] { "active-1", "active-2" };
 
@@ -1272,7 +1272,7 @@ class ManagementChannelTests {
     /**
      * Verifies that getMessageSessions clamps inputs at or beyond the Track 1 sentinel down to
      * the sentinel itself, both to avoid {@link java.util.Date} overflow for {@link OffsetDateTime#MAX}
-     * and to keep the broker's active-messages comparison stable.
+    * and to keep the broker's default-listing comparison stable.
      */
     @Test
     void getMessageSessionsCapsYear() {
@@ -1292,7 +1292,7 @@ class ManagementChannelTests {
             .expectComplete()
             .verify(TIMEOUT);
 
-        // Verify the sent timestamp is capped to the Track 1 active-messages sentinel.
+        // Verify the sent timestamp is capped to the Track 1 default-listing sentinel.
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         @SuppressWarnings("unchecked")
         final Map<String, Object> body

@@ -101,6 +101,8 @@ public final class IndexedOneLakeKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("indexedOneLakeParameters", this.indexedOneLakeParameters);
@@ -122,6 +124,7 @@ public final class IndexedOneLakeKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             IndexedOneLakeKnowledgeSourceParameters indexedOneLakeParameters = null;
@@ -133,6 +136,8 @@ public final class IndexedOneLakeKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -148,10 +153,21 @@ public final class IndexedOneLakeKnowledgeSource extends KnowledgeSource {
             IndexedOneLakeKnowledgeSource deserializedIndexedOneLakeKnowledgeSource
                 = new IndexedOneLakeKnowledgeSource(name, indexedOneLakeParameters);
             deserializedIndexedOneLakeKnowledgeSource.setDescription(description);
+            deserializedIndexedOneLakeKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedIndexedOneLakeKnowledgeSource.setETag(eTag);
             deserializedIndexedOneLakeKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedIndexedOneLakeKnowledgeSource.kind = kind;
             return deserializedIndexedOneLakeKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedOneLakeKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

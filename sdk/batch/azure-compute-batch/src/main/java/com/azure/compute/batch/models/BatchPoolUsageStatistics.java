@@ -35,7 +35,8 @@ public final class BatchPoolUsageStatistics implements JsonSerializable<BatchPoo
     private final OffsetDateTime lastUpdateTime;
 
     /*
-     * The aggregated wall-clock time of the dedicated Compute Node cores being part of the Pool.
+     * The aggregated wall-clock time of the dedicated Compute Node cores being part of the Pool. The time duration is
+     * specified in ISO 8601 format.
      */
     @Generated
     private final Duration dedicatedCoreTime;
@@ -78,7 +79,7 @@ public final class BatchPoolUsageStatistics implements JsonSerializable<BatchPoo
 
     /**
      * Get the dedicatedCoreTime property: The aggregated wall-clock time of the dedicated Compute Node cores being part
-     * of the Pool.
+     * of the Pool. The time duration is specified in ISO 8601 format.
      *
      * @return the dedicatedCoreTime value.
      */
