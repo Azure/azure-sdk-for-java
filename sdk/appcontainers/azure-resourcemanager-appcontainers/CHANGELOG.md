@@ -108,13 +108,13 @@
 #### `models.AvailableWorkloadProfileProperties` was modified
 
 * `AvailableWorkloadProfileProperties()` was changed to private access
-* `withDisplayName(java.lang.String)` was removed
-* `withApplicability(models.Applicability)` was removed
-* `withCores(java.lang.Integer)` was removed
 * `withCategory(java.lang.String)` was removed
+* `withCores(java.lang.Integer)` was removed
 * `validate()` was removed
-* `withGpus(java.lang.Integer)` was removed
 * `withMemoryGiB(java.lang.Integer)` was removed
+* `withApplicability(models.Applicability)` was removed
+* `withGpus(java.lang.Integer)` was removed
+* `withDisplayName(java.lang.String)` was removed
 
 #### `models.HttpSettings` was modified
 
@@ -151,9 +151,9 @@
 #### `models.DiagnosticsDefinition` was modified
 
 * `DiagnosticsDefinition()` was changed to private access
-* `withSupportTopicList(java.util.List)` was removed
-* `validate()` was removed
 * `withAnalysisTypes(java.util.List)` was removed
+* `validate()` was removed
+* `withSupportTopicList(java.util.List)` was removed
 
 #### `models.PrivateEndpoint` was modified
 
@@ -191,8 +191,8 @@
 
 * `UsageName()` was changed to private access
 * `withLocalizedValue(java.lang.String)` was removed
-* `withValue(java.lang.String)` was removed
 * `validate()` was removed
+* `withValue(java.lang.String)` was removed
 
 #### `models.TrafficWeight` was modified
 
@@ -224,9 +224,9 @@
 
 #### `models.UserAssignedIdentity` was modified
 
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `validate()` was removed
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.SecretKeyVaultProperties` was modified
 
@@ -264,10 +264,10 @@
 #### `models.BillingMeterProperties` was modified
 
 * `BillingMeterProperties()` was changed to private access
-* `withCategory(java.lang.String)` was removed
 * `validate()` was removed
-* `withMeterType(java.lang.String)` was removed
 * `withDisplayName(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
+* `withMeterType(java.lang.String)` was removed
 
 #### `models.ManagedEnvironmentStorageProperties` was modified
 
@@ -280,9 +280,9 @@
 #### `models.BillingMeter` was modified
 
 * `BillingMeter()` was changed to private access
-* `validate()` was removed
-* `withLocation(java.lang.String)` was removed
 * `withProperties(models.BillingMeterProperties)` was removed
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.GithubActionConfiguration` was modified
 
@@ -311,10 +311,10 @@
 #### `models.WorkflowEnvelopeProperties` was modified
 
 * `WorkflowEnvelopeProperties()` was changed to private access
-* `withHealth(models.WorkflowHealth)` was removed
-* `withFlowState(models.WorkflowState)` was removed
 * `validate()` was removed
 * `withFiles(java.lang.Object)` was removed
+* `withFlowState(models.WorkflowState)` was removed
+* `withHealth(models.WorkflowHealth)` was removed
 
 #### `models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem` was modified
 
@@ -352,11 +352,11 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
+* `withResource(java.lang.String)` was removed
+* `validate()` was removed
 * `withProvider(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
-* `validate()` was removed
 * `withOperation(java.lang.String)` was removed
-* `withResource(java.lang.String)` was removed
 
 #### `models.JobConfigurationManualTriggerConfig` was modified
 
@@ -389,15 +389,15 @@
 #### `models.ErrorEntity` was modified
 
 * `ErrorEntity()` was changed to private access
-* `withMessage(java.lang.String)` was removed
-* `withTarget(java.lang.String)` was removed
-* `withMessageTemplate(java.lang.String)` was removed
-* `withCode(java.lang.String)` was removed
-* `withExtendedCode(java.lang.String)` was removed
-* `withInnerErrors(java.util.List)` was removed
 * `withParameters(java.util.List)` was removed
+* `withCode(java.lang.String)` was removed
 * `validate()` was removed
+* `withExtendedCode(java.lang.String)` was removed
+* `withTarget(java.lang.String)` was removed
 * `withDetails(java.util.List)` was removed
+* `withInnerErrors(java.util.List)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withMessageTemplate(java.lang.String)` was removed
 
 #### `models.VnetConfiguration` was modified
 
@@ -410,8 +410,8 @@
 #### `models.WorkflowHealth` was modified
 
 * `WorkflowHealth()` was changed to private access
-* `validate()` was removed
 * `withError(models.ErrorEntity)` was removed
+* `validate()` was removed
 * `withState(models.WorkflowHealthState)` was removed
 
 #### `models.LogAnalyticsConfiguration` was modified
@@ -468,8 +468,8 @@
 
 #### `models.ManagedServiceIdentity` was modified
 
-* `validate()` was removed
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 
 #### `models.DefaultAuthorizationPolicy` was modified
@@ -488,10 +488,10 @@
 #### `models.WorkloadProfileStatesProperties` was modified
 
 * `WorkloadProfileStatesProperties()` was changed to private access
-* `validate()` was removed
-* `withMaximumCount(java.lang.Integer)` was removed
 * `withMinimumCount(java.lang.Integer)` was removed
+* `validate()` was removed
 * `withCurrentCount(java.lang.Integer)` was removed
+* `withMaximumCount(java.lang.Integer)` was removed
 
 #### `models.HttpScaleRule` was modified
 
@@ -508,9 +508,9 @@
 #### `models.DiagnosticsDataApiResponse` was modified
 
 * `DiagnosticsDataApiResponse()` was changed to private access
-* `withRenderingProperties(models.DiagnosticRendering)` was removed
-* `withTable(models.DiagnosticDataTableResponseObject)` was removed
 * `validate()` was removed
+* `withTable(models.DiagnosticDataTableResponseObject)` was removed
+* `withRenderingProperties(models.DiagnosticRendering)` was removed
 
 #### `models.HttpRouteAction` was modified
 
@@ -571,8 +571,8 @@
 #### `models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo` was modified
 
 * `CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo()` was changed to private access
-* `validate()` was removed
 * `withDetails(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.Facebook` was modified
 
@@ -584,8 +584,8 @@
 
 #### `models.ManagedIdentitySetting` was modified
 
-* `withLifecycle(models.IdentitySettingsLifeCycle)` was removed
 * `models.IdentitySettingsLifeCycle lifecycle()` -> `models.SessionPoolIdentityLifeCycle lifecycle()`
+* `withLifecycle(models.IdentitySettingsLifeCycle)` was removed
 * `validate()` was removed
 
 #### `models.CustomOpenIdConnectProvider` was modified
@@ -599,10 +599,10 @@
 #### `models.DiagnosticRendering` was modified
 
 * `DiagnosticRendering()` was changed to private access
-* `withDescription(java.lang.String)` was removed
-* `withIsVisible(java.lang.Boolean)` was removed
 * `withType(java.lang.Integer)` was removed
+* `withDescription(java.lang.String)` was removed
 * `withTitle(java.lang.String)` was removed
+* `withIsVisible(java.lang.Boolean)` was removed
 * `validate()` was removed
 
 #### `models.Apple` was modified
@@ -674,11 +674,11 @@
 #### `models.DiagnosticsProperties` was modified
 
 * `DiagnosticsProperties()` was changed to private access
-* `withDataset(java.util.List)` was removed
 * `withDataProviderMetadata(models.DiagnosticDataProviderMetadata)` was removed
-* `validate()` was removed
-* `withStatus(models.DiagnosticsStatus)` was removed
 * `withMetadata(models.DiagnosticsDefinition)` was removed
+* `withStatus(models.DiagnosticsStatus)` was removed
+* `validate()` was removed
+* `withDataset(java.util.List)` was removed
 
 #### `models.IngressPortMapping` was modified
 
@@ -687,18 +687,18 @@
 #### `models.DiagnosticsStatus` was modified
 
 * `DiagnosticsStatus()` was changed to private access
-* `withStatusId(java.lang.Integer)` was removed
 * `validate()` was removed
+* `withStatusId(java.lang.Integer)` was removed
 * `withMessage(java.lang.String)` was removed
 
 #### `models.ReplicaContainer` was modified
 
 * `ReplicaContainer()` was changed to private access
-* `withContainerId(java.lang.String)` was removed
-* `withRestartCount(java.lang.Integer)` was removed
-* `withReady(java.lang.Boolean)` was removed
-* `validate()` was removed
 * `withStarted(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withContainerId(java.lang.String)` was removed
+* `withReady(java.lang.Boolean)` was removed
+* `withRestartCount(java.lang.Integer)` was removed
 * `withName(java.lang.String)` was removed
 
 #### `models.BaseContainer` was modified
@@ -716,9 +716,9 @@
 #### `models.DiagnosticDataProviderMetadata` was modified
 
 * `DiagnosticDataProviderMetadata()` was changed to private access
+* `validate()` was removed
 * `withPropertyBag(java.util.List)` was removed
 * `withProviderName(java.lang.String)` was removed
-* `validate()` was removed
 
 #### `models.ExtendedLocation` was modified
 
@@ -727,8 +727,8 @@
 #### `models.DiagnosticDataTableResponseObject` was modified
 
 * `DiagnosticDataTableResponseObject()` was changed to private access
-* `withRows(java.util.List)` was removed
 * `validate()` was removed
+* `withRows(java.util.List)` was removed
 * `withColumns(java.util.List)` was removed
 * `withTableName(java.lang.String)` was removed
 
@@ -743,9 +743,9 @@
 #### `models.DiagnosticDataProviderMetadataPropertyBagItem` was modified
 
 * `DiagnosticDataProviderMetadataPropertyBagItem()` was changed to private access
+* `withValue(java.lang.String)` was removed
 * `validate()` was removed
 * `withName(java.lang.String)` was removed
-* `withValue(java.lang.String)` was removed
 
 #### `models.AppLogsConfiguration` was modified
 
@@ -810,8 +810,8 @@
 #### `models.DiagnosticDataTableResponseColumn` was modified
 
 * `DiagnosticDataTableResponseColumn()` was changed to private access
-* `withColumnName(java.lang.String)` was removed
 * `validate()` was removed
+* `withColumnName(java.lang.String)` was removed
 * `withDataType(java.lang.String)` was removed
 * `withColumnType(java.lang.String)` was removed
 
@@ -1001,29 +1001,29 @@
 #### `models.Job` was modified
 
 * `resume()` was added
-* `suspend()` was added
 * `runningState()` was added
 * `resume(com.azure.core.util.Context)` was added
 * `suspend(com.azure.core.util.Context)` was added
+* `suspend()` was added
 
 #### `models.ManagedEnvironment$Update` was modified
 
-* `withEnvironmentMode(models.ManagedEnvironmentMode)` was added
-* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
 * `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withEnvironmentMode(models.ManagedEnvironmentMode)` was added
 
 #### `models.Jobs` was modified
 
 * `suspend(java.lang.String,java.lang.String)` was added
-* `resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `resume(java.lang.String,java.lang.String)` was added
 * `suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resume(java.lang.String,java.lang.String)` was added
+* `resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.ManagedEnvironment$Definition` was modified
 
-* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
 * `withEnvironmentMode(models.ManagedEnvironmentMode)` was added
 * `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
 
 #### `models.ContainerApp$Update` was modified
 
@@ -1036,22 +1036,22 @@
 
 #### `models.ManagedEnvironment` was modified
 
-* `checkMigrationEligibilityWithResponse(models.CheckMigrationEligibilityRequest,com.azure.core.util.Context)` was added
 * `checkMigrationEligibility(models.CheckMigrationEligibilityRequest)` was added
 * `openTelemetryConfiguration()` was added
 * `appInsightsConfiguration()` was added
 * `environmentMode()` was added
+* `checkMigrationEligibilityWithResponse(models.CheckMigrationEligibilityRequest,com.azure.core.util.Context)` was added
 
 #### `models.ManagedEnvironments` was modified
 
-* `checkMigrationEligibilityWithResponse(java.lang.String,java.lang.String,models.CheckMigrationEligibilityRequest,com.azure.core.util.Context)` was added
 * `checkMigrationEligibility(java.lang.String,java.lang.String,models.CheckMigrationEligibilityRequest)` was added
+* `checkMigrationEligibilityWithResponse(java.lang.String,java.lang.String,models.CheckMigrationEligibilityRequest,com.azure.core.util.Context)` was added
 
 #### `models.JobExecution` was modified
 
-* `message()` was added
-* `reason()` was added
 * `systemData()` was added
+* `reason()` was added
+* `message()` was added
 * `detailedStatus()` was added
 
 #### `models.ManagedEnvironmentPrivateLinkResources` was modified
@@ -1069,16 +1069,16 @@
 
 #### `ContainerAppsApiManager` was modified
 
-* `containerAppsFunctions()` was added
-* `availableEnvironmentModes()` was added
 * `sandboxGroups()` was added
+* `containerAppsFunctions()` was added
+* `containerAppsRevisionFunctions()` was added
+* `containerAppsLabelHistories()` was added
+* `vnetConnections()` was added
 * `functionsExtensions()` was added
 * `containerAppPrivateEndpointConnections()` was added
 * `containerAppPrivateLinkResources()` was added
-* `containerAppsRevisionFunctions()` was added
-* `vnetConnections()` was added
 * `daprComponentResiliencyPolicies()` was added
-* `containerAppsLabelHistories()` was added
+* `availableEnvironmentModes()` was added
 * `dotNetComponents()` was added
 
 #### `models.ReplicaContainer` was modified
@@ -1087,12 +1087,12 @@
 
 #### `models.BlobStorageTokenStore` was modified
 
-* `managedIdentityResourceId()` was added
-* `withClientId(java.lang.String)` was added
-* `blobContainerUri()` was added
 * `clientId()` was added
+* `blobContainerUri()` was added
 * `withBlobContainerUri(java.lang.String)` was added
 * `withManagedIdentityResourceId(java.lang.String)` was added
+* `managedIdentityResourceId()` was added
+* `withClientId(java.lang.String)` was added
 
 #### `models.ContainerApp$Definition` was modified
 
