@@ -11,15 +11,12 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
-import com.openai.core.http.AsyncStreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
-import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
@@ -102,14 +99,11 @@ public class FunctionCallStreamingAsync {
                     // Stream response asynchronously with function tool
                     ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
-                        ResponseCreateParams.builder()
+                    return Mono.fromFuture(openAIAsyncClient.responses()
+                        .createStreaming(ResponseCreateParams.builder()
                             .input("What's the weather like in Seattle?")
-                            .build());
-
-                    stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
-                        @Override
-                        public void onNext(ResponseStreamEvent event) {
+                            .build())
+                        .subscribe(event -> {
                             responseAccumulator.accumulate(event);
                             // Print text deltas as they arrive
                             event.outputTextDelta()
@@ -117,16 +111,8 @@ public class FunctionCallStreamingAsync {
                             // Print function call argument deltas as they arrive
                             event.functionCallArgumentsDelta()
                                 .ifPresent(argEvent -> System.out.print(argEvent.delta()));
-                        }
-
-                        @Override
-                        public void onComplete(java.util.Optional<Throwable> error) {
-                            // No-op: onCompleteFuture below signals completion.
-                        }
-                    });
-
-                    return Mono.fromFuture(stream.onCompleteFuture())
-                        .doFinally(signal -> stream.close())
+                        })
+                        .onCompleteFuture())
                         .doOnSuccess(unused -> {
                             System.out.println();
 

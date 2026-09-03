@@ -10,11 +10,9 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
-import com.openai.core.http.AsyncStreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -77,14 +75,11 @@ public class CodeInterpreterStreamingAsync {
                     // Stream response asynchronously with Code Interpreter
                     ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
-                        ResponseCreateParams.builder()
+                    return Mono.fromFuture(openAIAsyncClient.responses()
+                        .createStreaming(ResponseCreateParams.builder()
                             .input("Calculate the first 10 prime numbers using Python.")
-                            .build());
-
-                    stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
-                        @Override
-                        public void onNext(ResponseStreamEvent event) {
+                            .build())
+                        .subscribe(event -> {
                             responseAccumulator.accumulate(event);
                             // Print text deltas as they arrive
                             event.outputTextDelta()
@@ -96,16 +91,8 @@ public class CodeInterpreterStreamingAsync {
                                 .ifPresent(e -> System.out.print(e.delta()));
                             event.codeInterpreterCallCompleted()
                                 .ifPresent(e -> System.out.println("\n[Code interpreter completed]"));
-                        }
-
-                        @Override
-                        public void onComplete(java.util.Optional<Throwable> error) {
-                            // No-op: onCompleteFuture below signals completion.
-                        }
-                    });
-
-                    return Mono.fromFuture(stream.onCompleteFuture())
-                        .doFinally(signal -> stream.close())
+                        })
+                        .onCompleteFuture())
                         .doOnSuccess(unused -> {
                             System.out.println();
 

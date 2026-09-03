@@ -786,27 +786,14 @@ The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrati
 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response asynchronously - text is printed as each chunk arrives
-AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
-    ResponseCreateParams.builder()
+return Mono.fromFuture(openAIAsyncClient.responses()
+    .createStreaming(ResponseCreateParams.builder()
         .input("Tell me a short story about a brave explorer.")
-        .build());
-
-stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
-    @Override
-    public void onNext(ResponseStreamEvent event) {
-        responseAccumulator.accumulate(event);
-        event.outputTextDelta()
-            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
-    }
-
-    @Override
-    public void onComplete(java.util.Optional<Throwable> error) {
-        // No-op: onCompleteFuture below signals completion.
-    }
-});
-
-return Mono.fromFuture(stream.onCompleteFuture())
-    .doFinally(signal -> stream.close())
+        .build())
+    .subscribe(event -> responseAccumulator.accumulate(event)
+        .outputTextDelta()
+        .ifPresent(textEvent -> System.out.print(textEvent.delta())))
+    .onCompleteFuture())
     .doOnSuccess(unused -> {
         System.out.println(); // newline after streamed text
 

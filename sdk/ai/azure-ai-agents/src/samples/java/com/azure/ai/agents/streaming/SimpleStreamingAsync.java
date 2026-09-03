@@ -9,14 +9,11 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
-import com.openai.core.http.AsyncStreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
@@ -71,27 +68,14 @@ public class SimpleStreamingAsync {
                     ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
                     // Stream response asynchronously - text is printed as each chunk arrives
-                    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
-                        ResponseCreateParams.builder()
+                    return Mono.fromFuture(openAIAsyncClient.responses()
+                        .createStreaming(ResponseCreateParams.builder()
                             .input("Tell me a short story about a brave explorer.")
-                            .build());
-
-                    stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
-                        @Override
-                        public void onNext(ResponseStreamEvent event) {
-                            responseAccumulator.accumulate(event);
-                            event.outputTextDelta()
-                                .ifPresent(textEvent -> System.out.print(textEvent.delta()));
-                        }
-
-                        @Override
-                        public void onComplete(java.util.Optional<Throwable> error) {
-                            // No-op: onCompleteFuture below signals completion.
-                        }
-                    });
-
-                    return Mono.fromFuture(stream.onCompleteFuture())
-                        .doFinally(signal -> stream.close())
+                            .build())
+                        .subscribe(event -> responseAccumulator.accumulate(event)
+                            .outputTextDelta()
+                            .ifPresent(textEvent -> System.out.print(textEvent.delta())))
+                        .onCompleteFuture())
                         .doOnSuccess(unused -> {
                             System.out.println(); // newline after streamed text
 
