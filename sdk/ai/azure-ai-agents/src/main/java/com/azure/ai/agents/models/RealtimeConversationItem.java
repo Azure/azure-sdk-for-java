@@ -77,7 +77,9 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("function_call".equals(discriminatorValue)) {
+                if ("message".equals(discriminatorValue)) {
+                    return RealtimeConversationItemMessage.fromJson(readerToUse.reset());
+                } else if ("function_call".equals(discriminatorValue)) {
                     return RealtimeConversationItemFunctionCall.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return RealtimeConversationItemFunctionCallOutput.fromJson(readerToUse.reset());

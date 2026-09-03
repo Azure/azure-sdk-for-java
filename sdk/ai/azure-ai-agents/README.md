@@ -68,6 +68,8 @@ The Agents client library has the following sub-clients which group the differen
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
+- `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
+- `BetaAgentEndpointConversationsClient` / `BetaAgentEndpointConversationsAsyncClient` **(preview)**: Read persisted voice-agent conversations, transcripts, and audio metadata.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -183,8 +185,41 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 |---|---|
 | `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
+| `BetaVoiceAgentWebSocketClient` | `VoiceAgents=V1Preview` |
+| `BetaAgentEndpointConversationsClient` | `VoiceAgents=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
+
+### Realtime voice-agent sessions
+
+Use `BetaVoiceAgentWebSocketClient` or `BetaVoiceAgentWebSocketAsyncClient` to connect to a voice agent over WebSocket. The client acquires a token for `https://ai.azure.com/.default`, negotiates the `realtime` subprotocol, and sends the required `VoiceAgents=V1Preview` feature header automatically.
+
+```java
+BetaVoiceAgentWebSocketClient realtimeClient = new AgentsClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint)
+    .buildBetaVoiceAgentWebSocketClient();
+
+try (VoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName)) {
+    session.sendText("Hello");
+    session.createResponse();
+    for (RealtimeServerEvent event : session.receiveEvents()) {
+        if (event instanceof RealtimeServerEventResponseDone) {
+            break;
+        }
+    }
+}
+```
+
+The session API provides typed client and server events for text, PCM16 audio, response cancellation, and client-executed function tools. Set voice-agent persistence with `VoiceAgentDefinition.setStore(true)` or override it per connection with `VoiceAgentWebSocketConnectionOptions.setStoreEnabled(true)`, then read the resulting conversation through `BetaAgentEndpointConversationsClient`.
+
+Complete examples are available in the `voice/` samples folder:
+
+- `VoiceAgentLiveTextConversationSample` and `VoiceAgentLiveTextConversationAsyncSample` demonstrate typed text turns, streamed transcript/audio output, and persisted conversation readback.
+- `VoiceAgentLiveAudioConversationAsyncSample` uses Java Sound for 24-kHz mono PCM16 microphone capture and speaker playback with barge-in.
+- `VoiceAgentLiveFunctionToolSample` executes a function locally and sends its result back to the active response.
+
+Java converts HTTPS project endpoints to `wss://` for production sessions. The generated protocol models include WebRTC signaling events, but this library does not provide a WebRTC peer connection or media implementation; use WebSocket transport for Java-managed text and audio sessions.
 
 ### Agent optimization
 
