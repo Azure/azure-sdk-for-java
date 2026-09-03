@@ -3,68 +3,96 @@
 
 package com.azure.ai.agents.toolboxes;
 
+import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.McpTool;
+import com.azure.ai.agents.models.McpToolboxTool;
+import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.ToolSearchToolboxTool;
 import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
- * This sample demonstrates creating a toolbox version that includes the Toolbox Search tool.
+ * Demonstrates creating a tool-search toolbox and invoking its MCP endpoint from a prompt agent.
  *
- * <p>Toolboxes are a preview feature. Before running, set {@code FOUNDRY_PROJECT_ENDPOINT} to your Azure AI Foundry
- * project endpoint.</p>
+ * <p>Before running the sample, set these environment variables:</p>
+ * <ul>
+ *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - The Azure AI Project endpoint.</li>
+ *   <li>{@code MCP_PROJECT_CONNECTION_ID} - The project connection resource ID used by the inner MCP server.</li>
+ *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
+ * </ul>
  */
 public class ToolboxSearchToolboxSample {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String toolboxName = "toolbox-search-tool-java";
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
+        String toolboxName = "toolbox-search-java";
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        AgentsClientBuilder builder = new AgentsClientBuilder().credential(credential).endpoint(endpoint);
+        ToolboxesClient toolboxesClient = builder.buildToolboxesClient();
+        AgentsClient agentsClient = builder.buildAgentsClient();
+        ResponsesClient responsesClient = builder.buildResponsesClient();
+        AgentVersionDetails agent = null;
 
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildToolboxesClient();
-
-        try {
-            toolboxesClient.deleteToolbox(toolboxName);
-        } catch (ResourceNotFoundException ignored) {
-            // The sample toolbox does not already exist.
-        }
-
+        deleteToolboxIfPresent(toolboxesClient, toolboxName);
         try {
             // BEGIN: com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
-
-            ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool()
-                .setName("search_tools")
-                .setDescription("Search over available toolbox tools at runtime.");
-
-            ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
-                toolboxName,
-                Collections.singletonList(toolboxSearchTool),
-                "Toolbox version with a Toolbox Search tool.",
-                null,
-                null,
-                null);
-
-            System.out.printf("Created toolbox: %s%n", version.getName());
-            System.out.printf("Toolbox version: %s%n", version.getVersion());
-            for (ToolboxTool tool : version.getTools()) {
-                System.out.printf("Tool type: %s%n", tool.getType());
-            }
-
+            McpToolboxTool innerMcp = new McpToolboxTool("github")
+                .setServerUrl("https://api.githubcopilot.com/mcp")
+                .setProjectConnectionId(configuration.get("MCP_PROJECT_CONNECTION_ID"))
+                .setRequireApproval(BinaryData.fromString("\"never\""))
+                .setDeferLoading(true);
+            ToolSearchToolboxTool search = new ToolSearchToolboxTool();
+            ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(toolboxName,
+                Arrays.<ToolboxTool>asList(innerMcp, search), "Tool-search toolbox", null, null, null);
             // END: com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
+
+            String toolboxUrl = endpoint + "/toolboxes/" + toolboxName + "/versions/"
+                + version.getVersion() + "/mcp?api-version=v1";
+            String token = credential.getToken(new TokenRequestContext()
+                .addScopes("https://ai.azure.com/.default")).block().getToken();
+            McpTool toolboxMcp = new McpTool("search-tool")
+                .setServerUrl(toolboxUrl)
+                .setAuthorization(token)
+                .setRequireApproval("never");
+            agent = agentsClient.createAgentVersion("toolbox-search-agent",
+                new CreateAgentVersionInput(new PromptAgentDefinition(configuration.get("FOUNDRY_MODEL_NAME"))
+                    .setInstructions("Use tool_search to discover a tool, then call_tool to invoke it.")
+                    .setTools(java.util.Collections.singletonList(toolboxMcp))));
+
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(
+                    new com.azure.ai.agents.models.AgentReference(agent.getName()).setVersion(agent.getVersion())),
+                ResponseCreateParams.builder().input("What is my GitHub profile username?"));
+            System.out.println("Response: " + response.output());
         } finally {
-            try {
-                toolboxesClient.deleteToolbox(toolboxName);
-                System.out.printf("Deleted toolbox: %s%n", toolboxName);
-            } catch (ResourceNotFoundException ignored) {
-                // The sample toolbox may not have been created.
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
             }
+            deleteToolboxIfPresent(toolboxesClient, toolboxName);
+        }
+    }
+
+    private static void deleteToolboxIfPresent(ToolboxesClient client, String toolboxName) {
+        try {
+            client.deleteToolbox(toolboxName);
+        } catch (ResourceNotFoundException ignored) {
+            // The toolbox does not exist.
         }
     }
 }

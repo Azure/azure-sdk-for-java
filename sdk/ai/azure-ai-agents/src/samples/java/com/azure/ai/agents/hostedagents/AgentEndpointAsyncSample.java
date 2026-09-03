@@ -65,11 +65,11 @@ public class AgentEndpointAsyncSample {
                     new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
                     .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
                         updated.getName()))
-                    .then(Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                    .then(Mono.defer(() -> Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                         .input("What is the size of France in square miles?")
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
-                        .build())))
+                        .build()))))
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
                     .then();
             });

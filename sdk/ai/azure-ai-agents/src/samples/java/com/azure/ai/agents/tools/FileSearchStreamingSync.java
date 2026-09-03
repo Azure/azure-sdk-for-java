@@ -8,24 +8,29 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.ApproximateLocation;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.WebSearchPreviewTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.IterableStream;
+import com.openai.client.OpenAIClient;
 import com.openai.helpers.ResponseAccumulator;
-import com.openai.models.responses.Response;
+import com.openai.models.files.FileCreateParams;
+import com.openai.models.files.FileObject;
+import com.openai.models.files.FilePurpose;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.openai.models.responses.ToolChoiceOptions;
+import com.openai.models.vectorstores.VectorStore;
+import com.openai.models.vectorstores.VectorStoreCreateParams;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 
 /**
- * Demonstrates streaming a response from the preview Web Search tool with approximate location and citations.
+ * Demonstrates streaming an agent response while File Search queries an uploaded document.
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -33,8 +38,8 @@ import java.util.Collections;
  *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
  * </ul>
  */
-public class WebSearchSync {
-    public static void main(String[] args) {
+public class FileSearchStreamingSync {
+    public static void main(String[] args) throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String model = configuration.get("FOUNDRY_MODEL_NAME");
@@ -44,38 +49,49 @@ public class WebSearchSync {
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        AgentVersionDetails agent = null;
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
 
+        Path document = SampleUtils.createTempFile("product-info", ".txt",
+            "Contoso Smart Eyewear provides navigation, translation, and hands-free notifications.");
+        FileObject uploaded = null;
+        VectorStore vectorStore = null;
+        AgentVersionDetails agent = null;
         try {
-            // BEGIN: com.azure.ai.agents.define_web_search
-            WebSearchPreviewTool tool = new WebSearchPreviewTool()
-                .setUserLocation(new ApproximateLocation()
-                    .setCountry("GB")
-                    .setRegion("London")
-                    .setCity("London"));
-            // END: com.azure.ai.agents.define_web_search
-            agent = agentsClient.createAgentVersion("web-search-preview-agent",
+            uploaded = openAIClient.files().create(FileCreateParams.builder()
+                .file(document).purpose(FilePurpose.ASSISTANTS).build());
+            vectorStore = openAIClient.vectorStores().create(VectorStoreCreateParams.builder()
+                .name("ProductInfoStreamingStore")
+                .fileIds(Collections.singletonList(uploaded.id()))
+                .build());
+            FileSearchTool tool = new FileSearchTool(Collections.singletonList(vectorStore.id()));
+            agent = agentsClient.createAgentVersion("file-search-streaming-agent",
                 new CreateAgentVersionInput(new PromptAgentDefinition(model)
-                    .setInstructions("Search the web for current information and cite sources.")
+                    .setInstructions("Search the product document before answering.")
                     .setTools(Collections.singletonList(tool))));
 
             ResponseAccumulator accumulator = ResponseAccumulator.create();
             IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
                 new AzureCreateResponseOptions().setAgentReference(SampleUtils.toAgentReference(agent)),
-                ResponseCreateParams.builder()
-                    .input("Show the latest London Underground service updates.")
-                    .toolChoice(ToolChoiceOptions.REQUIRED));
+                ResponseCreateParams.builder().input("What features does Contoso Smart Eyewear provide?"));
             for (ResponseStreamEvent event : events) {
                 accumulator.accumulate(event);
+                event.fileSearchCallSearching().ifPresent(ignored ->
+                    System.out.println("[Searching uploaded files]"));
                 event.outputTextDelta().ifPresent(delta -> System.out.print(delta.delta()));
             }
             System.out.println();
-            Response response = accumulator.response();
-            ToolSampleUtils.printUrlCitations(response);
+            SampleUtils.printResponseText(accumulator.response());
         } finally {
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
             }
+            if (vectorStore != null) {
+                openAIClient.vectorStores().delete(vectorStore.id());
+            }
+            if (uploaded != null) {
+                openAIClient.files().delete(uploaded.id());
+            }
+            Files.deleteIfExists(document);
         }
     }
 }

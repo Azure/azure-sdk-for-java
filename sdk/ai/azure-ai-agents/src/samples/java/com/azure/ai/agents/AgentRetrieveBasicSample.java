@@ -3,16 +3,11 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.conversations.Conversation;
@@ -22,10 +17,8 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
 
-import java.util.Collections;
-
 /**
- * Demonstrates prompt-agent creation, endpoint routing, and a multi-turn conversation.
+ * Demonstrates synchronously retrieving an agent and conversation before creating a response.
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -33,7 +26,7 @@ import java.util.Collections;
  *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
  * </ul>
  */
-public class CreateResponseWithConversation {
+public class AgentRetrieveBasicSample {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
@@ -43,54 +36,48 @@ public class CreateResponseWithConversation {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversations = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
+        ConversationService conversations = builder.buildOpenAIClient().conversations();
 
+        String agentName = "retrieve-agent";
         AgentVersionDetails agent = null;
-        AgentEndpointConfig originalEndpoint = null;
         String conversationId = null;
-        try {
-            agent = agentsClient.createAgentVersion("basic-conversation-agent",
-                new CreateAgentVersionInput(new PromptAgentDefinition(model)
-                    .setInstructions("You are a helpful assistant that answers general questions.")));
-            originalEndpoint = agentsClient.getAgent(agent.getName()).getAgentEndpoint();
 
-            AgentEndpointConfig agentEndpoint = new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                .setProtocolConfiguration(new ProtocolConfiguration()
-                    .setResponses(new ResponsesProtocolConfiguration()));
-            agentsClient.updateAgentDetails(agent.getName(),
-                new UpdateAgentDetailsOptions().setAgentEndpoint(agentEndpoint));
+        try {
+            agent = agentsClient.createAgentVersion(agentName,
+                new CreateAgentVersionInput(new PromptAgentDefinition(model)
+                    .setInstructions("You are a helpful assistant.")));
+
+            AgentDetails retrievedAgent = agentsClient.getAgent(agentName);
+            System.out.printf("Retrieved agent: %s (%s), latest version: %s%n", retrievedAgent.getName(),
+                retrievedAgent.getId(), retrievedAgent.getVersions().getLatest().getVersion());
 
             Conversation conversation = conversations.create();
             conversationId = conversation.id();
-            AzureCreateResponseOptions options = new AzureCreateResponseOptions()
-                .setAgentReference(SampleUtils.toAgentReference(agent));
-            Response first = responsesClient.createAzureResponse(options,
-                ResponseCreateParams.builder()
-                    .conversation(conversationId)
-                    .input("What is the size of France in square miles?"));
-            SampleUtils.printResponseText(first);
+            System.out.println("Conversation created: " + conversationId);
+
+            Conversation retrievedConversation = conversations.retrieve(conversationId);
+            System.out.println("Retrieved conversation: " + retrievedConversation.id());
 
             conversations.items().create(ItemCreateParams.builder()
                 .conversationId(conversationId)
                 .addItem(EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
-                    .content("What is its capital city?")
+                    .content("How many feet are in a mile?")
                     .build())
                 .build());
-            Response second = responsesClient.createAzureResponse(options,
+            System.out.println("Added a user message to the conversation");
+
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(SampleUtils.toAgentReference(agent)),
                 ResponseCreateParams.builder().conversation(conversationId));
-            SampleUtils.printResponseText(second);
+            SampleUtils.printResponseText(response);
         } finally {
             if (conversationId != null) {
                 conversations.delete(conversationId);
             }
             if (agent != null) {
-                agentsClient.updateAgentDetails(agent.getName(),
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(originalEndpoint));
-                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
             }
         }
     }

@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents;
 
+import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
@@ -25,7 +26,7 @@ import com.openai.services.blocking.ConversationService;
 import java.util.Collections;
 
 /**
- * Demonstrates prompt-agent creation, endpoint routing, and a multi-turn conversation.
+ * Demonstrates synchronous prompt-agent creation, endpoint routing, and a multi-turn conversation.
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -33,7 +34,7 @@ import java.util.Collections;
  *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
  * </ul>
  */
-public class CreateResponseWithConversation {
+public class AgentBasicSample {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
@@ -43,28 +44,35 @@ public class CreateResponseWithConversation {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversations = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
+        ConversationService conversations = builder.buildOpenAIClient().conversations();
 
+        String agentName = "basic-agent";
         AgentVersionDetails agent = null;
         AgentEndpointConfig originalEndpoint = null;
         String conversationId = null;
+
         try {
-            agent = agentsClient.createAgentVersion("basic-conversation-agent",
+            agent = agentsClient.createAgentVersion(agentName,
                 new CreateAgentVersionInput(new PromptAgentDefinition(model)
                     .setInstructions("You are a helpful assistant that answers general questions.")));
-            originalEndpoint = agentsClient.getAgent(agent.getName()).getAgentEndpoint();
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentEndpointConfig agentEndpoint = new AgentEndpointConfig()
+            AgentDetails details = agentsClient.getAgent(agentName);
+            originalEndpoint = details.getAgentEndpoint();
+            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
                 .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
                     new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
                 .setProtocolConfiguration(new ProtocolConfiguration()
                     .setResponses(new ResponsesProtocolConfiguration()));
-            agentsClient.updateAgentDetails(agent.getName(),
-                new UpdateAgentDetailsOptions().setAgentEndpoint(agentEndpoint));
+            agentsClient.updateAgentDetails(agentName,
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+            System.out.printf("Agent endpoint configured for version %s%n", agent.getVersion());
 
             Conversation conversation = conversations.create();
             conversationId = conversation.id();
+            System.out.println("Conversation created: " + conversationId);
+
             AzureCreateResponseOptions options = new AzureCreateResponseOptions()
                 .setAgentReference(SampleUtils.toAgentReference(agent));
             Response first = responsesClient.createAzureResponse(options,
@@ -88,9 +96,9 @@ public class CreateResponseWithConversation {
                 conversations.delete(conversationId);
             }
             if (agent != null) {
-                agentsClient.updateAgentDetails(agent.getName(),
+                agentsClient.updateAgentDetails(agentName,
                     new UpdateAgentDetailsOptions().setAgentEndpoint(originalEndpoint));
-                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
             }
         }
     }
