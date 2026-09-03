@@ -44,7 +44,7 @@ public enum AgentDefinitionOptInKeys {
 
     /**
      * Parses a serialized value to a AgentDefinitionOptInKeys instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AgentDefinitionOptInKeys object, or null if unable to parse.
      */

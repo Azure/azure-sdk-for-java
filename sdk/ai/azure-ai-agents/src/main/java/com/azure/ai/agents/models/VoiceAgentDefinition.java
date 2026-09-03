@@ -28,20 +28,19 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private AgentKind kind = AgentKind.VOICE;
 
     /*
-     * How the model backing this agent is served. Together with `model`, this selects the model up front. `managed`
-     * uses a service-managed model; `self_deployed` uses the customer's own Foundry deployment. This is independent of
-     * the architecture (realtime or cascaded), which the service derives from the selected model.
+     * How the model backing this voice agent is served. Required with `model` for a model-backed voice agent and
+     * omitted when `conversation_engine` is provided. This is independent of the architecture (realtime or cascaded),
+     * which the service derives from the selected model.
      */
     @Generated
-    private final VoiceModelType modelType;
+    private VoiceModelType modelType;
 
     /*
-     * The model to use for this agent, paired with `model_type`: the service-managed model name when `model_type` is
-     * `managed`, or the customer's Foundry deployment name when `model_type` is `self_deployed`. The model must support
-     * realtime or cascaded voice. The service derives the architecture from the selected model.
+     * The model to use for this agent. Required with `model_type` for a model-backed voice agent and omitted when
+     * `conversation_engine` is provided. The model must support realtime or cascaded voice.
      */
     @Generated
-    private final String model;
+    private String model;
 
     /*
      * A system (or developer) message inserted into the model's context. Supports template substitution via
@@ -137,18 +136,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private Boolean store;
 
     /**
-     * Creates an instance of VoiceAgentDefinition class.
-     *
-     * @param modelType the modelType value to set.
-     * @param model the model value to set.
-     */
-    @Generated
-    public VoiceAgentDefinition(VoiceModelType modelType, String model) {
-        this.modelType = modelType;
-        this.model = model;
-    }
-
-    /**
      * Get the kind property: The kind property.
      *
      * @return the kind value.
@@ -160,10 +147,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the modelType property: How the model backing this agent is served. Together with `model`, this selects the
-     * model up front. `managed` uses a service-managed model; `self_deployed` uses the customer's own Foundry
-     * deployment. This is independent of the architecture (realtime or cascaded), which the service derives from the
-     * selected model.
+     * Get the modelType property: How the model backing this voice agent is served. Required with `model` for a
+     * model-backed voice agent and omitted when `conversation_engine` is provided. This is independent of the
+     * architecture (realtime or cascaded), which the service derives from the selected model.
      *
      * @return the modelType value.
      */
@@ -173,9 +159,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the model property: The model to use for this agent, paired with `model_type`: the service-managed model name
-     * when `model_type` is `managed`, or the customer's Foundry deployment name when `model_type` is `self_deployed`.
-     * The model must support realtime or cascaded voice. The service derives the architecture from the selected model.
+     * Get the model property: The model to use for this agent. Required with `model_type` for a model-backed voice
+     * agent and omitted when `conversation_engine` is provided. The model must support realtime or cascaded voice.
      *
      * @return the model value.
      */
@@ -530,9 +515,10 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("model_type", this.modelType == null ? null : this.modelType.toString());
         jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("conversation_engine", this.conversationEngine);
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
@@ -554,6 +540,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("subagent_config", this.subagentConfig);
         jsonWriter.writeBooleanField("store", this.store);
         return jsonWriter.writeEndObject();
     }
@@ -564,90 +551,172 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VoiceAgentDefinition if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VoiceAgentDefinition.
      */
     @Generated
     public static VoiceAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RaiConfig raiConfig = null;
-            VoiceModelType modelType = null;
-            String model = null;
-            AgentKind kind = AgentKind.VOICE;
-            String instructions = null;
-            VoiceAgentGreetingConfig greeting = null;
-            VoiceAgentAudioConfig audio = null;
-            List<VoiceOutputModality> outputModalities = null;
-            BinaryData maxOutputTokens = null;
-            List<VoiceAgentSessionIncludeOption> include = null;
-            VoiceAgentInterimResponseConfig interimResponse = null;
-            VoiceAgentAvatarConfig avatar = null;
-            List<VoiceAgentTool> tools = null;
-            BinaryData toolChoice = null;
-            Boolean parallelToolCalls = null;
-            Map<String, StructuredInputDefinition> structuredInputs = null;
-            Boolean store = null;
+            VoiceAgentDefinition deserializedVoiceAgentDefinition = new VoiceAgentDefinition();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("rai_config".equals(fieldName)) {
-                    raiConfig = RaiConfig.fromJson(reader);
-                } else if ("model_type".equals(fieldName)) {
-                    modelType = VoiceModelType.fromString(reader.getString());
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
+                    deserializedVoiceAgentDefinition.setRaiConfig(RaiConfig.fromJson(reader));
                 } else if ("kind".equals(fieldName)) {
-                    kind = AgentKind.fromString(reader.getString());
+                    deserializedVoiceAgentDefinition.kind = AgentKind.fromString(reader.getString());
+                } else if ("model_type".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.modelType = VoiceModelType.fromString(reader.getString());
+                } else if ("model".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.model = reader.getString();
+                } else if ("conversation_engine".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.conversationEngine = VoiceConversationEngine.fromJson(reader);
                 } else if ("instructions".equals(fieldName)) {
-                    instructions = reader.getString();
+                    deserializedVoiceAgentDefinition.instructions = reader.getString();
                 } else if ("greeting".equals(fieldName)) {
-                    greeting = VoiceAgentGreetingConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.greeting = VoiceAgentGreetingConfig.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
-                    audio = VoiceAgentAudioConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.audio = VoiceAgentAudioConfig.fromJson(reader);
                 } else if ("output_modalities".equals(fieldName)) {
-                    outputModalities = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
+                    List<VoiceOutputModality> outputModalities
+                        = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
+                    deserializedVoiceAgentDefinition.outputModalities = outputModalities;
                 } else if ("max_output_tokens".equals(fieldName)) {
-                    maxOutputTokens
+                    deserializedVoiceAgentDefinition.maxOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("include".equals(fieldName)) {
-                    include
+                    List<VoiceAgentSessionIncludeOption> include
                         = reader.readArray(reader1 -> VoiceAgentSessionIncludeOption.fromString(reader1.getString()));
+                    deserializedVoiceAgentDefinition.include = include;
                 } else if ("interim_response".equals(fieldName)) {
-                    interimResponse = VoiceAgentInterimResponseConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.interimResponse = VoiceAgentInterimResponseConfig.fromJson(reader);
                 } else if ("avatar".equals(fieldName)) {
-                    avatar = VoiceAgentAvatarConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.avatar = VoiceAgentAvatarConfig.fromJson(reader);
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> VoiceAgentTool.fromJson(reader1));
+                    List<VoiceAgentTool> tools = reader.readArray(reader1 -> VoiceAgentTool.fromJson(reader1));
+                    deserializedVoiceAgentDefinition.tools = tools;
                 } else if ("tool_choice".equals(fieldName)) {
-                    toolChoice
+                    deserializedVoiceAgentDefinition.toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("parallel_tool_calls".equals(fieldName)) {
-                    parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
+                    deserializedVoiceAgentDefinition.parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("structured_inputs".equals(fieldName)) {
-                    structuredInputs = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
+                    Map<String, StructuredInputDefinition> structuredInputs
+                        = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
+                    deserializedVoiceAgentDefinition.structuredInputs = structuredInputs;
+                } else if ("subagent_config".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.subagentConfig = VoiceAgentSubagentConfig.fromJson(reader);
                 } else if ("store".equals(fieldName)) {
-                    store = reader.getNullable(JsonReader::getBoolean);
+                    deserializedVoiceAgentDefinition.store = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            VoiceAgentDefinition deserializedVoiceAgentDefinition = new VoiceAgentDefinition(modelType, model);
-            deserializedVoiceAgentDefinition.setRaiConfig(raiConfig);
-            deserializedVoiceAgentDefinition.kind = kind;
-            deserializedVoiceAgentDefinition.instructions = instructions;
-            deserializedVoiceAgentDefinition.greeting = greeting;
-            deserializedVoiceAgentDefinition.audio = audio;
-            deserializedVoiceAgentDefinition.outputModalities = outputModalities;
-            deserializedVoiceAgentDefinition.maxOutputTokens = maxOutputTokens;
-            deserializedVoiceAgentDefinition.include = include;
-            deserializedVoiceAgentDefinition.interimResponse = interimResponse;
-            deserializedVoiceAgentDefinition.avatar = avatar;
-            deserializedVoiceAgentDefinition.tools = tools;
-            deserializedVoiceAgentDefinition.toolChoice = toolChoice;
-            deserializedVoiceAgentDefinition.parallelToolCalls = parallelToolCalls;
-            deserializedVoiceAgentDefinition.structuredInputs = structuredInputs;
-            deserializedVoiceAgentDefinition.store = store;
             return deserializedVoiceAgentDefinition;
         });
+    }
+
+    /*
+     * The engine that owns conversation handling for this voice agent. Exactly one of this property and the
+     * model-backed configuration (`model_type` with `model`) must be provided. When this property is provided,
+     * `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and `greeting.tool_choice`
+     * cannot be `required`, because the engine owns the conversation logic. The initial implementation supports a
+     * hosted-agent engine.
+     */
+    @Generated
+    private VoiceConversationEngine conversationEngine;
+
+    /*
+     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
+     * specialists.
+     */
+    @Generated
+    private VoiceAgentSubagentConfig subagentConfig;
+
+    /**
+     * Creates an instance of VoiceAgentDefinition class.
+     */
+    @Generated
+    public VoiceAgentDefinition() {
+    }
+
+    /**
+     * Set the modelType property: How the model backing this voice agent is served. Required with `model` for a
+     * model-backed voice agent and omitted when `conversation_engine` is provided. This is independent of the
+     * architecture (realtime or cascaded), which the service derives from the selected model.
+     *
+     * @param modelType the modelType value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setModelType(VoiceModelType modelType) {
+        this.modelType = modelType;
+        return this;
+    }
+
+    /**
+     * Set the model property: The model to use for this agent. Required with `model_type` for a model-backed voice
+     * agent and omitted when `conversation_engine` is provided. The model must support realtime or cascaded voice.
+     *
+     * @param model the model value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the conversationEngine property: The engine that owns conversation handling for this voice agent. Exactly one
+     * of this property and the model-backed configuration (`model_type` with `model`) must be provided. When this
+     * property is provided, `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
+     * `greeting.tool_choice` cannot be `required`, because the engine owns the conversation logic. The initial
+     * implementation supports a hosted-agent engine.
+     *
+     * @return the conversationEngine value.
+     */
+    @Generated
+    public VoiceConversationEngine getConversationEngine() {
+        return this.conversationEngine;
+    }
+
+    /**
+     * Set the conversationEngine property: The engine that owns conversation handling for this voice agent. Exactly one
+     * of this property and the model-backed configuration (`model_type` with `model`) must be provided. When this
+     * property is provided, `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
+     * `greeting.tool_choice` cannot be `required`, because the engine owns the conversation logic. The initial
+     * implementation supports a hosted-agent engine.
+     *
+     * @param conversationEngine the conversationEngine value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setConversationEngine(VoiceConversationEngine conversationEngine) {
+        this.conversationEngine = conversationEngine;
+        return this;
+    }
+
+    /**
+     * Get the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
+     * consult as background specialists.
+     *
+     * @return the subagentConfig value.
+     */
+    @Generated
+    public VoiceAgentSubagentConfig getSubagentConfig() {
+        return this.subagentConfig;
+    }
+
+    /**
+     * Set the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
+     * consult as background specialists.
+     *
+     * @param subagentConfig the subagentConfig value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSubagentConfig(VoiceAgentSubagentConfig subagentConfig) {
+        this.subagentConfig = subagentConfig;
+        return this;
     }
 }

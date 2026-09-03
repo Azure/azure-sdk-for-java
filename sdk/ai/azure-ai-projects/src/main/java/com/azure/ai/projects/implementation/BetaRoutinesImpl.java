@@ -55,7 +55,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * Initializes an instance of BetaRoutinesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BetaRoutinesImpl(AIProjectClientImpl client) {
@@ -66,7 +66,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AIProjectsServiceVersion getServiceVersion() {
@@ -291,10 +291,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Create or update a routine
-     *
+     * 
      * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -314,9 +314,9 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -336,7 +336,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param createOrUpdateRoutineRequest The createOrUpdateRoutineRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -359,10 +359,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Create or update a routine
-     *
+     * 
      * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -382,9 +382,9 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -404,7 +404,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param createOrUpdateRoutineRequest The createOrUpdateRoutineRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -426,10 +426,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Get a routine
-     *
+     * 
      * Retrieves the specified routine and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -449,7 +449,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -457,7 +457,7 @@ public final class BetaRoutinesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a routine
-     *
+     * 
      * Retrieves the specified routine and its current configuration along with {@link Response} on successful
      * completion of {@link Mono}.
      */
@@ -470,10 +470,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Get a routine
-     *
+     * 
      * Retrieves the specified routine and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -493,7 +493,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -501,7 +501,7 @@ public final class BetaRoutinesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a routine
-     *
+     * 
      * Retrieves the specified routine and its current configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -513,10 +513,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Enable a routine
-     *
+     * 
      * Enables the specified routine so it can be dispatched.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -536,7 +536,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -556,10 +556,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Enable a routine
-     *
+     * 
      * Enables the specified routine so it can be dispatched.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -579,7 +579,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -597,10 +597,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Disable a routine
-     *
+     * 
      * Disables the specified routine so it no longer runs.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -620,7 +620,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -640,10 +640,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Disable a routine
-     *
+     * 
      * Disables the specified routine so it no longer runs.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -663,7 +663,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -681,7 +681,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List routines
-     *
+     * 
      * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -696,7 +696,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -716,7 +716,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -737,7 +737,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List routines
-     *
+     * 
      * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -752,7 +752,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -772,7 +772,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -791,7 +791,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List routines
-     *
+     * 
      * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -806,7 +806,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -826,7 +826,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -845,7 +845,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List routines
-     *
+     * 
      * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -860,7 +860,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -880,7 +880,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -899,9 +899,9 @@ public final class BetaRoutinesImpl {
 
     /**
      * Delete a routine
-     *
+     * 
      * Deletes the specified routine.
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -918,9 +918,9 @@ public final class BetaRoutinesImpl {
 
     /**
      * Delete a routine
-     *
+     * 
      * Deletes the specified routine.
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -937,7 +937,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List prior runs for a routine
-     *
+     * 
      * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -954,7 +954,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -986,7 +986,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1009,7 +1009,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List prior runs for a routine
-     *
+     * 
      * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1026,7 +1026,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1058,7 +1058,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1078,7 +1078,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List prior runs for a routine
-     *
+     * 
      * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1095,7 +1095,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1127,7 +1127,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1147,7 +1147,7 @@ public final class BetaRoutinesImpl {
 
     /**
      * List prior runs for a routine
-     *
+     * 
      * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1164,7 +1164,7 @@ public final class BetaRoutinesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1196,7 +1196,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1216,10 +1216,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Queue an asynchronous routine dispatch
-     *
+     * 
      * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1229,9 +1229,9 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1241,7 +1241,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param dispatchRoutineAsyncRequest The dispatchRoutineAsyncRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1264,10 +1264,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * Queue an asynchronous routine dispatch
-     *
+     * 
      * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1277,9 +1277,9 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1289,7 +1289,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param routineName The unique name of the routine.
      * @param dispatchRoutineAsyncRequest The dispatchRoutineAsyncRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1311,10 +1311,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * List routines
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1334,7 +1334,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1356,10 +1356,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * List routines
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1379,7 +1379,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1399,10 +1399,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * List prior runs for a routine
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1434,7 +1434,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1457,10 +1457,10 @@ public final class BetaRoutinesImpl {
 
     /**
      * List prior runs for a routine
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1492,7 +1492,7 @@ public final class BetaRoutinesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

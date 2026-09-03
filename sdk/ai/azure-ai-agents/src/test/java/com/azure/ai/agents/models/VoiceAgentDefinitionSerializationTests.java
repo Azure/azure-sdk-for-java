@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
@@ -34,10 +35,11 @@ public class VoiceAgentDefinitionSerializationTests {
             .setVoiceType(VoiceType.AZURE_STANDARD);
         VoiceAgentFunctionTool functionTool
             = new VoiceAgentFunctionTool("get_weather").setDescription("Get weather for a city.")
-                .setParameters(new RealtimeFunctionToolParameters());
+                .setParameters(BinaryData.fromString("{}"));
         VoiceAgentSystemTool systemTool = new VoiceAgentSystemTool(VoiceAgentSystemToolName.END_CONVERSATION);
 
-        VoiceAgentDefinition original = new VoiceAgentDefinition(VoiceModelType.MANAGED, "gpt-realtime")
+        VoiceAgentDefinition original = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
+            .setModel("gpt-realtime")
             .setInstructions("Keep replies short and natural.")
             .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
@@ -77,9 +79,9 @@ public class VoiceAgentDefinitionSerializationTests {
 
     @Test
     public void selfDeployedVoiceDefinitionRoundTrips() throws IOException {
-        VoiceAgentDefinition original
-            = new VoiceAgentDefinition(VoiceModelType.SELF_DEPLOYED, "customer-realtime-deployment")
-                .setInstructions("Use the customer deployment.");
+        VoiceAgentDefinition original = new VoiceAgentDefinition().setModelType(VoiceModelType.SELF_DEPLOYED)
+            .setModel("customer-realtime-deployment")
+            .setInstructions("Use the customer deployment.");
 
         String json = serialize(original);
         VoiceAgentDefinition deserialized;

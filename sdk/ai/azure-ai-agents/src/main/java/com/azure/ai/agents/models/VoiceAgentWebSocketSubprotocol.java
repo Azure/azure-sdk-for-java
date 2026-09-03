@@ -24,7 +24,7 @@ public enum VoiceAgentWebSocketSubprotocol {
 
     /**
      * Parses a serialized value to a VoiceAgentWebSocketSubprotocol instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VoiceAgentWebSocketSubprotocol object, or null if unable to parse.
      */

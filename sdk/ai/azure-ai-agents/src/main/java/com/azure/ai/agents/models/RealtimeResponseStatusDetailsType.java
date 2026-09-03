@@ -39,7 +39,7 @@ public enum RealtimeResponseStatusDetailsType {
 
     /**
      * Parses a serialized value to a RealtimeResponseStatusDetailsType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RealtimeResponseStatusDetailsType object, or null if unable to parse.
      */

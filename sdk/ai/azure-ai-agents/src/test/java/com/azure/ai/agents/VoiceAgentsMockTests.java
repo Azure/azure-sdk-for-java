@@ -198,7 +198,9 @@ public class VoiceAgentsMockTests {
     private static VoiceAgentDefinition createVoiceDefinition(String instructions) {
         VoiceAgentAudioOutputConfig output
             = new VoiceAgentAudioOutputConfig().setVoice("en-US-AvaNeural").setVoiceType(VoiceType.AZURE_STANDARD);
-        return new VoiceAgentDefinition(VoiceModelType.MANAGED, "gpt-realtime").setInstructions(instructions)
+        return new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
+            .setModel("gpt-realtime")
+            .setInstructions(instructions)
             .setAudio(new VoiceAgentAudioConfig().setOutput(output))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
             .setStore(true);

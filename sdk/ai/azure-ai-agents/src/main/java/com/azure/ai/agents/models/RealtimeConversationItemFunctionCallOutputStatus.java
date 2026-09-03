@@ -34,7 +34,7 @@ public enum RealtimeConversationItemFunctionCallOutputStatus {
 
     /**
      * Parses a serialized value to a RealtimeConversationItemFunctionCallOutputStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RealtimeConversationItemFunctionCallOutputStatus object, or null if unable to parse.
      */

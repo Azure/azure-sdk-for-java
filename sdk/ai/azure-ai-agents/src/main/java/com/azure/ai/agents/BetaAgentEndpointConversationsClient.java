@@ -8,6 +8,7 @@ import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.VoiceConversation;
+import com.azure.ai.agents.models.VoiceGeneratedItemAudioResponse;
 import com.azure.ai.agents.models.VoiceItemAudioResponse;
 import com.azure.ai.agents.models.VoiceRecordingResponse;
 import com.azure.ai.agents.models.VoiceResponse;
@@ -71,7 +72,7 @@ public final class BetaAgentEndpointConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -142,7 +143,7 @@ public final class BetaAgentEndpointConversationsClient {
      * Retrieves a single conversation recorded for the specified voice agent endpoint by its id.
      * Returns `404` when the conversation was not persisted (`store = false`) or does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -262,7 +263,7 @@ public final class BetaAgentEndpointConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -349,7 +350,7 @@ public final class BetaAgentEndpointConversationsClient {
      * Retrieves a single response from the specified conversation by its id, including its `output` items,
      * `usage`, and status. Returns `404` when the conversation or response was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -463,7 +464,7 @@ public final class BetaAgentEndpointConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -517,7 +518,7 @@ public final class BetaAgentEndpointConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -551,7 +552,7 @@ public final class BetaAgentEndpointConversationsClient {
      * `/items/{item_id}/audio/content`. Returns `404` when the conversation or item was not persisted
      * (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -591,7 +592,7 @@ public final class BetaAgentEndpointConversationsClient {
      * Requires the conversation to have persisted audio (`store = true`); returns `404` when the conversation,
      * item, or its audio was not persisted.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -643,7 +644,7 @@ public final class BetaAgentEndpointConversationsClient {
      * returned by the item's `/audio` metadata route — so this route returns `409 Conflict` for BYOS recordings.
      * Returns `404` when the conversation, item, or its audio was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -669,6 +670,87 @@ public final class BetaAgentEndpointConversationsClient {
     }
 
     /**
+     * Get a voice agent conversation item's generated audio metadata
+     *
+     * Returns metadata for a conversation item's generated audio. This subordinate artifact is separate from the
+     * canonical heard-audio segment and exists only when playback was interrupted and the service rendered more audio
+     * than the listener heard, including when the response ends as cancelled. Returns `404` when the conversation or
+     * item was not persisted, or when no generated audio exists beyond the heard segment.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     conversation_id: String (Required)
+     *     item_id: String (Required)
+     *     role: String(user/agent) (Optional)
+     *     format: String(wav) (Optional)
+     *     codec: String(pcm16/pcmu/pcma) (Optional)
+     *     sample_rate: Integer (Optional)
+     *     channels: Integer (Optional)
+     *     start_offset_ms: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     blob_uri: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio metadata is retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a voice agent conversation item's generated audio metadata
+     *
+     * Returns metadata for a conversation item's generated audio along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentConversationItemGeneratedAudioWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationItemGeneratedAudioWithResponse(agentName, conversationId, itemId,
+            requestOptions);
+    }
+
+    /**
+     * Stream a voice agent conversation item's generated audio
+     *
+     * Streams a conversation item's generated audio as a WAV (`audio/wav`) byte stream through the service. This
+     * subordinate artifact exists only when playback was interrupted and the service rendered more audio than the
+     * listener heard, including when the response ends as cancelled. This route serves Foundry-managed storage only.
+     * For bring-your-own-storage (BYOS) recordings the bytes are not proxied, so this route returns `409 Conflict`.
+     * Returns `404` when the conversation or item was not persisted, or when no generated audio exists beyond the
+     * heard segment.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio is streamed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentConversationItemGeneratedAudioContentWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationItemGeneratedAudioContentWithResponse(agentName, conversationId,
+            itemId, requestOptions);
+    }
+
+    /**
      * Get a voice agent conversation's merged recording metadata
      *
      * Returns metadata for the whole-call merged stereo recording (user audio on the left channel, agent audio
@@ -682,7 +764,7 @@ public final class BetaAgentEndpointConversationsClient {
      * For a `completed` conversation, metadata is available subject to the existing BYOS behavior. Requires the
      * conversation to have persisted audio (`store = true`); otherwise returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -732,7 +814,7 @@ public final class BetaAgentEndpointConversationsClient {
      * For a `completed` conversation, content is available subject to the existing BYOS behavior. A conversation
      * without persisted audio (`store = false`) returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1236,6 +1318,69 @@ public final class BetaAgentEndpointConversationsClient {
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationItemAudioContentWithResponse(agentName, conversationId, itemId, requestOptions)
             .getValue();
+    }
+
+    /**
+     * Get a voice agent conversation item's generated audio metadata
+     *
+     * Returns metadata for a conversation item's generated audio. This subordinate artifact is separate from the
+     * canonical heard-audio segment and exists only when playback was interrupted and the service rendered more audio
+     * than the listener heard, including when the response ends as cancelled. Returns `404` when the conversation or
+     * item was not persisted, or when no generated audio exists beyond the heard segment.
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio metadata is retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a voice agent conversation item's generated audio metadata
+     *
+     * Returns metadata for a conversation item's generated audio.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VoiceGeneratedItemAudioResponse getAgentConversationItemGeneratedAudio(String agentName,
+        String conversationId, String itemId) {
+        // Generated convenience method for getAgentConversationItemGeneratedAudioWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAgentConversationItemGeneratedAudioWithResponse(agentName, conversationId, itemId, requestOptions)
+            .getValue()
+            .toObject(VoiceGeneratedItemAudioResponse.class);
+    }
+
+    /**
+     * Stream a voice agent conversation item's generated audio
+     *
+     * Streams a conversation item's generated audio as a WAV (`audio/wav`) byte stream through the service. This
+     * subordinate artifact exists only when playback was interrupted and the service rendered more audio than the
+     * listener heard, including when the response ends as cancelled. This route serves Foundry-managed storage only.
+     * For bring-your-own-storage (BYOS) recordings the bytes are not proxied, so this route returns `409 Conflict`.
+     * Returns `404` when the conversation or item was not persisted, or when no generated audio exists beyond the
+     * heard segment.
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio is streamed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getAgentConversationItemGeneratedAudioContent(String agentName, String conversationId,
+        String itemId) {
+        // Generated convenience method for getAgentConversationItemGeneratedAudioContentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAgentConversationItemGeneratedAudioContentWithResponse(agentName, conversationId, itemId,
+            requestOptions).getValue();
     }
 
     /**
