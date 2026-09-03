@@ -5,10 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingCustomSearchConfiguration;
 import com.azure.ai.agents.models.BingCustomSearchPreviewTool;
 import com.azure.ai.agents.models.BingCustomSearchToolParameters;
@@ -17,6 +13,14 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.client.OpenAIClient;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +54,6 @@ public class BingCustomSearchSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_bing_custom_search
         // Create Bing Custom Search tool with connection and instance configuration
@@ -67,22 +70,25 @@ public class BingCustomSearchSync {
                 + "Use the available Bing Custom Search tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(bingCustomSearchTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("bing-custom-search-agent", agentDefinition);
-        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
+        String agentName = "bing-custom-search-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .input("Search for the latest Azure AI documentation"));
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                    .input("Search for the latest Azure AI documentation")
+                .build());
 
             System.out.println("Response: " + response.output());
         } finally {
-            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-            System.out.println("Agent deleted");
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }

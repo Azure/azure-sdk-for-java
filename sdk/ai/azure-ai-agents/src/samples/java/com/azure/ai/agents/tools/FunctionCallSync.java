@@ -5,20 +5,24 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseFunctionToolCall;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,50 +50,51 @@ public class FunctionCallSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
-        AgentVersionDetails agent = null;
+        // Create a FunctionTool with parameters schema
+        // Use BinaryData.fromObject() to produce correct JSON types (not double-encoded strings)
+        Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
+        locationProp.put("type", "string");
+        locationProp.put("description", "The city and state, e.g. Seattle, WA");
 
+        Map<String, Object> unitProp = new LinkedHashMap<String, Object>();
+        unitProp.put("type", "string");
+        unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
+
+        Map<String, Object> properties = new LinkedHashMap<String, Object>();
+        properties.put("location", locationProp);
+        properties.put("unit", unitProp);
+
+        Map<String, BinaryData> parameters = new HashMap<String, BinaryData>();
+        parameters.put("type", BinaryData.fromObject("object"));
+        parameters.put("properties", BinaryData.fromObject(properties));
+        parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
+        parameters.put("additionalProperties", BinaryData.fromObject(false));
+
+        FunctionTool tool = new FunctionTool("get_weather", parameters, true)
+            .setDescription("Get the current weather in a given location");
+
+        // Create the agent definition with Function tool enabled
+        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+            .setInstructions("You are a helpful assistant that can get weather information. "
+                + "When asked about the weather, use the get_weather function to retrieve weather data.")
+            .setTools(Collections.singletonList(tool));
+
+        String agentName = "function-call-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            // Create a FunctionTool with parameters schema
-            // Use BinaryData.fromObject() to produce correct JSON types (not double-encoded strings)
-            Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
-            locationProp.put("type", "string");
-            locationProp.put("description", "The city and state, e.g. Seattle, WA");
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            Map<String, Object> unitProp = new LinkedHashMap<String, Object>();
-            unitProp.put("type", "string");
-            unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
 
-            Map<String, Object> properties = new LinkedHashMap<String, Object>();
-            properties.put("location", locationProp);
-            properties.put("unit", unitProp);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
 
-            Map<String, BinaryData> parameters = new HashMap<String, BinaryData>();
-            parameters.put("type", BinaryData.fromObject("object"));
-            parameters.put("properties", BinaryData.fromObject(properties));
-            parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
-            parameters.put("additionalProperties", BinaryData.fromObject(false));
-
-            FunctionTool tool = new FunctionTool("get_weather", parameters, true)
-                .setDescription("Get the current weather in a given location");
-
-            // Create the agent definition with Function tool enabled
-            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a helpful assistant that can get weather information. "
-                    + "When asked about the weather, use the get_weather function to retrieve weather data.")
-                .setTools(Collections.singletonList(tool));
-
-            agent = agentsClient.createAgentVersion("function-call-agent", agentDefinition);
-            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
-
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .input("What's the weather like in Seattle?"));
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                .input("What's the weather like in Seattle?")
+                .build());
 
             // Process and display the response
             for (ResponseOutputItem outputItem : response.output()) {
@@ -112,10 +117,7 @@ public class FunctionCallSync {
                 }
             }
         } finally {
-            if (agent != null) {
-                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-                System.out.println("Agent deleted");
-            }
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }

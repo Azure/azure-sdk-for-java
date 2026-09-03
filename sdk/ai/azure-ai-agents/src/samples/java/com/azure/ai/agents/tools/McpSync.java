@@ -5,19 +5,23 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,35 +50,36 @@ public class McpSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
-        AgentVersionDetails agent = null;
+        // Create an MCP tool that connects to a remote MCP server
+        // BEGIN: com.azure.ai.agents.built_in_mcp
+        // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
+        McpTool tool = new McpTool("api-specs")
+            .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
+            .setRequireApproval("always");
+        // END: com.azure.ai.agents.built_in_mcp
 
+        // Create the agent definition with MCP tool enabled
+        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+            .setInstructions("You are a helpful agent that can use MCP tools to assist users. "
+                + "Use the available MCP tools to answer questions and perform tasks.")
+            .setTools(Collections.singletonList(tool));
+
+        String agentName = "mcp-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            // Create an MCP tool that connects to a remote MCP server
-            // BEGIN: com.azure.ai.agents.built_in_mcp
-            // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
-            McpTool tool = new McpTool("api-specs")
-                .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval("always");
-            // END: com.azure.ai.agents.built_in_mcp
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            // Create the agent definition with MCP tool enabled
-            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a helpful agent that can use MCP tools to assist users. "
-                    + "Use the available MCP tools to answer questions and perform tasks.")
-                .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("mcp-agent", agentDefinition);
-            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
-
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .input("Please summarize the Azure REST API specifications Readme"));
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                .input("Please summarize the Azure REST API specifications Readme")
+                .build());
 
             // Process MCP approval requests — the server requires approval before executing tools
             List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
@@ -95,11 +100,10 @@ public class McpSync {
             // If approvals were needed, send them back and get the final response
             if (!approvals.isEmpty()) {
                 System.out.println("Sending " + approvals.size() + " approval(s)...");
-                response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .inputOfResponse(approvals)
-                        .previousResponseId(response.id()));
+                response = openAIClient.responses().create(ResponseCreateParams.builder()
+                    .inputOfResponse(approvals)
+                    .previousResponseId(response.id())
+                    .build());
             }
 
             // Process and display the final response
@@ -126,10 +130,7 @@ public class McpSync {
                 }
             }
         } finally {
-            if (agent != null) {
-                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-                System.out.println("Agent deleted");
-            }
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }

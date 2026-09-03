@@ -5,21 +5,26 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
+import com.openai.core.http.AsyncStreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates how to stream a response from an agent configured with the
@@ -42,9 +47,6 @@ public class CodeInterpreterStreamingAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Create a CodeInterpreterTool - an Azure-specific tool for executing Python code
         CodeInterpreterTool tool = new CodeInterpreterTool();
@@ -55,53 +57,65 @@ public class CodeInterpreterStreamingAsync {
                 + "When asked to perform calculations, use the code interpreter to run Python code.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("code-interpreter-streaming-async-agent", agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
-                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+        // Create the agent version and pin the agent endpoint to it. The endpoint URL identifies the agent,
+        // so responses.createStreaming(...) below does not need to send an agent_reference in its body.
+        String agentName = "code-interpreter-streaming-async-agent";
+        Mono.usingWhen(
+                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
+                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
+                            new UpdateAgentDetailsOptions().setAgentEndpoint(
+                                new AgentEndpointConfig()
+                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
+                        .thenReturn(agent)),
+                agent -> {
+                    OpenAIClientAsync openAIAsyncClient
+                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                    // BEGIN: com.azure.ai.agents.streaming.code_interpreter_async
+                    // Stream response asynchronously with Code Interpreter
+                    ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                // BEGIN: com.azure.ai.agents.streaming.code_interpreter_async
-                // Stream response asynchronously with Code Interpreter
-                ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
-
-                return responsesAsyncClient.createStreamingAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
                         ResponseCreateParams.builder()
-                            .input("Calculate the first 10 prime numbers using Python."))
-                    .doOnNext(event -> {
-                        responseAccumulator.accumulate(event);
-                        // Print text deltas as they arrive
-                        event.outputTextDelta()
-                            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
-                        // Observe code interpreter progress events
-                        event.codeInterpreterCallInProgress()
-                            .ifPresent(e -> System.out.println("\n[Code interpreter running...]"));
-                        event.codeInterpreterCallCodeDelta()
-                            .ifPresent(e -> System.out.print(e.delta()));
-                        event.codeInterpreterCallCompleted()
-                            .ifPresent(e -> System.out.println("\n[Code interpreter completed]"));
-                    })
-                    .then(Mono.fromCallable(() -> {
-                        System.out.println();
+                            .input("Calculate the first 10 prime numbers using Python.")
+                            .build());
 
-                        // Access the complete accumulated response
-                        Response response = responseAccumulator.response();
-                        System.out.println("\nResponse ID: " + response.id());
-                        // END: com.azure.ai.agents.streaming.code_interpreter_async
-                        return response;
-                    }));
-            })
-            .then(Mono.defer(() -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"));
-                }
-                return Mono.empty();
-            }))
+                    stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
+                        @Override
+                        public void onNext(ResponseStreamEvent event) {
+                            responseAccumulator.accumulate(event);
+                            // Print text deltas as they arrive
+                            event.outputTextDelta()
+                                .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+                            // Observe code interpreter progress events
+                            event.codeInterpreterCallInProgress()
+                                .ifPresent(e -> System.out.println("\n[Code interpreter running...]"));
+                            event.codeInterpreterCallCodeDelta()
+                                .ifPresent(e -> System.out.print(e.delta()));
+                            event.codeInterpreterCallCompleted()
+                                .ifPresent(e -> System.out.println("\n[Code interpreter completed]"));
+                        }
+
+                        @Override
+                        public void onComplete(java.util.Optional<Throwable> error) {
+                            // No-op: onCompleteFuture below signals completion.
+                        }
+                    });
+
+                    return Mono.fromFuture(stream.onCompleteFuture())
+                        .doFinally(signal -> stream.close())
+                        .doOnSuccess(unused -> {
+                            System.out.println();
+
+                            // Access the complete accumulated response
+                            Response response = responseAccumulator.response();
+                            System.out.println("\nResponse ID: " + response.id());
+                        });
+                    // END: com.azure.ai.agents.streaming.code_interpreter_async
+                },
+                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
             .block();
     }
 }

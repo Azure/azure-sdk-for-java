@@ -6,10 +6,6 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -18,6 +14,7 @@ import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
 import com.azure.ai.agents.tools.ComputerUseUtil.SearchState;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
@@ -28,6 +25,13 @@ import com.openai.models.responses.ResponseInputImage;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseInputText;
 import com.openai.models.responses.ResponseOutputItem;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -68,7 +72,6 @@ public class ComputerUseSync {
             .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // Initialize state machine
         SearchState currentState = SearchState.INITIAL;
@@ -84,29 +87,30 @@ public class ComputerUseSync {
             return;
         }
 
-        AgentVersionDetails agent = null;
+        // BEGIN: com.azure.ai.agents.define_computer_use
+        ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
+            ComputerEnvironment.WINDOWS,
+            1026,
+            769
+        );
+        // END: com.azure.ai.agents.define_computer_use
 
+        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+            .setInstructions("You are a computer automation assistant."
+                + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
+            .setTools(Collections.singletonList(tool));
+
+        String agentName = "ComputerUseAgent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            // BEGIN: com.azure.ai.agents.define_computer_use
-            ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
-                ComputerEnvironment.WINDOWS,
-                1026,
-                769
-            );
-            // END: com.azure.ai.agents.define_computer_use
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a computer automation assistant."
-                    + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
-                .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition);
-            System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
-                agent.getId(), agent.getName(), agent.getVersion());
-
-            // Create the AgentReference for the response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
 
             // Initial request with screenshot - start with Bing search page
             System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
@@ -136,11 +140,10 @@ public class ComputerUseSync {
                         .build())
             );
 
-            Response response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .inputOfResponse(initialInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO));
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                    .inputOfResponse(initialInput)
+                    .truncation(ResponseCreateParams.Truncation.AUTO)
+                    .build());
 
             System.out.printf("Initial response received (ID: %s)%n", response.id());
 
@@ -193,25 +196,16 @@ public class ComputerUseSync {
                             .build())
                 );
 
-                response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .previousResponseId(response.id())
-                        .inputOfResponse(followUpInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO));
+                response = openAIClient.responses().create(ResponseCreateParams.builder()
+                    .previousResponseId(response.id())
+                    .inputOfResponse(followUpInput)
+                    .truncation(ResponseCreateParams.Truncation.AUTO)
+                    .build());
 
                 System.out.printf("Follow-up response received (ID: %s)%n", response.id());
             }
         } finally {
-            System.out.println("\nCleaning up...");
-            if (agent != null) {
-                try {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-                    System.out.println("Agent deleted");
-                } catch (Exception e) {
-                    System.out.println("Failed to delete agent: " + e.getMessage());
-                }
-            }
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }

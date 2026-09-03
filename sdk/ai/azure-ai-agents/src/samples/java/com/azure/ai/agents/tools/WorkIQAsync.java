@@ -5,19 +5,23 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.responses.ToolChoiceOptions;
 import reactor.core.publisher.Mono;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -53,7 +57,6 @@ public class WorkIQAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 
         WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(workIqConnectionId);
 
@@ -63,38 +66,32 @@ public class WorkIQAsync {
                 + "Teams messages, and other Microsoft 365 content.")
             .setTools(Collections.singletonList(workIqTool));
 
-        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
-            .flatMap(agent -> Mono.usingWhen(
-                Mono.just(agent),
-                createdAgent -> {
-                    System.out.printf("Agent created: %s (version %s)%n",
-                        createdAgent.getName(), createdAgent.getVersion());
-
-                    AgentReference agentReference = new AgentReference(createdAgent.getName())
-                        .setVersion(createdAgent.getVersion());
-
-                    return responsesAsyncClient.createAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder()
+        Mono.usingWhen(
+                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
+                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
+                            new UpdateAgentDetailsOptions().setAgentEndpoint(
+                                new AgentEndpointConfig()
+                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
+                        .thenReturn(agent)),
+                agent -> {
+                    OpenAIClientAsync openAIAsyncClient
+                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
+                    return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                             .toolChoice(ToolChoiceOptions.REQUIRED)
-                            .input(userInput))
+                            .input(userInput)
+                            .build()))
                         .doOnNext(response -> {
                             System.out.println("Response status: "
                                 + response.status().map(Object::toString).orElse("unknown"));
                             System.out.println("Agent response: " + getResponseText(response));
                         });
                 },
-                createdAgent -> deleteAgentVersion(agentsAsyncClient, createdAgent),
-                (createdAgent, error) -> deleteAgentVersion(agentsAsyncClient, createdAgent),
-                createdAgent -> deleteAgentVersion(agentsAsyncClient, createdAgent)))
+                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .timeout(Duration.ofSeconds(300))
             .block();
-    }
-
-    private static Mono<Void> deleteAgentVersion(AgentsAsyncClient agentsAsyncClient, AgentVersionDetails agent) {
-        return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-            .doOnSuccess(unused -> System.out.println("Agent deleted"));
     }
 
     private static String getResponseText(Response response) {

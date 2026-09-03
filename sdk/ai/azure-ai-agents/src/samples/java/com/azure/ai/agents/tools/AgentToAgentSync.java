@@ -5,17 +5,21 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.A2AProtocolVersion;
 import com.azure.ai.agents.models.A2ATool;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.client.OpenAIClient;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 
@@ -41,7 +45,6 @@ public class AgentToAgentSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_agent_to_agent
         // Create agent-to-agent tool with A2A protocol version and connection ID
@@ -54,23 +57,25 @@ public class AgentToAgentSync {
             .setInstructions("You are a coordinator agent that can communicate with other agents.")
             .setTools(Collections.singletonList(a2aTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("a2a-agent", agentDefinition);
-        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
+        String agentName = "a2a-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            // Create a response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .input("What can the secondary agent do?"));
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                    .input("What can the secondary agent do?")
+                .build());
 
             System.out.println("Response: " + response.output());
         } finally {
-            // Clean up
-            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }

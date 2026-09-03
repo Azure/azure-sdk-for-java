@@ -4,12 +4,15 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.AzureCreateResponseDetails;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.SessionLogEvent;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,6 +26,8 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
 
+import java.util.Collections;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         String endpoint = "my-resource-url";
@@ -31,7 +36,6 @@ public final class ReadmeSamples {
         AgentsClientBuilder builder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
@@ -44,6 +48,16 @@ public final class ReadmeSamples {
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
         AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
         // END: com.azure.ai.agents.create_prompt_agent
+
+        // BEGIN: com.azure.ai.agents.configure_agent_endpoint
+        AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+            .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+
+        agentsClient.updateAgentDetails(agent.getName(),
+            new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+        // END: com.azure.ai.agents.configure_agent_endpoint
 
         // BEGIN: com.azure.ai.agents.create_conversation
         Conversation conversation = conversationsClient.create();
@@ -66,12 +80,11 @@ public final class ReadmeSamples {
         // END: com.azure.ai.agents.add_message_to_conversation
 
         // BEGIN: com.azure.ai.agents.create_response
-        AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-        Response response = responsesClient.createAzureResponse(
-            new AzureCreateResponseOptions().setAgentReference(agentReference),
-            ResponseCreateParams.builder().conversation(conversation.id()));
-        // To extract Azure-specific response details:
-        AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
+        OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+
+        Response response = agentScopedClient.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
         // END: com.azure.ai.agents.create_response
 
         // BEGIN: com.azure.ai.agents.openai_official_library

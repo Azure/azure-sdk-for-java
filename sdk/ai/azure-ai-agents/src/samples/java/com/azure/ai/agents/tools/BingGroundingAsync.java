@@ -5,10 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingGroundingSearchConfiguration;
 import com.azure.ai.agents.models.BingGroundingSearchToolParameters;
 import com.azure.ai.agents.models.BingGroundingTool;
@@ -19,8 +15,15 @@ import com.openai.models.responses.ResponseCreateParams;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Mono;
+import com.openai.client.OpenAIClientAsync;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 /**
  * This sample demonstrates (using the async client) how to create an agent with the Bing Grounding tool
@@ -44,9 +47,6 @@ public class BingGroundingAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Create Bing grounding tool with connection configuration
         BingGroundingTool bingTool = new BingGroundingTool(
@@ -59,30 +59,27 @@ public class BingGroundingAsync {
             .setInstructions("You are a helpful assistant. Use Bing to find up-to-date information.")
             .setTools(Collections.singletonList(bingTool));
 
-        agentsAsyncClient.createAgentVersion("bing-grounding-agent", agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
-                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
-
-                return responsesAsyncClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .input("What are the latest developments in AI?"));
-            })
-            .doOnNext(response -> {
-                System.out.println("Response: " + response.output());
-            })
-            .then(Mono.defer(() -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"));
-                }
-                return Mono.empty();
-            }))
+        String agentName = "bing-grounding-agent";
+        Mono.usingWhen(
+                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
+                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
+                            new UpdateAgentDetailsOptions().setAgentEndpoint(
+                                new AgentEndpointConfig()
+                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
+                        .thenReturn(agent)),
+                agent -> {
+                    OpenAIClientAsync openAIAsyncClient
+                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
+                    return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                            .input("What are the latest developments in AI?")
+                            .build()))
+                        .doOnNext(response -> {
+                            System.out.println("Response: " + response.output());
+                        });
+                },
+                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .timeout(Duration.ofSeconds(300))
             .block();

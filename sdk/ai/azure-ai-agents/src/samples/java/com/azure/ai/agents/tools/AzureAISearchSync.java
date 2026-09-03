@@ -5,10 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AISearchIndexResource;
 import com.azure.ai.agents.models.AzureAISearchQueryType;
 import com.azure.ai.agents.models.AzureAISearchTool;
@@ -16,8 +12,16 @@ import com.azure.ai.agents.models.AzureAISearchToolResource;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,7 +50,6 @@ public class AzureAISearchSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_azure_ai_search
         // Create Azure AI Search tool with index configuration
@@ -66,23 +69,25 @@ public class AzureAISearchSync {
                 + "Always provide citations for answers using the tool.")
             .setTools(Collections.singletonList(aiSearchTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("ai-search-agent", agentDefinition);
-        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
+        String agentName = "ai-search-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            // Create a response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .input("Search for information about Azure AI services"));
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                .input("Search for information about Azure AI services")
+                .build());
 
             System.out.println("Response: " + response.output());
         } finally {
-            // Clean up
-            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }
