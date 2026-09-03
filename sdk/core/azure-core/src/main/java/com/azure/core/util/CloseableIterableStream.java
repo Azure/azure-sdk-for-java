@@ -15,6 +15,18 @@ import java.util.stream.Stream;
  * <p>This stream must be closed after use. Use it in a try-with-resources statement to ensure the owned resource is
  * released whether iteration completes normally or ends early. Closing the stream is safe to do more than once.</p>
  *
+ * <p><strong>Code sample</strong></p>
+ *
+ * <!-- src_embed com.azure.core.util.closeableIterableStream.iterate -->
+ * <pre>
+ * try &#40;CloseableIterableStream&lt;ServerSentEvent&lt;String&gt;&gt; events = response&#41; &#123;
+ *     for &#40;ServerSentEvent&lt;String&gt; event : events&#41; &#123;
+ *         System.out.printf&#40;&quot;Event '%s': %s%n&quot;, event.getEvent&#40;&#41;, event.getData&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.core.util.closeableIterableStream.iterate -->
+ *
  * @param <T> The type of values in this stream.
  */
 public final class CloseableIterableStream<T> extends IterableStream<T> implements Closeable {
