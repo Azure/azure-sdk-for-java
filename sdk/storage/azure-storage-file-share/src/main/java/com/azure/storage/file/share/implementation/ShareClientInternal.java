@@ -989,7 +989,7 @@ public final class ShareClientInternal {
      * <pre>
      * {@code
      * {
-     *     ShareUsageBytes: int (Required)
+     *     ShareUsageBytes: long (Required)
      * }
      * }
      * </pre>

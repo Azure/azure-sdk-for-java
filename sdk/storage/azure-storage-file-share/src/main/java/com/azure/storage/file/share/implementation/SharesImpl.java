@@ -2406,7 +2406,7 @@ public final class SharesImpl {
      * <pre>
      * {@code
      * {
-     *     ShareUsageBytes: int (Required)
+     *     ShareUsageBytes: long (Required)
      * }
      * }
      * </pre>
@@ -2468,7 +2468,7 @@ public final class SharesImpl {
      * <pre>
      * {@code
      * {
-     *     ShareUsageBytes: int (Required)
+     *     ShareUsageBytes: long (Required)
      * }
      * }
      * </pre>

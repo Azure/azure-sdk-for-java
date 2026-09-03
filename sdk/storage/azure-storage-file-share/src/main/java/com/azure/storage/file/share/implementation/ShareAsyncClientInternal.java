@@ -994,7 +994,7 @@ public final class ShareAsyncClientInternal {
      * <pre>
      * {@code
      * {
-     *     ShareUsageBytes: int (Required)
+     *     ShareUsageBytes: long (Required)
      * }
      * }
      * </pre>

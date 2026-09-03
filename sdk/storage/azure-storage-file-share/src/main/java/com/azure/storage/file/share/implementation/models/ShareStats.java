@@ -23,7 +23,7 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * include all recently created or recently resized files.
      */
     @Generated
-    private final int shareUsageBytes;
+    private final long shareUsageBytes;
 
     /**
      * Creates an instance of ShareStats class.
@@ -31,7 +31,7 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * @param shareUsageBytes the shareUsageBytes value to set.
      */
     @Generated
-    private ShareStats(int shareUsageBytes) {
+    private ShareStats(long shareUsageBytes) {
         this.shareUsageBytes = shareUsageBytes;
     }
 
@@ -42,7 +42,7 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * @return the shareUsageBytes value.
      */
     @Generated
-    public int getShareUsageBytes() {
+    public long getShareUsageBytes() {
         return this.shareUsageBytes;
     }
 
@@ -57,7 +57,7 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ShareStats" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeIntElement("ShareUsageBytes", this.shareUsageBytes);
+        xmlWriter.writeLongElement("ShareUsageBytes", this.shareUsageBytes);
         return xmlWriter.writeEndElement();
     }
 
@@ -91,12 +91,12 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
         String finalRootElementName
             = rootElementName == null || rootElementName.isEmpty() ? "ShareStats" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            int shareUsageBytes = 0;
+            long shareUsageBytes = 0L;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
                 if ("ShareUsageBytes".equals(elementName.getLocalPart())) {
-                    shareUsageBytes = reader.getIntElement();
+                    shareUsageBytes = reader.getLongElement();
                 } else {
                     reader.skipElement();
                 }
