@@ -1,4 +1,4 @@
 directory: specification/webpubsub/resource-manager/Microsoft.SignalRService/SignalRService
-commit: e12a60d5808eaee0bdb982a2c87626d00892f362
+commit: 88e90ae653598778320aa0a37da27f5ce85979e0
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
