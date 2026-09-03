@@ -12,9 +12,9 @@ import java.util.Collection;
  */
 public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     /**
-     * Upgrades the clusters
-     * kubernetes version to the latest supported patch release on minor version N-1, where N is the latest supported
-     * minor version.
+     * Upgrades the clusters kubernetes
+     * version to the latest supported patch release on minor version N-1, where N is the latest supported minor
+     * version.
      * For example, if a cluster runs version 1.17.7 and versions 1.17.9, 1.18.4, 1.18.6, and 1.19.1 are available, the
      * cluster upgrades to 1.18.6.
      */
@@ -32,12 +32,20 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     public static final UpgradeChannel NODE_IMAGE = fromString("NodeImage");
 
     /**
-     * Upgrades the clusters
-     * Kubernetes version to the latest supported patch version of the specified target Kubernetes version.
+     * Upgrades the clusters Kubernetes
+     * version to the latest supported patch version of the specified target Kubernetes version.
      * For information on the behavior of update run for Kubernetes version upgrade,
      * see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal.
      */
     public static final UpgradeChannel TARGET_KUBERNETES_VERSION = fromString("TargetKubernetesVersion");
+
+    /**
+     * Applies security patches to the
+     * nodes of the target clusters.
+     * For information on the behavior of update run for security patch upgrade,
+     * see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal.
+     */
+    public static final UpgradeChannel SECURITY_PATCH = fromString("SecurityPatch");
 
     /**
      * Creates a new instance of UpgradeChannel value.

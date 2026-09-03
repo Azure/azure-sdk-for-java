@@ -11,6 +11,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateProvisioningSt
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateTarget;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.ScheduledStartProperties;
 
 public final class GateImpl implements Gate {
     private GateInner innerObject;
@@ -53,6 +54,10 @@ public final class GateImpl implements Gate {
 
     public GateType gateType() {
         return this.innerModel().gateType();
+    }
+
+    public ScheduledStartProperties scheduledStartProperties() {
+        return this.innerModel().scheduledStartProperties();
     }
 
     public GateTarget target() {

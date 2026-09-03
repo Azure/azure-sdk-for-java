@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class AutoUpgradeProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/AutoUpgradeProfiles_Delete.json
+     * x-ms-original-file: 2026-06-02-preview/AutoUpgradeProfiles_Delete.json
      */
     /**
      * Sample code: Delete an AutoUpgradeProfile resource.

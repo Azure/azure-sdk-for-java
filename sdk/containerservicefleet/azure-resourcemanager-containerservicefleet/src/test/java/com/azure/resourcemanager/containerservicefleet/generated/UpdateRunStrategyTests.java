@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.containerservicefleet.models.DayOfWeek;
 import com.azure.resourcemanager.containerservicefleet.models.GateConfiguration;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
+import com.azure.resourcemanager.containerservicefleet.models.ScheduledStartConfiguration;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
@@ -17,171 +20,245 @@ public final class UpdateRunStrategyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateRunStrategy model = BinaryData.fromString(
-            "{\"stages\":[{\"name\":\"zunlu\",\"groups\":[{\"name\":\"n\",\"maxConcurrency\":\"nxipeil\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"tskzbbtdzumveek\",\"maxConcurrency\":\"wozuhkf\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}],\"afterStageWaitInSeconds\":568244971,\"maxConcurrency\":\"us\",\"beforeGates\":[{\"displayName\":\"uwaboekqvke\",\"type\":\"Approval\"},{\"displayName\":\"mvb\",\"type\":\"Approval\"},{\"displayName\":\"jsflhhcaalnjix\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"wjo\",\"type\":\"Approval\"}]},{\"name\":\"qcslyjpkiid\",\"groups\":[{\"name\":\"xznelixhnrztf\",\"maxConcurrency\":\"hb\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"gdtpnapnyiro\",\"maxConcurrency\":\"hpigv\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"edjvcslynqw\",\"maxConcurrency\":\"cwzzhxgktr\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}],\"afterStageWaitInSeconds\":203480893,\"maxConcurrency\":\"lwptfdy\",\"beforeGates\":[{\"displayName\":\"b\",\"type\":\"Approval\"},{\"displayName\":\"eopzfqrhhuaopp\",\"type\":\"Approval\"},{\"displayName\":\"eqx\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"hzxct\",\"type\":\"Approval\"},{\"displayName\":\"bkdmo\",\"type\":\"Approval\"},{\"displayName\":\"ostmgrcf\",\"type\":\"Approval\"}]},{\"name\":\"nrmfqjhhk\",\"groups\":[{\"name\":\"vjymjhxxjyngud\",\"maxConcurrency\":\"krtswbxqz\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"fdxxivetvtcqaqtd\",\"maxConcurrency\":\"mcbxvwvxysl\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"tkblmpewww\",\"maxConcurrency\":\"krvrns\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"fovasr\",\"maxConcurrency\":\"v\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}],\"afterStageWaitInSeconds\":561759175,\"maxConcurrency\":\"xb\",\"beforeGates\":[{\"displayName\":\"rfbjf\",\"type\":\"Approval\"},{\"displayName\":\"ssotftpv\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"ilzznfqqnvwp\",\"type\":\"Approval\"},{\"displayName\":\"aruoujmkcjhwqyt\",\"type\":\"Approval\"},{\"displayName\":\"bnw\",\"type\":\"Approval\"},{\"displayName\":\"gdrjervnaenqpe\",\"type\":\"Approval\"}]},{\"name\":\"ndoygmifthnzdnd\",\"groups\":[{\"name\":\"nayqi\",\"maxConcurrency\":\"nduhavhqlkthum\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"r\",\"maxConcurrency\":\"ccymvaolpsslql\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"wiydmcwyhzdxssad\",\"maxConcurrency\":\"mnvdfzn\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}],\"afterStageWaitInSeconds\":11756294,\"maxConcurrency\":\"blylpstdbh\",\"beforeGates\":[{\"displayName\":\"zdzucerscdntnevf\",\"type\":\"Approval\"},{\"displayName\":\"mygtdssls\",\"type\":\"Approval\"},{\"displayName\":\"weriofzpyqsem\",\"type\":\"Approval\"},{\"displayName\":\"n\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"szhedplvw\",\"type\":\"Approval\"},{\"displayName\":\"bmwmbesldnkw\",\"type\":\"Approval\"}]}]}")
+            "{\"stages\":[{\"name\":\"jcntuj\",\"groups\":[{\"name\":\"jed\",\"maxAllowedFailures\":\"wwa\",\"maxConcurrency\":\"kojvd\",\"memberSelector\":{\"byLabel\":\"zfoqouicybxar\"},\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}]}],\"memberSelector\":{\"byLabel\":\"idoamciodhkha\"},\"afterStageWaitInSeconds\":157531111,\"maxAllowedFailures\":\"nz\",\"maxConcurrency\":\"nlwntoe\",\"beforeGates\":[{\"displayName\":\"wbw\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Saturday\",\"startTime\":\"zcmrvexztvb\",\"utcOffset\":\"qgsfraoyzkoow\"}},{\"displayName\":\"mnguxawqaldsyu\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Tuesday\",\"startTime\":\"erqf\",\"utcOffset\":\"bw\"}},{\"displayName\":\"nkbykutwpfhp\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Tuesday\",\"startTime\":\"r\",\"utcOffset\":\"kdsnfdsdoakgtdl\"}}],\"afterGates\":[{\"displayName\":\"evdlh\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Monday\",\"startTime\":\"sdsttwvog\",\"utcOffset\":\"bbejdcngqqm\"}},{\"displayName\":\"kufgmj\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Friday\",\"startTime\":\"dgrtwaenuuzkopbm\",\"utcOffset\":\"nrfdw\"}},{\"displayName\":\"uhhziuiefozbhdm\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Tuesday\",\"startTime\":\"zqhof\",\"utcOffset\":\"rmaequ\"}},{\"displayName\":\"hxicslfaoqz\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Wednesday\",\"startTime\":\"lhalnswh\",\"utcOffset\":\"csphkaiv\"}}]},{\"name\":\"itqscywuggwoluhc\",\"groups\":[{\"name\":\"emh\",\"maxAllowedFailures\":\"rsbrgzdwm\",\"maxConcurrency\":\"eypqwdxggicccn\",\"memberSelector\":{\"byLabel\":\"huexmk\"},\"beforeGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"}]}],\"memberSelector\":{\"byLabel\":\"zrncsdt\"},\"afterStageWaitInSeconds\":94882707,\"maxAllowedFailures\":\"iypbsfgytgusl\",\"maxConcurrency\":\"adcy\",\"beforeGates\":[{\"displayName\":\"yhejhzisxgfp\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Saturday\",\"startTime\":\"p\",\"utcOffset\":\"vk\"}},{\"displayName\":\"pqvujzraehtwdwrf\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Friday\",\"startTime\":\"byrcdlbhshfwp\",\"utcOffset\":\"acstwityk\"}},{\"displayName\":\"vxccedcp\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Monday\",\"startTime\":\"odn\",\"utcOffset\":\"zxltjcvn\"}}],\"afterGates\":[{\"displayName\":\"ugcxnavvwxq\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Thursday\",\"startTime\":\"unyowxwl\",\"utcOffset\":\"djrkvfgbvfvpd\"}},{\"displayName\":\"daciz\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Friday\",\"startTime\":\"hkr\",\"utcOffset\":\"ibdeibq\"}},{\"displayName\":\"qkgh\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Friday\",\"startTime\":\"zwmk\",\"utcOffset\":\"efajpj\"}}]},{\"name\":\"rwkq\",\"groups\":[{\"name\":\"gbijtjivfx\",\"maxAllowedFailures\":\"jabibsystawf\",\"maxConcurrency\":\"jpvkvpbjxbkzbzkd\",\"memberSelector\":{\"byLabel\":\"cjabudurgkakmo\"},\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}]},{\"name\":\"mouwqlgzrfzeey\",\"maxAllowedFailures\":\"izikayuhq\",\"maxConcurrency\":\"jbsybbqw\",\"memberSelector\":{\"byLabel\":\"t\"},\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}]}],\"memberSelector\":{\"byLabel\":\"as\"},\"afterStageWaitInSeconds\":753407395,\"maxAllowedFailures\":\"qfxssmwutw\",\"maxConcurrency\":\"srezp\",\"beforeGates\":[{\"displayName\":\"euyowqkd\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Monday\",\"startTime\":\"sibircgpi\",\"utcOffset\":\"pzimejzanlfzxi\"}},{\"displayName\":\"rmbzo\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Friday\",\"startTime\":\"xrjqcirgzpfrlazs\",\"utcOffset\":\"rnwoiindfp\"}},{\"displayName\":\"jylwbtlhflsj\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Thursday\",\"startTime\":\"zfjvfbgofe\",\"utcOffset\":\"jagrqmqhldvr\"}}],\"afterGates\":[{\"displayName\":\"jnalghf\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Friday\",\"startTime\":\"sexso\",\"utcOffset\":\"ueluqhhahhxvrhmz\"}},{\"displayName\":\"pjgwwspug\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Tuesday\",\"startTime\":\"sxhqxujx\",\"utcOffset\":\"kndxdigrjgu\"}},{\"displayName\":\"zdmsyqtfi\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Thursday\",\"startTime\":\"otzi\",\"utcOffset\":\"gamv\"}},{\"displayName\":\"ho\",\"type\":\"Approval\",\"scheduledStartConfiguration\":{\"startDay\":\"Tuesday\",\"startTime\":\"udphqamvdkfwyn\",\"utcOffset\":\"cvtbv\"}}]}]}")
             .toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("zunlu", model.stages().get(0).name());
-        Assertions.assertEquals("n", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals("nxipeil", model.stages().get(0).groups().get(0).maxConcurrency());
+        Assertions.assertEquals("jcntuj", model.stages().get(0).name());
+        Assertions.assertEquals("jed", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("wwa", model.stages().get(0).groups().get(0).maxAllowedFailures());
+        Assertions.assertEquals("kojvd", model.stages().get(0).groups().get(0).maxConcurrency());
+        Assertions.assertEquals("zfoqouicybxar", model.stages().get(0).groups().get(0).memberSelector().byLabel());
         Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).groups().get(0).beforeGates().get(0).type());
-        Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).groups().get(0).afterGates().get(0).type());
-        Assertions.assertEquals(568244971, model.stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals("us", model.stages().get(0).maxConcurrency());
-        Assertions.assertEquals("uwaboekqvke", model.stages().get(0).beforeGates().get(0).displayName());
-        Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).beforeGates().get(0).type());
-        Assertions.assertEquals("wjo", model.stages().get(0).afterGates().get(0).displayName());
-        Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).afterGates().get(0).type());
+        Assertions.assertEquals(GateType.SCHEDULED_START,
+            model.stages().get(0).groups().get(0).afterGates().get(0).type());
+        Assertions.assertEquals("idoamciodhkha", model.stages().get(0).memberSelector().byLabel());
+        Assertions.assertEquals(157531111, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("nz", model.stages().get(0).maxAllowedFailures());
+        Assertions.assertEquals("nlwntoe", model.stages().get(0).maxConcurrency());
+        Assertions.assertEquals("wbw", model.stages().get(0).beforeGates().get(0).displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.stages().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals(DayOfWeek.SATURDAY,
+            model.stages().get(0).beforeGates().get(0).scheduledStartConfiguration().startDay());
+        Assertions.assertEquals("zcmrvexztvb",
+            model.stages().get(0).beforeGates().get(0).scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("qgsfraoyzkoow",
+            model.stages().get(0).beforeGates().get(0).scheduledStartConfiguration().utcOffset());
+        Assertions.assertEquals("evdlh", model.stages().get(0).afterGates().get(0).displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.stages().get(0).afterGates().get(0).type());
+        Assertions.assertEquals(DayOfWeek.MONDAY,
+            model.stages().get(0).afterGates().get(0).scheduledStartConfiguration().startDay());
+        Assertions.assertEquals("sdsttwvog",
+            model.stages().get(0).afterGates().get(0).scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("bbejdcngqqm",
+            model.stages().get(0).afterGates().get(0).scheduledStartConfiguration().utcOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateRunStrategy model = new UpdateRunStrategy().withStages(Arrays.asList(
-            new UpdateStage().withName("zunlu")
+            new UpdateStage().withName("jcntuj")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("jed")
+                    .withMaxAllowedFailures("wwa")
+                    .withMaxConcurrency("kojvd")
+                    .withMemberSelector(new MemberSelector().withByLabel("zfoqouicybxar"))
+                    .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.SCHEDULED_START)))
+                    .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.SCHEDULED_START),
+                        new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.SCHEDULED_START)))))
+                .withMemberSelector(new MemberSelector().withByLabel("idoamciodhkha"))
+                .withAfterStageWaitInSeconds(157531111)
+                .withMaxAllowedFailures("nz")
+                .withMaxConcurrency("nlwntoe")
+                .withBeforeGates(Arrays.asList(new GateConfiguration()
+                    .withDisplayName("wbw")
+                    .withType(GateType.SCHEDULED_START)
+                    .withScheduledStartConfiguration(new ScheduledStartConfiguration()
+                        .withStartDay(DayOfWeek.SATURDAY)
+                        .withStartTime("zcmrvexztvb")
+                        .withUtcOffset("qgsfraoyzkoow")),
+                    new GateConfiguration().withDisplayName("mnguxawqaldsyu")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.TUESDAY)
+                                .withStartTime("erqf")
+                                .withUtcOffset("bw")),
+                    new GateConfiguration()
+                        .withDisplayName("nkbykutwpfhp")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.TUESDAY)
+                                .withStartTime("r")
+                                .withUtcOffset("kdsnfdsdoakgtdl"))))
+                .withAfterGates(Arrays.asList(new GateConfiguration()
+                    .withDisplayName("evdlh")
+                    .withType(GateType.SCHEDULED_START)
+                    .withScheduledStartConfiguration(new ScheduledStartConfiguration()
+                        .withStartDay(DayOfWeek.MONDAY)
+                        .withStartTime("sdsttwvog")
+                        .withUtcOffset("bbejdcngqqm")),
+                    new GateConfiguration().withDisplayName("kufgmj")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                                .withStartTime("dgrtwaenuuzkopbm")
+                                .withUtcOffset("nrfdw")),
+                    new GateConfiguration().withDisplayName("uhhziuiefozbhdm")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(new ScheduledStartConfiguration()
+                            .withStartDay(DayOfWeek.TUESDAY)
+                            .withStartTime("zqhof")
+                            .withUtcOffset("rmaequ")),
+                    new GateConfiguration().withDisplayName("hxicslfaoqz")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.WEDNESDAY)
+                                .withStartTime("lhalnswh")
+                                .withUtcOffset("csphkaiv")))),
+            new UpdateStage().withName("itqscywuggwoluhc")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("emh")
+                    .withMaxAllowedFailures("rsbrgzdwm")
+                    .withMaxConcurrency("eypqwdxggicccn")
+                    .withMemberSelector(new MemberSelector().withByLabel("huexmk"))
+                    .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.SCHEDULED_START),
+                        new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.APPROVAL)))
+                    .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.APPROVAL),
+                        new GateConfiguration().withType(GateType.SCHEDULED_START),
+                        new GateConfiguration().withType(GateType.APPROVAL)))))
+                .withMemberSelector(new MemberSelector().withByLabel("zrncsdt"))
+                .withAfterStageWaitInSeconds(94882707)
+                .withMaxAllowedFailures("iypbsfgytgusl")
+                .withMaxConcurrency("adcy")
+                .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("yhejhzisxgfp")
+                    .withType(GateType.APPROVAL)
+                    .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.SATURDAY)
+                        .withStartTime("p")
+                        .withUtcOffset("vk")),
+                    new GateConfiguration().withDisplayName("pqvujzraehtwdwrf")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                                .withStartTime("byrcdlbhshfwp")
+                                .withUtcOffset("acstwityk")),
+                    new GateConfiguration().withDisplayName("vxccedcp")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.MONDAY)
+                                .withStartTime("odn")
+                                .withUtcOffset("zxltjcvn"))))
+                .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("ugcxnavvwxq")
+                    .withType(GateType.APPROVAL)
+                    .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.THURSDAY)
+                        .withStartTime("unyowxwl")
+                        .withUtcOffset("djrkvfgbvfvpd")),
+                    new GateConfiguration().withDisplayName("daciz")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                                .withStartTime("hkr")
+                                .withUtcOffset("ibdeibq")),
+                    new GateConfiguration().withDisplayName("qkgh")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                                .withStartTime("zwmk")
+                                .withUtcOffset("efajpj")))),
+            new UpdateStage().withName("rwkq")
                 .withGroups(Arrays.asList(
-                    new UpdateGroup().withName("n")
-                        .withMaxConcurrency("nxipeil")
+                    new UpdateGroup().withName("gbijtjivfx")
+                        .withMaxAllowedFailures("jabibsystawf")
+                        .withMaxConcurrency("jpvkvpbjxbkzbzkd")
+                        .withMemberSelector(new MemberSelector().withByLabel("cjabudurgkakmo"))
+                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
+                            new GateConfiguration().withType(GateType.APPROVAL)))
+                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.SCHEDULED_START),
+                            new GateConfiguration().withType(GateType.APPROVAL),
+                            new GateConfiguration().withType(GateType.SCHEDULED_START))),
+                    new UpdateGroup().withName("mouwqlgzrfzeey")
+                        .withMaxAllowedFailures("izikayuhq")
+                        .withMaxConcurrency("jbsybbqw")
+                        .withMemberSelector(new MemberSelector().withByLabel("t"))
                         .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
                             new GateConfiguration().withType(GateType.APPROVAL)))
                         .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
+                            new GateConfiguration().withType(GateType.SCHEDULED_START),
                             new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("tskzbbtdzumveek")
-                        .withMaxConcurrency("wozuhkf")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL)))))
-                .withAfterStageWaitInSeconds(568244971)
-                .withMaxConcurrency("us")
-                .withBeforeGates(
-                    Arrays.asList(new GateConfiguration().withDisplayName("uwaboekqvke").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("mvb").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("jsflhhcaalnjix").withType(GateType.APPROVAL)))
-                .withAfterGates(
-                    Arrays.asList(new GateConfiguration().withDisplayName("wjo").withType(GateType.APPROVAL))),
-            new UpdateStage().withName("qcslyjpkiid")
-                .withGroups(Arrays.asList(
-                    new UpdateGroup().withName("xznelixhnrztf")
-                        .withMaxConcurrency("hb")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("gdtpnapnyiro")
-                        .withMaxConcurrency("hpigv")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("edjvcslynqw")
-                        .withMaxConcurrency("cwzzhxgktr")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL)))))
-                .withAfterStageWaitInSeconds(203480893)
-                .withMaxConcurrency("lwptfdy")
-                .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("b").withType(GateType.APPROVAL),
-                    new GateConfiguration().withDisplayName("eopzfqrhhuaopp").withType(GateType.APPROVAL),
-                    new GateConfiguration().withDisplayName("eqx").withType(GateType.APPROVAL)))
-                .withAfterGates(
-                    Arrays.asList(new GateConfiguration().withDisplayName("hzxct").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("bkdmo").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("ostmgrcf").withType(GateType.APPROVAL))),
-            new UpdateStage().withName("nrmfqjhhk")
-                .withGroups(Arrays.asList(
-                    new UpdateGroup().withName("vjymjhxxjyngud")
-                        .withMaxConcurrency("krtswbxqz")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("fdxxivetvtcqaqtd")
-                        .withMaxConcurrency("mcbxvwvxysl")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("tkblmpewww")
-                        .withMaxConcurrency("krvrns")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("fovasr")
-                        .withMaxConcurrency("v")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))))
-                .withAfterStageWaitInSeconds(561759175)
-                .withMaxConcurrency("xb")
-                .withBeforeGates(
-                    Arrays.asList(new GateConfiguration().withDisplayName("rfbjf").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("ssotftpv").withType(GateType.APPROVAL)))
-                .withAfterGates(
-                    Arrays.asList(new GateConfiguration().withDisplayName("ilzznfqqnvwp").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("aruoujmkcjhwqyt").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("bnw").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("gdrjervnaenqpe").withType(GateType.APPROVAL))),
-            new UpdateStage().withName("ndoygmifthnzdnd")
-                .withGroups(Arrays.asList(
-                    new UpdateGroup().withName("nayqi")
-                        .withMaxConcurrency("nduhavhqlkthum")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("r")
-                        .withMaxConcurrency("ccymvaolpsslql")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateGroup().withName("wiydmcwyhzdxssad")
-                        .withMaxConcurrency("mnvdfzn")
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))))
-                .withAfterStageWaitInSeconds(11756294)
-                .withMaxConcurrency("blylpstdbh")
-                .withBeforeGates(Arrays.asList(
-                    new GateConfiguration().withDisplayName("zdzucerscdntnevf").withType(GateType.APPROVAL),
-                    new GateConfiguration().withDisplayName("mygtdssls").withType(GateType.APPROVAL),
-                    new GateConfiguration().withDisplayName("weriofzpyqsem").withType(GateType.APPROVAL),
-                    new GateConfiguration().withDisplayName("n").withType(GateType.APPROVAL)))
-                .withAfterGates(
-                    Arrays.asList(new GateConfiguration().withDisplayName("szhedplvw").withType(GateType.APPROVAL),
-                        new GateConfiguration().withDisplayName("bmwmbesldnkw").withType(GateType.APPROVAL)))));
+                            new GateConfiguration().withType(GateType.SCHEDULED_START)))))
+                .withMemberSelector(new MemberSelector().withByLabel("as"))
+                .withAfterStageWaitInSeconds(753407395)
+                .withMaxAllowedFailures("qfxssmwutw")
+                .withMaxConcurrency("srezp")
+                .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("euyowqkd")
+                    .withType(GateType.APPROVAL)
+                    .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.MONDAY)
+                        .withStartTime("sibircgpi")
+                        .withUtcOffset("pzimejzanlfzxi")),
+                    new GateConfiguration().withDisplayName("rmbzo")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                                .withStartTime("xrjqcirgzpfrlazs")
+                                .withUtcOffset("rnwoiindfp")),
+                    new GateConfiguration().withDisplayName("jylwbtlhflsj")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.THURSDAY)
+                                .withStartTime("zfjvfbgofe")
+                                .withUtcOffset("jagrqmqhldvr"))))
+                .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("jnalghf")
+                    .withType(GateType.SCHEDULED_START)
+                    .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                        .withStartTime("sexso")
+                        .withUtcOffset("ueluqhhahhxvrhmz")),
+                    new GateConfiguration().withDisplayName("pjgwwspug")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.TUESDAY)
+                                .withStartTime("sxhqxujx")
+                                .withUtcOffset("kndxdigrjgu")),
+                    new GateConfiguration().withDisplayName("zdmsyqtfi")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.THURSDAY)
+                                .withStartTime("otzi")
+                                .withUtcOffset("gamv")),
+                    new GateConfiguration().withDisplayName("ho")
+                        .withType(GateType.APPROVAL)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.TUESDAY)
+                                .withStartTime("udphqamvdkfwyn")
+                                .withUtcOffset("cvtbv"))))));
         model = BinaryData.fromObject(model).toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("zunlu", model.stages().get(0).name());
-        Assertions.assertEquals("n", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals("nxipeil", model.stages().get(0).groups().get(0).maxConcurrency());
+        Assertions.assertEquals("jcntuj", model.stages().get(0).name());
+        Assertions.assertEquals("jed", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("wwa", model.stages().get(0).groups().get(0).maxAllowedFailures());
+        Assertions.assertEquals("kojvd", model.stages().get(0).groups().get(0).maxConcurrency());
+        Assertions.assertEquals("zfoqouicybxar", model.stages().get(0).groups().get(0).memberSelector().byLabel());
         Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).groups().get(0).beforeGates().get(0).type());
-        Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).groups().get(0).afterGates().get(0).type());
-        Assertions.assertEquals(568244971, model.stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals("us", model.stages().get(0).maxConcurrency());
-        Assertions.assertEquals("uwaboekqvke", model.stages().get(0).beforeGates().get(0).displayName());
-        Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).beforeGates().get(0).type());
-        Assertions.assertEquals("wjo", model.stages().get(0).afterGates().get(0).displayName());
-        Assertions.assertEquals(GateType.APPROVAL, model.stages().get(0).afterGates().get(0).type());
+        Assertions.assertEquals(GateType.SCHEDULED_START,
+            model.stages().get(0).groups().get(0).afterGates().get(0).type());
+        Assertions.assertEquals("idoamciodhkha", model.stages().get(0).memberSelector().byLabel());
+        Assertions.assertEquals(157531111, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("nz", model.stages().get(0).maxAllowedFailures());
+        Assertions.assertEquals("nlwntoe", model.stages().get(0).maxConcurrency());
+        Assertions.assertEquals("wbw", model.stages().get(0).beforeGates().get(0).displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.stages().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals(DayOfWeek.SATURDAY,
+            model.stages().get(0).beforeGates().get(0).scheduledStartConfiguration().startDay());
+        Assertions.assertEquals("zcmrvexztvb",
+            model.stages().get(0).beforeGates().get(0).scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("qgsfraoyzkoow",
+            model.stages().get(0).beforeGates().get(0).scheduledStartConfiguration().utcOffset());
+        Assertions.assertEquals("evdlh", model.stages().get(0).afterGates().get(0).displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.stages().get(0).afterGates().get(0).type());
+        Assertions.assertEquals(DayOfWeek.MONDAY,
+            model.stages().get(0).afterGates().get(0).scheduledStartConfiguration().startDay());
+        Assertions.assertEquals("sdsttwvog",
+            model.stages().get(0).afterGates().get(0).scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("bbejdcngqqm",
+            model.stages().get(0).afterGates().get(0).scheduledStartConfiguration().utcOffset());
     }
 }

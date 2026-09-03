@@ -12,6 +12,7 @@ import com.azure.resourcemanager.containerservicefleet.models.AdoptionPolicy;
 import com.azure.resourcemanager.containerservicefleet.models.DeletePolicy;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespace;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespacePatch;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespacePropertiesPatch;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespaceProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespaceStatus;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedNamespaceProperties;
@@ -249,6 +250,11 @@ public final class FleetManagedNamespaceImpl
 
     public FleetManagedNamespaceImpl withIfNoneMatch(String ifNoneMatch) {
         this.createIfNoneMatch = ifNoneMatch;
+        return this;
+    }
+
+    public FleetManagedNamespaceImpl withProperties(FleetManagedNamespacePropertiesPatch properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 
