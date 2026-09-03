@@ -21,7 +21,7 @@ public final class JobsStopMultipleExecutionsMockTests {
     @Test
     public void testStopMultipleExecutions() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2021-10-06T07:20:54Z\",\"endTime\":\"2021-04-02T08:31:22Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{}]},\"detailedStatus\":{\"replicas\":[{}]},\"reason\":\"mdmuqoh\",\"message\":\"hraxquddrwjcl\"},\"id\":\"rhlhpvzadbwenni\",\"name\":\"afhxrzfrmvztiuc\",\"type\":\"viqlluk\"},{\"properties\":{\"status\":\"Unknown\",\"startTime\":\"2021-09-18T09:47:02Z\",\"endTime\":\"2021-05-16T14:32:12Z\",\"template\":{\"containers\":[{},{},{}],\"initContainers\":[{},{}]},\"detailedStatus\":{\"replicas\":[{},{},{},{}]},\"reason\":\"po\",\"message\":\"tsin\"},\"id\":\"gov\",\"name\":\"yhdrxb\",\"type\":\"dvcehqw\"},{\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-04-27T16:40:09Z\",\"endTime\":\"2021-04-27T22:58:41Z\",\"template\":{\"containers\":[{},{}],\"initContainers\":[{},{},{},{}]},\"detailedStatus\":{\"replicas\":[{}]},\"reason\":\"orbalkj\",\"message\":\"kbd\"},\"id\":\"ltqstqkqsygxiyn\",\"name\":\"covagzkheuba\",\"type\":\"lxu\"},{\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-02-09T23:03:22Z\",\"endTime\":\"2021-05-06T15:52:28Z\",\"template\":{\"containers\":[{},{}],\"initContainers\":[{},{}]},\"detailedStatus\":{\"replicas\":[{},{},{},{}]},\"reason\":\"lg\",\"message\":\"izuxlrarwpewsaud\"},\"id\":\"jtighsxj\",\"name\":\"ytnkqb\",\"type\":\"lahovuuwx\"}],\"nextLink\":\"e\"}";
+            = "{\"value\":[{\"properties\":{\"status\":\"Processing\",\"startTime\":\"2021-11-28T00:45:51Z\",\"endTime\":\"2021-02-27T09:22:58Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{}]},\"detailedStatus\":{\"replicas\":[{},{}]},\"reason\":\"kahmjedbiucvkhhw\",\"message\":\"pjbweunxcq\"},\"id\":\"ihufoihp\",\"name\":\"iybxvgnzuzpb\",\"type\":\"kzcscpiuzvkun\"},{\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2020-12-23T19:54:33Z\",\"endTime\":\"2021-06-06T16:57:38Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{}]},\"detailedStatus\":{\"replicas\":[{},{}]},\"reason\":\"cdocfqpl\",\"message\":\"o\"},\"id\":\"hxw\",\"name\":\"jlvzklk\",\"type\":\"bgikyjtkakvlbi\"},{\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-10-05T09:15:49Z\",\"endTime\":\"2021-05-28T11:55:32Z\",\"template\":{\"containers\":[{},{},{}],\"initContainers\":[{},{},{}]},\"detailedStatus\":{\"replicas\":[{},{},{}]},\"reason\":\"jixwfgc\",\"message\":\"y\"},\"id\":\"c\",\"name\":\"wnujvqynvav\",\"type\":\"tmdmuqohhihr\"}],\"nextLink\":\"quddrwjclj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class JobsStopMultipleExecutionsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ContainerAppJobExecutions response
-            = manager.jobs().stopMultipleExecutions("jixwfgc", "i", com.azure.core.util.Context.NONE);
+            = manager.jobs().stopMultipleExecutions("oeajogsy", "wetamfddrvlk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T07:20:54Z"), response.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T08:31:22Z"), response.value().get(0).endTime());
-        Assertions.assertEquals("e", response.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-28T00:45:51Z"), response.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T09:22:58Z"), response.value().get(0).endTime());
+        Assertions.assertEquals("quddrwjclj", response.nextLink());
     }
 }

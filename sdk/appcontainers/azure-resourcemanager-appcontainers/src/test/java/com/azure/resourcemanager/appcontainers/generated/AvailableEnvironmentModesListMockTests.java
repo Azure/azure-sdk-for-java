@@ -22,7 +22,7 @@ public final class AvailableEnvironmentModesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"ujjzgxq\",\"properties\":{\"displayName\":\"lxrhgtvh\",\"description\":\"qqy\"},\"id\":\"kkt\",\"name\":\"ozejo\",\"type\":\"mkorvvmv\"}]}";
+            = "{\"value\":[{\"location\":\"klajvcfocz\",\"properties\":{\"displayName\":\"ejov\",\"description\":\"wxn\"},\"id\":\"hhnoyrzaaoee\",\"name\":\"pmjen\",\"type\":\"jeatea\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AvailableEnvironmentModesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvailableEnvironmentMode> response
-            = manager.availableEnvironmentModes().list("p", com.azure.core.util.Context.NONE);
+            = manager.availableEnvironmentModes().list("ekfsrm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ujjzgxq", response.iterator().next().location());
+        Assertions.assertEquals("klajvcfocz", response.iterator().next().location());
     }
 }

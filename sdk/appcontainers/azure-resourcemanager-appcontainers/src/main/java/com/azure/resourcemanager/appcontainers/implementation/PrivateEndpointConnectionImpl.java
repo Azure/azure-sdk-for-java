@@ -71,28 +71,29 @@ public final class PrivateEndpointConnectionImpl
 
     private String resourceGroupName;
 
-    private String containerAppName;
+    private String environmentName;
 
     private String privateEndpointConnectionName;
 
-    public PrivateEndpointConnectionImpl withExistingContainerApp(String resourceGroupName, String containerAppName) {
+    public PrivateEndpointConnectionImpl withExistingManagedEnvironment(String resourceGroupName,
+        String environmentName) {
         this.resourceGroupName = resourceGroupName;
-        this.containerAppName = containerAppName;
+        this.environmentName = environmentName;
         return this;
     }
 
     public PrivateEndpointConnection create() {
         this.innerObject = serviceManager.serviceClient()
-            .getContainerAppPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName, this.innerModel(),
+            .getManagedEnvironmentPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName, this.innerModel(),
                 Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection create(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getContainerAppPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName, this.innerModel(),
+            .getManagedEnvironmentPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName, this.innerModel(),
                 context);
         return this;
     }
@@ -110,16 +111,16 @@ public final class PrivateEndpointConnectionImpl
 
     public PrivateEndpointConnection apply() {
         this.innerObject = serviceManager.serviceClient()
-            .getContainerAppPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName, this.innerModel(),
+            .getManagedEnvironmentPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName, this.innerModel(),
                 Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getContainerAppPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, containerAppName, privateEndpointConnectionName, this.innerModel(),
+            .getManagedEnvironmentPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName, this.innerModel(),
                 context);
         return this;
     }
@@ -129,23 +130,23 @@ public final class PrivateEndpointConnectionImpl
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.containerAppName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "containerApps");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
         this.privateEndpointConnectionName
             = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnection refresh() {
         this.innerObject = serviceManager.serviceClient()
-            .getContainerAppPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, containerAppName, privateEndpointConnectionName, Context.NONE)
+            .getManagedEnvironmentPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName, Context.NONE)
             .getValue();
         return this;
     }
 
     public PrivateEndpointConnection refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getContainerAppPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, containerAppName, privateEndpointConnectionName, context)
+            .getManagedEnvironmentPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName, context)
             .getValue();
         return this;
     }

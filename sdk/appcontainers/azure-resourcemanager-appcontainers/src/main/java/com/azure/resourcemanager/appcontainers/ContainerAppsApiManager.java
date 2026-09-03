@@ -718,7 +718,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ContainerAppPrivateEndpointConnections. It manages PrivateEndpointConnection.
+     * Gets the resource collection API of ContainerAppPrivateEndpointConnections.
      * 
      * @return Resource collection API of ContainerAppPrivateEndpointConnections.
      */
@@ -872,7 +872,8 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedEnvironmentPrivateEndpointConnections.
+     * Gets the resource collection API of ManagedEnvironmentPrivateEndpointConnections. It manages
+     * PrivateEndpointConnection.
      * 
      * @return Resource collection API of ManagedEnvironmentPrivateEndpointConnections.
      */

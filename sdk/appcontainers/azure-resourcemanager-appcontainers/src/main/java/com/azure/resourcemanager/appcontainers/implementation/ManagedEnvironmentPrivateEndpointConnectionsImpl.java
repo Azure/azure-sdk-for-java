@@ -48,31 +48,6 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsImpl
         }
     }
 
-    public PrivateEndpointConnection createOrUpdate(String resourceGroupName, String environmentName,
-        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName,
-                privateEndpointConnectionEnvelope);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public PrivateEndpointConnection createOrUpdate(String resourceGroupName, String environmentName,
-        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope,
-        Context context) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName,
-                privateEndpointConnectionEnvelope, context);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public void delete(String resourceGroupName, String environmentName, String privateEndpointConnectionName) {
         this.serviceClient().delete(resourceGroupName, environmentName, privateEndpointConnectionName);
     }
@@ -95,11 +70,96 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsImpl
         return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
+    public PrivateEndpointConnection getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
+    }
+
+    public Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        this.delete(resourceGroupName, environmentName, privateEndpointConnectionName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        this.delete(resourceGroupName, environmentName, privateEndpointConnectionName, context);
+    }
+
     private ManagedEnvironmentPrivateEndpointConnectionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager() {
         return this.serviceManager;
+    }
+
+    public PrivateEndpointConnectionImpl define(String name) {
+        return new PrivateEndpointConnectionImpl(name, this.manager());
     }
 }

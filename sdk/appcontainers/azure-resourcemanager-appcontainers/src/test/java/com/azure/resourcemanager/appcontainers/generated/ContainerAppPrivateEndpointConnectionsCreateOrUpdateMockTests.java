@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
+import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpoint;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointServiceConnectionStatus;
@@ -24,7 +25,7 @@ public final class ContainerAppPrivateEndpointConnectionsCreateOrUpdateMockTests
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"xildfkcefey\",\"zqp\",\"oisfmnaybdjn\"],\"privateEndpoint\":{\"id\":\"entq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"hymxymulwivqtow\",\"actionsRequired\":\"lsycoyb\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qubfajcyw\",\"name\":\"jqwmchq\",\"type\":\"htfxcpupuki\"}";
+            = "{\"properties\":{\"groupIds\":[\"ioshjgczetybn\",\"gztlcgc\",\"j\"],\"privateEndpoint\":{\"id\":\"j\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"j\",\"actionsRequired\":\"becuvlbefvwcl\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ylrwoxzg\",\"name\":\"psyxjije\",\"type\":\"pdvrbkerdkdkga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +34,18 @@ public final class ContainerAppPrivateEndpointConnectionsCreateOrUpdateMockTests
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PrivateEndpointConnection response
-            = manager.containerAppPrivateEndpointConnections()
-                .define("fsn")
-                .withExistingContainerApp("huqimlda", "lfxlmuifmuadj")
-                .withPrivateEndpoint(new PrivateEndpoint())
-                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                    .withStatus(PrivateEndpointServiceConnectionStatus.DISCONNECTED)
-                    .withDescription("j")
-                    .withActionsRequired("becuvlbefvwcl"))
-                .create();
+        PrivateEndpointConnection response = manager.containerAppPrivateEndpointConnections()
+            .createOrUpdate("wgxql", "ekotjgxi", "qfkyfhiwvjaqu",
+                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.DISCONNECTED)
+                        .withDescription("ilg")
+                        .withActionsRequired("rqre")),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.DISCONNECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hymxymulwivqtow", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("lsycoyb", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("j", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("becuvlbefvwcl", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.appcontainers.models.PrivateLinkServiceConnectionState;
 
@@ -22,14 +22,11 @@ public final class ContainerAppPrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void updateAPrivateEndpointConnectionByContainerApp(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        PrivateEndpointConnection resource = manager.containerAppPrivateEndpointConnections()
-            .getWithResponse("examplerg", "testcontainerapp0", "test-private-endpoint-connection",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withActionsRequired("None"))
-            .apply();
+        manager.containerAppPrivateEndpointConnections()
+            .createOrUpdate("examplerg", "testcontainerapp0", "test-private-endpoint-connection",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withActionsRequired("None")),
+                com.azure.core.util.Context.NONE);
     }
 }

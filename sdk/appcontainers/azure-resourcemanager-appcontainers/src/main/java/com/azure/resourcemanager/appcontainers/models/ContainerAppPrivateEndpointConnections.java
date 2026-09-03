@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
 
 /**
  * Resource collection API of ContainerAppPrivateEndpointConnections.
@@ -48,6 +49,42 @@ public interface ContainerAppPrivateEndpointConnections {
      */
     PrivateEndpointConnection get(String resourceGroupName, String containerAppName,
         String privateEndpointConnectionName);
+
+    /**
+     * Update the state of a private endpoint connection for a given Container App.
+     * 
+     * Creates a private endpoint connection or updates its connection state for a Container App.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
+     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    PrivateEndpointConnection createOrUpdate(String resourceGroupName, String containerAppName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope);
+
+    /**
+     * Update the state of a private endpoint connection for a given Container App.
+     * 
+     * Creates a private endpoint connection or updates its connection state for a Container App.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
+     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    PrivateEndpointConnection createOrUpdate(String resourceGroupName, String containerAppName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope,
+        Context context);
 
     /**
      * Delete a private endpoint connection for a given Container App.
@@ -109,68 +146,4 @@ public interface ContainerAppPrivateEndpointConnections {
      * {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String containerAppName, Context context);
-
-    /**
-     * Get a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App along with {@link Response}.
-     */
-    PrivateEndpointConnection getById(String id);
-
-    /**
-     * Get a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for a given Container App.
-     * 
-     * Gets the details of a private endpoint connection associated with a Container App along with {@link Response}.
-     */
-    Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete a private endpoint connection for a given Container App.
-     * 
-     * Deletes the specified private endpoint connection associated with a Container App.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete a private endpoint connection for a given Container App.
-     * 
-     * Deletes the specified private endpoint connection associated with a Container App.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new PrivateEndpointConnection resource.
-     * 
-     * @param name resource name.
-     * @return the first stage of the new PrivateEndpointConnection definition.
-     */
-    PrivateEndpointConnection.DefinitionStages.Blank define(String name);
 }

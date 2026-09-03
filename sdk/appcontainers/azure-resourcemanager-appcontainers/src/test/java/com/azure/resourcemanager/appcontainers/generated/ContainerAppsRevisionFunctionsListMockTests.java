@@ -21,7 +21,7 @@ public final class ContainerAppsRevisionFunctionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"invokeUrlTemplate\":\"mvecvztscbgmusai\",\"triggerType\":\"dscnkzzo\",\"language\":\"rddclzeqozrehlb\",\"isDisabled\":false,\"state\":\"Enabled\"},\"id\":\"jrqvzyuexozon\",\"name\":\"npameudpabcreu\",\"type\":\"zosgyjxvcvasorm\"}]}";
+            = "{\"value\":[{\"properties\":{\"invokeUrlTemplate\":\"yidoxznvg\",\"triggerType\":\"tmuuvdawsx\",\"language\":\"szbknimxl\",\"isDisabled\":true,\"state\":\"Enabled\"},\"id\":\"zutylcu\",\"name\":\"za\",\"type\":\"mnb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ContainerAppsRevisionFunctionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ContainerAppsFunction> response = manager.containerAppsRevisionFunctions()
-            .list("hemvwfnqqwypvnd", "wbgodtggrssg", "jfkainj", com.azure.core.util.Context.NONE);
+        PagedIterable<ContainerAppsFunction> response
+            = manager.containerAppsRevisionFunctions().list("cgbzxm", "t", "lef", com.azure.core.util.Context.NONE);
 
     }
 }

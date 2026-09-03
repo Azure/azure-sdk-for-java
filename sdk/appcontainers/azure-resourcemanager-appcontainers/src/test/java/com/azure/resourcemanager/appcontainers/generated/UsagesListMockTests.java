@@ -22,7 +22,7 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"currentValue\":29.163712,\"limit\":47.58983,\"name\":{\"value\":\"gzxlermkmerghski\",\"localizedValue\":\"npupkcbkfuk\"}}]}";
+            = "{\"value\":[{\"currentValue\":76.90058,\"limit\":92.80392,\"name\":{\"value\":\"slavxjfiuof\",\"localizedValue\":\"eidzlvssqywjopa\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class UsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Usage> response = manager.usages().list("jkjymgqbgcx", com.azure.core.util.Context.NONE);
+        PagedIterable<Usage> response = manager.usages().list("xrkgjn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(29.163712f, response.iterator().next().currentValue());
-        Assertions.assertEquals(47.58983f, response.iterator().next().limit());
-        Assertions.assertEquals("gzxlermkmerghski", response.iterator().next().name().value());
-        Assertions.assertEquals("npupkcbkfuk", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(76.90058f, response.iterator().next().currentValue());
+        Assertions.assertEquals(92.80392f, response.iterator().next().limit());
+        Assertions.assertEquals("slavxjfiuof", response.iterator().next().name().value());
+        Assertions.assertEquals("eidzlvssqywjopa", response.iterator().next().name().localizedValue());
     }
 }

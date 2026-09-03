@@ -106,13 +106,13 @@ public interface PrivateEndpointConnection {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, containerAppName.
+             * Specifies resourceGroupName, environmentName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param containerAppName Name of the Container App.
+             * @param environmentName Name of the managed environment.
              * @return the next definition stage.
              */
-            WithCreate withExistingContainerApp(String resourceGroupName, String containerAppName);
+            WithCreate withExistingManagedEnvironment(String resourceGroupName, String environmentName);
         }
 
         /**

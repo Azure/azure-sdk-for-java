@@ -23,7 +23,7 @@ public final class MaintenanceConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Monday\",\"startHourUtc\":1556399795,\"durationHours\":2134981177},{\"weekDay\":\"Wednesday\",\"startHourUtc\":833559193,\"durationHours\":1668969246}]},\"id\":\"dfb\",\"name\":\"lciichgjs\",\"type\":\"smvxodgw\"}]}";
+            = "{\"value\":[{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Monday\",\"startHourUtc\":1172854495,\"durationHours\":481196341}]},\"id\":\"vmtywhlakxp\",\"name\":\"jpewpyjlfx\",\"type\":\"m\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class MaintenanceConfigurationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<MaintenanceConfigurationResource> response
-            = manager.maintenanceConfigurations().list("fpjbqggwe", "iwdhdmncgbfzu", com.azure.core.util.Context.NONE);
+        PagedIterable<MaintenanceConfigurationResource> response = manager.maintenanceConfigurations()
+            .list("htpmnoejhq", "fmsibzoyrfgxkyd", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(WeekDay.MONDAY, response.iterator().next().scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(1556399795, response.iterator().next().scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(2134981177, response.iterator().next().scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(1172854495, response.iterator().next().scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(481196341, response.iterator().next().scheduledEntries().get(0).durationHours());
     }
 }

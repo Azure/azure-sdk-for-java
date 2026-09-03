@@ -28,7 +28,7 @@ public final class MaintenanceConfigurationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.maintenanceConfigurations()
-            .deleteWithResponse("kgd", "hjkrukizyhgs", "tnqsktx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("yvrmkjm", "it", "chwudlxee", com.azure.core.util.Context.NONE);
 
     }
 }

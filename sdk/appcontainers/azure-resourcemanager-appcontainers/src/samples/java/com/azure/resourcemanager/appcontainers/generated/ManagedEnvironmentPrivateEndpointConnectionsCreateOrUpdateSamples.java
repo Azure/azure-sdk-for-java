@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.appcontainers.models.PrivateLinkServiceConnectionState;
 
@@ -22,11 +22,13 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsCreateOrUpdateSam
      */
     public static void updateAPrivateEndpointConnectionByManagedEnvironment(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentPrivateEndpointConnections()
-            .createOrUpdate("examplerg", "managedEnv", "jlaw-demo1",
-                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withActionsRequired("None")),
-                com.azure.core.util.Context.NONE);
+        PrivateEndpointConnection resource = manager.managedEnvironmentPrivateEndpointConnections()
+            .getWithResponse("examplerg", "managedEnv", "jlaw-demo1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withActionsRequired("None"))
+            .apply();
     }
 }

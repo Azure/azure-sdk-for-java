@@ -22,7 +22,7 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"yftcvbzwgwhg\",\"name\":\"soauoorssatfyb\",\"description\":\"ufdmxuq\",\"author\":\"qna\",\"category\":\"tuxvzfqayopbt\",\"supportTopicList\":[{\"id\":\"gvbhxmndztgs\",\"pesId\":\"ayqmarxneibpgbrh\"},{\"id\":\"dqknh\",\"pesId\":\"motpuwnnoh\"},{\"id\":\"zngocfrjuypwyiul\",\"pesId\":\"nos\"},{\"id\":\"kfhaxttpfsmwgsgh\",\"pesId\":\"cum\"}],\"analysisTypes\":[\"auqmllfeoth\"],\"type\":\"arigrjdljlkqh\",\"score\":64.40022},\"dataset\":[{\"table\":{\"tableName\":\"astax\",\"columns\":[{},{}],\"rows\":[\"\\\"dataulhgltoiz\\\"\"]},\"renderingProperties\":{\"type\":1036553043,\"title\":\"ksgfyyskyekg\",\"description\":\"xczvfcckwrtwle\",\"isVisible\":true}},{\"table\":{\"tableName\":\"zrt\",\"columns\":[{},{},{}],\"rows\":[\"\\\"datawynctacz\\\"\",\"\\\"datanjfmbbfnvjxit\\\"\"]},\"renderingProperties\":{\"type\":1661586982,\"title\":\"rtiklsmnihqlco\",\"description\":\"syi\",\"isVisible\":true}},{\"table\":{\"tableName\":\"wbgbudav\",\"columns\":[{},{},{}],\"rows\":[\"\\\"dataccqcdhth\\\"\",\"\\\"datajvlirk\\\"\",\"\\\"dataucosawrdt\\\"\",\"\\\"dataagzlgpyai\\\"\"]},\"renderingProperties\":{\"type\":1112397483,\"title\":\"jjtsm\",\"description\":\"dqftt\",\"isVisible\":true}}],\"status\":{\"message\":\"dueurgmcdcpkshl\",\"statusId\":1971643278},\"dataProviderMetadata\":{\"providerName\":\"hzic\",\"propertyBag\":[{\"name\":\"jhyaaknyuki\",\"value\":\"iglh\"},{\"name\":\"zwxqtejpii\",\"value\":\"vtozya\"},{\"name\":\"jnxkbylhyyxgffk\",\"value\":\"q\"},{\"name\":\"wtrdgs\",\"value\":\"vq\"}]}},\"id\":\"nsgnwxlwmez\",\"name\":\"ohxp\",\"type\":\"hceopvkvtwf\"}]}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"cwybszfncnpatpft\",\"name\":\"ebwf\",\"description\":\"xorpwal\",\"author\":\"wugexojfccyl\",\"category\":\"rh\",\"supportTopicList\":[{\"id\":\"zjpwexcdrzprob\",\"pesId\":\"xezm\"},{\"id\":\"kjgpjeuxsphlokfp\",\"pesId\":\"jpdvzvfbhwbdquf\"},{\"id\":\"gnrglaqrwyamb\",\"pesId\":\"afebzxfkjq\"}],\"analysisTypes\":[\"bhlenntrvrkpsab\",\"u\",\"vzm\"],\"type\":\"hnysvlpyeu\",\"score\":0.47174692},\"dataset\":[{\"table\":{\"tableName\":\"qb\",\"columns\":[{},{}],\"rows\":[\"\\\"datahyqqegatxgr\\\"\"]},\"renderingProperties\":{\"type\":540272069,\"title\":\"nmtsdixc\",\"description\":\"kibmgjymn\",\"isVisible\":false}},{\"table\":{\"tableName\":\"airwcqzoofj\",\"columns\":[{},{},{},{}],\"rows\":[\"\\\"dataepfbhtleberpylje\\\"\"]},\"renderingProperties\":{\"type\":1510380414,\"title\":\"wjjqxowkdnjrx\",\"description\":\"rhw\",\"isVisible\":true}}],\"status\":{\"message\":\"pnowawonoehrguql\",\"statusId\":1968078590},\"dataProviderMetadata\":{\"providerName\":\"bjzm\",\"propertyBag\":[{\"name\":\"uyfazbkoc\",\"value\":\"gvthrmxkbcjww\"},{\"name\":\"omraw\",\"value\":\"keboo\"}]}},\"id\":\"l\",\"name\":\"acagae\",\"type\":\"aoiqclmgdt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,25 +32,25 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostics> response = manager.containerAppsDiagnostics()
-            .listDetectors("htncwmhjobzrfp", "iz", com.azure.core.util.Context.NONE);
+            .listDetectors("oxrezsvavlrxik", "moywlu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("auqmllfeoth",
+        Assertions.assertEquals("bhlenntrvrkpsab",
             response.iterator().next().properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("astax", response.iterator().next().properties().dataset().get(0).table().tableName());
-        Assertions.assertEquals(1036553043,
+        Assertions.assertEquals("qb", response.iterator().next().properties().dataset().get(0).table().tableName());
+        Assertions.assertEquals(540272069,
             response.iterator().next().properties().dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("ksgfyyskyekg",
+        Assertions.assertEquals("nmtsdixc",
             response.iterator().next().properties().dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("xczvfcckwrtwle",
+        Assertions.assertEquals("kibmgjymn",
             response.iterator().next().properties().dataset().get(0).renderingProperties().description());
         Assertions
-            .assertTrue(response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("dueurgmcdcpkshl", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(1971643278, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("hzic", response.iterator().next().properties().dataProviderMetadata().providerName());
-        Assertions.assertEquals("jhyaaknyuki",
+            .assertFalse(response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
+        Assertions.assertEquals("pnowawonoehrguql", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1968078590, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("bjzm", response.iterator().next().properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("uyfazbkoc",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("iglh",
+        Assertions.assertEquals("gvthrmxkbcjww",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

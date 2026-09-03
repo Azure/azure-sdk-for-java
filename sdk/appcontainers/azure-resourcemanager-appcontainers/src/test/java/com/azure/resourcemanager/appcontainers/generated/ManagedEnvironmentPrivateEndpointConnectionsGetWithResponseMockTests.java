@@ -22,7 +22,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsGetWithResponseMo
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"kxrkemjpeq\",\"lrlzaudgjt\"],\"privateEndpoint\":{\"id\":\"lakkucddwnhcz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ucgjtirjwayhicqq\",\"actionsRequired\":\"v\"},\"provisioningState\":\"Canceled\"},\"id\":\"lvlize\",\"name\":\"vbia\",\"type\":\"v\"}";
+            = "{\"properties\":{\"groupIds\":[\"tcsubmzoo\",\"svobchkxfp\"],\"privateEndpoint\":{\"id\":\"yslb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"mnnkkwayqshw\",\"actionsRequired\":\"xrid\"},\"provisioningState\":\"Canceled\"},\"id\":\"aqjmkgxqwque\",\"name\":\"uylztpziizevjyk\",\"type\":\"fvezefk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsGetWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.managedEnvironmentPrivateEndpointConnections()
-            .getWithResponse("gqggoxsstci", "rak", "rrynjcwmhly", com.azure.core.util.Context.NONE)
+            .getWithResponse("kyelsyasvfnkwmy", "jjekrknfdrugj", "yckgtxkrdtulcrcj", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ucgjtirjwayhicqq", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("v", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("mnnkkwayqshw", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("xrid", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

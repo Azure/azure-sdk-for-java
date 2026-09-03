@@ -23,7 +23,7 @@ public final class HttpRouteConfigsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Waiting\",\"provisioningErrors\":[{\"timestamp\":\"2021-03-10T22:17:11Z\",\"message\":\"qumjdjxhzghgod\"}],\"fqdn\":\"nrceqavfdbdfmmx\",\"customDomains\":[{\"name\":\"ajuop\",\"bindingType\":\"Auto\",\"certificateId\":\"mk\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"wl\"}],\"routes\":[{},{},{},{}],\"description\":\"jk\"}]},\"id\":\"xxr\",\"name\":\"zobuzmsxgamtdtk\",\"type\":\"ppthuzdprmimrl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"provisioningErrors\":[{\"timestamp\":\"2021-09-20T08:01:22Z\",\"message\":\"qwwvgwkslvl\"},{\"timestamp\":\"2021-11-25T15:37:55Z\",\"message\":\"vbia\"}],\"fqdn\":\"n\",\"customDomains\":[{\"name\":\"ekzyqxadyfhb\",\"bindingType\":\"Auto\",\"certificateId\":\"ojqttbsp\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"aqjsgyzstujr\"},{\"containerApp\":\"xrk\"},{\"containerApp\":\"sf\"},{\"containerApp\":\"rlduyehiiittugy\"}],\"routes\":[{},{}],\"description\":\"lda\"}]},\"id\":\"rfqazcsozjv\",\"name\":\"dzciggb\",\"type\":\"vt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class HttpRouteConfigsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HttpRouteConfig> response
-            = manager.httpRouteConfigs().list("ggicwnxhtfmcqbs", "d", com.azure.core.util.Context.NONE);
+            = manager.httpRouteConfigs().list("tfbclakkuc", "dwnhczbutoucgjti", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ajuop", response.iterator().next().properties().customDomains().get(0).name());
+        Assertions.assertEquals("ekzyqxadyfhb", response.iterator().next().properties().customDomains().get(0).name());
         Assertions.assertEquals(BindingType.AUTO,
             response.iterator().next().properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("mk", response.iterator().next().properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("wl",
+        Assertions.assertEquals("ojqttbsp",
+            response.iterator().next().properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("aqjsgyzstujr",
             response.iterator().next().properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("jk", response.iterator().next().properties().rules().get(0).description());
+        Assertions.assertEquals("lda", response.iterator().next().properties().rules().get(0).description());
     }
 }

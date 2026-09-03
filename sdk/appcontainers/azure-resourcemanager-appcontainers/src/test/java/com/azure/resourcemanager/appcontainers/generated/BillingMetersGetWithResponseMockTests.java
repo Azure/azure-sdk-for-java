@@ -21,7 +21,7 @@ public final class BillingMetersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"lbsnosnqliw\",\"properties\":{\"category\":\"ojfetyalh\",\"meterType\":\"mknazgbjbhrpgiq\",\"displayName\":\"tcucrcmmai\"},\"id\":\"qjiwifhbksldttoh\",\"name\":\"clnaihtg\",\"type\":\"iqikvllr\"},{\"location\":\"p\",\"properties\":{\"category\":\"xkoi\",\"meterType\":\"trawrqkza\",\"displayName\":\"unmpaklwzl\"},\"id\":\"epr\",\"name\":\"ejzltka\",\"type\":\"zfjsxscbd\"},{\"location\":\"apgrcqe\",\"properties\":{\"category\":\"rdjomlnwsb\",\"meterType\":\"dls\",\"displayName\":\"x\"},\"id\":\"esdfedsb\",\"name\":\"zancoinmp\",\"type\":\"ymcqidkltvdhq\"},{\"location\":\"fbxweiibntojovfn\",\"properties\":{\"category\":\"dhuihaouwudhuao\",\"meterType\":\"jkehwvumosqi\",\"displayName\":\"amqprlo\"},\"id\":\"ugejcvjkjyczcmt\",\"name\":\"gelajdyolje\",\"type\":\"yxqfmzsizzhravr\"}]}";
+            = "{\"value\":[{\"location\":\"xdjxldn\",\"properties\":{\"category\":\"yi\",\"meterType\":\"kd\",\"displayName\":\"rndwdbvxvzaled\"},\"id\":\"qxlun\",\"name\":\"fthmcxqqxmy\",\"type\":\"klaoa\"},{\"location\":\"ohrvmz\",\"properties\":{\"category\":\"azad\",\"meterType\":\"znllaslk\",\"displayName\":\"hjqjpv\"},\"id\":\"ihxjtgzgtai\",\"name\":\"wbqgroigbsfsgsa\",\"type\":\"nwldfmhljq\"},{\"location\":\"spmrjct\",\"properties\":{\"category\":\"dsxebuhsxrz\",\"meterType\":\"gsdaluyckh\",\"displayName\":\"rbhseuerbgpxebjl\"},\"id\":\"caytujraxdtpryj\",\"name\":\"gtnse\",\"type\":\"ouxly\"},{\"location\":\"vvyljurkepose\",\"properties\":{\"category\":\"ylmpctwjwdsd\",\"meterType\":\"mkxerxxxoteeh\",\"displayName\":\"owgomvvhxowp\"},\"id\":\"apnpxraqawbmp\",\"name\":\"p\",\"type\":\"eylqlocvvujexayg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class BillingMetersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BillingMeterCollection response
-            = manager.billingMeters().getWithResponse("cof", com.azure.core.util.Context.NONE).getValue();
+            = manager.billingMeters().getWithResponse("xc", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("lbsnosnqliw", response.value().get(0).location());
-        Assertions.assertEquals("ojfetyalh", response.value().get(0).properties().category());
-        Assertions.assertEquals("mknazgbjbhrpgiq", response.value().get(0).properties().meterType());
-        Assertions.assertEquals("tcucrcmmai", response.value().get(0).properties().displayName());
+        Assertions.assertEquals("xdjxldn", response.value().get(0).location());
+        Assertions.assertEquals("yi", response.value().get(0).properties().category());
+        Assertions.assertEquals("kd", response.value().get(0).properties().meterType());
+        Assertions.assertEquals("rndwdbvxvzaled", response.value().get(0).properties().displayName());
     }
 }

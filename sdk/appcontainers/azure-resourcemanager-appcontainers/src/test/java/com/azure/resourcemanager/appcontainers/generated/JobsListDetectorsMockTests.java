@@ -22,7 +22,7 @@ public final class JobsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"ezomu\",\"name\":\"qgisnionetbzdrd\",\"description\":\"enx\",\"author\":\"tlzlmtrlxcznnhz\",\"category\":\"nbmxlx\",\"supportTopicList\":[{\"id\":\"g\",\"pesId\":\"zusitoqcahfs\"},{\"id\":\"jmlreesrfwsszvlc\",\"pesId\":\"isolntfxxcrqmip\"}],\"analysisTypes\":[\"foygizmshxxba\"],\"type\":\"abuln\",\"score\":28.192514},\"dataset\":[{\"table\":{\"tableName\":\"xjdzjs\",\"columns\":[{},{},{}],\"rows\":[\"\\\"dataxqqm\\\"\",\"\\\"datai\\\"\"]},\"renderingProperties\":{\"type\":2013340237,\"title\":\"fn\",\"description\":\"c\",\"isVisible\":true}},{\"table\":{\"tableName\":\"hksnyzmspamwbw\",\"columns\":[{},{}],\"rows\":[\"\\\"datalcefiqdktw\\\"\"]},\"renderingProperties\":{\"type\":340303279,\"title\":\"lpfliwoyn\",\"description\":\"uzhwvladpcmhjhau\",\"isVisible\":false}},{\"table\":{\"tableName\":\"kymffztsils\",\"columns\":[{}],\"rows\":[\"\\\"dataeiihfymko\\\"\",\"\\\"dataihyeseu\\\"\",\"\\\"datagcigzh\\\"\"]},\"renderingProperties\":{\"type\":960565645,\"title\":\"bvmtdw\",\"description\":\"bebjn\",\"isVisible\":true}}],\"status\":{\"message\":\"abtvkbi\",\"statusId\":1732504590},\"dataProviderMetadata\":{\"providerName\":\"fg\",\"propertyBag\":[{\"name\":\"dyhi\",\"value\":\"aczmuh\"}]}},\"id\":\"akznhokhoitwhr\",\"name\":\"sdmmaz\",\"type\":\"nckidbjpg\"}]}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"dvqgcnbhcbmjkz\",\"name\":\"bn\",\"description\":\"ntsxjmfmeftvh\",\"author\":\"o\",\"category\":\"jrhskbwgmjgrul\",\"supportTopicList\":[{\"id\":\"xhcxnwjtpfdz\",\"pesId\":\"ouzfwofwakuk\"},{\"id\":\"dtzxsoe\",\"pesId\":\"lwglihezomucmqg\"}],\"analysisTypes\":[\"ionetbzdrdpuenxk\",\"tlzlmtrlxcznnhz\"],\"type\":\"nbmxlx\",\"score\":44.0681},\"dataset\":[{\"table\":{\"tableName\":\"zusitoqcahfs\",\"columns\":[{},{},{},{}],\"rows\":[\"\\\"datareesrfwsszvl\\\"\",\"\\\"datawliso\\\"\",\"\\\"datantfxxcrqmipfjwfo\\\"\",\"\\\"datagizmshxxbaizabu\\\"\"]},\"renderingProperties\":{\"type\":625721867,\"title\":\"k\",\"description\":\"o\",\"isVisible\":false}}],\"status\":{\"message\":\"sjznvhx\",\"statusId\":1004769177},\"dataProviderMetadata\":{\"providerName\":\"paydhfn\",\"propertyBag\":[{\"name\":\"mtfshksnyzmspa\",\"value\":\"bwmbnlslcef\"}]}},\"id\":\"d\",\"name\":\"twtkvih\",\"type\":\"pfliwo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,25 +32,27 @@ public final class JobsListDetectorsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostics> response
-            = manager.jobs().listDetectors("kdt", "xsoednlw", com.azure.core.util.Context.NONE);
+            = manager.jobs().listDetectors("pzxkzrntmkct", "huosgwqpsqaz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("foygizmshxxba",
+        Assertions.assertEquals("ionetbzdrdpuenxk",
             response.iterator().next().properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("xjdzjs", response.iterator().next().properties().dataset().get(0).table().tableName());
-        Assertions.assertEquals(2013340237,
+        Assertions.assertEquals("zusitoqcahfs",
+            response.iterator().next().properties().dataset().get(0).table().tableName());
+        Assertions.assertEquals(625721867,
             response.iterator().next().properties().dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("fn",
+        Assertions.assertEquals("k",
             response.iterator().next().properties().dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("c",
+        Assertions.assertEquals("o",
             response.iterator().next().properties().dataset().get(0).renderingProperties().description());
         Assertions
-            .assertTrue(response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("abtvkbi", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(1732504590, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("fg", response.iterator().next().properties().dataProviderMetadata().providerName());
-        Assertions.assertEquals("dyhi",
+            .assertFalse(response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
+        Assertions.assertEquals("sjznvhx", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1004769177, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("paydhfn",
+            response.iterator().next().properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("mtfshksnyzmspa",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("aczmuh",
+        Assertions.assertEquals("bwmbnlslcef",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

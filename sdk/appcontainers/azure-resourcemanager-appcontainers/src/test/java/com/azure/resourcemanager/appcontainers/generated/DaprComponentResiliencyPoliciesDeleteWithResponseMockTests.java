@@ -28,7 +28,7 @@ public final class DaprComponentResiliencyPoliciesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.daprComponentResiliencyPolicies()
-            .deleteWithResponse("wxqouoxudnmc", "aprhknqiijgencdg", "oqueqihkkyowltj", "uwhldxwhieproqks",
+            .deleteWithResponse("rfvqtvkhgvo", "gxkfnaoaqymhccto", "uowyrnskbyhqu", "czygxv",
                 com.azure.core.util.Context.NONE);
 
     }

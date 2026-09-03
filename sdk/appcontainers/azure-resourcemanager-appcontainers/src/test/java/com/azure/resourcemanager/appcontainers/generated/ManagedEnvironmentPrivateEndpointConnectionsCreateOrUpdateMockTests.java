@@ -10,7 +10,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
-import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpoint;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointServiceConnectionStatus;
@@ -25,7 +24,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsCreateOrUpdateMoc
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"oeysfp\"],\"privateEndpoint\":{\"id\":\"twuuhauegnk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"eubtzjyrkwfug\",\"actionsRequired\":\"hrrk\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qdurhzzfopue\",\"name\":\"qusvwlujopwnib\",\"type\":\"ttoztj\"}";
+            = "{\"properties\":{\"groupIds\":[\"cdtajdopggorw\",\"oqtrotpvclpo\"],\"privateEndpoint\":{\"id\":\"lmwkptskwxjg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cbmkakmkookbp\",\"actionsRequired\":\"mgvmuy\"},\"provisioningState\":\"Succeeded\"},\"id\":\"wk\",\"name\":\"fowzkroyr\",\"type\":\"urxf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +34,18 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsCreateOrUpdateMoc
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.managedEnvironmentPrivateEndpointConnections()
-            .createOrUpdate("srgekzyqxadyfhb", "wkhojqttbspvkhg", "aqjsgyzstujr",
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                        .withDescription("daxurfqazc")
-                        .withActionsRequired("zjvxdzcigg")),
-                com.azure.core.util.Context.NONE);
+            .define("qvzyuexozonyn")
+            .withExistingManagedEnvironment("lbz", "ixbnj")
+            .withPrivateEndpoint(new PrivateEndpoint())
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                    .withDescription("wgzygbaduvecovsd")
+                    .withActionsRequired("zrtdbakr"))
+            .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("eubtzjyrkwfug", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hrrk", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("cbmkakmkookbp", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("mgvmuy", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

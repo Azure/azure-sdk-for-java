@@ -23,7 +23,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"urbelfn\",\"zryizwbxg\"],\"privateEndpoint\":{\"id\":\"xlayunomir\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"benqlamwmg\",\"actionsRequired\":\"ayxflnbcpjstbh\"},\"provisioningState\":\"Failed\"},\"id\":\"u\",\"name\":\"sqsnxf\",\"type\":\"xufeapd\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"kifmxawo\",\"tfzknhrkm\",\"qncfvdscnhe\",\"vwfnqqwypvn\"],\"privateEndpoint\":{\"id\":\"b\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ggrssgwjfkain\",\"actionsRequired\":\"uymvecvzts\"},\"provisioningState\":\"Canceled\"},\"id\":\"usaictd\",\"name\":\"cnk\",\"type\":\"zohnrddclzeqozre\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.managedEnvironmentPrivateEndpointConnections()
-            .list("qumqvfmwcaddt", "ctxegt", com.azure.core.util.Context.NONE);
+            .list("kqtwqlepjjzkcasf", "zcntogffjwajnrtw", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("benqlamwmg",
+        Assertions.assertEquals("ggrssgwjfkain",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ayxflnbcpjstbh",
+        Assertions.assertEquals("uymvecvzts",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }
