@@ -4,9 +4,30 @@
 
 package com.azure.iot.deviceregistry.softwareupdate;
 
+// BEGIN: readme-sample-createClient-imports
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.iot.deviceregistry.softwareupdate.DeviceRegistrySoftwareUpdateClientBuilder;
+import com.azure.iot.deviceregistry.softwareupdate.SoftwareUpdateClient;
+// END: readme-sample-createClient-imports
+
 public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.iot.deviceregistry.softwareupdate.readme
-        // END: com.azure.iot.deviceregistry.softwareupdate.readme
+    public void createClient() {
+        // BEGIN: readme-sample-createClient
+        String endpoint = System.getenv("DEVICE_REGISTRY_SOFTWARE_UPDATE_ENDPOINT");
+
+        SoftwareUpdateClient softwareUpdateClient = new DeviceRegistrySoftwareUpdateClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildSoftwareUpdateClient();
+        // END: readme-sample-createClient
+    }
+
+    public void listUpdates(SoftwareUpdateClient softwareUpdateClient) {
+        // BEGIN: readme-sample-listUpdates
+        softwareUpdateClient.listUpdates().forEach(update -> {
+            System.out.printf("%s/%s/%s%n", update.getUpdateId().getProvider(), update.getUpdateId().getName(),
+                update.getUpdateId().getVersion());
+        });
+        // END: readme-sample-listUpdates
     }
 }
