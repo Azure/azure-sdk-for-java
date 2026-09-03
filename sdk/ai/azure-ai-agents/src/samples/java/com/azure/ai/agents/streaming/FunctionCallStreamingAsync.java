@@ -5,27 +5,32 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
+import com.openai.core.http.AsyncStreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates how to stream a response from an agent configured with a
@@ -48,9 +53,6 @@ public class FunctionCallStreamingAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Define a function tool with parameter schema
         Map<String, Object> locationProp = new LinkedHashMap<>();
@@ -80,57 +82,69 @@ public class FunctionCallStreamingAsync {
                 + "When asked about the weather, use the get_weather function.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("function-streaming-async-agent", agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
-                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+        // Create the agent version and pin the agent endpoint to it. The endpoint URL identifies the agent,
+        // so responses.createStreaming(...) below does not need to send an agent_reference in its body.
+        String agentName = "function-streaming-async-agent";
+        Mono.usingWhen(
+                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
+                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
+                            new UpdateAgentDetailsOptions().setAgentEndpoint(
+                                new AgentEndpointConfig()
+                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
+                        .thenReturn(agent)),
+                agent -> {
+                    OpenAIClientAsync openAIAsyncClient
+                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                    // BEGIN: com.azure.ai.agents.streaming.function_call_async
+                    // Stream response asynchronously with function tool
+                    ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                // BEGIN: com.azure.ai.agents.streaming.function_call_async
-                // Stream response asynchronously with function tool
-                ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
-
-                return responsesAsyncClient.createStreamingAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
                         ResponseCreateParams.builder()
-                            .input("What's the weather like in Seattle?"))
-                    .doOnNext(event -> {
-                        responseAccumulator.accumulate(event);
-                        // Print text deltas as they arrive
-                        event.outputTextDelta()
-                            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
-                        // Print function call argument deltas as they arrive
-                        event.functionCallArgumentsDelta()
-                            .ifPresent(argEvent -> System.out.print(argEvent.delta()));
-                    })
-                    .then(Mono.fromCallable(() -> {
-                        System.out.println();
+                            .input("What's the weather like in Seattle?")
+                            .build());
 
-                        // Access the final response and inspect function calls
-                        Response response = responseAccumulator.response();
-                        for (ResponseOutputItem outputItem : response.output()) {
-                            outputItem.functionCall().ifPresent(functionCall -> {
-                                System.out.println("\n--- Function Tool Call ---");
-                                System.out.println("Call ID: " + functionCall.callId());
-                                System.out.println("Function Name: " + functionCall.name());
-                                System.out.println("Arguments: " + functionCall.arguments());
-                                System.out.println("Status: " + functionCall.status());
-                            });
+                    stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
+                        @Override
+                        public void onNext(ResponseStreamEvent event) {
+                            responseAccumulator.accumulate(event);
+                            // Print text deltas as they arrive
+                            event.outputTextDelta()
+                                .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+                            // Print function call argument deltas as they arrive
+                            event.functionCallArgumentsDelta()
+                                .ifPresent(argEvent -> System.out.print(argEvent.delta()));
                         }
-                        // END: com.azure.ai.agents.streaming.function_call_async
-                        return response;
-                    }));
-            })
-            .then(Mono.defer(() -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"));
-                }
-                return Mono.empty();
-            }))
+
+                        @Override
+                        public void onComplete(java.util.Optional<Throwable> error) {
+                            // No-op: onCompleteFuture below signals completion.
+                        }
+                    });
+
+                    return Mono.fromFuture(stream.onCompleteFuture())
+                        .doFinally(signal -> stream.close())
+                        .doOnSuccess(unused -> {
+                            System.out.println();
+
+                            // Access the final response and inspect function calls
+                            Response response = responseAccumulator.response();
+                            for (ResponseOutputItem outputItem : response.output()) {
+                                outputItem.functionCall().ifPresent(functionCall -> {
+                                    System.out.println("\n--- Function Tool Call ---");
+                                    System.out.println("Call ID: " + functionCall.callId());
+                                    System.out.println("Function Name: " + functionCall.name());
+                                    System.out.println("Arguments: " + functionCall.arguments());
+                                    System.out.println("Status: " + functionCall.status());
+                                });
+                            }
+                        });
+                    // END: com.azure.ai.agents.streaming.function_call_async
+                },
+                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
             .block();
     }
 }

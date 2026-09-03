@@ -6,10 +6,6 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -18,6 +14,7 @@ import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
 import com.azure.ai.agents.tools.ComputerUseUtil.SearchState;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
@@ -29,13 +26,19 @@ import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseInputText;
 import com.openai.models.responses.ResponseOutputItem;
 import reactor.core.publisher.Mono;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +75,6 @@ public class ComputerUseAsync {
             .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsAsyncClient agentsClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesClient = builder.buildResponsesAsyncClient();
 
         // Load screenshot assets
         Map<String, ScreenshotInfo> screenshots;
@@ -95,9 +97,6 @@ public class ComputerUseAsync {
             .setInstructions("You are a computer automation assistant."
             + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
             .setTools(Collections.singletonList(tool));
-
-        // Use AtomicReference to track the agent for cleanup
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Build the initial input using proper OpenAI SDK types
         List<ResponseInputContent> contentParts = Arrays.asList(
@@ -123,48 +122,45 @@ public class ComputerUseAsync {
                     .build())
         );
 
-        // Create agent and run the interaction loop
-        agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition)
-            .doOnNext(agent -> {
-                agentRef.set(agent);
-                System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
-                    agent.getId(), agent.getName(), agent.getVersion());
-            })
-            .flatMap(agent -> {
-                // Create the AgentReference for the response
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+        final Map<String, ScreenshotInfo> screenshotsForLoop = screenshots;
 
-                System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
+        // Create the agent version, pin the agent endpoint to it, then run the interaction loop
+        // through an agent-scoped OpenAI client. The endpoint URL identifies the agent, so
+        // responses.create(...) below does not need to send an agent_reference in its body.
+        String agentName = "ComputerUseAgent";
+        Mono.usingWhen(
+                agentsClient.createAgentVersion(agentName, agentDefinition)
+                    .flatMap(agent -> agentsClient.updateAgentDetails(agentName,
+                            new UpdateAgentDetailsOptions().setAgentEndpoint(
+                                new AgentEndpointConfig()
+                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
+                        .thenReturn(agent)),
+                agent -> {
+                    OpenAIClientAsync openAIAsyncClient
+                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                // Send initial request
-                return responsesClient.createAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder()
+                    System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
+
+                    // Send initial request
+                    return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                             .inputOfResponse(initialInput)
-                            .truncation(ResponseCreateParams.Truncation.AUTO))
-                    .doOnNext(response -> System.out.printf("Initial response received (ID: %s)%n", response.id()))
-                    .flatMap(response -> runInteractionLoop(
-                        responsesClient, agentReference, response, screenshots, SearchState.INITIAL, 0));
-            })
-            .doFinally(signalType -> {
-                System.out.println("\nCleaning up...");
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"))
-                        .doOnError(e -> System.out.println("Failed to delete agent: " + e.getMessage()))
-                        .subscribe();
-                }
-            })
-            .block(); // Block to wait for completion in main method
+                            .truncation(ResponseCreateParams.Truncation.AUTO)
+                            .build()))
+                        .doOnNext(response -> System.out.printf("Initial response received (ID: %s)%n", response.id()))
+                        .flatMap(response -> runInteractionLoop(
+                            openAIAsyncClient, response, screenshotsForLoop, SearchState.INITIAL, 0));
+                },
+                agent -> agentsClient.deleteAgentVersion(agentName, agent.getVersion()))
+            .doOnError(e -> System.err.println("Error: " + e.getMessage()))
+            .block();
     }
 
     /**
      * Recursively processes the interaction loop with the Computer Use Agent.
      *
-     * @param responsesClient The responses async client.
-     * @param agentReference The agent reference.
+     * @param openAIAsyncClient The agent-scoped OpenAI async client.
      * @param response The current response from the agent.
      * @param screenshots The map of screenshot assets.
      * @param currentState The current search state.
@@ -172,8 +168,7 @@ public class ComputerUseAsync {
      * @return A Mono that completes when the loop finishes.
      */
     private static Mono<Void> runInteractionLoop(
-            ResponsesAsyncClient responsesClient,
-            AgentReference agentReference,
+            OpenAIClientAsync openAIAsyncClient,
             Response response,
             Map<String, ScreenshotInfo> screenshots,
             SearchState currentState,
@@ -222,14 +217,13 @@ public class ComputerUseAsync {
                     .build())
         );
 
-        return responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .previousResponseId(response.id())
-                    .inputOfResponse(followUpInput)
-                    .truncation(ResponseCreateParams.Truncation.AUTO))
+        return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                .previousResponseId(response.id())
+                .inputOfResponse(followUpInput)
+                .truncation(ResponseCreateParams.Truncation.AUTO)
+                .build()))
             .doOnNext(newResponse -> System.out.printf("Follow-up response received (ID: %s)%n", newResponse.id()))
             .flatMap(newResponse -> runInteractionLoop(
-                responsesClient, agentReference, newResponse, screenshots, newState, iteration + 1));
+                openAIAsyncClient, newResponse, screenshots, newState, iteration + 1));
     }
 }

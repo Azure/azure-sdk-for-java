@@ -267,17 +267,30 @@ conversationsClient.items().create(
 
 To scope conversation operations to a delegated end user, set `FOUNDRY_USER_IDENTITY` to an opaque application-generated value and apply it as the `x-ms-user-identity` header. The caller must have the `agents/endpoints/UserIdentityImpersonation/action` RBAC permission. See the sync [UserIdentityConversation.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/conversations/UserIdentityConversation.java) and async [UserIdentityConversationAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/conversations/UserIdentityConversationAsync.java) samples.
 
+#### Configure the agent endpoint
+
+Before invoking the agent, point its endpoint at the version you just created and enable the OpenAI Responses protocol on it:
+
+```java com.azure.ai.agents.configure_agent_endpoint
+AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+
+agentsClient.updateAgentDetails(agent.getName(),
+    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+```
+
 #### Text generation with Responses
 
-And the final step that ties everything together, we pass the `AgentReference` and the `conversation.id()` as parameters for the `Response` creation:
+With the agent endpoint configured, invoke the OpenAI Responses API through an agent-scoped OpenAI client:
 
 ```java com.azure.ai.agents.create_response
-AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-Response response = responsesClient.createAzureResponse(
-    new AzureCreateResponseOptions().setAgentReference(agentReference),
-    ResponseCreateParams.builder().conversation(conversation.id()));
-// To extract Azure-specific response details:
-AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
+OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+
+Response response = agentScopedClient.responses().create(ResponseCreateParams.builder()
+    .conversation(conversation.id())
+    .build());
 ```
 
 ### Using Agent tools
@@ -744,16 +757,16 @@ The synchronous streaming methods return `IterableStream<ResponseStreamEvent>`, 
 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response - text is printed as it arrives
-IterableStream<ResponseStreamEvent> events =
-    responsesClient.createStreamingAzureResponse(
-        new AzureCreateResponseOptions().setAgentReference(agentReference),
+try (StreamResponse<ResponseStreamEvent> events = openAIClient.responses().createStreaming(
         ResponseCreateParams.builder()
-            .input("Tell me a short story about a brave explorer."));
+            .input("Tell me a short story about a brave explorer.")
+            .build())) {
 
-for (ResponseStreamEvent event : events) {
-    responseAccumulator.accumulate(event);
-    event.outputTextDelta()
-        .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+    events.stream().forEach(event -> {
+        responseAccumulator.accumulate(event);
+        event.outputTextDelta()
+            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+    });
 }
 System.out.println(); // newline after streamed text
 
@@ -773,21 +786,34 @@ The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrati
 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response asynchronously - text is printed as each chunk arrives
-return responsesAsyncClient.createStreamingAzureResponse(
-        new AzureCreateResponseOptions().setAgentReference(agentReference),
-        ResponseCreateParams.builder()
-            .input("Tell me a short story about a brave explorer."))
-    .doOnNext(event -> {
+AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
+    ResponseCreateParams.builder()
+        .input("Tell me a short story about a brave explorer.")
+        .build());
+
+stream.subscribe(new AsyncStreamResponse.Handler<ResponseStreamEvent>() {
+    @Override
+    public void onNext(ResponseStreamEvent event) {
         responseAccumulator.accumulate(event);
         event.outputTextDelta()
             .ifPresent(textEvent -> System.out.print(textEvent.delta()));
-    })
-    .then(Mono.fromCallable(() -> {
+    }
+
+    @Override
+    public void onComplete(java.util.Optional<Throwable> error) {
+        // No-op: onCompleteFuture below signals completion.
+    }
+});
+
+return Mono.fromFuture(stream.onCompleteFuture())
+    .doFinally(signal -> stream.close())
+    .doOnSuccess(unused -> {
         System.out.println(); // newline after streamed text
 
         // Access the complete accumulated response
         Response response = responseAccumulator.response();
         System.out.println("\nResponse ID: " + response.id());
+    });
 ```
 
 See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).

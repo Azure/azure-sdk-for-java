@@ -5,10 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureFunctionBinding;
 import com.azure.ai.agents.models.AzureFunctionDefinition;
 import com.azure.ai.agents.models.AzureFunctionDefinitionDetails;
@@ -18,9 +14,17 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ToolChoiceOptions;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,7 +57,6 @@ public class AzureFunctionSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // Define function parameters
         // Use BinaryData.fromObject() to produce correct JSON types
@@ -87,23 +90,26 @@ public class AzureFunctionSync {
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(azureFunctionTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("azure-function-agent", agentDefinition);
-        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
+        String agentName = "azure-function-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .toolChoice(ToolChoiceOptions.REQUIRED)
-                    .input("What is the weather in Seattle?"));
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                .toolChoice(ToolChoiceOptions.REQUIRED)
+                .input("What is the weather in Seattle?")
+                .build());
 
             System.out.println("Response: " + response.output());
         } finally {
-            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-            System.out.println("Agent deleted");
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }

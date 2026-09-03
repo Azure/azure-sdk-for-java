@@ -5,10 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.SharepointGroundingToolParameters;
 import com.azure.ai.agents.models.SharepointPreviewTool;
@@ -17,6 +13,14 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.client.OpenAIClient;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 import java.util.Arrays;
@@ -43,7 +47,6 @@ public class SharePointGroundingSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_sharepoint
         // Create SharePoint grounding tool with connection configuration
@@ -60,23 +63,25 @@ public class SharePointGroundingSync {
             .setInstructions("You are a helpful assistant that can search through SharePoint documents.")
             .setTools(Collections.singletonList(sharepointTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("sharepoint-agent", agentDefinition);
-        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
+        String agentName = "sharepoint-agent";
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            // Create a response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
+                new AgentEndpointConfig()
+                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                ResponseCreateParams.builder()
-                    .input("Find the latest project documentation in SharePoint"));
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+
+            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+                    .input("Find the latest project documentation in SharePoint")
+                .build());
 
             System.out.println("Response: " + response.output());
         } finally {
-            // Clean up
-            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
         }
     }
 }
