@@ -5,6 +5,13 @@
       "ignore": true,
       "differences": [
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded|attributeRemoved)",
+          "old": ".*com\\.azure\\.ai\\.agents\\..*",
+          "annotationType": "com\\.azure\\.ai\\.agents\\.implementation\\.utils\\.Beta",
+          "justification": "Adding or updating the preview @Beta annotation is metadata only and does not affect runtime behavior. Preview surface may still change between beta releases."
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",

@@ -5,6 +5,13 @@
       "ignore": true,
       "differences": [
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded|attributeRemoved)",
+          "old": ".*com\\.azure\\.ai\\.projects\\..*",
+          "annotationType": "com\\.azure\\.ai\\.projects\\.implementation\\.utils\\.Beta",
+          "justification": "Adding or updating the preview @Beta annotation is metadata only and does not affect runtime behavior. Preview surface may still change between beta releases."
+        },
+        {
           "code": "java.method.removed",
           "old": "method com.azure.ai.projects.models.SystemDataV3 com.azure.ai.projects.models.ModelVersion::getSystemData()",
           "justification": "SystemDataV3 was removed from ModelVersion because the current service contract no longer exposes system data on model versions."
