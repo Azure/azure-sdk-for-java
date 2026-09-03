@@ -86,20 +86,20 @@
 
 #### `models.UpdateStageStatus` was modified
 
-* `maxAllowedFailures()` was added
 * `failureCount()` was added
+* `maxAllowedFailures()` was added
 
 #### `models.UpdateGroupStatus` was modified
 
-* `failureCount()` was added
 * `maxAllowedFailures()` was added
+* `failureCount()` was added
 
 #### `models.UpdateGroup` was modified
 
 * `withMemberSelector(models.MemberSelector)` was added
 * `maxAllowedFailures()` was added
-* `withMaxAllowedFailures(java.lang.String)` was added
 * `memberSelector()` was added
+* `withMaxAllowedFailures(java.lang.String)` was added
 
 #### `models.Gate` was modified
 
@@ -111,13 +111,13 @@
 
 #### `models.ClusterResourcePlacementSpec` was modified
 
-* `withRolloutStrategy(models.RolloutStrategy)` was added
 * `rolloutStrategy()` was added
+* `withRolloutStrategy(models.RolloutStrategy)` was added
 
 #### `models.GateConfiguration` was modified
 
-* `scheduledStartConfiguration()` was added
 * `withScheduledStartConfiguration(models.ScheduledStartConfiguration)` was added
+* `scheduledStartConfiguration()` was added
 
 #### `models.GateType` was modified
 
@@ -125,15 +125,15 @@
 
 #### `models.FleetManagedNamespacePatch` was modified
 
-* `withProperties(models.FleetManagedNamespacePropertiesPatch)` was added
 * `properties()` was added
+* `withProperties(models.FleetManagedNamespacePropertiesPatch)` was added
 
 #### `models.UpdateStage` was modified
 
-* `withMaxAllowedFailures(java.lang.String)` was added
 * `memberSelector()` was added
-* `withMemberSelector(models.MemberSelector)` was added
 * `maxAllowedFailures()` was added
+* `withMemberSelector(models.MemberSelector)` was added
+* `withMaxAllowedFailures(java.lang.String)` was added
 
 #### `models.FleetManagedNamespace$Update` was modified
 
