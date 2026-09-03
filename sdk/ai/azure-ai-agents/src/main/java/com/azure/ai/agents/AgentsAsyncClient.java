@@ -1776,9 +1776,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     object: String (Required)
      *     metadata (Required): {
-     *          (Optional): {
-     *             String: String (Required)
-     *         }
+     *         String: String (Required)
      *     }
      *     created_at: long (Required)
      * }
