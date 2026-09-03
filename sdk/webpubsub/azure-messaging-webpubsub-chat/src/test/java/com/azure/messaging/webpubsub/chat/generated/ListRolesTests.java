@@ -5,6 +5,7 @@
 package com.azure.messaging.webpubsub.chat.generated;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.messaging.webpubsub.chat.models.ChatPermission;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +18,7 @@ public final class ListRolesTests extends WebPubSubChatServiceClientTestBase {
     @Disabled
     public void testListRolesTests() {
         // method invocation
-        PagedIterable<ChatRole> response = webPubSubChatServiceClient.listRoles(10, null);
+        PagedIterable<ChatRole> response = webPubSubChatServiceClient.listRoles();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
@@ -26,8 +27,9 @@ public final class ListRolesTests extends WebPubSubChatServiceClientTestBase {
         // verify property "name"
         Assertions.assertEquals("user.normal", firstItem.getName());
         // verify property "permissions"
-        List<String> firstItemPermissions = firstItem.getPermissions();
-        Assertions.assertEquals("user.update_own_info", firstItemPermissions.iterator().next());
+        List<ChatPermission> firstItemPermissions = firstItem.getPermissions();
+        Assertions.assertEquals(ChatPermission.fromString("user.update_own_info"),
+            firstItemPermissions.iterator().next());
         // verify property "etag"
         Assertions.assertEquals("etag1", firstItem.getEtag());
     }

@@ -16,7 +16,7 @@ public final class ListRoomMembersTests extends WebPubSubChatServiceClientTestBa
     @Disabled
     public void testListRoomMembersTests() {
         // method invocation
-        PagedIterable<ChatRoomMember> response = webPubSubChatServiceClient.listRoomMembers("room1", 10, null);
+        PagedIterable<ChatRoomMember> response = webPubSubChatServiceClient.listRoomMembers("room1");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

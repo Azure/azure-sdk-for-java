@@ -5,6 +5,7 @@
 package com.azure.messaging.webpubsub.chat.generated;
 
 import com.azure.core.http.MatchConditions;
+import com.azure.messaging.webpubsub.chat.models.ChatPermission;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import java.util.Arrays;
 import java.util.List;
@@ -18,18 +19,19 @@ public final class CreateOrReplaceRoleTests extends WebPubSubChatServiceClientTe
     @Disabled
     public void testCreateOrReplaceRoleTests() {
         // method invocation
-        ChatRole response = webPubSubChatServiceClient.createOrReplaceRole("room.moderator",
-            new ChatRole(
-                Arrays.asList("room.history", "room.mute", "room.freeze", "room.remove_user", "room.publish_message")),
-            new MatchConditions().setIfMatch("etag1"));
+        ChatRole response
+            = webPubSubChatServiceClient.createOrReplaceRole(
+                "room.moderator", new ChatRole(Arrays.asList(ChatPermission.ROOM_HISTORY,
+                    ChatPermission.ROOM_REMOVE_USER, ChatPermission.ROOM_PUBLISH_MESSAGE)),
+                new MatchConditions().setIfMatch("etag1"));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "name"
         Assertions.assertEquals("room.moderator", response.getName());
         // verify property "permissions"
-        List<String> responsePermissions = response.getPermissions();
-        Assertions.assertEquals("room.history", responsePermissions.iterator().next());
+        List<ChatPermission> responsePermissions = response.getPermissions();
+        Assertions.assertEquals(ChatPermission.ROOM_HISTORY, responsePermissions.iterator().next());
         // verify property "etag"
         Assertions.assertEquals("etag2", response.getEtag());
     }

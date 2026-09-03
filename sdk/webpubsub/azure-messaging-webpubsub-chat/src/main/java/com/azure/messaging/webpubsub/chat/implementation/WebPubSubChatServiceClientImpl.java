@@ -13,6 +13,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -62,7 +63,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Gets HTTP or HTTPS endpoint for the Web PubSub service instance.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -78,7 +79,7 @@ public final class WebPubSubChatServiceClientImpl {
     /**
      * Gets Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or
      * underscore.
-     * 
+     *
      * @return the hub value.
      */
     public String getHub() {
@@ -92,7 +93,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public WebPubSubChatServiceVersion getServiceVersion() {
@@ -106,7 +107,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -120,7 +121,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -129,7 +130,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Initializes an instance of WebPubSubChatServiceClient client.
-     * 
+     *
      * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
@@ -142,7 +143,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Initializes an instance of WebPubSubChatServiceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
@@ -156,7 +157,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Initializes an instance of WebPubSubChatServiceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
@@ -560,6 +561,28 @@ public final class WebPubSubChatServiceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("hub") String hub,
             @PathParam("userId") String userId, RequestOptions requestOptions, Context context);
 
+        @Post("/api/hubs/{hub}/:generateToken")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateClientToken(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
+            @QueryParam("clientType") String clientType, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/api/hubs/{hub}/:generateToken")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> generateClientTokenSync(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
+            @QueryParam("clientType") String clientType, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -634,7 +657,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -664,7 +687,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -708,7 +731,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -757,7 +780,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -823,7 +846,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -869,7 +892,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -919,7 +942,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -948,7 +971,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1010,7 +1033,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
      * @param resource The resource instance.
@@ -1076,7 +1099,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param conversationId Conversation identifier.
      * @param messageId Message identifier.
      * @param resource The resource instance.
@@ -1113,13 +1136,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1155,13 +1178,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1215,13 +1238,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1255,13 +1278,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1307,13 +1330,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1338,13 +1361,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1379,7 +1402,7 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
@@ -1393,13 +1416,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1441,7 +1464,7 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
@@ -1455,13 +1478,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1494,7 +1517,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1521,7 +1544,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param roleName Role name. Must start with 'user.' or 'room.' prefix.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1538,7 +1561,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Create or replace a room.
-     * 
+     *
      * Create or replace a room with a client-specified ID.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1575,7 +1598,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1597,7 +1620,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Create or replace a room.
-     * 
+     *
      * Create or replace a room with a client-specified ID.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1634,7 +1657,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1667,7 +1690,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1697,7 +1720,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1725,7 +1748,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1752,7 +1775,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1788,7 +1811,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1829,7 +1852,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1888,7 +1911,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1927,7 +1950,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2000,7 +2023,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
      * @param resource The resource instance.
@@ -2056,7 +2079,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
      * @param resource The resource instance.
@@ -2088,7 +2111,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2117,7 +2140,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param roomId Room identifier.
      * @param userId User ID of the member.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2135,7 +2158,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Get a user's profile.
-     * 
+     *
      * Get a user's profile. The response is a polymorphic `ChatUser` (e.g. `HumanChatUser`) selected by the `kind`
      * discriminator.
      * <p><strong>Response Body Schema</strong></p>
@@ -2150,7 +2173,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param userId User identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2158,7 +2181,7 @@ public final class WebPubSubChatServiceClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a user's profile.
-     * 
+     *
      * Get a user's profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2170,7 +2193,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Get a user's profile.
-     * 
+     *
      * Get a user's profile. The response is a polymorphic `ChatUser` (e.g. `HumanChatUser`) selected by the `kind`
      * discriminator.
      * <p><strong>Response Body Schema</strong></p>
@@ -2185,7 +2208,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param userId User identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2193,7 +2216,7 @@ public final class WebPubSubChatServiceClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a user's profile.
-     * 
+     *
      * Get a user's profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2205,7 +2228,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Create or replace a user.
-     * 
+     *
      * Create or replace a user. The request body is a polymorphic `ChatUser` (e.g. `HumanChatUser`) selected by the
      * `kind` discriminator.
      * <p><strong>Header Parameters</strong></p>
@@ -2243,7 +2266,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param userId User identifier.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2266,7 +2289,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Create or replace a user.
-     * 
+     *
      * Create or replace a user. The request body is a polymorphic `ChatUser` (e.g. `HumanChatUser`) selected by the
      * `kind` discriminator.
      * <p><strong>Header Parameters</strong></p>
@@ -2304,7 +2327,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param userId User identifier.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2335,7 +2358,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param userId User identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2362,7 +2385,7 @@ public final class WebPubSubChatServiceClientImpl {
      * string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param userId User identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2378,8 +2401,87 @@ public final class WebPubSubChatServiceClientImpl {
     }
 
     /**
-     * Query messages in a conversation from latest to earliest.
+     * Generate a token for connecting a client to Azure Web PubSub.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>userId</td><td>String</td><td>No</td><td>User identifier for the client connection.</td></tr>
+     * <tr><td>role</td><td>List&lt;String&gt;</td><td>No</td><td>Roles granted to the client connection. Call
+     * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>Lifetime of the generated token, in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
      * 
+     * <pre>
+     * {@code
+     * {
+     *     token: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param hub Target hub name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response containing a Web PubSub client access token along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
+        final String apiVersion = "2024-12-01";
+        final String clientType = "default";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.generateClientToken(this.getEndpoint(), hub, apiVersion,
+            clientType, accept, requestOptions, context));
+    }
+
+    /**
+     * Generate a token for connecting a client to Azure Web PubSub.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>userId</td><td>String</td><td>No</td><td>User identifier for the client connection.</td></tr>
+     * <tr><td>role</td><td>List&lt;String&gt;</td><td>No</td><td>Roles granted to the client connection. Call
+     * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>Lifetime of the generated token, in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     token: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param hub Target hub name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response containing a Web PubSub client access token along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
+        final String apiVersion = "2024-12-01";
+        final String clientType = "default";
+        final String accept = "application/json";
+        return service.generateClientTokenSync(this.getEndpoint(), hub, apiVersion, clientType, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Query messages in a conversation from latest to earliest.
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2397,7 +2499,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2420,7 +2522,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query messages in a conversation from latest to earliest.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2438,7 +2540,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2458,7 +2560,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query roles in a hub.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2467,13 +2569,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2496,7 +2598,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Query roles in a hub.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2505,13 +2607,13 @@ public final class WebPubSubChatServiceClientImpl {
      * {
      *     name: String (Required)
      *     permissions (Required): [
-     *         String (Required)
+     *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
      *     etag: String (Required)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2531,7 +2633,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Get room members.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2544,7 +2646,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2566,7 +2668,7 @@ public final class WebPubSubChatServiceClientImpl {
 
     /**
      * Get room members.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2579,7 +2681,7 @@ public final class WebPubSubChatServiceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

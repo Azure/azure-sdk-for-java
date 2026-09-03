@@ -19,8 +19,7 @@ public class ListMessages {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.messaging.webpubsub.chat.generated.list-messages.list-messages
-        PagedIterable<ChatMessage> response
-            = webPubSubChatServiceClient.listMessages("c.room1.abcd1234", null, null, 10);
+        PagedIterable<ChatMessage> response = webPubSubChatServiceClient.listMessages("c.room1.abcd1234");
         // END:com.azure.messaging.webpubsub.chat.generated.list-messages.list-messages
     }
 }

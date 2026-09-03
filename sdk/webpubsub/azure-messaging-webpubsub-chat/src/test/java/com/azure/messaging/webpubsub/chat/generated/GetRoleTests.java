@@ -4,6 +4,7 @@
 
 package com.azure.messaging.webpubsub.chat.generated;
 
+import com.azure.messaging.webpubsub.chat.models.ChatPermission;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -23,8 +24,8 @@ public final class GetRoleTests extends WebPubSubChatServiceClientTestBase {
         // verify property "name"
         Assertions.assertEquals("room.operator", response.getName());
         // verify property "permissions"
-        List<String> responsePermissions = response.getPermissions();
-        Assertions.assertEquals("room.invite", responsePermissions.iterator().next());
+        List<ChatPermission> responsePermissions = response.getPermissions();
+        Assertions.assertEquals(ChatPermission.ROOM_INVITE, responsePermissions.iterator().next());
         // verify property "etag"
         Assertions.assertEquals("etag1", response.getEtag());
     }

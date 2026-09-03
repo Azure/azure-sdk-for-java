@@ -19,7 +19,7 @@ public class ListRoles {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.messaging.webpubsub.chat.generated.list-roles.list-roles
-        PagedIterable<ChatRole> response = webPubSubChatServiceClient.listRoles(10, null);
+        PagedIterable<ChatRole> response = webPubSubChatServiceClient.listRoles();
         // END:com.azure.messaging.webpubsub.chat.generated.list-roles.list-roles
     }
 }

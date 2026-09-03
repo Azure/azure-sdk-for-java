@@ -4,9 +4,11 @@
 
 module com.azure.messaging.webpubsub.chat {
     requires transitive com.azure.core;
+    requires com.nimbusds.jose.jwt;
 
     exports com.azure.messaging.webpubsub.chat;
     exports com.azure.messaging.webpubsub.chat.models;
 
     opens com.azure.messaging.webpubsub.chat.models to com.azure.core;
+    opens com.azure.messaging.webpubsub.chat.implementation.models to com.azure.core;
 }

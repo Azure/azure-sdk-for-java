@@ -9,6 +9,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.chat.WebPubSubChatServiceClient;
 import com.azure.messaging.webpubsub.chat.WebPubSubChatServiceClientBuilder;
+import com.azure.messaging.webpubsub.chat.models.ChatPermission;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import java.util.Arrays;
 
@@ -20,10 +21,11 @@ public class CreateOrReplaceRole {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.messaging.webpubsub.chat.generated.create-or-replace-role.create-or-replace-role
-        ChatRole response = webPubSubChatServiceClient.createOrReplaceRole("room.moderator",
-            new ChatRole(
-                Arrays.asList("room.history", "room.mute", "room.freeze", "room.remove_user", "room.publish_message")),
-            new MatchConditions().setIfMatch("etag1"));
+        ChatRole response
+            = webPubSubChatServiceClient.createOrReplaceRole(
+                "room.moderator", new ChatRole(Arrays.asList(ChatPermission.ROOM_HISTORY,
+                    ChatPermission.ROOM_REMOVE_USER, ChatPermission.ROOM_PUBLISH_MESSAGE)),
+                new MatchConditions().setIfMatch("etag1"));
         // END:com.azure.messaging.webpubsub.chat.generated.create-or-replace-role.create-or-replace-role
     }
 }

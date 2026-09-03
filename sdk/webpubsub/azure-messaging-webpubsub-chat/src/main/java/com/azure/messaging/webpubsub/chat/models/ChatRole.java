@@ -30,7 +30,7 @@ public final class ChatRole implements JsonSerializable<ChatRole> {
      * Permissions associated with the role. Do not mix user permissions and room permissions in one role.
      */
     @Generated
-    private final List<String> permissions;
+    private final List<ChatPermission> permissions;
 
     /*
      * The entity tag for this resource.
@@ -44,7 +44,7 @@ public final class ChatRole implements JsonSerializable<ChatRole> {
      * @param permissions the permissions value to set.
      */
     @Generated
-    public ChatRole(List<String> permissions) {
+    public ChatRole(List<ChatPermission> permissions) {
         this.permissions = permissions;
     }
 
@@ -65,7 +65,7 @@ public final class ChatRole implements JsonSerializable<ChatRole> {
      * @return the permissions value.
      */
     @Generated
-    public List<String> getPermissions() {
+    public List<ChatPermission> getPermissions() {
         return this.permissions;
     }
 
@@ -86,7 +86,8 @@ public final class ChatRole implements JsonSerializable<ChatRole> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("permissions", this.permissions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -103,7 +104,7 @@ public final class ChatRole implements JsonSerializable<ChatRole> {
     public static ChatRole fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            List<String> permissions = null;
+            List<ChatPermission> permissions = null;
             String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,7 +113,7 @@ public final class ChatRole implements JsonSerializable<ChatRole> {
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("permissions".equals(fieldName)) {
-                    permissions = reader.readArray(reader1 -> reader1.getString());
+                    permissions = reader.readArray(reader1 -> ChatPermission.fromString(reader1.getString()));
                 } else if ("etag".equals(fieldName)) {
                     etag = reader.getString();
                 } else {
