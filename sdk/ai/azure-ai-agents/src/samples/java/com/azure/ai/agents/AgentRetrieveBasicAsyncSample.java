@@ -49,7 +49,7 @@ public class AgentRetrieveBasicAsyncSample {
             .doOnNext(agentRef::set)
             .flatMap(agent -> agentsClient.getAgent(agent.getName()))
             .doOnNext(agent -> System.out.printf("Retrieved agent: %s (%s)%n", agent.getName(), agent.getId()))
-            .then(Mono.fromFuture(conversations.create()))
+            .then(Mono.defer(() -> Mono.fromFuture(conversations.create())))
             .doOnNext(conversation -> conversationIdRef.set(conversation.id()))
             .flatMap(conversation -> Mono.fromFuture(conversations.retrieve(conversation.id())))
             .doOnNext(conversation -> System.out.println("Retrieved conversation: " + conversation.id()))

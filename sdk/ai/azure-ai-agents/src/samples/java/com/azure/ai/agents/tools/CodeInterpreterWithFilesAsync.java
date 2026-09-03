@@ -70,7 +70,7 @@ public class CodeInterpreterWithFilesAsync {
                     ToolSampleUtils.findContainerFile(response));
                 return response;
             }))
-            .then(cleanup(agentsClient, openAIClient, uploaded, csv, agentRef))
+            .then(Mono.defer(() -> cleanup(agentsClient, openAIClient, uploaded, csv, agentRef)))
             .onErrorResume(error -> cleanup(agentsClient, openAIClient, uploaded, csv, agentRef)
                 .then(Mono.error(error)))
             .block();

@@ -81,7 +81,7 @@ public class ToolboxSearchAgentAsyncSample {
                     new AgentReference(agent.getName()).setVersion(agent.getVersion())),
                 ResponseCreateParams.builder().input("What is my GitHub profile username?")))
             .doOnNext(response -> System.out.println("Response: " + response.output()))
-            .then(cleanup(agentsClient, toolboxesClient, toolboxName, agentRef))
+            .then(Mono.defer(() -> cleanup(agentsClient, toolboxesClient, toolboxName, agentRef)))
             .onErrorResume(error -> cleanup(agentsClient, toolboxesClient, toolboxName, agentRef)
                 .then(Mono.error(error)))
             .block();
