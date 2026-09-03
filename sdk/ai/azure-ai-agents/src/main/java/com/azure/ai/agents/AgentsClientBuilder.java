@@ -65,12 +65,14 @@ import java.util.stream.Stream;
         BetaVoiceAgentWebSocketClient.class,
         BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
+        AgentEndpointConversationsClient.class,
         ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
         BetaVoiceAgentWebSocketAsyncClient.class,
         BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
+        AgentEndpointConversationsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
@@ -724,5 +726,25 @@ public final class AgentsClientBuilder
     @Generated
     public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
         return new BetaAgentEndpointConversationsClient(buildInnerClient().getBetaAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of AgentEndpointConversationsAsyncClient class.
+     *
+     * @return an instance of AgentEndpointConversationsAsyncClient.
+     */
+    @Generated
+    public AgentEndpointConversationsAsyncClient buildAgentEndpointConversationsAsyncClient() {
+        return new AgentEndpointConversationsAsyncClient(buildInnerClient().getAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of AgentEndpointConversationsClient class.
+     *
+     * @return an instance of AgentEndpointConversationsClient.
+     */
+    @Generated
+    public AgentEndpointConversationsClient buildAgentEndpointConversationsClient() {
+        return new AgentEndpointConversationsClient(buildInnerClient().getAgentEndpointConversations());
     }
 }

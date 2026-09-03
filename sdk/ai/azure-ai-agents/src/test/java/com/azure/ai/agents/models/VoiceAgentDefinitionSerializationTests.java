@@ -37,7 +37,7 @@ public class VoiceAgentDefinitionSerializationTests {
                 .setParameters(new RealtimeFunctionToolParameters());
         VoiceAgentSystemTool systemTool = new VoiceAgentSystemTool(VoiceAgentSystemToolName.END_CONVERSATION);
 
-        VoiceAgentDefinition original = new VoiceAgentDefinition(VoiceModelType.MANAGED, "gpt-realtime")
+        VoiceAgentDefinition original = new VoiceAgentDefinition(VoiceModelType.MANAGED).setModel("gpt-realtime")
             .setInstructions("Keep replies short and natural.")
             .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
@@ -78,7 +78,7 @@ public class VoiceAgentDefinitionSerializationTests {
     @Test
     public void selfDeployedVoiceDefinitionRoundTrips() throws IOException {
         VoiceAgentDefinition original
-            = new VoiceAgentDefinition(VoiceModelType.SELF_DEPLOYED, "customer-realtime-deployment")
+            = new VoiceAgentDefinition(VoiceModelType.SELF_DEPLOYED).setModel("customer-realtime-deployment")
                 .setInstructions("Use the customer deployment.");
 
         String json = serialize(original);

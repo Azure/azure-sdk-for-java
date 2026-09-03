@@ -151,6 +151,20 @@ public final class AgentsClientImpl {
     }
 
     /**
+     * The AgentEndpointConversationsImpl object to access its operations.
+     */
+    private final AgentEndpointConversationsImpl agentEndpointConversations;
+
+    /**
+     * Gets the AgentEndpointConversationsImpl object to access its operations.
+     *
+     * @return the AgentEndpointConversationsImpl object.
+     */
+    public AgentEndpointConversationsImpl getAgentEndpointConversations() {
+        return this.agentEndpointConversations;
+    }
+
+    /**
      * The ToolboxesImpl object to access its operations.
      */
     private final ToolboxesImpl toolboxes;
@@ -217,6 +231,7 @@ public final class AgentsClientImpl {
         this.betaVoiceAgentWebSockets = new BetaVoiceAgentWebSocketsImpl(this);
         this.betaAgentEndpointConversations = new BetaAgentEndpointConversationsImpl(this);
         this.agents = new AgentsImpl(this);
+        this.agentEndpointConversations = new AgentEndpointConversationsImpl(this);
         this.toolboxes = new ToolboxesImpl(this);
     }
 }
