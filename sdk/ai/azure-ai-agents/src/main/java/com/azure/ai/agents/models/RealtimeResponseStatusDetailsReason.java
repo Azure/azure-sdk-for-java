@@ -39,7 +39,7 @@ public enum RealtimeResponseStatusDetailsReason {
 
     /**
      * Parses a serialized value to a RealtimeResponseStatusDetailsReason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RealtimeResponseStatusDetailsReason object, or null if unable to parse.
      */

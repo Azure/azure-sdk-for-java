@@ -52,7 +52,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Initializes an instance of BetaAgentEndpointConversationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BetaAgentEndpointConversationsImpl(AgentsClientImpl client) {
@@ -63,7 +63,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -293,6 +293,50 @@ public final class BetaAgentEndpointConversationsImpl {
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}/items/{item_id}/audio/generated")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAgentConversationItemGeneratedAudio(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}/items/{item_id}/audio/generated")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAgentConversationItemGeneratedAudioSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}/items/{item_id}/audio/generated/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAgentConversationItemGeneratedAudioContent(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}/items/{item_id}/audio/generated/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAgentConversationItemGeneratedAudioContentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
         @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}/audio")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -340,7 +384,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List voice agent conversations
-     *
+     * 
      * Returns the conversations persisted for the specified voice agent endpoint.
      * Conversations are present when the session's effective `store` setting is `true`, whether inherited from the
      * agent definition or enabled by the WebSocket session override.
@@ -365,7 +409,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -415,7 +459,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -438,7 +482,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List voice agent conversations
-     *
+     * 
      * Returns the conversations persisted for the specified voice agent endpoint.
      * Conversations are present when the session's effective `store` setting is `true`, whether inherited from the
      * agent definition or enabled by the WebSocket session override.
@@ -463,7 +507,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -513,7 +557,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -529,7 +573,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List voice agent conversations
-     *
+     * 
      * Returns the conversations persisted for the specified voice agent endpoint.
      * Conversations are present when the session's effective `store` setting is `true`, whether inherited from the
      * agent definition or enabled by the WebSocket session override.
@@ -554,7 +598,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -604,7 +648,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -625,7 +669,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List voice agent conversations
-     *
+     * 
      * Returns the conversations persisted for the specified voice agent endpoint.
      * Conversations are present when the session's effective `store` setting is `true`, whether inherited from the
      * agent definition or enabled by the WebSocket session override.
@@ -650,7 +694,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -700,7 +744,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -716,11 +760,11 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation
-     *
+     * 
      * Retrieves a single conversation recorded for the specified voice agent endpoint by its id.
      * Returns `404` when the conversation was not persisted (`store = false`) or does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -770,7 +814,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -779,7 +823,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation
-     *
+     * 
      * Retrieves a single conversation recorded for the specified voice agent endpoint by its id.
      * Returns `404` when the conversation was not persisted (`store = false`) or does not exist along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -794,11 +838,11 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation
-     *
+     * 
      * Retrieves a single conversation recorded for the specified voice agent endpoint by its id.
      * Returns `404` when the conversation was not persisted (`store = false`) or does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -848,7 +892,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -857,7 +901,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation
-     *
+     * 
      * Retrieves a single conversation recorded for the specified voice agent endpoint by its id.
      * Returns `404` when the conversation was not persisted (`store = false`) or does not exist along with
      * {@link Response}.
@@ -872,10 +916,10 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Delete a voice agent conversation
-     *
+     * 
      * Deletes a conversation and all of its stored data — responses, items, and any audio (cascade). This is
      * the customer's explicit data-deletion control for voice conversations.
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -894,10 +938,10 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Delete a voice agent conversation
-     *
+     * 
      * Deletes a conversation and all of its stored data — responses, items, and any audio (cascade). This is
      * the customer's explicit data-deletion control for voice conversations.
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -916,7 +960,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List responses in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of the responses (model inference turns) recorded for the specified
      * conversation. The per-response `output` projection may be omitted here; use the response-items route
      * for the canonical paged output. Returns `404` when the conversation was not persisted (`store = false`).
@@ -941,7 +985,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1005,7 +1049,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose responses are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1029,7 +1073,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List responses in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of the responses (model inference turns) recorded for the specified
      * conversation. The per-response `output` projection may be omitted here; use the response-items route
      * for the canonical paged output. Returns `404` when the conversation was not persisted (`store = false`).
@@ -1054,7 +1098,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1118,7 +1162,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose responses are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1137,7 +1181,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List responses in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of the responses (model inference turns) recorded for the specified
      * conversation. The per-response `output` projection may be omitted here; use the response-items route
      * for the canonical paged output. Returns `404` when the conversation was not persisted (`store = false`).
@@ -1162,7 +1206,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1226,7 +1270,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose responses are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1248,7 +1292,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List responses in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of the responses (model inference turns) recorded for the specified
      * conversation. The per-response `output` projection may be omitted here; use the response-items route
      * for the canonical paged output. Returns `404` when the conversation was not persisted (`store = false`).
@@ -1273,7 +1317,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1337,7 +1381,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose responses are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1356,11 +1400,11 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation response
-     *
+     * 
      * Retrieves a single response from the specified conversation by its id, including its `output` items,
      * `usage`, and status. Returns `404` when the conversation or response was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1424,7 +1468,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response to retrieve.
@@ -1434,7 +1478,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation response
-     *
+     * 
      * Retrieves a single response from the specified conversation by its id, including its `output` items,
      * `usage`, and status along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1449,11 +1493,11 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation response
-     *
+     * 
      * Retrieves a single response from the specified conversation by its id, including its `output` items,
      * `usage`, and status. Returns `404` when the conversation or response was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1517,7 +1561,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response to retrieve.
@@ -1527,7 +1571,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation response
-     *
+     * 
      * Retrieves a single response from the specified conversation by its id, including its `output` items,
      * `usage`, and status along with {@link Response}.
      */
@@ -1541,7 +1585,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items produced by a voice agent conversation response
-     *
+     * 
      * Returns a paged collection of the output items produced by a specific response (the response's output
      * projection). For the complete ordered conversation history — including user input and client-created
      * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
@@ -1567,7 +1611,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1575,7 +1619,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response whose output items are listed.
@@ -1601,7 +1645,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items produced by a voice agent conversation response
-     *
+     * 
      * Returns a paged collection of the output items produced by a specific response (the response's output
      * projection). For the complete ordered conversation history — including user input and client-created
      * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
@@ -1627,7 +1671,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1635,7 +1679,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response whose output items are listed.
@@ -1655,7 +1699,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items produced by a voice agent conversation response
-     *
+     * 
      * Returns a paged collection of the output items produced by a specific response (the response's output
      * projection). For the complete ordered conversation history — including user input and client-created
      * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
@@ -1681,7 +1725,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1689,7 +1733,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response whose output items are listed.
@@ -1713,7 +1757,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items produced by a voice agent conversation response
-     *
+     * 
      * Returns a paged collection of the output items produced by a specific response (the response's output
      * projection). For the complete ordered conversation history — including user input and client-created
      * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
@@ -1739,7 +1783,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1747,7 +1791,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response whose output items are listed.
@@ -1767,7 +1811,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of items — the complete ordered conversation history, including user input,
      * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
      * conversation was not persisted (`store = false`).
@@ -1792,7 +1836,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1800,7 +1844,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose items are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1824,7 +1868,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of items — the complete ordered conversation history, including user input,
      * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
      * conversation was not persisted (`store = false`).
@@ -1849,7 +1893,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1857,7 +1901,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose items are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1876,7 +1920,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of items — the complete ordered conversation history, including user input,
      * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
      * conversation was not persisted (`store = false`).
@@ -1901,7 +1945,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1909,7 +1953,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose items are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1931,7 +1975,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * List items in a voice agent conversation
-     *
+     * 
      * Returns a paged collection of items — the complete ordered conversation history, including user input,
      * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
      * conversation was not persisted (`store = false`).
@@ -1956,7 +2000,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1964,7 +2008,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose items are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1983,14 +2027,14 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation item
-     *
+     * 
      * Retrieves a single item from the specified conversation by its id, including its transcript. An
      * `input_audio`/`output_audio` content part indicates that audio is available for the item; the canonical per-item
      * audio metadata is the `/items/{item_id}/audio` resource, and the bytes are streamed by
      * `/items/{item_id}/audio/content`. Returns `404` when the conversation or item was not persisted
      * (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1998,7 +2042,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the item.
      * @param itemId The id of the conversation item to retrieve.
@@ -2008,7 +2052,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation item
-     *
+     * 
      * Retrieves a single item from the specified conversation by its id, including its transcript along with
      * {@link Response} on successful completion of {@link Mono}.
      */
@@ -2022,14 +2066,14 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation item
-     *
+     * 
      * Retrieves a single item from the specified conversation by its id, including its transcript. An
      * `input_audio`/`output_audio` content part indicates that audio is available for the item; the canonical per-item
      * audio metadata is the `/items/{item_id}/audio` resource, and the bytes are streamed by
      * `/items/{item_id}/audio/content`. Returns `404` when the conversation or item was not persisted
      * (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2037,7 +2081,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the item.
      * @param itemId The id of the conversation item to retrieve.
@@ -2047,7 +2091,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation item
-     *
+     * 
      * Retrieves a single item from the specified conversation by its id, including its transcript along with
      * {@link Response}.
      */
@@ -2061,7 +2105,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation item's audio metadata
-     *
+     * 
      * Returns metadata for a single conversation item's audio segment, including the common playback facts
      * (role, format/codec, sample rate, channels, offset, duration) for both Foundry-managed and
      * bring-your-own-storage (BYOS) recordings; for BYOS the response additionally includes `blob_uri`, the URI
@@ -2069,7 +2113,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * Requires the conversation to have persisted audio (`store = true`); returns `404` when the conversation,
      * item, or its audio was not persisted.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2086,7 +2130,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the item.
      * @param itemId The id of the conversation item whose audio metadata is retrieved.
@@ -2096,7 +2140,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation item's audio metadata
-     *
+     * 
      * Returns metadata for a single conversation item's audio segment, including the common playback facts
      * (role, format/codec, sample rate, channels, offset, duration) for both Foundry-managed and
      * bring-your-own-storage (BYOS) recordings; for BYOS the response additionally includes `blob_uri`, the URI
@@ -2115,7 +2159,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation item's audio metadata
-     *
+     * 
      * Returns metadata for a single conversation item's audio segment, including the common playback facts
      * (role, format/codec, sample rate, channels, offset, duration) for both Foundry-managed and
      * bring-your-own-storage (BYOS) recordings; for BYOS the response additionally includes `blob_uri`, the URI
@@ -2123,7 +2167,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * Requires the conversation to have persisted audio (`store = true`); returns `404` when the conversation,
      * item, or its audio was not persisted.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2140,7 +2184,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the item.
      * @param itemId The id of the conversation item whose audio metadata is retrieved.
@@ -2150,7 +2194,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation item's audio metadata
-     *
+     * 
      * Returns metadata for a single conversation item's audio segment, including the common playback facts
      * (role, format/codec, sample rate, channels, offset, duration) for both Foundry-managed and
      * bring-your-own-storage (BYOS) recordings; for BYOS the response additionally includes `blob_uri`, the URI
@@ -2168,20 +2212,20 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Stream a voice agent conversation item's audio
-     *
+     * 
      * Streams a single conversation item's audio as a WAV (`audio/wav`) byte stream through the service (no SAS
      * URL). This route serves Foundry-managed storage only. For bring-your-own-storage (BYOS) recordings the
      * bytes are not proxied — the caller must download directly from customer storage using the `blob_uri`
      * returned by the item's `/audio` metadata route — so this route returns `409 Conflict` for BYOS recordings.
      * Returns `404` when the conversation, item, or its audio was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the item.
      * @param itemId The id of the conversation item whose audio is streamed.
@@ -2203,20 +2247,20 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Stream a voice agent conversation item's audio
-     *
+     * 
      * Streams a single conversation item's audio as a WAV (`audio/wav`) byte stream through the service (no SAS
      * URL). This route serves Foundry-managed storage only. For bring-your-own-storage (BYOS) recordings the
      * bytes are not proxied — the caller must download directly from customer storage using the `blob_uri`
      * returned by the item's `/audio` metadata route — so this route returns `409 Conflict` for BYOS recordings.
      * Returns `404` when the conversation, item, or its audio was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the item.
      * @param itemId The id of the conversation item whose audio is streamed.
@@ -2236,8 +2280,173 @@ public final class BetaAgentEndpointConversationsImpl {
     }
 
     /**
+     * Get a voice agent conversation item's generated audio metadata
+     * 
+     * Returns metadata for a conversation item's generated audio. This subordinate artifact is separate from the
+     * canonical heard-audio segment and exists only when playback was interrupted and the service rendered more audio
+     * than the listener heard, including when the response ends as cancelled. Returns `404` when the conversation or
+     * item was not persisted, or when no generated audio exists beyond the heard segment.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     conversation_id: String (Required)
+     *     item_id: String (Required)
+     *     role: String(user/agent) (Optional)
+     *     format: String(wav) (Optional)
+     *     codec: String(pcm16/pcmu/pcma) (Optional)
+     *     sample_rate: Integer (Optional)
+     *     channels: Integer (Optional)
+     *     start_offset_ms: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     blob_uri: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio metadata is retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a voice agent conversation item's generated audio metadata
+     * 
+     * Returns metadata for a conversation item's generated audio along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAgentConversationItemGeneratedAudioWithResponseAsync(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getAgentConversationItemGeneratedAudio(this.client.getEndpoint(), agentName,
+                conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get a voice agent conversation item's generated audio metadata
+     * 
+     * Returns metadata for a conversation item's generated audio. This subordinate artifact is separate from the
+     * canonical heard-audio segment and exists only when playback was interrupted and the service rendered more audio
+     * than the listener heard, including when the response ends as cancelled. Returns `404` when the conversation or
+     * item was not persisted, or when no generated audio exists beyond the heard segment.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     conversation_id: String (Required)
+     *     item_id: String (Required)
+     *     role: String(user/agent) (Optional)
+     *     format: String(wav) (Optional)
+     *     codec: String(pcm16/pcmu/pcma) (Optional)
+     *     sample_rate: Integer (Optional)
+     *     channels: Integer (Optional)
+     *     start_offset_ms: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     blob_uri: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio metadata is retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a voice agent conversation item's generated audio metadata
+     * 
+     * Returns metadata for a conversation item's generated audio along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentConversationItemGeneratedAudioWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAgentConversationItemGeneratedAudioSync(this.client.getEndpoint(), agentName, conversationId,
+            itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Stream a voice agent conversation item's generated audio
+     * 
+     * Streams a conversation item's generated audio as a WAV (`audio/wav`) byte stream through the service. This
+     * subordinate artifact exists only when playback was interrupted and the service rendered more audio than the
+     * listener heard, including when the response ends as cancelled. This route serves Foundry-managed storage only.
+     * For bring-your-own-storage (BYOS) recordings the bytes are not proxied, so this route returns `409 Conflict`.
+     * Returns `404` when the conversation or item was not persisted, or when no generated audio exists beyond the
+     * heard segment.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio is streamed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAgentConversationItemGeneratedAudioContentWithResponseAsync(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        final String accept = "audio/wav";
+        return FluxUtil.withContext(
+            context -> service.getAgentConversationItemGeneratedAudioContent(this.client.getEndpoint(), agentName,
+                conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Stream a voice agent conversation item's generated audio
+     * 
+     * Streams a conversation item's generated audio as a WAV (`audio/wav`) byte stream through the service. This
+     * subordinate artifact exists only when playback was interrupted and the service rendered more audio than the
+     * listener heard, including when the response ends as cancelled. This route serves Foundry-managed storage only.
+     * For bring-your-own-storage (BYOS) recordings the bytes are not proxied, so this route returns `409 Conflict`.
+     * Returns `404` when the conversation or item was not persisted, or when no generated audio exists beyond the
+     * heard segment.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the item.
+     * @param itemId The id of the conversation item whose generated audio is streamed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentConversationItemGeneratedAudioContentWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        final String accept = "audio/wav";
+        return service.getAgentConversationItemGeneratedAudioContentSync(this.client.getEndpoint(), agentName,
+            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Get a voice agent conversation's merged recording metadata
-     *
+     * 
      * Returns metadata for the whole-call merged stereo recording (user audio on the left channel, agent audio
      * on the right). The common metadata (format, sample rate, channels, channel layout, duration) is returned
      * for both Foundry-managed and bring-your-own-storage (BYOS) recordings; for BYOS the response additionally
@@ -2249,7 +2458,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * For a `completed` conversation, metadata is available subject to the existing BYOS behavior. Requires the
      * conversation to have persisted audio (`store = true`); otherwise returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2266,7 +2475,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose merged recording metadata is retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2275,7 +2484,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation's merged recording metadata
-     *
+     * 
      * Returns metadata for the whole-call merged stereo recording (user audio on the left channel, agent audio
      * on the right) along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2289,7 +2498,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Get a voice agent conversation's merged recording metadata
-     *
+     * 
      * Returns metadata for the whole-call merged stereo recording (user audio on the left channel, agent audio
      * on the right). The common metadata (format, sample rate, channels, channel layout, duration) is returned
      * for both Foundry-managed and bring-your-own-storage (BYOS) recordings; for BYOS the response additionally
@@ -2301,7 +2510,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * For a `completed` conversation, metadata is available subject to the existing BYOS behavior. Requires the
      * conversation to have persisted audio (`store = true`); otherwise returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2318,7 +2527,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose merged recording metadata is retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2327,7 +2536,7 @@ public final class BetaAgentEndpointConversationsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a voice agent conversation's merged recording metadata
-     *
+     * 
      * Returns metadata for the whole-call merged stereo recording (user audio on the left channel, agent audio
      * on the right) along with {@link Response}.
      */
@@ -2341,7 +2550,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Stream a voice agent conversation's merged recording
-     *
+     * 
      * Streams the whole-call merged stereo recording as a WAV (`audio/wav`) byte stream through the service
      * (no SAS URL). This route serves Foundry-managed storage only. For bring-your-own-storage (BYOS)
      * recordings the bytes are not proxied — the caller must download directly from customer storage using the
@@ -2352,13 +2561,13 @@ public final class BetaAgentEndpointConversationsImpl {
      * For a `completed` conversation, content is available subject to the existing BYOS behavior. A conversation
      * without persisted audio (`store = false`) returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose merged recording is streamed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2378,7 +2587,7 @@ public final class BetaAgentEndpointConversationsImpl {
 
     /**
      * Stream a voice agent conversation's merged recording
-     *
+     * 
      * Streams the whole-call merged stereo recording as a WAV (`audio/wav`) byte stream through the service
      * (no SAS URL). This route serves Foundry-managed storage only. For bring-your-own-storage (BYOS)
      * recordings the bytes are not proxied — the caller must download directly from customer storage using the
@@ -2389,13 +2598,13 @@ public final class BetaAgentEndpointConversationsImpl {
      * For a `completed` conversation, content is available subject to the existing BYOS behavior. A conversation
      * without persisted audio (`store = false`) returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose merged recording is streamed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

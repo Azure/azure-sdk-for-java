@@ -24,7 +24,7 @@ public enum RealtimeAudioFormatsAudioPcmRate {
 
     /**
      * Parses a serialized value to a RealtimeAudioFormatsAudioPcmRate instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RealtimeAudioFormatsAudioPcmRate object, or null if unable to parse.
      */
@@ -40,7 +40,7 @@ public enum RealtimeAudioFormatsAudioPcmRate {
 
     /**
      * De-serializes the instance to int value.
-     *
+     * 
      * @return the int value.
      */
     public int toInt() {

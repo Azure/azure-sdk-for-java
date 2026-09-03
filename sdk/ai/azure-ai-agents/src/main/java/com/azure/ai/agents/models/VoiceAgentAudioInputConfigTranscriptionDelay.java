@@ -44,7 +44,7 @@ public enum VoiceAgentAudioInputConfigTranscriptionDelay {
 
     /**
      * Parses a serialized value to a VoiceAgentAudioInputConfigTranscriptionDelay instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VoiceAgentAudioInputConfigTranscriptionDelay object, or null if unable to parse.
      */

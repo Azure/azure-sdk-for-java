@@ -99,7 +99,7 @@ public enum ToolboxToolType {
 
     /**
      * Parses a serialized value to a ToolboxToolType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ToolboxToolType object, or null if unable to parse.
      */

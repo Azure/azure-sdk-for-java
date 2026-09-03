@@ -39,7 +39,7 @@ public enum VoiceAgentSemanticVadTurnDetectionEagerness {
 
     /**
      * Parses a serialized value to a VoiceAgentSemanticVadTurnDetectionEagerness instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VoiceAgentSemanticVadTurnDetectionEagerness object, or null if unable to parse.
      */

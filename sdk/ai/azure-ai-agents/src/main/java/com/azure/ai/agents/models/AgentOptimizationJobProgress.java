@@ -31,26 +31,6 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
     @Generated
     private final double bestScore;
 
-    /*
-     * Wall-clock time elapsed in seconds since the job began executing.
-     */
-    @Generated
-    private final double elapsedSeconds;
-
-    /**
-     * Creates an instance of AgentOptimizationJobProgress class.
-     *
-     * @param candidatesCompleted the candidatesCompleted value to set.
-     * @param bestScore the bestScore value to set.
-     * @param elapsedSeconds the elapsedSeconds value to set.
-     */
-    @Generated
-    private AgentOptimizationJobProgress(int candidatesCompleted, double bestScore, double elapsedSeconds) {
-        this.candidatesCompleted = candidatesCompleted;
-        this.bestScore = bestScore;
-        this.elapsedSeconds = elapsedSeconds;
-    }
-
     /**
      * Get the candidatesCompleted property: Number of candidates whose evaluation has completed so far.
      *
@@ -69,16 +49,6 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
     @Generated
     public double getBestScore() {
         return this.bestScore;
-    }
-
-    /**
-     * Get the elapsedSeconds property: Wall-clock time elapsed in seconds since the job began executing.
-     *
-     * @return the elapsedSeconds value.
-     */
-    @Generated
-    public double getElapsedSeconds() {
-        return this.elapsedSeconds;
     }
 
     /**
@@ -124,5 +94,35 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
             }
             return new AgentOptimizationJobProgress(candidatesCompleted, bestScore, elapsedSeconds);
         });
+    }
+
+    /*
+     * Wall-clock time elapsed in seconds since the job began executing.
+     */
+    @Generated
+    private final double elapsedSeconds;
+
+    /**
+     * Creates an instance of AgentOptimizationJobProgress class.
+     *
+     * @param candidatesCompleted the candidatesCompleted value to set.
+     * @param bestScore the bestScore value to set.
+     * @param elapsedSeconds the elapsedSeconds value to set.
+     */
+    @Generated
+    private AgentOptimizationJobProgress(int candidatesCompleted, double bestScore, double elapsedSeconds) {
+        this.candidatesCompleted = candidatesCompleted;
+        this.bestScore = bestScore;
+        this.elapsedSeconds = elapsedSeconds;
+    }
+
+    /**
+     * Get the elapsedSeconds property: Wall-clock time elapsed in seconds since the job began executing.
+     *
+     * @return the elapsedSeconds value.
+     */
+    @Generated
+    public double getElapsedSeconds() {
+        return this.elapsedSeconds;
     }
 }

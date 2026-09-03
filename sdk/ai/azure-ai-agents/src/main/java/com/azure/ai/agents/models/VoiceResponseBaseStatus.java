@@ -44,7 +44,7 @@ public enum VoiceResponseBaseStatus {
 
     /**
      * Parses a serialized value to a VoiceResponseBaseStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VoiceResponseBaseStatus object, or null if unable to parse.
      */

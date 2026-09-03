@@ -5,13 +5,13 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeAudioFormatsAudioPcm;
 import com.azure.ai.agents.models.RealtimeAudioFormatsAudioPcmRate;
-import com.azure.ai.agents.models.RealtimeFunctionToolParameters;
 import com.azure.ai.agents.models.VoiceAgentAudioConfig;
 import com.azure.ai.agents.models.VoiceAgentAudioInputConfig;
 import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
@@ -70,10 +70,11 @@ public class VoiceAgentWithToolsSample {
             .setVoiceType(VoiceType.AZURE_STANDARD);
         VoiceAgentFunctionTool weather = new VoiceAgentFunctionTool("get_weather")
             .setDescription("Get the current weather for a city.")
-            .setParameters(new RealtimeFunctionToolParameters());
+            .setParameters(BinaryData.fromString("{}"));
         VoiceAgentSystemTool endCall = new VoiceAgentSystemTool(VoiceAgentSystemToolName.END_CONVERSATION);
-        VoiceAgentDefinition definition = new VoiceAgentDefinition(
-            modelType, model)
+        VoiceAgentDefinition definition = new VoiceAgentDefinition()
+                .setModelType(modelType)
+                .setModel(model)
                 .setInstructions("Use tools when they help answer the caller.")
                 .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
                 .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))

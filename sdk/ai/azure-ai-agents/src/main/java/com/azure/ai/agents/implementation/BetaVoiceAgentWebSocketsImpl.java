@@ -42,7 +42,7 @@ public final class BetaVoiceAgentWebSocketsImpl {
 
     /**
      * Initializes an instance of BetaVoiceAgentWebSocketsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BetaVoiceAgentWebSocketsImpl(AgentsClientImpl client) {
@@ -53,7 +53,7 @@ public final class BetaVoiceAgentWebSocketsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -90,15 +90,24 @@ public final class BetaVoiceAgentWebSocketsImpl {
 
     /**
      * Connect to a voice agent
-     *
+     * 
      * Connects to a voice agent over WebSocket. The client must send an HTTP GET with `Upgrade: websocket`
      * headers. The optional `realtime` subprotocol is the only accepted subprotocol value. Supply the
      * `VoiceAgents=V1Preview` opt-in through either the `Foundry-Features` header or the `foundry_features`
      * query parameter.
-     *
-     * If the target agent is disabled, the HTTP WebSocket handshake fails before the `101 Switching Protocols`
-     * upgrade. The service returns `409 Conflict` using the shared Foundry `ApiErrorResponse` shape with
-     * `error.code = agent_disabled`. This failure is terminal until the caller enables the agent.
+     * 
+     * Handshake failures are evaluated in the following order, independent of the requested `transport`:
+     * 
+     * 1. Agent enablement (any transport): if the target agent is disabled, the handshake fails before the
+     * `101 Switching Protocols` upgrade with `409 Conflict`, using the shared Foundry `ApiErrorResponse` shape
+     * with `error.code = agent_disabled`. This failure is terminal until the caller enables the agent, and it
+     * takes precedence over the WebRTC-specific checks below.
+     * 2. WebRTC availability (only when `transport=webrtc`, and only once the agent itself is enabled): the agent
+     * must have the WebRTC transport capability configured. If the agent is enabled but WebRTC is not available
+     * for it, the handshake fails with `404 Not Found`. This is distinct from the `409 agent_disabled` case
+     * above, which concerns the agent itself rather than its WebRTC capability.
+     * 3. WebRTC compatibility (only when `transport=webrtc`): WebRTC does not support bring-your-own-model (BYOM)
+     * or hosted-agent voice agents; those requests fail with `400 Bad Request`.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -108,6 +117,11 @@ public final class BetaVoiceAgentWebSocketsImpl {
      * WebSocket handshake. Set this to `VoiceAgents=V1Preview`. Either this query parameter or the header is
      * required. Allowed values: "WorkflowAgents=V1Preview", "ExternalAgents=V1Preview", "DraftAgents=V1Preview",
      * "VoiceAgents=V1Preview", "DigitalWorker=V1Preview".</td></tr>
+     * <tr><td>transport</td><td>String</td><td>No</td><td>Selects the connection transport. Omit or send `websocket`
+     * for the default, where signaling and audio are
+     * exchanged as JSON events over this WebSocket. Send `webrtc` to negotiate a WebRTC connection: the WebSocket
+     * then carries only SDP signaling (`rtc.call.sdp.create` / `rtc.call.sdp.created`) while media and the data
+     * channel are peer-to-peer. Allowed values: "websocket", "webrtc".</td></tr>
      * <tr><td>store</td><td>Boolean</td><td>No</td><td>Whether to persist the conversation created by this WebSocket
      * session. If omitted, the service honors the
      * persisted voice agent definition's configured `store` value. If supplied, this value overrides the
@@ -131,7 +145,7 @@ public final class BetaVoiceAgentWebSocketsImpl {
      * <tr><td>Sec-WebSocket-Protocol</td><td>String</td><td>The negotiated WebSocket subprotocol. Present only when the
      * client requests `realtime`.</td></tr>
      * </table>
-     *
+     * 
      * @param agentName The name of the voice agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -148,15 +162,24 @@ public final class BetaVoiceAgentWebSocketsImpl {
 
     /**
      * Connect to a voice agent
-     *
+     * 
      * Connects to a voice agent over WebSocket. The client must send an HTTP GET with `Upgrade: websocket`
      * headers. The optional `realtime` subprotocol is the only accepted subprotocol value. Supply the
      * `VoiceAgents=V1Preview` opt-in through either the `Foundry-Features` header or the `foundry_features`
      * query parameter.
-     *
-     * If the target agent is disabled, the HTTP WebSocket handshake fails before the `101 Switching Protocols`
-     * upgrade. The service returns `409 Conflict` using the shared Foundry `ApiErrorResponse` shape with
-     * `error.code = agent_disabled`. This failure is terminal until the caller enables the agent.
+     * 
+     * Handshake failures are evaluated in the following order, independent of the requested `transport`:
+     * 
+     * 1. Agent enablement (any transport): if the target agent is disabled, the handshake fails before the
+     * `101 Switching Protocols` upgrade with `409 Conflict`, using the shared Foundry `ApiErrorResponse` shape
+     * with `error.code = agent_disabled`. This failure is terminal until the caller enables the agent, and it
+     * takes precedence over the WebRTC-specific checks below.
+     * 2. WebRTC availability (only when `transport=webrtc`, and only once the agent itself is enabled): the agent
+     * must have the WebRTC transport capability configured. If the agent is enabled but WebRTC is not available
+     * for it, the handshake fails with `404 Not Found`. This is distinct from the `409 agent_disabled` case
+     * above, which concerns the agent itself rather than its WebRTC capability.
+     * 3. WebRTC compatibility (only when `transport=webrtc`): WebRTC does not support bring-your-own-model (BYOM)
+     * or hosted-agent voice agents; those requests fail with `400 Bad Request`.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -166,6 +189,11 @@ public final class BetaVoiceAgentWebSocketsImpl {
      * WebSocket handshake. Set this to `VoiceAgents=V1Preview`. Either this query parameter or the header is
      * required. Allowed values: "WorkflowAgents=V1Preview", "ExternalAgents=V1Preview", "DraftAgents=V1Preview",
      * "VoiceAgents=V1Preview", "DigitalWorker=V1Preview".</td></tr>
+     * <tr><td>transport</td><td>String</td><td>No</td><td>Selects the connection transport. Omit or send `websocket`
+     * for the default, where signaling and audio are
+     * exchanged as JSON events over this WebSocket. Send `webrtc` to negotiate a WebRTC connection: the WebSocket
+     * then carries only SDP signaling (`rtc.call.sdp.create` / `rtc.call.sdp.created`) while media and the data
+     * channel are peer-to-peer. Allowed values: "websocket", "webrtc".</td></tr>
      * <tr><td>store</td><td>Boolean</td><td>No</td><td>Whether to persist the conversation created by this WebSocket
      * session. If omitted, the service honors the
      * persisted voice agent definition's configured `store` value. If supplied, this value overrides the
@@ -189,7 +217,7 @@ public final class BetaVoiceAgentWebSocketsImpl {
      * <tr><td>Sec-WebSocket-Protocol</td><td>String</td><td>The negotiated WebSocket subprotocol. Present only when the
      * client requests `realtime`.</td></tr>
      * </table>
-     *
+     * 
      * @param agentName The name of the voice agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

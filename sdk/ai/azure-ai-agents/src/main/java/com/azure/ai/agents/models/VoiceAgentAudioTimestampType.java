@@ -24,7 +24,7 @@ public enum VoiceAgentAudioTimestampType {
 
     /**
      * Parses a serialized value to a VoiceAgentAudioTimestampType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VoiceAgentAudioTimestampType object, or null if unable to parse.
      */

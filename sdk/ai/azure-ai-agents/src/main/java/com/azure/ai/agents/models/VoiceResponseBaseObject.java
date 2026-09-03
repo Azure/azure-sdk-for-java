@@ -24,7 +24,7 @@ public enum VoiceResponseBaseObject {
 
     /**
      * Parses a serialized value to a VoiceResponseBaseObject instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VoiceResponseBaseObject object, or null if unable to parse.
      */
