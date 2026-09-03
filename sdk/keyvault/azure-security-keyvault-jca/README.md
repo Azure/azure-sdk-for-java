@@ -791,6 +791,22 @@ Before you start debugging, make sure the code of your JCA jar is the same as yo
 
    ![debug breakpoints](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/debug-breakpoints.png)
 
+### Configure an HTTP proxy
+
+The Azure Key Vault JCA provider uses the standard JDK proxy settings. For example, pass an HTTPS proxy to `jarsigner` with:
+
+```shell
+jarsigner \
+    -J-Dhttps.proxyHost=<proxy-host> \
+    -J-Dhttps.proxyPort=<proxy-port> \
+    -J-Dhttp.nonProxyHosts="localhost|127.*|*.example.com" \
+    <other-jarsigner-options>
+```
+
+HTTPS requests use the HTTP `CONNECT` method to create a tunnel through the proxy. Despite its name, `http.nonProxyHosts` also applies to HTTPS requests; separate hosts with `|` and use `*` as a wildcard.
+
+To use the operating system proxy settings instead, set `-Djava.net.useSystemProxies=true` when starting the JVM. The JDK reads this property only at startup. For `jarsigner`, pass it as `-J-Djava.net.useSystemProxies=true`.
+
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
 
