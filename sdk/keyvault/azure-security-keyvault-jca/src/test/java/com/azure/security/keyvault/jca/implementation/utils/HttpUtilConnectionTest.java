@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Isolated("Mutates the JRE trust store and HTTPS proxy properties used by HttpUtil")
+@Isolated("Mutates the JRE trust store and HTTP/HTTPS proxy properties used by HttpUtil")
 public class HttpUtilConnectionTest {
     private static final char[] KEY_PASSWORD = "changeit".toCharArray();
 
@@ -143,12 +143,37 @@ public class HttpUtilConnectionTest {
 
     @Test
     @Timeout(20)
+    void realHttpGetUsesSystemProxy() throws Exception {
+        String originalProxyHost = System.getProperty("http.proxyHost");
+        String originalProxyPort = System.getProperty("http.proxyPort");
+        String originalNonProxyHosts = System.getProperty("http.nonProxyHosts");
+
+        try (LocalProxyServer proxy = new LocalProxyServer("200 OK", "response")) {
+            System.setProperty("http.proxyHost", InetAddress.getLoopbackAddress().getHostAddress());
+            System.setProperty("http.proxyPort", String.valueOf(proxy.getPort()));
+            System.setProperty("http.nonProxyHosts", "localhost|127.*|[::1]");
+            proxy.start();
+
+            String result = HttpUtil.get("http://proxy-target.example.test/resource", null);
+
+            proxy.awaitCompletion();
+            assertEquals("response", result);
+            assertEquals("GET http://proxy-target.example.test/resource HTTP/1.1", proxy.getRequestLine());
+        } finally {
+            restoreSystemProperty("http.proxyHost", originalProxyHost);
+            restoreSystemProperty("http.proxyPort", originalProxyPort);
+            restoreSystemProperty("http.nonProxyHosts", originalNonProxyHosts);
+        }
+    }
+
+    @Test
+    @Timeout(20)
     void realHttpsGetUsesSystemProxyConnectTunnel() throws Exception {
         String originalProxyHost = System.getProperty("https.proxyHost");
         String originalProxyPort = System.getProperty("https.proxyPort");
         String originalNonProxyHosts = System.getProperty("http.nonProxyHosts");
 
-        try (LocalConnectProxy proxy = new LocalConnectProxy()) {
+        try (LocalProxyServer proxy = new LocalProxyServer("502 Bad Gateway", "")) {
             System.setProperty("https.proxyHost", InetAddress.getLoopbackAddress().getHostAddress());
             System.setProperty("https.proxyPort", String.valueOf(proxy.getPort()));
             System.setProperty("http.nonProxyHosts", "localhost|127.*|[::1]");
@@ -163,6 +188,41 @@ public class HttpUtilConnectionTest {
             restoreSystemProperty("https.proxyHost", originalProxyHost);
             restoreSystemProperty("https.proxyPort", originalProxyPort);
             restoreSystemProperty("http.nonProxyHosts", originalNonProxyHosts);
+        }
+    }
+
+    @Test
+    @Timeout(20)
+    void realHttpsGetHonorsHttpNonProxyHosts() throws Exception {
+        String originalProxyHost = System.getProperty("https.proxyHost");
+        String originalProxyPort = System.getProperty("https.proxyPort");
+        String originalNonProxyHosts = System.getProperty("http.nonProxyHosts");
+        KeyPair keyPair = generateKeyPair();
+        X509Certificate certificate = createServerCertificate(keyPair, "localhost");
+        KeyStore trustStore = JreKeyStoreFactory.getDefaultKeyStore();
+        assertNotNull(trustStore);
+
+        String trustAlias = "http-util-connection-test-" + UUID.randomUUID();
+        trustStore.setCertificateEntry(trustAlias, certificate);
+
+        try (LocalProxyServer proxy = new LocalProxyServer("502 Bad Gateway", "");
+            LocalHttpsServer server = new LocalHttpsServer(keyPair.getPrivate(), certificate, "response")) {
+            System.setProperty("https.proxyHost", InetAddress.getLoopbackAddress().getHostAddress());
+            System.setProperty("https.proxyPort", String.valueOf(proxy.getPort()));
+            System.setProperty("http.nonProxyHosts", "localhost");
+            proxy.start();
+            server.start();
+
+            String result = HttpUtil.get("https://localhost:" + server.getPort() + "/test", null);
+
+            server.awaitCompletion();
+            assertEquals("response", result);
+            assertNull(proxy.getRequestLine());
+        } finally {
+            restoreSystemProperty("https.proxyHost", originalProxyHost);
+            restoreSystemProperty("https.proxyPort", originalProxyPort);
+            restoreSystemProperty("http.nonProxyHosts", originalNonProxyHosts);
+            trustStore.deleteEntry(trustAlias);
         }
     }
 
@@ -208,16 +268,20 @@ public class HttpUtilConnectionTest {
         }
     }
 
-    private static final class LocalConnectProxy implements AutoCloseable {
+    private static final class LocalProxyServer implements AutoCloseable {
         private final ServerSocket serverSocket;
+        private final byte[] responseBody;
+        private final String responseStatus;
         private final CountDownLatch completed = new CountDownLatch(1);
         private final Thread proxyThread;
         private volatile String requestLine;
         private volatile Throwable failure;
 
-        private LocalConnectProxy() throws IOException {
+        private LocalProxyServer(String responseStatus, String responseBody) throws IOException {
             serverSocket = new ServerSocket(0, 1, InetAddress.getLoopbackAddress());
-            proxyThread = new Thread(this::serve, "http-util-local-connect-proxy");
+            this.responseStatus = responseStatus;
+            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            proxyThread = new Thread(this::serve, "http-util-local-proxy");
             proxyThread.setDaemon(true);
         }
 
@@ -245,12 +309,13 @@ public class HttpUtilConnectionTest {
                     headerCount++;
                 }
                 if (headerCount == 0) {
-                    throw new IOException("The CONNECT request did not contain any headers.");
+                    throw new IOException("The proxy request did not contain any headers.");
                 }
 
                 OutputStream outputStream = socket.getOutputStream();
-                outputStream.write("HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
-                    .getBytes(StandardCharsets.ISO_8859_1));
+                outputStream.write(("HTTP/1.1 " + responseStatus + "\r\nContent-Length: " + responseBody.length
+                    + "\r\nConnection: close\r\n\r\n").getBytes(StandardCharsets.ISO_8859_1));
+                outputStream.write(responseBody);
                 outputStream.flush();
             } catch (Throwable throwable) {
                 failure = throwable;
@@ -260,9 +325,9 @@ public class HttpUtilConnectionTest {
         }
 
         private void awaitCompletion() throws Exception {
-            assertTrue(completed.await(10, TimeUnit.SECONDS), "The local CONNECT proxy did not finish in time.");
+            assertTrue(completed.await(10, TimeUnit.SECONDS), "The local proxy did not finish in time.");
             if (failure != null) {
-                throw new AssertionError("The local CONNECT proxy failed.", failure);
+                throw new AssertionError("The local proxy failed.", failure);
             }
         }
 

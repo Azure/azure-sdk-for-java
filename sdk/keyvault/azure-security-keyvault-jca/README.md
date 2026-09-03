@@ -793,19 +793,44 @@ Before you start debugging, make sure the code of your JCA jar is the same as yo
 
 ### Configure an HTTP proxy
 
-The Azure Key Vault JCA provider uses the standard JDK proxy settings. For example, pass an HTTPS proxy to `jarsigner` with:
+The Azure Key Vault JCA provider delegates proxy selection to the JDK. Select the proxy properties based on the protocol of the request URL:
+
+| Request URL | Proxy properties |
+| --- | --- |
+| `http://` | `http.proxyHost` and `http.proxyPort` |
+| `https://` | `https.proxyHost` and `https.proxyPort` |
+
+Key Vault and identity endpoints use HTTPS, while AIA certificate URLs may use HTTP or HTTPS. Both protocols use `http.nonProxyHosts` for hosts that should be accessed directly. Separate hosts with `|` and use `*` as a wildcard.
+
+For a Java application, pass the properties as JVM `-D` options before `-jar`:
+
+```shell
+java \
+    -Dhttp.proxyHost=<proxy-host> \
+    -Dhttp.proxyPort=<proxy-port> \
+    -Dhttps.proxyHost=<proxy-host> \
+    -Dhttps.proxyPort=<proxy-port> \
+    -Dhttp.nonProxyHosts="localhost|127.*|*.example.com" \
+    -jar <application-jar>
+```
+
+The `jarsigner` command runs in its own JVM. Prefix each JVM option with `-J` to pass the same properties to that JVM:
 
 ```shell
 jarsigner \
+    -J-Dhttp.proxyHost=<proxy-host> \
+    -J-Dhttp.proxyPort=<proxy-port> \
     -J-Dhttps.proxyHost=<proxy-host> \
     -J-Dhttps.proxyPort=<proxy-port> \
     -J-Dhttp.nonProxyHosts="localhost|127.*|*.example.com" \
     <other-jarsigner-options>
 ```
 
-HTTPS requests use the HTTP `CONNECT` method to create a tunnel through the proxy. Despite its name, `http.nonProxyHosts` also applies to HTTPS requests; separate hosts with `|` and use `*` as a wildcard.
+HTTPS requests use the HTTP `CONNECT` method to create a tunnel through the proxy.
 
 To use the operating system proxy settings instead, set `-Djava.net.useSystemProxies=true` when starting the JVM. The JDK reads this property only at startup. For `jarsigner`, pass it as `-J-Djava.net.useSystemProxies=true`.
+
+For the complete property definitions, see the [JDK Networking Properties](https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html#Proxies).
 
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
