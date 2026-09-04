@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents;
 
+import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -10,18 +11,23 @@ import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkflowAgentDefinition;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
+import com.openai.helpers.ResponseAccumulator;
+import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseInputItem;
-import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseStreamEvent;
+import com.openai.services.blocking.ConversationService;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
- * Demonstrates approving MCP calls made by prompt agents within a workflow.
+ * Demonstrates MCP calls made by prompt agents within a workflow.
+ *
+ * <p>The current workflow service cannot resume nested MCP approval requests through the outer workflow response,
+ * so this sample configures MCP tools with approval disabled.</p>
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -40,15 +46,18 @@ public class WorkflowMultiAgentMcpApprovalSample {
             .endpoint(endpoint)
             .allowPreview(true);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
+        ResponsesClient responsesClient = new ResponsesClient(openAIClient);
+        ConversationService conversations = openAIClient.conversations();
         AgentVersionDetails teacher = null;
         AgentVersionDetails student = null;
         AgentVersionDetails workflow = null;
+        Conversation conversation = null;
 
         try {
             McpTool mcpTool = new McpTool("api-specs")
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval("always");
+                .setRequireApproval("never");
             teacher = createPromptAgent(agentsClient, model, "workflow-teacher-mcp", mcpTool,
                 "Check the student's answer using the MCP tool.");
             student = createPromptAgent(agentsClient, model, "workflow-student-mcp", mcpTool,
@@ -57,33 +66,38 @@ public class WorkflowMultiAgentMcpApprovalSample {
                 new CreateAgentVersionInput(new WorkflowAgentDefinition().setWorkflow(
                     WorkflowSampleUtils.createStudentTeacherWorkflow(student.getName(), teacher.getName()))));
 
+            conversation = conversations.create();
             AzureCreateResponseOptions options = new AzureCreateResponseOptions()
-                .setAgentReference(SampleUtils.toAgentReference(workflow));
-            Response response = responsesClient.createAzureResponse(options,
-                ResponseCreateParams.builder().input("Summarize the Azure REST API specifications repository."));
-
-            List<ResponseInputItem> approvals = new ArrayList<>();
-            for (ResponseOutputItem item : response.output()) {
-                if (item.isMcpApprovalRequest()) {
-                    approvals.add(ResponseInputItem.ofMcpApprovalResponse(
-                        ResponseInputItem.McpApprovalResponse.builder()
-                            .approvalRequestId(item.asMcpApprovalRequest().id())
-                            .approve(true)
-                            .build()));
-                }
-            }
-            if (!approvals.isEmpty()) {
-                response = responsesClient.createAzureResponse(options,
-                    ResponseCreateParams.builder()
-                        .previousResponseId(response.id())
-                        .inputOfResponse(approvals));
-            }
+                .setAgentReference(new AgentReference(workflow.getName()));
+            Response response = streamResponse(responsesClient, options,
+                ResponseCreateParams.builder()
+                    .conversation(conversation.id())
+                    .input("Summarize the Azure REST API specifications repository."));
+            System.out.println();
             SampleUtils.printResponseText(response);
         } finally {
-            WorkflowMultiAgentSample.deleteVersion(agentsClient, workflow);
-            WorkflowMultiAgentSample.deleteVersion(agentsClient, student);
-            WorkflowMultiAgentSample.deleteVersion(agentsClient, teacher);
+            try {
+                if (conversation != null) {
+                    conversations.delete(conversation.id());
+                }
+                WorkflowMultiAgentSample.deleteVersion(agentsClient, workflow);
+                WorkflowMultiAgentSample.deleteVersion(agentsClient, student);
+                WorkflowMultiAgentSample.deleteVersion(agentsClient, teacher);
+            } finally {
+                openAIClient.close();
+            }
         }
+    }
+
+    private static Response streamResponse(ResponsesClient responsesClient, AzureCreateResponseOptions options,
+        ResponseCreateParams.Builder params) {
+        ResponseAccumulator accumulator = ResponseAccumulator.create();
+        IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(options, params);
+        for (ResponseStreamEvent event : events) {
+            accumulator.accumulate(event);
+            event.outputTextDelta().ifPresent(textEvent -> System.out.print(textEvent.delta()));
+        }
+        return accumulator.response();
     }
 
     private static AgentVersionDetails createPromptAgent(AgentsClient client, String model, String name, McpTool tool,

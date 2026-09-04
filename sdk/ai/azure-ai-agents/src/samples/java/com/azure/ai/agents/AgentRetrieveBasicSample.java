@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
@@ -37,7 +38,8 @@ public class AgentRetrieveBasicSample {
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationService conversations = builder.buildOpenAIClient().conversations();
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
+        ConversationService conversations = openAIClient.conversations();
 
         String agentName = "retrieve-agent";
         AgentVersionDetails agent = null;
@@ -73,11 +75,15 @@ public class AgentRetrieveBasicSample {
                 ResponseCreateParams.builder().conversation(conversationId));
             SampleUtils.printResponseText(response);
         } finally {
-            if (conversationId != null) {
-                conversations.delete(conversationId);
-            }
-            if (agent != null) {
-                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            try {
+                if (conversationId != null) {
+                    conversations.delete(conversationId);
+                }
+                if (agent != null) {
+                    agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+                }
+            } finally {
+                openAIClient.close();
             }
         }
     }

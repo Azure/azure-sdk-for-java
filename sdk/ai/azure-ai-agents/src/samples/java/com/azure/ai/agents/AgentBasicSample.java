@@ -16,6 +16,7 @@ import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
@@ -45,7 +46,8 @@ public class AgentBasicSample {
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationService conversations = builder.buildOpenAIClient().conversations();
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
+        ConversationService conversations = openAIClient.conversations();
 
         String agentName = "basic-agent";
         AgentVersionDetails agent = null;
@@ -92,13 +94,17 @@ public class AgentBasicSample {
                 ResponseCreateParams.builder().conversation(conversationId));
             SampleUtils.printResponseText(second);
         } finally {
-            if (conversationId != null) {
-                conversations.delete(conversationId);
-            }
-            if (agent != null) {
-                agentsClient.updateAgentDetails(agentName,
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(originalEndpoint));
-                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            try {
+                if (conversationId != null) {
+                    conversations.delete(conversationId);
+                }
+                if (agent != null) {
+                    agentsClient.updateAgentDetails(agentName,
+                        new UpdateAgentDetailsOptions().setAgentEndpoint(originalEndpoint));
+                    agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+                }
+            } finally {
+                openAIClient.close();
             }
         }
     }

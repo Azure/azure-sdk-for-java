@@ -16,6 +16,7 @@ import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseCreateParams;
@@ -45,7 +46,8 @@ public class AgentBasicAsyncSample {
             .endpoint(endpoint);
         AgentsAsyncClient agentsClient = builder.buildAgentsAsyncClient();
         ResponsesAsyncClient responsesClient = builder.buildResponsesAsyncClient();
-        ConversationServiceAsync conversations = builder.buildOpenAIAsyncClient().conversations();
+        OpenAIClientAsync openAIClient = builder.buildOpenAIAsyncClient();
+        ConversationServiceAsync conversations = openAIClient.conversations();
 
         String agentName = "basic-async-agent";
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
@@ -97,12 +99,16 @@ public class AgentBasicAsyncSample {
             .doOnNext(SampleUtils::printResponseText)
             .then();
 
-        sample.then(Mono.defer(() -> cleanup(agentsClient, conversations, agentName, agentRef, originalEndpointRef,
-                conversationIdRef)))
-            .onErrorResume(error -> cleanup(agentsClient, conversations, agentName, agentRef,
-                    originalEndpointRef, conversationIdRef)
-                .then(Mono.error(error)))
-            .block();
+        try {
+            sample.then(Mono.defer(() -> cleanup(agentsClient, conversations, agentName, agentRef, originalEndpointRef,
+                    conversationIdRef)))
+                .onErrorResume(error -> cleanup(agentsClient, conversations, agentName, agentRef,
+                        originalEndpointRef, conversationIdRef)
+                    .then(Mono.error(error)))
+                .block();
+        } finally {
+            openAIClient.close();
+        }
     }
 
     private static Mono<Void> cleanup(AgentsAsyncClient agentsClient, ConversationServiceAsync conversations,
