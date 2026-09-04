@@ -72,19 +72,22 @@ public class QueueStorageCustomizations extends Customization {
     // module-info.java is hand-authored: the module descriptor carries the full requires/exports/opens (incl. the
     // transitive com.azure.storage.common visibility). typespec-java regenerates a minimal version that overwrites
     // it, so drop the generated copy and keep the hand-written descriptor.
+    //
+    // XmlSerializer/XmlSerializerProviders are only referenced by the generated convenience clients (removed above);
+    // with @@Legacy.disablePageable applied to Service.getQueues for java, the *Impl operation layer no longer
+    // references them either, so the pair is dead code once the clients are gone.
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
-        "src/main/java/module-info.java");
+        "src/main/java/module-info.java",
+        PKG_ROOT + "implementation/XmlSerializer.java",
+        PKG_ROOT + "implementation/XmlSerializerProviders.java");
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
         removeGeneratedFiles(editor, logger);
-        fixXmlSerializerRedundantCast(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
         restoreMetadataHeaderCollection(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
-        exposeRawListQueuesResponse(customization.getPackage(IMPL_PACKAGE), logger);
-        removeUnusedXmlNextLinkHelpers(customization.getPackage(IMPL_PACKAGE), logger);
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
     }
 
@@ -302,48 +305,6 @@ public class QueueStorageCustomizations extends Customization {
         return Optional.empty();
     }
 
-    private static void exposeRawListQueuesResponse(PackageCustomization implPackage, Logger logger) {
-        if (implPackage.getClass("ServicesImpl") == null) {
-            logger.info("ServicesImpl not present; skipping raw list-queues accessor injection.");
-            return;
-        }
-        implPackage.getClass("ServicesImpl").customizeAst(ast -> ast.getClassByName("ServicesImpl").ifPresent(clazz -> {
-            clazz.addMember(StaticJavaParser.parseMethodDeclaration(
-                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
-                    + "public Mono<Response<BinaryData>> getQueuesWithResponseAsync(RequestOptions requestOptions) {\n"
-                    + "    final String accept = \"application/xml\";\n"
-                    + "    return FluxUtil.withContext(context -> service.getQueues(this.client.getUrl(),\n"
-                    + "        this.client.getServiceVersion().getVersion(), accept, requestOptions, context));\n"
-                    + "}"));
-            clazz.addMember(StaticJavaParser.parseMethodDeclaration(
-                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
-                    + "public Response<BinaryData> getQueuesWithResponse(RequestOptions requestOptions) {\n"
-                    + "    final String accept = \"application/xml\";\n"
-                    + "    return service.getQueuesSync(this.client.getUrl(),\n"
-                    + "        this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);\n"
-                    + "}"));
-            logger.info("Injected raw getQueuesWithResponse[Async] accessors into ServicesImpl.");
-        }));
-    }
-
-    // exposeRawListQueuesResponse replaces the emitter's paginated path, leaving the generated getXmlNextLink
-    // helpers uncalled and tripping SpotBugs UPM_UNCALLED_PRIVATE_METHOD.
-    private static void removeUnusedXmlNextLinkHelpers(PackageCustomization implPackage, Logger logger) {
-        if (implPackage.getClass("ServicesImpl") == null) {
-            logger.info("ServicesImpl not present; skipping getXmlNextLink removal.");
-            return;
-        }
-        implPackage.getClass("ServicesImpl").customizeAst(ast -> ast.getClassByName("ServicesImpl").ifPresent(clazz -> {
-            List<MethodDeclaration> unused = clazz.getMethodsByName("getXmlNextLink");
-            if (unused.isEmpty()) {
-                logger.info("No getXmlNextLink methods found in ServicesImpl; skipping removal.");
-                return;
-            }
-            new ArrayList<>(unused).forEach(MethodDeclaration::remove);
-            logger.info("Removed {} unused getXmlNextLink method(s) from ServicesImpl.", unused.size());
-        }));
-    }
-
     private static void retargetServiceVersionReferences(Editor editor, Logger logger) {
         String implDir = PKG_ROOT + "implementation/";
         for (String fileName : new String[] {
@@ -378,25 +339,6 @@ public class QueueStorageCustomizations extends Customization {
             logger.info("Removed generated file {}", path);
         } else {
             logger.info("Generated file {} not present; skipping removal.", path);
-        }
-    }
-
-    // The generated XmlSerializer casts typeReference.getJavaClass() (already Class<T>) to Class<T> -- a redundant
-    // cast that trips the module's -Werror build. The file is emitter-generated and wired into ServicesImpl (XML
-    // pageable responses), so it can't be removed; drop the redundant cast here instead.
-    private static void fixXmlSerializerRedundantCast(Editor editor, Logger logger) {
-        String path = PKG_ROOT + "implementation/XmlSerializer.java";
-        String content = editor.getContents().get(path);
-        if (content == null) {
-            logger.info("XmlSerializer not present in editor; skipping cast fix.");
-            return;
-        }
-        String updated = content.replace("(Class<T>) typeReference.getJavaClass()", "typeReference.getJavaClass()");
-        if (!updated.equals(content)) {
-            editor.replaceFile(path, updated);
-            logger.info("Removed redundant cast in XmlSerializer.");
-        } else {
-            logger.info("XmlSerializer redundant cast not found; skipping.");
         }
     }
 
