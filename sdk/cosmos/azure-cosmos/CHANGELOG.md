@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.71.3-hotfix (Unreleased)
+### 4.71.3-hotfix (2026-09-04)
 
 #### Bugs Fixed
 * Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
