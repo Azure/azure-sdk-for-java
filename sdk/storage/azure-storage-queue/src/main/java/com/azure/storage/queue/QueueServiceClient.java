@@ -10,20 +10,19 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.models.KeyInfo;
-import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
-import com.azure.storage.queue.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
 import com.azure.storage.queue.models.QueueItem;
@@ -141,10 +140,12 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        QueueAsyncClient queueAsyncClient
-            = new QueueAsyncClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
-                processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
-        return new QueueClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
+        AzureQueueStorageImpl queueStorage = new AzureQueueStorageImpl(this.azureQueueStorage.getHttpPipeline(),
+            this.azureQueueStorage.getSerializerAdapter(), this.azureQueueStorage.getUrl(),
+            this.azureQueueStorage.getServiceVersion());
+        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueAsyncClient);
     }
 
@@ -335,9 +336,10 @@ public final class QueueServiceClient {
             }
         }
         BiFunction<String, Integer, PagedResponse<QueueItem>> retriever = (nextMarker, pageSize) -> {
-            Supplier<PagedResponse<QueueItem>> operation = () -> this.azureQueueStorage.getServices()
-                .listQueuesSegmentSinglePage(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
-                    include, null, null, finalContext);
+            Supplier<PagedResponse<QueueItem>> operation
+                = () -> ModelHelper.toQueueItemPage(this.azureQueueStorage.getServices()
+                    .getQueuesWithResponse(RequestOptionsHelper.listQueuesRequestOptions(finalContext, prefix,
+                        nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include)));
 
             return submitThreadPool(operation, LOGGER, timeout);
 
@@ -403,8 +405,12 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<QueueServiceProperties>> operation
-            = () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
+        Supplier<Response<QueueServiceProperties>> operation = () -> {
+            Response<BinaryData> response = this.azureQueueStorage.getServices()
+                .getPropertiesWithResponse(RequestOptionsHelper.requestOptions(finalContext));
+            return new SimpleResponse<>(response,
+                ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceProperties::fromXml));
+        };
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -538,7 +544,8 @@ public final class QueueServiceClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getServices()
-            .setPropertiesNoCustomHeadersWithResponse(properties, null, null, finalContext);
+            .setPropertiesWithResponse(ModelHelper.serializeXmlBody(properties),
+                RequestOptionsHelper.requestOptions(finalContext));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -596,8 +603,12 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation
-            = () -> this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
+        Supplier<Response<QueueServiceStatistics>> operation = () -> {
+            Response<BinaryData> response = this.azureQueueStorage.getServices()
+                .getStatisticsWithResponse(RequestOptionsHelper.requestOptions(finalContext));
+            return new SimpleResponse<>(response,
+                ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceStatistics::fromXml));
+        };
         return submitThreadPool(operation, LOGGER, timeout);
     }
 
@@ -754,17 +765,16 @@ public final class QueueServiceClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
-            = () -> this.azureQueueStorage.getServices()
-                .getUserDelegationKeyWithResponse(new KeyInfo()
-                    .setStart(options.getStartsOn() == null
-                        ? ""
-                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null, null, finalContext);
+        KeyInfo keyInfo = new KeyInfo(options.getExpiresOn()).setStart(options.getStartsOn())
+            .setDelegatedUserTenantId(options.getDelegatedUserTenantId());
+        Callable<Response<UserDelegationKey>> operation = () -> {
+            Response<BinaryData> rb = this.azureQueueStorage.getServices()
+                .getUserDelegationKeyWithResponse(ModelHelper.serializeXmlBody(keyInfo),
+                    RequestOptionsHelper.requestOptions(finalContext));
+            return new SimpleResponse<>(rb, ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml));
+        };
 
-        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
-            = sendRequest(operation, timeout, QueueStorageException.class);
+        Response<UserDelegationKey> response = sendRequest(operation, timeout, QueueStorageException.class);
         return new SimpleResponse<>(response, response.getValue());
     }
 

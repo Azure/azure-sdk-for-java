@@ -185,6 +185,9 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
+        // Restore the AutoRest request URL shape (drop the trailing slash RestProxy adds for query-only queue-scoped
+        // routes). Placed before the credential policy since the URL is part of the shared-key string-to-sign.
+
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
