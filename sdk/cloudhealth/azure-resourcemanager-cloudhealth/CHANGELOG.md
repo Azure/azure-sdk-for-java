@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,52 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2026-08-25)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DependenciesAggregationType` was removed
+
+#### `models.LookBackWindow` was removed
+
+#### `models.DependenciesAggregationUnit` was removed
+
+#### `models.HealthState` was modified
+
+* `DELETED` was removed
+
+#### `models.ThresholdRuleV2` was modified
+
+* `withLookBackWindow(models.LookBackWindow)` was removed
+* `lookBackWindow()` was removed
+
+#### `models.DependenciesSignalGroupV2` was modified
+
+* `models.DependenciesAggregationType aggregationType()` -> `models.AggregationType aggregationType()`
+* `models.DependenciesAggregationUnit unit()` -> `models.AggregationUnit unit()`
+* `withAggregationType(models.DependenciesAggregationType)` was removed
+* `withUnit(models.DependenciesAggregationUnit)` was removed
+
+### Features Added
+
+* `models.AggregationUnit` was added
+
+* `models.AggregationType` was added
+
+* `models.SignalAggregationGroup` was added
+
+#### `models.EntityProperties` was modified
+
+* `withSignalAggregationGroups(java.util.List)` was added
+* `signalAggregationGroups()` was added
+
+#### `models.DependenciesSignalGroupV2` was modified
+
+* `withUnit(models.AggregationUnit)` was added
+* `withAggregationType(models.AggregationType)` was added
 
 ## 1.0.0-beta.3 (2026-07-13)
 

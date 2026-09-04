@@ -29,7 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.providerhub.fluent.AuthorizedApplicationsClient;
 import com.azure.resourcemanager.providerhub.fluent.CustomRolloutsClient;
 import com.azure.resourcemanager.providerhub.fluent.DefaultRolloutsClient;
-import com.azure.resourcemanager.providerhub.fluent.NewRegionFrontloadReleasesClient;
+import com.azure.resourcemanager.providerhub.fluent.ManifestsClient;
 import com.azure.resourcemanager.providerhub.fluent.NotificationRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
 import com.azure.resourcemanager.providerhub.fluent.ProviderHubManagementClient;
@@ -180,20 +180,6 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
     }
 
     /**
-     * The NewRegionFrontloadReleasesClient object to access its operations.
-     */
-    private final NewRegionFrontloadReleasesClient newRegionFrontloadReleases;
-
-    /**
-     * Gets the NewRegionFrontloadReleasesClient object to access its operations.
-     * 
-     * @return the NewRegionFrontloadReleasesClient object.
-     */
-    public NewRegionFrontloadReleasesClient getNewRegionFrontloadReleases() {
-        return this.newRegionFrontloadReleases;
-    }
-
-    /**
      * The ProviderRegistrationsClient object to access its operations.
      */
     private final ProviderRegistrationsClient providerRegistrations;
@@ -292,6 +278,20 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
     }
 
     /**
+     * The ManifestsClient object to access its operations.
+     */
+    private final ManifestsClient manifests;
+
+    /**
+     * Gets the ManifestsClient object to access its operations.
+     * 
+     * @return the ManifestsClient object.
+     */
+    public ManifestsClient getManifests() {
+        return this.manifests;
+    }
+
+    /**
      * The ResourceActionsClient object to access its operations.
      */
     private final ResourceActionsClient resourceActions;
@@ -322,11 +322,10 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-09-01";
+        this.apiVersion = "2025-10-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.customRollouts = new CustomRolloutsClientImpl(this);
-        this.newRegionFrontloadReleases = new NewRegionFrontloadReleasesClientImpl(this);
         this.providerRegistrations = new ProviderRegistrationsClientImpl(this);
         this.defaultRollouts = new DefaultRolloutsClientImpl(this);
         this.notificationRegistrations = new NotificationRegistrationsClientImpl(this);
@@ -334,6 +333,7 @@ public final class ProviderHubManagementClientImpl implements ProviderHubManagem
         this.skus = new SkusClientImpl(this);
         this.authorizedApplications = new AuthorizedApplicationsClientImpl(this);
         this.providerMonitorSettings = new ProviderMonitorSettingsClientImpl(this);
+        this.manifests = new ManifestsClientImpl(this);
         this.resourceActions = new ResourceActionsClientImpl(this);
     }
 

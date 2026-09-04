@@ -27,7 +27,6 @@
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/artifactsigning</module>
-    <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/authorization</module>
     <module>sdk/automanage</module>
@@ -227,6 +226,7 @@
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
+    <module>sdk/redhatopenshifthcp</module>
     <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relationships</module>

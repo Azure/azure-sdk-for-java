@@ -94,6 +94,12 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku AZURE_CONTAINER_LINUX = fromString("AzureContainerLinux");
 
     /**
+     * Use Ubuntu2604 as the OS for node images. For limitations and supported Kubernetes versions, see
+     * https://aka.ms/aks/supported-ubuntu-versions.
+     */
+    public static final OSSku UBUNTU2604 = fromString("Ubuntu2604");
+
+    /**
      * Creates a new instance of OSSku value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

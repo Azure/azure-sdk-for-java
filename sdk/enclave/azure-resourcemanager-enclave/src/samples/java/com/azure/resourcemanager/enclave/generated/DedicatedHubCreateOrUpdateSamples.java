@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class DedicatedHubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/DedicatedHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: DedicatedHub_CreateOrUpdate.

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.horizondb.models.HorizonDbFirewallRulePropertie
 import java.io.IOException;
 
 /**
- * Represents the HorizonDb firewall rule.
+ * Represents the HorizonDB firewall rule.
  */
 @Fluent
 public final class HorizonDbFirewallRuleInner extends ProxyResource {

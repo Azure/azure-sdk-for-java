@@ -284,7 +284,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         //Upload file
         File source = new File(filePath);
-        blobClient.uploadFromFile(source.getPath());
+        blobClient.uploadFromFile(source.getPath(), true);
 
         // Create policy with 1 day read permission
         BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);

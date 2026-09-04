@@ -5,10 +5,13 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an agentic reasoning activity record.
@@ -83,12 +86,17 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("reasoningTokens", this.reasoningTokens);
         jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
+        jsonWriter.writeJsonField("logicalReasoningEffort", this.logicalReasoningEffort);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,17 +113,26 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
     public static KnowledgeBaseAgenticReasoningActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.AGENTIC_REASONING;
             Integer reasoningTokens = null;
             KnowledgeRetrievalReasoningEffort retrievalReasoningEffort = null;
+            KnowledgeRetrievalReasoningEffort logicalReasoningEffort = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -128,19 +145,42 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
                     reasoningTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("retrievalReasoningEffort".equals(fieldName)) {
                     retrievalReasoningEffort = KnowledgeRetrievalReasoningEffort.fromJson(reader);
+                } else if ("logicalReasoningEffort".equals(fieldName)) {
+                    logicalReasoningEffort = KnowledgeRetrievalReasoningEffort.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             KnowledgeBaseAgenticReasoningActivityRecord deserializedKnowledgeBaseAgenticReasoningActivityRecord
                 = new KnowledgeBaseAgenticReasoningActivityRecord(id);
+            deserializedKnowledgeBaseAgenticReasoningActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseAgenticReasoningActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.setError(error);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.type = type;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.reasoningTokens = reasoningTokens;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.retrievalReasoningEffort = retrievalReasoningEffort;
+            deserializedKnowledgeBaseAgenticReasoningActivityRecord.logicalReasoningEffort = logicalReasoningEffort;
             return deserializedKnowledgeBaseAgenticReasoningActivityRecord;
         });
+    }
+
+    /*
+     * The logical reasoning effort requested by the customer. This is distinct from `retrievalReasoningEffort`, which
+     * reports the reasoning effort used for billing.
+     */
+    @Generated
+    private KnowledgeRetrievalReasoningEffort logicalReasoningEffort;
+
+    /**
+     * Get the logicalReasoningEffort property: The logical reasoning effort requested by the customer. This is distinct
+     * from `retrievalReasoningEffort`, which reports the reasoning effort used for billing.
+     *
+     * @return the logicalReasoningEffort value.
+     */
+    @Generated
+    public KnowledgeRetrievalReasoningEffort getLogicalReasoningEffort() {
+        return this.logicalReasoningEffort;
     }
 }

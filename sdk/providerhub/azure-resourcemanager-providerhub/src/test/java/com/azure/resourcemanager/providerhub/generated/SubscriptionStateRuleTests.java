@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SubscriptionStateRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionStateRule model = BinaryData
-            .fromString("{\"state\":\"Enabled\",\"allowedActions\":[\"jhqjbasvmsmjqul\",\"gsntnbybkzgcwr\"]}")
-            .toObject(SubscriptionStateRule.class);
+        SubscriptionStateRule model
+            = BinaryData.fromString("{\"state\":\"Enabled\",\"allowedActions\":[\"vndhkrwpdapp\",\"sbdkvwr\"]}")
+                .toObject(SubscriptionStateRule.class);
         Assertions.assertEquals(SubscriptionState.ENABLED, model.state());
-        Assertions.assertEquals("jhqjbasvmsmjqul", model.allowedActions().get(0));
+        Assertions.assertEquals("vndhkrwpdapp", model.allowedActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionStateRule model = new SubscriptionStateRule().withState(SubscriptionState.ENABLED)
-            .withAllowedActions(Arrays.asList("jhqjbasvmsmjqul", "gsntnbybkzgcwr"));
+            .withAllowedActions(Arrays.asList("vndhkrwpdapp", "sbdkvwr"));
         model = BinaryData.fromObject(model).toObject(SubscriptionStateRule.class);
         Assertions.assertEquals(SubscriptionState.ENABLED, model.state());
-        Assertions.assertEquals("jhqjbasvmsmjqul", model.allowedActions().get(0));
+        Assertions.assertEquals("vndhkrwpdapp", model.allowedActions().get(0));
     }
 }

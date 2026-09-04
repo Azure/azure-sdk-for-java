@@ -68,13 +68,6 @@ public interface ProviderHubManagementClient {
     CustomRolloutsClient getCustomRollouts();
 
     /**
-     * Gets the NewRegionFrontloadReleasesClient object to access its operations.
-     * 
-     * @return the NewRegionFrontloadReleasesClient object.
-     */
-    NewRegionFrontloadReleasesClient getNewRegionFrontloadReleases();
-
-    /**
      * Gets the ProviderRegistrationsClient object to access its operations.
      * 
      * @return the ProviderRegistrationsClient object.
@@ -122,6 +115,13 @@ public interface ProviderHubManagementClient {
      * @return the ProviderMonitorSettingsClient object.
      */
     ProviderMonitorSettingsClient getProviderMonitorSettings();
+
+    /**
+     * Gets the ManifestsClient object to access its operations.
+     * 
+     * @return the ManifestsClient object.
+     */
+    ManifestsClient getManifests();
 
     /**
      * Gets the ResourceActionsClient object to access its operations.

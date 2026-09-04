@@ -59,7 +59,7 @@
           <artifactId>jackson-datatype-jsr310</artifactId>
         </exclusion>
       </exclusions>
-      <version>5.0.2</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+      <version>5.0.3</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -88,12 +88,12 @@
           <artifactId>jackson-datatype-jsr310</artifactId>
         </exclusion>
       </exclusions>
-      <version>7.17.19</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.20</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -107,13 +107,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.8</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.9</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -141,7 +141,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -205,8 +205,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-configuration-processor:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-stream:[5.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[5.0.3]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -215,7 +215,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

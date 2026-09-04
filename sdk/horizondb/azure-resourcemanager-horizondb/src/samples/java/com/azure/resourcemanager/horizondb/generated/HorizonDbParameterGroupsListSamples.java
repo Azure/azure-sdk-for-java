@@ -9,15 +9,15 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbParameterGroupsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListBySubscription.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListBySubscription.json
      */
     /**
-     * Sample code: List HorizonDb parameter groups in a subscription.
+     * Sample code: List HorizonDB parameter groups in a subscription.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbParameterGroupsInASubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBParameterGroupsInASubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups().list(com.azure.core.util.Context.NONE);
     }
 }
