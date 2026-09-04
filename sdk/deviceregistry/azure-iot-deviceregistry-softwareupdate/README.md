@@ -50,7 +50,7 @@ Add `azure-identity` to your project to use `DefaultAzureCredential`:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.4</version>
+    <version>1.18.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
