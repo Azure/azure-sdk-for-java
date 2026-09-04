@@ -172,6 +172,28 @@ client.addOnStoppedEventHandler(event -> {
 });
 ```
 
+### Invoke upstream events (preview)
+
+`invokeEvent` sends an `invoke` request to the service, awaits the correlated `invokeResponse` payload.
+
+```java readme-sample-invokeEvent
+InvokeEventResult result = client.invokeEvent("processOrder",
+    BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON);
+System.out.println("Invocation result: " + result.getData().toString());
+```
+
+You can set a timeout and a custom invocation ID via `InvokeEventOptions` so the invocation fails with an `InvocationException` if no response is received within the specified duration. By default, there is no timeout and the invocation waits indefinitely.
+
+```java readme-sample-invokeEventWithTimeout
+InvokeEventOptions options = new InvokeEventOptions().setTimeout(Duration.ofSeconds(10)).setInvocationId("my-invocation-1");
+InvokeEventResult result = client.invokeEvent("processOrder",
+    BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
+System.out.println("Invocation result: " + result.getData().toString());
+```
+
+_Streaming and service-initiated invocations are not yet supported._
+
+
 ### Operation and retry
 
 By default, the operation such as `client.joinGroup()`, `client.leaveGroup()`, `client.sendToGroup()`, `client.sendEvent()` has three reties. You can use `WebPubSubClientBuilder.retryOptions()` to change. If all retries have failed, an error will be thrown. You can keep retrying by passing in the same `ackId` as previous retries, thus the service can help to deduplicate the operation with the same `ackId`
