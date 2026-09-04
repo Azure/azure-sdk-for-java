@@ -9,7 +9,15 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class ListAgents {
+/**
+ * Demonstrates listing all agents in an Azure AI Foundry project.
+ *
+ * <p>Before running the sample, set this environment variable:</p>
+ * <ul>
+ *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - The Azure AI Project endpoint.</li>
+ * </ul>
+ */
+public class ListAgentsSample {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         // Code sample for listing all agents

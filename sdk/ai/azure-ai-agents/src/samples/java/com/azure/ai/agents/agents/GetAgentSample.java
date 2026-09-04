@@ -20,7 +20,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
  * </ul>
  */
-public class GetAgent {
+public class GetAgentSample {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
