@@ -12,9 +12,9 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -297,7 +297,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             clientToUse = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -354,7 +354,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             clientToUse = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -447,7 +447,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             // Uncomment if running locally
             // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
@@ -524,7 +524,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             // Uncomment if running locally
             // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");

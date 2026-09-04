@@ -361,7 +361,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             container.createItem(TestObject.create()).block();
         }
 
-        List<FeedRange> feedRanges = container.getFeedRanges().block();
+        List<FeedRange> feedRanges = getFeedRangesWithRetry(
+            container,
+            "get feed ranges for metadata fault injection setup");
         assertThat(feedRanges.size()).isGreaterThan(1);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();

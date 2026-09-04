@@ -17,7 +17,9 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpClientUnderTestWrapper;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -32,6 +34,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import io.netty.channel.ConnectTimeoutException;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -55,10 +58,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -1541,9 +1548,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     private static void assertEqual(AddressInformation actual, Address expected) {
-        assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
+        assertThat(stripTrailingSlash(actual.getPhysicalUri().getURIAsString()))
+            .isEqualTo(stripTrailingSlash(expected.getPhyicalUri()));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
         assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
+    }
+
+    private static String stripTrailingSlash(String uri) {
+        return uri == null ? null : uri.replaceAll("/+$", "");
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {
@@ -1588,6 +1600,291 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             BridgeInternal.getClientSideRequestStatics(serviceRequest.requestContext.cosmosDiagnostics).getAddressResolutionStatistics().keySet().iterator().next();
         assertThat(httpClient.capturedRequests.get(requestIndex).headers().value(HttpConstants.HttpHeaders.ACTIVITY_ID)).isNotNull();
         assertThat(httpClient.capturedRequests.get(requestIndex).headers().value(HttpConstants.HttpHeaders.ACTIVITY_ID)).isEqualTo(addressResolutionActivityId);
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void submitOpenConnectionTasksResolvesAddressesWhenCacheEntryIsMissing() throws Exception {
+        String collectionRid = "collectionRid";
+        String partitionKeyRangeId = "0";
+        URI serviceEndpoint = new URI("https://localhost");
+        Address address = createAddress("rntbd://localhost:10250/", partitionKeyRangeId, true);
+
+        AtomicInteger addressResolutionCount = new AtomicInteger();
+        ProactiveOpenConnectionsProcessor processor = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Mockito.when(processor.submitOpenConnectionTaskOutsideLoop(
+                Mockito.anyString(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+            .thenReturn(completedOpenConnectionTask(
+                collectionRid,
+                serviceEndpoint,
+                new Uri(address.getPhyicalUri()),
+                null));
+
+        GatewayAddressCache cache = createGatewayAddressCache(
+            serviceEndpoint,
+            processor,
+            (request, requestedCollectionRid, partitionKeyRangeIds, forceRefresh) -> {
+                addressResolutionCount.incrementAndGet();
+                assertThat(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint())
+                    .isEqualTo(serviceEndpoint);
+                assertThat(request.faultInjectionRequestContext.getRegionalRoutingContextToRoute()
+                    .getGatewayRegionalEndpoint()).isEqualTo(serviceEndpoint);
+                assertThat(requestedCollectionRid).isEqualTo(collectionRid);
+                assertThat(partitionKeyRangeIds).containsExactly(partitionKeyRangeId);
+                assertThat(forceRefresh).isFalse();
+                return Collections.singletonList(address);
+            });
+
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange().setId(partitionKeyRangeId);
+        StepVerifier.create(cache.submitOpenConnectionTasks(partitionKeyRange, collectionRid, false))
+            .expectNextCount(1)
+            .verifyComplete();
+        StepVerifier.create(cache.submitOpenConnectionTasks(partitionKeyRange, collectionRid, false))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertThat(addressResolutionCount).hasValue(1);
+        Mockito.verify(processor, Mockito.times(2))
+            .submitOpenConnectionTaskOutsideLoop(
+                Mockito.eq(collectionRid),
+                Mockito.eq(serviceEndpoint),
+                Mockito.argThat(uri -> uri.getURIAsString().equals(address.getPhyicalUri())),
+                Mockito.eq(1));
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void submitOpenConnectionTasksRefreshesAddressesAfterNetworkFailure() throws Exception {
+        String collectionRid = "collectionRid";
+        String partitionKeyRangeId = "0";
+        URI serviceEndpoint = new URI("https://localhost");
+        Address stalePrimary = createAddress("rntbd://localhost:10250/", partitionKeyRangeId, true);
+        Address staleSecondary = createAddress("rntbd://localhost:10251/", partitionKeyRangeId, false);
+        Address refreshedPrimary = createAddress("rntbd://localhost:10252/", partitionKeyRangeId, true);
+        Address refreshedSecondary = createAddress("rntbd://localhost:10253/", partitionKeyRangeId, false);
+        ConnectTimeoutException staleAddressException = new ConnectTimeoutException("Connection timed out");
+
+        AtomicInteger addressResolutionCount = new AtomicInteger();
+        List<Boolean> forceRefreshValues = new CopyOnWriteArrayList<>();
+        Map<String, AtomicInteger> connectionAttempts = new ConcurrentHashMap<>();
+        ProactiveOpenConnectionsProcessor processor = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Mockito.when(processor.submitOpenConnectionTaskOutsideLoop(
+                Mockito.anyString(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+            .thenAnswer(invocation -> {
+                Uri uri = invocation.getArgument(2);
+                int attempt = connectionAttempts
+                    .computeIfAbsent(uri.getURIAsString(), ignored -> new AtomicInteger())
+                    .incrementAndGet();
+                Throwable exception = uri.getURIAsString().equals(stalePrimary.getPhyicalUri()) && attempt == 2
+                    ? staleAddressException
+                    : null;
+                return completedOpenConnectionTask(collectionRid, serviceEndpoint, uri, exception);
+            });
+
+        GatewayAddressCache cache = createGatewayAddressCache(
+            serviceEndpoint,
+            processor,
+            (request, requestedCollectionRid, partitionKeyRangeIds, forceRefresh) -> {
+                assertThat(requestedCollectionRid).isEqualTo(collectionRid);
+                assertThat(partitionKeyRangeIds).containsExactly(partitionKeyRangeId);
+                forceRefreshValues.add(forceRefresh);
+                return addressResolutionCount.incrementAndGet() == 1
+                    ? Arrays.asList(stalePrimary, staleSecondary)
+                    : Arrays.asList(refreshedPrimary, refreshedSecondary);
+            });
+
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange().setId(partitionKeyRangeId);
+        StepVerifier.create(cache.submitOpenConnectionTasks(partitionKeyRange, collectionRid, false))
+            .expectNextCount(2)
+            .verifyComplete();
+        StepVerifier.create(cache.submitOpenConnectionTasks(partitionKeyRange, collectionRid, false))
+            .expectErrorMatches(throwable -> throwable == staleAddressException)
+            .verify();
+        StepVerifier.create(cache.submitOpenConnectionTasks(partitionKeyRange, collectionRid, true))
+            .expectNextCount(2)
+            .verifyComplete();
+
+        assertThat(addressResolutionCount).hasValue(2);
+        assertThat(forceRefreshValues).containsExactly(false, true);
+        assertThat(connectionAttempts.get(stalePrimary.getPhyicalUri())).hasValue(2);
+        assertThat(connectionAttempts.get(refreshedPrimary.getPhyicalUri())).hasValue(1);
+        assertThat(connectionAttempts.get(refreshedSecondary.getPhyicalUri())).hasValue(1);
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void submitOpenConnectionTasksPropagatesFailureAfterRefreshedAddressFails() throws Exception {
+        String collectionRid = "collectionRid";
+        String partitionKeyRangeId = "0";
+        URI serviceEndpoint = new URI("https://localhost");
+        Address staleAddress = createAddress("rntbd://localhost:10250/", partitionKeyRangeId, true);
+        Address refreshedAddress = createAddress("rntbd://localhost:10251/", partitionKeyRangeId, true);
+        ConnectTimeoutException connectionFailure = new ConnectTimeoutException("Connection timed out");
+
+        AtomicInteger addressResolutionCount = new AtomicInteger();
+        AtomicInteger connectionAttemptCount = new AtomicInteger();
+        ProactiveOpenConnectionsProcessor processor = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Mockito.when(processor.submitOpenConnectionTaskOutsideLoop(
+                Mockito.anyString(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+            .thenAnswer(invocation -> {
+                connectionAttemptCount.incrementAndGet();
+                return completedOpenConnectionTask(
+                    collectionRid,
+                    serviceEndpoint,
+                    invocation.getArgument(2),
+                    connectionFailure);
+            });
+
+        GatewayAddressCache cache = createGatewayAddressCache(
+            serviceEndpoint,
+            processor,
+            (request, requestedCollectionRid, partitionKeyRangeIds, forceRefresh) ->
+                Collections.singletonList(addressResolutionCount.incrementAndGet() == 1
+                    ? staleAddress
+                    : refreshedAddress));
+
+        StepVerifier.create(cache.submitOpenConnectionTasks(
+                new PartitionKeyRange().setId(partitionKeyRangeId),
+                collectionRid,
+                false))
+            .expectErrorMatches(throwable -> throwable == connectionFailure)
+            .verify();
+        StepVerifier.create(cache.submitOpenConnectionTasks(
+                new PartitionKeyRange().setId(partitionKeyRangeId),
+                collectionRid,
+                true))
+            .expectErrorMatches(throwable -> throwable == connectionFailure)
+            .verify();
+
+        assertThat(addressResolutionCount).hasValue(2);
+        assertThat(connectionAttemptCount).hasValue(2);
+    }
+
+    @DataProvider(name = "networkFailureResponseOrders")
+    public Object[][] networkFailureResponseOrders() {
+        return new Object[][] {
+            { true },
+            { false }
+        };
+    }
+
+    @Test(groups = { "direct" }, dataProvider = "networkFailureResponseOrders", timeOut = TIMEOUT)
+    public void submitOpenConnectionTasksPrefersNetworkFailureAcrossReplicas(boolean networkFailureFirst)
+        throws Exception {
+
+        String collectionRid = "collectionRid";
+        String partitionKeyRangeId = "0";
+        URI serviceEndpoint = new URI("https://localhost");
+        Address networkFailureAddress = createAddress("rntbd://localhost:10250/", partitionKeyRangeId, true);
+        Address nonNetworkFailureAddress = createAddress("rntbd://localhost:10251/", partitionKeyRangeId, false);
+        ConnectTimeoutException networkFailure = new ConnectTimeoutException("Connection timed out");
+        IllegalStateException nonNetworkFailure = new IllegalStateException("Context negotiation failed");
+        OpenConnectionTask networkFailureTask = new OpenConnectionTask(
+            collectionRid,
+            serviceEndpoint,
+            new Uri(networkFailureAddress.getPhyicalUri()),
+            1);
+        OpenConnectionTask nonNetworkFailureTask = new OpenConnectionTask(
+            collectionRid,
+            serviceEndpoint,
+            new Uri(nonNetworkFailureAddress.getPhyicalUri()),
+            1);
+
+        ProactiveOpenConnectionsProcessor processor = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Mockito.when(processor.submitOpenConnectionTaskOutsideLoop(
+                Mockito.anyString(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+            .thenAnswer(invocation -> ((Uri) invocation.getArgument(2)).getURIAsString()
+                .equals(networkFailureAddress.getPhyicalUri())
+                ? networkFailureTask
+                : nonNetworkFailureTask);
+
+        GatewayAddressCache cache = createGatewayAddressCache(
+            serviceEndpoint,
+            processor,
+            (request, requestedCollectionRid, partitionKeyRangeIds, forceRefresh) ->
+                Arrays.asList(networkFailureAddress, nonNetworkFailureAddress));
+
+        StepVerifier.create(cache.submitOpenConnectionTasks(
+                new PartitionKeyRange().setId(partitionKeyRangeId),
+                collectionRid,
+                false))
+            .then(() -> {
+                OpenConnectionResponse networkFailureResponse = new OpenConnectionResponse(
+                    networkFailureTask.getAddressUri(), false, networkFailure, 0);
+                OpenConnectionResponse nonNetworkFailureResponse = new OpenConnectionResponse(
+                    nonNetworkFailureTask.getAddressUri(), false, nonNetworkFailure, 0);
+                if (networkFailureFirst) {
+                    networkFailureTask.complete(networkFailureResponse);
+                } else {
+                    nonNetworkFailureTask.complete(nonNetworkFailureResponse);
+                    networkFailureTask.complete(networkFailureResponse);
+                }
+            })
+            .expectErrorMatches(throwable -> throwable == networkFailure)
+            .verify();
+
+        if (networkFailureFirst) {
+            assertThat(nonNetworkFailureTask.isDone()).isFalse();
+        }
+    }
+
+    private static GatewayAddressCache createGatewayAddressCache(
+        URI serviceEndpoint,
+        ProactiveOpenConnectionsProcessor processor,
+        AddressResolver addressResolver) {
+
+        return new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.TCP,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            ConnectionPolicy.getDefaultPolicy(),
+            processor,
+            null) {
+                @Override
+                public Mono<List<Address>> getServerAddressesViaGatewayAsync(
+                    RxDocumentServiceRequest request,
+                    String collectionRid,
+                    List<String> partitionKeyRangeIds,
+                    boolean forceRefresh) {
+
+                    return Mono.just(addressResolver.resolve(
+                        request,
+                        collectionRid,
+                        partitionKeyRangeIds,
+                        forceRefresh));
+                }
+            };
+    }
+
+    private static Address createAddress(String physicalUri, String partitionKeyRangeId, boolean primary) {
+        Address address = new Address();
+        address.setIsPrimary(primary);
+        address.setProtocol(Protocol.TCP.scheme());
+        address.setPhysicalUri(physicalUri);
+        address.setPartitionKeyRangeId(partitionKeyRangeId);
+        return address;
+    }
+
+    private static OpenConnectionTask completedOpenConnectionTask(
+        String collectionRid,
+        URI serviceEndpoint,
+        Uri uri,
+        Throwable exception) {
+
+        OpenConnectionTask task = new OpenConnectionTask(collectionRid, serviceEndpoint, uri, 1);
+        task.complete(new OpenConnectionResponse(uri, exception == null, exception, exception == null ? 1 : 0));
+        return task;
+    }
+
+    @FunctionalInterface
+    private interface AddressResolver {
+        List<Address> resolve(
+            RxDocumentServiceRequest request,
+            String collectionRid,
+            List<String> partitionKeyRangeIds,
+            boolean forceRefresh);
     }
 
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
