@@ -159,6 +159,13 @@ public interface ResourceProviderManifest {
     ResourceProviderAuthorizationRules resourceProviderAuthorizationRules();
 
     /**
+     * Gets the tokenAuthConfiguration property: The token auth configuration.
+     * 
+     * @return the tokenAuthConfiguration value.
+     */
+    TokenAuthConfiguration tokenAuthConfiguration();
+
+    /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.ResourceProviderManifestInner object.
      * 
      * @return the inner object.

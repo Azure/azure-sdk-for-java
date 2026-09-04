@@ -87,7 +87,8 @@ public final class BatchJobReleaseTask implements JsonSerializable<BatchJobRelea
      * The maximum elapsed time that the Job Release Task may run on a given Compute Node, measured from the time the
      * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. The default
      * value is 15 minutes. You may not specify a timeout longer than 15 minutes. If you do, the Batch service rejects
-     * it with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * it with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration maxWallClockTime;
@@ -95,7 +96,8 @@ public final class BatchJobReleaseTask implements JsonSerializable<BatchJobRelea
     /*
      * The minimum time to retain the Task directory for the Job Release Task on the Compute Node. After this time, the
      * Batch service may delete the Task directory and all its contents. The default is 7 days, i.e. the Task directory
-     * will be retained for 7 days unless the Compute Node is removed or the Job is deleted.
+     * will be retained for 7 days unless the Compute Node is removed or the Job is deleted. The time duration is
+     * specified in ISO 8601 format.
      */
     @Generated
     private Duration retentionTime;
@@ -253,7 +255,7 @@ public final class BatchJobReleaseTask implements JsonSerializable<BatchJobRelea
      * Node, measured from the time the Task starts. If the Task does not complete within the time limit, the Batch
      * service terminates it. The default value is 15 minutes. You may not specify a timeout longer than 15 minutes. If
      * you do, the Batch service rejects it with an error; if you are calling the REST API directly, the HTTP status
-     * code is 400 (Bad Request).
+     * code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @return the maxWallClockTime value.
      */
@@ -267,7 +269,7 @@ public final class BatchJobReleaseTask implements JsonSerializable<BatchJobRelea
      * Node, measured from the time the Task starts. If the Task does not complete within the time limit, the Batch
      * service terminates it. The default value is 15 minutes. You may not specify a timeout longer than 15 minutes. If
      * you do, the Batch service rejects it with an error; if you are calling the REST API directly, the HTTP status
-     * code is 400 (Bad Request).
+     * code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @param maxWallClockTime the maxWallClockTime value to set.
      * @return the BatchJobReleaseTask object itself.
@@ -282,7 +284,7 @@ public final class BatchJobReleaseTask implements JsonSerializable<BatchJobRelea
      * Get the retentionTime property: The minimum time to retain the Task directory for the Job Release Task on the
      * Compute Node. After this time, the Batch service may delete the Task directory and all its contents. The default
      * is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is
-     * deleted.
+     * deleted. The time duration is specified in ISO 8601 format.
      *
      * @return the retentionTime value.
      */
@@ -295,7 +297,7 @@ public final class BatchJobReleaseTask implements JsonSerializable<BatchJobRelea
      * Set the retentionTime property: The minimum time to retain the Task directory for the Job Release Task on the
      * Compute Node. After this time, the Batch service may delete the Task directory and all its contents. The default
      * is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is
-     * deleted.
+     * deleted. The time duration is specified in ISO 8601 format.
      *
      * @param retentionTime the retentionTime value to set.
      * @return the BatchJobReleaseTask object itself.

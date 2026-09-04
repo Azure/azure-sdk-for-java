@@ -223,7 +223,8 @@ public final class TranscriptionClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> transcribeWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> transcribeWithResponseInternalAsync(BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.transcribe(this.getEndpoint(),
@@ -275,7 +276,7 @@ public final class TranscriptionClientImpl {
      * @return the result of the transcribe operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> transcribeWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> transcribeWithResponseInternal(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.transcribeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,

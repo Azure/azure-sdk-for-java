@@ -14,13 +14,17 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.UUIDs;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -397,7 +401,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                                 getThreadInfo());
 
                             // resolve partition key range id again for operations which comes in main sink due to gone retry.
-                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
+                            return this.resolvePartitionKeyRangeId(operation)
                                                    .map((String pkRangeId) -> {
                                                        PartitionScopeThresholds partitionScopeThresholds =
                                                            this.partitionScopeThresholds.computeIfAbsent(
@@ -465,6 +469,47 @@ public final class BulkExecutor<TContext> implements Disposable {
                         }
                     });
             });
+    }
+
+    private Mono<String> resolvePartitionKeyRangeId(CosmosItemOperation operation) {
+        checkNotNull(operation, "expected non-null operation");
+        if (!(operation instanceof ItemBulkOperation<?, ?>)) {
+            throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
+        }
+
+        ItemBulkOperation<?, ?> itemOperation = (ItemBulkOperation<?, ?>) operation;
+        return BulkExecutorUtil.resolvePartitionKeyRangeId(
+            this.docClientWrapper,
+            this.container,
+            operation.getPartitionKeyValue(),
+            (partitionKeyDefinition, partitionKeyInternal) -> {
+                PartitionKeyInternal completedPartitionKey =
+                    PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeededLazy(
+                        partitionKeyDefinition,
+                        partitionKeyInternal,
+                        () -> resolveItemId(itemOperation, this.effectiveItemSerializer));
+                itemOperation.setPartitionKeyJson(completedPartitionKey.toJson());
+                return completedPartitionKey;
+            });
+    }
+
+    static String resolveItemId(
+        ItemBulkOperation<?, ?> operation,
+        CosmosItemSerializer effectiveItemSerializer) {
+
+        if (StringUtils.isNotEmpty(operation.getId())) {
+            return operation.getId();
+        }
+
+        Object item = operation.getItemInternal();
+        if (item == null) {
+            return null;
+        }
+
+        checkNotNull(effectiveItemSerializer, "expected non-null effectiveItemSerializer");
+        Map<String, Object> serializedItem = operation.serializeAndCacheItem(effectiveItemSerializer);
+        Object idValue = serializedItem.get(Constants.Properties.ID);
+        return idValue == null ? null : idValue.toString();
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionedGroup(
