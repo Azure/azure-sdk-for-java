@@ -13,7 +13,12 @@ public enum IdentityServiceVersion implements ServiceVersion {
     /**
      * Enum value 2025-06-30.
      */
-    V2025_06_30("2025-06-30");
+    V2025_06_30("2025-06-30"),
+
+    /**
+     * Enum value 2026-09-23.
+     */
+    V2026_09_23("2026-09-23");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum IdentityServiceVersion implements ServiceVersion {
      * @return The latest {@link IdentityServiceVersion}.
      */
     public static IdentityServiceVersion getLatest() {
-        return V2025_06_30;
+        return V2026_09_23;
     }
 }

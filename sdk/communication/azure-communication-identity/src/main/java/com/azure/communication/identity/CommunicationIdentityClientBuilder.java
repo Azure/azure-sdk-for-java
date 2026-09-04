@@ -382,9 +382,9 @@ public final class CommunicationIdentityClientBuilder implements
      * Maps the public {@link CommunicationIdentityServiceVersion} onto the generated
      * {@link IdentityServiceVersion}.
      *
-     * <p>The generated client accepts only api-versions declared in the TypeSpec {@code Versions} enum,
-     * which currently contains {@code 2025-06-30} alone. Older values remain part of the public API of
-     * this library but cannot be routed to the generated client until they are added upstream.</p>
+     * <p>The generated client accepts only api-versions declared in the TypeSpec {@code Versions} enum.
+     * Older values remain part of the public API of this library but cannot be routed to the generated
+     * client until they are added upstream.</p>
      */
     private IdentityServiceVersion mapServiceVersion(CommunicationIdentityServiceVersion apiVersion) {
         for (IdentityServiceVersion generated : IdentityServiceVersion.values()) {
@@ -393,9 +393,16 @@ public final class CommunicationIdentityClientBuilder implements
             }
         }
 
+        StringBuilder supported = new StringBuilder();
+        for (IdentityServiceVersion generated : IdentityServiceVersion.values()) {
+            if (supported.length() > 0) {
+                supported.append(", ");
+            }
+            supported.append(generated.getVersion());
+        }
+
         throw logger.logExceptionAsError(new IllegalArgumentException("Service version " + apiVersion.getVersion()
-            + " is not supported by the generated client. Supported versions: "
-            + IdentityServiceVersion.values()[0].getVersion() + "."));
+            + " is not supported by the generated client. Supported versions: " + supported + "."));
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
