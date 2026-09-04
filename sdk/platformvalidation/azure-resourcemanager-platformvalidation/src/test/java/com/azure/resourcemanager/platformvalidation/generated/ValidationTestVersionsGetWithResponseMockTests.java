@@ -24,7 +24,7 @@ public final class ValidationTestVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"pjflcxogao\",\"audience\":\"Internal\",\"provisioningState\":\"Failed\",\"categoryIds\":[\"ikvmkqzeqqk\",\"l\",\"fzxmhhvhgureodkw\",\"bdagxt\"],\"overallState\":\"Active\",\"owners\":[\"bxwakbog\",\"xndlkzgxhu\"],\"inputs\":[{\"name\":\"lbpodxunk\",\"definition\":{\"description\":\"bxmubyynt\",\"type\":\"Array\",\"required\":false,\"defaultValue\":\"koievseo\",\"allowedValues\":[\"rlltmuwlauwzizx\"]}},{\"name\":\"mpgcjefuzmuvpbt\",\"definition\":{\"description\":\"um\",\"type\":\"Boolean\",\"required\":false,\"defaultValue\":\"bmnzbtbhjpgl\",\"allowedValues\":[\"ohdneuel\",\"phsdyhto\",\"fikdowwqu\",\"v\"]}},{\"name\":\"zx\",\"definition\":{\"description\":\"vithh\",\"type\":\"Integer\",\"required\":false,\"defaultValue\":\"ggbhcohfwds\",\"allowedValues\":[\"aljutiiswac\"]}}],\"contentHash\":\"gdkz\",\"testStoreUri\":\"wkfvhqcrailvp\"},\"id\":\"pfuflrw\",\"name\":\"mh\",\"type\":\"lxyjr\"}";
+            = "{\"properties\":{\"description\":\"oygmift\",\"audience\":\"Public\",\"provisioningState\":\"Canceled\",\"categoryIds\":[\"l\"],\"overallState\":\"Published\",\"owners\":[\"igynduhavhqlk\"],\"inputs\":[{\"name\":\"maqolbgycduie\",\"definition\":{\"description\":\"gccymvaolpssl\",\"type\":\"Integer\",\"required\":true,\"defaultValue\":\"n\",\"allowedValues\":[\"lzpswiydm\",\"wyhzdx\",\"sadbz\"]}}],\"contentHash\":\"vdfznudaodvxzb\",\"testStoreUri\":\"blylpstdbh\"},\"id\":\"srzdzucerscdn\",\"name\":\"nevf\",\"type\":\"wjmy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +34,22 @@ public final class ValidationTestVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidationTestVersion response = manager.validationTestVersions()
-            .getWithResponse("zhedplvwiw", "bmwmbesldnkw", com.azure.core.util.Context.NONE)
+            .getWithResponse("enq", "eh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pjflcxogao", response.properties().description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, response.properties().audience());
-        Assertions.assertEquals("ikvmkqzeqqk", response.properties().categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.ACTIVE, response.properties().overallState());
-        Assertions.assertEquals("bxwakbog", response.properties().owners().get(0));
-        Assertions.assertEquals("lbpodxunk", response.properties().inputs().get(0).name());
-        Assertions.assertEquals("bxmubyynt", response.properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.ARRAY,
+        Assertions.assertEquals("oygmift", response.properties().description());
+        Assertions.assertEquals(CatalogAudience.PUBLIC, response.properties().audience());
+        Assertions.assertEquals("l", response.properties().categoryIds().get(0));
+        Assertions.assertEquals(ValidationTestOverallState.PUBLISHED, response.properties().overallState());
+        Assertions.assertEquals("igynduhavhqlk", response.properties().owners().get(0));
+        Assertions.assertEquals("maqolbgycduie", response.properties().inputs().get(0).name());
+        Assertions.assertEquals("gccymvaolpssl", response.properties().inputs().get(0).definition().description());
+        Assertions.assertEquals(ValidationTestInputDataType.INTEGER,
             response.properties().inputs().get(0).definition().type());
-        Assertions.assertFalse(response.properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("koievseo", response.properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("rlltmuwlauwzizx",
-            response.properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("gdkz", response.properties().contentHash());
-        Assertions.assertEquals("wkfvhqcrailvp", response.properties().testStoreUri());
+        Assertions.assertTrue(response.properties().inputs().get(0).definition().required());
+        Assertions.assertEquals("n", response.properties().inputs().get(0).definition().defaultValue());
+        Assertions.assertEquals("lzpswiydm", response.properties().inputs().get(0).definition().allowedValues().get(0));
+        Assertions.assertEquals("vdfznudaodvxzb", response.properties().contentHash());
+        Assertions.assertEquals("blylpstdbh", response.properties().testStoreUri());
     }
 }

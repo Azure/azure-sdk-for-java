@@ -9,7 +9,7 @@ package com.azure.resourcemanager.platformvalidation.generated;
  */
 public final class ValidationTestCategoriesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestCategories_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestCategories_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestCategories_Get_MaximumSet.

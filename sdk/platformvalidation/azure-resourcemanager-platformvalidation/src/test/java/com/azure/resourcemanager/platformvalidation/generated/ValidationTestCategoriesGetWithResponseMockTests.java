@@ -22,7 +22,7 @@ public final class ValidationTestCategoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"uwhhmhykojoxafn\",\"description\":\"lpichk\",\"audience\":\"Internal\",\"provisioningState\":\"Succeeded\",\"parentCategoryId\":\"yhbpkkpw\",\"owners\":[\"q\",\"ovvqfovljxywsu\",\"syrsndsytgadgvra\"]},\"id\":\"en\",\"name\":\"qnzarrwl\",\"type\":\"uu\"}";
+            = "{\"properties\":{\"displayName\":\"swacffgdkzz\",\"description\":\"kfvhqcrailvpn\",\"audience\":\"Internal\",\"provisioningState\":\"Failed\",\"parentCategoryId\":\"rwdmhdlxyjrxsa\",\"owners\":[\"cnihgwqapnedgfbc\",\"kcvqvpke\"]},\"id\":\"cvdrhvoodsot\",\"name\":\"obzdopcjwvnhdl\",\"type\":\"wmgxcxrsl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ValidationTestCategoriesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidationTestCategory response = manager.validationTestCategories()
-            .getWithResponse("bdbutauvf", com.azure.core.util.Context.NONE)
+            .getWithResponse("wdsjnkalju", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uwhhmhykojoxafn", response.properties().displayName());
-        Assertions.assertEquals("lpichk", response.properties().description());
+        Assertions.assertEquals("swacffgdkzz", response.properties().displayName());
+        Assertions.assertEquals("kfvhqcrailvpn", response.properties().description());
         Assertions.assertEquals(CatalogAudience.INTERNAL, response.properties().audience());
-        Assertions.assertEquals("yhbpkkpw", response.properties().parentCategoryId());
-        Assertions.assertEquals("q", response.properties().owners().get(0));
+        Assertions.assertEquals("rwdmhdlxyjrxsa", response.properties().parentCategoryId());
+        Assertions.assertEquals("cnihgwqapnedgfbc", response.properties().owners().get(0));
     }
 }

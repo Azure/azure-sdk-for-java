@@ -23,7 +23,7 @@ public final class ValidationTestCategoriesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"iipfpubj\",\"description\":\"wwiftohqkvpuv\",\"audience\":\"Internal\",\"provisioningState\":\"Succeeded\",\"parentCategoryId\":\"aknynfsynljphuop\",\"owners\":[\"lqiyntorzihl\",\"osjswsr\",\"slyzrpzbchckqq\"]},\"id\":\"ioxiysuiizyn\",\"name\":\"edyatrwyhqmibzyh\",\"type\":\"itsmypyyn\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"khjwn\",\"description\":\"qsluicp\",\"audience\":\"Public\",\"provisioningState\":\"Canceled\",\"parentCategoryId\":\"lvmbmpaxmodfvuef\",\"owners\":[\"bpfvm\",\"yhrfouyftaakcpw\",\"yzvqt\"]},\"id\":\"ubex\",\"name\":\"pzk\",\"type\":\"mond\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class ValidationTestCategoriesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ValidationTestCategory> response
-            = manager.validationTestCategories().list("jfqka", com.azure.core.util.Context.NONE);
+            = manager.validationTestCategories().list("mutwuoe", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iipfpubj", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("wwiftohqkvpuv", response.iterator().next().properties().description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, response.iterator().next().properties().audience());
-        Assertions.assertEquals("aknynfsynljphuop", response.iterator().next().properties().parentCategoryId());
-        Assertions.assertEquals("lqiyntorzihl", response.iterator().next().properties().owners().get(0));
+        Assertions.assertEquals("khjwn", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("qsluicp", response.iterator().next().properties().description());
+        Assertions.assertEquals(CatalogAudience.PUBLIC, response.iterator().next().properties().audience());
+        Assertions.assertEquals("lvmbmpaxmodfvuef", response.iterator().next().properties().parentCategoryId());
+        Assertions.assertEquals("bpfvm", response.iterator().next().properties().owners().get(0));
     }
 }

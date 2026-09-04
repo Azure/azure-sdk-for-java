@@ -5,16 +5,20 @@
 package com.azure.resourcemanager.platformvalidation.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestRunInner;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTestRun;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTestRunProperties;
 
-public final class ValidationTestRunImpl
-    implements ValidationTestRun, ValidationTestRun.Definition, ValidationTestRun.Update {
+public final class ValidationTestRunImpl implements ValidationTestRun {
     private ValidationTestRunInner innerObject;
 
     private final com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager;
+
+    ValidationTestRunImpl(ValidationTestRunInner innerObject,
+        com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -36,112 +40,11 @@ public final class ValidationTestRunImpl
         return this.innerModel().systemData();
     }
 
-    public String resourceGroupName() {
-        return resourceGroupName;
-    }
-
     public ValidationTestRunInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String cloudValidationName;
-
-    private String validationExecutionPlanName;
-
-    private String executionPlanRunName;
-
-    private String validationTestRunName;
-
-    public ValidationTestRunImpl withExistingExecutionPlanRun(String resourceGroupName, String cloudValidationName,
-        String validationExecutionPlanName, String executionPlanRunName) {
-        this.resourceGroupName = resourceGroupName;
-        this.cloudValidationName = cloudValidationName;
-        this.validationExecutionPlanName = validationExecutionPlanName;
-        this.executionPlanRunName = executionPlanRunName;
-        return this;
-    }
-
-    public ValidationTestRun create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationTestRuns()
-            .createOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public ValidationTestRun create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationTestRuns()
-            .createOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, this.innerModel(), context);
-        return this;
-    }
-
-    ValidationTestRunImpl(String name,
-        com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager) {
-        this.innerObject = new ValidationTestRunInner();
-        this.serviceManager = serviceManager;
-        this.validationTestRunName = name;
-    }
-
-    public ValidationTestRunImpl update() {
-        return this;
-    }
-
-    public ValidationTestRun apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationTestRuns()
-            .createOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public ValidationTestRun apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationTestRuns()
-            .createOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, this.innerModel(), context);
-        return this;
-    }
-
-    ValidationTestRunImpl(ValidationTestRunInner innerObject,
-        com.azure.resourcemanager.platformvalidation.PlatformValidationManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudValidationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudValidations");
-        this.validationExecutionPlanName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "validationExecutionPlans");
-        this.executionPlanRunName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "executionPlanRuns");
-        this.validationTestRunName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "validationTestRuns");
-    }
-
-    public ValidationTestRun refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationTestRuns()
-            .getWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public ValidationTestRun refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationTestRuns()
-            .getWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, context)
-            .getValue();
-        return this;
-    }
-
-    public ValidationTestRunImpl withProperties(ValidationTestRunProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
     }
 }

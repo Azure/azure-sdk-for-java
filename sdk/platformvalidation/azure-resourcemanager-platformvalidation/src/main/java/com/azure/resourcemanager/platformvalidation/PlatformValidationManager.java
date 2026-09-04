@@ -352,7 +352,7 @@ public final class PlatformValidationManager {
     }
 
     /**
-     * Gets the resource collection API of ValidationTestRuns. It manages ValidationTestRun.
+     * Gets the resource collection API of ValidationTestRuns.
      * 
      * @return Resource collection API of ValidationTestRuns.
      */

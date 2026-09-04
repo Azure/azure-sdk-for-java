@@ -25,7 +25,7 @@ public final class ValidationTestsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"zxctobgb\",\"audience\":\"Public\",\"provisioningState\":\"Canceled\",\"categoryIds\":[\"ostmgrcf\",\"unrmfqjhhkxb\",\"vjymjhxxjyngud\",\"vkr\"],\"overallState\":\"Published\",\"owners\":[\"qzvszjf\",\"uvjfdxxive\",\"vtcqaqtdo\"],\"inputs\":[{\"name\":\"bxvwv\",\"definition\":{\"description\":\"slqb\",\"type\":\"String\",\"required\":false,\"defaultValue\":\"lyt\",\"allowedValues\":[\"mpew\",\"wfbkrvrns\",\"shqjohxcrsbf\"]}},{\"name\":\"vasrruvwb\",\"definition\":{\"description\":\"qfsubcgjbirx\",\"type\":\"Array\",\"required\":true,\"defaultValue\":\"fbjfdtwssotftpvj\",\"allowedValues\":[\"xilzznf\",\"q\",\"vwpm\",\"taruoujmkcj\"]}},{\"name\":\"wqytjrybnwjewgdr\",\"definition\":{\"description\":\"rvnaenqpeh\",\"type\":\"Array\",\"required\":false,\"defaultValue\":\"mifthnzdnd\",\"allowedValues\":[\"nayqi\",\"ynduha\",\"hqlkthumaqo\"]}},{\"name\":\"bgycduiertgccym\",\"definition\":{\"description\":\"olpsslqlf\",\"type\":\"String\",\"required\":true,\"defaultValue\":\"glzpswiydm\",\"allowedValues\":[\"hzdxssadbzm\"]}}],\"testStoreUri\":\"dfznudaodv\",\"currentVersion\":\"bncblylpstdbhhx\",\"latestPublishedVersion\":\"zdzucerscdntnevf\",\"lastPublishedAt\":\"2021-05-10T05:26:40Z\"},\"id\":\"ygtdsslswt\",\"name\":\"weriofzpyqsem\",\"type\":\"abnetshh\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"xolzdahzx\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"categoryIds\":[\"dmoizpostmg\",\"cfbu\"],\"overallState\":\"Published\",\"owners\":[\"jhhkxbp\",\"jy\",\"jhxxjyn\"],\"inputs\":[{\"name\":\"ivkrtsw\",\"definition\":{\"description\":\"qzvszjf\",\"type\":\"Number\",\"required\":true,\"defaultValue\":\"xxivetv\",\"allowedValues\":[\"aqtdoqmcbx\",\"wvxysl\",\"bhsfxob\",\"ytkblmpew\"]}},{\"name\":\"wfbkrvrns\",\"definition\":{\"description\":\"hqjohxcrsbfova\",\"type\":\"Integer\",\"required\":false,\"defaultValue\":\"bhsqfsubcgjbirxb\",\"allowedValues\":[\"srfbjfdtwss\",\"t\"]}}],\"testStoreUri\":\"pvjzbe\",\"currentVersion\":\"l\",\"latestPublishedVersion\":\"nfqqnvwp\",\"lastPublishedAt\":\"2021-08-13T08:01:40Z\"},\"id\":\"ruoujmk\",\"name\":\"jhwqytjrybnw\",\"type\":\"ewgdrjervn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,28 +34,29 @@ public final class ValidationTestsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ValidationTest> response = manager.validationTests().list("z", com.azure.core.util.Context.NONE);
+        PagedIterable<ValidationTest> response
+            = manager.validationTests().list("fqrhhuaopppc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zxctobgb", response.iterator().next().properties().description());
-        Assertions.assertEquals(CatalogAudience.PUBLIC, response.iterator().next().properties().audience());
-        Assertions.assertEquals("ostmgrcf", response.iterator().next().properties().categoryIds().get(0));
+        Assertions.assertEquals("xolzdahzx", response.iterator().next().properties().description());
+        Assertions.assertEquals(CatalogAudience.INTERNAL, response.iterator().next().properties().audience());
+        Assertions.assertEquals("dmoizpostmg", response.iterator().next().properties().categoryIds().get(0));
         Assertions.assertEquals(ValidationTestOverallState.PUBLISHED,
             response.iterator().next().properties().overallState());
-        Assertions.assertEquals("qzvszjf", response.iterator().next().properties().owners().get(0));
-        Assertions.assertEquals("bxvwv", response.iterator().next().properties().inputs().get(0).name());
-        Assertions.assertEquals("slqb",
+        Assertions.assertEquals("jhhkxbp", response.iterator().next().properties().owners().get(0));
+        Assertions.assertEquals("ivkrtsw", response.iterator().next().properties().inputs().get(0).name());
+        Assertions.assertEquals("qzvszjf",
             response.iterator().next().properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.STRING,
+        Assertions.assertEquals(ValidationTestInputDataType.NUMBER,
             response.iterator().next().properties().inputs().get(0).definition().type());
-        Assertions.assertFalse(response.iterator().next().properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("lyt",
+        Assertions.assertTrue(response.iterator().next().properties().inputs().get(0).definition().required());
+        Assertions.assertEquals("xxivetv",
             response.iterator().next().properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("mpew",
+        Assertions.assertEquals("aqtdoqmcbx",
             response.iterator().next().properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("dfznudaodv", response.iterator().next().properties().testStoreUri());
-        Assertions.assertEquals("bncblylpstdbhhx", response.iterator().next().properties().currentVersion());
-        Assertions.assertEquals("zdzucerscdntnevf", response.iterator().next().properties().latestPublishedVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T05:26:40Z"),
+        Assertions.assertEquals("pvjzbe", response.iterator().next().properties().testStoreUri());
+        Assertions.assertEquals("l", response.iterator().next().properties().currentVersion());
+        Assertions.assertEquals("nfqqnvwp", response.iterator().next().properties().latestPublishedVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T08:01:40Z"),
             response.iterator().next().properties().lastPublishedAt());
     }
 }

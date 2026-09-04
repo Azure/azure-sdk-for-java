@@ -49,20 +49,6 @@ public final class ValidationTestRunsImpl implements ValidationTestRuns {
         }
     }
 
-    public void delete(String resourceGroupName, String cloudValidationName, String validationExecutionPlanName,
-        String executionPlanRunName, String validationTestRunName) {
-        this.serviceClient()
-            .delete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName);
-    }
-
-    public void delete(String resourceGroupName, String cloudValidationName, String validationExecutionPlanName,
-        String executionPlanRunName, String validationTestRunName, Context context) {
-        this.serviceClient()
-            .delete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, context);
-    }
-
     public PagedIterable<ValidationTestRun> listByExecutionPlanRun(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName) {
         PagedIterable<ValidationTestRunInner> inner = this.serviceClient()
@@ -79,137 +65,11 @@ public final class ValidationTestRunsImpl implements ValidationTestRuns {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ValidationTestRunImpl(inner1, this.manager()));
     }
 
-    public ValidationTestRun getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudValidationName = ResourceManagerUtils.getValueFromIdByName(id, "cloudValidations");
-        if (cloudValidationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudValidations'.", id)));
-        }
-        String validationExecutionPlanName = ResourceManagerUtils.getValueFromIdByName(id, "validationExecutionPlans");
-        if (validationExecutionPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'validationExecutionPlans'.", id)));
-        }
-        String executionPlanRunName = ResourceManagerUtils.getValueFromIdByName(id, "executionPlanRuns");
-        if (executionPlanRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionPlanRuns'.", id)));
-        }
-        String validationTestRunName = ResourceManagerUtils.getValueFromIdByName(id, "validationTestRuns");
-        if (validationTestRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'validationTestRuns'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-                validationTestRunName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<ValidationTestRun> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudValidationName = ResourceManagerUtils.getValueFromIdByName(id, "cloudValidations");
-        if (cloudValidationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudValidations'.", id)));
-        }
-        String validationExecutionPlanName = ResourceManagerUtils.getValueFromIdByName(id, "validationExecutionPlans");
-        if (validationExecutionPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'validationExecutionPlans'.", id)));
-        }
-        String executionPlanRunName = ResourceManagerUtils.getValueFromIdByName(id, "executionPlanRuns");
-        if (executionPlanRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionPlanRuns'.", id)));
-        }
-        String validationTestRunName = ResourceManagerUtils.getValueFromIdByName(id, "validationTestRuns");
-        if (validationTestRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'validationTestRuns'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName,
-            executionPlanRunName, validationTestRunName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudValidationName = ResourceManagerUtils.getValueFromIdByName(id, "cloudValidations");
-        if (cloudValidationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudValidations'.", id)));
-        }
-        String validationExecutionPlanName = ResourceManagerUtils.getValueFromIdByName(id, "validationExecutionPlans");
-        if (validationExecutionPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'validationExecutionPlans'.", id)));
-        }
-        String executionPlanRunName = ResourceManagerUtils.getValueFromIdByName(id, "executionPlanRuns");
-        if (executionPlanRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionPlanRuns'.", id)));
-        }
-        String validationTestRunName = ResourceManagerUtils.getValueFromIdByName(id, "validationTestRuns");
-        if (validationTestRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'validationTestRuns'.", id)));
-        }
-        this.delete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-            validationTestRunName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudValidationName = ResourceManagerUtils.getValueFromIdByName(id, "cloudValidations");
-        if (cloudValidationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudValidations'.", id)));
-        }
-        String validationExecutionPlanName = ResourceManagerUtils.getValueFromIdByName(id, "validationExecutionPlans");
-        if (validationExecutionPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'validationExecutionPlans'.", id)));
-        }
-        String executionPlanRunName = ResourceManagerUtils.getValueFromIdByName(id, "executionPlanRuns");
-        if (executionPlanRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'executionPlanRuns'.", id)));
-        }
-        String validationTestRunName = ResourceManagerUtils.getValueFromIdByName(id, "validationTestRuns");
-        if (validationTestRunName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'validationTestRuns'.", id)));
-        }
-        this.delete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
-            validationTestRunName, context);
-    }
-
     private ValidationTestRunsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager() {
         return this.serviceManager;
-    }
-
-    public ValidationTestRunImpl define(String name) {
-        return new ValidationTestRunImpl(name, this.manager());
     }
 }

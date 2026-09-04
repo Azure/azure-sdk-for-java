@@ -277,7 +277,7 @@ public final class PlatformValidationManagementClientImpl implements PlatformVal
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01-preview";
+        this.apiVersion = "2026-08-01-preview";
         this.operationStatus = new OperationStatusClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.cloudValidations = new CloudValidationsClientImpl(this);

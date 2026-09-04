@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class CloudValidationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_Update_MaximumSet.

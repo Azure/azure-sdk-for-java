@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.platformvalidation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Validation Test Run properties.
  */
-@Fluent
+@Immutable
 public final class ValidationTestRunProperties implements JsonSerializable<ValidationTestRunProperties> {
     /*
      * The overall status of the test run.
@@ -57,12 +57,6 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     private String testId;
 
     /*
-     * The names of the validation test categories (ValidationTestCategory resource names, not ARM resource IDs)
-     * associated with this test run.
-     */
-    private List<String> testCategoryIds;
-
-    /*
      * Validation test run inputs json, conforming to the input contract declared by `ValidationTestInput` on the
      * corresponding validation test.
      * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
@@ -82,7 +76,7 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     /**
      * Creates an instance of ValidationTestRunProperties class.
      */
-    public ValidationTestRunProperties() {
+    private ValidationTestRunProperties() {
     }
 
     /**
@@ -150,40 +144,6 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     }
 
     /**
-     * Set the testId property: The name of the validation test (ValidationTest resource name, not an ARM resource ID)
-     * in the validation test catalog.
-     * 
-     * @param testId the testId value to set.
-     * @return the ValidationTestRunProperties object itself.
-     */
-    public ValidationTestRunProperties withTestId(String testId) {
-        this.testId = testId;
-        return this;
-    }
-
-    /**
-     * Get the testCategoryIds property: The names of the validation test categories (ValidationTestCategory resource
-     * names, not ARM resource IDs) associated with this test run.
-     * 
-     * @return the testCategoryIds value.
-     */
-    public List<String> testCategoryIds() {
-        return this.testCategoryIds;
-    }
-
-    /**
-     * Set the testCategoryIds property: The names of the validation test categories (ValidationTestCategory resource
-     * names, not ARM resource IDs) associated with this test run.
-     * 
-     * @param testCategoryIds the testCategoryIds value to set.
-     * @return the ValidationTestRunProperties object itself.
-     */
-    public ValidationTestRunProperties withTestCategoryIds(List<String> testCategoryIds) {
-        this.testCategoryIds = testCategoryIds;
-        return this;
-    }
-
-    /**
      * Get the inputsJson property: Validation test run inputs json, conforming to the input contract declared by
      * `ValidationTestInput` on the corresponding validation test.
      * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
@@ -192,19 +152,6 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
      */
     public String inputsJson() {
         return this.inputsJson;
-    }
-
-    /**
-     * Set the inputsJson property: Validation test run inputs json, conforming to the input contract declared by
-     * `ValidationTestInput` on the corresponding validation test.
-     * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
-     * 
-     * @param inputsJson the inputsJson value to set.
-     * @return the ValidationTestRunProperties object itself.
-     */
-    public ValidationTestRunProperties withInputsJson(String inputsJson) {
-        this.inputsJson = inputsJson;
-        return this;
     }
 
     /**
@@ -232,8 +179,6 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("testId", this.testId);
-        jsonWriter.writeArrayField("testCategoryIds", this.testCategoryIds,
-            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("inputsJson", this.inputsJson);
         return jsonWriter.writeEndObject();
     }
@@ -272,9 +217,6 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("testId".equals(fieldName)) {
                     deserializedValidationTestRunProperties.testId = reader.getString();
-                } else if ("testCategoryIds".equals(fieldName)) {
-                    List<String> testCategoryIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedValidationTestRunProperties.testCategoryIds = testCategoryIds;
                 } else if ("inputsJson".equals(fieldName)) {
                     deserializedValidationTestRunProperties.inputsJson = reader.getString();
                 } else if ("passDetails".equals(fieldName)) {

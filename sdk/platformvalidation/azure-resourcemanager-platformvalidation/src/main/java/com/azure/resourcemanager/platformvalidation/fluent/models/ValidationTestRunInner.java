@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.platformvalidation.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Validation Test Run represents execution instance(s) of a Validation Test instance under execution plan.
  */
-@Fluent
+@Immutable
 public final class ValidationTestRunInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
@@ -46,7 +46,7 @@ public final class ValidationTestRunInner extends ProxyResource {
     /**
      * Creates an instance of ValidationTestRunInner class.
      */
-    public ValidationTestRunInner() {
+    private ValidationTestRunInner() {
     }
 
     /**
@@ -56,17 +56,6 @@ public final class ValidationTestRunInner extends ProxyResource {
      */
     public ValidationTestRunProperties properties() {
         return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the ValidationTestRunInner object itself.
-     */
-    public ValidationTestRunInner withProperties(ValidationTestRunProperties properties) {
-        this.properties = properties;
-        return this;
     }
 
     /**

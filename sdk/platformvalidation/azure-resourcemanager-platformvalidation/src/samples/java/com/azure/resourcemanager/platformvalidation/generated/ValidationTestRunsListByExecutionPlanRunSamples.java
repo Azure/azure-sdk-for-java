@@ -9,7 +9,7 @@ package com.azure.resourcemanager.platformvalidation.generated;
  */
 public final class ValidationTestRunsListByExecutionPlanRunSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestRuns_ListByExecutionPlanRun_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestRuns_ListByExecutionPlanRun_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestRuns_ListByExecutionPlanRun_MaximumSet.

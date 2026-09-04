@@ -9,7 +9,7 @@ package com.azure.resourcemanager.platformvalidation.generated;
  */
 public final class ValidationExecutionPlansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationExecutionPlans_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationExecutionPlans_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationExecutionPlans_Delete_MaximumSet.

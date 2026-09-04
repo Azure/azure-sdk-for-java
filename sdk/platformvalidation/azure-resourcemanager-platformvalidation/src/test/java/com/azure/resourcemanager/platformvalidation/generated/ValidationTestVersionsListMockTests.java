@@ -25,7 +25,7 @@ public final class ValidationTestVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"edgfbcvkcvq\",\"audience\":\"Internal\",\"provisioningState\":\"Failed\",\"categoryIds\":[\"vdrhvoo\",\"sotbob\",\"dopcjwvnh\"],\"overallState\":\"Draft\",\"owners\":[\"gx\",\"xrslpm\",\"twuoegrpkhjwni\"],\"inputs\":[{\"name\":\"luicpdggkzzlvmbm\",\"definition\":{\"description\":\"xmodf\",\"type\":\"Object\",\"required\":false,\"defaultValue\":\"sbpfvmwyhr\",\"allowedValues\":[\"yftaakcpw\",\"yzvqt\"]}},{\"name\":\"nubexk\",\"definition\":{\"description\":\"ksmond\",\"type\":\"Number\",\"required\":false,\"defaultValue\":\"ypomgkopkwho\",\"allowedValues\":[\"ajqgxy\",\"mocmbqfqvmk\",\"xozap\"]}},{\"name\":\"helxprglya\",\"definition\":{\"description\":\"dckcbc\",\"type\":\"String\",\"required\":true,\"defaultValue\":\"gciqibrh\",\"allowedValues\":[\"sdqrhzoymibmrq\",\"ibahwflus\",\"dtmhrkwofyyvoqa\",\"piexpbtgiw\"]}}],\"contentHash\":\"oenwashr\",\"testStoreUri\":\"tkcnqxwb\"},\"id\":\"kulpiujwaasi\",\"name\":\"qiiobyuqer\",\"type\":\"qlpqwcciuq\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"weriofzpyqsem\",\"audience\":\"Public\",\"provisioningState\":\"Failed\",\"categoryIds\":[\"hhszh\",\"d\",\"lvwiwubmwmbesl\",\"nkww\"],\"overallState\":\"Published\",\"owners\":[\"lcxog\",\"okonzmnsikvmkqz\"],\"inputs\":[{\"name\":\"kdltfzxmhhvhg\",\"definition\":{\"description\":\"eodkwobda\",\"type\":\"Array\",\"required\":false,\"defaultValue\":\"dxbx\",\"allowedValues\":[\"bogqxndlkzgxhu\",\"iplbpodxunkbebxm\",\"byyntwlrbqt\",\"oievseotgqrlltm\"]}},{\"name\":\"wlauwzizxbmpg\",\"definition\":{\"description\":\"efuzmuvpbttd\",\"type\":\"String\",\"required\":false,\"defaultValue\":\"xe\",\"allowedValues\":[\"zbtbhj\",\"glkfg\"]}}],\"contentHash\":\"dneu\",\"testStoreUri\":\"fphsdyhtozfikdow\"},\"id\":\"uuvxz\",\"name\":\"clvit\",\"type\":\"hqzonosggbhcoh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +35,25 @@ public final class ValidationTestVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ValidationTestVersion> response
-            = manager.validationTestVersions().list("sag", "fcnihgwq", com.azure.core.util.Context.NONE);
+            = manager.validationTestVersions().list("tdss", "s", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("edgfbcvkcvq", response.iterator().next().properties().description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, response.iterator().next().properties().audience());
-        Assertions.assertEquals("vdrhvoo", response.iterator().next().properties().categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.DRAFT,
+        Assertions.assertEquals("weriofzpyqsem", response.iterator().next().properties().description());
+        Assertions.assertEquals(CatalogAudience.PUBLIC, response.iterator().next().properties().audience());
+        Assertions.assertEquals("hhszh", response.iterator().next().properties().categoryIds().get(0));
+        Assertions.assertEquals(ValidationTestOverallState.PUBLISHED,
             response.iterator().next().properties().overallState());
-        Assertions.assertEquals("gx", response.iterator().next().properties().owners().get(0));
-        Assertions.assertEquals("luicpdggkzzlvmbm", response.iterator().next().properties().inputs().get(0).name());
-        Assertions.assertEquals("xmodf",
+        Assertions.assertEquals("lcxog", response.iterator().next().properties().owners().get(0));
+        Assertions.assertEquals("kdltfzxmhhvhg", response.iterator().next().properties().inputs().get(0).name());
+        Assertions.assertEquals("eodkwobda",
             response.iterator().next().properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.OBJECT,
+        Assertions.assertEquals(ValidationTestInputDataType.ARRAY,
             response.iterator().next().properties().inputs().get(0).definition().type());
         Assertions.assertFalse(response.iterator().next().properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("sbpfvmwyhr",
+        Assertions.assertEquals("dxbx",
             response.iterator().next().properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("yftaakcpw",
+        Assertions.assertEquals("bogqxndlkzgxhu",
             response.iterator().next().properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("oenwashr", response.iterator().next().properties().contentHash());
-        Assertions.assertEquals("tkcnqxwb", response.iterator().next().properties().testStoreUri());
+        Assertions.assertEquals("dneu", response.iterator().next().properties().contentHash());
+        Assertions.assertEquals("fphsdyhtozfikdow", response.iterator().next().properties().testStoreUri());
     }
 }
