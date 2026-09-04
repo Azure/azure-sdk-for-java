@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.79.1-hotfix (Unreleased)
+### 4.79.1-hotfix (2026-09-04)
 
 #### Bugs Fixed
 * Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
