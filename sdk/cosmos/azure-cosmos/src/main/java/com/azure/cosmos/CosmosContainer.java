@@ -29,7 +29,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.slf4j.Logger;
@@ -1148,7 +1147,6 @@ public class CosmosContainer {
      *
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         this.asyncContainer.enableServerThroughputControlGroup(groupConfig);
     }

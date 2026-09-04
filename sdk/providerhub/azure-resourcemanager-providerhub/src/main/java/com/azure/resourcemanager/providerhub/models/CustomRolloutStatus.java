@@ -33,6 +33,11 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
      */
     private CustomRolloutStatusManifestCheckinStatus manifestCheckinStatus;
 
+    /*
+     * Information about the manifests applied to the completed regions.
+     */
+    private List<AppliedManifestInfo> completedRegionsInfo;
+
     /**
      * Creates an instance of CustomRolloutStatus class.
      */
@@ -101,6 +106,26 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
     }
 
     /**
+     * Get the completedRegionsInfo property: Information about the manifests applied to the completed regions.
+     * 
+     * @return the completedRegionsInfo value.
+     */
+    public List<AppliedManifestInfo> completedRegionsInfo() {
+        return this.completedRegionsInfo;
+    }
+
+    /**
+     * Set the completedRegionsInfo property: Information about the manifests applied to the completed regions.
+     * 
+     * @param completedRegionsInfo the completedRegionsInfo value to set.
+     * @return the CustomRolloutStatus object itself.
+     */
+    public CustomRolloutStatus withCompletedRegionsInfo(List<AppliedManifestInfo> completedRegionsInfo) {
+        this.completedRegionsInfo = completedRegionsInfo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -116,6 +141,9 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
         if (manifestCheckinStatus() != null) {
             manifestCheckinStatus().validate();
         }
+        if (completedRegionsInfo() != null) {
+            completedRegionsInfo().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -129,6 +157,8 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
         jsonWriter.writeMapField("failedOrSkippedRegions", this.failedOrSkippedRegions,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("manifestCheckinStatus", this.manifestCheckinStatus);
+        jsonWriter.writeArrayField("completedRegionsInfo", this.completedRegionsInfo,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +187,10 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
                 } else if ("manifestCheckinStatus".equals(fieldName)) {
                     deserializedCustomRolloutStatus.manifestCheckinStatus
                         = CustomRolloutStatusManifestCheckinStatus.fromJson(reader);
+                } else if ("completedRegionsInfo".equals(fieldName)) {
+                    List<AppliedManifestInfo> completedRegionsInfo
+                        = reader.readArray(reader1 -> AppliedManifestInfo.fromJson(reader1));
+                    deserializedCustomRolloutStatus.completedRegionsInfo = completedRegionsInfo;
                 } else {
                     reader.skipChildren();
                 }
