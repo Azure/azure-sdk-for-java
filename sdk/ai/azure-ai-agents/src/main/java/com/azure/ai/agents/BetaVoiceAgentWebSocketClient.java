@@ -41,6 +41,7 @@ public final class BetaVoiceAgentWebSocketClient {
      * @return a connected session.
      */
     public VoiceAgentWebSocketSessionClient connect(String agentName, VoiceAgentWebSocketConnectionOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
         VoiceAgentWebSocketSessionAsyncClient session
             = asyncClient.connect(agentName, options).block(options.getHandshakeTimeout().plusSeconds(1));
         return new VoiceAgentWebSocketSessionClient(session);

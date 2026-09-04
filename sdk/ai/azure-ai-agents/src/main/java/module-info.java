@@ -1,8 +1,8 @@
 
 module com.azure.ai.agents {
     requires transitive com.azure.core;
-    requires openai.java.core;
-    requires openai.java.client.okhttp;
+    requires transitive openai.java.core;
+    requires transitive openai.java.client.okhttp;
     requires reactor.netty.http;
     requires reactor.netty.core;
     requires io.netty.codec.http;

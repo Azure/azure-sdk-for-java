@@ -18,6 +18,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -66,7 +67,7 @@ public class SessionLogStreamAsyncSample {
                     new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
                     .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
                         updated.getName()))
-                    .then(Mono.defer(() -> Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                    .then(Mono.defer(() -> Mono.<Response>fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                         .input("Say hello in one short sentence.")
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))

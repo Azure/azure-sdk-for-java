@@ -48,9 +48,17 @@ public class AgentsCustomizations extends Customization {
         CompilationUnit moduleInfo = StaticJavaParser.parse(customization.getRawEditor().getFileContent(fileName));
         ModuleDeclaration module = moduleInfo.getModule()
             .orElseThrow(() -> new IllegalStateException("Generated module-info.java has no module"));
-        for (String requiredModule : new String[] { "openai.java.core", "openai.java.client.okhttp",
-            "reactor.netty.http", "reactor.netty.core", "io.netty.codec.http", "io.netty.transport",
-            "io.netty.common", "io.netty.codec" }) {
+        for (String requiredModule : new String[] { "openai.java.core", "openai.java.client.okhttp" }) {
+            String directive = "requires transitive " + requiredModule + ";";
+            if (module.getDirectives().stream().noneMatch(existing -> directive.equals(existing.toString().trim()))) {
+                String nonTransitiveDirective = "requires " + requiredModule + ";";
+                module.getDirectives()
+                    .removeIf(existing -> nonTransitiveDirective.equals(existing.toString().trim()));
+                module.addDirective(directive);
+            }
+        }
+        for (String requiredModule : new String[] { "reactor.netty.http", "reactor.netty.core",
+            "io.netty.codec.http", "io.netty.transport", "io.netty.common", "io.netty.codec" }) {
             String directive = "requires " + requiredModule + ";";
             if (module.getDirectives().stream().noneMatch(existing -> directive.equals(existing.toString().trim()))) {
                 module.addDirective(directive);
