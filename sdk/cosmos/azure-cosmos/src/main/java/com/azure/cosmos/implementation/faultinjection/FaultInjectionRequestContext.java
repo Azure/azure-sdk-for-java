@@ -106,6 +106,14 @@ public class FaultInjectionRequestContext {
         return this.locationEndpointToRoute;
     }
 
+    public void setRegionalRoutingContextToRoute(RegionalRoutingContext regionalRoutingContextToRoute) {
+        this.regionalRoutingContextToRoute = regionalRoutingContextToRoute;
+    }
+
+    public RegionalRoutingContext getRegionalRoutingContextToRoute() {
+        return this.regionalRoutingContextToRoute;
+    }
+
     public List<String> getFaultInjectionRuleEvaluationResults(long transportRequestId) {
         if (this.transportRequestIdRuleEvaluationMap.isEmpty()) {
             return null;
@@ -114,4 +122,3 @@ public class FaultInjectionRequestContext {
         return this.transportRequestIdRuleEvaluationMap.getOrDefault(transportRequestId, null);
     }
 }
-

@@ -104,6 +104,9 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
         inputs:
@@ -173,6 +176,11 @@ jobs:
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
+      - task: PipAuthenticate@1
+        displayName: 'Pip Authenticate to Azure Artifacts'
+        inputs:
+          artifactFeeds: 'public/azure-sdk-for-python'
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -390,16 +398,18 @@ jobs:
                   ServiceName: ${{parameters.ServiceDirectory}}
                   ForRelease: false
 
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - task: UseNode@1
         inputs:
           version: 22.x
         displayName: Use Node.js 22.x
+
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+        parameters:
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
+          registryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
 
       - task: PowerShell@2
         displayName: Verify Code Generation for Pull Request
@@ -408,6 +418,8 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
@@ -416,6 +428,8 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:

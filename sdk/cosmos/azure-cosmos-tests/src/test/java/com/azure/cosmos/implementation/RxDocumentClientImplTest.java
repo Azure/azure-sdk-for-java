@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
@@ -34,6 +35,11 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -45,6 +51,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -314,6 +322,91 @@ public class RxDocumentClientImplTest {
 
             // de-register client
             rxDocumentClient.close();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void diagnosticsClientConfigContainsAllClientCfgKeysIncludingPartitionLevelCircuitBreaker() throws Exception {
+        Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(1);
+        Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(null);
+        Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getHttp2ConnectionConfig()).thenReturn(new Http2ConnectionConfig());
+        Mockito.when(this.connectionPolicyMock.getConnectionMode()).thenReturn(ConnectionMode.DIRECT);
+
+        MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
+        httpClientMock
+            .when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+            .thenReturn(dummyHttpClient());
+
+        RxDocumentClientImpl rxDocumentClient = null;
+
+        try {
+            rxDocumentClient = new RxDocumentClientImpl(
+                this.serviceEndpointMock,
+                this.masterKeyOrResourceTokenMock,
+                this.permissionFeedMock,
+                this.connectionPolicyMock,
+                this.consistencyLevelMock,
+                null,
+                this.configsMock,
+                this.cosmosAuthorizationTokenResolverMock,
+                this.azureKeyCredentialMock,
+                false,
+                false,
+                false,
+                this.metadataCachesSnapshotMock,
+                this.apiTypeMock,
+                this.cosmosClientTelemetryConfigMock,
+                this.clientCorrelationIdMock,
+                this.endToEndOperationLatencyPolicyConfig,
+                this.sessionRetryOptionsMock,
+                this.containerProactiveInitConfigMock,
+                this.defaultItemSerializer,
+                false
+            );
+
+            Method initPpcb = RxDocumentClientImpl.class.getDeclaredMethod("initializePerPartitionCircuitBreaker");
+            initPpcb.setAccessible(true);
+            initPpcb.invoke(rxDocumentClient);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            StringWriter jsonWriter = new StringWriter();
+            JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
+            SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
+            DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE
+                .serialize(rxDocumentClient.getConfig(), jsonGenerator, serializerProvider);
+            jsonGenerator.flush();
+            ObjectNode clientCfgs = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
+
+            String[] expectedKeys = new String[] {
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg",
+                "partitionLevelCircuitBreakerCfg"
+            };
+
+            for (String expectedKey : expectedKeys) {
+                assertThat(clientCfgs.has(expectedKey))
+                    .withFailMessage("Expected clientCfgs key '%s' to be present. Serialized clientCfgs: %s",
+                        expectedKey, clientCfgs)
+                    .isTrue();
+            }
+        } finally {
+            if (rxDocumentClient != null) {
+                rxDocumentClient.close();
+            }
+            httpClientMock.close();
         }
     }
 

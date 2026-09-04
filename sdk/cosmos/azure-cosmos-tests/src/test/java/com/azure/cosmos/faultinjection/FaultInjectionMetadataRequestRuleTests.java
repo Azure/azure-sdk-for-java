@@ -35,6 +35,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -361,7 +362,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             container.createItem(TestItem.createNewItem()).block();
         }
 
-        List<FeedRange> feedRanges = container.getFeedRanges().block();
+        List<FeedRange> feedRanges = getFeedRangesWithRetry(
+            container,
+            "get feed ranges for metadata fault injection setup");
         assertThat(feedRanges.size()).isGreaterThan(1);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
