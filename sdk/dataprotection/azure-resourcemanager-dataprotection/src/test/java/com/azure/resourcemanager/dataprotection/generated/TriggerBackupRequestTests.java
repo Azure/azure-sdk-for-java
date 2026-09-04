@@ -14,19 +14,19 @@ public final class TriggerBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerBackupRequest model = BinaryData.fromString(
-            "{\"backupRuleOptions\":{\"ruleName\":\"gnzscxaqwo\",\"triggerOption\":{\"retentionTagOverride\":\"hcbonqvpkvlr\"}}}")
+            "{\"backupRuleOptions\":{\"ruleName\":\"lrxnjeaseiphe\",\"triggerOption\":{\"retentionTagOverride\":\"lokeyy\"}}}")
             .toObject(TriggerBackupRequest.class);
-        Assertions.assertEquals("gnzscxaqwo", model.backupRuleOptions().ruleName());
-        Assertions.assertEquals("hcbonqvpkvlr", model.backupRuleOptions().triggerOption().retentionTagOverride());
+        Assertions.assertEquals("lrxnjeaseiphe", model.backupRuleOptions().ruleName());
+        Assertions.assertEquals("lokeyy", model.backupRuleOptions().triggerOption().retentionTagOverride());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerBackupRequest model
-            = new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("gnzscxaqwo")
-                .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("hcbonqvpkvlr")));
+        TriggerBackupRequest model = new TriggerBackupRequest()
+            .withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("lrxnjeaseiphe")
+                .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("lokeyy")));
         model = BinaryData.fromObject(model).toObject(TriggerBackupRequest.class);
-        Assertions.assertEquals("gnzscxaqwo", model.backupRuleOptions().ruleName());
-        Assertions.assertEquals("hcbonqvpkvlr", model.backupRuleOptions().triggerOption().retentionTagOverride());
+        Assertions.assertEquals("lrxnjeaseiphe", model.backupRuleOptions().ruleName());
+        Assertions.assertEquals("lokeyy", model.backupRuleOptions().triggerOption().retentionTagOverride());
     }
 }

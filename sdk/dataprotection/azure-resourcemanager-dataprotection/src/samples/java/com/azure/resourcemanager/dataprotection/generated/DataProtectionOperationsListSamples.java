@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class DataProtectionOperationsListSamples {
     /*
-     * x-ms-original-file: 2026-03-01/Operations/List.json
+     * x-ms-original-file: 2026-04-01-preview/Operations/List.json
      */
     /**
      * Sample code: Returns the list of supported REST operations.

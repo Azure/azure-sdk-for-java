@@ -19,7 +19,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateForModifyBackupRe
  */
 public final class BackupInstancesValidateForModifyBackupSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ValidateForModifyBackup.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/ValidateForModifyBackup.json
      */
     /**
      * Sample code: Validate For Modify Backup.
@@ -54,7 +54,7 @@ public final class BackupInstancesValidateForModifyBackupSamples {
                             .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
                     .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
                         .withUserAssignedIdentityArmUrl(
-                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
+                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                     .withObjectType("BackupInstance")),
                 com.azure.core.util.Context.NONE);
     }

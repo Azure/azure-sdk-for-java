@@ -12,6 +12,7 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
 import com.azure.resourcemanager.dataprotection.models.BackupInstanceResource;
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
+import com.azure.resourcemanager.dataprotection.models.ResumeProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
@@ -195,8 +196,9 @@ public final class BackupInstanceResourceImpl
         serviceManager.backupInstances().resumeProtection(resourceGroupName, vaultName, backupInstanceName);
     }
 
-    public void resumeProtection(Context context) {
-        serviceManager.backupInstances().resumeProtection(resourceGroupName, vaultName, backupInstanceName, context);
+    public void resumeProtection(ResumeProtectionRequest parameters, Context context) {
+        serviceManager.backupInstances()
+            .resumeProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void stopProtection() {
