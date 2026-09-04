@@ -2257,8 +2257,8 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentFromCodeWithResponseAsync(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createAgentFromCodeWithResponseInternalAsync(String agentName,
+        String codeZipSha256, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil
@@ -2405,7 +2405,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentFromCodeWithResponse(String agentName, String codeZipSha256,
+    public Response<BinaryData> createAgentFromCodeWithResponseInternal(String agentName, String codeZipSha256,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -2913,8 +2913,8 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentFromCodeWithResponseAsync(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateAgentFromCodeWithResponseInternalAsync(String agentName,
+        String codeZipSha256, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil
@@ -3062,7 +3062,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentFromCodeWithResponse(String agentName, String codeZipSha256,
+    public Response<BinaryData> updateAgentFromCodeWithResponseInternal(String agentName, String codeZipSha256,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -5954,7 +5954,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentVersionFromCodeWithResponseAsync(String agentName,
+    public Mono<Response<BinaryData>> createAgentVersionFromCodeWithResponseInternalAsync(String agentName,
         String codeZipSha256, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -6040,7 +6040,7 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentVersionFromCodeWithResponse(String agentName, String codeZipSha256,
+    public Response<BinaryData> createAgentVersionFromCodeWithResponseInternal(String agentName, String codeZipSha256,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";

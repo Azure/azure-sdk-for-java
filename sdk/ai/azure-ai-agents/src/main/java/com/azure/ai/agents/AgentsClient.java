@@ -89,7 +89,7 @@ public final class AgentsClient {
      *
      * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -226,7 +226,7 @@ public final class AgentsClient {
      *
      * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -265,9 +265,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -414,7 +414,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -553,7 +553,7 @@ public final class AgentsClient {
      *
      * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -645,9 +645,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -783,7 +783,7 @@ public final class AgentsClient {
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -820,9 +820,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -997,7 +997,7 @@ public final class AgentsClient {
      *
      * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1013,9 +1013,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1152,7 +1152,7 @@ public final class AgentsClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1167,9 +1167,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1307,7 +1307,7 @@ public final class AgentsClient {
      *
      * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1322,9 +1322,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1573,7 +1573,7 @@ public final class AgentsClient {
      *
      * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1745,7 +1745,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1952,7 +1952,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2059,7 +2059,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2100,7 +2100,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2372,306 +2372,11 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new code-based agent
-     *
-     * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
-     * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
-     * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     state: String(enabled/disabled) (Required)
-     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                     invocations_moderation (Optional): {
-     *                         input_content_type: String(json/text) (Optional)
-     *                         output_content_type: String(json/text) (Optional)
-     *                         response_mode: String(non_streaming/streaming/both) (Required)
-     *                         input_paths (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         output_paths (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         stream_selectors (Optional): [
-     *                              (Optional){
-     *                                 event_type: String (Required)
-     *                                 text_field: String (Optional)
-     *                             }
-     *                         ]
-     *                     }
-     *                 }
-     *             }
-     *             draft: Boolean (Optional)
-     *             status: String(creating/active/failed/deleting/deleted) (Optional)
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *                 status: String(active/disabled) (Optional)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocol_configuration (Optional): {
-     *             activity (Optional): {
-     *                 enable_m365_public_endpoint: Boolean (Optional)
-     *                 access_boundaries (Optional): [
-     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
-     *                 ]
-     *             }
-     *             responses (Optional): {
-     *             }
-     *             a2a (Optional): {
-     *             }
-     *             mcp (Optional): {
-     *             }
-     *             invocations (Optional): {
-     *             }
-     *             invocations_ws (Optional): {
-     *             }
-     *         }
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
-     *             }
-     *         ]
-     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
-     *     }
-     *     digital_worker_type: String(m365) (Optional)
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Max 63 chars, must start and end with alphanumeric,
-     * hyphens allowed in the middle.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content multipart request content.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createAgentFromCodeWithResponse(String agentName, String codeZipSha256, BinaryData content,
-        RequestOptions requestOptions) {
-        // Operation 'createAgentFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable and
-        // hence not generated.
-        return this.serviceClient.createAgentFromCodeWithResponse(agentName, codeZipSha256, content, requestOptions);
-    }
-
-    /**
-     * Update a code-based agent
-     *
-     * Updates a code-based agent by uploading new code and creating a new version.
-     * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     state: String(enabled/disabled) (Required)
-     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                     invocations_moderation (Optional): {
-     *                         input_content_type: String(json/text) (Optional)
-     *                         output_content_type: String(json/text) (Optional)
-     *                         response_mode: String(non_streaming/streaming/both) (Required)
-     *                         input_paths (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         output_paths (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         stream_selectors (Optional): [
-     *                              (Optional){
-     *                                 event_type: String (Required)
-     *                                 text_field: String (Optional)
-     *                             }
-     *                         ]
-     *                     }
-     *                 }
-     *             }
-     *             draft: Boolean (Optional)
-     *             status: String(creating/active/failed/deleting/deleted) (Optional)
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *                 status: String(active/disabled) (Optional)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocol_configuration (Optional): {
-     *             activity (Optional): {
-     *                 enable_m365_public_endpoint: Boolean (Optional)
-     *                 access_boundaries (Optional): [
-     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
-     *                 ]
-     *             }
-     *             responses (Optional): {
-     *             }
-     *             a2a (Optional): {
-     *             }
-     *             mcp (Optional): {
-     *             }
-     *             invocations (Optional): {
-     *             }
-     *             invocations_ws (Optional): {
-     *             }
-     *         }
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
-     *             }
-     *         ]
-     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
-     *     }
-     *     digital_worker_type: String(m365) (Optional)
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content multipart request content.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> updateAgentFromCodeWithResponse(String agentName, String codeZipSha256, BinaryData content,
-        RequestOptions requestOptions) {
-        // Operation 'updateAgentFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable and
-        // hence not generated.
-        return this.serviceClient.updateAgentFromCodeWithResponse(agentName, codeZipSha256, content, requestOptions);
-    }
-
-    /**
      * Update an agent endpoint
      *
      * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2729,9 +2434,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2866,92 +2571,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Create an agent version from code
-     *
-     * Creates a new agent version from code. Uploads the code zip and creates a new version
-     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
-     * `x-ms-code-zip-sha256` header for integrity and dedup.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     created_at: long (Required)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
-     *             invocations_moderation (Optional): {
-     *                 input_content_type: String(json/text) (Optional)
-     *                 output_content_type: String(json/text) (Optional)
-     *                 response_mode: String(non_streaming/streaming/both) (Required)
-     *                 input_paths (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 output_paths (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 stream_selectors (Optional): [
-     *                      (Optional){
-     *                         event_type: String (Required)
-     *                         text_field: String (Optional)
-     *                     }
-     *                 ]
-     *             }
-     *         }
-     *     }
-     *     draft: Boolean (Optional)
-     *     status: String(creating/active/failed/deleting/deleted) (Optional)
-     *     instance_identity (Optional): {
-     *         principal_id: String (Required)
-     *         client_id: String (Required)
-     *         status: String(active/disabled) (Optional)
-     *     }
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): {
-     *         type: String(ManagedAgentIdentityBlueprint) (Required)
-     *     }
-     *     agent_guid: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content multipart request content.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createAgentVersionFromCodeWithResponse(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
-        // Operation 'createAgentVersionFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable
-        // and hence not generated.
-        return this.serviceClient.createAgentVersionFromCodeWithResponse(agentName, codeZipSha256, content,
-            requestOptions);
-    }
-
-    /**
      * Download agent code
      *
      * Downloads the code zip for a code-based hosted agent.
@@ -2972,13 +2591,13 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -3079,7 +2698,7 @@ public final class AgentsClient {
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided user identity for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3090,9 +2709,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3130,7 +2749,7 @@ public final class AgentsClient {
      *
      * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3230,7 +2849,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3291,7 +2910,7 @@ public final class AgentsClient {
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3327,15 +2946,15 @@ public final class AgentsClient {
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3419,7 +3038,7 @@ public final class AgentsClient {
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -3542,7 +3161,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3627,9 +3246,9 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentDetails createAgentFromCode(String agentName, String codeZipSha256, CreateAgentFromCodeContent content) {
-        // Generated convenience method for createAgentFromCodeWithResponse
+        // Generated convenience method for createAgentFromCodeWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return createAgentFromCodeWithResponse(agentName, codeZipSha256,
+        return createAgentFromCodeWithResponseInternal(agentName, codeZipSha256,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
                 .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
                     content.getCode().getFilename())
@@ -3666,9 +3285,9 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentDetails updateAgentFromCode(String agentName, String codeZipSha256,
         CreateAgentVersionFromCodeContent content) {
-        // Generated convenience method for updateAgentFromCodeWithResponse
+        // Generated convenience method for updateAgentFromCodeWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return updateAgentFromCodeWithResponse(agentName, codeZipSha256,
+        return updateAgentFromCodeWithResponseInternal(agentName, codeZipSha256,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
                 .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
                     content.getCode().getFilename())
@@ -3739,9 +3358,9 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersionFromCode(String agentName, String codeZipSha256,
         CreateAgentVersionFromCodeContent content) {
-        // Generated convenience method for createAgentVersionFromCodeWithResponse
+        // Generated convenience method for createAgentVersionFromCodeWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return createAgentVersionFromCodeWithResponse(agentName, codeZipSha256,
+        return createAgentVersionFromCodeWithResponseInternal(agentName, codeZipSha256,
             new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
                 .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
                     content.getCode().getFilename())
@@ -4469,15 +4088,15 @@ public final class AgentsClient {
      * Generates and creates an agent from kind-specific high-level inputs.
      * The generated definition remains fully editable through the standard agent versioning operations.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4613,7 +4232,7 @@ public final class AgentsClient {
      * Publishes a Foundry agent to Microsoft 365 / Microsoft Teams and returns the published title and
      * Teams app ids.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4645,9 +4264,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4680,7 +4299,7 @@ public final class AgentsClient {
      * Generates the Microsoft Teams app package (zip) for a Foundry agent from the supplied publish
      * request, without publishing it. Returns the app package as `application/zip`.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4712,9 +4331,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -4752,7 +4371,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4977,7 +4596,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4987,9 +4606,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5002,7 +4621,7 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -5056,7 +4675,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5090,7 +4709,7 @@ public final class AgentsClient {
      *
      * Retrieves a telephony binding owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5103,7 +4722,7 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -5135,7 +4754,7 @@ public final class AgentsClient {
      *
      * Updates a telephony binding owned by the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5146,9 +4765,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5161,7 +4780,7 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -5246,7 +4865,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5290,7 +4909,7 @@ public final class AgentsClient {
      *
      * Retrieves a durable inbound call record owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5376,7 +4995,7 @@ public final class AgentsClient {
      *
      * Transfers an active inbound call to a configured target for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5384,9 +5003,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5472,7 +5091,7 @@ public final class AgentsClient {
      *
      * Ends an active inbound call owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5556,7 +5175,7 @@ public final class AgentsClient {
      *
      * Returns all transfer targets configured for the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5572,7 +5191,7 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -5603,7 +5222,7 @@ public final class AgentsClient {
      *
      * Replaces all transfer targets configured for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5619,9 +5238,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5637,7 +5256,7 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -6069,5 +5688,388 @@ public final class AgentsClient {
             = BinaryData.fromObject(replaceTelephonyTransferTargetsRequestObj);
         return replaceTelephonyTransferTargetsWithResponse(agentName, ifMatch, replaceTelephonyTransferTargetsRequest,
             requestOptions).getValue().toObject(TelephonyTransferTargets.class);
+    }
+
+    /**
+     * Create a new code-based agent
+     *
+     * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
+     * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
+     * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The unique name that identifies the agent. Max 63 chars, must start and end with alphanumeric,
+     * hyphens allowed in the middle.
+     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
+     * verification.
+     * @param content The content multipart request content.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createAgentFromCodeWithResponseInternal(String agentName, String codeZipSha256,
+        BinaryData content, RequestOptions requestOptions) {
+        // Operation 'createAgentFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable and
+        // hence not generated.
+        return this.serviceClient.createAgentFromCodeWithResponseInternal(agentName, codeZipSha256, content,
+            requestOptions);
+    }
+
+    /**
+     * Update a code-based agent
+     *
+     * Updates a code-based agent by uploading new code and creating a new version.
+     * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
+     * verification.
+     * @param content The content multipart request content.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> updateAgentFromCodeWithResponseInternal(String agentName, String codeZipSha256,
+        BinaryData content, RequestOptions requestOptions) {
+        // Operation 'updateAgentFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable and
+        // hence not generated.
+        return this.serviceClient.updateAgentFromCodeWithResponseInternal(agentName, codeZipSha256, content,
+            requestOptions);
+    }
+
+    /**
+     * Create an agent version from code
+     *
+     * Creates a new agent version from code. Uploads the code zip and creates a new version
+     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
+     * `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     created_at: long (Required)
+     *     definition (Required): {
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *         rai_config (Optional): {
+     *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     }
+     *     draft: Boolean (Optional)
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
+     *     instance_identity (Optional): {
+     *         principal_id: String (Required)
+     *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
+     *     }
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): {
+     *         type: String(ManagedAgentIdentityBlueprint) (Required)
+     *     }
+     *     agent_guid: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
+     * verification.
+     * @param content The content multipart request content.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createAgentVersionFromCodeWithResponseInternal(String agentName, String codeZipSha256,
+        BinaryData content, RequestOptions requestOptions) {
+        // Operation 'createAgentVersionFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.createAgentVersionFromCodeWithResponseInternal(agentName, codeZipSha256, content,
+            requestOptions);
     }
 }

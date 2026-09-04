@@ -24,7 +24,12 @@ class AgentsServicePollUtilsTest {
             Arguments.of("Completed", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("COMPLETED", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("superseded", LongRunningOperationStatus.USER_CANCELLED),
-            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED));
+            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("queued", LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of("in_progress", LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of("succeeded", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
+            Arguments.of("failed", LongRunningOperationStatus.FAILED),
+            Arguments.of("cancelled", LongRunningOperationStatus.USER_CANCELLED));
     }
 
     @ParameterizedTest

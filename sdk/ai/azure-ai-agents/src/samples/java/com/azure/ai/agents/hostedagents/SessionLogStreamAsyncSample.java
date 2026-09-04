@@ -72,6 +72,7 @@ public class SessionLogStreamAsyncSample {
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
                         .build()))))
+                    .cast(Response.class)
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
                     .then(agentsAsyncClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
                         resources.getSession().getAgentSessionId(), new RequestOptions()))

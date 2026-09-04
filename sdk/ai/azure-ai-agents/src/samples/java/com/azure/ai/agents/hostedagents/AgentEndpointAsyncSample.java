@@ -71,6 +71,7 @@ public class AgentEndpointAsyncSample {
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
                         .build()))))
+                    .cast(Response.class)
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
                     .then();
             });
