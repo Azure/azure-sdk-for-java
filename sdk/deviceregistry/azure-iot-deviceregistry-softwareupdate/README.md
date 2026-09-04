@@ -96,9 +96,7 @@ wait for completion and inspect operation status.
 
 ```java readme-sample-listUpdates
 softwareUpdateClient.listUpdates().forEach(update -> {
-    System.out.printf("%s/%s/%s%n",
-        update.getUpdateId().getProvider(),
-        update.getUpdateId().getName(),
+    System.out.printf("%s/%s/%s%n", update.getUpdateId().getProvider(), update.getUpdateId().getName(),
         update.getUpdateId().getVersion());
 });
 ```
