@@ -10,12 +10,8 @@ import java.time.Duration;
 /**
  * Represents a server-sent event with a typed data payload.
  *
- * <p>An emitted server-sent event contains data and may expose an identifier, event name, comment, and retry interval.
- * The identifier and retry interval represent the effective stream state when the event was dispatched, including
- * values inherited from earlier metadata-only blocks.</p>
- *
- * <p>The identifier and retry interval are protocol metadata only. Azure Core does not reconnect or replay the
- * request. Metadata-only updates received after the latest emitted event aren't exposed as an additional event.</p>
+ * <p>A server-sent event may contain an identifier, event name, data, comment, and retry interval. This type stores
+ * these values without parsing or normalizing them.</p>
  *
  * @param <T> The type of the event data.
  * @see <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream">
@@ -32,11 +28,11 @@ public final class ServerSentEvent<T> {
     /**
      * Creates a server-sent event.
      *
-     * @param id The effective last-event identifier when this event was dispatched.
+     * @param id The event identifier.
      * @param event The event name.
      * @param data The event data.
      * @param comment The event comment.
-     * @param retryAfter The effective retry interval when this event was dispatched.
+     * @param retryAfter The retry interval.
      */
     public ServerSentEvent(String id, String event, T data, String comment, Duration retryAfter) {
         this.id = id;
@@ -47,10 +43,9 @@ public final class ServerSentEvent<T> {
     }
 
     /**
-     * Gets the effective last-event identifier when this event was dispatched.
+     * Gets the event identifier.
      *
-     * @return The effective last-event identifier, {@code null} if no valid {@code id} field was received before this
-     * event, or an empty string if an empty {@code id} field reset the identifier.
+     * @return The event identifier, or {@code null} if none was provided.
      */
     public String getId() {
         return id;
@@ -59,7 +54,7 @@ public final class ServerSentEvent<T> {
     /**
      * Gets the event name.
      *
-     * @return The event name, or {@code message} if no non-empty {@code event} field was specified.
+     * @return The event name, or {@code null} if none was provided.
      */
     public String getEvent() {
         return event;
@@ -68,7 +63,7 @@ public final class ServerSentEvent<T> {
     /**
      * Gets the event data.
      *
-     * @return The event data, or {@code null} if event data wasn't specified.
+     * @return The event data, or {@code null} if none was provided.
      */
     public T getData() {
         return data;
@@ -77,17 +72,16 @@ public final class ServerSentEvent<T> {
     /**
      * Gets the event comment.
      *
-     * @return The event comment, or {@code null} if it wasn't specified.
+     * @return The event comment, or {@code null} if none was provided.
      */
     public String getComment() {
         return comment;
     }
 
     /**
-     * Gets the effective retry interval when this event was dispatched.
+     * Gets the retry interval.
      *
-     * @return The latest valid retry interval received before this event, or {@code null} if no valid
-     * {@code retry} field was received.
+     * @return The retry interval, or {@code null} if none was provided.
      */
     public Duration getRetryAfter() {
         return retryAfter;
