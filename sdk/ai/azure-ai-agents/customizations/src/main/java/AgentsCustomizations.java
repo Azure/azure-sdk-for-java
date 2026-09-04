@@ -111,7 +111,21 @@ public class AgentsCustomizations extends Customization {
             }
 
             addVoiceAgentBuildMethods(builder);
+            customizeAgentEndpointConversationBuildMethods(builder);
         });
+    }
+
+    private static void customizeAgentEndpointConversationBuildMethods(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration asyncMethod
+            = getSingleMethod(builder, "buildBetaAgentEndpointConversationsAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsAsyncClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentEndpointConversationsClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
     }
 
     private static void addVoiceAgentBuildMethods(ClassOrInterfaceDeclaration builder) {
