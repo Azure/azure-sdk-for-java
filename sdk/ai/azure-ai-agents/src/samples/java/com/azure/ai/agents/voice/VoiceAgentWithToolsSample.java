@@ -29,6 +29,8 @@ import com.azure.ai.agents.models.VoiceModelType;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Demonstrates a voice-agent definition with audio processing, transcription, and tools.
@@ -68,9 +70,18 @@ public class VoiceAgentWithToolsSample {
         VoiceAgentAudioOutputConfig output = new VoiceAgentAudioOutputConfig()
             .setVoice("en-US-AvaNeural")
             .setVoiceType(VoiceType.AZURE_STANDARD);
+        Map<String, Object> cityProperty = new LinkedHashMap<>();
+        cityProperty.put("type", "string");
+        cityProperty.put("description", "City name, for example Seattle.");
+        Map<String, Object> properties = new LinkedHashMap<>();
+        properties.put("city", cityProperty);
+        Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("type", "object");
+        parameters.put("properties", properties);
+        parameters.put("required", Collections.singletonList("city"));
         VoiceAgentFunctionTool weather = new VoiceAgentFunctionTool("get_weather")
             .setDescription("Get the current weather for a city.")
-            .setParameters(BinaryData.fromString("{}"));
+            .setParameters(BinaryData.fromObject(parameters));
         VoiceAgentSystemTool endCall = new VoiceAgentSystemTool(VoiceAgentSystemToolName.END_CONVERSATION);
         VoiceAgentDefinition definition = new VoiceAgentDefinition()
                 .setModelType(modelType)
@@ -81,9 +92,11 @@ public class VoiceAgentWithToolsSample {
                 .setTools(Arrays.<VoiceAgentTool>asList(weather, endCall))
                 .setStore(true);
 
+        boolean agentCreated = false;
         try {
             AgentVersionDetails created = client.createAgentVersion(agentName,
                 new CreateAgentVersionInput(definition));
+            agentCreated = true;
             AgentVersionDetails fetched = client.getAgentVersionDetails(agentName, created.getVersion());
             VoiceAgentDefinition fetchedDefinition = (VoiceAgentDefinition) fetched.getDefinition();
             System.out.println("Configured voice tools: " + fetchedDefinition.getTools().size());
@@ -91,7 +104,9 @@ public class VoiceAgentWithToolsSample {
                 System.out.printf("  %s%n", tool.getType());
             }
         } finally {
-            client.deleteAgent(agentName);
+            if (agentCreated) {
+                client.deleteAgent(agentName);
+            }
         }
     }
 }

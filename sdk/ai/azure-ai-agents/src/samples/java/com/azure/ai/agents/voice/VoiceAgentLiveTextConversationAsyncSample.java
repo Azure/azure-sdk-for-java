@@ -28,11 +28,17 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Demonstrates an asynchronous, typed, multi-turn realtime conversation with a persisted voice agent.
  *
+ * <p>To end the call, submit a blank line or enter {@code exit} or {@code quit}. The sample then closes the WebSocket,
+ * reads the persisted conversation, and deletes the agent unless {@code FOUNDRY_KEEP_VOICE_AGENT} is set to
+ * {@code true}.</p>
+ *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - The Azure AI Project endpoint.</li>
  *   <li>{@code FOUNDRY_VOICE_AGENT_NAME} - Optional. The voice agent name. Defaults to
  *   {@code sample-live-text-conversation-agent-async-java}.</li>
+ *   <li>{@code FOUNDRY_KEEP_VOICE_AGENT} - Optional. Set to {@code true} to keep the agent after the sample.
+ *   Defaults to {@code false}.</li>
  * </ul>
  */
 public class VoiceAgentLiveTextConversationAsyncSample {
@@ -43,6 +49,8 @@ public class VoiceAgentLiveTextConversationAsyncSample {
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = configuration.get("FOUNDRY_VOICE_AGENT_NAME",
             "sample-live-text-conversation-agent-async-java");
+        boolean keepAgent
+            = Boolean.parseBoolean(configuration.get("FOUNDRY_KEEP_VOICE_AGENT", "false"));
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -76,9 +84,8 @@ public class VoiceAgentLiveTextConversationAsyncSample {
             .then(Mono.defer(() -> conversationId.get() == null
                 ? Mono.fromRunnable(() -> System.out.println("No persisted conversation ID was returned."))
                 : VoiceAgentRealtimeSampleUtils.readConversation(conversations, agentName, conversationId.get())))
-            .then(agents.deleteAgent(agentName))
-            .doOnSuccess(ignored -> System.out.println("Deleted voice agent: " + agentName))
-            .onErrorResume(error -> agents.deleteAgent(agentName)
+            .then(Mono.defer(() -> cleanupAgent(agents, agentName, keepAgent)))
+            .onErrorResume(error -> Mono.defer(() -> cleanupAgent(agents, agentName, keepAgent))
                 .onErrorResume(cleanupError -> Mono.empty())
                 .then(Mono.error(error)))
             .doFinally(signal -> {
@@ -86,6 +93,14 @@ public class VoiceAgentLiveTextConversationAsyncSample {
                 player.close();
             })
             .block();
+    }
+
+    private static Mono<Void> cleanupAgent(AgentsAsyncClient agents, String agentName, boolean keepAgent) {
+        if (keepAgent) {
+            return Mono.fromRunnable(() -> System.out.println("Kept voice agent: " + agentName));
+        }
+        return agents.deleteAgent(agentName)
+            .doOnSuccess(ignored -> System.out.println("Deleted voice agent: " + agentName));
     }
 
     private static Mono<Void> runConversation(VoiceAgentWebSocketSessionAsyncClient session, Scanner scanner,

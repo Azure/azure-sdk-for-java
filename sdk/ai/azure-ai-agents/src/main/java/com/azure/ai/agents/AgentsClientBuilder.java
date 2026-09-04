@@ -760,7 +760,9 @@ public final class AgentsClientBuilder
      */
     @Generated
     public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
-        return new BetaAgentEndpointConversationsAsyncClient(buildInnerClient().getBetaAgentEndpointConversations());
+        return new BetaAgentEndpointConversationsAsyncClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
     }
 
     /**
@@ -770,6 +772,8 @@ public final class AgentsClientBuilder
      */
     @Generated
     public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
-        return new BetaAgentEndpointConversationsClient(buildInnerClient().getBetaAgentEndpointConversations());
+        return new BetaAgentEndpointConversationsClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
     }
 }
