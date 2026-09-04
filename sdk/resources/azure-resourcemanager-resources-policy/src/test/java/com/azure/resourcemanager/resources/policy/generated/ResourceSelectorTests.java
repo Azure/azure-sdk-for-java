@@ -15,27 +15,24 @@ public final class ResourceSelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSelector model = BinaryData.fromString(
-            "{\"name\":\"aos\",\"selectors\":[{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"pclhocohslk\"],\"notIn\":[\"eggzfb\",\"hfmvfaxkffe\"],\"progress\":517393984}]}")
+            "{\"name\":\"x\",\"selectors\":[{\"kind\":\"groupPrincipalId\",\"in\":[\"toc\",\"j\"],\"notIn\":[\"pmouexhdz\",\"i\",\"qeojnxqbzvddntw\",\"deicbtwnpzao\"]}]}")
             .toObject(ResourceSelector.class);
-        Assertions.assertEquals("aos", model.name());
-        Assertions.assertEquals(SelectorKind.POLICY_DEFINITION_REFERENCE_ID, model.selectors().get(0).kind());
-        Assertions.assertEquals("pclhocohslk", model.selectors().get(0).in().get(0));
-        Assertions.assertEquals("eggzfb", model.selectors().get(0).notIn().get(0));
-        Assertions.assertEquals(517393984, model.selectors().get(0).progress());
+        Assertions.assertEquals("x", model.name());
+        Assertions.assertEquals(SelectorKind.GROUP_PRINCIPAL_ID, model.selectors().get(0).kind());
+        Assertions.assertEquals("toc", model.selectors().get(0).in().get(0));
+        Assertions.assertEquals("pmouexhdz", model.selectors().get(0).notIn().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSelector model = new ResourceSelector().withName("aos")
-            .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                .withIn(Arrays.asList("pclhocohslk"))
-                .withNotIn(Arrays.asList("eggzfb", "hfmvfaxkffe"))
-                .withProgress(517393984)));
+        ResourceSelector model = new ResourceSelector().withName("x")
+            .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.GROUP_PRINCIPAL_ID)
+                .withIn(Arrays.asList("toc", "j"))
+                .withNotIn(Arrays.asList("pmouexhdz", "i", "qeojnxqbzvddntw", "deicbtwnpzao"))));
         model = BinaryData.fromObject(model).toObject(ResourceSelector.class);
-        Assertions.assertEquals("aos", model.name());
-        Assertions.assertEquals(SelectorKind.POLICY_DEFINITION_REFERENCE_ID, model.selectors().get(0).kind());
-        Assertions.assertEquals("pclhocohslk", model.selectors().get(0).in().get(0));
-        Assertions.assertEquals("eggzfb", model.selectors().get(0).notIn().get(0));
-        Assertions.assertEquals(517393984, model.selectors().get(0).progress());
+        Assertions.assertEquals("x", model.name());
+        Assertions.assertEquals(SelectorKind.GROUP_PRINCIPAL_ID, model.selectors().get(0).kind());
+        Assertions.assertEquals("toc", model.selectors().get(0).in().get(0));
+        Assertions.assertEquals("pmouexhdz", model.selectors().get(0).notIn().get(0));
     }
 }

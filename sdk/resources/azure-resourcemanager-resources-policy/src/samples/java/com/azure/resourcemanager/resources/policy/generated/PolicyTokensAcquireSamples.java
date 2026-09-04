@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.policy.models.PolicyTokenRequest;
  */
 public final class PolicyTokensAcquireSamples {
     /*
-     * x-ms-original-file: 2026-07-01/acquirePolicyToken.json
+     * x-ms-original-file: 2026-01-01-preview/acquirePolicyToken.json
      */
     /**
      * Sample code: Acquire a policy token.

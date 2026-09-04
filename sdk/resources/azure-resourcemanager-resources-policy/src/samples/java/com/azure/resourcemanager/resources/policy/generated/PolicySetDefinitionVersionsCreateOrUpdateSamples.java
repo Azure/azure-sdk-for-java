@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Create or update a policy set definition version.

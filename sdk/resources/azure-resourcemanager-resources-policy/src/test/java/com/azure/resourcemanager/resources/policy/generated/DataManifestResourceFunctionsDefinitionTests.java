@@ -12,12 +12,12 @@ public final class DataManifestResourceFunctionsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataManifestResourceFunctionsDefinition model = BinaryData.fromString(
-            "{\"standard\":[\"efkdlf\",\"akggkfpag\",\"owpulpq\",\"lyls\"],\"custom\":[{\"name\":\"jnsjervtiagxsd\",\"fullyQualifiedResourceType\":\"uem\",\"defaultProperties\":[\"zkfzbeyv\",\"nqicvinvkjjxdxrb\",\"ukzclewyhmlwpaz\"],\"allowCustomProperties\":false}]}")
+            "{\"standard\":[\"byrcdlbhshfwp\"],\"custom\":[{\"name\":\"twitykhev\",\"fullyQualifiedResourceType\":\"cedcpnmdy\",\"defaultProperties\":[\"wzxltjc\",\"nhltiugcxn\",\"vvwxqi\"],\"allowCustomProperties\":true},{\"name\":\"nyowxwlmdjrkvfg\",\"fullyQualifiedResourceType\":\"fvpdbo\",\"defaultProperties\":[\"izsjqlhkrr\",\"bdeibqipqk\",\"hvxndzwmkrefajpj\",\"rwkq\"],\"allowCustomProperties\":false}]}")
             .toObject(DataManifestResourceFunctionsDefinition.class);
-        Assertions.assertEquals("efkdlf", model.standard().get(0));
-        Assertions.assertEquals("jnsjervtiagxsd", model.custom().get(0).name());
-        Assertions.assertEquals("uem", model.custom().get(0).fullyQualifiedResourceType());
-        Assertions.assertEquals("zkfzbeyv", model.custom().get(0).defaultProperties().get(0));
-        Assertions.assertFalse(model.custom().get(0).allowCustomProperties());
+        Assertions.assertEquals("byrcdlbhshfwp", model.standard().get(0));
+        Assertions.assertEquals("twitykhev", model.custom().get(0).name());
+        Assertions.assertEquals("cedcpnmdy", model.custom().get(0).fullyQualifiedResourceType());
+        Assertions.assertEquals("wzxltjc", model.custom().get(0).defaultProperties().get(0));
+        Assertions.assertTrue(model.custom().get(0).allowCustomProperties());
     }
 }

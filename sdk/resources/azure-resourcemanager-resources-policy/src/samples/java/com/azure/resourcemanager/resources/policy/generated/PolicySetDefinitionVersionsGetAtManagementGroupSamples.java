@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicySetDefinitionVersionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicySetDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy set definition version at management group level.

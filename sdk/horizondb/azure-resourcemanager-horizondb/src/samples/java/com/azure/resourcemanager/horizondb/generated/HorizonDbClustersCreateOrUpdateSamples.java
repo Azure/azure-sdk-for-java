@@ -15,14 +15,14 @@ import java.util.Map;
  */
 public final class HorizonDbClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb cluster.
+     * Sample code: Create or update a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void createOrUpdateAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void createOrUpdateAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters()
             .define("examplecluster")
             .withRegion("westus2")
@@ -32,11 +32,9 @@ public final class HorizonDbClustersCreateOrUpdateSamples {
                 .withAdministratorLoginPassword("fakeTokenPlaceholder")
                 .withVersion("17")
                 .withCreateMode(CreateModeCluster.CREATE)
-                .withSourceClusterResourceId(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/examplesourceresourcegroup/providers/Microsoft.HorizonDb/clusters/examplesourcecluster")
                 .withReplicaCount(2)
                 .withVCores(4)
-                .withZonePlacementPolicy(ZonePlacementPolicy.STRICT))
+                .withZonePlacementPolicy(ZonePlacementPolicy.BEST_EFFORT))
             .create();
     }
 

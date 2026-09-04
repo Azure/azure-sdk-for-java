@@ -12,13 +12,13 @@ public final class ParameterValuesValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterValuesValue model
-            = BinaryData.fromString("{\"value\":\"\\\"dataskghsauuimj\\\"\"}").toObject(ParameterValuesValue.class);
+            = BinaryData.fromString("{\"value\":\"\\\"datay\\\"\"}").toObject(ParameterValuesValue.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterValuesValue model = new ParameterValuesValue()
-            .withValue(BinaryData.fromBytes("\"dataskghsauuimj\"".getBytes(StandardCharsets.UTF_8)));
+        ParameterValuesValue model
+            = new ParameterValuesValue().withValue(BinaryData.fromBytes("\"datay\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(ParameterValuesValue.class);
     }
 }

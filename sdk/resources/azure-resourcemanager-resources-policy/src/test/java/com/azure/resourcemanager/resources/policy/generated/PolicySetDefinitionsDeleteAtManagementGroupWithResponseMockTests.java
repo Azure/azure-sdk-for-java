@@ -28,7 +28,7 @@ public final class PolicySetDefinitionsDeleteAtManagementGroupWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policySetDefinitions()
-            .deleteAtManagementGroupWithResponse("rbccqcdht", "ojvlirknucosaw", com.azure.core.util.Context.NONE);
+            .deleteAtManagementGroupWithResponse("qzlxn", "zubfo", com.azure.core.util.Context.NONE);
 
     }
 }

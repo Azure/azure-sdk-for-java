@@ -29,17 +29,25 @@ import com.azure.resourcemanager.resources.policy.implementation.DataPolicyManif
 import com.azure.resourcemanager.resources.policy.implementation.PolicyAssignmentsImpl;
 import com.azure.resourcemanager.resources.policy.implementation.PolicyDefinitionVersionsImpl;
 import com.azure.resourcemanager.resources.policy.implementation.PolicyDefinitionsImpl;
+import com.azure.resourcemanager.resources.policy.implementation.PolicyEnrollmentsImpl;
+import com.azure.resourcemanager.resources.policy.implementation.PolicyExemptionsImpl;
 import com.azure.resourcemanager.resources.policy.implementation.PolicyManagementClientBuilder;
 import com.azure.resourcemanager.resources.policy.implementation.PolicySetDefinitionVersionsImpl;
 import com.azure.resourcemanager.resources.policy.implementation.PolicySetDefinitionsImpl;
 import com.azure.resourcemanager.resources.policy.implementation.PolicyTokensImpl;
+import com.azure.resourcemanager.resources.policy.implementation.VariableValuesImpl;
+import com.azure.resourcemanager.resources.policy.implementation.VariablesImpl;
 import com.azure.resourcemanager.resources.policy.models.DataPolicyManifests;
 import com.azure.resourcemanager.resources.policy.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.policy.models.PolicyDefinitionVersions;
 import com.azure.resourcemanager.resources.policy.models.PolicyDefinitions;
+import com.azure.resourcemanager.resources.policy.models.PolicyEnrollments;
+import com.azure.resourcemanager.resources.policy.models.PolicyExemptions;
 import com.azure.resourcemanager.resources.policy.models.PolicySetDefinitionVersions;
 import com.azure.resourcemanager.resources.policy.models.PolicySetDefinitions;
 import com.azure.resourcemanager.resources.policy.models.PolicyTokens;
+import com.azure.resourcemanager.resources.policy.models.VariableValues;
+import com.azure.resourcemanager.resources.policy.models.Variables;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -61,9 +69,17 @@ public final class PolicyManager {
 
     private PolicyDefinitionVersions policyDefinitionVersions;
 
+    private PolicyEnrollments policyEnrollments;
+
+    private PolicyExemptions policyExemptions;
+
     private PolicySetDefinitions policySetDefinitions;
 
     private PolicySetDefinitionVersions policySetDefinitionVersions;
+
+    private Variables variables;
+
+    private VariableValues variableValues;
 
     private PolicyTokens policyTokens;
 
@@ -332,6 +348,30 @@ public final class PolicyManager {
     }
 
     /**
+     * Gets the resource collection API of PolicyEnrollments. It manages PolicyEnrollment.
+     * 
+     * @return Resource collection API of PolicyEnrollments.
+     */
+    public PolicyEnrollments policyEnrollments() {
+        if (this.policyEnrollments == null) {
+            this.policyEnrollments = new PolicyEnrollmentsImpl(clientObject.getPolicyEnrollments(), this);
+        }
+        return policyEnrollments;
+    }
+
+    /**
+     * Gets the resource collection API of PolicyExemptions. It manages PolicyExemption.
+     * 
+     * @return Resource collection API of PolicyExemptions.
+     */
+    public PolicyExemptions policyExemptions() {
+        if (this.policyExemptions == null) {
+            this.policyExemptions = new PolicyExemptionsImpl(clientObject.getPolicyExemptions(), this);
+        }
+        return policyExemptions;
+    }
+
+    /**
      * Gets the resource collection API of PolicySetDefinitions. It manages PolicySetDefinition.
      * 
      * @return Resource collection API of PolicySetDefinitions.
@@ -354,6 +394,30 @@ public final class PolicyManager {
                 = new PolicySetDefinitionVersionsImpl(clientObject.getPolicySetDefinitionVersions(), this);
         }
         return policySetDefinitionVersions;
+    }
+
+    /**
+     * Gets the resource collection API of Variables. It manages Variable.
+     * 
+     * @return Resource collection API of Variables.
+     */
+    public Variables variables() {
+        if (this.variables == null) {
+            this.variables = new VariablesImpl(clientObject.getVariables(), this);
+        }
+        return variables;
+    }
+
+    /**
+     * Gets the resource collection API of VariableValues. It manages VariableValue.
+     * 
+     * @return Resource collection API of VariableValues.
+     */
+    public VariableValues variableValues() {
+        if (this.variableValues == null) {
+            this.variableValues = new VariableValuesImpl(clientObject.getVariableValues(), this);
+        }
+        return variableValues;
     }
 
     /**

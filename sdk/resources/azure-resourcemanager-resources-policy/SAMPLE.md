@@ -46,6 +46,28 @@
 - [ListBuiltIn](#policydefinitions_listbuiltin)
 - [ListByManagementGroup](#policydefinitions_listbymanagementgroup)
 
+## PolicyEnrollments
+
+- [CreateOrUpdate](#policyenrollments_createorupdate)
+- [Delete](#policyenrollments_delete)
+- [Get](#policyenrollments_get)
+- [List](#policyenrollments_list)
+- [ListByResourceGroup](#policyenrollments_listbyresourcegroup)
+- [ListForManagementGroup](#policyenrollments_listformanagementgroup)
+- [ListForResource](#policyenrollments_listforresource)
+- [Update](#policyenrollments_update)
+
+## PolicyExemptions
+
+- [CreateOrUpdate](#policyexemptions_createorupdate)
+- [Delete](#policyexemptions_delete)
+- [Get](#policyexemptions_get)
+- [List](#policyexemptions_list)
+- [ListByResourceGroup](#policyexemptions_listbyresourcegroup)
+- [ListForManagementGroup](#policyexemptions_listformanagementgroup)
+- [ListForResource](#policyexemptions_listforresource)
+- [Update](#policyexemptions_update)
+
 ## PolicySetDefinitionVersions
 
 - [CreateOrUpdate](#policysetdefinitionversions_createorupdate)
@@ -79,7 +101,28 @@
 
 - [Acquire](#policytokens_acquire)
 - [AcquireAtManagementGroup](#policytokens_acquireatmanagementgroup)
-- [AcquireAtResourceGroup](#policytokens_acquireatresourcegroup)
+
+## VariableValues
+
+- [CreateOrUpdate](#variablevalues_createorupdate)
+- [CreateOrUpdateAtManagementGroup](#variablevalues_createorupdateatmanagementgroup)
+- [Delete](#variablevalues_delete)
+- [DeleteAtManagementGroup](#variablevalues_deleteatmanagementgroup)
+- [Get](#variablevalues_get)
+- [GetAtManagementGroup](#variablevalues_getatmanagementgroup)
+- [List](#variablevalues_list)
+- [ListForManagementGroup](#variablevalues_listformanagementgroup)
+
+## Variables
+
+- [CreateOrUpdate](#variables_createorupdate)
+- [CreateOrUpdateAtManagementGroup](#variables_createorupdateatmanagementgroup)
+- [Delete](#variables_delete)
+- [DeleteAtManagementGroup](#variables_deleteatmanagementgroup)
+- [Get](#variables_get)
+- [GetAtManagementGroup](#variables_getatmanagementgroup)
+- [List](#variables_list)
+- [ListForManagementGroup](#variables_listformanagementgroup)
 ### DataPolicyManifests_GetByPolicyMode
 
 ```java
@@ -88,7 +131,7 @@
  */
 public final class DataPolicyManifestsGetByPolicyModeSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getDataPolicyManifest.json
+     * x-ms-original-file: 2026-01-01-preview/getDataPolicyManifest.json
      */
     /**
      * Sample code: Retrieve a data policy manifest by policy mode.
@@ -111,7 +154,7 @@ public final class DataPolicyManifestsGetByPolicyModeSamples {
  */
 public final class DataPolicyManifestsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listDataPolicyManifests.json
+     * x-ms-original-file: 2026-01-01-preview/listDataPolicyManifests.json
      */
     /**
      * Sample code: List data policy manifests.
@@ -123,7 +166,7 @@ public final class DataPolicyManifestsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/listDataPolicyManifestsNamespaceFilter.json
+     * x-ms-original-file: 2026-01-01-preview/listDataPolicyManifestsNamespaceFilter.json
      */
     /**
      * Sample code: List data policy manifests with namespace filter.
@@ -163,7 +206,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy assignment with resource selectors.
@@ -187,7 +230,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithEnrollEnforcement.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithEnrollEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment to enforce policy effect only on enrolled resources during
@@ -217,7 +260,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignment.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignment.json
      */
     /**
      * Sample code: Create or update a policy assignment.
@@ -246,7 +289,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a system assigned identity.
@@ -276,31 +319,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithResourcePercentageSelector.json
-     */
-    /**
-     * Sample code: Create or update a policy assignment with a resource percentage selector.
-     * 
-     * @param manager Entry point to PolicyManager.
-     */
-    public static void createOrUpdateAPolicyAssignmentWithAResourcePercentageSelector(
-        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
-        manager.policyAssignments()
-            .define("CostManagement")
-            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2")
-            .withDisplayName("Limit resources by rollout percentage")
-            .withPolicyDefinitionId(
-                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement")
-            .withDescription("Limit resources by rollout percentage")
-            .withMetadata(BinaryData.fromBytes("{assignedBy=Special Someone}".getBytes(StandardCharsets.UTF_8)))
-            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRollout")
-                .withSelectors(Arrays
-                    .asList(new Selector().withKind(SelectorKind.fromString("resourcePercentage")).withProgress(80)))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithSelfserveExemptionSettings.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithSelfserveExemptionSettings.json
      */
     /**
      * Sample code: Create or update a policy assignment with self-serve exemption settings.
@@ -326,7 +345,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentNonComplianceMessages.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentNonComplianceMessages.json
      */
     /**
      * Sample code: Create or update a policy assignment with multiple non-compliance messages.
@@ -351,7 +370,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a user assigned identity.
@@ -384,7 +403,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Create or update a policy assignment with overrides.
@@ -415,7 +434,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithoutEnforcement.json
+     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithoutEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment without enforcing policy effect during resource creation or
@@ -465,7 +484,7 @@ public final class PolicyAssignmentsCreateSamples {
  */
 public final class PolicyAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyAssignment.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyAssignment.json
      */
     /**
      * Sample code: Delete a policy assignment.
@@ -488,7 +507,7 @@ public final class PolicyAssignmentsDeleteSamples {
  */
 public final class PolicyAssignmentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Retrieve a policy assignment with overrides.
@@ -503,22 +522,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithResourcePercentageSelector.json
-     */
-    /**
-     * Sample code: Retrieve a policy assignment with a resource percentage selector.
-     * 
-     * @param manager Entry point to PolicyManager.
-     */
-    public static void retrieveAPolicyAssignmentWithAResourcePercentageSelector(
-        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
-        manager.policyAssignments()
-            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Retrieve a policy assignment with resource selectors.
@@ -533,7 +537,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a user assigned identity.
@@ -548,7 +552,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignment.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignment.json
      */
     /**
      * Sample code: Retrieve a policy assignment.
@@ -562,7 +566,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a system assigned identity.
@@ -586,7 +590,7 @@ public final class PolicyAssignmentsGetSamples {
  */
 public final class PolicyAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignments.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyAssignments.json
      */
     /**
      * Sample code: List policy assignments that apply to a subscription.
@@ -610,7 +614,7 @@ public final class PolicyAssignmentsListSamples {
  */
 public final class PolicyAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignmentsForResourceGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyAssignmentsForResourceGroup.json
      */
     /**
      * Sample code: List policy assignments that apply to a resource group.
@@ -634,7 +638,7 @@ public final class PolicyAssignmentsListByResourceGroupSamples {
  */
 public final class PolicyAssignmentsListForManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignmentsForManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyAssignmentsForManagementGroup.json
      */
     /**
      * Sample code: List policy assignments that apply to a management group.
@@ -658,7 +662,7 @@ public final class PolicyAssignmentsListForManagementGroupSamples {
  */
 public final class PolicyAssignmentsListForResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignmentsForResource.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyAssignmentsForResource.json
      */
     /**
      * Sample code: List policy assignments that apply to a resource group.
@@ -696,7 +700,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Update a policy assignment with resource selectors.
@@ -717,28 +721,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithResourcePercentageSelector.json
-     */
-    /**
-     * Sample code: Update a policy assignment with a resource percentage selector.
-     * 
-     * @param manager Entry point to PolicyManager.
-     */
-    public static void updateAPolicyAssignmentWithAResourcePercentageSelector(
-        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
-        PolicyAssignment resource = manager.policyAssignments()
-            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRollout")
-                .withSelectors(Arrays
-                    .asList(new Selector().withKind(SelectorKind.fromString("resourcePercentage")).withProgress(80)))))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a user assigned identity.
@@ -760,7 +743,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Update a policy assignment with overrides.
@@ -782,7 +765,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithSelfserveExemptionSettings.json
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithSelfserveExemptionSettings.json
      */
     /**
      * Sample code: Update a policy assignment with self-serve exemption settings.
@@ -802,7 +785,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a system assigned identity.
@@ -848,7 +831,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionVersion.json
      */
     /**
      * Sample code: Create or update a policy definition version.
@@ -912,7 +895,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionVersionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy definition version at management group level.
@@ -966,7 +949,7 @@ public final class PolicyDefinitionVersionsCreateOrUpdateAtManagementGroupSample
  */
 public final class PolicyDefinitionVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyDefinitionVersion.json
      */
     /**
      * Sample code: Delete a policy definition version.
@@ -989,7 +972,7 @@ public final class PolicyDefinitionVersionsDeleteSamples {
  */
 public final class PolicyDefinitionVersionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy definition version at management group level.
@@ -1013,7 +996,7 @@ public final class PolicyDefinitionVersionsDeleteAtManagementGroupSamples {
  */
 public final class PolicyDefinitionVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyDefinitionVersion.json
      */
     /**
      * Sample code: Retrieve a policy definition version.
@@ -1035,7 +1018,7 @@ public final class PolicyDefinitionVersionsGetSamples {
  */
 public final class PolicyDefinitionVersionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy definition version at management group level.
@@ -1059,7 +1042,7 @@ public final class PolicyDefinitionVersionsGetAtManagementGroupSamples {
  */
 public final class PolicyDefinitionVersionsGetBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getBuiltinPolicyDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/getBuiltinPolicyDefinitionVersion.json
      */
     /**
      * Sample code: Retrieve a built-in policy definition version.
@@ -1082,7 +1065,7 @@ public final class PolicyDefinitionVersionsGetBuiltInSamples {
  */
 public final class PolicyDefinitionVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyDefinitionVersions.json
      */
     /**
      * Sample code: List policy definition versions by subscription.
@@ -1104,7 +1087,7 @@ public final class PolicyDefinitionVersionsListSamples {
  */
 public final class PolicyDefinitionVersionsListAllSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllPolicyDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listAllPolicyDefinitionVersions.json
      */
     /**
      * Sample code: List all policy definition versions at subscription.
@@ -1126,7 +1109,7 @@ public final class PolicyDefinitionVersionsListAllSamples {
  */
 public final class PolicyDefinitionVersionsListAllAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllPolicyDefinitionVersionsByManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listAllPolicyDefinitionVersionsByManagementGroup.json
      */
     /**
      * Sample code: List all policy definition versions at management group.
@@ -1149,7 +1132,7 @@ public final class PolicyDefinitionVersionsListAllAtManagementGroupSamples {
  */
 public final class PolicyDefinitionVersionsListAllBuiltinsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllBuiltInPolicyDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listAllBuiltInPolicyDefinitionVersions.json
      */
     /**
      * Sample code: List all built-in policy definition versions.
@@ -1171,7 +1154,7 @@ public final class PolicyDefinitionVersionsListAllBuiltinsSamples {
  */
 public final class PolicyDefinitionVersionsListBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listBuiltInPolicyDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listBuiltInPolicyDefinitionVersions.json
      */
     /**
      * Sample code: List built-in policy definition versions.
@@ -1194,7 +1177,7 @@ public final class PolicyDefinitionVersionsListBuiltInSamples {
  */
 public final class PolicyDefinitionVersionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyDefinitionVersionsByManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyDefinitionVersionsByManagementGroup.json
      */
     /**
      * Sample code: List policy definition versions by management group.
@@ -1228,7 +1211,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionAdvancedParams.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionAdvancedParams.json
      */
     /**
      * Sample code: Create or update a policy definition with advanced parameters.
@@ -1262,7 +1245,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
      */
     /**
      * Sample code: Create or update a policy definition with external evaluation enforcement settings.
@@ -1291,7 +1274,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinition.json
      */
     /**
      * Sample code: Create or update a policy definition.
@@ -1353,7 +1336,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy definition at management group level.
@@ -1406,7 +1389,7 @@ public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
  */
 public final class PolicyDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyDefinition.json
      */
     /**
      * Sample code: Delete a policy definition.
@@ -1427,7 +1410,7 @@ public final class PolicyDefinitionsDeleteSamples {
  */
 public final class PolicyDefinitionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy definition at management group level.
@@ -1451,7 +1434,7 @@ public final class PolicyDefinitionsDeleteAtManagementGroupSamples {
  */
 public final class PolicyDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyDefinition.json
      */
     /**
      * Sample code: Retrieve a policy definition.
@@ -1472,7 +1455,7 @@ public final class PolicyDefinitionsGetSamples {
  */
 public final class PolicyDefinitionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy definition at management group level.
@@ -1495,7 +1478,7 @@ public final class PolicyDefinitionsGetAtManagementGroupSamples {
  */
 public final class PolicyDefinitionsGetBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getBuiltinPolicyDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/getBuiltinPolicyDefinition.json
      */
     /**
      * Sample code: Retrieve a built-in policy definition.
@@ -1518,7 +1501,7 @@ public final class PolicyDefinitionsGetBuiltInSamples {
  */
 public final class PolicyDefinitionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyDefinitions.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyDefinitions.json
      */
     /**
      * Sample code: List policy definitions by subscription.
@@ -1540,7 +1523,7 @@ public final class PolicyDefinitionsListSamples {
  */
 public final class PolicyDefinitionsListBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listBuiltInPolicyDefinitions.json
+     * x-ms-original-file: 2026-01-01-preview/listBuiltInPolicyDefinitions.json
      */
     /**
      * Sample code: List built-in policy definitions.
@@ -1561,7 +1544,7 @@ public final class PolicyDefinitionsListBuiltInSamples {
  */
 public final class PolicyDefinitionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyDefinitionsByManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyDefinitionsByManagementGroup.json
      */
     /**
      * Sample code: List policy definitions by management group.
@@ -1572,6 +1555,569 @@ public final class PolicyDefinitionsListByManagementGroupSamples {
         listPolicyDefinitionsByManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
         manager.policyDefinitions()
             .listByManagementGroup("MyManagementGroup", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_CreateOrUpdate
+
+```java
+import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
+import com.azure.resourcemanager.resources.policy.models.Selector;
+import com.azure.resourcemanager.resources.policy.models.SelectorKind;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+/**
+ * Samples for PolicyEnrollments CreateOrUpdate.
+ */
+public final class PolicyEnrollmentsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyEnrollmentWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Create or update a policy enrollment with resource selectors.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAPolicyEnrollmentWithResourceSelectors(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .define("DemoExpensiveVM")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster")
+            .withPolicyAssignmentId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("Limit_Skus"))
+            .withDisplayName("Enroll demo cluster")
+            .withDescription("Enroll demo cluster from limit sku")
+            .withMetadata(
+                BinaryData.fromBytes("{reason=Enrollment for a expensive VM demo}".getBytes(StandardCharsets.UTF_8)))
+            .withAssignmentScopeValidation(AssignmentScopeValidation.DEFAULT)
+            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRegions")
+                .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                    .withIn(Arrays.asList("eastus2euap", "centraluseuap"))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyEnrollment.json
+     */
+    /**
+     * Sample code: Create or update a policy enrollment.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        createOrUpdateAPolicyEnrollment(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .define("DemoExpensiveVM")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster")
+            .withPolicyAssignmentId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("Limit_Skus"))
+            .withDisplayName("Enroll demo cluster")
+            .withDescription("Enroll demo cluster from limit sku")
+            .withMetadata(
+                BinaryData.fromBytes("{reason=Enrollment for a expensive VM demo}".getBytes(StandardCharsets.UTF_8)))
+            .create();
+    }
+}
+```
+
+### PolicyEnrollments_Delete
+
+```java
+/**
+ * Samples for PolicyEnrollments Delete.
+ */
+public final class PolicyEnrollmentsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyEnrollment.json
+     */
+    /**
+     * Sample code: Delete a policy enrollment.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void deleteAPolicyEnrollment(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .deleteByResourceGroupWithResponse(
+                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_Get
+
+```java
+/**
+ * Samples for PolicyEnrollments Get.
+ */
+public final class PolicyEnrollmentsGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getPolicyEnrollmentWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Retrieve a policy enrollment with resource selectors.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAPolicyEnrollmentWithResourceSelectors(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getPolicyEnrollment.json
+     */
+    /**
+     * Sample code: Retrieve a policy enrollment.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAPolicyEnrollment(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_List
+
+```java
+/**
+ * Samples for PolicyEnrollments List.
+ */
+public final class PolicyEnrollmentsListSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyEnrollmentsForSubscription.json
+     */
+    /**
+     * Sample code: List policy enrollments for subscription.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listPolicyEnrollmentsForSubscription(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments().list("atScope()", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_ListByResourceGroup
+
+```java
+/**
+ * Samples for PolicyEnrollments ListByResourceGroup.
+ */
+public final class PolicyEnrollmentsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyEnrollmentsForResourceGroup.json
+     */
+    /**
+     * Sample code: List policy enrollments for resource group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listPolicyEnrollmentsForResourceGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .listByResourceGroup("TestResourceGroup", "atScope()", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_ListForManagementGroup
+
+```java
+/**
+ * Samples for PolicyEnrollments ListForManagementGroup.
+ */
+public final class PolicyEnrollmentsListForManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyEnrollmentsForManagementGroup.json
+     */
+    /**
+     * Sample code: List policy enrollments for management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listPolicyEnrollmentsForManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments().listForManagementGroup("DevOrg", "atScope()", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_ListForResource
+
+```java
+/**
+ * Samples for PolicyEnrollments ListForResource.
+ */
+public final class PolicyEnrollmentsListForResourceSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyEnrollmentsForResource.json
+     */
+    /**
+     * Sample code: List policy enrollments for resource.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listPolicyEnrollmentsForResource(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyEnrollments()
+            .listForResource("TestResourceGroup", "Microsoft.Compute", "virtualMachines/MyTestVm", "domainNames",
+                "MyTestComputer.cloudapp.net", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyEnrollments_Update
+
+```java
+import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.PolicyEnrollment;
+import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
+import com.azure.resourcemanager.resources.policy.models.Selector;
+import com.azure.resourcemanager.resources.policy.models.SelectorKind;
+import java.util.Arrays;
+
+/**
+ * Samples for PolicyEnrollments Update.
+ */
+public final class PolicyEnrollmentsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyEnrollmentWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Update a policy enrollment with resource selectors.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        updateAPolicyEnrollmentWithResourceSelectors(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        PolicyEnrollment resource = manager.policyEnrollments()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withAssignmentScopeValidation(AssignmentScopeValidation.DEFAULT)
+            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRegions")
+                .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                    .withIn(Arrays.asList("eastus2euap", "centraluseuap"))))))
+            .apply();
+    }
+}
+```
+
+### PolicyExemptions_CreateOrUpdate
+
+```java
+import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
+import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
+import com.azure.resourcemanager.resources.policy.models.Selector;
+import com.azure.resourcemanager.resources.policy.models.SelectorKind;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+/**
+ * Samples for PolicyExemptions CreateOrUpdate.
+ */
+public final class PolicyExemptionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyExemptionWithExemptionManagementMode.json
+     */
+    /**
+     * Sample code: Create or update a policy exemption with exemption management mode.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAPolicyExemptionWithExemptionManagementMode(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .define("DemoExpensiveVM")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster")
+            .withPolicyAssignmentId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("Limit_Skus"))
+            .withExemptionCategory(ExemptionCategory.WAIVER)
+            .withDisplayName("Exempt demo cluster")
+            .withDescription("Exempt demo cluster from limit sku")
+            .withMetadata(BinaryData
+                .fromBytes("{reason=Temporary exemption for a expensive VM demo}".getBytes(StandardCharsets.UTF_8)))
+            .withExemptionManagementMode(ExemptionManagementMode.USER_SELF_SERVE)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyExemption.json
+     */
+    /**
+     * Sample code: Create or update a policy exemption.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        createOrUpdateAPolicyExemption(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .define("DemoExpensiveVM")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster")
+            .withPolicyAssignmentId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("Limit_Skus"))
+            .withExemptionCategory(ExemptionCategory.WAIVER)
+            .withDisplayName("Exempt demo cluster")
+            .withDescription("Exempt demo cluster from limit sku")
+            .withMetadata(BinaryData
+                .fromBytes("{reason=Temporary exemption for a expensive VM demo}".getBytes(StandardCharsets.UTF_8)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyExemptionWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Create or update a policy exemption with resource selectors.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAPolicyExemptionWithResourceSelectors(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .define("DemoExpensiveVM")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster")
+            .withPolicyAssignmentId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement")
+            .withPolicyDefinitionReferenceIds(Arrays.asList("Limit_Skus"))
+            .withExemptionCategory(ExemptionCategory.WAIVER)
+            .withDisplayName("Exempt demo cluster")
+            .withDescription("Exempt demo cluster from limit sku")
+            .withMetadata(BinaryData
+                .fromBytes("{reason=Temporary exemption for a expensive VM demo}".getBytes(StandardCharsets.UTF_8)))
+            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRegions")
+                .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                    .withIn(Arrays.asList("eastus2euap", "centraluseuap"))))))
+            .withAssignmentScopeValidation(AssignmentScopeValidation.DEFAULT)
+            .create();
+    }
+}
+```
+
+### PolicyExemptions_Delete
+
+```java
+/**
+ * Samples for PolicyExemptions Delete.
+ */
+public final class PolicyExemptionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/deletePolicyExemption.json
+     */
+    /**
+     * Sample code: Delete a policy exemption.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void deleteAPolicyExemption(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .deleteByResourceGroupWithResponse(
+                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyExemptions_Get
+
+```java
+/**
+ * Samples for PolicyExemptions Get.
+ */
+public final class PolicyExemptionsGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getPolicyExemptionWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Retrieve a policy exemption with resource selectors.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAPolicyExemptionWithResourceSelectors(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getPolicyExemption.json
+     */
+    /**
+     * Sample code: Retrieve a policy exemption.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAPolicyExemption(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyExemptions_List
+
+```java
+/**
+ * Samples for PolicyExemptions List.
+ */
+public final class PolicyExemptionsListSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyExemptionsForSubscription.json
+     */
+    /**
+     * Sample code: List policy exemptions that apply to a subscription.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listPolicyExemptionsThatApplyToASubscription(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions().list("atScope()", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyExemptions_ListByResourceGroup
+
+```java
+/**
+ * Samples for PolicyExemptions ListByResourceGroup.
+ */
+public final class PolicyExemptionsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyExemptionsForResourceGroup.json
+     */
+    /**
+     * Sample code: List policy exemptions that apply to a resource group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void listPolicyExemptionsThatApplyToAResourceGroup(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .listByResourceGroup("TestResourceGroup", "atScope()", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyExemptions_ListForManagementGroup
+
+```java
+/**
+ * Samples for PolicyExemptions ListForManagementGroup.
+ */
+public final class PolicyExemptionsListForManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyExemptionsForManagementGroup.json
+     */
+    /**
+     * Sample code: List policy exemptions that apply to a management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void listPolicyExemptionsThatApplyToAManagementGroup(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions().listForManagementGroup("DevOrg", "atScope()", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyExemptions_ListForResource
+
+```java
+/**
+ * Samples for PolicyExemptions ListForResource.
+ */
+public final class PolicyExemptionsListForResourceSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listPolicyExemptionsForResource.json
+     */
+    /**
+     * Sample code: List all policy exemptions that apply to a resource.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listAllPolicyExemptionsThatApplyToAResource(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyExemptions()
+            .listForResource("TestResourceGroup", "Microsoft.Compute", "virtualMachines/MyTestVm", "domainNames",
+                "MyTestComputer.cloudapp.net", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyExemptions_Update
+
+```java
+import com.azure.resourcemanager.resources.policy.models.AssignmentScopeValidation;
+import com.azure.resourcemanager.resources.policy.models.ExemptionManagementMode;
+import com.azure.resourcemanager.resources.policy.models.PolicyExemption;
+import com.azure.resourcemanager.resources.policy.models.ResourceSelector;
+import com.azure.resourcemanager.resources.policy.models.Selector;
+import com.azure.resourcemanager.resources.policy.models.SelectorKind;
+import java.util.Arrays;
+
+/**
+ * Samples for PolicyExemptions Update.
+ */
+public final class PolicyExemptionsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyExemptionWithExemptionManagementMode.json
+     */
+    /**
+     * Sample code: Update a policy exemption with exemption management mode.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void updateAPolicyExemptionWithExemptionManagementMode(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        PolicyExemption resource = manager.policyExemptions()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withExemptionManagementMode(ExemptionManagementMode.ADMIN).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01-preview/updatePolicyExemptionWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Update a policy exemption with resource selectors.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        updateAPolicyExemptionWithResourceSelectors(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        PolicyExemption resource = manager.policyExemptions()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRegions")
+                .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                    .withIn(Arrays.asList("eastus2euap", "centraluseuap"))))))
+            .withAssignmentScopeValidation(AssignmentScopeValidation.DEFAULT)
+            .apply();
     }
 }
 ```
@@ -1595,7 +2141,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Create or update a policy set definition version.
@@ -1667,7 +2213,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionVersionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition version at management group level.
@@ -1682,13 +2228,13 @@ public final class PolicySetDefinitionVersionsCreateOrUpdateAtManagementGroupSam
                     .withDescription("Policies to enforce low cost storage SKUs")
                     .withMetadata(BinaryData.fromBytes("{category=Cost Management}".getBytes(StandardCharsets.UTF_8)))
                     .withPolicyDefinitions(Arrays.asList(new PolicyDefinitionReference().withPolicyDefinitionId(
-                        "/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
+                        "/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
                         .withParameters(mapOf("listOfAllowedSKUs",
                             new ParameterValuesValue().withValue(
                                 BinaryData.fromBytes("[Standard_GRS, Standard_LRS]".getBytes(StandardCharsets.UTF_8)))))
                         .withPolicyDefinitionReferenceId("Limit_Skus"),
                         new PolicyDefinitionReference().withPolicyDefinitionId(
-                            "/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
+                            "/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
                             .withParameters(mapOf("prefix",
                                 new ParameterValuesValue()
                                     .withValue(BinaryData.fromBytes("DeptA".getBytes(StandardCharsets.UTF_8))),
@@ -1722,7 +2268,7 @@ public final class PolicySetDefinitionVersionsCreateOrUpdateAtManagementGroupSam
  */
 public final class PolicySetDefinitionVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicySetDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Delete a policy set definition version.
@@ -1745,7 +2291,7 @@ public final class PolicySetDefinitionVersionsDeleteSamples {
  */
 public final class PolicySetDefinitionVersionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicySetDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicySetDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy set definition version at management group level.
@@ -1769,7 +2315,7 @@ public final class PolicySetDefinitionVersionsDeleteAtManagementGroupSamples {
  */
 public final class PolicySetDefinitionVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Retrieve a policy set definition version.
@@ -1792,7 +2338,7 @@ public final class PolicySetDefinitionVersionsGetSamples {
  */
 public final class PolicySetDefinitionVersionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicySetDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy set definition version at management group level.
@@ -1816,7 +2362,7 @@ public final class PolicySetDefinitionVersionsGetAtManagementGroupSamples {
  */
 public final class PolicySetDefinitionVersionsGetBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getBuiltInPolicySetDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/getBuiltInPolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Retrieve a built-in policy set definition version.
@@ -1840,7 +2386,7 @@ public final class PolicySetDefinitionVersionsGetBuiltInSamples {
  */
 public final class PolicySetDefinitionVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicySetDefinitionVersions.json
      */
     /**
      * Sample code: List policy set definitions.
@@ -1861,7 +2407,7 @@ public final class PolicySetDefinitionVersionsListSamples {
  */
 public final class PolicySetDefinitionVersionsListAllSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllPolicySetDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listAllPolicySetDefinitionVersions.json
      */
     /**
      * Sample code: List all policy definition versions at subscription.
@@ -1883,7 +2429,7 @@ public final class PolicySetDefinitionVersionsListAllSamples {
  */
 public final class PolicySetDefinitionVersionsListAllAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllPolicySetDefinitionVersionsByManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listAllPolicySetDefinitionVersionsByManagementGroup.json
      */
     /**
      * Sample code: List all policy definition versions at management group.
@@ -1906,7 +2452,7 @@ public final class PolicySetDefinitionVersionsListAllAtManagementGroupSamples {
  */
 public final class PolicySetDefinitionVersionsListAllBuiltinsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllBuiltInPolicySetDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listAllBuiltInPolicySetDefinitionVersions.json
      */
     /**
      * Sample code: List all built-in policy definition versions.
@@ -1928,7 +2474,7 @@ public final class PolicySetDefinitionVersionsListAllBuiltinsSamples {
  */
 public final class PolicySetDefinitionVersionsListBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listBuiltInPolicySetDefinitionVersions.json
+     * x-ms-original-file: 2026-01-01-preview/listBuiltInPolicySetDefinitionVersions.json
      */
     /**
      * Sample code: List built-in policy set definitions.
@@ -1951,7 +2497,7 @@ public final class PolicySetDefinitionVersionsListBuiltInSamples {
  */
 public final class PolicySetDefinitionVersionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitionVersionsByManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicySetDefinitionVersionsByManagementGroup.json
      */
     /**
      * Sample code: List policy set definitions at management group level.
@@ -1986,7 +2532,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionWithGroups.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionWithGroups.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups.
@@ -2031,7 +2577,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinition.json
      */
     /**
      * Sample code: Create or update a policy set definition.
@@ -2102,7 +2648,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups at management group level.
@@ -2145,7 +2691,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition at management group level.
@@ -2160,13 +2706,13 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
                     .withDescription("Policies to enforce low cost storage SKUs")
                     .withMetadata(BinaryData.fromBytes("{category=Cost Management}".getBytes(StandardCharsets.UTF_8)))
                     .withPolicyDefinitions(Arrays.asList(new PolicyDefinitionReference().withPolicyDefinitionId(
-                        "/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
+                        "/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
                         .withParameters(mapOf("listOfAllowedSKUs",
                             new ParameterValuesValue().withValue(
                                 BinaryData.fromBytes("[Standard_GRS, Standard_LRS]".getBytes(StandardCharsets.UTF_8)))))
                         .withPolicyDefinitionReferenceId("Limit_Skus"),
                         new PolicyDefinitionReference().withPolicyDefinitionId(
-                            "/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
+                            "/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
                             .withParameters(mapOf("prefix",
                                 new ParameterValuesValue()
                                     .withValue(BinaryData.fromBytes("DeptA".getBytes(StandardCharsets.UTF_8))),
@@ -2199,7 +2745,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
  */
 public final class PolicySetDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicySetDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicySetDefinition.json
      */
     /**
      * Sample code: Delete a policy set definition.
@@ -2220,7 +2766,7 @@ public final class PolicySetDefinitionsDeleteSamples {
  */
 public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/deletePolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy set definition at management group level.
@@ -2244,7 +2790,7 @@ public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
  */
 public final class PolicySetDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicySetDefinition.json
      */
     /**
      * Sample code: Retrieve a policy set definition.
@@ -2265,7 +2811,7 @@ public final class PolicySetDefinitionsGetSamples {
  */
 public final class PolicySetDefinitionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/getPolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy set definition at management group level.
@@ -2289,7 +2835,7 @@ public final class PolicySetDefinitionsGetAtManagementGroupSamples {
  */
 public final class PolicySetDefinitionsGetBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getBuiltInPolicySetDefinition.json
+     * x-ms-original-file: 2026-01-01-preview/getBuiltInPolicySetDefinition.json
      */
     /**
      * Sample code: Retrieve a built-in policy set definition.
@@ -2312,7 +2858,7 @@ public final class PolicySetDefinitionsGetBuiltInSamples {
  */
 public final class PolicySetDefinitionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitions.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicySetDefinitions.json
      */
     /**
      * Sample code: List policy set definitions.
@@ -2333,7 +2879,7 @@ public final class PolicySetDefinitionsListSamples {
  */
 public final class PolicySetDefinitionsListBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listBuiltInPolicySetDefinitions.json
+     * x-ms-original-file: 2026-01-01-preview/listBuiltInPolicySetDefinitions.json
      */
     /**
      * Sample code: List built-in policy set definitions.
@@ -2355,7 +2901,7 @@ public final class PolicySetDefinitionsListBuiltInSamples {
  */
 public final class PolicySetDefinitionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitionsByManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicySetDefinitionsByManagementGroup.json
      */
     /**
      * Sample code: List policy set definitions at management group level.
@@ -2381,7 +2927,7 @@ import com.azure.resourcemanager.resources.policy.models.PolicyTokenRequest;
  */
 public final class PolicyTokensAcquireSamples {
     /*
-     * x-ms-original-file: 2026-07-01/acquirePolicyToken.json
+     * x-ms-original-file: 2026-01-01-preview/acquirePolicyToken.json
      */
     /**
      * Sample code: Acquire a policy token.
@@ -2408,7 +2954,7 @@ import com.azure.resourcemanager.resources.policy.models.PolicyTokenRequest;
  */
 public final class PolicyTokensAcquireAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/acquirePolicyTokenAtManagementGroup.json
+     * x-ms-original-file: 2026-01-01-preview/acquirePolicyTokenAtManagementGroup.json
      */
     /**
      * Sample code: Acquire a policy token at management group level.
@@ -2427,32 +2973,394 @@ public final class PolicyTokensAcquireAtManagementGroupSamples {
 }
 ```
 
-### PolicyTokens_AcquireAtResourceGroup
+### VariableValues_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.resources.policy.models.PolicyTokenOperation;
-import com.azure.resourcemanager.resources.policy.models.PolicyTokenRequest;
+import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resources.policy.models.PolicyVariableValueColumnValue;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
- * Samples for PolicyTokens AcquireAtResourceGroup.
+ * Samples for VariableValues CreateOrUpdate.
  */
-public final class PolicyTokensAcquireAtResourceGroupSamples {
+public final class VariableValuesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/acquirePolicyTokenAtResourceGroup.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdateVariableValue.json
      */
     /**
-     * Sample code: Acquire a policy token at resource group level.
+     * Sample code: Create or update a variable value.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAVariableValue(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues()
+            .define("TestValue")
+            .withExistingVariable("DemoTestVariable")
+            .withValues(Arrays.asList(
+                new PolicyVariableValueColumnValue().withColumnName("StringColumn")
+                    .withColumnValue(BinaryData.fromBytes("SampleValue".getBytes(StandardCharsets.UTF_8))),
+                new PolicyVariableValueColumnValue().withColumnName("IntegerColumn")
+                    .withColumnValue(BinaryData.fromBytes("10".getBytes(StandardCharsets.UTF_8)))))
+            .create();
+    }
+}
+```
+
+### VariableValues_CreateOrUpdateAtManagementGroup
+
+```java
+import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resources.policy.fluent.models.VariableValueInner;
+import com.azure.resourcemanager.resources.policy.models.PolicyVariableValueColumnValue;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+/**
+ * Samples for VariableValues CreateOrUpdateAtManagementGroup.
+ */
+public final class VariableValuesCreateOrUpdateAtManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdateVariableValueAtManagementGroup.json
+     */
+    /**
+     * Sample code: Create or update a variable value at management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAVariableValueAtManagementGroup(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues()
+            .createOrUpdateAtManagementGroupWithResponse("DevOrg", "DemoTestVariable", "TestValue",
+                new VariableValueInner().withValues(Arrays.asList(
+                    new PolicyVariableValueColumnValue().withColumnName("StringColumn")
+                        .withColumnValue(BinaryData.fromBytes("SampleValue".getBytes(StandardCharsets.UTF_8))),
+                    new PolicyVariableValueColumnValue().withColumnName("IntegerColumn")
+                        .withColumnValue(BinaryData.fromBytes("10".getBytes(StandardCharsets.UTF_8))))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VariableValues_Delete
+
+```java
+/**
+ * Samples for VariableValues Delete.
+ */
+public final class VariableValuesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/deleteVariableValue.json
+     */
+    /**
+     * Sample code: Delete a variable value.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void deleteAVariableValue(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues()
+            .deleteByResourceGroupWithResponse("DemoTestVariable", "TestValue", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VariableValues_DeleteAtManagementGroup
+
+```java
+/**
+ * Samples for VariableValues DeleteAtManagementGroup.
+ */
+public final class VariableValuesDeleteAtManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/deleteVariableValueAtManagementGroup.json
+     */
+    /**
+     * Sample code: Delete a variable value at management group.
      * 
      * @param manager Entry point to PolicyManager.
      */
     public static void
-        acquireAPolicyTokenAtResourceGroupLevel(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
-        manager.policyTokens()
-            .acquireAtResourceGroupWithResponse("testRG",
-                new PolicyTokenRequest().withOperation(new PolicyTokenOperation().withUri(
-                    "https://management.azure.com/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM?api-version=2024-01-01")
-                    .withHttpMethod("delete")),
+        deleteAVariableValueAtManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues()
+            .deleteAtManagementGroupWithResponse("DevOrg", "DemoTestVariable", "TestValue",
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VariableValues_Get
+
+```java
+/**
+ * Samples for VariableValues Get.
+ */
+public final class VariableValuesGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getVariableValue.json
+     */
+    /**
+     * Sample code: Retrieve a variable value.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAVariableValue(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues().getWithResponse("DemoTestVariable", "TestValue", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VariableValues_GetAtManagementGroup
+
+```java
+/**
+ * Samples for VariableValues GetAtManagementGroup.
+ */
+public final class VariableValuesGetAtManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getVariableValueAtManagementGroup.json
+     */
+    /**
+     * Sample code: Retrieve a variable value at management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        retrieveAVariableValueAtManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues()
+            .getAtManagementGroupWithResponse("DevOrg", "DemoTestVariable", "TestValue",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VariableValues_List
+
+```java
+/**
+ * Samples for VariableValues List.
+ */
+public final class VariableValuesListSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listVariableValuesForSubscription.json
+     */
+    /**
+     * Sample code: List variable values that apply to a variable at subscription level.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void listVariableValuesThatApplyToAVariableAtSubscriptionLevel(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues().list("DemoTestVariable", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VariableValues_ListForManagementGroup
+
+```java
+/**
+ * Samples for VariableValues ListForManagementGroup.
+ */
+public final class VariableValuesListForManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listVariableValuesForManagementGroup.json
+     */
+    /**
+     * Sample code: List variable values at a management group scope.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listVariableValuesAtAManagementGroupScope(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variableValues().listForManagementGroup("DevOrg", "DemoTestVariable", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.resources.policy.models.PolicyVariableColumn;
+import java.util.Arrays;
+
+/**
+ * Samples for Variables CreateOrUpdate.
+ */
+public final class VariablesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdateVariable.json
+     */
+    /**
+     * Sample code: Create or update a variable.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAVariable(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables()
+            .define("DemoTestVariable")
+            .withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("TestColumn")))
+            .create();
+    }
+}
+```
+
+### Variables_CreateOrUpdateAtManagementGroup
+
+```java
+import com.azure.resourcemanager.resources.policy.fluent.models.VariableInner;
+import com.azure.resourcemanager.resources.policy.models.PolicyVariableColumn;
+import java.util.Arrays;
+
+/**
+ * Samples for Variables CreateOrUpdateAtManagementGroup.
+ */
+public final class VariablesCreateOrUpdateAtManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdateVariableAtManagementGroup.json
+     */
+    /**
+     * Sample code: Create or update a variable at management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        createOrUpdateAVariableAtManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables()
+            .createOrUpdateAtManagementGroupWithResponse("DevOrg", "DemoTestVariable",
+                new VariableInner().withColumns(Arrays.asList(new PolicyVariableColumn().withColumnName("TestColumn"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_Delete
+
+```java
+/**
+ * Samples for Variables Delete.
+ */
+public final class VariablesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/deleteVariable.json
+     */
+    /**
+     * Sample code: Delete a variable.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void deleteAVariable(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables().deleteWithResponse("DemoTestVariable", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_DeleteAtManagementGroup
+
+```java
+/**
+ * Samples for Variables DeleteAtManagementGroup.
+ */
+public final class VariablesDeleteAtManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/deleteVariableAtManagementGroup.json
+     */
+    /**
+     * Sample code: Delete a variable at management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        deleteAVariableAtManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables()
+            .deleteAtManagementGroupWithResponse("DevOrg", "DemoTestVariable", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_Get
+
+```java
+/**
+ * Samples for Variables Get.
+ */
+public final class VariablesGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getVariable.json
+     */
+    /**
+     * Sample code: Retrieve a variable.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAVariable(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables().getWithResponse("DemoTestVariable", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_GetAtManagementGroup
+
+```java
+/**
+ * Samples for Variables GetAtManagementGroup.
+ */
+public final class VariablesGetAtManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/getVariableAtManagementGroup.json
+     */
+    /**
+     * Sample code: Retrieve a variable at management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        retrieveAVariableAtManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables()
+            .getAtManagementGroupWithResponse("DevOrg", "DemoTestVariable", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_List
+
+```java
+/**
+ * Samples for Variables List.
+ */
+public final class VariablesListSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listVariablesForSubscription.json
+     */
+    /**
+     * Sample code: List variables that apply to a subscription.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listVariablesThatApplyToASubscription(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Variables_ListForManagementGroup
+
+```java
+/**
+ * Samples for Variables ListForManagementGroup.
+ */
+public final class VariablesListForManagementGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/listVariablesForManagementGroup.json
+     */
+    /**
+     * Sample code: List variables that apply to a management group.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void
+        listVariablesThatApplyToAManagementGroup(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.variables().listForManagementGroup("DevOrg", com.azure.core.util.Context.NONE);
     }
 }
 ```

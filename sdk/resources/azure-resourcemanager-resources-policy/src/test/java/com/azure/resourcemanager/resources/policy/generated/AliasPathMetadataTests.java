@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AliasPathMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AliasPathMetadata model = BinaryData.fromString("{\"type\":\"NotSpecified\",\"attributes\":\"None\"}")
+        AliasPathMetadata model = BinaryData.fromString("{\"type\":\"Any\",\"attributes\":\"Modifiable\"}")
             .toObject(AliasPathMetadata.class);
-        Assertions.assertEquals(AliasPathTokenType.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals(AliasPathAttributes.NONE, model.attributes());
+        Assertions.assertEquals(AliasPathTokenType.ANY, model.type());
+        Assertions.assertEquals(AliasPathAttributes.MODIFIABLE, model.attributes());
     }
 }

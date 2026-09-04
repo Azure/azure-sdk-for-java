@@ -15,28 +15,28 @@ public final class ParameterDefinitionsValueMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterDefinitionsValueMetadata model = BinaryData.fromString(
-            "{\"displayName\":\"mwctondzjluudfd\",\"description\":\"gg\",\"strongType\":\"sb\",\"assignPermissions\":true,\"irgne\":\"\\\"datatgseinqfiufxqkn\\\"\",\"fcdmqnrojlpijn\":\"\\\"datattwqmsni\\\"\"}")
+            "{\"displayName\":\"ibthostgktstvd\",\"description\":\"clzedqbcvh\",\"strongType\":\"h\",\"assignPermissions\":true,\"wqfbumlkxtrqjfsm\":\"\\\"datakdl\\\"\",\"srtawcoezbr\":\"\\\"datambtxhwgf\\\"\"}")
             .toObject(ParameterDefinitionsValueMetadata.class);
-        Assertions.assertEquals("mwctondzjluudfd", model.displayName());
-        Assertions.assertEquals("gg", model.description());
-        Assertions.assertEquals("sb", model.strongType());
+        Assertions.assertEquals("ibthostgktstvd", model.displayName());
+        Assertions.assertEquals("clzedqbcvh", model.description());
+        Assertions.assertEquals("h", model.strongType());
         Assertions.assertTrue(model.assignPermissions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParameterDefinitionsValueMetadata model
-            = new ParameterDefinitionsValueMetadata().withDisplayName("mwctondzjluudfd")
-                .withDescription("gg")
-                .withStrongType("sb")
+            = new ParameterDefinitionsValueMetadata().withDisplayName("ibthostgktstvd")
+                .withDescription("clzedqbcvh")
+                .withStrongType("h")
                 .withAssignPermissions(true)
                 .withAdditionalProperties(
-                    mapOf("irgne", BinaryData.fromBytes("\"datatgseinqfiufxqkn\"".getBytes(StandardCharsets.UTF_8)),
-                        "fcdmqnrojlpijn", BinaryData.fromBytes("\"datattwqmsni\"".getBytes(StandardCharsets.UTF_8))));
+                    mapOf("wqfbumlkxtrqjfsm", BinaryData.fromBytes("\"datakdl\"".getBytes(StandardCharsets.UTF_8)),
+                        "srtawcoezbr", BinaryData.fromBytes("\"datambtxhwgf\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(ParameterDefinitionsValueMetadata.class);
-        Assertions.assertEquals("mwctondzjluudfd", model.displayName());
-        Assertions.assertEquals("gg", model.description());
-        Assertions.assertEquals("sb", model.strongType());
+        Assertions.assertEquals("ibthostgktstvd", model.displayName());
+        Assertions.assertEquals("clzedqbcvh", model.description());
+        Assertions.assertEquals("h", model.strongType());
         Assertions.assertTrue(model.assignPermissions());
     }
 

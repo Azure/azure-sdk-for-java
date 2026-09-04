@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class DataPolicyManifestsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listDataPolicyManifests.json
+     * x-ms-original-file: 2026-01-01-preview/listDataPolicyManifests.json
      */
     /**
      * Sample code: List data policy manifests.
@@ -21,7 +21,7 @@ public final class DataPolicyManifestsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/listDataPolicyManifestsNamespaceFilter.json
+     * x-ms-original-file: 2026-01-01-preview/listDataPolicyManifestsNamespaceFilter.json
      */
     /**
      * Sample code: List data policy manifests with namespace filter.

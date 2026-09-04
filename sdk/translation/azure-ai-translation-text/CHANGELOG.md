@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.0.3 (2026-08-28)
+
+### Bugs Fixed
+
+- Fixed request URLs when using custom endpoints.
+
 ## 2.0.2 (2026-08-18)
 
 ### Other Changes

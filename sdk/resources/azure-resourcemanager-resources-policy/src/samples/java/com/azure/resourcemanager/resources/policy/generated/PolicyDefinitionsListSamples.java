@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicyDefinitionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyDefinitions.json
+     * x-ms-original-file: 2026-01-01-preview/listPolicyDefinitions.json
      */
     /**
      * Sample code: List policy definitions by subscription.

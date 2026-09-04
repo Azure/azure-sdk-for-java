@@ -23,16 +23,16 @@ import reactor.core.publisher.Mono;
  */
 public interface HorizonDbFirewallRulesClient {
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule along with {@link Response} on successful completion of
+     * @return information about a HorizonDB firewall rule along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -40,60 +40,60 @@ public interface HorizonDbFirewallRulesClient {
         String poolName, String firewallRuleName);
 
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule on successful completion of {@link Mono}.
+     * @return information about a HorizonDB firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbFirewallRuleInner> getAsync(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName);
 
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule along with {@link Response}.
+     * @return information about a HorizonDB firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HorizonDbFirewallRuleInner> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, Context context);
 
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule.
+     * @return information about a HorizonDB firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbFirewallRuleInner get(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName);
 
     /**
-     * Lists all HorizonDb firewall rules in a pool.
+     * Lists all HorizonDB firewall rules in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -103,11 +103,11 @@ public interface HorizonDbFirewallRulesClient {
     PagedFlux<HorizonDbFirewallRuleInner> listAsync(String resourceGroupName, String clusterName, String poolName);
 
     /**
-     * Lists all HorizonDb firewall rules in a pool.
+     * Lists all HorizonDB firewall rules in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -117,11 +117,11 @@ public interface HorizonDbFirewallRulesClient {
     PagedIterable<HorizonDbFirewallRuleInner> list(String resourceGroupName, String clusterName, String poolName);
 
     /**
-     * Lists all HorizonDb firewall rules in a pool.
+     * Lists all HorizonDB firewall rules in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,17 +133,17 @@ public interface HorizonDbFirewallRulesClient {
         Context context);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb firewall rule along with {@link Response} on successful completion of
+     * @return represents the HorizonDB firewall rule along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -151,17 +151,17 @@ public interface HorizonDbFirewallRulesClient {
         String poolName, String firewallRuleName, HorizonDbFirewallRuleInner resource);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb firewall rule.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<HorizonDbFirewallRuleInner>, HorizonDbFirewallRuleInner> beginCreateOrUpdateAsync(
@@ -169,17 +169,17 @@ public interface HorizonDbFirewallRulesClient {
         HorizonDbFirewallRuleInner resource);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb firewall rule.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbFirewallRuleInner>, HorizonDbFirewallRuleInner> beginCreateOrUpdate(
@@ -187,18 +187,18 @@ public interface HorizonDbFirewallRulesClient {
         HorizonDbFirewallRuleInner resource);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb firewall rule.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbFirewallRuleInner>, HorizonDbFirewallRuleInner> beginCreateOrUpdate(
@@ -206,64 +206,64 @@ public interface HorizonDbFirewallRulesClient {
         HorizonDbFirewallRuleInner resource, Context context);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb firewall rule on successful completion of {@link Mono}.
+     * @return represents the HorizonDB firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbFirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, HorizonDbFirewallRuleInner resource);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb firewall rule.
+     * @return represents the HorizonDB firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbFirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, HorizonDbFirewallRuleInner resource);
 
     /**
-     * Creates a new HorizonDb firewall rule or updates an existing rule.
+     * Creates a new HorizonDB firewall rule or updates an existing rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb firewall rule.
+     * @return represents the HorizonDB firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbFirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, HorizonDbFirewallRuleInner resource, Context context);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,12 +274,12 @@ public interface HorizonDbFirewallRulesClient {
         String poolName, String firewallRuleName);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,12 +290,12 @@ public interface HorizonDbFirewallRulesClient {
         String firewallRuleName);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -306,12 +306,12 @@ public interface HorizonDbFirewallRulesClient {
         String firewallRuleName);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -323,12 +323,12 @@ public interface HorizonDbFirewallRulesClient {
         String firewallRuleName, Context context);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,12 +338,12 @@ public interface HorizonDbFirewallRulesClient {
     Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String poolName, String firewallRuleName);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -352,12 +352,12 @@ public interface HorizonDbFirewallRulesClient {
     void delete(String resourceGroupName, String clusterName, String poolName, String firewallRuleName);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

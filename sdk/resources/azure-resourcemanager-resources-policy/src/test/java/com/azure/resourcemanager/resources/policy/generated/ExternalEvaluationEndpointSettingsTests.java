@@ -13,16 +13,16 @@ public final class ExternalEvaluationEndpointSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalEvaluationEndpointSettings model
-            = BinaryData.fromString("{\"kind\":\"ratiz\",\"details\":\"\\\"dataonasxifto\\\"\"}")
+            = BinaryData.fromString("{\"kind\":\"vleo\",\"details\":\"\\\"dataml\\\"\"}")
                 .toObject(ExternalEvaluationEndpointSettings.class);
-        Assertions.assertEquals("ratiz", model.kind());
+        Assertions.assertEquals("vleo", model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalEvaluationEndpointSettings model = new ExternalEvaluationEndpointSettings().withKind("ratiz")
-            .withDetails(BinaryData.fromBytes("\"dataonasxifto\"".getBytes(StandardCharsets.UTF_8)));
+        ExternalEvaluationEndpointSettings model = new ExternalEvaluationEndpointSettings().withKind("vleo")
+            .withDetails(BinaryData.fromBytes("\"dataml\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(ExternalEvaluationEndpointSettings.class);
-        Assertions.assertEquals("ratiz", model.kind());
+        Assertions.assertEquals("vleo", model.kind());
     }
 }

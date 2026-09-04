@@ -13,12 +13,12 @@ public final class AliasPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AliasPath model = BinaryData.fromString(
-            "{\"path\":\"r\",\"apiVersions\":[\"gsquyfxrxxlept\",\"amxjezwlw\"],\"pattern\":{\"phrase\":\"uqlcvydy\",\"variable\":\"tdooaoj\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Object\",\"attributes\":\"Modifiable\"}}")
+            "{\"path\":\"qhuexm\",\"apiVersions\":[\"lstvlzywe\",\"hz\",\"ncsdtclusiyp\"],\"pattern\":{\"phrase\":\"gytguslfead\",\"variable\":\"gq\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Any\",\"attributes\":\"None\"}}")
             .toObject(AliasPath.class);
-        Assertions.assertEquals("r", model.path());
-        Assertions.assertEquals("gsquyfxrxxlept", model.apiVersions().get(0));
-        Assertions.assertEquals("uqlcvydy", model.pattern().phrase());
-        Assertions.assertEquals("tdooaoj", model.pattern().variable());
+        Assertions.assertEquals("qhuexm", model.path());
+        Assertions.assertEquals("lstvlzywe", model.apiVersions().get(0));
+        Assertions.assertEquals("gytguslfead", model.pattern().phrase());
+        Assertions.assertEquals("gq", model.pattern().variable());
         Assertions.assertEquals(AliasPatternType.EXTRACT, model.pattern().type());
     }
 }

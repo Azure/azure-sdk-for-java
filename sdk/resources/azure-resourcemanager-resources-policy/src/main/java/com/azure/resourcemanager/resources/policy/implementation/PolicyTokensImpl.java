@@ -59,23 +59,6 @@ public final class PolicyTokensImpl implements PolicyTokens {
         }
     }
 
-    public Response<PolicyTokenResponse> acquireAtResourceGroupWithResponse(String resourceGroupName,
-        PolicyTokenRequest parameters, Context context) {
-        Response<PolicyTokenResponseInner> inner
-            = this.serviceClient().acquireAtResourceGroupWithResponse(resourceGroupName, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PolicyTokenResponseImpl(inner.getValue(), this.manager()));
-    }
-
-    public PolicyTokenResponse acquireAtResourceGroup(String resourceGroupName, PolicyTokenRequest parameters) {
-        PolicyTokenResponseInner inner = this.serviceClient().acquireAtResourceGroup(resourceGroupName, parameters);
-        if (inner != null) {
-            return new PolicyTokenResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     private PolicyTokensClient serviceClient() {
         return this.innerClient;
     }

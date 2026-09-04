@@ -12,21 +12,21 @@ public final class HorizonDbFirewallRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbFirewallRuleProperties model = BinaryData.fromString(
-            "{\"startIpAddress\":\"toqcjmklja\",\"endIpAddress\":\"bqidtqaj\",\"description\":\"ulpkudjkrl\",\"provisioningState\":\"Canceled\"}")
+            "{\"startIpAddress\":\"gazxuf\",\"endIpAddress\":\"zuckyfi\",\"description\":\"fidfvzw\",\"provisioningState\":\"Provisioning\"}")
             .toObject(HorizonDbFirewallRuleProperties.class);
-        Assertions.assertEquals("toqcjmklja", model.startIpAddress());
-        Assertions.assertEquals("bqidtqaj", model.endIpAddress());
-        Assertions.assertEquals("ulpkudjkrl", model.description());
+        Assertions.assertEquals("gazxuf", model.startIpAddress());
+        Assertions.assertEquals("zuckyfi", model.endIpAddress());
+        Assertions.assertEquals("fidfvzw", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HorizonDbFirewallRuleProperties model = new HorizonDbFirewallRuleProperties().withStartIpAddress("toqcjmklja")
-            .withEndIpAddress("bqidtqaj")
-            .withDescription("ulpkudjkrl");
+        HorizonDbFirewallRuleProperties model = new HorizonDbFirewallRuleProperties().withStartIpAddress("gazxuf")
+            .withEndIpAddress("zuckyfi")
+            .withDescription("fidfvzw");
         model = BinaryData.fromObject(model).toObject(HorizonDbFirewallRuleProperties.class);
-        Assertions.assertEquals("toqcjmklja", model.startIpAddress());
-        Assertions.assertEquals("bqidtqaj", model.endIpAddress());
-        Assertions.assertEquals("ulpkudjkrl", model.description());
+        Assertions.assertEquals("gazxuf", model.startIpAddress());
+        Assertions.assertEquals("zuckyfi", model.endIpAddress());
+        Assertions.assertEquals("fidfvzw", model.description());
     }
 }

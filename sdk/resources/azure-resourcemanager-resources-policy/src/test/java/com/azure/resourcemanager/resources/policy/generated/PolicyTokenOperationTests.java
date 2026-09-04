@@ -13,19 +13,20 @@ public final class PolicyTokenOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyTokenOperation model = BinaryData
-            .fromString("{\"uri\":\"ve\",\"httpMethod\":\"yfdvlvhbwrnfxtgd\",\"content\":\"\\\"dataqthe\\\"\"}")
+            .fromString(
+                "{\"uri\":\"bxoeeonql\",\"httpMethod\":\"fwmyymv\",\"content\":\"\\\"databpbhfckdvezcrcss\\\"\"}")
             .toObject(PolicyTokenOperation.class);
-        Assertions.assertEquals("ve", model.uri());
-        Assertions.assertEquals("yfdvlvhbwrnfxtgd", model.httpMethod());
+        Assertions.assertEquals("bxoeeonql", model.uri());
+        Assertions.assertEquals("fwmyymv", model.httpMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyTokenOperation model = new PolicyTokenOperation().withUri("ve")
-            .withHttpMethod("yfdvlvhbwrnfxtgd")
-            .withContent(BinaryData.fromBytes("\"dataqthe\"".getBytes(StandardCharsets.UTF_8)));
+        PolicyTokenOperation model = new PolicyTokenOperation().withUri("bxoeeonql")
+            .withHttpMethod("fwmyymv")
+            .withContent(BinaryData.fromBytes("\"databpbhfckdvezcrcss\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(PolicyTokenOperation.class);
-        Assertions.assertEquals("ve", model.uri());
-        Assertions.assertEquals("yfdvlvhbwrnfxtgd", model.httpMethod());
+        Assertions.assertEquals("bxoeeonql", model.uri());
+        Assertions.assertEquals("fwmyymv", model.httpMethod());
     }
 }

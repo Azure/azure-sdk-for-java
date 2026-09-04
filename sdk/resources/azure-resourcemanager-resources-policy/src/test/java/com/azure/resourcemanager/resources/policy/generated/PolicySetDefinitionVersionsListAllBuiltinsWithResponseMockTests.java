@@ -22,7 +22,7 @@ public final class PolicySetDefinitionVersionsListAllBuiltinsWithResponseMockTes
     @Test
     public void testListAllBuiltinsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyType\":\"NotSpecified\",\"displayName\":\"uevqmvyumgmm\",\"description\":\"bsnznwgsqufm\",\"metadata\":\"\\\"datacyoseqcazisvbrqg\\\"\",\"parameters\":{\"pgawepk\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"nrzpghlrdtbg\"}],\"policyDefinitionGroups\":[{\"name\":\"buibrvjz\"}],\"version\":\"flvsmfjihv\"},\"id\":\"cqrttjf\",\"name\":\"qmmfjewfeqbavdos\",\"type\":\"wy\"},{\"properties\":{\"policyType\":\"NotSpecified\",\"displayName\":\"elvxgwzz\",\"description\":\"dtlcjgpvcqzv\",\"metadata\":\"\\\"datab\\\"\",\"parameters\":{\"x\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"xrmx\"},{\"policyDefinitionId\":\"mdrwynb\"}],\"policyDefinitionGroups\":[{\"name\":\"azoymdvhhpl\"},{\"name\":\"hwwdkatveqmg\"},{\"name\":\"cswzeyxrye\"}],\"version\":\"mhpwbukl\"},\"id\":\"mfasgtlvhqpoilos\",\"name\":\"aemcezevftmh\",\"type\":\"l\"}],\"nextLink\":\"kjyghztms\"}";
+            = "{\"value\":[{\"properties\":{\"policyType\":\"Custom\",\"displayName\":\"ydy\",\"description\":\"mxvps\",\"metadata\":\"\\\"datazsyqagqllcbrvaid\\\"\",\"parameters\":{\"y\":{},\"trrqwfyybptm\":{},\"jrnogykugdl\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"sav\"}],\"policyDefinitionGroups\":[{\"name\":\"kslgeuufkbz\"}],\"version\":\"bxjblajybdnb\"},\"id\":\"sbtoisazdjmo\",\"name\":\"svpzxgnywxuy\",\"type\":\"lfj\"},{\"properties\":{\"policyType\":\"Custom\",\"displayName\":\"mszcfy\",\"description\":\"peqregfur\",\"metadata\":\"\\\"dataagknxmaovrg\\\"\",\"parameters\":{\"nzf\":{},\"ewvqkycjcgeip\":{},\"xxsdyafwtydsmmab\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"clejqzhpv\"}],\"policyDefinitionGroups\":[{\"name\":\"badjze\"},{\"name\":\"llgfy\"},{\"name\":\"gtqscjpvqerq\"}],\"version\":\"omwdzpzl\"},\"id\":\"uexlqpww\",\"name\":\"mbje\",\"type\":\"fwlbghnkfr\"},{\"properties\":{\"policyType\":\"NotSpecified\",\"displayName\":\"ydsn\",\"description\":\"pchiypbfhmih\",\"metadata\":\"\\\"datatqozewbrsrjzgkbr\\\"\",\"parameters\":{\"bo\":{},\"fq\":{},\"nqbjxgjwsrer\":{}},\"policyDefinitions\":[{\"policyDefinitionId\":\"buudrizwkwkjxla\"},{\"policyDefinitionId\":\"cedikqelssyb\"}],\"policyDefinitionGroups\":[{\"name\":\"vgb\"}],\"version\":\"ommki\"},\"id\":\"ypwtmzyjjy\",\"name\":\"t\",\"type\":\"mzqlnaag\"}],\"nextLink\":\"i\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,12 @@ public final class PolicySetDefinitionVersionsListAllBuiltinsWithResponseMockTes
             .listAllBuiltinsWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PolicyType.NOT_SPECIFIED, response.value().get(0).policyType());
-        Assertions.assertEquals("uevqmvyumgmm", response.value().get(0).displayName());
-        Assertions.assertEquals("bsnznwgsqufm", response.value().get(0).description());
-        Assertions.assertEquals("nrzpghlrdtbg",
-            response.value().get(0).policyDefinitions().get(0).policyDefinitionId());
-        Assertions.assertEquals("buibrvjz", response.value().get(0).policyDefinitionGroups().get(0).name());
-        Assertions.assertEquals("flvsmfjihv", response.value().get(0).version());
-        Assertions.assertEquals("kjyghztms", response.nextLink());
+        Assertions.assertEquals(PolicyType.CUSTOM, response.value().get(0).policyType());
+        Assertions.assertEquals("ydy", response.value().get(0).displayName());
+        Assertions.assertEquals("mxvps", response.value().get(0).description());
+        Assertions.assertEquals("sav", response.value().get(0).policyDefinitions().get(0).policyDefinitionId());
+        Assertions.assertEquals("kslgeuufkbz", response.value().get(0).policyDefinitionGroups().get(0).name());
+        Assertions.assertEquals("bxjblajybdnb", response.value().get(0).version());
+        Assertions.assertEquals("i", response.nextLink());
     }
 }

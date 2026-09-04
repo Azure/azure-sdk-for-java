@@ -12,11 +12,11 @@ public final class DataManifestCustomResourceFunctionDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataManifestCustomResourceFunctionDefinition model = BinaryData.fromString(
-            "{\"name\":\"fn\",\"fullyQualifiedResourceType\":\"kwyfzqwhxxbuyqax\",\"defaultProperties\":[\"qztpp\"],\"allowCustomProperties\":false}")
+            "{\"name\":\"b\",\"fullyQualifiedResourceType\":\"tjivfxzsjabib\",\"defaultProperties\":[\"tawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"],\"allowCustomProperties\":false}")
             .toObject(DataManifestCustomResourceFunctionDefinition.class);
-        Assertions.assertEquals("fn", model.name());
-        Assertions.assertEquals("kwyfzqwhxxbuyqax", model.fullyQualifiedResourceType());
-        Assertions.assertEquals("qztpp", model.defaultProperties().get(0));
+        Assertions.assertEquals("b", model.name());
+        Assertions.assertEquals("tjivfxzsjabib", model.fullyQualifiedResourceType());
+        Assertions.assertEquals("tawfsdjpvkvp", model.defaultProperties().get(0));
         Assertions.assertFalse(model.allowCustomProperties());
     }
 }

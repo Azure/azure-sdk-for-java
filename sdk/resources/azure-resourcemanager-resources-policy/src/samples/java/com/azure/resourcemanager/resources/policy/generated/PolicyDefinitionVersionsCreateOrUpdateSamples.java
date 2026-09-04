@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionVersion.json
+     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionVersion.json
      */
     /**
      * Sample code: Create or update a policy definition version.

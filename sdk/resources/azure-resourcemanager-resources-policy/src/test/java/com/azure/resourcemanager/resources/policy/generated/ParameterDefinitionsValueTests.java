@@ -18,36 +18,35 @@ public final class ParameterDefinitionsValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterDefinitionsValue model = BinaryData.fromString(
-            "{\"type\":\"Boolean\",\"allowedValues\":[\"\\\"datancyg\\\"\",\"\\\"datap\\\"\",\"\\\"datavipmdscwxqupevzh\\\"\"],\"defaultValue\":\"\\\"datatotxhojujb\\\"\",\"schema\":\"\\\"dataelmcuvhixbjxyfw\\\"\",\"metadata\":{\"displayName\":\"r\",\"description\":\"o\",\"strongType\":\"ttpkiwkkbnujrywv\",\"assignPermissions\":true,\"oiwiithtywub\":\"\\\"datapncur\\\"\",\"fdntwjchrdgoih\":\"\\\"datacbihwqk\\\"\"}}")
+            "{\"type\":\"Boolean\",\"allowedValues\":[\"\\\"datamtmczuome\\\"\",\"\\\"datawcw\\\"\"],\"defaultValue\":\"\\\"dataioknssxmoj\\\"\",\"schema\":\"\\\"datavpkjpr\\\"\",\"metadata\":{\"displayName\":\"cfzq\",\"description\":\"yxgtczh\",\"strongType\":\"dbsdshm\",\"assignPermissions\":true,\"baxk\":\"\\\"datahvbbxuripltfnh\\\"\",\"kpyklyhp\":\"\\\"dataxywr\\\"\",\"uudl\":\"\\\"datauodpv\\\"\"}}")
             .toObject(ParameterDefinitionsValue.class);
         Assertions.assertEquals(ParameterType.BOOLEAN, model.type());
-        Assertions.assertEquals("r", model.metadata().displayName());
-        Assertions.assertEquals("o", model.metadata().description());
-        Assertions.assertEquals("ttpkiwkkbnujrywv", model.metadata().strongType());
+        Assertions.assertEquals("cfzq", model.metadata().displayName());
+        Assertions.assertEquals("yxgtczh", model.metadata().description());
+        Assertions.assertEquals("dbsdshm", model.metadata().strongType());
         Assertions.assertTrue(model.metadata().assignPermissions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterDefinitionsValue model
-            = new ParameterDefinitionsValue().withType(ParameterType.BOOLEAN)
-                .withAllowedValues(Arrays.asList(BinaryData.fromBytes("\"datancyg\"".getBytes(StandardCharsets.UTF_8)),
-                    BinaryData.fromBytes("\"datap\"".getBytes(StandardCharsets.UTF_8)),
-                    BinaryData.fromBytes("\"datavipmdscwxqupevzh\"".getBytes(StandardCharsets.UTF_8))))
-                .withDefaultValue(BinaryData.fromBytes("\"datatotxhojujb\"".getBytes(StandardCharsets.UTF_8)))
-                .withSchema(BinaryData.fromBytes("\"dataelmcuvhixbjxyfw\"".getBytes(StandardCharsets.UTF_8)))
-                .withMetadata(new ParameterDefinitionsValueMetadata().withDisplayName("r")
-                    .withDescription("o")
-                    .withStrongType("ttpkiwkkbnujrywv")
-                    .withAssignPermissions(true)
-                    .withAdditionalProperties(mapOf("oiwiithtywub",
-                        BinaryData.fromBytes("\"datapncur\"".getBytes(StandardCharsets.UTF_8)), "fdntwjchrdgoih",
-                        BinaryData.fromBytes("\"datacbihwqk\"".getBytes(StandardCharsets.UTF_8)))));
+        ParameterDefinitionsValue model = new ParameterDefinitionsValue().withType(ParameterType.BOOLEAN)
+            .withAllowedValues(Arrays.asList(BinaryData.fromBytes("\"datamtmczuome\"".getBytes(StandardCharsets.UTF_8)),
+                BinaryData.fromBytes("\"datawcw\"".getBytes(StandardCharsets.UTF_8))))
+            .withDefaultValue(BinaryData.fromBytes("\"dataioknssxmoj\"".getBytes(StandardCharsets.UTF_8)))
+            .withSchema(BinaryData.fromBytes("\"datavpkjpr\"".getBytes(StandardCharsets.UTF_8)))
+            .withMetadata(new ParameterDefinitionsValueMetadata().withDisplayName("cfzq")
+                .withDescription("yxgtczh")
+                .withStrongType("dbsdshm")
+                .withAssignPermissions(true)
+                .withAdditionalProperties(
+                    mapOf("kpyklyhp", BinaryData.fromBytes("\"dataxywr\"".getBytes(StandardCharsets.UTF_8)), "baxk",
+                        BinaryData.fromBytes("\"datahvbbxuripltfnh\"".getBytes(StandardCharsets.UTF_8)), "uudl",
+                        BinaryData.fromBytes("\"datauodpv\"".getBytes(StandardCharsets.UTF_8)))));
         model = BinaryData.fromObject(model).toObject(ParameterDefinitionsValue.class);
         Assertions.assertEquals(ParameterType.BOOLEAN, model.type());
-        Assertions.assertEquals("r", model.metadata().displayName());
-        Assertions.assertEquals("o", model.metadata().description());
-        Assertions.assertEquals("ttpkiwkkbnujrywv", model.metadata().strongType());
+        Assertions.assertEquals("cfzq", model.metadata().displayName());
+        Assertions.assertEquals("yxgtczh", model.metadata().description());
+        Assertions.assertEquals("dbsdshm", model.metadata().strongType());
         Assertions.assertTrue(model.metadata().assignPermissions());
     }
 

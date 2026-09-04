@@ -27,7 +27,7 @@ public final class DefaultRolloutsStopWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.defaultRollouts().stopWithResponse("tewfopazdazgbsq", "pew", com.azure.core.util.Context.NONE);
+        manager.defaultRollouts().stopWithResponse("ysowl", "ux", com.azure.core.util.Context.NONE);
 
     }
 }

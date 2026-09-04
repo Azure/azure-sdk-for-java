@@ -12,18 +12,18 @@ public final class NonComplianceMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NonComplianceMessage model
-            = BinaryData.fromString("{\"message\":\"vxieduugidyj\",\"policyDefinitionReferenceId\":\"f\"}")
+            = BinaryData.fromString("{\"message\":\"bkbfkgukdkex\",\"policyDefinitionReferenceId\":\"pofm\"}")
                 .toObject(NonComplianceMessage.class);
-        Assertions.assertEquals("vxieduugidyj", model.message());
-        Assertions.assertEquals("f", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("bkbfkgukdkex", model.message());
+        Assertions.assertEquals("pofm", model.policyDefinitionReferenceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NonComplianceMessage model
-            = new NonComplianceMessage().withMessage("vxieduugidyj").withPolicyDefinitionReferenceId("f");
+            = new NonComplianceMessage().withMessage("bkbfkgukdkex").withPolicyDefinitionReferenceId("pofm");
         model = BinaryData.fromObject(model).toObject(NonComplianceMessage.class);
-        Assertions.assertEquals("vxieduugidyj", model.message());
-        Assertions.assertEquals("f", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("bkbfkgukdkex", model.message());
+        Assertions.assertEquals("pofm", model.policyDefinitionReferenceId());
     }
 }

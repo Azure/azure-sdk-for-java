@@ -16,20 +16,20 @@ public final class AliasTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Alias model = BinaryData.fromString(
-            "{\"name\":\"k\",\"paths\":[{\"path\":\"iekkezz\",\"apiVersions\":[\"ly\",\"jhdgqggebdunyga\",\"qidbqfatpxllrxcy\"],\"pattern\":{\"phrase\":\"a\",\"variable\":\"uvarmywdmjsjq\",\"type\":\"NotSpecified\"},\"metadata\":{\"type\":\"NotSpecified\",\"attributes\":\"None\"}},{\"path\":\"lyc\",\"apiVersions\":[\"hp\",\"xkgymareqnajxqu\",\"jhkycub\"],\"pattern\":{\"phrase\":\"gssofwq\",\"variable\":\"qal\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"NotSpecified\",\"attributes\":\"Modifiable\"}},{\"path\":\"acqqudfnbyxbaaab\",\"apiVersions\":[\"ayffim\",\"zrtuzq\",\"gsexne\"],\"pattern\":{\"phrase\":\"nwnwme\",\"variable\":\"syyceuzsoibjud\",\"type\":\"NotSpecified\"},\"metadata\":{\"type\":\"Boolean\",\"attributes\":\"None\"}}],\"type\":\"Mask\",\"defaultPath\":\"ytdw\",\"defaultPattern\":{\"phrase\":\"rqubpaxhexiil\",\"variable\":\"pdtii\",\"type\":\"Extract\"},\"defaultMetadata\":{\"type\":\"Integer\",\"attributes\":\"Modifiable\"}}")
+            "{\"name\":\"zfoqouicybxar\",\"paths\":[{\"path\":\"ufoxc\",\"apiVersions\":[\"p\",\"doamciodhkha\",\"xkhnzbonlwnto\"],\"pattern\":{\"phrase\":\"kdwbwhkszz\",\"variable\":\"rvexztvb\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"NotSpecified\",\"attributes\":\"None\"}},{\"path\":\"zkoowtlmnguxawqa\",\"apiVersions\":[\"yuuximerqfobwyzn\",\"bykutw\",\"fhpagmhrskdsnf\"],\"pattern\":{\"phrase\":\"oakgtdlmkkzev\",\"variable\":\"hewpusdsttwv\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Number\",\"attributes\":\"Modifiable\"}},{\"path\":\"ngqqmoakuf\",\"apiVersions\":[\"zr\",\"rdgrtw\",\"enuuzkopbm\"],\"pattern\":{\"phrase\":\"fdwoyuhh\",\"variable\":\"u\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Number\",\"attributes\":\"None\"}},{\"path\":\"smlmzqhoftrm\",\"apiVersions\":[\"u\"],\"pattern\":{\"phrase\":\"xicslfao\",\"variable\":\"piyylhalnswhccsp\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Boolean\",\"attributes\":\"None\"}}],\"type\":\"PlainText\",\"defaultPath\":\"ywuggwoluhcz\",\"defaultPattern\":{\"phrase\":\"mhairsbrgzdwmsw\",\"variable\":\"pqwd\",\"type\":\"Extract\"},\"defaultMetadata\":{\"type\":\"Array\",\"attributes\":\"None\"}}")
             .toObject(Alias.class);
-        Assertions.assertEquals("k", model.name());
-        Assertions.assertEquals("iekkezz", model.paths().get(0).path());
-        Assertions.assertEquals("ly", model.paths().get(0).apiVersions().get(0));
-        Assertions.assertEquals("a", model.paths().get(0).pattern().phrase());
-        Assertions.assertEquals("uvarmywdmjsjq", model.paths().get(0).pattern().variable());
-        Assertions.assertEquals(AliasPatternType.NOT_SPECIFIED, model.paths().get(0).pattern().type());
-        Assertions.assertEquals(AliasType.MASK, model.type());
-        Assertions.assertEquals("ytdw", model.defaultPath());
-        Assertions.assertEquals("rqubpaxhexiil", model.defaultPattern().phrase());
-        Assertions.assertEquals("pdtii", model.defaultPattern().variable());
+        Assertions.assertEquals("zfoqouicybxar", model.name());
+        Assertions.assertEquals("ufoxc", model.paths().get(0).path());
+        Assertions.assertEquals("p", model.paths().get(0).apiVersions().get(0));
+        Assertions.assertEquals("kdwbwhkszz", model.paths().get(0).pattern().phrase());
+        Assertions.assertEquals("rvexztvb", model.paths().get(0).pattern().variable());
+        Assertions.assertEquals(AliasPatternType.EXTRACT, model.paths().get(0).pattern().type());
+        Assertions.assertEquals(AliasType.PLAIN_TEXT, model.type());
+        Assertions.assertEquals("ywuggwoluhcz", model.defaultPath());
+        Assertions.assertEquals("mhairsbrgzdwmsw", model.defaultPattern().phrase());
+        Assertions.assertEquals("pqwd", model.defaultPattern().variable());
         Assertions.assertEquals(AliasPatternType.EXTRACT, model.defaultPattern().type());
-        Assertions.assertEquals(AliasPathTokenType.INTEGER, model.defaultMetadata().type());
-        Assertions.assertEquals(AliasPathAttributes.MODIFIABLE, model.defaultMetadata().attributes());
+        Assertions.assertEquals(AliasPathTokenType.ARRAY, model.defaultMetadata().type());
+        Assertions.assertEquals(AliasPathAttributes.NONE, model.defaultMetadata().attributes());
     }
 }

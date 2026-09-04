@@ -30,10 +30,14 @@ import com.azure.resourcemanager.resources.policy.fluent.DataPolicyManifestsClie
 import com.azure.resourcemanager.resources.policy.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.policy.fluent.PolicyDefinitionVersionsClient;
 import com.azure.resourcemanager.resources.policy.fluent.PolicyDefinitionsClient;
+import com.azure.resourcemanager.resources.policy.fluent.PolicyEnrollmentsClient;
+import com.azure.resourcemanager.resources.policy.fluent.PolicyExemptionsClient;
 import com.azure.resourcemanager.resources.policy.fluent.PolicyManagementClient;
 import com.azure.resourcemanager.resources.policy.fluent.PolicySetDefinitionVersionsClient;
 import com.azure.resourcemanager.resources.policy.fluent.PolicySetDefinitionsClient;
 import com.azure.resourcemanager.resources.policy.fluent.PolicyTokensClient;
+import com.azure.resourcemanager.resources.policy.fluent.VariableValuesClient;
+import com.azure.resourcemanager.resources.policy.fluent.VariablesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -189,6 +193,34 @@ public final class PolicyManagementClientImpl implements PolicyManagementClient 
     }
 
     /**
+     * The PolicyEnrollmentsClient object to access its operations.
+     */
+    private final PolicyEnrollmentsClient policyEnrollments;
+
+    /**
+     * Gets the PolicyEnrollmentsClient object to access its operations.
+     * 
+     * @return the PolicyEnrollmentsClient object.
+     */
+    public PolicyEnrollmentsClient getPolicyEnrollments() {
+        return this.policyEnrollments;
+    }
+
+    /**
+     * The PolicyExemptionsClient object to access its operations.
+     */
+    private final PolicyExemptionsClient policyExemptions;
+
+    /**
+     * Gets the PolicyExemptionsClient object to access its operations.
+     * 
+     * @return the PolicyExemptionsClient object.
+     */
+    public PolicyExemptionsClient getPolicyExemptions() {
+        return this.policyExemptions;
+    }
+
+    /**
      * The PolicySetDefinitionsClient object to access its operations.
      */
     private final PolicySetDefinitionsClient policySetDefinitions;
@@ -214,6 +246,34 @@ public final class PolicyManagementClientImpl implements PolicyManagementClient 
      */
     public PolicySetDefinitionVersionsClient getPolicySetDefinitionVersions() {
         return this.policySetDefinitionVersions;
+    }
+
+    /**
+     * The VariablesClient object to access its operations.
+     */
+    private final VariablesClient variables;
+
+    /**
+     * Gets the VariablesClient object to access its operations.
+     * 
+     * @return the VariablesClient object.
+     */
+    public VariablesClient getVariables() {
+        return this.variables;
+    }
+
+    /**
+     * The VariableValuesClient object to access its operations.
+     */
+    private final VariableValuesClient variableValues;
+
+    /**
+     * Gets the VariableValuesClient object to access its operations.
+     * 
+     * @return the VariableValuesClient object.
+     */
+    public VariableValuesClient getVariableValues() {
+        return this.variableValues;
     }
 
     /**
@@ -247,13 +307,17 @@ public final class PolicyManagementClientImpl implements PolicyManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01";
+        this.apiVersion = "2026-01-01-preview";
         this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);
         this.policyDefinitionVersions = new PolicyDefinitionVersionsClientImpl(this);
+        this.policyEnrollments = new PolicyEnrollmentsClientImpl(this);
+        this.policyExemptions = new PolicyExemptionsClientImpl(this);
         this.policySetDefinitions = new PolicySetDefinitionsClientImpl(this);
         this.policySetDefinitionVersions = new PolicySetDefinitionVersionsClientImpl(this);
+        this.variables = new VariablesClientImpl(this);
+        this.variableValues = new VariableValuesClientImpl(this);
         this.policyTokens = new PolicyTokensClientImpl(this);
     }
 

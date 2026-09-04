@@ -16,30 +16,37 @@ public final class OverrideModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OverrideModel model = BinaryData.fromString(
-            "{\"kind\":\"definitionVersion\",\"value\":\"tiukbldngkpoci\",\"selectors\":[{\"kind\":\"userPrincipalId\",\"in\":[\"gukgjnpiucgygevq\",\"ntypmrbpizcdrqj\",\"dpydn\"],\"notIn\":[\"xdeoejzic\",\"ifsjttgzfbishcb\"],\"progress\":1409405599}]}")
+            "{\"kind\":\"policyEffect\",\"value\":\"m\",\"selectors\":[{\"kind\":\"resourceType\",\"in\":[\"vvtpgvdfgio\",\"kftutqxlngxlefg\",\"gnxkrxdqmidtth\"],\"notIn\":[\"qdrabhjybigehoqf\",\"owskanyktz\"]},{\"kind\":\"userPrincipalId\",\"in\":[\"wgqyw\"],\"notIn\":[\"rvynhzgpph\",\"cgyncocpecf\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"ofsx\"],\"notIn\":[\"v\",\"bmqj\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"pmivkwlzu\"],\"notIn\":[\"fwnfnb\"]}]}")
             .toObject(OverrideModel.class);
-        Assertions.assertEquals(OverrideKind.DEFINITION_VERSION, model.kind());
-        Assertions.assertEquals("tiukbldngkpoci", model.value());
-        Assertions.assertEquals(SelectorKind.USER_PRINCIPAL_ID, model.selectors().get(0).kind());
-        Assertions.assertEquals("gukgjnpiucgygevq", model.selectors().get(0).in().get(0));
-        Assertions.assertEquals("xdeoejzic", model.selectors().get(0).notIn().get(0));
-        Assertions.assertEquals(1409405599, model.selectors().get(0).progress());
+        Assertions.assertEquals(OverrideKind.POLICY_EFFECT, model.kind());
+        Assertions.assertEquals("m", model.value());
+        Assertions.assertEquals(SelectorKind.RESOURCE_TYPE, model.selectors().get(0).kind());
+        Assertions.assertEquals("vvtpgvdfgio", model.selectors().get(0).in().get(0));
+        Assertions.assertEquals("qdrabhjybigehoqf", model.selectors().get(0).notIn().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OverrideModel model = new OverrideModel().withKind(OverrideKind.DEFINITION_VERSION)
-            .withValue("tiukbldngkpoci")
-            .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.USER_PRINCIPAL_ID)
-                .withIn(Arrays.asList("gukgjnpiucgygevq", "ntypmrbpizcdrqj", "dpydn"))
-                .withNotIn(Arrays.asList("xdeoejzic", "ifsjttgzfbishcb"))
-                .withProgress(1409405599)));
+        OverrideModel model = new OverrideModel().withKind(OverrideKind.POLICY_EFFECT)
+            .withValue("m")
+            .withSelectors(Arrays.asList(
+                new Selector().withKind(SelectorKind.RESOURCE_TYPE)
+                    .withIn(Arrays.asList("vvtpgvdfgio", "kftutqxlngxlefg", "gnxkrxdqmidtth"))
+                    .withNotIn(Arrays.asList("qdrabhjybigehoqf", "owskanyktz")),
+                new Selector().withKind(SelectorKind.USER_PRINCIPAL_ID)
+                    .withIn(Arrays.asList("wgqyw"))
+                    .withNotIn(Arrays.asList("rvynhzgpph", "cgyncocpecf")),
+                new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
+                    .withIn(Arrays.asList("ofsx"))
+                    .withNotIn(Arrays.asList("v", "bmqj")),
+                new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
+                    .withIn(Arrays.asList("pmivkwlzu"))
+                    .withNotIn(Arrays.asList("fwnfnb"))));
         model = BinaryData.fromObject(model).toObject(OverrideModel.class);
-        Assertions.assertEquals(OverrideKind.DEFINITION_VERSION, model.kind());
-        Assertions.assertEquals("tiukbldngkpoci", model.value());
-        Assertions.assertEquals(SelectorKind.USER_PRINCIPAL_ID, model.selectors().get(0).kind());
-        Assertions.assertEquals("gukgjnpiucgygevq", model.selectors().get(0).in().get(0));
-        Assertions.assertEquals("xdeoejzic", model.selectors().get(0).notIn().get(0));
-        Assertions.assertEquals(1409405599, model.selectors().get(0).progress());
+        Assertions.assertEquals(OverrideKind.POLICY_EFFECT, model.kind());
+        Assertions.assertEquals("m", model.value());
+        Assertions.assertEquals(SelectorKind.RESOURCE_TYPE, model.selectors().get(0).kind());
+        Assertions.assertEquals("vvtpgvdfgio", model.selectors().get(0).in().get(0));
+        Assertions.assertEquals("qdrabhjybigehoqf", model.selectors().get(0).notIn().get(0));
     }
 }
