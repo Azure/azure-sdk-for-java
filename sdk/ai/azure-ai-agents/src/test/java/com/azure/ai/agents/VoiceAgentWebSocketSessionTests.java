@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentWebSocketSessionTests {
@@ -127,6 +128,20 @@ public class VoiceAgentWebSocketSessionTests {
             .verify();
         session.close();
         assertFalse(session.isOpen());
+    }
+
+    @Test
+    public void syncConnectRejectsNullOptions() {
+        TokenCredential credential
+            = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
+        BetaVoiceAgentWebSocketClient client
+            = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
+                .credential(credential)
+                .configuration(Configuration.NONE)
+                .buildBetaVoiceAgentWebSocketClient();
+
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> client.connect("agent", null));
+        assertEquals("'options' cannot be null.", exception.getMessage());
     }
 
     @Test
