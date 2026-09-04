@@ -3,9 +3,8 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.ServerSentEvent;
-
-import java.util.Collections;
+import java.io.BufferedReader;
+import java.io.StringReader;
 
 /**
  * Code snippets for {@link CloseableIterableStream}.
@@ -15,16 +14,26 @@ public class CloseableIterableStreamJavaDocCodeSnippets {
      * Iterates over a server-sent event response and closes its associated resource.
      */
     public void iterateServerSentEventResponse() {
-        CloseableIterableStream<ServerSentEvent<String>> response = new CloseableIterableStream<>(
-            Collections.singletonList(new ServerSentEvent<>(null, "message", "event data", null, null)), () -> {
-            });
-
         // BEGIN: com.azure.core.util.closeableIterableStream.iterate
-        try (CloseableIterableStream<ServerSentEvent<String>> events = response) {
-            for (ServerSentEvent<String> event : events) {
-                System.out.printf("Event '%s': %s%n", event.getEvent(), event.getData());
+        BufferedReader responseBody = getResponseBody();
+        Iterable<String> eventData = parseEventData(responseBody);
+
+        try (CloseableIterableStream<String> events = new CloseableIterableStream<>(eventData, responseBody)) {
+            for (String event : events) {
+                System.out.printf("Event data: %s%n", event);
             }
         }
         // END: com.azure.core.util.closeableIterableStream.iterate
+    }
+
+    private BufferedReader getResponseBody() {
+        return new BufferedReader(new StringReader("data: event data\n\n"));
+    }
+
+    private Iterable<String> parseEventData(BufferedReader responseBody) {
+        return () -> responseBody.lines()
+            .filter(line -> line.startsWith("data:"))
+            .map(line -> line.substring("data:".length()).trim())
+            .iterator();
     }
 }

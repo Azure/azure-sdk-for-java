@@ -23,7 +23,7 @@ public class CloseableIterableStreamTests {
     }
 
     @Test
-    public void requiresCloseable() {
+    public void requiresOwnedResource() {
         assertThrows(NullPointerException.class, () -> new CloseableIterableStream<>(Arrays.asList("one"), null));
     }
 
@@ -33,6 +33,22 @@ public class CloseableIterableStreamTests {
         });
 
         assertEquals(Arrays.asList("one", "two"), stream.stream().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void delegatesIteratorCreation() {
+        AtomicInteger iteratorCount = new AtomicInteger();
+        Iterable<String> iterable = () -> {
+            iteratorCount.incrementAndGet();
+            return Arrays.asList("one").iterator();
+        };
+        CloseableIterableStream<String> stream = new CloseableIterableStream<>(iterable, () -> {
+        });
+
+        stream.iterator();
+        stream.iterator();
+
+        assertEquals(2, iteratorCount.get());
     }
 
     @Test
