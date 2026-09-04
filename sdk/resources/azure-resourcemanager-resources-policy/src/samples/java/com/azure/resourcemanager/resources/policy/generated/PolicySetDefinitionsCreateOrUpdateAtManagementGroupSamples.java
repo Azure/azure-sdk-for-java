@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups at management group level.
@@ -62,7 +62,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition at management group level.
@@ -77,13 +77,13 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
                     .withDescription("Policies to enforce low cost storage SKUs")
                     .withMetadata(BinaryData.fromBytes("{category=Cost Management}".getBytes(StandardCharsets.UTF_8)))
                     .withPolicyDefinitions(Arrays.asList(new PolicyDefinitionReference().withPolicyDefinitionId(
-                        "/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
+                        "/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
                         .withParameters(mapOf("listOfAllowedSKUs",
                             new ParameterValuesValue().withValue(
                                 BinaryData.fromBytes("[Standard_GRS, Standard_LRS]".getBytes(StandardCharsets.UTF_8)))))
                         .withPolicyDefinitionReferenceId("Limit_Skus"),
                         new PolicyDefinitionReference().withPolicyDefinitionId(
-                            "/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
+                            "/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
                             .withParameters(mapOf("prefix",
                                 new ParameterValuesValue()
                                     .withValue(BinaryData.fromBytes("DeptA".getBytes(StandardCharsets.UTF_8))),

@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy assignment with resource selectors.
@@ -51,7 +51,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithEnrollEnforcement.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithEnrollEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment to enforce policy effect only on enrolled resources during
@@ -81,7 +81,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignment.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignment.json
      */
     /**
      * Sample code: Create or update a policy assignment.
@@ -110,7 +110,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a system assigned identity.
@@ -140,7 +140,31 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithSelfserveExemptionSettings.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithResourcePercentageSelector.json
+     */
+    /**
+     * Sample code: Create or update a policy assignment with a resource percentage selector.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void createOrUpdateAPolicyAssignmentWithAResourcePercentageSelector(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyAssignments()
+            .define("CostManagement")
+            .withExistingScope("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2")
+            .withDisplayName("Limit resources by rollout percentage")
+            .withPolicyDefinitionId(
+                "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement")
+            .withDescription("Limit resources by rollout percentage")
+            .withMetadata(BinaryData.fromBytes("{assignedBy=Special Someone}".getBytes(StandardCharsets.UTF_8)))
+            .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRollout")
+                .withSelectors(Arrays
+                    .asList(new Selector().withKind(SelectorKind.fromString("resourcePercentage")).withProgress(80)))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithSelfserveExemptionSettings.json
      */
     /**
      * Sample code: Create or update a policy assignment with self-serve exemption settings.
@@ -166,7 +190,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentNonComplianceMessages.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentNonComplianceMessages.json
      */
     /**
      * Sample code: Create or update a policy assignment with multiple non-compliance messages.
@@ -191,7 +215,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a user assigned identity.
@@ -224,7 +248,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Create or update a policy assignment with overrides.
@@ -255,7 +279,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createPolicyAssignmentWithoutEnforcement.json
+     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithoutEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment without enforcing policy effect during resource creation or

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicyAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/listPolicyAssignmentsForResourceGroup.json
+     * x-ms-original-file: 2026-07-01/listPolicyAssignmentsForResourceGroup.json
      */
     /**
      * Sample code: List policy assignments that apply to a resource group.

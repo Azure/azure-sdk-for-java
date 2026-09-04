@@ -8,23 +8,23 @@ import com.azure.resourcemanager.resources.policy.models.PolicyTokenOperation;
 import com.azure.resourcemanager.resources.policy.models.PolicyTokenRequest;
 
 /**
- * Samples for PolicyTokens AcquireAtManagementGroup.
+ * Samples for PolicyTokens AcquireAtResourceGroup.
  */
-public final class PolicyTokensAcquireAtManagementGroupSamples {
+public final class PolicyTokensAcquireAtResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/acquirePolicyTokenAtManagementGroup.json
+     * x-ms-original-file: 2026-07-01/acquirePolicyTokenAtResourceGroup.json
      */
     /**
-     * Sample code: Acquire a policy token at management group level.
+     * Sample code: Acquire a policy token at resource group level.
      * 
      * @param manager Entry point to PolicyManager.
      */
     public static void
-        acquireAPolicyTokenAtManagementGroupLevel(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        acquireAPolicyTokenAtResourceGroupLevel(com.azure.resourcemanager.resources.policy.PolicyManager manager) {
         manager.policyTokens()
-            .acquireAtManagementGroupWithResponse("MyManagementGroup",
+            .acquireAtResourceGroupWithResponse("testRG",
                 new PolicyTokenRequest().withOperation(new PolicyTokenOperation().withUri(
-                    "https://management.azure.com/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000000000?api-version=2022-04-01")
+                    "https://management.azure.com/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM?api-version=2024-01-01")
                     .withHttpMethod("delete")),
                 com.azure.core.util.Context.NONE);
     }

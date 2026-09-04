@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionAdvancedParams.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionAdvancedParams.json
      */
     /**
      * Sample code: Create or update a policy definition with advanced parameters.
@@ -54,7 +54,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
      */
     /**
      * Sample code: Create or update a policy definition with external evaluation enforcement settings.
@@ -83,7 +83,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinition.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinition.json
      */
     /**
      * Sample code: Create or update a policy definition.
