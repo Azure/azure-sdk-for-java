@@ -437,7 +437,7 @@ com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.1.0;1.
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-providerhub;2.1.0;3.0.0
+com.azure.resourcemanager:azure-resourcemanager-providerhub;3.0.0;3.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-reservations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storagemover;1.5.0;1.6.0-beta.1
@@ -474,7 +474,7 @@ com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.2.0;1.3.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.1.0;1.2.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.1.0;1.2.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0;1.1.0-beta.2
@@ -518,7 +518,7 @@ com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-computelimit;1.4.0;1.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-edgeactions;1.0.0-beta.1;1.0.0-beta.2
@@ -542,7 +542,7 @@ com.azure.resourcemanager:azure-resourcemanager-enclave;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerserviceaimanager;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshifthcp;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagesync;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resources-policy;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-resources-policy;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2
