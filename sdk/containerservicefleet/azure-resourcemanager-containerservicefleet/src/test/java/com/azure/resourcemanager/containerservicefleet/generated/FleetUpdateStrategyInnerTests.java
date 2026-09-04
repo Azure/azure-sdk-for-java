@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetUpdateStrategyInner;
 import com.azure.resourcemanager.containerservicefleet.models.GateConfiguration;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
@@ -18,50 +19,39 @@ public final class FleetUpdateStrategyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetUpdateStrategyInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"tdaaygdvwvg\",\"groups\":[{\"name\":\"hgwxrtfudx\"},{\"name\":\"pxgy\"},{\"name\":\"agvrvmnpkuk\"},{\"name\":\"himdbl\"}],\"afterStageWaitInSeconds\":505358997,\"maxConcurrency\":\"mfnjh\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"foqreyfkzik\",\"groups\":[{\"name\":\"wneaiv\"}],\"afterStageWaitInSeconds\":322973840,\"maxConcurrency\":\"elpcirelsfeaenwa\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"aanozjosphyoulpj\",\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"iml\",\"groups\":[{\"name\":\"jxkcgxxlxsff\"},{\"name\":\"cvizqzdwlvw\"},{\"name\":\"youpfgfbkj\"}],\"memberSelector\":{\"byLabel\":\"dyhgkfminsg\"},\"afterStageWaitInSeconds\":1272513184,\"maxAllowedFailures\":\"ttsttktlahbqact\",\"maxConcurrency\":\"gzukxitmm\",\"beforeGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"n\",\"id\":\"xcpjuisavokqdzf\",\"name\":\"azivjlfrqttbajl\",\"type\":\"atnwxyiopi\"}")
             .toObject(FleetUpdateStrategyInner.class);
-        Assertions.assertEquals("tdaaygdvwvg", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("hgwxrtfudx", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(505358997, model.strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals("mfnjh", model.strategy().stages().get(0).maxConcurrency());
-        Assertions.assertEquals(GateType.APPROVAL, model.strategy().stages().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals("iml", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("jxkcgxxlxsff", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("dyhgkfminsg", model.strategy().stages().get(0).memberSelector().byLabel());
+        Assertions.assertEquals(1272513184, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("ttsttktlahbqact", model.strategy().stages().get(0).maxAllowedFailures());
+        Assertions.assertEquals("gzukxitmm", model.strategy().stages().get(0).maxConcurrency());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL, model.strategy().stages().get(0).afterGates().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetUpdateStrategyInner model
-            = new FleetUpdateStrategyInner()
-                .withStrategy(
-                    new UpdateRunStrategy().withStages(Arrays.asList(
-                        new UpdateStage().withName("tdaaygdvwvg")
-                            .withGroups(Arrays.asList(new UpdateGroup().withName("hgwxrtfudx"),
-                                new UpdateGroup().withName("pxgy"), new UpdateGroup().withName("agvrvmnpkuk"),
-                                new UpdateGroup().withName("himdbl")))
-                            .withAfterStageWaitInSeconds(505358997)
-                            .withMaxConcurrency("mfnjh")
-                            .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL)))
-                            .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL))),
-                        new UpdateStage().withName("foqreyfkzik")
-                            .withGroups(Arrays.asList(new UpdateGroup().withName("wneaiv")))
-                            .withAfterStageWaitInSeconds(322973840)
-                            .withMaxConcurrency("elpcirelsfeaenwa")
-                            .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL)))
-                            .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL),
-                                new GateConfiguration().withType(GateType.APPROVAL))))));
+        FleetUpdateStrategyInner model = new FleetUpdateStrategyInner()
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("iml")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("jxkcgxxlxsff"),
+                    new UpdateGroup().withName("cvizqzdwlvw"), new UpdateGroup().withName("youpfgfbkj")))
+                .withMemberSelector(new MemberSelector().withByLabel("dyhgkfminsg"))
+                .withAfterStageWaitInSeconds(1272513184)
+                .withMaxAllowedFailures("ttsttktlahbqact")
+                .withMaxConcurrency("gzukxitmm")
+                .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.SCHEDULED_START),
+                    new GateConfiguration().withType(GateType.SCHEDULED_START)))
+                .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL))))));
         model = BinaryData.fromObject(model).toObject(FleetUpdateStrategyInner.class);
-        Assertions.assertEquals("tdaaygdvwvg", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("hgwxrtfudx", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(505358997, model.strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals("mfnjh", model.strategy().stages().get(0).maxConcurrency());
-        Assertions.assertEquals(GateType.APPROVAL, model.strategy().stages().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals("iml", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("jxkcgxxlxsff", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("dyhgkfminsg", model.strategy().stages().get(0).memberSelector().byLabel());
+        Assertions.assertEquals(1272513184, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("ttsttktlahbqact", model.strategy().stages().get(0).maxAllowedFailures());
+        Assertions.assertEquals("gzukxitmm", model.strategy().stages().get(0).maxConcurrency());
+        Assertions.assertEquals(GateType.SCHEDULED_START, model.strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL, model.strategy().stages().get(0).afterGates().get(0).type());
     }
 }

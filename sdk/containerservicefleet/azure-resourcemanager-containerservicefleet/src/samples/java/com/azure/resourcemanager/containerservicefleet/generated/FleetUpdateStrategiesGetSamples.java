@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetUpdateStrategiesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateStrategies_Get.json
+     * x-ms-original-file: 2026-06-02-preview/UpdateStrategies_Get.json
      */
     /**
      * Sample code: Get a FleetUpdateStrategy resource.
