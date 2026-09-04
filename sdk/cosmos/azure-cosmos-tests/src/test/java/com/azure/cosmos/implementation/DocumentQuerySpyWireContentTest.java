@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
-
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -20,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -140,8 +140,33 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     public Document createDocument(AsyncDocumentClient client, String collectionLink, int cnt) {
 
         Document docDefinition = getDocumentDefinition(cnt);
-        return client
-                .createDocument(collectionLink, docDefinition, null, false).block().getResource();
+        AtomicReference<Document> createdDocument = new AtomicReference<>();
+        executeWithRetry(
+            () -> createdDocument.set(
+                client.createDocument(collectionLink, docDefinition, null, false).block().getResource()),
+            10,
+            "create setup document for DocumentQuerySpyWireContentTest");
+        return createdDocument.get();
+    }
+
+    private static void executeWithRetry(Runnable action, int maxRetries, String context) {
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                action.run();
+                return;
+            } catch (RuntimeException error) {
+                if (attempt == maxRetries - 1) {
+                    throw error;
+                }
+
+                try {
+                    TimeUnit.SECONDS.sleep(attempt + 1L);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Interrupted while retrying " + context, interrupted);
+                }
+            }
+        }
     }
 
     @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
@@ -174,25 +199,29 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         // wait for catch up
         TimeUnit.SECONDS.sleep(1);
 
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
-            ResourceType.Document,
-            OperationType.Query,
-            options,
-            client
-        );
+        warmUpCollectionCache(getMultiPartitionCollectionLink());
+        warmUpCollectionCache(getSinglePartitionCollectionLink());
+    }
 
-        try {
-            // do the query once to ensure the collection is cached.
-            client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
-                  .then().block();
+    private void warmUpCollectionCache(String collectionLink) {
+        executeWithRetry(() -> {
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.Document,
+                OperationType.Query,
+                options,
+                client);
 
-            // do the query once to ensure the collection is cached.
-            client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
-                  .then().block();
-        } finally {
-            safeClose(state);
-        }
+            try {
+                client.queryDocuments(collectionLink, "select * from root", state, Document.class)
+                    .then()
+                    .block();
+            } finally {
+                safeClose(state);
+            }
+        },
+            10,
+            "warm up collection cache for DocumentQuerySpyWireContentTest");
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

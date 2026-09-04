@@ -115,6 +115,9 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
         inputs:
@@ -190,6 +193,11 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
           parameters:
             PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+      - task: PipAuthenticate@1
+        displayName: 'Pip Authenticate to Azure Artifacts'
+        inputs:
+          artifactFeeds: 'public/azure-sdk-for-python'
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -402,6 +410,11 @@ jobs:
           version: 22.x
         displayName: Use Node.js 22.x
 
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+        parameters:
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
+          registryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
+
       - task: PowerShell@2
         displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
@@ -410,6 +423,11 @@ jobs:
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
+
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:

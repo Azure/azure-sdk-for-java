@@ -28,13 +28,13 @@ import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -675,10 +675,11 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
         String containerName = "roundTripsContainer-" + UUID.randomUUID();
-        createdDatabase.createContainer(containerName,
-            "/mypk",
-            ThroughputProperties.createManualThroughput(10100)).block();
-        roundTripsContainer = createdDatabase.getContainer(containerName);
+        roundTripsContainer = createCollection(
+            createdDatabase,
+            new CosmosContainerProperties(containerName, "/mypk"),
+            new CosmosContainerRequestOptions(),
+            10100);
         setupRoundTripContainer();
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();

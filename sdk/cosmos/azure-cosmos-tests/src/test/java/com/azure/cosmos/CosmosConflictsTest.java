@@ -13,13 +13,13 @@ import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosConflictRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.util.Strings;
@@ -127,8 +127,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
             ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createLastWriterWinsPolicy(
                 "/regionId");
             containerProperties.setConflictResolutionPolicy(resolutionPolicy);
-            database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-            Thread.sleep(5000); //waiting for container to get available across multi region
+            createCollection(database, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             try {
                 List<CosmosAsyncContainer> containers = new ArrayList<>();
@@ -182,8 +181,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
                 "/mypk");
             ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createCustomPolicy(database.getId(), containerProperties.getId(), sprocId);
             containerProperties.setConflictResolutionPolicy(resolutionPolicy);
-            database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-            Thread.sleep(5000); //waiting for container to get available across multi region
+            createCollection(database, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             try {
                 //create the sproc
@@ -243,8 +241,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
                 "/mypk");
             ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createCustomPolicy(database.getId(), containerProperties.getId(), sprocId);
             containerProperties.setConflictResolutionPolicy(resolutionPolicy);
-            database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-            Thread.sleep(5000); //waiting for container to get available across multi region
+            createCollection(database, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             try {
                 List<CosmosAsyncContainer> containers = new ArrayList<>();

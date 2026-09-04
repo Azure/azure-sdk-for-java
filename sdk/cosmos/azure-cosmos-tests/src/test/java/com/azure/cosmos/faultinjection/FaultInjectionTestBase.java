@@ -97,7 +97,9 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
             }
 
             if (operationType == OperationType.ReadFeed) {
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    cosmosAsyncContainer,
+                    "get feed ranges for fault injection base change feed setup");
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 

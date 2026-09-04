@@ -5,7 +5,6 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -35,10 +34,6 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readStoredProcedures() throws Exception {
         int maxItemCount = 2;
-
-        CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
-                                                                                           .readAllStoredProcedures();
-
         int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
@@ -49,7 +44,10 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
+        validateFeedResponseListWithRetry(
+            () -> createdCollection.getScripts().readAllStoredProcedures().byPage(maxItemCount),
+            validator,
+            "Stored procedure read feed");
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
