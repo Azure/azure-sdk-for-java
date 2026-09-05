@@ -23,46 +23,47 @@ public final class TableCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"kgqxn\",\"restoreParameters\":{\"restoreSource\":\"keznjaujvaa\",\"restoreTimestampInUtc\":\"2021-07-20T05:39:01Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":2110011560,\"autoscaleSettings\":{\"maxThroughput\":1670599893}}},\"id\":\"xw\",\"name\":\"ka\",\"type\":\"rrqmbzmqk\",\"location\":\"tbnxwbjsid\",\"tags\":{\"ewijymrhbguz\":\"kfpksokdgo\",\"nfnzhhh\":\"zkye\"},\"identity\":{\"principalId\":\"mffjkutycyarn\",\"tenantId\":\"ohguabz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"cnhz\":{\"principalId\":\"pyc\",\"clientId\":\"coe\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"urcclfgxannn\",\"restoreParameters\":{\"restoreSource\":\"zposewxigpxvkqm\",\"restoreTimestampInUtc\":\"2021-05-06T23:25:16Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":102361694,\"autoscaleSettings\":{\"maxThroughput\":479705193}}},\"id\":\"zyzeyuubeidsz\",\"name\":\"ytoithgygvfl\",\"type\":\"vdihoynkrx\",\"location\":\"twk\",\"tags\":{\"moenodnaien\":\"yrucpcunnuzdq\"},\"identity\":{\"principalId\":\"skndnelqkaadlknw\",\"tenantId\":\"anniyopetxivcnr\",\"type\":\"None\",\"userAssignedIdentities\":{\"qsdtcjbctvivuzq\":{\"principalId\":\"aephblkw\",\"clientId\":\"atv\"}}}}")
             .toObject(TableCreateUpdateParameters.class);
-        Assertions.assertEquals("tbnxwbjsid", model.location());
-        Assertions.assertEquals("kfpksokdgo", model.tags().get("ewijymrhbguz"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("kgqxn", model.resource().id());
-        Assertions.assertEquals("keznjaujvaa", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T05:39:01Z"),
+        Assertions.assertEquals("twk", model.location());
+        Assertions.assertEquals("yrucpcunnuzdq", model.tags().get("moenodnaien"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("urcclfgxannn", model.resource().id());
+        Assertions.assertEquals("zposewxigpxvkqm", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T23:25:16Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals(2110011560, model.options().throughput());
-        Assertions.assertEquals(1670599893, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(102361694, model.options().throughput());
+        Assertions.assertEquals(479705193, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableCreateUpdateParameters model = new TableCreateUpdateParameters().withLocation("tbnxwbjsid")
-            .withTags(mapOf("ewijymrhbguz", "kfpksokdgo", "nfnzhhh", "zkye"))
-            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("cnhz", new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new TableResource().withId("kgqxn")
-                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("keznjaujvaa")
-                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-07-20T05:39:01Z"))
+        TableCreateUpdateParameters model = new TableCreateUpdateParameters().withLocation("twk")
+            .withTags(mapOf("moenodnaien", "yrucpcunnuzdq"))
+            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("qsdtcjbctvivuzq", new ManagedServiceIdentityUserAssignedIdentities())))
+            .withResource(new TableResource().withId("urcclfgxannn")
+                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("zposewxigpxvkqm")
+                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-05-06T23:25:16Z"))
                     .withRestoreWithTtlDisabled(false))
                 .withCreateMode(CreateMode.DEFAULT))
-            .withOptions(new CreateUpdateOptions().withThroughput(2110011560)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1670599893)));
+            .withOptions(new CreateUpdateOptions().withThroughput(102361694)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(479705193)));
         model = BinaryData.fromObject(model).toObject(TableCreateUpdateParameters.class);
-        Assertions.assertEquals("tbnxwbjsid", model.location());
-        Assertions.assertEquals("kfpksokdgo", model.tags().get("ewijymrhbguz"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("kgqxn", model.resource().id());
-        Assertions.assertEquals("keznjaujvaa", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T05:39:01Z"),
+        Assertions.assertEquals("twk", model.location());
+        Assertions.assertEquals("yrucpcunnuzdq", model.tags().get("moenodnaien"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("urcclfgxannn", model.resource().id());
+        Assertions.assertEquals("zposewxigpxvkqm", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T23:25:16Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals(2110011560, model.options().throughput());
-        Assertions.assertEquals(1670599893, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(102361694, model.options().throughput());
+        Assertions.assertEquals(479705193, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available

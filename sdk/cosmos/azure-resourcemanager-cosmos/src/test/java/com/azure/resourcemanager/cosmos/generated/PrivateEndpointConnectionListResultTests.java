@@ -12,13 +12,14 @@ public final class PrivateEndpointConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"cauwazcgwdfriwg\"},\"privateLinkServiceConnectionState\":{\"status\":\"pozo\",\"description\":\"cvgllixdg\",\"actionsRequired\":\"fgw\"},\"groupId\":\"qkjvxprwpxsoohu\",\"provisioningState\":\"lcsklt\"},\"id\":\"uugggzlfbgrd\",\"name\":\"gubsrtmdylpe\",\"type\":\"pilttjzgc\"}],\"nextLink\":\"cmfpfbodet\"}")
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"tdscnkzzohnrdd\"},\"privateLinkServiceConnectionState\":{\"status\":\"eqozrehlbz\",\"description\":\"xbnjrqvzyuexoz\",\"actionsRequired\":\"ynp\"},\"groupId\":\"eudpab\",\"provisioningState\":\"euwzosgyjxvc\"},\"id\":\"sormrex\",\"name\":\"vdubew\",\"type\":\"zygba\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"covsdqhzrtd\"},\"privateLinkServiceConnectionState\":{\"status\":\"rlimzfvppkeqs\",\"description\":\"jmcl\",\"actionsRequired\":\"ygnhrkombc\"},\"groupId\":\"ajdopggor\",\"provisioningState\":\"oqtrotpvclpo\"},\"id\":\"rlmw\",\"name\":\"ptskwxjgvhxccb\",\"type\":\"kakmkookbputmgvm\"}],\"nextLink\":\"akmlwktfowzkroyr\"}")
             .toObject(PrivateEndpointConnectionListResult.class);
-        Assertions.assertEquals("cauwazcgwdfriwg", model.value().get(0).privateEndpoint().id());
-        Assertions.assertEquals("pozo", model.value().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("cvgllixdg", model.value().get(0).privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("qkjvxprwpxsoohu", model.value().get(0).groupId());
-        Assertions.assertEquals("lcsklt", model.value().get(0).provisioningState());
-        Assertions.assertEquals("cmfpfbodet", model.nextLink());
+        Assertions.assertEquals("tdscnkzzohnrdd", model.value().get(0).privateEndpoint().id());
+        Assertions.assertEquals("eqozrehlbz", model.value().get(0).privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("xbnjrqvzyuexoz",
+            model.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("eudpab", model.value().get(0).groupId());
+        Assertions.assertEquals("euwzosgyjxvc", model.value().get(0).provisioningState());
+        Assertions.assertEquals("akmlwktfowzkroyr", model.nextLink());
     }
 }

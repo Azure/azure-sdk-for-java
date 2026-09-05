@@ -11,7 +11,7 @@ public final class SqlDedicatedGatewayRegionalServiceResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDedicatedGatewayRegionalServiceResource model = BinaryData.fromString(
-            "{\"sqlDedicatedGatewayEndpoint\":\"xbeuuqu\",\"name\":\"zwtjwwguzytijc\",\"location\":\"nondegjdyd\",\"status\":\"Updating\"}")
+            "{\"sqlDedicatedGatewayEndpoint\":\"mcthtpqgf\",\"name\":\"osizk\",\"location\":\"u\",\"status\":\"Deleting\"}")
             .toObject(SqlDedicatedGatewayRegionalServiceResource.class);
     }
 }

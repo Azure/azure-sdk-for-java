@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseListUsagesSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseGetUsages.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseGetUsages.json
      */
     /**
      * Sample code: CosmosDBDatabaseGetUsages.

@@ -20,33 +20,34 @@ public final class CassandraKeyspaceCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"tdgukvlbp\"},\"options\":{\"throughput\":1914645473,\"autoscaleSettings\":{\"maxThroughput\":8081594}}},\"id\":\"uambewreswmowegm\",\"name\":\"teyxeyguq\",\"type\":\"ijiitns\",\"location\":\"lz\",\"tags\":{\"jwaiuf\":\"ygr\",\"aybfu\":\"n\"},\"identity\":{\"principalId\":\"rojsydg\",\"tenantId\":\"ydkygywezskieca\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"xawoijpodtblxp\":{\"principalId\":\"ieqvds\",\"clientId\":\"klixqcahyhxaly\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"ezkiswqjmdghsypa\"},\"options\":{\"throughput\":2024323319,\"autoscaleSettings\":{\"maxThroughput\":191485279}}},\"id\":\"bjczjnciuiyqvlda\",\"name\":\"v\",\"type\":\"i\",\"location\":\"qzlgcndhzxrrfcfs\",\"tags\":{\"fsbzxlbzxo\":\"hgsnxuwwkpph\",\"nmwpf\":\"eikjclwza\",\"uqqiqezxlhd\":\"uqtaazyqbxyxoyf\",\"cadwvpsozjii\":\"zq\"},\"identity\":{\"principalId\":\"iybmrzoep\",\"tenantId\":\"wdvwnjkgvfnmx\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rfqjpnqnoo\":{\"principalId\":\"tibtyi\",\"clientId\":\"yvp\"}}}}")
             .toObject(CassandraKeyspaceCreateUpdateParameters.class);
-        Assertions.assertEquals("lz", model.location());
-        Assertions.assertEquals("ygr", model.tags().get("jwaiuf"));
+        Assertions.assertEquals("qzlgcndhzxrrfcfs", model.location());
+        Assertions.assertEquals("hgsnxuwwkpph", model.tags().get("fsbzxlbzxo"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("tdgukvlbp", model.resource().id());
-        Assertions.assertEquals(1914645473, model.options().throughput());
-        Assertions.assertEquals(8081594, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("ezkiswqjmdghsypa", model.resource().id());
+        Assertions.assertEquals(2024323319, model.options().throughput());
+        Assertions.assertEquals(191485279, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CassandraKeyspaceCreateUpdateParameters model = new CassandraKeyspaceCreateUpdateParameters().withLocation("lz")
-            .withTags(mapOf("jwaiuf", "ygr", "aybfu", "n"))
+        CassandraKeyspaceCreateUpdateParameters model = new CassandraKeyspaceCreateUpdateParameters()
+            .withLocation("qzlgcndhzxrrfcfs")
+            .withTags(mapOf("fsbzxlbzxo", "hgsnxuwwkpph", "nmwpf", "eikjclwza", "uqqiqezxlhd", "uqtaazyqbxyxoyf",
+                "cadwvpsozjii", "zq"))
             .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("xawoijpodtblxp", new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new CassandraKeyspaceResource().withId("tdgukvlbp"))
-            .withOptions(new CreateUpdateOptions().withThroughput(1914645473)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(8081594)));
+                .withUserAssignedIdentities(mapOf("rfqjpnqnoo", new ManagedServiceIdentityUserAssignedIdentities())))
+            .withResource(new CassandraKeyspaceResource().withId("ezkiswqjmdghsypa"))
+            .withOptions(new CreateUpdateOptions().withThroughput(2024323319)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(191485279)));
         model = BinaryData.fromObject(model).toObject(CassandraKeyspaceCreateUpdateParameters.class);
-        Assertions.assertEquals("lz", model.location());
-        Assertions.assertEquals("ygr", model.tags().get("jwaiuf"));
+        Assertions.assertEquals("qzlgcndhzxrrfcfs", model.location());
+        Assertions.assertEquals("hgsnxuwwkpph", model.tags().get("fsbzxlbzxo"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("tdgukvlbp", model.resource().id());
-        Assertions.assertEquals(1914645473, model.options().throughput());
-        Assertions.assertEquals(8081594, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("ezkiswqjmdghsypa", model.resource().id());
+        Assertions.assertEquals(2024323319, model.options().throughput());
+        Assertions.assertEquals(191485279, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available

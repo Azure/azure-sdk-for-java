@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class LocationsListSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBLocationList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBLocationList.json
      */
     /**
      * Sample code: CosmosDBLocationList.

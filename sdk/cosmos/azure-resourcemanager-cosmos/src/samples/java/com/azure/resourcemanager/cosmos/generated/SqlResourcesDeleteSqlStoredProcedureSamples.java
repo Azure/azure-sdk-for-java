@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesDeleteSqlStoredProcedureSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlStoredProcedureDelete.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlStoredProcedureDelete.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureDelete.

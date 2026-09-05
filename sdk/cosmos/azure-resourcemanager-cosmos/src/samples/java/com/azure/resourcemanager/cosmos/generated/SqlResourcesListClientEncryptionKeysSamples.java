@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesListClientEncryptionKeysSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlClientEncryptionKeysList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeysList.json
      */
     /**
      * Sample code: CosmosDBClientEncryptionKeysList.
