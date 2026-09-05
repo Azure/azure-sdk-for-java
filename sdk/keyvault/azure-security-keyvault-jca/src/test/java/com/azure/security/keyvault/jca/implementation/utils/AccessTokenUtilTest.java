@@ -5,14 +5,14 @@ package com.azure.security.keyvault.jca.implementation.utils;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -73,11 +73,9 @@ public class AccessTokenUtilTest {
         logger.setLevel(Level.ALL);
         logger.setUseParentHandlers(false);
 
-        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.post(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(null);
-
-            AccessTokenUtil.getAccessToken("https://vault.azure.net", null, "tenant-id", "client-id", clientSecret);
+        try {
+            AccessTokenUtil.getAccessToken("https://vault.azure.net", null, "tenant-id", "client-id", clientSecret,
+                (uri, headers, body, contentType) -> null);
         } finally {
             logger.removeHandler(collector);
             logger.setLevel(originalLevel);
@@ -86,5 +84,14 @@ public class AccessTokenUtilTest {
 
         assertFalse(loggedValues.contains(clientSecret), "The client secret must never be logged");
         assertTrue(loggedValues.contains("client-id"), "Non-secret parameters stay available for diagnostics");
+    }
+
+    @Test
+    void getLoginUriReturnsNullForEmptyAuthenticateHeader() {
+        Map<String, List<String>> headers = Collections.singletonMap("WWW-Authenticate", Collections.emptyList());
+
+        String result = AccessTokenUtil.getLoginUri("https://vault.azure.net", false, ignored -> headers);
+
+        assertNull(result);
     }
 }

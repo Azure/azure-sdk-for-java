@@ -4,29 +4,21 @@
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.ssl.SSLContexts;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.net.URI;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class JreKeyStoreTest {
@@ -48,7 +40,7 @@ public class JreKeyStoreTest {
         assertNotNull(jreCertificates);
         assertNotNull(jreCertificates.getAliases());
         Map<String, Certificate> certs = jreCertificates.getCertificates();
-        assertTrue(certs.size() > 0);
+        assertFalse(certs.isEmpty());
         assertNotNull(jreCertificates.getCertificateKeys());
     }
 
@@ -64,33 +56,27 @@ public class JreKeyStoreTest {
          * - Create SSL connection factory.
          * - Set hostname verifier to trust any hostname.
          */
-
-        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(ks, null).build();
-
-        SSLConnectionSocketFactory sslConnectionSocketFactory
-            = new SSLConnectionSocketFactory(sslContext, (hostname, session) -> true);
-
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslConnectionSocketFactory).build());
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, JcaTestUtils.loadTrustMaterial(ks, null), null);
 
         /*
          * And now execute the test.
          */
         String result = null;
-
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://google.com:443");
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = null;
-                if (status == 200) {
-                    result1 = "Success";
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
+        HttpsURLConnection connection = null;
+        try {
+            connection = (HttpsURLConnection) URI.create("https://google.com:443").toURL().openConnection();
+            connection.setSSLSocketFactory(sslContext.getSocketFactory());
+            connection.setRequestMethod("GET");
+            if (connection.getResponseCode() == 200) {
+                result = "Success";
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
 
         /*

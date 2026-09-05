@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -35,7 +36,7 @@ public class SpecificPathCertificatesTest {
 
     public static String getFilePath(String packageName) {
         String filepath = "\\src\\test\\resources\\" + packageName;
-        return System.getProperty("user.dir") + filepath.replace("\\", System.getProperty("file.separator"));
+        return System.getProperty("user.dir") + filepath.replace("\\", FileSystems.getDefault().getSeparator());
     }
 
     @Test
