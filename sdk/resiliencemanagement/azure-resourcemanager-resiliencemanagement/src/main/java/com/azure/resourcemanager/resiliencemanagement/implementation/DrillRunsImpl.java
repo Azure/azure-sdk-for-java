@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesReq
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunFailoverRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunReprotectRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRuns;
+import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.MarkAsCompleteRequest;
 
 public final class DrillRunsImpl implements DrillRuns {
@@ -103,6 +104,26 @@ public final class DrillRunsImpl implements DrillRuns {
     public void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body, Context context) {
         this.serviceClient().markAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, context);
+    }
+
+    public void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName) {
+        this.serviceClient().generateReport(serviceGroupName, operationId, drillName, drillRunName);
+    }
+
+    public void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        Context context) {
+        this.serviceClient().generateReport(serviceGroupName, operationId, drillName, drillRunName, context);
+    }
+
+    public void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, ListReportDownloadUrlRequest body) {
+        this.serviceClient().listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body);
+    }
+
+    public void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, ListReportDownloadUrlRequest body, Context context) {
+        this.serviceClient()
+            .listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context);
     }
 
     private DrillRunsClient serviceClient() {

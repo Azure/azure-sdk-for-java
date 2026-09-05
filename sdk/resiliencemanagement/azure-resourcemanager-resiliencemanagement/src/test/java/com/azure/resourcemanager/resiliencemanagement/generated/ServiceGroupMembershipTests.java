@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceGroupMembershipTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceGroupMembership model
-            = BinaryData.fromString("{\"serviceGroupId\":\"ypl\",\"membershipType\":\"Direct\"}")
-                .toObject(ServiceGroupMembership.class);
-        Assertions.assertEquals("ypl", model.serviceGroupId());
-        Assertions.assertEquals(MembershipType.DIRECT, model.membershipType());
+        ServiceGroupMembership model = BinaryData
+            .fromString("{\"serviceGroupId\":\"cndvkaozwyiftyhx\",\"membershipType\":\"ThroughResourceGroup\"}")
+            .toObject(ServiceGroupMembership.class);
+        Assertions.assertEquals("cndvkaozwyiftyhx", model.serviceGroupId());
+        Assertions.assertEquals(MembershipType.THROUGH_RESOURCE_GROUP, model.membershipType());
     }
 }

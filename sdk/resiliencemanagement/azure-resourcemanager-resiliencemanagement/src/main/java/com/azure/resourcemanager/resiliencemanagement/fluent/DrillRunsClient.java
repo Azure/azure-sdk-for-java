@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunInne
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunFailoverRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunReprotectRequest;
+import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.MarkAsCompleteRequest;
 
 /**
@@ -405,4 +406,149 @@ public interface DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body, Context context);
+
+    /**
+     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
+     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+     * attempt retries it. A report that has been finalized is never regenerated.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public, read-only summary of report generation for a Drill Run.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGenerateReport(String serviceGroupName, String operationId,
+        String drillName, String drillRunName);
+
+    /**
+     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
+     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+     * attempt retries it. A report that has been finalized is never regenerated.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public, read-only summary of report generation for a Drill Run.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGenerateReport(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, Context context);
+
+    /**
+     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
+     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+     * attempt retries it. A report that has been finalized is never regenerated.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName);
+
+    /**
+     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
+     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+     * attempt retries it. A report that has been finalized is never regenerated.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        Context context);
+
+    /**
+     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
+     * returned expiryTimestamp and grants access to that single report only.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response containing a short-lived, read-only download URL for a
+     * Drill Run report.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginListReportDownloadUrl(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, ListReportDownloadUrlRequest body);
+
+    /**
+     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
+     * returned expiryTimestamp and grants access to that single report only.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response containing a short-lived, read-only download URL for a
+     * Drill Run report.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginListReportDownloadUrl(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, ListReportDownloadUrlRequest body, Context context);
+
+    /**
+     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
+     * returned expiryTimestamp and grants access to that single report only.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        ListReportDownloadUrlRequest body);
+
+    /**
+     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
+     * returned expiryTimestamp and grants access to that single report only.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        ListReportDownloadUrlRequest body, Context context);
 }

@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateForOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateForOperationRequest model
-            = BinaryData.fromString("{\"operationName\":\"Reprotect\"}").toObject(ValidateForOperationRequest.class);
-        Assertions.assertEquals(RecoveryOperationNames.REPROTECT, model.operationName());
+        ValidateForOperationRequest model = BinaryData.fromString("{\"operationName\":\"TestFailoverCleanup\"}")
+            .toObject(ValidateForOperationRequest.class);
+        Assertions.assertEquals(RecoveryOperationNames.TEST_FAILOVER_CLEANUP, model.operationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidateForOperationRequest model
-            = new ValidateForOperationRequest().withOperationName(RecoveryOperationNames.REPROTECT);
+            = new ValidateForOperationRequest().withOperationName(RecoveryOperationNames.TEST_FAILOVER_CLEANUP);
         model = BinaryData.fromObject(model).toObject(ValidateForOperationRequest.class);
-        Assertions.assertEquals(RecoveryOperationNames.REPROTECT, model.operationName());
+        Assertions.assertEquals(RecoveryOperationNames.TEST_FAILOVER_CLEANUP, model.operationName());
     }
 }

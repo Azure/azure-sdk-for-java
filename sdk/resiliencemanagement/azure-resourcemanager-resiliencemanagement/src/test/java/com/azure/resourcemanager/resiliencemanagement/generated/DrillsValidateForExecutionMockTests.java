@@ -32,10 +32,10 @@ public final class DrillsValidateForExecutionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drills()
-            .validateForExecution("zlwxaeaovur", "xdndsbdweaderzm", "ntopa",
+            .validateForExecution("dminic", "teajohiyg", "pnbonhpcz",
                 new ValidateForExecutionRequest().withValidateForExecutionProperties(
-                    new ValidateForExecutionProperties().withOperationName(DrillRunTasks.REPROTECT_REVERSE)
-                        .withSourceLocations(Arrays.asList("magoaqylkjz", "jiuazjc", "mxitpfinzcpd", "tkrlgjmtbd"))),
+                    new ValidateForExecutionProperties().withOperationName(DrillRunTasks.FAILOVER)
+                        .withSourceLocations(Arrays.asList("vw"))),
                 com.azure.core.util.Context.NONE);
 
     }

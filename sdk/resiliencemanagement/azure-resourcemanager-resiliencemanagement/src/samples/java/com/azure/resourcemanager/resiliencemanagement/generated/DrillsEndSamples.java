@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillEndRequest;
  */
 public final class DrillsEndSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Drills_End_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/Drills_End_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_End_MaximumSet.
