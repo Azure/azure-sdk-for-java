@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.terraform.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.terraform.models.AzureExtensionResourceType;
 import com.azure.resourcemanager.terraform.models.ExportResource;
 import com.azure.resourcemanager.terraform.models.TargetProvider;
 import java.util.Arrays;
@@ -14,51 +15,54 @@ public final class ExportResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportResource model = BinaryData.fromString(
-            "{\"type\":\"ExportResource\",\"resourceIds\":[\"rtfw\",\"ukxgaud\"],\"resourceName\":\"snhsjcnyejhkryh\",\"resourceType\":\"apcz\",\"namePattern\":\"okjye\",\"recursive\":true,\"includeResourceGroup\":false,\"targetProvider\":\"azapi\",\"fullProperties\":true,\"maskSensitive\":false,\"includeRoleAssignment\":false,\"includeManagedResource\":true,\"excludeAzureResource\":[\"jspodmailzyde\",\"o\",\"wyahuxinpmqnja\"],\"excludeTerraformResource\":[\"xj\",\"prozvcputegjvwmf\",\"atscmd\",\"pjhulsuuvmkj\"]}")
+            "{\"type\":\"ExportResource\",\"resourceIds\":[\"wlokjyem\"],\"resourceName\":\"vnipjox\",\"resourceType\":\"nchgej\",\"namePattern\":\"odmailzyd\",\"recursive\":false,\"includeResourceGroup\":true,\"targetProvider\":\"azurerm\",\"fullProperties\":true,\"maskSensitive\":false,\"includeRoleAssignment\":false,\"includeExtensions\":[\"locks\",\"locks\"],\"includeManagedResource\":true,\"excludeAzureResource\":[\"xj\",\"prozvcputegjvwmf\",\"atscmd\",\"pjhulsuuvmkj\"],\"excludeTerraformResource\":[\"rwfndiod\"]}")
             .toObject(ExportResource.class);
-        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
         Assertions.assertTrue(model.fullProperties());
         Assertions.assertFalse(model.maskSensitive());
         Assertions.assertFalse(model.includeRoleAssignment());
+        Assertions.assertEquals(AzureExtensionResourceType.LOCKS, model.includeExtensions().get(0));
         Assertions.assertTrue(model.includeManagedResource());
-        Assertions.assertEquals("jspodmailzyde", model.excludeAzureResource().get(0));
-        Assertions.assertEquals("xj", model.excludeTerraformResource().get(0));
-        Assertions.assertEquals("rtfw", model.resourceIds().get(0));
-        Assertions.assertEquals("snhsjcnyejhkryh", model.resourceName());
-        Assertions.assertEquals("apcz", model.resourceType());
-        Assertions.assertEquals("okjye", model.namePattern());
-        Assertions.assertTrue(model.recursive());
-        Assertions.assertFalse(model.includeResourceGroup());
+        Assertions.assertEquals("xj", model.excludeAzureResource().get(0));
+        Assertions.assertEquals("rwfndiod", model.excludeTerraformResource().get(0));
+        Assertions.assertEquals("wlokjyem", model.resourceIds().get(0));
+        Assertions.assertEquals("vnipjox", model.resourceName());
+        Assertions.assertEquals("nchgej", model.resourceType());
+        Assertions.assertEquals("odmailzyd", model.namePattern());
+        Assertions.assertFalse(model.recursive());
+        Assertions.assertTrue(model.includeResourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportResource model = new ExportResource().withTargetProvider(TargetProvider.AZAPI)
+        ExportResource model = new ExportResource().withTargetProvider(TargetProvider.AZURERM)
             .withFullProperties(true)
             .withMaskSensitive(false)
             .withIncludeRoleAssignment(false)
+            .withIncludeExtensions(Arrays.asList(AzureExtensionResourceType.LOCKS, AzureExtensionResourceType.LOCKS))
             .withIncludeManagedResource(true)
-            .withExcludeAzureResource(Arrays.asList("jspodmailzyde", "o", "wyahuxinpmqnja"))
-            .withExcludeTerraformResource(Arrays.asList("xj", "prozvcputegjvwmf", "atscmd", "pjhulsuuvmkj"))
-            .withResourceIds(Arrays.asList("rtfw", "ukxgaud"))
-            .withResourceName("snhsjcnyejhkryh")
-            .withResourceType("apcz")
-            .withNamePattern("okjye")
-            .withRecursive(true)
-            .withIncludeResourceGroup(false);
+            .withExcludeAzureResource(Arrays.asList("xj", "prozvcputegjvwmf", "atscmd", "pjhulsuuvmkj"))
+            .withExcludeTerraformResource(Arrays.asList("rwfndiod"))
+            .withResourceIds(Arrays.asList("wlokjyem"))
+            .withResourceName("vnipjox")
+            .withResourceType("nchgej")
+            .withNamePattern("odmailzyd")
+            .withRecursive(false)
+            .withIncludeResourceGroup(true);
         model = BinaryData.fromObject(model).toObject(ExportResource.class);
-        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
         Assertions.assertTrue(model.fullProperties());
         Assertions.assertFalse(model.maskSensitive());
         Assertions.assertFalse(model.includeRoleAssignment());
+        Assertions.assertEquals(AzureExtensionResourceType.LOCKS, model.includeExtensions().get(0));
         Assertions.assertTrue(model.includeManagedResource());
-        Assertions.assertEquals("jspodmailzyde", model.excludeAzureResource().get(0));
-        Assertions.assertEquals("xj", model.excludeTerraformResource().get(0));
-        Assertions.assertEquals("rtfw", model.resourceIds().get(0));
-        Assertions.assertEquals("snhsjcnyejhkryh", model.resourceName());
-        Assertions.assertEquals("apcz", model.resourceType());
-        Assertions.assertEquals("okjye", model.namePattern());
-        Assertions.assertTrue(model.recursive());
-        Assertions.assertFalse(model.includeResourceGroup());
+        Assertions.assertEquals("xj", model.excludeAzureResource().get(0));
+        Assertions.assertEquals("rwfndiod", model.excludeTerraformResource().get(0));
+        Assertions.assertEquals("wlokjyem", model.resourceIds().get(0));
+        Assertions.assertEquals("vnipjox", model.resourceName());
+        Assertions.assertEquals("nchgej", model.resourceType());
+        Assertions.assertEquals("odmailzyd", model.namePattern());
+        Assertions.assertFalse(model.recursive());
+        Assertions.assertTrue(model.includeResourceGroup());
     }
 }
