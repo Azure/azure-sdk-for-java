@@ -539,6 +539,7 @@ com.azure.resourcemanager:azure-resourcemanager-billing-trust;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-containerservicepreparedimgspec;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-enclave;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerserviceaimanager;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-platformvalidation;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshifthcp;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagesync;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources-policy;1.0.0-beta.1;1.0.0-beta.2
