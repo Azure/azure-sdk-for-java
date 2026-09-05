@@ -300,11 +300,11 @@ extends:
               parameters:
                 ServiceDirectories: $(ServiceDirectories)
 
-            # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+            # Use BasePathLength of 18 to allow longer repository-relative paths.
             - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
               parameters:
                 SourceDirectory: $(Build.SourcesDirectory)
-                BasePathLength: 38
+                BasePathLength: 18
 
             - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
