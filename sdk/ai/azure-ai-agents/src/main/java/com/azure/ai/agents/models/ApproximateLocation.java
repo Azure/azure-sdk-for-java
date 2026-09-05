@@ -144,6 +144,7 @@ public final class ApproximateLocation implements JsonSerializable<ApproximateLo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -164,6 +165,7 @@ public final class ApproximateLocation implements JsonSerializable<ApproximateLo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApproximateLocation.
      */
+    @Generated
     public static ApproximateLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApproximateLocation deserializedApproximateLocation = new ApproximateLocation();
@@ -177,8 +179,7 @@ public final class ApproximateLocation implements JsonSerializable<ApproximateLo
                 } else if ("city".equals(fieldName)) {
                     deserializedApproximateLocation.city = reader.getString();
                 } else if ("timezone".equals(fieldName)) {
-                    String timezoneId = reader.getString();
-                    deserializedApproximateLocation.timezone = parseTimeZone(timezoneId);
+                    deserializedApproximateLocation.timezone = parseTimeZone(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -199,25 +200,14 @@ public final class ApproximateLocation implements JsonSerializable<ApproximateLo
         return this;
     }
 
-    /**
-     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
-     * <p>
-     * {@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
-     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
-     *
-     * @param timezoneId the timezone ID to parse, or {@code null}.
-     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
-     */
     private static TimeZone parseTimeZone(String timezoneId) {
         if (timezoneId == null) {
             return null;
         }
-        TimeZone tz = TimeZone.getTimeZone(timezoneId);
-        // TimeZone.getTimeZone falls back to GMT for unknown IDs.
-        // Treat unknown IDs as null to avoid silent data corruption.
-        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timezoneId)) {
+        TimeZone timezone = TimeZone.getTimeZone(timezoneId);
+        if ("GMT".equals(timezone.getID()) && !"GMT".equalsIgnoreCase(timezoneId)) {
             return null;
         }
-        return tz;
+        return timezone;
     }
 }

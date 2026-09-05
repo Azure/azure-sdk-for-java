@@ -14,6 +14,7 @@ import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiProjectConnectionAuthDetails;
 import com.azure.ai.agents.models.OpenApiProjectConnectionSecurityScheme;
 import com.azure.ai.agents.models.OpenApiTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -74,7 +75,7 @@ public class OpenApiWithConnectionSync {
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(openApiTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("openapi-connection-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("openapi-connection-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

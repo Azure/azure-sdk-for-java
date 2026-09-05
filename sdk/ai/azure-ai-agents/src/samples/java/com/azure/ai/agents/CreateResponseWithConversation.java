@@ -3,89 +3,94 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.conversations.Conversation;
+import com.openai.models.conversations.items.ItemCreateParams;
+import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseOutputItem;
-import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.services.blocking.ConversationService;
 
+import java.util.Collections;
+
 /**
- * This sample demonstrates how to use the createWithAgentConversation helper method
- * to create a response with a conversation.
+ * Demonstrates prompt-agent creation, endpoint routing, and a multi-turn conversation.
+ *
+ * <p>Before running the sample, set these environment variables:</p>
+ * <ul>
+ *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - The Azure AI Project endpoint.</li>
+ *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
+ * </ul>
  */
 public class CreateResponseWithConversation {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = configuration.get("FOUNDRY_MODEL_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .serviceVersion(AgentsServiceVersion.getLatest())
             .endpoint(endpoint);
-
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
+        ConversationService conversations = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
         AgentVersionDetails agent = null;
+        AgentEndpointConfig originalEndpoint = null;
         String conversationId = null;
-
         try {
-            // Create a prompt agent
-            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a helpful assistant.");
+            agent = agentsClient.createAgentVersion("basic-conversation-agent",
+                new CreateAgentVersionInput(new PromptAgentDefinition(model)
+                    .setInstructions("You are a helpful assistant that answers general questions.")));
+            originalEndpoint = agentsClient.getAgent(agent.getName()).getAgentEndpoint();
 
-            agent = agentsClient.createAgentVersion("my-agent", agentDefinition);
-            System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
+            AgentEndpointConfig agentEndpoint = new AgentEndpointConfig()
+                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setProtocolConfiguration(new ProtocolConfiguration()
+                    .setResponses(new ResponsesProtocolConfiguration()));
+            agentsClient.updateAgentDetails(agent.getName(),
+                new UpdateAgentDetailsOptions().setAgentEndpoint(agentEndpoint));
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
-
-            // Create a conversation
-            Conversation conversation = conversationService.create();
+            Conversation conversation = conversations.create();
             conversationId = conversation.id();
-            System.out.println("Created conversation: " + conversationId);
-
-            // Create a response using the conversation
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            AzureCreateResponseOptions options = new AzureCreateResponseOptions()
+                .setAgentReference(SampleUtils.toAgentReference(agent));
+            Response first = responsesClient.createAzureResponse(options,
                 ResponseCreateParams.builder()
                     .conversation(conversationId)
-                    .input("Hi, how can you help me?"));
+                    .input("What is the size of France in square miles?"));
+            SampleUtils.printResponseText(first);
 
-            // Process and display the response
-            System.out.println("\n=== Agent Response ===");
-            for (ResponseOutputItem outputItem : response.output()) {
-                if (outputItem.message().isPresent()) {
-                    ResponseOutputMessage message = outputItem.message().get();
-                    message.content().forEach(content -> {
-                        content.outputText().ifPresent(text -> {
-                            System.out.println("Assistant: " + text.text());
-                        });
-                    });
-                }
-            }
-            System.out.println("Response ID: " + response.id());
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
+            conversations.items().create(ItemCreateParams.builder()
+                .conversationId(conversationId)
+                .addItem(EasyInputMessage.builder()
+                    .role(EasyInputMessage.Role.USER)
+                    .content("What is its capital city?")
+                    .build())
+                .build());
+            Response second = responsesClient.createAzureResponse(options,
+                ResponseCreateParams.builder().conversation(conversationId));
+            SampleUtils.printResponseText(second);
         } finally {
-            // Cleanup conversation
             if (conversationId != null) {
-                conversationService.delete(conversationId);
-                System.out.println("Conversation deleted.");
+                conversations.delete(conversationId);
             }
-            // Cleanup agent
             if (agent != null) {
+                agentsClient.updateAgentDetails(agent.getName(),
+                    new UpdateAgentDetailsOptions().setAgentEndpoint(originalEndpoint));
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-                System.out.println("Agent deleted.");
             }
         }
     }

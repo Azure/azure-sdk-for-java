@@ -7,6 +7,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
@@ -53,7 +54,8 @@ public class StreamingTests extends ClientTestBase {
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(AGENT_MODEL)
             .setInstructions("You are a helpful assistant. Reply in one sentence.");
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("streaming-test-agent", agentDefinition);
+        AgentVersionDetails agent
+            = agentsClient.createAgentVersion("streaming-test-agent", new CreateAgentVersionInput(agentDefinition));
 
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -102,7 +104,8 @@ public class StreamingTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant. When asked about weather, use the get_weather function.")
             .setTools(Collections.singletonList(tool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("function-streaming-test-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("function-streaming-test-agent",
+            new CreateAgentVersionInput(agentDefinition));
 
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -156,8 +159,8 @@ public class StreamingTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that uses code interpreter for calculations.")
             .setTools(Collections.singletonList(tool));
 
-        AgentVersionDetails agent
-            = agentsClient.createAgentVersion("code-interpreter-streaming-test-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("code-interpreter-streaming-test-agent",
+            new CreateAgentVersionInput(agentDefinition));
 
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -207,10 +210,10 @@ public class StreamingTests extends ClientTestBase {
             new StructuredInputDefinition().setDescription("User's role").setRequired(true));
 
         AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-streaming-test-agent",
-            new PromptAgentDefinition(AGENT_MODEL).setInstructions(
+            new CreateAgentVersionInput(new PromptAgentDefinition(AGENT_MODEL).setInstructions(
                 "You are a helpful assistant. " + "The user's name is {{userName}} and their role is {{userRole}}. "
                     + "Greet them and confirm their details.")
-                .setStructuredInputs(structuredInputDefinitions));
+                .setStructuredInputs(structuredInputDefinitions)));
 
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());

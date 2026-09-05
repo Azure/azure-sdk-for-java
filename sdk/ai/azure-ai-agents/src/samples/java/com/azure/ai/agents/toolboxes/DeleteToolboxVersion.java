@@ -23,7 +23,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class DeleteToolboxVersion {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String toolboxName = "toolbox_created_from_java";
+        String toolboxName = "toolbox-created-from-java";
         String version = "1"; // Replace with the version to delete
         // Code sample for deleting a specific toolbox version
         ToolboxesClient toolboxesClient = new AgentsClientBuilder()

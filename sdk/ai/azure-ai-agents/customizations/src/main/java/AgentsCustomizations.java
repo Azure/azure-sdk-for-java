@@ -2,12 +2,18 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.modules.ModuleDeclaration;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -26,10 +32,143 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        customizeModuleInfo(libraryCustomization);
+        customizeVoiceAgentWebSocketBuilder(libraryCustomization);
+        customizeRealtimeMessageDiscriminators(libraryCustomization);
+        removeGeneratedTrailingWhitespace(libraryCustomization);
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        customizeTimeZoneModels(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void customizeModuleInfo(LibraryCustomization customization) {
+        String fileName = "src/main/java/module-info.java";
+        CompilationUnit moduleInfo = StaticJavaParser.parse(customization.getRawEditor().getFileContent(fileName));
+        ModuleDeclaration module = moduleInfo.getModule()
+            .orElseThrow(() -> new IllegalStateException("Generated module-info.java has no module"));
+        for (String requiredModule : new String[] { "openai.java.core", "openai.java.client.okhttp" }) {
+            String directive = "requires transitive " + requiredModule + ";";
+            if (module.getDirectives().stream().noneMatch(existing -> directive.equals(existing.toString().trim()))) {
+                String nonTransitiveDirective = "requires " + requiredModule + ";";
+                module.getDirectives()
+                    .removeIf(existing -> nonTransitiveDirective.equals(existing.toString().trim()));
+                module.addDirective(directive);
+            }
+        }
+        for (String requiredModule : new String[] { "reactor.netty.http", "reactor.netty.core",
+            "io.netty.codec.http", "io.netty.transport", "io.netty.common", "io.netty.codec" }) {
+            String directive = "requires " + requiredModule + ";";
+            if (module.getDirectives().stream().noneMatch(existing -> directive.equals(existing.toString().trim()))) {
+                module.addDirective(directive);
+            }
+        }
+        customization.getRawEditor().replaceFile(fileName, moduleInfo.toString());
+    }
+
+    private void removeGeneratedTrailingWhitespace(LibraryCustomization customization) {
+        String fileName = "src/main/java/com/azure/ai/agents/models/MemoryStoreObjectType.java";
+        String content = customization.getRawEditor().getFileContent(fileName);
+        customization.getRawEditor().replaceFile(fileName,
+            content.replace("     * \n     * @param value", "     *\n     * @param value"));
+    }
+
+    private void customizeRealtimeMessageDiscriminators(LibraryCustomization customization) {
+        for (String className : new String[] { "RealtimeConversationItemMessage",
+            "RealtimeConversationItemMessageAssistant", "RealtimeConversationItemMessageSystem",
+            "RealtimeConversationItemMessageUser" }) {
+            customization.getClass("com.azure.ai.agents.models", className).customizeAst(ast -> ast
+                .getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + " was not found."))
+                .getFieldByName("type")
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + ".type was not found."))
+                .setFinal(true));
+        }
+    }
+
+    private void customizeVoiceAgentWebSocketBuilder(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration");
+            ast.addImport("com.azure.core.http.ProxyOptions");
+            ast.addImport("com.azure.core.util.UserAgentUtil");
+            ast.addImport("java.net.URI");
+
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
+            addServiceClient(builder, "BetaVoiceAgentWebSocketClient.class");
+            addServiceClient(builder, "BetaVoiceAgentWebSocketAsyncClient.class");
+
+            if (builder.getMethodsByName("createVoiceAgentWebSocketConfiguration").isEmpty()) {
+                builder.addMember(StaticJavaParser.parseMethodDeclaration(
+                    "private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration() {"
+                        + " validateClient();"
+                        + " Objects.requireNonNull(tokenCredential, \"'credential' must be configured to build a voice-agent WebSocket client.\");"
+                        + " Configuration buildConfiguration = configuration == null ? Configuration.getGlobalConfiguration() : configuration;"
+                        + " ClientOptions localClientOptions = clientOptions == null ? new ClientOptions() : clientOptions;"
+                        + " HttpLogOptions localLogOptions = httpLogOptions == null ? new HttpLogOptions() : httpLogOptions;"
+                        + " String clientName = PROPERTIES.getOrDefault(SDK_NAME, \"azure-ai-agents\");"
+                        + " String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, \"unknown\");"
+                        + " String applicationId = CoreUtils.getApplicationId(localClientOptions, localLogOptions);"
+                        + " String userAgent = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion, buildConfiguration);"
+                        + " HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);"
+                        + " ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(buildConfiguration);"
+                        + " AgentsServiceVersion localServiceVersion = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;"
+                        + " return new VoiceAgentWebSocketClientConfiguration(URI.create(endpoint), tokenCredential, localServiceVersion.getVersion(), userAgent, headers, proxyOptions);"
+                        + " }"));
+            }
+
+            addVoiceAgentBuildMethods(builder);
+            customizeAgentEndpointConversationBuildMethods(builder);
+        });
+    }
+
+    private static void customizeAgentEndpointConversationBuildMethods(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration asyncMethod
+            = getSingleMethod(builder, "buildBetaAgentEndpointConversationsAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsAsyncClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentEndpointConversationsClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+    }
+
+    private static void addVoiceAgentBuildMethods(ClassOrInterfaceDeclaration builder) {
+        if (builder.getMethodsByName("buildBetaVoiceAgentWebSocketAsyncClient").isEmpty()) {
+            builder.addMember(StaticJavaParser.parseMethodDeclaration(
+                "@Beta public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {"
+                    + " return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());"
+                    + " }"));
+        }
+        if (builder.getMethodsByName("buildBetaVoiceAgentWebSocketClient").isEmpty()) {
+            builder.addMember(StaticJavaParser.parseMethodDeclaration(
+                "@Beta public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {"
+                    + " return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());"
+                    + " }"));
+        }
+    }
+
+    private static void addServiceClient(ClassOrInterfaceDeclaration builder, String serviceClient) {
+        NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
+            .filter(AnnotationExpr::isNormalAnnotationExpr)
+            .map(AnnotationExpr::asNormalAnnotationExpr)
+            .orElseThrow(() -> new IllegalStateException(
+                builder.getNameAsString() + " has no normal @ServiceClientBuilder annotation."));
+        MemberValuePair pair = annotation.getPairs().stream()
+            .filter(candidate -> "serviceClients".equals(candidate.getNameAsString()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("@ServiceClientBuilder has no serviceClients value."));
+        Expression value = pair.getValue();
+        ArrayInitializerExpr clients = value.isArrayInitializerExpr()
+            ? value.asArrayInitializerExpr()
+            : new ArrayInitializerExpr(new com.github.javaparser.ast.NodeList<>(value));
+        if (!clients.getValues().stream().anyMatch(existing -> serviceClient.equals(existing.toString()))) {
+            clients.getValues().add(StaticJavaParser.parseExpression(serviceClient));
+            pair.setValue(clients);
+        }
     }
 
     private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
@@ -50,13 +189,101 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void modifyPollingStrategies(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.implementation", "OperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"))));
+        customizePollingStrategy(customization, "OperationLocationPollingStrategy",
+            "{ return AgentsServicePollUtils.poll(pollingStrategyOptions, serializer, endpoint, pollingContext, pollResponseType); }");
+        customizePollingStrategy(customization, "SyncOperationLocationPollingStrategy",
+            "{ return AgentsServicePollUtils.pollSync(pollingStrategyOptions, serializer, endpoint, pollingContext, pollResponseType); }");
+    }
 
-        customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+    private static void customizePollingStrategy(LibraryCustomization customization, String className,
+        String pollMethodBody) {
+        customization.getClass("com.azure.ai.agents.implementation", className).customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + " was not found."));
+            if (!clazz.getFieldByName("pollingStrategyOptions").isPresent()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "private final PollingStrategyOptions pollingStrategyOptions;"));
+            }
+
+            com.github.javaparser.ast.stmt.BlockStmt constructorBody = clazz.getConstructors().stream()
+                .filter(constructor -> constructor.getParameters().size() == 2)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(className + " two-parameter constructor was not found."))
+                .getBody();
+            String optionsAssignment = "this.pollingStrategyOptions = pollingStrategyOptions;";
+            if (constructorBody.getStatements().stream()
+                .noneMatch(statement -> optionsAssignment.equals(statement.toString()))) {
+                constructorBody.addStatement(1, StaticJavaParser.parseStatement(optionsAssignment));
+            }
+
+            List<MethodDeclaration> pollMethods = clazz.getMethodsByName("poll");
+            if (pollMethods.isEmpty()) {
+                String returnType = className.startsWith("Sync") ? "PollResponse<T>" : "Mono<PollResponse<T>>";
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public " + returnType
+                    + " poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) "
+                    + pollMethodBody));
+            } else {
+                pollMethods.get(0).setBody(StaticJavaParser.parseBlock(pollMethodBody));
+            }
+        });
+    }
+
+    private void customizeTimeZoneModels(LibraryCustomization customization) {
+        for (String className : new String[] { "ApproximateLocation", "WebSearchApproximateLocation" }) {
+            customization.getClass("com.azure.ai.agents.models", className)
+                .customizeAst(ast -> customizeTimeZoneModel(ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException("Generated model " + className + " was not found."))));
+        }
+    }
+
+    private static void customizeTimeZoneModel(ClassOrInterfaceDeclaration model) {
+        MethodDeclaration toJson = getSingleMethod(model, "toJson");
+        String toJsonBody = toJson.getBody()
+            .orElseThrow(() -> new IllegalStateException(model.getNameAsString() + ".toJson has no body."))
+            .toString();
+        String generatedWriter = "jsonWriter.writeJsonField(\"timezone\", this.timezone);";
+        String timeZoneWriter
+            = "jsonWriter.writeStringField(\"timezone\", this.timezone != null ? this.timezone.getID() : null);";
+        if (!toJsonBody.contains(timeZoneWriter)) {
+            if (!toJsonBody.contains(generatedWriter)) {
+                throw new IllegalStateException(
+                    model.getNameAsString() + ".toJson no longer uses the expected generated timezone writer.");
+            }
+            toJson.setBody(StaticJavaParser.parseBlock(toJsonBody.replace(generatedWriter, timeZoneWriter)));
+        }
+
+        MethodDeclaration fromJson = getSingleMethod(model, "fromJson");
+        String fromJsonBody = fromJson.getBody()
+            .orElseThrow(() -> new IllegalStateException(model.getNameAsString() + ".fromJson has no body."))
+            .toString();
+        if (!fromJsonBody.contains("parseTimeZone(")) {
+            String generatedParser = "TimeZone.fromJson(reader)";
+            if (!fromJsonBody.contains(generatedParser)) {
+                throw new IllegalStateException(
+                    model.getNameAsString() + ".fromJson no longer uses the expected generated timezone parser.");
+            }
+            fromJson.setBody(StaticJavaParser.parseBlock(
+                fromJsonBody.replace(generatedParser, "parseTimeZone(reader.getString())")));
+        }
+
+        if (model.getMethodsByName("parseTimeZone").isEmpty()) {
+            model.addMember(StaticJavaParser.parseMethodDeclaration(
+                "private static TimeZone parseTimeZone(String timezoneId) {"
+                    + " if (timezoneId == null) { return null; }"
+                    + " TimeZone timezone = TimeZone.getTimeZone(timezoneId);"
+                    + " if (\"GMT\".equals(timezone.getID()) && !\"GMT\".equalsIgnoreCase(timezoneId)) { return null; }"
+                    + " return timezone;"
+                    + " }"));
+        }
+    }
+
+    private static MethodDeclaration getSingleMethod(ClassOrInterfaceDeclaration model, String methodName) {
+        List<MethodDeclaration> methods = model.getMethodsByName(methodName);
+        if (methods.size() != 1) {
+            throw new IllegalStateException(
+                "Expected one " + model.getNameAsString() + "." + methodName + " method, found " + methods.size() + ".");
+        }
+        return methods.get(0);
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
@@ -244,6 +471,13 @@ public class AgentsCustomizations extends Customization {
         if (Files.isRegularFile(modulePath)) {
             return modulePath;
         }
+        // tsp-client may also launch from the service directory (user.dir = sdk/ai).
+        Path serviceDirectoryPath
+            = Paths.get(System.getProperty("user.dir"), "azure-ai-agents", "customizations", CSV_FILE_NAME)
+                .toAbsolutePath();
+        if (Files.isRegularFile(serviceDirectoryPath)) {
+            return serviceDirectoryPath;
+        }
         // spec SDK-generation (spec-gen-sdk) launches from the repo root (user.dir = repo root).
         Path repoRootPath
             = Paths.get(System.getProperty("user.dir"), "sdk", "ai", "azure-ai-agents", "customizations", CSV_FILE_NAME)
@@ -251,8 +485,8 @@ public class AgentsCustomizations extends Customization {
         if (Files.isRegularFile(repoRootPath)) {
             return repoRootPath;
         }
-        logger.warn("Could not locate {} at {} or {} (user.dir={}); skipping @Beta annotations.", CSV_FILE_NAME,
-            modulePath, repoRootPath, System.getProperty("user.dir"));
+        logger.warn("Could not locate {} at {}, {}, or {} (user.dir={}); skipping @Beta annotations.", CSV_FILE_NAME,
+            modulePath, serviceDirectoryPath, repoRootPath, System.getProperty("user.dir"));
         return null;
     }
 }

@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -22,6 +23,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -37,6 +39,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -47,6 +50,7 @@ import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,14 +64,18 @@ import java.util.stream.Stream;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaAgentEndpointConversationsClient.class,
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
+        BetaAgentEndpointConversationsAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
         AgentsAsyncClient.class,
-        ToolboxesAsyncClient.class })
+        ToolboxesAsyncClient.class,
+        BetaVoiceAgentWebSocketClient.class,
+        BetaVoiceAgentWebSocketAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -381,6 +389,27 @@ public final class AgentsClientBuilder
         return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
     }
 
+    private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration() {
+        validateClient();
+        Objects.requireNonNull(tokenCredential,
+            "'credential' must be configured to build a voice-agent WebSocket client.");
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        ClientOptions localClientOptions = clientOptions == null ? new ClientOptions() : clientOptions;
+        HttpLogOptions localLogOptions = httpLogOptions == null ? new HttpLogOptions() : httpLogOptions;
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "azure-ai-agents");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "unknown");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localLogOptions);
+        String userAgent
+            = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion, buildConfiguration);
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(buildConfiguration);
+        AgentsServiceVersion localServiceVersion
+            = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
+        return new VoiceAgentWebSocketClientConfiguration(URI.create(endpoint), tokenCredential,
+            localServiceVersion.getVersion(), userAgent, headers, proxyOptions);
+    }
+
     /**
      * Builds an instance of ResponsesClient class with a default setup for OpenAI
      *
@@ -554,8 +583,10 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
+            BetaVoiceAgentWebSocketClient.class,
             BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class })
+            BetaMemoryStoresAsyncClient.class,
+            BetaVoiceAgentWebSocketAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
@@ -624,6 +655,26 @@ public final class AgentsClientBuilder
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
+
+        /**
+         * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+         *
+         * @return an asynchronous voice-agent WebSocket client.
+         */
+        @Beta
+        public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
+            return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+         *
+         * @return a synchronous voice-agent WebSocket client.
+         */
+        @Beta
+        public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
+            return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        }
     }
 
     /**
@@ -680,5 +731,49 @@ public final class AgentsClientBuilder
     @Generated
     public ToolboxesClient buildToolboxesClient() {
         return new ToolboxesClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+     *
+     * @return an asynchronous voice-agent WebSocket client.
+     */
+    @Beta
+    public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
+        return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+    }
+
+    /**
+     * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+     *
+     * @return a synchronous voice-agent WebSocket client.
+     */
+    @Beta
+    public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
+        return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    }
+
+    /**
+     * Builds an instance of BetaAgentEndpointConversationsAsyncClient class.
+     *
+     * @return an instance of BetaAgentEndpointConversationsAsyncClient.
+     */
+    @Generated
+    public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
+        return new BetaAgentEndpointConversationsAsyncClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of BetaAgentEndpointConversationsClient class.
+     *
+     * @return an instance of BetaAgentEndpointConversationsClient.
+     */
+    @Generated
+    public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
+        return new BetaAgentEndpointConversationsClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
     }
 }

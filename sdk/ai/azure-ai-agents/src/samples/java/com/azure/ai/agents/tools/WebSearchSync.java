@@ -6,82 +6,75 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.ApproximateLocation;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WebSearchPreviewTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.util.IterableStream;
+import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseOutputItem;
-import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.models.responses.ResponseStreamEvent;
+import com.openai.models.responses.ToolChoiceOptions;
 
 import java.util.Collections;
 
 /**
- * This sample demonstrates how to create an agent with the Web Search tool
- * to search the web for current information.
+ * Demonstrates streaming a response from the preview Web Search tool with approximate location and citations.
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
- *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
+ *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - The Azure AI Project endpoint.</li>
+ *   <li>{@code FOUNDRY_MODEL_NAME} - The model deployment name.</li>
  * </ul>
  */
 public class WebSearchSync {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = configuration.get("FOUNDRY_MODEL_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
-
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-
         AgentVersionDetails agent = null;
 
         try {
             // BEGIN: com.azure.ai.agents.define_web_search
-            // Create a WebSearchPreviewTool
-            WebSearchPreviewTool tool = new WebSearchPreviewTool();
+            WebSearchPreviewTool tool = new WebSearchPreviewTool()
+                .setUserLocation(new ApproximateLocation()
+                    .setCountry("GB")
+                    .setRegion("London")
+                    .setCity("London"));
             // END: com.azure.ai.agents.define_web_search
+            agent = agentsClient.createAgentVersion("web-search-preview-agent",
+                new CreateAgentVersionInput(new PromptAgentDefinition(model)
+                    .setInstructions("Search the web for current information and cite sources.")
+                    .setTools(Collections.singletonList(tool))));
 
-            // Create the agent definition with Web Search tool enabled
-            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a helpful assistant that can perform web searches to find information. "
-                    + "When asked to find information, use the web search tool to gather relevant data.")
-                .setTools(Collections.singletonList(tool));
-
-            agent = agentsClient.createAgentVersion("web-search-agent", agentDefinition);
-            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
-
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            ResponseAccumulator accumulator = ResponseAccumulator.create();
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(SampleUtils.toAgentReference(agent)),
                 ResponseCreateParams.builder()
-                    .input("What are the latest trends in renewable energy?"));
-
-            // Process and display the response
-            for (ResponseOutputItem outputItem : response.output()) {
-                if (outputItem.message().isPresent()) {
-                    ResponseOutputMessage message = outputItem.message().get();
-                    message.content().forEach(content -> {
-                        content.outputText().ifPresent(text -> {
-                            System.out.println("Assistant: " + text.text());
-                        });
-                    });
-                }
+                    .input("Show the latest London Underground service updates.")
+                    .toolChoice(ToolChoiceOptions.REQUIRED));
+            for (ResponseStreamEvent event : events) {
+                accumulator.accumulate(event);
+                event.outputTextDelta().ifPresent(delta -> System.out.print(delta.delta()));
             }
+            System.out.println();
+            Response response = accumulator.response();
+            ToolSampleUtils.printUrlCitations(response);
         } finally {
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-                System.out.println("Agent deleted");
             }
         }
     }

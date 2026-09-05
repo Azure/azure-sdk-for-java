@@ -33,12 +33,6 @@ public final class AgentOptimizationDatasetItem implements JsonSerializable<Agen
     private String groundTruth;
 
     /*
-     * Desired number of conversation turns for simulation mode (1-20).
-     */
-    @Generated
-    private Integer desiredNumTurns;
-
-    /*
      * Per-item evaluation criteria.
      */
     @Generated
@@ -92,28 +86,6 @@ public final class AgentOptimizationDatasetItem implements JsonSerializable<Agen
     @Generated
     public AgentOptimizationDatasetItem setGroundTruth(String groundTruth) {
         this.groundTruth = groundTruth;
-        return this;
-    }
-
-    /**
-     * Get the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
-     *
-     * @return the desiredNumTurns value.
-     */
-    @Generated
-    public Integer getDesiredNumTurns() {
-        return this.desiredNumTurns;
-    }
-
-    /**
-     * Set the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
-     *
-     * @param desiredNumTurns the desiredNumTurns value to set.
-     * @return the AgentOptimizationDatasetItem object itself.
-     */
-    @Generated
-    public AgentOptimizationDatasetItem setDesiredNumTurns(Integer desiredNumTurns) {
-        this.desiredNumTurns = desiredNumTurns;
         return this;
     }
 
@@ -184,5 +156,33 @@ public final class AgentOptimizationDatasetItem implements JsonSerializable<Agen
             }
             return deserializedAgentOptimizationDatasetItem;
         });
+    }
+
+    /*
+     * Desired number of conversation turns for simulation mode (1-20).
+     */
+    @Generated
+    private Integer desiredNumTurns;
+
+    /**
+     * Get the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
+     *
+     * @return the desiredNumTurns value.
+     */
+    @Generated
+    public Integer getDesiredNumTurns() {
+        return this.desiredNumTurns;
+    }
+
+    /**
+     * Set the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
+     *
+     * @param desiredNumTurns the desiredNumTurns value to set.
+     * @return the AgentOptimizationDatasetItem object itself.
+     */
+    @Generated
+    public AgentOptimizationDatasetItem setDesiredNumTurns(Integer desiredNumTurns) {
+        this.desiredNumTurns = desiredNumTurns;
+        return this;
     }
 }

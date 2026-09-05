@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
+- Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
+
 ### Breaking Changes
 
 ### Bugs Fixed

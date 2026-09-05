@@ -9,6 +9,7 @@ import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.SharepointGroundingToolParameters;
 import com.azure.ai.agents.models.SharepointPreviewTool;
@@ -60,7 +61,7 @@ public class SharePointGroundingSync {
             .setInstructions("You are a helpful assistant that can search through SharePoint documents.")
             .setTools(Collections.singletonList(sharepointTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("sharepoint-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("sharepoint-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

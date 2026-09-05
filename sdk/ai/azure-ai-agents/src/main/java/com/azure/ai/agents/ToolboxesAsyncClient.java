@@ -67,7 +67,7 @@ public final class ToolboxesAsyncClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -86,6 +86,23 @@ public final class ToolboxesAsyncClient {
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      * }
@@ -107,7 +124,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -126,6 +143,23 @@ public final class ToolboxesAsyncClient {
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      * }
@@ -268,7 +302,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -287,6 +321,23 @@ public final class ToolboxesAsyncClient {
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      * }
@@ -326,7 +377,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -345,6 +396,23 @@ public final class ToolboxesAsyncClient {
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      * }

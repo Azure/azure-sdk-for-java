@@ -5,6 +5,9 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.WorkflowAgentDefinition;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -22,6 +25,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -32,7 +36,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
@@ -72,6 +79,17 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.buildBetaAgentEndpointConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        StepVerifier
+            .create(builder.buildBetaAgentEndpointConversationsAsyncClient()
+                .getAgentConversationWithResponse("agent", "conversation", new RequestOptions()))
+            .expectNextCount(1)
+            .verifyComplete();
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
     }
 
     @Test
@@ -112,6 +130,39 @@ public class FoundryFeaturesHeaderVerificationTest {
             .buildAgentsClient()
             .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
 
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void workflowWithoutPreviewPropagatesForbiddenResponse() {
+        RecordingHttpClient httpClient
+            = new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::forbiddenResponse);
+        AgentsClient client = createBuilder(httpClient).buildAgentsClient();
+
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.createAgentVersion("workflow-agent-preview-test",
+                new CreateAgentVersionInput(new WorkflowAgentDefinition().setWorkflow(minimalWorkflow()))));
+
+        assertEquals(403, exception.getResponse().getStatusCode());
+        assertTrue(exception.getMessage().contains("PreviewFeatureRequired"));
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void asyncWorkflowWithoutPreviewPropagatesForbiddenResponse() {
+        RecordingHttpClient httpClient
+            = new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::forbiddenResponse);
+        AgentsAsyncClient client = createBuilder(httpClient).buildAgentsAsyncClient();
+
+        StepVerifier
+            .create(client.createAgentVersion("workflow-agent-preview-test",
+                new CreateAgentVersionInput(new WorkflowAgentDefinition().setWorkflow(minimalWorkflow()))))
+            .expectErrorSatisfies(error -> {
+                HttpResponseException exception = assertInstanceOf(HttpResponseException.class, error);
+                assertEquals(403, exception.getResponse().getStatusCode());
+                assertTrue(exception.getMessage().contains("PreviewFeatureRequired"));
+            })
+            .verify();
         assertNull(foundryFeatures(httpClient));
     }
 
@@ -240,6 +291,18 @@ public class FoundryFeaturesHeaderVerificationTest {
         String path = request.getUrl().getPath();
         String responseBody = path.endsWith("/models") ? "{\"data\":[],\"object\":\"list\"}" : "{}";
         return jsonResponse(request, responseBody);
+    }
+
+    private static HttpResponse forbiddenResponse(HttpRequest request) {
+        String responseBody = "{\"error\":{\"code\":\"PreviewFeatureRequired\","
+            + "\"message\":\"The requested agent kind requires preview opt-in.\"}}";
+        HttpHeaders responseHeaders
+            = new HttpHeaders().set(HttpHeaderName.fromString("Content-Type"), "application/json");
+        return new MockHttpResponse(request, 403, responseHeaders, responseBody.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static String minimalWorkflow() {
+        return "kind: workflow\ntrigger:\n  kind: OnConversationStart\n  id: my_workflow\n  actions: []\n";
     }
 
     private static HttpResponse jsonResponse(HttpRequest request, String responseBody) {

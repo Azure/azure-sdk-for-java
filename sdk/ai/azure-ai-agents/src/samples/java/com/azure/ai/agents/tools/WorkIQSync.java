@@ -9,6 +9,7 @@ import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
 import com.azure.core.util.Configuration;
@@ -64,7 +65,7 @@ public class WorkIQSync {
                 + "Teams messages, and other Microsoft 365 content.")
             .setTools(Collections.singletonList(workIqTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

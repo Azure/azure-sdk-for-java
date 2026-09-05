@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
@@ -102,7 +103,7 @@ public class FileSearchSync {
                     + "When asked about information, use the file search tool to find relevant content from the files.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("file-search-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion("file-search-agent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName())
