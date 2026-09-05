@@ -12,8 +12,8 @@ public final class SummaryResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SummaryResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"},{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Analyzing\"},\"id\":\"srknftguv\",\"name\":\"iuhprwmdyvxqta\",\"type\":\"riwwroy\"}],\"nextLink\":\"exrmcqibycnojvk\"}")
+            "{\"value\":[{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Extracting\"},\"id\":\"cvkcvqvpkeqdcv\",\"name\":\"rhvoods\",\"type\":\"tbobz\"},{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Pending\"},\"id\":\"wvnhdldwmgx\",\"name\":\"xrslpm\",\"type\":\"twuoegrpkhjwni\"},{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"i\",\"name\":\"pdggkzzlvm\",\"type\":\"mpaxmodfvuefywsb\"}],\"nextLink\":\"vmwy\"}")
             .toObject(SummaryResourceListResult.class);
-        Assertions.assertEquals("exrmcqibycnojvk", model.nextLink());
+        Assertions.assertEquals("vmwy", model.nextLink());
     }
 }

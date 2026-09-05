@@ -35,6 +35,7 @@ import com.azure.resourcemanager.iotfirmwaredefense.implementation.OperationsImp
 import com.azure.resourcemanager.iotfirmwaredefense.implementation.PasswordHashesImpl;
 import com.azure.resourcemanager.iotfirmwaredefense.implementation.SbomComponentsImpl;
 import com.azure.resourcemanager.iotfirmwaredefense.implementation.SummariesImpl;
+import com.azure.resourcemanager.iotfirmwaredefense.implementation.UnsafeFunctionCallsImpl;
 import com.azure.resourcemanager.iotfirmwaredefense.implementation.UsageMetricsImpl;
 import com.azure.resourcemanager.iotfirmwaredefense.implementation.WorkspacesImpl;
 import com.azure.resourcemanager.iotfirmwaredefense.models.BinaryHardenings;
@@ -46,6 +47,7 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.Operations;
 import com.azure.resourcemanager.iotfirmwaredefense.models.PasswordHashes;
 import com.azure.resourcemanager.iotfirmwaredefense.models.SbomComponents;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Summaries;
+import com.azure.resourcemanager.iotfirmwaredefense.models.UnsafeFunctionCalls;
 import com.azure.resourcemanager.iotfirmwaredefense.models.UsageMetrics;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Workspaces;
 import java.time.Duration;
@@ -82,6 +84,8 @@ public final class IoTFirmwareDefenseManager {
     private Summaries summaries;
 
     private UsageMetrics usageMetrics;
+
+    private UnsafeFunctionCalls unsafeFunctionCalls;
 
     private final IoTFirmwareDefenseMgmtClient clientObject;
 
@@ -428,6 +432,18 @@ public final class IoTFirmwareDefenseManager {
             this.usageMetrics = new UsageMetricsImpl(clientObject.getUsageMetrics(), this);
         }
         return usageMetrics;
+    }
+
+    /**
+     * Gets the resource collection API of UnsafeFunctionCalls.
+     * 
+     * @return Resource collection API of UnsafeFunctionCalls.
+     */
+    public UnsafeFunctionCalls unsafeFunctionCalls() {
+        if (this.unsafeFunctionCalls == null) {
+            this.unsafeFunctionCalls = new UnsafeFunctionCallsImpl(clientObject.getUnsafeFunctionCalls(), this);
+        }
+        return unsafeFunctionCalls;
     }
 
     /**
