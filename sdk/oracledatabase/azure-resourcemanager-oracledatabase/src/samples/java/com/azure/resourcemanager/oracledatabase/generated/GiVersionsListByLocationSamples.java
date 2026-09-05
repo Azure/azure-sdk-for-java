@@ -11,7 +11,7 @@ import com.azure.resourcemanager.oracledatabase.models.SystemShapes;
  */
 public final class GiVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GiVersions_ListByLocation_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/GiVersions_ListByLocation_MinimumSet_Gen.json
      */
     /**
      * Sample code: GiVersions_ListByLocation_MinimumSet.
@@ -24,7 +24,7 @@ public final class GiVersionsListByLocationSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/GiVersions_ListByLocation_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/GiVersions_ListByLocation_MaximumSet_Gen.json
      */
     /**
      * Sample code: GiVersions_ListByLocation_MaximumSet.

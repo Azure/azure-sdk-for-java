@@ -1,14 +1,19 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2026-08-27)
+
+- Azure Resource Manager Oracle Database client library for Java. This package contains Microsoft Azure SDK for Oracle Database Management SDK.  Package api-version 2025-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.DbSystemBaseProperties` was modified
 
-### Bugs Fixed
+* `dataCollectionOptions()` was added
+* `withDataCollectionOptions(models.DataCollectionOptions)` was added
 
-### Other Changes
+#### `models.DbSystemProperties` was modified
+
+* `withDataCollectionOptions(models.DataCollectionOptions)` was added
 
 ## 1.2.0 (2025-09-24)
 

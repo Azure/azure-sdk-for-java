@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class ExadbVmClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExadbVmClusters_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ExadbVmClusters_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExadbVmClusters_Delete_MaximumSet.
@@ -22,7 +22,7 @@ public final class ExadbVmClustersDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ExadbVmClusters_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ExadbVmClusters_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: ExadbVmClusters_Delete_MinimumSet.

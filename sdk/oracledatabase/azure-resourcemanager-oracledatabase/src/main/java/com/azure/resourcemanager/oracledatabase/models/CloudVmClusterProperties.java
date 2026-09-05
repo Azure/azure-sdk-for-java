@@ -81,7 +81,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     private String zoneId;
 
     /*
-     * The hostname for the cloud VM cluster.
+     * The hostname for the cloud VM cluster. Hostname and domain combined length cannot exceed 112 characters.
      */
     private String hostname;
 
@@ -490,7 +490,8 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
-     * Get the hostname property: The hostname for the cloud VM cluster.
+     * Get the hostname property: The hostname for the cloud VM cluster. Hostname and domain combined length cannot
+     * exceed 112 characters.
      * 
      * @return the hostname value.
      */
@@ -499,7 +500,8 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
-     * Set the hostname property: The hostname for the cloud VM cluster.
+     * Set the hostname property: The hostname for the cloud VM cluster. Hostname and domain combined length cannot
+     * exceed 112 characters.
      * 
      * @param hostname the hostname value to set.
      * @return the CloudVmClusterProperties object itself.
