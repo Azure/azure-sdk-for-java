@@ -21,7 +21,7 @@ public final class DpsCertificatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"ajdeyeamdphaga\",\"expiry\":\"Sun, 25 Jul 2021 22:27:33 GMT\",\"thumbprint\":\"xw\",\"isVerified\":true,\"created\":\"Mon, 16 Aug 2021 19:25:13 GMT\",\"updated\":\"Sat, 24 Apr 2021 13:32:45 GMT\"},\"etag\":\"kgshwa\",\"id\":\"ixzbinjeputtmryw\",\"name\":\"uzoqft\",\"type\":\"yqzrnkcqvyxlw\"}";
+            = "{\"properties\":{\"subject\":\"ciwwzjuqkhr\",\"expiry\":\"Sat, 22 May 2021 18:36:22 GMT\",\"thumbprint\":\"wkuofoskghsauu\",\"isVerified\":false,\"created\":\"Wed, 14 Apr 2021 04:20:05 GMT\",\"updated\":\"Sun, 12 Sep 2021 20:46:22 GMT\"},\"etag\":\"uugidyjrrfby\",\"id\":\"svexcsonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,10 @@ public final class DpsCertificatesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateResponse response = manager.dpsCertificates()
-            .getWithResponse("ydnfyhxdeoejz", "cwif", "jttgzf", "ishc", com.azure.core.util.Context.NONE)
+            .getWithResponse("ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl", "zdobpxjmflbvvnch",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.properties().isVerified());
+        Assertions.assertFalse(response.properties().isVerified());
     }
 }

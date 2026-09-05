@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class DpsCertificateGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSGetCertificate.json
+     * x-ms-original-file: 2026-08-31/DPSGetCertificate.json
      */
     /**
      * Sample code: DPSGetCertificate.
