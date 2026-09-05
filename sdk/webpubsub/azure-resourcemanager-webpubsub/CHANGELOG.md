@@ -1,14 +1,301 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-09-03)
 
-### Features Added
+- Azure Resource Manager WebPubSub client library for Java. This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package api-version 2025-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CustomCertificateList` was removed
 
-### Other Changes
+#### `models.SignalRServiceUsageList` was removed
+
+#### `models.PrivateEndpointConnectionList` was removed
+
+#### `models.SharedPrivateLinkResourceList` was removed
+
+#### `models.PrivateLinkResourceList` was removed
+
+#### `models.WebPubSubHubList` was removed
+
+#### `models.ReplicaList` was removed
+
+#### `models.OperationList` was removed
+
+#### `models.CustomDomainList` was removed
+
+#### `models.WebPubSubResourceList` was removed
+
+#### `models.Dimension` was modified
+
+* `Dimension()` was changed to private access
+* `withInternalName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.EventHandler` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointAcl` was modified
+
+* `validate()` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ManagedIdentitySettings` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.NameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.EventNameFilter` was modified
+
+* `validate()` was removed
+
+#### `models.ShareablePrivateLinkResourceType` was modified
+
+* `ShareablePrivateLinkResourceType()` was changed to private access
+* `withProperties(models.ShareablePrivateLinkResourceProperties)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ResourceLogConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.EventHubEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.WebPubSubSocketIOSettings` was modified
+
+* `validate()` was removed
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.SignalRServiceUsageName` was modified
+
+* `SignalRServiceUsageName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.Sku` was modified
+
+* `Sku()` was changed to private access
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
+* `validate()` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.IpRule` was modified
+
+* `validate()` was removed
+
+#### `models.LiveTraceCategory` was modified
+
+* `validate()` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `validate()` was removed
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+
+#### `models.UserAssignedIdentityProperty` was modified
+
+* `validate()` was removed
+
+#### `models.EventListenerEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ShareablePrivateLinkResourceProperties` was modified
+
+* `ShareablePrivateLinkResourceProperties()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+* `validate()` was removed
+* `withGroupId(java.lang.String)` was removed
+
+#### `models.ResourceSku` was modified
+
+* `validate()` was removed
+
+#### `models.UpstreamAuthSettings` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkAcl` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceReference` was modified
+
+* `validate()` was removed
+
+#### `models.LiveTraceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.WebPubSubHubProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SkuCapacity` was modified
+
+* `SkuCapacity()` was changed to private access
+* `validate()` was removed
+
+#### `models.EventListener` was modified
+
+* `validate()` was removed
+
+#### `models.WebPubSubNetworkACLs` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceLogCategory` was modified
+
+* `validate()` was removed
+
+#### `models.EventListenerFilter` was modified
+
+* `validate()` was removed
+
+#### `models.WebPubSubTlsSettings` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.GroupPresenceEventFilters` was added
+
+* `models.PersistentStorage$UpdateStages` was added
+
+* `models.ApplicationFirewallSettings` was added
+
+* `models.TrafficThrottleByJwtCustomClaimRule` was added
+
+* `models.ClientConnectionCountRule` was added
+
+* `models.ThrottleByUserIdRule` was added
+
+* `models.PersistentStorage$Definition` was added
+
+* `models.ChatSettings` was added
+
+* `models.ClientTrafficControlRuleDiscriminator` was added
+
+* `models.PersistentStorage$DefinitionStages` was added
+
+* `models.ThrottleByJwtCustomClaimRule` was added
+
+* `models.WebPubSubPersistentStorages` was added
+
+* `models.ClientTrafficControlRule` was added
+
+* `models.GroupPresenceEventName` was added
+
+* `models.TrafficThrottleByUserIdRule` was added
+
+* `models.PersistentStorage$Update` was added
+
+* `models.ThrottleByJwtSignatureRule` was added
+
+* `models.PersistentStorage` was added
+
+* `models.ClientConnectionCountRuleDiscriminator` was added
+
+* `models.TrafficThrottleByJwtSignatureRule` was added
+
+#### `models.EventHandler` was modified
+
+* `withGroupPresenceEvents(models.GroupPresenceEventFilters)` was added
+* `groupPresenceEvents()` was added
+
+#### `models.WebPubSubResource` was modified
+
+* `applicationFirewall()` was added
+
+#### `models.WebPubSubResource$Update` was modified
+
+* `withApplicationFirewall(models.ApplicationFirewallSettings)` was added
+
+#### `models.SharedPrivateLinkResource$Definition` was modified
+
+* `withFqdns(java.util.List)` was added
+
+#### `WebPubSubManager` was modified
+
+* `webPubSubPersistentStorages()` was added
+
+#### `models.SharedPrivateLinkResource$Update` was modified
+
+* `withFqdns(java.util.List)` was added
+
+#### `models.WebPubSubResource$Definition` was modified
+
+* `withApplicationFirewall(models.ApplicationFirewallSettings)` was added
+
+#### `models.WebPubSubHubProperties` was modified
+
+* `withChat(models.ChatSettings)` was added
+* `chat()` was added
+
+#### `models.SharedPrivateLinkResource` was modified
+
+* `fqdns()` was added
 
 ## 1.1.0 (2024-09-26)
 
