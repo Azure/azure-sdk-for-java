@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class ConsolesListByVirtualMachineSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_ListByVirtualMachine.json
+     * x-ms-original-file: 2026-07-01/Consoles_ListByVirtualMachine.json
      */
     /**
      * Sample code: List consoles of the virtual machine.

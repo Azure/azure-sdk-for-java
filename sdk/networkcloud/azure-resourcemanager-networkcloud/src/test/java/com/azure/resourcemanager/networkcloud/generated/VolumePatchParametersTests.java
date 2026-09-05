@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumePatchParameters model = BinaryData.fromString(
-            "{\"tags\":{\"sggux\":\"oznnhdrlktgj\",\"ywaeeczgf\":\"eml\",\"blycsxzujksr\":\"ukklelss\",\"ewbidyvteowxv\":\"smdesqplpvmjcd\"}}")
-            .toObject(VolumePatchParameters.class);
-        Assertions.assertEquals("oznnhdrlktgj", model.tags().get("sggux"));
+        VolumePatchParameters model
+            = BinaryData.fromString("{\"tags\":{\"ixkykxd\":\"ihywartspph\",\"emmucfxh\":\"sj\"}}")
+                .toObject(VolumePatchParameters.class);
+        Assertions.assertEquals("ihywartspph", model.tags().get("ixkykxd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumePatchParameters model = new VolumePatchParameters().withTags(mapOf("sggux", "oznnhdrlktgj", "ywaeeczgf",
-            "eml", "blycsxzujksr", "ukklelss", "ewbidyvteowxv", "smdesqplpvmjcd"));
+        VolumePatchParameters model
+            = new VolumePatchParameters().withTags(mapOf("ixkykxd", "ihywartspph", "emmucfxh", "sj"));
         model = BinaryData.fromObject(model).toObject(VolumePatchParameters.class);
-        Assertions.assertEquals("oznnhdrlktgj", model.tags().get("sggux"));
+        Assertions.assertEquals("ihywartspph", model.tags().get("ixkykxd"));
     }
 
     // Use "Map.of" if available

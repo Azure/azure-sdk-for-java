@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Create.json
+     * x-ms-original-file: 2026-07-01/Clusters_Create.json
      */
     /**
      * Sample code: Create or update cluster.

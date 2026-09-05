@@ -14,24 +14,24 @@ public final class IpAddressPoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpAddressPool model = BinaryData.fromString(
-            "{\"addresses\":[\"gx\",\"wrck\"],\"autoAssign\":\"True\",\"name\":\"lyhpluodpvruud\",\"onlyUseHostIps\":\"True\"}")
+            "{\"addresses\":[\"f\",\"kmr\",\"emvvhm\"],\"autoAssign\":\"True\",\"name\":\"rjfut\",\"onlyUseHostIps\":\"True\"}")
             .toObject(IpAddressPool.class);
-        Assertions.assertEquals("gx", model.addresses().get(0));
+        Assertions.assertEquals("f", model.addresses().get(0));
         Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
-        Assertions.assertEquals("lyhpluodpvruud", model.name());
+        Assertions.assertEquals("rjfut", model.name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.onlyUseHostIps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAddressPool model = new IpAddressPool().withAddresses(Arrays.asList("gx", "wrck"))
+        IpAddressPool model = new IpAddressPool().withAddresses(Arrays.asList("f", "kmr", "emvvhm"))
             .withAutoAssign(BfdEnabled.TRUE)
-            .withName("lyhpluodpvruud")
+            .withName("rjfut")
             .withOnlyUseHostIps(BfdEnabled.TRUE);
         model = BinaryData.fromObject(model).toObject(IpAddressPool.class);
-        Assertions.assertEquals("gx", model.addresses().get(0));
+        Assertions.assertEquals("f", model.addresses().get(0));
         Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
-        Assertions.assertEquals("lyhpluodpvruud", model.name());
+        Assertions.assertEquals("rjfut", model.name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.onlyUseHostIps());
     }
 }

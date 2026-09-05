@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunReadCommandsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunReadCommands_Hostname.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunReadCommands_Hostname.json
      */
     /**
      * Sample code: Run and retrieve output from a single read only command on bare metal machine.
@@ -31,7 +31,7 @@ public final class BareMetalMachinesRunReadCommandsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunReadCommands_Multiple.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunReadCommands_Multiple.json
      */
     /**
      * Sample code: Run and retrieve output from read only commands on bare metal machine.

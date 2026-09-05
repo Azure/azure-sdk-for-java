@@ -70,12 +70,12 @@ public final class StorageApplianceImpl
         return this.innerModel().systemData();
     }
 
-    public AdministrativeCredentials administratorCredentials() {
-        return this.innerModel().administratorCredentials();
-    }
-
     public String rackId() {
         return this.innerModel().rackId();
+    }
+
+    public String storageApplianceSkuId() {
+        return this.innerModel().storageApplianceSkuId();
     }
 
     public long rackSlot() {
@@ -86,8 +86,8 @@ public final class StorageApplianceImpl
         return this.innerModel().serialNumber();
     }
 
-    public String storageApplianceSkuId() {
-        return this.innerModel().storageApplianceSkuId();
+    public AdministrativeCredentials administratorCredentials() {
+        return this.innerModel().administratorCredentials();
     }
 
     public CertificateInfo caCertificate() {
@@ -324,13 +324,13 @@ public final class StorageApplianceImpl
         return this;
     }
 
-    public StorageApplianceImpl withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
-        this.innerModel().withAdministratorCredentials(administratorCredentials);
+    public StorageApplianceImpl withRackId(String rackId) {
+        this.innerModel().withRackId(rackId);
         return this;
     }
 
-    public StorageApplianceImpl withRackId(String rackId) {
-        this.innerModel().withRackId(rackId);
+    public StorageApplianceImpl withStorageApplianceSkuId(String storageApplianceSkuId) {
+        this.innerModel().withStorageApplianceSkuId(storageApplianceSkuId);
         return this;
     }
 
@@ -349,8 +349,8 @@ public final class StorageApplianceImpl
         }
     }
 
-    public StorageApplianceImpl withStorageApplianceSkuId(String storageApplianceSkuId) {
-        this.innerModel().withStorageApplianceSkuId(storageApplianceSkuId);
+    public StorageApplianceImpl withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
+        this.innerModel().withAdministratorCredentials(administratorCredentials);
         return this;
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class KubernetesVersionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_ListByResourceGroup.json
      */
     /**
      * Sample code: List Kubernetes versions for resource group.

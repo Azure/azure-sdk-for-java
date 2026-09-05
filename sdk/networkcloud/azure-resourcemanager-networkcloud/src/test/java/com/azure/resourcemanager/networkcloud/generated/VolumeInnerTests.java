@@ -16,31 +16,31 @@ public final class VolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeInner model = BinaryData.fromString(
-            "{\"properties\":{\"sizeMiB\":1729116644305213337,\"storageApplianceId\":\"htomflrytswfp\",\"allocatedSizeMiB\":7106258411472210858,\"assignedStorageApplianceId\":\"cxnmskwhqjjyslu\",\"attachedTo\":[\"shhkvpedw\",\"slsrhmpq\",\"wwsko\",\"dcbrwimuvq\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"ovyrrleaesinu\",\"serialNumber\":\"ljqobbpihehcecyb\",\"provisioningState\":\"Accepted\"},\"etag\":\"rjb\",\"extendedLocation\":{\"name\":\"mpxdlvy\",\"type\":\"CustomLocation\"},\"location\":\"e\",\"tags\":{\"qwjksghudgz\":\"s\",\"ggsvoujkxibdaf\":\"xog\",\"xfbvfb\":\"rkmdyom\",\"rhpw\":\"dy\"},\"id\":\"gddeimaw\",\"name\":\"o\",\"type\":\"gkkumuikjcj\"}")
+            "{\"properties\":{\"sizeMiB\":8094379454967795002,\"storageApplianceId\":\"pgddeimawz\",\"allocatedSizeMiB\":3000306472777857348,\"assignedStorageApplianceId\":\"um\",\"attachedTo\":[\"jcjcazt\",\"wsnsqowx\",\"comlikytwvczc\",\"wka\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"yfdvlvhbwrnfxtgd\",\"serialNumber\":\"qthe\",\"provisioningState\":\"Provisioning\"},\"etag\":\"aoyankcoeqswa\",\"extendedLocation\":{\"name\":\"kltytmhdroz\",\"type\":\"EdgeZone\"},\"location\":\"drlktg\",\"tags\":{\"eeczgfbu\":\"gguxhemlwyw\",\"ycsxzu\":\"klelssxb\"},\"id\":\"ksrl\",\"name\":\"mdesqp\",\"type\":\"pvmjcdoewbid\"}")
             .toObject(VolumeInner.class);
-        Assertions.assertEquals("e", model.location());
-        Assertions.assertEquals("s", model.tags().get("qwjksghudgz"));
-        Assertions.assertEquals("mpxdlvy", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals(1729116644305213337L, model.sizeMiB());
-        Assertions.assertEquals("htomflrytswfp", model.storageApplianceId());
+        Assertions.assertEquals("drlktg", model.location());
+        Assertions.assertEquals("gguxhemlwyw", model.tags().get("eeczgfbu"));
+        Assertions.assertEquals("kltytmhdroz", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals(8094379454967795002L, model.sizeMiB());
+        Assertions.assertEquals("pgddeimawz", model.storageApplianceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeInner model = new VolumeInner().withLocation("e")
-            .withTags(mapOf("qwjksghudgz", "s", "ggsvoujkxibdaf", "xog", "xfbvfb", "rkmdyom", "rhpw", "dy"))
+        VolumeInner model = new VolumeInner().withLocation("drlktg")
+            .withTags(mapOf("eeczgfbu", "gguxhemlwyw", "ycsxzu", "klelssxb"))
             .withExtendedLocation(
-                new ExtendedLocation().withName("mpxdlvy").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withSizeMiB(1729116644305213337L)
-            .withStorageApplianceId("htomflrytswfp");
+                new ExtendedLocation().withName("kltytmhdroz").withType(ExtendedLocationType.EDGE_ZONE))
+            .withSizeMiB(8094379454967795002L)
+            .withStorageApplianceId("pgddeimawz");
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
-        Assertions.assertEquals("e", model.location());
-        Assertions.assertEquals("s", model.tags().get("qwjksghudgz"));
-        Assertions.assertEquals("mpxdlvy", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals(1729116644305213337L, model.sizeMiB());
-        Assertions.assertEquals("htomflrytswfp", model.storageApplianceId());
+        Assertions.assertEquals("drlktg", model.location());
+        Assertions.assertEquals("gguxhemlwyw", model.tags().get("eeczgfbu"));
+        Assertions.assertEquals("kltytmhdroz", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals(8094379454967795002L, model.sizeMiB());
+        Assertions.assertEquals("pgddeimawz", model.storageApplianceId());
     }
 
     // Use "Map.of" if available
