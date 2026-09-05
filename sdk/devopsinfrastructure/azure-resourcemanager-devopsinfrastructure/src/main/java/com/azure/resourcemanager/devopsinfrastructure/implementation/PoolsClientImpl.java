@@ -39,6 +39,7 @@ import com.azure.resourcemanager.devopsinfrastructure.fluent.models.CheckNameAva
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.models.PoolListResult;
 import com.azure.resourcemanager.devopsinfrastructure.models.CheckNameAvailability;
+import com.azure.resourcemanager.devopsinfrastructure.models.DeleteResourcesDetails;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -196,6 +197,26 @@ public final class PoolsClientImpl implements PoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CheckNameAvailability body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> deleteResources(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") DeleteResourcesDetails body,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteResourcesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") DeleteResourcesDetails body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1059,6 +1080,78 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(CheckNameAvailability body) {
         return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
+    }
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteResourcesWithResponseAsync(String resourceGroupName, String poolName,
+        DeleteResourcesDetails body) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteResources(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, poolName, contentType, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteResourcesAsync(String resourceGroupName, String poolName, DeleteResourcesDetails body) {
+        return deleteResourcesWithResponseAsync(resourceGroupName, poolName, body).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteResourcesWithResponse(String resourceGroupName, String poolName,
+        DeleteResourcesDetails body, Context context) {
+        final String contentType = "application/json";
+        return service.deleteResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, poolName, contentType, body, context);
+    }
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteResources(String resourceGroupName, String poolName, DeleteResourcesDetails body) {
+        deleteResourcesWithResponse(resourceGroupName, poolName, body, Context.NONE);
     }
 
     /**

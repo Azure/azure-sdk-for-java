@@ -25,7 +25,7 @@ public final class PoolsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"available\":\"Available\",\"message\":\"jlfltkacjvefkdlf\",\"name\":\"akggkfpag\",\"reason\":\"Invalid\"}";
+            = "{\"available\":\"Available\",\"message\":\"l\",\"name\":\"jrvxaglrv\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,14 +36,14 @@ public final class PoolsCheckNameAvailabilityWithResponseMockTests {
 
         CheckNameAvailabilityResult response = manager.pools()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailability().withName("odtji")
+                new CheckNameAvailability().withName("xbjhwuaanozjosph")
                     .withType(DevOpsInfrastructureResourceType.MICROSOFT_DEV_OPS_INFRASTRUCTURE_POOLS),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(AvailabilityStatus.AVAILABLE, response.available());
-        Assertions.assertEquals("jlfltkacjvefkdlf", response.message());
-        Assertions.assertEquals("akggkfpag", response.name());
+        Assertions.assertEquals("l", response.message());
+        Assertions.assertEquals("jrvxaglrv", response.name());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
     }
 }

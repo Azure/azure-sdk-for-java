@@ -24,7 +24,7 @@ public final class PoolsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"maximumConcurrency\":1025445351,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"aanozjosphyoulpj\"},\"identity\":{\"principalId\":\"ag\",\"tenantId\":\"vimjwos\",\"type\":\"None\",\"userAssignedIdentities\":{\"fjhdg\":{\"principalId\":\"cskfcktqumiekk\",\"clientId\":\"zikhl\"}}},\"location\":\"gebdunygaeq\",\"tags\":{\"a\":\"qfatpxllrxcyjm\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\"},\"id\":\"kgymareqnajxqug\",\"name\":\"hky\",\"type\":\"ubeddg\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"maximumConcurrency\":90280554,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"arrwlquu\",\"runtimeConfiguration\":{\"workFolder\":\"qkacewii\"}},\"identity\":{\"principalId\":\"ubjibww\",\"tenantId\":\"tohqkvpuvksgp\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"iyntorzihle\":{\"principalId\":\"ynfs\",\"clientId\":\"ljphuopxodl\"}}},\"location\":\"jswsrmslyz\",\"tags\":{\"iysui\":\"bchckqqzqio\",\"rwyhqmibzyhwitsm\":\"zynkedya\",\"pcdpumnz\":\"pyy\",\"abikns\":\"mwzn\"},\"id\":\"rgjhxb\",\"name\":\"dtlwwrlkd\",\"type\":\"tncvokot\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,17 @@ public final class PoolsListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Pool> response = manager.pools().listByResourceGroup("fatkld", com.azure.core.util.Context.NONE);
+        PagedIterable<Pool> response
+            = manager.pools().listByResourceGroup("rsndsytgadgvra", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gebdunygaeq", response.iterator().next().location());
-        Assertions.assertEquals("qfatpxllrxcyjm", response.iterator().next().tags().get("a"));
-        Assertions.assertEquals(ProvisioningState.CANCELED,
+        Assertions.assertEquals("jswsrmslyz", response.iterator().next().location());
+        Assertions.assertEquals("bchckqqzqio", response.iterator().next().tags().get("iysui"));
+        Assertions.assertEquals(ProvisioningState.PROVISIONING,
             response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(1025445351, response.iterator().next().properties().maximumConcurrency());
-        Assertions.assertEquals("aanozjosphyoulpj",
-            response.iterator().next().properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals(90280554, response.iterator().next().properties().maximumConcurrency());
+        Assertions.assertEquals("arrwlquu", response.iterator().next().properties().devCenterProjectResourceId());
+        Assertions.assertEquals("qkacewii",
+            response.iterator().next().properties().runtimeConfiguration().workFolder());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

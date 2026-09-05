@@ -27,6 +27,11 @@ public final class EphemeralType extends ExpandableStringEnum<EphemeralType> {
     public static final EphemeralType RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
+     * NVMeDisk ephemeral only, requires that the SKU supports the NVMe DiskControllerType.
+     */
+    public static final EphemeralType NVME_DISK = fromString("NVMeDisk");
+
+    /**
      * Creates a new instance of EphemeralType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

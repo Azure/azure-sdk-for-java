@@ -13,18 +13,18 @@ public final class CheckNameAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckNameAvailability model
-            = BinaryData.fromString("{\"name\":\"poczvyifqrvkdvjs\",\"type\":\"Microsoft.DevOpsInfrastructure/pools\"}")
+            = BinaryData.fromString("{\"name\":\"refovgmkqsleyyvx\",\"type\":\"Microsoft.DevOpsInfrastructure/pools\"}")
                 .toObject(CheckNameAvailability.class);
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.name());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.name());
         Assertions.assertEquals(DevOpsInfrastructureResourceType.MICROSOFT_DEV_OPS_INFRASTRUCTURE_POOLS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailability model = new CheckNameAvailability().withName("poczvyifqrvkdvjs")
+        CheckNameAvailability model = new CheckNameAvailability().withName("refovgmkqsleyyvx")
             .withType(DevOpsInfrastructureResourceType.MICROSOFT_DEV_OPS_INFRASTRUCTURE_POOLS);
         model = BinaryData.fromObject(model).toObject(CheckNameAvailability.class);
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.name());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.name());
         Assertions.assertEquals(DevOpsInfrastructureResourceType.MICROSOFT_DEV_OPS_INFRASTRUCTURE_POOLS, model.type());
     }
 }

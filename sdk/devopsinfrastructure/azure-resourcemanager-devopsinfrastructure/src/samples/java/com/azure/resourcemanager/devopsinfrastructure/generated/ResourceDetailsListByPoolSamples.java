@@ -9,7 +9,7 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class ResourceDetailsListByPoolSamples {
     /*
-     * x-ms-original-file: 2025-01-21/ResourceDetails_ListByPool.json
+     * x-ms-original-file: 2026-07-03-preview/ResourceDetails_ListByPool.json
      */
     /**
      * Sample code: ResourceDetails_ListByPool.

@@ -8,6 +8,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.AzureDevOpsOrganiza
 import com.azure.resourcemanager.devopsinfrastructure.models.CertificateStoreNameOption;
 import com.azure.resourcemanager.devopsinfrastructure.models.DevOpsAzureSku;
 import com.azure.resourcemanager.devopsinfrastructure.models.EphemeralType;
+import com.azure.resourcemanager.devopsinfrastructure.models.NetworkProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.Organization;
 import com.azure.resourcemanager.devopsinfrastructure.models.OsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolImage;
@@ -15,6 +16,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
 import com.azure.resourcemanager.devopsinfrastructure.models.SecretsManagementSettings;
 import com.azure.resourcemanager.devopsinfrastructure.models.StatelessAgentProfile;
+import com.azure.resourcemanager.devopsinfrastructure.models.VmSize;
 import com.azure.resourcemanager.devopsinfrastructure.models.VmssFabricProfile;
 import java.util.Arrays;
 
@@ -23,7 +25,53 @@ import java.util.Arrays;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-21/CreateOrUpdatePool.json
+     * x-ms-original-file: 2026-07-03-preview/CreateOrUpdatePool_InstanceMix.json
+     */
+    /**
+     * Sample code: Pools_CreateOrUpdate_InstanceMix.
+     * 
+     * @param manager Entry point to DevOpsInfrastructureManager.
+     */
+    public static void poolsCreateOrUpdateInstanceMix(
+        com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
+        manager.pools()
+            .define("pool")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg")
+            .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withMaximumConcurrency(10)
+                .withOrganizationProfile(
+                    new AzureDevOpsOrganizationProfile().withDescription("Managed by Managed DevOps Pools")
+                        .withUpdateDescription(true)
+                        .withOrganizations(Arrays
+                            .asList(new Organization().withUrl("https://mseng.visualstudio.com").withOpenAccess(true))))
+                .withAgentProfile(new StatelessAgentProfile())
+                .withFabricProfile(new VmssFabricProfile()
+                    .withSku(new DevOpsAzureSku().withName("Mix")
+                        .withVmSizes(Arrays.asList(new VmSize().withName("Standard_E2ads_v5"),
+                            new VmSize().withName("Standard_D2ads_v5"))))
+                    .withImages(Arrays.asList(new PoolImage()
+                        .withResourceId("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest")
+                        .withEphemeralType(EphemeralType.AUTOMATIC)
+                        .withProvisioningScriptStorageAccountResourceId(
+                            "/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/provisioningscriptsa")
+                        .withProvisioningScriptManagedIdentityClientId("0f8fad5b-d9cb-469f-a165-70867728950e")
+                        .withProvisioningScriptShouldRestart(true)
+                        .withProvisioningScriptEntryPoint("scripts/setup-agent.ps1")))
+                    .withOsProfile(new OsProfile().withSecretsManagementSettings(
+                        new SecretsManagementSettings().withCertificateStoreName(CertificateStoreNameOption.ROOT)
+                            .withObservedCertificates(Arrays.asList("https://abc.vault.azure.net/secrets/one"))
+                            .withKeyExportable(false)))
+                    .withNetworkProfile(new NetworkProfile().withSubnetId(
+                        "/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet")
+                        .withStaticIpAddressCount(2)))
+                .withDevCenterProjectResourceId(
+                    "/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-03-preview/CreateOrUpdatePool.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -36,23 +84,37 @@ public final class PoolsCreateOrUpdateSamples {
             .define("pool")
             .withRegion("eastus")
             .withExistingResourceGroup("rg")
-            .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
-                .withMaximumConcurrency(10)
-                .withOrganizationProfile(new AzureDevOpsOrganizationProfile().withOrganizations(
-                    Arrays.asList(new Organization().withUrl("https://mseng.visualstudio.com").withOpenAccess(true))))
-                .withAgentProfile(new StatelessAgentProfile())
-                .withFabricProfile(
-                    new VmssFabricProfile().withSku(new DevOpsAzureSku().withName("Standard_D4ads_v5"))
+            .withProperties(
+                new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withMaximumConcurrency(10)
+                    .withOrganizationProfile(new AzureDevOpsOrganizationProfile()
+                        .withDescription("Managed by Managed DevOps Pools")
+                        .withUpdateDescription(true)
+                        .withOrganizations(Arrays.asList(new Organization()
+                            .withUrl("https://mseng.visualstudio.com")
+                            .withOpenAccess(true))))
+                    .withAgentProfile(new StatelessAgentProfile())
+                    .withFabricProfile(new VmssFabricProfile()
+                        .withSku(new DevOpsAzureSku().withName("Standard_D4ads_v5"))
                         .withImages(Arrays.asList(new PoolImage()
                             .withResourceId("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest")
-                            .withEphemeralType(EphemeralType.AUTOMATIC)))
+                            .withEphemeralType(EphemeralType.NVME_DISK)
+                            .withProvisioningScriptStorageAccountResourceId(
+                                "/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/provisioningscriptsa")
+                            .withProvisioningScriptManagedIdentityClientId("0f8fad5b-d9cb-469f-a165-70867728950e")
+                            .withProvisioningScriptShouldRestart(true)
+                            .withProvisioningScriptEntryPoint("scripts/setup-agent.ps1")))
                         .withOsProfile(
                             new OsProfile().withSecretsManagementSettings(new SecretsManagementSettings()
                                 .withCertificateStoreName(CertificateStoreNameOption.ROOT)
                                 .withObservedCertificates(Arrays.asList("https://abc.vault.azure.net/secrets/one"))
-                                .withKeyExportable(false))))
-                .withDevCenterProjectResourceId(
-                    "/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"))
+                                .withKeyExportable(false)))
+                        .withNetworkProfile(new NetworkProfile()
+                            .withSubnetId(
+                                "/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet")
+                            .withStaticIpAddressCount(2)))
+                    .withDevCenterProjectResourceId(
+                        "/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"))
             .create();
     }
 }
