@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
 public class ThinClientStoreModelTest {
@@ -190,6 +191,39 @@ public class ThinClientStoreModelTest {
         assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.WORKLOAD_ID))
             .as("workload-id header should NOT be present when additionalHeaders is null")
             .isNull();
+    }
+
+    @Test(groups = "unit")
+    public void getRootUriThrowsWhenThinClientEndpointIsUnavailable() throws Exception {
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+        Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost:8080"));
+        Mockito.doReturn(regionalRoutingContext).when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        ThinClientStoreModel storeModel = new ThinClientStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            Mockito.mock(HttpClient.class),
+            null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Query,
+            "/dbs/db/colls/col/docs",
+            ResourceType.Document);
+
+        assertThatThrownBy(() -> storeModel.getRootUri(request))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessageContaining("Thin client endpoint is not available for resolved gateway endpoint https://localhost:8080")
+            .hasMessageContaining("operation type Query")
+            .hasMessageContaining("resource type Document")
+            .hasMessageContaining("activity id " + request.getActivityId());
     }
 
     @Test(groups = "unit")
