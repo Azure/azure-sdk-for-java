@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CrossRegionRestoreJobRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CrossRegionRestoreJobRequest model = BinaryData
-            .fromString("{\"sourceRegion\":\"g\",\"sourceBackupVaultId\":\"wzf\",\"jobId\":\"tsttktlahbq\"}")
-            .toObject(CrossRegionRestoreJobRequest.class);
-        Assertions.assertEquals("g", model.sourceRegion());
-        Assertions.assertEquals("wzf", model.sourceBackupVaultId());
-        Assertions.assertEquals("tsttktlahbq", model.jobId());
+        CrossRegionRestoreJobRequest model
+            = BinaryData.fromString("{\"sourceRegion\":\"hjxa\",\"sourceBackupVaultId\":\"vvjgslor\",\"jobId\":\"il\"}")
+                .toObject(CrossRegionRestoreJobRequest.class);
+        Assertions.assertEquals("hjxa", model.sourceRegion());
+        Assertions.assertEquals("vvjgslor", model.sourceBackupVaultId());
+        Assertions.assertEquals("il", model.jobId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CrossRegionRestoreJobRequest model = new CrossRegionRestoreJobRequest().withSourceRegion("g")
-            .withSourceBackupVaultId("wzf")
-            .withJobId("tsttktlahbq");
+        CrossRegionRestoreJobRequest model = new CrossRegionRestoreJobRequest().withSourceRegion("hjxa")
+            .withSourceBackupVaultId("vvjgslor")
+            .withJobId("il");
         model = BinaryData.fromObject(model).toObject(CrossRegionRestoreJobRequest.class);
-        Assertions.assertEquals("g", model.sourceRegion());
-        Assertions.assertEquals("wzf", model.sourceBackupVaultId());
-        Assertions.assertEquals("tsttktlahbq", model.jobId());
+        Assertions.assertEquals("hjxa", model.sourceRegion());
+        Assertions.assertEquals("vvjgslor", model.sourceBackupVaultId());
+        Assertions.assertEquals("il", model.jobId());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupInstancesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
+     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
      */
     /**
      * Sample code: Get BackupInstance for ADLS Blob.
@@ -23,7 +23,7 @@ public final class BackupInstancesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
+     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
      */
     /**
      * Sample code: Get BackupInstance with ADLSBlobBackupAutoProtection.
@@ -37,7 +37,7 @@ public final class BackupInstancesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
+     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
      */
     /**
      * Sample code: Get BackupInstance with BlobBackupAutoProtection.
@@ -51,7 +51,7 @@ public final class BackupInstancesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance.json
+     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/GetBackupInstance.json
      */
     /**
      * Sample code: Get BackupInstance.

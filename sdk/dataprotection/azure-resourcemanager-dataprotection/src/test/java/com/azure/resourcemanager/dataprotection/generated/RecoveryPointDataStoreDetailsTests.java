@@ -13,14 +13,14 @@ public final class RecoveryPointDataStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointDataStoreDetails model = BinaryData.fromString(
-            "{\"creationTime\":\"2021-05-18T14:08:14Z\",\"expiryTime\":\"2021-07-10T05:57:56Z\",\"id\":\"dfpwpjylwbtlhfls\",\"metaData\":\"dhszfjv\",\"state\":\"gofel\",\"type\":\"grqmqhldvrii\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-04-25T18:11:53Z\",\"rehydrationStatus\":\"FAILED\"}")
+            "{\"creationTime\":\"2021-01-19T22:00:25Z\",\"expiryTime\":\"2021-10-23T07:29:01Z\",\"id\":\"rezpdr\",\"metaData\":\"euyowqkd\",\"state\":\"t\",\"type\":\"ib\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-12-07T21:16:32Z\",\"rehydrationStatus\":\"COMPLETED\"}")
             .toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T14:08:14Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T05:57:56Z"), model.expiryTime());
-        Assertions.assertEquals("dfpwpjylwbtlhfls", model.id());
-        Assertions.assertEquals("dhszfjv", model.metadata());
-        Assertions.assertEquals("gofel", model.state());
-        Assertions.assertEquals("grqmqhldvrii", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T22:00:25Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T07:29:01Z"), model.expiryTime());
+        Assertions.assertEquals("rezpdr", model.id());
+        Assertions.assertEquals("euyowqkd", model.metadata());
+        Assertions.assertEquals("t", model.state());
+        Assertions.assertEquals("ib", model.type());
         Assertions.assertFalse(model.visible());
     }
 }

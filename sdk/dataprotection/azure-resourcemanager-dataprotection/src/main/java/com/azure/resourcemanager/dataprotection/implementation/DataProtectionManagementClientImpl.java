@@ -487,7 +487,7 @@ public final class DataProtectionManagementClientImpl implements DataProtectionM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01";
+        this.apiVersion = "2026-06-01";
         this.dataProtectionOperations = new DataProtectionOperationsClientImpl(this);
         this.backupInstances = new BackupInstancesClientImpl(this);
         this.backupVaultOperationResults = new BackupVaultOperationResultsClientImpl(this);
