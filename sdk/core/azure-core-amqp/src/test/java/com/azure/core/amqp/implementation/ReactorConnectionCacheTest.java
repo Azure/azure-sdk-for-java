@@ -223,6 +223,129 @@ public class ReactorConnectionCacheTest {
     }
 
     @Test
+    public void invalidateConnectionReplacesCachedConnectionOnNextGet() {
+        final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        try {
+            final ReactorConnection[] c = new ReactorConnection[1];
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
+            // Populate the cache with the first connection.
+            StepVerifier.create(connectionMono, 0)
+                .thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
+                .expectNextMatches(con -> {
+                    Assertions.assertFalse(con.isDisposed());
+                    c[0] = con;
+                    return true;
+                })
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+            connectionSupplier.assertInvocationCount(1);
+
+            // Mark the current connection for force-invalidation.
+            connectionCache.invalidateConnection();
+
+            // Next subscription must close the marked connection and serve a brand-new one.
+            StepVerifier.create(connectionMono, 0)
+                .thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
+                .expectNextMatches(con -> {
+                    Assertions.assertFalse(con.isDisposed());
+                    Assertions.assertNotEquals(c[0], con);
+                    return true;
+                })
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+
+            // The previously cached connection should be closed by the cacheInvalidateIf branch.
+            Assertions.assertTrue(c[0].isDisposed());
+            // A second connection had to be supplied because the first was force-invalidated.
+            connectionSupplier.assertInvocationCount(2);
+        } finally {
+            connectionSupplier.dispose();
+            connectionCache.dispose();
+        }
+    }
+
+    @Test
+    public void invalidateConnectionDoesNotInvalidateNewlyCreatedConnection() {
+        // Asserts the AB-A safety property: invalidate() targets a specific connection-id, so a
+        // fresh connection created after the invalidation marker was consumed must NOT be evicted
+        // by a stale marker.
+        final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        try {
+            final ReactorConnection[] c = new ReactorConnection[2];
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
+            StepVerifier.create(connectionMono, 0)
+                .thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
+                .expectNextMatches(con -> {
+                    c[0] = con;
+                    return true;
+                })
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+
+            connectionCache.invalidateConnection();
+
+            // Consume the invalidation marker and obtain the replacement connection.
+            StepVerifier.create(connectionMono, 0)
+                .thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
+                .expectNextMatches(con -> {
+                    c[1] = con;
+                    Assertions.assertNotEquals(c[0], c[1]);
+                    return true;
+                })
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+
+            // The marker has been consumed; another get() must serve the same (cached) replacement
+            // connection without creating a third one.
+            StepVerifier.create(connectionMono, 0).thenRequest(1).expectNextMatches(con -> {
+                Assertions.assertEquals(c[1], con);
+                Assertions.assertFalse(con.isDisposed());
+                return true;
+            }).expectComplete().verify(VERIFY_TIMEOUT);
+
+            connectionSupplier.assertInvocationCount(2);
+        } finally {
+            connectionSupplier.dispose();
+            connectionCache.dispose();
+        }
+    }
+
+    @Test
+    public void invalidateConnectionWithoutCachedConnectionIsNoOp() {
+        final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        try {
+            // No connection has been supplied yet.
+            connectionCache.invalidateConnection();
+            connectionSupplier.assertInvocationCount(0);
+
+            // First get() after the no-op invalidate() must still produce a connection normally.
+            StepVerifier.create(connectionCache.get(), 0)
+                .thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
+                .expectNextMatches(con -> {
+                    Assertions.assertFalse(con.isDisposed());
+                    return true;
+                })
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+            connectionSupplier.assertInvocationCount(1);
+        } finally {
+            connectionSupplier.dispose();
+            connectionCache.dispose();
+        }
+    }
+
+    @Test
     public void shouldBubbleUpNonRetriableError() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final ReactorConnectionCache<ReactorConnection> connectionCache
