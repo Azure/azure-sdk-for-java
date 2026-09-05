@@ -15,22 +15,20 @@ public final class TrafficControllerUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerUpdateProperties model = BinaryData.fromString(
-            "{\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"vmyokacspkwl\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"dobpxjmflbvvn\"}}}")
+            "{\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"vfaxkffeiith\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"m\"}}}")
             .toObject(TrafficControllerUpdateProperties.class);
-        Assertions.assertEquals("vmyokacspkwl", model.securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("dobpxjmflbvvn",
-            model.securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
+        Assertions.assertEquals("vfaxkffeiith", model.securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("m", model.securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrafficControllerUpdateProperties model
             = new TrafficControllerUpdateProperties().withSecurityPolicyConfigurations(
-                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("vmyokacspkwl"))
-                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("dobpxjmflbvvn")));
+                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("vfaxkffeiith"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("m")));
         model = BinaryData.fromObject(model).toObject(TrafficControllerUpdateProperties.class);
-        Assertions.assertEquals("vmyokacspkwl", model.securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("dobpxjmflbvvn",
-            model.securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
+        Assertions.assertEquals("vfaxkffeiith", model.securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("m", model.securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

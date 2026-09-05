@@ -2189,6 +2189,31 @@
             "match": "method .* com\\.azure\\.ai\\.projects\\.EvaluationRules(Async)?Client::createOrUpdateEvaluationRule\\(.*FoundryFeaturesOptInKeys\\)"
           },
           "justification": "Breaking change in beta operation: EvaluationRulesClient/EvaluationRulesAsyncClient are retained; only the overload of createOrUpdateEvaluationRule that took FoundryFeaturesOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties",
+          "justification": "TypeSpec migration: AssociationUpdate properties were flattened, removing the intermediate AssociationUpdateProperties model. Equivalent setters are now available directly on AssociationUpdate."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.azure.resourcemanager.servicenetworking.models.Association.UpdateStages.WithProperties",
+          "justification": "TypeSpec migration: AssociationUpdate properties were flattened, so the WithProperties update stage was replaced by WithAssociationType and WithSubnet."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old": "interface com.azure.resourcemanager.servicenetworking.models.Association.Update",
+          "justification": "TypeSpec migration: AssociationUpdate properties were flattened, so Association.Update no longer implements the removed WithProperties stage; it extends WithTags, WithAssociationType and WithSubnet instead."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties com.azure.resourcemanager.servicenetworking.models.AssociationUpdate::properties()",
+          "justification": "TypeSpec migration: AssociationUpdate properties were flattened. Use associationType() and subnet() directly on AssociationUpdate."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.servicenetworking.models.AssociationUpdate com.azure.resourcemanager.servicenetworking.models.AssociationUpdate::withProperties(com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties)",
+          "justification": "TypeSpec migration: AssociationUpdate properties were flattened. Use withAssociationType(AssociationType) and withSubnet(AssociationSubnetUpdate) directly on AssociationUpdate."
         }
       ]
     }
