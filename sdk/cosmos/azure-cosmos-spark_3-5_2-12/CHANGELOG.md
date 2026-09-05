@@ -8,6 +8,8 @@
 
 #### Bugs Fixed
 
+* Added a configurable five-minute deadline for change-feed offset metadata discovery so stalled network operations fail the streaming query instead of blocking indefinitely. See [issue 50021](https://github.com/Azure/azure-sdk-for-java/issues/50021).
+
 #### Other Changes
 
 ### 4.49.2 (2026-07-27)
