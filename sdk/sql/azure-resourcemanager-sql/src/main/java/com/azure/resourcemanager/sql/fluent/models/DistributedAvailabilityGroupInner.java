@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
 import com.azure.resourcemanager.sql.models.FailoverModeType;
+import com.azure.resourcemanager.sql.models.LinkModeType;
 import com.azure.resourcemanager.sql.models.LinkRole;
 import com.azure.resourcemanager.sql.models.ReplicationMode;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
@@ -292,6 +293,29 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
             this.innerProperties = new DistributedAvailabilityGroupProperties();
         }
         this.innerProperties().withSeedingMode(seedingMode);
+        return this;
+    }
+
+    /**
+     * Get the linkMode property: Specifies whether the link operates in single-database or multi-database mode.
+     * 
+     * @return the linkMode value.
+     */
+    public LinkModeType linkMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkMode();
+    }
+
+    /**
+     * Set the linkMode property: Specifies whether the link operates in single-database or multi-database mode.
+     * 
+     * @param linkMode the linkMode value to set.
+     * @return the DistributedAvailabilityGroupInner object itself.
+     */
+    public DistributedAvailabilityGroupInner withLinkMode(LinkModeType linkMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DistributedAvailabilityGroupProperties();
+        }
+        this.innerProperties().withLinkMode(linkMode);
         return this;
     }
 

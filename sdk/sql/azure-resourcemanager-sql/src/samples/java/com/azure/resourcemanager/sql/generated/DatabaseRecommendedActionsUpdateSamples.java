@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
  */
 public final class DatabaseRecommendedActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/DatabaseRecommendedActionUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/DatabaseRecommendedActionUpdate.json
      */
     /**
      * Sample code: Update database recommended action.

@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public final class ServerAzureADAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/AdministratorCreateOrUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/AdministratorCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates an existing Azure Active Directory administrator.

@@ -424,14 +424,18 @@ public interface DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param skipToken The skipToken parameter.
+     * @param top The number of elements to return from the collection.
+     * @param skip The number of elements in the collection to skip.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param orderby How the results should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, String skipToken);
+    PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, Long top, Long skip,
+        String filter, String orderby);
 
     /**
      * Gets a list of databases.
@@ -464,7 +468,10 @@ public interface DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param skipToken The skipToken parameter.
+     * @param top The number of elements to return from the collection.
+     * @param skip The number of elements in the collection to skip.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param orderby How the results should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -472,8 +479,8 @@ public interface DatabasesClient {
      * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, String skipToken,
-        Context context);
+    PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Long top, Long skip,
+        String filter, String orderby, Context context);
 
     /**
      * Exports a database.
