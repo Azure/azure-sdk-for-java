@@ -24,14 +24,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class UpdateToolbox {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String toolboxName = "toolbox_created_from_java";
+        String toolboxName = "toolbox-created-from-java";
         // Code sample for updating a toolbox's default version
         ToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
                 .buildToolboxesClient();
 
-        ToolboxDetails updatedToolbox = toolboxesClient.updateToolbox(toolboxName, "2");
+        ToolboxDetails updatedToolbox = toolboxesClient.updateToolbox(toolboxName, "1");
 
         System.out.println("Updated Toolbox Name: " + updatedToolbox.getName());
         System.out.println("Updated Default Version: " + updatedToolbox.getDefaultVersion());
