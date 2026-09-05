@@ -1,14 +1,17 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0 (2026-08-31)
+
+- Azure Resource Manager Recovery Services Backup client library for Java. This package contains Microsoft Azure SDK for Recovery Services Backup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package api-version 2026-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.InstantItemRecoveryOperationResultRequest` was added
 
-### Bugs Fixed
+#### `models.ItemLevelRecoveryConnections` was modified
 
-### Other Changes
+* `listInstantItemRecoveryOperationResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.InstantItemRecoveryOperationResultRequest)` was added
+* `listInstantItemRecoveryOperationResultWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.InstantItemRecoveryOperationResultRequest,com.azure.core.util.Context)` was added
 
 ## 1.7.0 (2026-08-13)
 

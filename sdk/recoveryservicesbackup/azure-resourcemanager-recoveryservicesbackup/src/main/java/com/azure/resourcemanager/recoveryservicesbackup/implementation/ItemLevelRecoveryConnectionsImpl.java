@@ -9,6 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryOperationResultRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
 
 public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecoveryConnections {
@@ -50,6 +52,22 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
         String protectedItemName, String recoveryPointId) {
         this.serviceClient()
             .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+    }
+
+    public Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
+        String recoveryPointId, InstantItemRecoveryOperationResultRequest body, Context context) {
+        return this.serviceClient()
+            .listInstantItemRecoveryOperationResultWithResponse(resourceGroupName, vaultName, fabricName, containerName,
+                protectedItemName, recoveryPointId, body, context);
+    }
+
+    public InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body) {
+        return this.serviceClient()
+            .listInstantItemRecoveryOperationResult(resourceGroupName, vaultName, fabricName, containerName,
+                protectedItemName, recoveryPointId, body);
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

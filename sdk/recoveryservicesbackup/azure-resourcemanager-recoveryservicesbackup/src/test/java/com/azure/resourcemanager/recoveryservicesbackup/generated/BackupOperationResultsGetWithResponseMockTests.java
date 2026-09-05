@@ -27,7 +27,8 @@ public final class BackupOperationResultsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.backupOperationResults().getWithResponse("dpq", "rfbo", "xi", com.azure.core.util.Context.NONE);
+        manager.backupOperationResults()
+            .getWithResponse("yvrmkjm", "it", "chwudlxee", com.azure.core.util.Context.NONE);
 
     }
 }

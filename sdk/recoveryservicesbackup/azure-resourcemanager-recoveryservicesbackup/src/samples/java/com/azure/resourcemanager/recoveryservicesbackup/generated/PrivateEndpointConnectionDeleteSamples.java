@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-01/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete PrivateEndpointConnection.
