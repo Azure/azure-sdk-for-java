@@ -13,18 +13,18 @@ public final class SelfServeExemptionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfServeExemptionSettings model = BinaryData.fromString(
-            "{\"enabled\":false,\"policyDefinitionReferenceIds\":[\"nlebxetqgtzxd\",\"nqbqqwxr\",\"feallnwsu\",\"isnjampmngnz\"]}")
+            "{\"enabled\":true,\"policyDefinitionReferenceIds\":[\"eamdp\",\"agalpbuxwgipwhon\",\"wkgshwa\",\"kix\"]}")
             .toObject(SelfServeExemptionSettings.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("nlebxetqgtzxd", model.policyDefinitionReferenceIds().get(0));
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("eamdp", model.policyDefinitionReferenceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfServeExemptionSettings model = new SelfServeExemptionSettings().withEnabled(false)
-            .withPolicyDefinitionReferenceIds(Arrays.asList("nlebxetqgtzxd", "nqbqqwxr", "feallnwsu", "isnjampmngnz"));
+        SelfServeExemptionSettings model = new SelfServeExemptionSettings().withEnabled(true)
+            .withPolicyDefinitionReferenceIds(Arrays.asList("eamdp", "agalpbuxwgipwhon", "wkgshwa", "kix"));
         model = BinaryData.fromObject(model).toObject(SelfServeExemptionSettings.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("nlebxetqgtzxd", model.policyDefinitionReferenceIds().get(0));
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("eamdp", model.policyDefinitionReferenceIds().get(0));
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.policy.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resources.policy.models.ComplianceState;
 import com.azure.resourcemanager.resources.policy.models.ExternalEndpointResult;
 import com.azure.resourcemanager.resources.policy.models.ExternalEvaluationEndpointInvocationResult;
 import com.azure.resourcemanager.resources.policy.models.PolicyAction;
@@ -15,25 +16,26 @@ public final class ExternalEvaluationEndpointInvocationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalEvaluationEndpointInvocationResult model = BinaryData.fromString(
-            "{\"policyInfo\":{\"policyDefinitionId\":\"yjgyd\",\"policySetDefinitionId\":\"lod\",\"policyDefinitionReferenceId\":\"euzanhs\",\"policySetDefinitionName\":\"hse\",\"policySetDefinitionVersion\":\"phpzfngqjcl\",\"policyDefinitionName\":\"ftujwjjufw\",\"policyDefinitionVersion\":\"qrkuor\",\"policyDefinitionEffect\":\"ssruqnmdvhazcvj\",\"policyAssignmentId\":\"iqswbqer\",\"policyAssignmentName\":\"xiytxtdgukvl\",\"policyAssignmentVersion\":\"ktg\",\"policyAssignmentScope\":\"tyouambewreswmow\"},\"result\":\"Failed\",\"endpointKind\":\"uteyxeyguq\",\"message\":\"ijiitns\",\"retryAfter\":\"2021-03-05T21:47:33Z\",\"claims\":\"\\\"datadesygrijwa\\\"\",\"policyAction\":\"Error\",\"policyEvaluationDetails\":\"\\\"datan\\\"\",\"additionalInfo\":\"\\\"dataybfueqfrojsydgr\\\"\",\"expiration\":\"2021-04-19T05:33:50Z\"}")
+            "{\"policyInfo\":{\"policyDefinitionId\":\"rlsmdesqplpvmjc\",\"policySetDefinitionId\":\"ewbidyvteowxv\",\"policyDefinitionReferenceId\":\"iudeu\",\"policySetDefinitionName\":\"sxze\",\"policySetDefinitionVersion\":\"axwk\",\"policyDefinitionName\":\"ykhv\",\"policyDefinitionVersion\":\"xepmrut\",\"policyDefinitionEffect\":\"abaobnslujdjltym\",\"policyAssignmentId\":\"vguihywar\",\"policyAssignmentName\":\"pphkixkykxds\",\"policyAssignmentVersion\":\"pemmucfxhik\",\"policyAssignmentScope\":\"lrmymyincqlhri\"},\"result\":\"Succeeded\",\"endpointKind\":\"miii\",\"message\":\"gqcg\",\"retryAfter\":\"2021-03-09T10:20:04Z\",\"claims\":\"\\\"dataqkctotiowlxte\\\"\",\"policyAction\":\"Allow\",\"policyEvaluationDetails\":\"\\\"datajgwdtgukranbl\\\"\",\"additionalInfo\":\"\\\"datahqlkccuzgygqwaho\\\"\",\"complianceState\":\"Error\",\"expiration\":\"2021-03-23T08:23:32Z\"}")
             .toObject(ExternalEvaluationEndpointInvocationResult.class);
-        Assertions.assertEquals("yjgyd", model.policyInfo().policyDefinitionId());
-        Assertions.assertEquals("lod", model.policyInfo().policySetDefinitionId());
-        Assertions.assertEquals("euzanhs", model.policyInfo().policyDefinitionReferenceId());
-        Assertions.assertEquals("hse", model.policyInfo().policySetDefinitionName());
-        Assertions.assertEquals("phpzfngqjcl", model.policyInfo().policySetDefinitionVersion());
-        Assertions.assertEquals("ftujwjjufw", model.policyInfo().policyDefinitionName());
-        Assertions.assertEquals("qrkuor", model.policyInfo().policyDefinitionVersion());
-        Assertions.assertEquals("ssruqnmdvhazcvj", model.policyInfo().policyDefinitionEffect());
-        Assertions.assertEquals("iqswbqer", model.policyInfo().policyAssignmentId());
-        Assertions.assertEquals("xiytxtdgukvl", model.policyInfo().policyAssignmentName());
-        Assertions.assertEquals("ktg", model.policyInfo().policyAssignmentVersion());
-        Assertions.assertEquals("tyouambewreswmow", model.policyInfo().policyAssignmentScope());
-        Assertions.assertEquals(ExternalEndpointResult.FAILED, model.result());
-        Assertions.assertEquals("uteyxeyguq", model.endpointKind());
-        Assertions.assertEquals("ijiitns", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T21:47:33Z"), model.retryAfter());
-        Assertions.assertEquals(PolicyAction.ERROR, model.policyAction());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-19T05:33:50Z"), model.expiration());
+        Assertions.assertEquals("rlsmdesqplpvmjc", model.policyInfo().policyDefinitionId());
+        Assertions.assertEquals("ewbidyvteowxv", model.policyInfo().policySetDefinitionId());
+        Assertions.assertEquals("iudeu", model.policyInfo().policyDefinitionReferenceId());
+        Assertions.assertEquals("sxze", model.policyInfo().policySetDefinitionName());
+        Assertions.assertEquals("axwk", model.policyInfo().policySetDefinitionVersion());
+        Assertions.assertEquals("ykhv", model.policyInfo().policyDefinitionName());
+        Assertions.assertEquals("xepmrut", model.policyInfo().policyDefinitionVersion());
+        Assertions.assertEquals("abaobnslujdjltym", model.policyInfo().policyDefinitionEffect());
+        Assertions.assertEquals("vguihywar", model.policyInfo().policyAssignmentId());
+        Assertions.assertEquals("pphkixkykxds", model.policyInfo().policyAssignmentName());
+        Assertions.assertEquals("pemmucfxhik", model.policyInfo().policyAssignmentVersion());
+        Assertions.assertEquals("lrmymyincqlhri", model.policyInfo().policyAssignmentScope());
+        Assertions.assertEquals(ExternalEndpointResult.SUCCEEDED, model.result());
+        Assertions.assertEquals("miii", model.endpointKind());
+        Assertions.assertEquals("gqcg", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T10:20:04Z"), model.retryAfter());
+        Assertions.assertEquals(PolicyAction.ALLOW, model.policyAction());
+        Assertions.assertEquals(ComplianceState.ERROR, model.complianceState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T08:23:32Z"), model.expiration());
     }
 }

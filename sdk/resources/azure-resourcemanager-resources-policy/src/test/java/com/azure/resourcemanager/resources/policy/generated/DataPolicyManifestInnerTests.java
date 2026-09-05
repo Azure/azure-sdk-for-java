@@ -13,21 +13,21 @@ public final class DataPolicyManifestInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataPolicyManifestInner model = BinaryData.fromString(
-            "{\"properties\":{\"namespaces\":[\"mypyynpcdpu\",\"nzgmwznmabik\",\"sorgj\"],\"policyMode\":\"bldtlww\",\"isBuiltInOnly\":true,\"resourceTypeAliases\":[{\"resourceType\":\"ncvokotllxdyhg\",\"aliases\":[{\"name\":\"ogjltdtbnnhad\",\"paths\":[{},{},{}],\"type\":\"Mask\",\"defaultPath\":\"cikhnv\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"gxqquezik\",\"paths\":[{},{},{},{}],\"type\":\"NotSpecified\",\"defaultPath\":\"allatmelwuipic\",\"defaultPattern\":{},\"defaultMetadata\":{}}]}],\"effects\":[{\"name\":\"v\",\"detailsSchema\":\"\\\"datavc\\\"\"}],\"fieldValues\":[\"rhyrnxxmueed\"],\"resourceFunctions\":{\"standard\":[\"v\",\"tkwqqtchealm\"],\"custom\":[{\"name\":\"aayg\",\"fullyQualifiedResourceType\":\"wvgpiohg\",\"defaultProperties\":[\"tfudxepx\",\"yqagvrvm\",\"pkukghi\"],\"allowCustomProperties\":false},{\"name\":\"xgwim\",\"fullyQualifiedResourceType\":\"jhfjxwm\",\"defaultProperties\":[\"kfoqreyfkzikfj\",\"wneaiv\"],\"allowCustomProperties\":true},{\"name\":\"elpcirelsfeaenwa\",\"fullyQualifiedResourceType\":\"atklddxbjhwuaa\",\"defaultProperties\":[\"jos\",\"hyoulpjr\"],\"allowCustomProperties\":false}]}},\"id\":\"l\",\"name\":\"vimjwos\",\"type\":\"tx\"}")
+            "{\"properties\":{\"namespaces\":[\"nkbebxmuby\",\"ntwlrbqtkoie\"],\"policyMode\":\"eotg\",\"isBuiltInOnly\":false,\"resourceTypeAliases\":[{\"resourceType\":\"u\",\"aliases\":[{\"name\":\"wzizxbmpgcjefuzm\",\"paths\":[{},{}],\"type\":\"NotSpecified\",\"defaultPath\":\"d\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"p\",\"paths\":[{},{},{},{}],\"type\":\"NotSpecified\",\"defaultPath\":\"zbtbhj\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"fgohdneuelfphs\",\"paths\":[{},{},{}],\"type\":\"Mask\",\"defaultPath\":\"fikdowwqu\",\"defaultPattern\":{},\"defaultMetadata\":{}}]},{\"resourceType\":\"xclvit\",\"aliases\":[{\"name\":\"o\",\"paths\":[{}],\"type\":\"Mask\",\"defaultPath\":\"hcohfwdsjnk\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"tiiswacffg\",\"paths\":[{},{},{},{}],\"type\":\"PlainText\",\"defaultPath\":\"kfvhqcrailvpn\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"flrwd\",\"paths\":[{},{}],\"type\":\"Mask\",\"defaultPath\":\"jrxs\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"cnihgwqapnedgfbc\",\"paths\":[{},{},{}],\"type\":\"PlainText\",\"defaultPath\":\"pkeqdcvdrhvoo\",\"defaultPattern\":{},\"defaultMetadata\":{}}]},{\"resourceType\":\"bobzdopcjwvnhd\",\"aliases\":[{\"name\":\"gx\",\"paths\":[{},{},{}],\"type\":\"Mask\",\"defaultPath\":\"mutwuoe\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"hjwniyqsluic\",\"paths\":[{},{},{}],\"type\":\"NotSpecified\",\"defaultPath\":\"zl\",\"defaultPattern\":{},\"defaultMetadata\":{}},{\"name\":\"paxmodfvuefywsb\",\"paths\":[{}],\"type\":\"NotSpecified\",\"defaultPath\":\"hrfou\",\"defaultPattern\":{},\"defaultMetadata\":{}}]}],\"effects\":[{\"name\":\"cpwi\",\"detailsSchema\":\"\\\"datavqtmnub\\\"\"}],\"fieldValues\":[\"pzk\",\"mond\",\"mquxvypo\"],\"resourceFunctions\":{\"standard\":[\"pkwhojvpa\",\"qgxy\"],\"custom\":[{\"name\":\"mbqfqvmk\",\"fullyQualifiedResourceType\":\"oz\",\"defaultProperties\":[\"helxprglya\",\"dd\",\"kcbcue\",\"rjxgciqib\"],\"allowCustomProperties\":false},{\"name\":\"xsdqrhzoymibmrqy\",\"fullyQualifiedResourceType\":\"ahwfluszdtmhrk\",\"defaultProperties\":[\"yyv\",\"qacpiex\"],\"allowCustomProperties\":false},{\"name\":\"iwbwoenwashrtdtk\",\"fullyQualifiedResourceType\":\"qxwbpokulpiu\",\"defaultProperties\":[\"asipqiio\",\"yuq\"],\"allowCustomProperties\":false},{\"name\":\"lp\",\"fullyQualifiedResourceType\":\"cciuqgbdbutau\",\"defaultProperties\":[\"tkuwhhmhykojo\",\"afnn\"],\"allowCustomProperties\":true}]}},\"id\":\"chkoymkcdyh\",\"name\":\"pkkpw\",\"type\":\"reqnovvqfov\"}")
             .toObject(DataPolicyManifestInner.class);
-        Assertions.assertEquals("mypyynpcdpu", model.namespaces().get(0));
-        Assertions.assertEquals("bldtlww", model.policyMode());
-        Assertions.assertTrue(model.isBuiltInOnly());
-        Assertions.assertEquals("ncvokotllxdyhg", model.resourceTypeAliases().get(0).resourceType());
-        Assertions.assertEquals("ogjltdtbnnhad", model.resourceTypeAliases().get(0).aliases().get(0).name());
-        Assertions.assertEquals(AliasType.MASK, model.resourceTypeAliases().get(0).aliases().get(0).type());
-        Assertions.assertEquals("cikhnv", model.resourceTypeAliases().get(0).aliases().get(0).defaultPath());
-        Assertions.assertEquals("v", model.effects().get(0).name());
-        Assertions.assertEquals("rhyrnxxmueed", model.fieldValues().get(0));
-        Assertions.assertEquals("v", model.standard().get(0));
-        Assertions.assertEquals("aayg", model.custom().get(0).name());
-        Assertions.assertEquals("wvgpiohg", model.custom().get(0).fullyQualifiedResourceType());
-        Assertions.assertEquals("tfudxepx", model.custom().get(0).defaultProperties().get(0));
+        Assertions.assertEquals("nkbebxmuby", model.namespaces().get(0));
+        Assertions.assertEquals("eotg", model.policyMode());
+        Assertions.assertFalse(model.isBuiltInOnly());
+        Assertions.assertEquals("u", model.resourceTypeAliases().get(0).resourceType());
+        Assertions.assertEquals("wzizxbmpgcjefuzm", model.resourceTypeAliases().get(0).aliases().get(0).name());
+        Assertions.assertEquals(AliasType.NOT_SPECIFIED, model.resourceTypeAliases().get(0).aliases().get(0).type());
+        Assertions.assertEquals("d", model.resourceTypeAliases().get(0).aliases().get(0).defaultPath());
+        Assertions.assertEquals("cpwi", model.effects().get(0).name());
+        Assertions.assertEquals("pzk", model.fieldValues().get(0));
+        Assertions.assertEquals("pkwhojvpa", model.standard().get(0));
+        Assertions.assertEquals("mbqfqvmk", model.custom().get(0).name());
+        Assertions.assertEquals("oz", model.custom().get(0).fullyQualifiedResourceType());
+        Assertions.assertEquals("helxprglya", model.custom().get(0).defaultProperties().get(0));
         Assertions.assertFalse(model.custom().get(0).allowCustomProperties());
     }
 }
