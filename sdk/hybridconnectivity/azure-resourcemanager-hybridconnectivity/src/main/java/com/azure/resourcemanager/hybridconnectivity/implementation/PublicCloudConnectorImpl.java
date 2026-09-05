@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
@@ -49,6 +50,10 @@ public final class PublicCloudConnectorImpl
 
     public PublicCloudConnectorProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public HostType kind() {
+        return this.innerModel().kind();
     }
 
     public SystemData systemData() {

@@ -14,12 +14,12 @@ public final class InventoryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InventoryProperties model = BinaryData.fromString(
-            "{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"ocukoklyax\",\"azureResourceId\":\"onuq\",\"status\":\"InProgress\",\"statusDetails\":\"beypewrmjmw\",\"provisioningState\":\"Succeeded\"}")
+            "{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"i\",\"azureResourceId\":\"kvceoveilovnotyf\",\"status\":\"Completed\",\"statusDetails\":\"jbkcnxdhbttkph\",\"provisioningState\":\"Succeeded\"}")
             .toObject(InventoryProperties.class);
         Assertions.assertEquals(CloudNativeType.EC2, model.cloudNativeType());
-        Assertions.assertEquals("ocukoklyax", model.cloudNativeResourceId());
-        Assertions.assertEquals("onuq", model.azureResourceId());
-        Assertions.assertEquals(SolutionConfigurationStatus.IN_PROGRESS, model.status());
-        Assertions.assertEquals("beypewrmjmw", model.statusDetails());
+        Assertions.assertEquals("i", model.cloudNativeResourceId());
+        Assertions.assertEquals("kvceoveilovnotyf", model.azureResourceId());
+        Assertions.assertEquals(SolutionConfigurationStatus.COMPLETED, model.status());
+        Assertions.assertEquals("jbkcnxdhbttkph", model.statusDetails());
     }
 }

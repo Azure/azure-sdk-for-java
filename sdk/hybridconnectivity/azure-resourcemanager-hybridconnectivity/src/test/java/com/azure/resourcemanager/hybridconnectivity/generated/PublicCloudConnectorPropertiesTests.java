@@ -6,6 +6,9 @@ package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfile;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpCloudProfile;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpOrganizationProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpProjectProperties;
 import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
 import java.util.Arrays;
@@ -15,25 +18,50 @@ public final class PublicCloudConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicCloudConnectorProperties model = BinaryData.fromString(
-            "{\"awsCloudProfile\":{\"accountId\":\"fsrpymzidnse\",\"excludedAccounts\":[\"tbzsgfyccs\",\"ewmdw\",\"jeiachboosfl\",\"ro\"],\"isOrganizationalAccount\":false},\"hostType\":\"AWS\",\"provisioningState\":\"Canceled\",\"connectorPrimaryIdentifier\":\"hzzvypyq\"}")
+            "{\"awsCloudProfile\":{\"accountId\":\"tzlcuiywgqywgn\",\"excludedAccounts\":[\"ynhz\",\"pphrcgynco\",\"pec\"],\"isOrganizationalAccount\":false},\"gcpCloudProfile\":{\"projectProperties\":{\"projectNumber\":\"oo\",\"projectId\":\"sxlzevgbmqj\"},\"organizationProperties\":{\"organizationId\":\"bcypmi\",\"managementProjectNumber\":\"kwlzuvccfwnfn\",\"managementProjectId\":\"acfi\",\"excludedProjectNumbers\":[\"ebxetqgtzxdp\"],\"excludedFolderIds\":[\"qqwx\",\"jfeallnwsub\"]}},\"hostType\":\"GCP\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"mpmngnzscxaqwoo\"}")
             .toObject(PublicCloudConnectorProperties.class);
-        Assertions.assertEquals("fsrpymzidnse", model.awsCloudProfile().accountId());
-        Assertions.assertEquals("tbzsgfyccs", model.awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("tzlcuiywgqywgn", model.awsCloudProfile().accountId());
+        Assertions.assertEquals("ynhz", model.awsCloudProfile().excludedAccounts().get(0));
         Assertions.assertFalse(model.awsCloudProfile().isOrganizationalAccount());
-        Assertions.assertEquals(HostType.AWS, model.hostType());
+        Assertions.assertEquals("oo", model.gcpCloudProfile().projectProperties().projectNumber());
+        Assertions.assertEquals("sxlzevgbmqj", model.gcpCloudProfile().projectProperties().projectId());
+        Assertions.assertEquals("bcypmi", model.gcpCloudProfile().organizationProperties().organizationId());
+        Assertions.assertEquals("kwlzuvccfwnfn",
+            model.gcpCloudProfile().organizationProperties().managementProjectNumber());
+        Assertions.assertEquals("acfi", model.gcpCloudProfile().organizationProperties().managementProjectId());
+        Assertions.assertEquals("ebxetqgtzxdp",
+            model.gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("qqwx", model.gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
+        Assertions.assertEquals(HostType.GCP, model.hostType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicCloudConnectorProperties model = new PublicCloudConnectorProperties()
-            .withAwsCloudProfile(new AwsCloudProfile().withAccountId("fsrpymzidnse")
-                .withExcludedAccounts(Arrays.asList("tbzsgfyccs", "ewmdw", "jeiachboosfl", "ro"))
+            .withAwsCloudProfile(new AwsCloudProfile().withAccountId("tzlcuiywgqywgn")
+                .withExcludedAccounts(Arrays.asList("ynhz", "pphrcgynco", "pec"))
                 .withIsOrganizationalAccount(false))
-            .withHostType(HostType.AWS);
+            .withGcpCloudProfile(new GcpCloudProfile()
+                .withProjectProperties(new GcpProjectProperties().withProjectNumber("oo").withProjectId("sxlzevgbmqj"))
+                .withOrganizationProperties(new GcpOrganizationProperties().withOrganizationId("bcypmi")
+                    .withManagementProjectNumber("kwlzuvccfwnfn")
+                    .withManagementProjectId("acfi")
+                    .withExcludedProjectNumbers(Arrays.asList("ebxetqgtzxdp"))
+                    .withExcludedFolderIds(Arrays.asList("qqwx", "jfeallnwsub"))))
+            .withHostType(HostType.GCP);
         model = BinaryData.fromObject(model).toObject(PublicCloudConnectorProperties.class);
-        Assertions.assertEquals("fsrpymzidnse", model.awsCloudProfile().accountId());
-        Assertions.assertEquals("tbzsgfyccs", model.awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("tzlcuiywgqywgn", model.awsCloudProfile().accountId());
+        Assertions.assertEquals("ynhz", model.awsCloudProfile().excludedAccounts().get(0));
         Assertions.assertFalse(model.awsCloudProfile().isOrganizationalAccount());
-        Assertions.assertEquals(HostType.AWS, model.hostType());
+        Assertions.assertEquals("oo", model.gcpCloudProfile().projectProperties().projectNumber());
+        Assertions.assertEquals("sxlzevgbmqj", model.gcpCloudProfile().projectProperties().projectId());
+        Assertions.assertEquals("bcypmi", model.gcpCloudProfile().organizationProperties().organizationId());
+        Assertions.assertEquals("kwlzuvccfwnfn",
+            model.gcpCloudProfile().organizationProperties().managementProjectNumber());
+        Assertions.assertEquals("acfi", model.gcpCloudProfile().organizationProperties().managementProjectId());
+        Assertions.assertEquals("ebxetqgtzxdp",
+            model.gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("qqwx", model.gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
+        Assertions.assertEquals(HostType.GCP, model.hostType());
     }
 }

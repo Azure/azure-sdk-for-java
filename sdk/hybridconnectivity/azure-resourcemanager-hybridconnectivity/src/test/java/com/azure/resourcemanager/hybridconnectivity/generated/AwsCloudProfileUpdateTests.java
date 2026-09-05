@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AwsCloudProfileUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwsCloudProfileUpdate model = BinaryData.fromString("{\"excludedAccounts\":[\"exhd\",\"xibqeojnx\"]}")
+        AwsCloudProfileUpdate model = BinaryData.fromString("{\"excludedAccounts\":[\"oaeupfhyhltrpmo\"]}")
             .toObject(AwsCloudProfileUpdate.class);
-        Assertions.assertEquals("exhd", model.excludedAccounts().get(0));
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.excludedAccounts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AwsCloudProfileUpdate model
-            = new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("exhd", "xibqeojnx"));
+            = new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("oaeupfhyhltrpmo"));
         model = BinaryData.fromObject(model).toObject(AwsCloudProfileUpdate.class);
-        Assertions.assertEquals("exhd", model.excludedAccounts().get(0));
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.excludedAccounts().get(0));
     }
 }
