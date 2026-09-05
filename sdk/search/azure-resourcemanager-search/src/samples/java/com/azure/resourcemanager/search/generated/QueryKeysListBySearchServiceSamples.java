@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class QueryKeysListBySearchServiceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchListQueryKeysBySearchService.json
+     * x-ms-original-file: 2026-09-01-preview/SearchListQueryKeysBySearchService.json
      */
     /**
      * Sample code: SearchListQueryKeysBySearchService.
