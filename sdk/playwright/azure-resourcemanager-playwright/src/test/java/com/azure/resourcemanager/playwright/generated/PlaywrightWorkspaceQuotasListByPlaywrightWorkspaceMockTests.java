@@ -31,7 +31,7 @@ public final class PlaywrightWorkspaceQuotasListByPlaywrightWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PlaywrightWorkspaceQuota> response = manager.playwrightWorkspaceQuotas()
-            .listByPlaywrightWorkspace("dawkzbali", "urqhaka", com.azure.core.util.Context.NONE);
+            .listByPlaywrightWorkspace("ali", "urqhaka", com.azure.core.util.Context.NONE);
 
     }
 }

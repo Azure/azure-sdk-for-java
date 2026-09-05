@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class PlaywrightWorkspacesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"gvtqagnbuynh\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"enbtkcxywny\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class PlaywrightWorkspacesCheckNameAvailabilityWithResponseMockTest
 
         CheckNameAvailabilityResponse response = manager.playwrightWorkspaces()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityRequest().withName("spnqzahmgkb").withType("yydhibnuqqk"),
+                new CheckNameAvailabilityRequest().withName("cvpnazzmhjrunmpx").withType("dbhrbnlankxm"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertFalse(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("gvtqagnbuynh", response.message());
+        Assertions.assertEquals("enbtkcxywny", response.message());
     }
 }
