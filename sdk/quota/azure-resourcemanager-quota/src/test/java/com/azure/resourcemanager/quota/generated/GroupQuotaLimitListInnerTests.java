@@ -16,29 +16,26 @@ public final class GroupQuotaLimitListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaLimitListInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Escalated\",\"value\":[{\"properties\":{\"resourceName\":\"fgibmadgakeq\",\"limit\":4098961683533013138,\"comment\":\"zqqedq\",\"unit\":\"bciqfouflm\",\"name\":{\"value\":\"zsm\",\"localizedValue\":\"mglougpbkw\"},\"availableLimit\":7027727975634894937,\"allocatedToSubscriptions\":{\"value\":[{},{},{},{}]}}},{\"properties\":{\"resourceName\":\"ap\",\"limit\":4447095824411046688,\"comment\":\"uertumk\",\"unit\":\"svqwhbmdgbbjfd\",\"name\":{\"value\":\"bmbexppbhtqqro\",\"localizedValue\":\"p\"},\"availableLimit\":295546602874213209,\"allocatedToSubscriptions\":{\"value\":[{},{}]}}},{\"properties\":{\"resourceName\":\"xigjyjgzjaoyfhr\",\"limit\":8383206399343322753,\"comment\":\"erkujys\",\"unit\":\"eju\",\"name\":{\"value\":\"awrlyx\",\"localizedValue\":\"kcprbnw\"},\"availableLimit\":6443099524883861361,\"allocatedToSubscriptions\":{\"value\":[{},{}]}}}],\"nextLink\":\"p\"},\"id\":\"szdnr\",\"name\":\"jq\",\"type\":\"uhmuouqfprwzwbn\"}")
+            "{\"properties\":{\"provisioningState\":\"Escalated\",\"value\":[{\"properties\":{\"resourceName\":\"vecxgodebfqkk\",\"limit\":8422654337875438873,\"comment\":\"kgriwflzlfbx\",\"unit\":\"uzycispnqza\",\"name\":{\"value\":\"kbrpyydhibnuq\",\"localizedValue\":\"pikad\"},\"availableLimit\":2695770375115037115,\"allocatedToSubscriptions\":{\"value\":[{},{}]}}},{\"properties\":{\"resourceName\":\"uynhijg\",\"limit\":2954558774425046372,\"comment\":\"siarbutrcvpn\",\"unit\":\"zmhjrunmp\",\"name\":{\"value\":\"dbhrbnlankxm\",\"localizedValue\":\"k\"},\"availableLimit\":6177133916320921271,\"allocatedToSubscriptions\":{\"value\":[{},{},{},{}]}}}],\"nextLink\":\"cxy\"},\"id\":\"y\",\"name\":\"nrs\",\"type\":\"nlqidybyxczf\"}")
             .toObject(GroupQuotaLimitListInner.class);
-        Assertions.assertEquals("fgibmadgakeq", model.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(4098961683533013138L, model.properties().value().get(0).properties().limit());
-        Assertions.assertEquals("zqqedq", model.properties().value().get(0).properties().comment());
+        Assertions.assertEquals("vecxgodebfqkk", model.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(8422654337875438873L, model.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("kgriwflzlfbx", model.properties().value().get(0).properties().comment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GroupQuotaLimitListInner model
             = new GroupQuotaLimitListInner().withProperties(new GroupQuotaLimitListProperties().withValue(Arrays.asList(
-                new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("fgibmadgakeq")
-                    .withLimit(4098961683533013138L)
-                    .withComment("zqqedq")),
-                new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("ap")
-                    .withLimit(4447095824411046688L)
-                    .withComment("uertumk")),
-                new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("xigjyjgzjaoyfhr")
-                    .withLimit(8383206399343322753L)
-                    .withComment("erkujys")))));
+                new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("vecxgodebfqkk")
+                    .withLimit(8422654337875438873L)
+                    .withComment("kgriwflzlfbx")),
+                new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("uynhijg")
+                    .withLimit(2954558774425046372L)
+                    .withComment("siarbutrcvpn")))));
         model = BinaryData.fromObject(model).toObject(GroupQuotaLimitListInner.class);
-        Assertions.assertEquals("fgibmadgakeq", model.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(4098961683533013138L, model.properties().value().get(0).properties().limit());
-        Assertions.assertEquals("zqqedq", model.properties().value().get(0).properties().comment());
+        Assertions.assertEquals("vecxgodebfqkk", model.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(8422654337875438873L, model.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("kgriwflzlfbx", model.properties().value().get(0).properties().comment());
     }
 }

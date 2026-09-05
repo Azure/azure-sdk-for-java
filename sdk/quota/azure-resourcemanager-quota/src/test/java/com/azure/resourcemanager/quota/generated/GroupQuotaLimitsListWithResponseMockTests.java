@@ -21,7 +21,7 @@ public final class GroupQuotaLimitsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"value\":[{\"properties\":{\"resourceName\":\"zyh\",\"limit\":3835671102059625578,\"comment\":\"ypyynpcdpumnzg\",\"unit\":\"z\",\"name\":{},\"availableLimit\":6753075814486696287,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"orgjhxbldt\",\"limit\":8467924740961026044,\"comment\":\"kdmtncvokotll\",\"unit\":\"yhgsy\",\"name\":{},\"availableLimit\":4877471072225031792,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"tbnnha\",\"limit\":723581934822095821,\"comment\":\"kvci\",\"unit\":\"nvpamq\",\"name\":{},\"availableLimit\":7776859938318021776,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"kywggxkallatmel\",\"limit\":4889606083827449989,\"comment\":\"ccjzkzivgvv\",\"unit\":\"ayrhyrnx\",\"name\":{},\"availableLimit\":8141122622506603180,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"drd\"},\"id\":\"tkwqqtchealm\",\"name\":\"mtdaa\",\"type\":\"gdv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Created\",\"value\":[{\"properties\":{\"resourceName\":\"ujbazpjuohminyfl\",\"limit\":3372671534162877362,\"comment\":\"duvwpklvxwmygd\",\"unit\":\"gpqch\",\"name\":{},\"availableLimit\":2468361459408178372,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"jcrxgibbdaxcon\",\"limit\":8794909142926460051,\"comment\":\"orsukokwbqp\",\"unit\":\"lvnuuepzlrph\",\"name\":{},\"availableLimit\":1586614318517999656,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"eyuqdunvmnnrwr\"},\"id\":\"ork\",\"name\":\"alywjhhgdn\",\"type\":\"xmsivfomiloxggdu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class GroupQuotaLimitsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotaLimitList response = manager.groupQuotaLimits()
-            .listWithResponse("ntorzihleosjswsr", "slyzrpzbchckqq", "qioxi", "suiizynkedyat",
+            .listWithResponse("guaadraufactkahz", "v", "jjziuxxpsh", "eekulfgslqubkwd",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zyh", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(3835671102059625578L, response.properties().value().get(0).properties().limit());
-        Assertions.assertEquals("ypyynpcdpumnzg", response.properties().value().get(0).properties().comment());
+        Assertions.assertEquals("ujbazpjuohminyfl", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(3372671534162877362L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("duvwpklvxwmygd", response.properties().value().get(0).properties().comment());
     }
 }

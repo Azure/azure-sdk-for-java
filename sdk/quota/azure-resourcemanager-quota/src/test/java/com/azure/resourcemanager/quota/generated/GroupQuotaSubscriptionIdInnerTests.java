@@ -12,8 +12,8 @@ public final class GroupQuotaSubscriptionIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionIdInner model = BinaryData.fromString(
-            "{\"properties\":{\"subscriptionId\":\"sxazjpq\",\"provisioningState\":\"Created\"},\"id\":\"alhbx\",\"name\":\"hejjz\",\"type\":\"v\"}")
+            "{\"properties\":{\"subscriptionId\":\"bsjyofdx\",\"provisioningState\":\"Accepted\"},\"id\":\"dttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}")
             .toObject(GroupQuotaSubscriptionIdInner.class);
-        Assertions.assertEquals("sxazjpq", model.properties().subscriptionId());
+        Assertions.assertEquals("bsjyofdx", model.properties().subscriptionId());
     }
 }

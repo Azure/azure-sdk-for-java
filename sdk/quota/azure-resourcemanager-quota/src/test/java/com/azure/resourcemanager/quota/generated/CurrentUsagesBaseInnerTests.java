@@ -13,11 +13,11 @@ public final class CurrentUsagesBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CurrentUsagesBaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"usages\":{\"value\":1358628547,\"usagesType\":\"Individual\"},\"unit\":\"lwrq\",\"name\":{\"value\":\"tsthsucocm\",\"localizedValue\":\"yazttbtwwrqpue\"},\"resourceType\":\"kzywbiex\",\"quotaPeriod\":\"eyueaxibxujwb\",\"isQuotaApplicable\":false,\"properties\":\"datalmuzy\"},\"id\":\"aepdkzjanc\",\"name\":\"xrhdwbavxbniwdjs\",\"type\":\"zt\"}")
+            "{\"properties\":{\"usages\":{\"value\":1360002238,\"usagesType\":\"Combined\"},\"unit\":\"wdmhdlxyjrxs\",\"name\":{\"value\":\"fcnihgwq\",\"localizedValue\":\"nedgfbc\"},\"resourceType\":\"cvqvpkeqdcv\",\"quotaPeriod\":\"hvoodsotbobzd\",\"isQuotaApplicable\":false,\"properties\":\"\\\"datawvnhdldwmgx\\\"\"},\"id\":\"rslpmutwuoeg\",\"name\":\"pkhjwni\",\"type\":\"qsluicp\"}")
             .toObject(CurrentUsagesBaseInner.class);
-        Assertions.assertEquals(1358628547, model.properties().usages().value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.properties().usages().usagesType());
-        Assertions.assertEquals("tsthsucocm", model.properties().name().value());
-        Assertions.assertEquals("kzywbiex", model.properties().resourceType());
+        Assertions.assertEquals(1360002238, model.properties().usages().value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.properties().usages().usagesType());
+        Assertions.assertEquals("fcnihgwq", model.properties().name().value());
+        Assertions.assertEquals("cvqvpkeqdcv", model.properties().resourceType());
     }
 }

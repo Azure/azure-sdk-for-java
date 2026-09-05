@@ -22,7 +22,7 @@ public final class QuotaOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"jyofdxluusdtto\",\"display\":{\"provider\":\"boekqvkel\",\"resource\":\"mvb\",\"operation\":\"yjsflhhcaalnji\",\"description\":\"sxyawjoyaqcs\"},\"origin\":\"jpkiidzyexznelix\"}]}";
+            = "{\"value\":[{\"name\":\"ddxbjhwuaanoz\",\"display\":{\"provider\":\"ph\",\"resource\":\"ulpjr\",\"operation\":\"ag\",\"description\":\"vimjwos\"},\"origin\":\"xitc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class QuotaOperationsListMockTests {
 
         PagedIterable<OperationResponse> response = manager.quotaOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jyofdxluusdtto", response.iterator().next().name());
-        Assertions.assertEquals("boekqvkel", response.iterator().next().display().provider());
-        Assertions.assertEquals("mvb", response.iterator().next().display().resource());
-        Assertions.assertEquals("yjsflhhcaalnji", response.iterator().next().display().operation());
-        Assertions.assertEquals("sxyawjoyaqcs", response.iterator().next().display().description());
-        Assertions.assertEquals("jpkiidzyexznelix", response.iterator().next().origin());
+        Assertions.assertEquals("ddxbjhwuaanoz", response.iterator().next().name());
+        Assertions.assertEquals("ph", response.iterator().next().display().provider());
+        Assertions.assertEquals("ulpjr", response.iterator().next().display().resource());
+        Assertions.assertEquals("ag", response.iterator().next().display().operation());
+        Assertions.assertEquals("vimjwos", response.iterator().next().display().description());
+        Assertions.assertEquals("xitc", response.iterator().next().origin());
     }
 }
