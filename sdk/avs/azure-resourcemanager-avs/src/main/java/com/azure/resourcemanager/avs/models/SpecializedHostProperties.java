@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The properties of a specialized host.
@@ -43,6 +44,9 @@ public final class SpecializedHostProperties extends HostProperties {
      */
     @Override
     public void validate() {
+        if (licenses() != null) {
+            licenses().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -53,6 +57,7 @@ public final class SpecializedHostProperties extends HostProperties {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", displayName());
         jsonWriter.writeStringField("maintenance", maintenance() == null ? null : maintenance().toString());
+        jsonWriter.writeArrayField("licenses", licenses(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -86,6 +91,9 @@ public final class SpecializedHostProperties extends HostProperties {
                         .withMaintenance(HostMaintenance.fromString(reader.getString()));
                 } else if ("faultDomain".equals(fieldName)) {
                     deserializedSpecializedHostProperties.withFaultDomain(reader.getString());
+                } else if ("licenses".equals(fieldName)) {
+                    List<HostLicense> licenses = reader.readArray(reader1 -> HostLicense.fromJson(reader1));
+                    deserializedSpecializedHostProperties.withLicenses(licenses);
                 } else if ("kind".equals(fieldName)) {
                     deserializedSpecializedHostProperties.kind = HostKind.fromString(reader.getString());
                 } else {
