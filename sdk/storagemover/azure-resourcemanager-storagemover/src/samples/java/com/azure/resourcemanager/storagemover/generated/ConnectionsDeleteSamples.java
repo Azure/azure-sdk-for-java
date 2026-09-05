@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class ConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Connections_Delete.json
+     * x-ms-original-file: 2026-05-01/Connections_Delete.json
      */
     /**
      * Sample code: Connections_Delete.

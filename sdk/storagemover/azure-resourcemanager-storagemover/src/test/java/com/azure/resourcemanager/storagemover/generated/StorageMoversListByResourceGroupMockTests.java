@@ -22,7 +22,7 @@ public final class StorageMoversListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"sxsdqrhzoymibm\",\"provisioningState\":\"Succeeded\"},\"location\":\"bahwfl\",\"tags\":{\"piexpbtgiw\":\"dtmhrkwofyyvoqa\",\"nwashrtd\":\"wo\",\"ulpiuj\":\"kcnqxwbpo\"},\"id\":\"aasipqi\",\"name\":\"obyu\",\"type\":\"erpqlpqwcciuqg\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"jhfjxwm\",\"provisioningState\":\"Canceled\"},\"location\":\"foqreyfkzik\",\"tags\":{\"wczelpci\":\"wneaiv\"},\"id\":\"elsfeaen\",\"name\":\"abfatkl\",\"type\":\"dxbjhwuaanozj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class StorageMoversListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StorageMover> response
-            = manager.storageMovers().listByResourceGroup("rjxgciqib", com.azure.core.util.Context.NONE);
+            = manager.storageMovers().listByResourceGroup("wi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bahwfl", response.iterator().next().location());
-        Assertions.assertEquals("dtmhrkwofyyvoqa", response.iterator().next().tags().get("piexpbtgiw"));
-        Assertions.assertEquals("sxsdqrhzoymibm", response.iterator().next().description());
+        Assertions.assertEquals("foqreyfkzik", response.iterator().next().location());
+        Assertions.assertEquals("wneaiv", response.iterator().next().tags().get("wczelpci"));
+        Assertions.assertEquals("jhfjxwm", response.iterator().next().description());
     }
 }

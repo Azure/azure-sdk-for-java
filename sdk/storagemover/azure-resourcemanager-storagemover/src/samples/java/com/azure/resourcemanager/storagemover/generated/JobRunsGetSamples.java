@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class JobRunsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-01/JobRuns_Get_With_Schedule.json
+     * x-ms-original-file: 2026-05-01/JobRuns_Get_With_Schedule.json
      */
     /**
      * Sample code: JobRuns_Get_With_Schedule.
@@ -23,7 +23,7 @@ public final class JobRunsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-01/JobRuns_Get.json
+     * x-ms-original-file: 2026-05-01/JobRuns_Get.json
      */
     /**
      * Sample code: JobRuns_Get.

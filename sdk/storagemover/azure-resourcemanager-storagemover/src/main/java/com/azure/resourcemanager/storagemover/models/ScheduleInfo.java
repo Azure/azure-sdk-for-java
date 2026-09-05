@@ -60,6 +60,11 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
      */
     private OffsetDateTime endDate;
 
+    /*
+     * Repeat interval used for sub-daily schedules.
+     */
+    private String repeatInterval;
+
     /**
      * Creates an instance of ScheduleInfo class.
      */
@@ -227,6 +232,26 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
     }
 
     /**
+     * Get the repeatInterval property: Repeat interval used for sub-daily schedules.
+     * 
+     * @return the repeatInterval value.
+     */
+    public String repeatInterval() {
+        return this.repeatInterval;
+    }
+
+    /**
+     * Set the repeatInterval property: Repeat interval used for sub-daily schedules.
+     * 
+     * @param repeatInterval the repeatInterval value to set.
+     * @return the ScheduleInfo object itself.
+     */
+    public ScheduleInfo withRepeatInterval(String repeatInterval) {
+        this.repeatInterval = repeatInterval;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -242,6 +267,7 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
         jsonWriter.writeStringField("cronExpression", this.cronExpression);
         jsonWriter.writeStringField("endDate",
             this.endDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDate));
+        jsonWriter.writeStringField("repeatInterval", this.repeatInterval);
         return jsonWriter.writeEndObject();
     }
 
@@ -280,6 +306,8 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
                 } else if ("endDate".equals(fieldName)) {
                     deserializedScheduleInfo.endDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("repeatInterval".equals(fieldName)) {
+                    deserializedScheduleInfo.repeatInterval = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

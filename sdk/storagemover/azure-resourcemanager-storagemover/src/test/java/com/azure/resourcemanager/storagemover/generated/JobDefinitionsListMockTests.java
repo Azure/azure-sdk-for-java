@@ -27,7 +27,7 @@ public final class JobDefinitionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"flsjc\",\"jobType\":\"CloudToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"fjvfbgofeljagr\",\"sourceResourceId\":\"qhl\",\"sourceSubpath\":\"riiiojnalghfkv\",\"targetName\":\"vsexsowuelu\",\"targetResourceId\":\"hahhxvrhmzkwpj\",\"targetSubpath\":\"wspughftqsxhqx\",\"latestJobRunName\":\"xukndxdigr\",\"latestJobRunResourceId\":\"uufzdmsyqtfihw\",\"latestJobRunStatus\":\"CancelRequested\",\"agentName\":\"z\",\"agentResourceId\":\"gamv\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Canceled\",\"connections\":[\"udphqamvdkfwyn\",\"cvtbv\",\"ayhmtnvyqiatkz\",\"pcnp\"],\"schedule\":{\"frequency\":\"Weekly\",\"isActive\":true,\"executionTime\":{\"hour\":691812304,\"minute\":30},\"startDate\":\"2021-07-14T16:40:38Z\",\"daysOfWeek\":[\"jguq\",\"hwyg\"],\"daysOfMonth\":[1249464934,307379599,826622083],\"cronExpression\":\"xu\",\"endDate\":\"2021-10-16T01:46:34Z\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":true},\"id\":\"uh\",\"name\":\"pfcqdp\",\"type\":\"qxqvpsvuoymgc\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"nbsazejjoqkag\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"ttaugzxnfaazp\",\"sourceResourceId\":\"tnkdmkqj\",\"sourceSubpath\":\"wuenvr\",\"targetName\":\"pyouaibrebqaays\",\"targetResourceId\":\"ixqtn\",\"targetSubpath\":\"tezlwff\",\"latestJobRunName\":\"akpjpqqmtedlt\",\"latestJobRunResourceId\":\"jihy\",\"latestJobRunStatus\":\"Started\",\"agentName\":\"hvwauyqncy\",\"agentResourceId\":\"p\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Deleting\",\"connections\":[\"wx\",\"upev\"],\"schedule\":{\"frequency\":\"Weekly\",\"isActive\":true,\"executionTime\":{\"hour\":1386174682,\"minute\":30},\"startDate\":\"2021-09-07T00:16:30Z\",\"daysOfWeek\":[\"pelmcuvhixbjxyf\",\"n\"],\"daysOfMonth\":[1461211866],\"cronExpression\":\"o\",\"endDate\":\"2021-03-11T06:14Z\",\"repeatInterval\":\"p\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":false,\"isCrossTenantJob\":true,\"crossTenantEndpointTenantId\":\"jrywvtylbfpnc\",\"crossTenantEndpointResourceId\":\"doiwi\",\"syncMode\":\"htywubxcbihwq\",\"moverSyncedUntil\":\"2021-06-27T00:09:55Z\"},\"id\":\"ntwjch\",\"name\":\"dgoihxumwctondzj\",\"type\":\"uu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,30 +37,37 @@ public final class JobDefinitionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JobDefinition> response
-            = manager.jobDefinitions().list("szrnwo", "indfpwpjyl", "bt", com.azure.core.util.Context.NONE);
+            = manager.jobDefinitions().list("lcrpw", "xeznoi", "brnjwmw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("flsjc", response.iterator().next().description());
-        Assertions.assertEquals(JobType.CLOUD_TO_CLOUD, response.iterator().next().jobType());
+        Assertions.assertEquals("nbsazejjoqkag", response.iterator().next().description());
+        Assertions.assertEquals(JobType.ON_PREM_TO_CLOUD, response.iterator().next().jobType());
         Assertions.assertEquals(CopyMode.MIRROR, response.iterator().next().copyMode());
-        Assertions.assertEquals("fjvfbgofeljagr", response.iterator().next().sourceName());
-        Assertions.assertEquals("riiiojnalghfkv", response.iterator().next().sourceSubpath());
-        Assertions.assertEquals("vsexsowuelu", response.iterator().next().targetName());
-        Assertions.assertEquals("wspughftqsxhqx", response.iterator().next().targetSubpath());
-        Assertions.assertEquals("z", response.iterator().next().agentName());
-        Assertions.assertEquals("udphqamvdkfwyn", response.iterator().next().connections().get(0));
+        Assertions.assertEquals("ttaugzxnfaazp", response.iterator().next().sourceName());
+        Assertions.assertEquals("wuenvr", response.iterator().next().sourceSubpath());
+        Assertions.assertEquals("pyouaibrebqaays", response.iterator().next().targetName());
+        Assertions.assertEquals("tezlwff", response.iterator().next().targetSubpath());
+        Assertions.assertEquals("hvwauyqncy", response.iterator().next().agentName());
+        Assertions.assertEquals("wx", response.iterator().next().connections().get(0));
         Assertions.assertEquals(Frequency.WEEKLY, response.iterator().next().schedule().frequency());
         Assertions.assertTrue(response.iterator().next().schedule().isActive());
-        Assertions.assertEquals(691812304, response.iterator().next().schedule().executionTime().hour());
+        Assertions.assertEquals(1386174682, response.iterator().next().schedule().executionTime().hour());
         Assertions.assertEquals(Minute.THREE_ZERO, response.iterator().next().schedule().executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T16:40:38Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T00:16:30Z"),
             response.iterator().next().schedule().startDate());
-        Assertions.assertEquals("jguq", response.iterator().next().schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(1249464934, response.iterator().next().schedule().daysOfMonth().get(0));
-        Assertions.assertEquals("xu", response.iterator().next().schedule().cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T01:46:34Z"),
+        Assertions.assertEquals("pelmcuvhixbjxyf", response.iterator().next().schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(1461211866, response.iterator().next().schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("o", response.iterator().next().schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-11T06:14Z"),
             response.iterator().next().schedule().endDate());
+        Assertions.assertEquals("p", response.iterator().next().schedule().repeatInterval());
         Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5,
             response.iterator().next().dataIntegrityValidation());
-        Assertions.assertTrue(response.iterator().next().preservePermissions());
+        Assertions.assertFalse(response.iterator().next().preservePermissions());
+        Assertions.assertTrue(response.iterator().next().isCrossTenantJob());
+        Assertions.assertEquals("jrywvtylbfpnc", response.iterator().next().crossTenantEndpointTenantId());
+        Assertions.assertEquals("doiwi", response.iterator().next().crossTenantEndpointResourceId());
+        Assertions.assertEquals("htywubxcbihwq", response.iterator().next().syncMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T00:09:55Z"),
+            response.iterator().next().moverSyncedUntil());
     }
 }

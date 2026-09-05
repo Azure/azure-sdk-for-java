@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,6 +18,8 @@ import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -124,6 +127,39 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
      * Boolean to preserve permissions or not.
      */
     private Boolean preservePermissions;
+
+    /*
+     * Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     */
+    private Boolean isCrossTenantJob;
+
+    /*
+     * The Azure AD tenant ID of the cross-tenant source endpoint. Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     */
+    private String crossTenantEndpointTenantId;
+
+    /*
+     * Full ARM resource ID of the cross-tenant (foreign) endpoint. On the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     */
+    private String crossTenantEndpointResourceId;
+
+    /*
+     * The synchronization mode for the Job Definition.
+     */
+    private String syncMode;
+
+    /*
+     * The last time the mover was synchronized.
+     */
+    private OffsetDateTime moverSyncedUntil;
 
     /**
      * Creates an instance of JobDefinitionProperties class.
@@ -459,6 +495,126 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
     }
 
     /**
+     * Get the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the isCrossTenantJob value.
+     */
+    public Boolean isCrossTenantJob() {
+        return this.isCrossTenantJob;
+    }
+
+    /**
+     * Set the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @param isCrossTenantJob the isCrossTenantJob value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withIsCrossTenantJob(Boolean isCrossTenantJob) {
+        this.isCrossTenantJob = isCrossTenantJob;
+        return this;
+    }
+
+    /**
+     * Get the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the crossTenantEndpointTenantId value.
+     */
+    public String crossTenantEndpointTenantId() {
+        return this.crossTenantEndpointTenantId;
+    }
+
+    /**
+     * Set the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @param crossTenantEndpointTenantId the crossTenantEndpointTenantId value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withCrossTenantEndpointTenantId(String crossTenantEndpointTenantId) {
+        this.crossTenantEndpointTenantId = crossTenantEndpointTenantId;
+        return this;
+    }
+
+    /**
+     * Get the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @return the crossTenantEndpointResourceId value.
+     */
+    public String crossTenantEndpointResourceId() {
+        return this.crossTenantEndpointResourceId;
+    }
+
+    /**
+     * Set the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @param crossTenantEndpointResourceId the crossTenantEndpointResourceId value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withCrossTenantEndpointResourceId(String crossTenantEndpointResourceId) {
+        this.crossTenantEndpointResourceId = crossTenantEndpointResourceId;
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @return the syncMode value.
+     */
+    public String syncMode() {
+        return this.syncMode;
+    }
+
+    /**
+     * Set the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withSyncMode(String syncMode) {
+        this.syncMode = syncMode;
+        return this;
+    }
+
+    /**
+     * Get the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @return the moverSyncedUntil value.
+     */
+    public OffsetDateTime moverSyncedUntil() {
+        return this.moverSyncedUntil;
+    }
+
+    /**
+     * Set the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @param moverSyncedUntil the moverSyncedUntil value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withMoverSyncedUntil(OffsetDateTime moverSyncedUntil) {
+        this.moverSyncedUntil = moverSyncedUntil;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -478,6 +634,14 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
         jsonWriter.writeStringField("dataIntegrityValidation",
             this.dataIntegrityValidation == null ? null : this.dataIntegrityValidation.toString());
         jsonWriter.writeBooleanField("preservePermissions", this.preservePermissions);
+        jsonWriter.writeBooleanField("isCrossTenantJob", this.isCrossTenantJob);
+        jsonWriter.writeStringField("crossTenantEndpointTenantId", this.crossTenantEndpointTenantId);
+        jsonWriter.writeStringField("crossTenantEndpointResourceId", this.crossTenantEndpointResourceId);
+        jsonWriter.writeStringField("syncMode", this.syncMode);
+        jsonWriter.writeStringField("moverSyncedUntil",
+            this.moverSyncedUntil == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.moverSyncedUntil));
         return jsonWriter.writeEndObject();
     }
 
@@ -543,6 +707,17 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
                 } else if ("preservePermissions".equals(fieldName)) {
                     deserializedJobDefinitionProperties.preservePermissions
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isCrossTenantJob".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.isCrossTenantJob = reader.getNullable(JsonReader::getBoolean);
+                } else if ("crossTenantEndpointTenantId".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.crossTenantEndpointTenantId = reader.getString();
+                } else if ("crossTenantEndpointResourceId".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.crossTenantEndpointResourceId = reader.getString();
+                } else if ("syncMode".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.syncMode = reader.getString();
+                } else if ("moverSyncedUntil".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.moverSyncedUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
