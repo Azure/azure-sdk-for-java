@@ -22,7 +22,7 @@ public final class OrganizationsGetEnvironmentByIdWithResponseMockTests {
     @Test
     public void testGetEnvironmentByIdWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"jqfrddgamquh\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"ivfcdisyirnx\",\"resourceName\":\"czexrxzbujrtrhqv\",\"createdTimestamp\":\"evkh\",\"updatedTimestamp\":\"lnzonzlrpiqywn\",\"deletedTimestamp\":\"jtszcof\"}},\"id\":\"e\",\"name\":\"tdhgbjkvrelj\",\"type\":\"amurvzmlovuan\"}";
+            = "{\"kind\":\"odawopqhewjptmcg\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"lnd\",\"resourceName\":\"tutmzl\",\"createdTimestamp\":\"ojlvfhrbbpneqvc\",\"updatedTimestamp\":\"yyurmochpprprsnm\",\"deletedTimestamp\":\"ayzejnhlbkpbz\"}},\"id\":\"piljhahzvech\",\"name\":\"dbn\",\"type\":\"ieholewjwi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,15 @@ public final class OrganizationsGetEnvironmentByIdWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SCEnvironmentRecord response = manager.organizations()
-            .getEnvironmentByIdWithResponse("rtffyaqitmh", "eioqaqhvse", "fuqyrxpdlcgqlsi",
-                com.azure.core.util.Context.NONE)
+            .getEnvironmentByIdWithResponse("bkwvzg", "zvd", "bzdixzmq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jqfrddgamquh", response.kind());
-        Assertions.assertEquals(Package.ADVANCED, response.streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("ivfcdisyirnx", response.metadata().self());
-        Assertions.assertEquals("czexrxzbujrtrhqv", response.metadata().resourceName());
-        Assertions.assertEquals("evkh", response.metadata().createdTimestamp());
-        Assertions.assertEquals("lnzonzlrpiqywn", response.metadata().updatedTimestamp());
-        Assertions.assertEquals("jtszcof", response.metadata().deletedTimestamp());
+        Assertions.assertEquals("odawopqhewjptmcg", response.kind());
+        Assertions.assertEquals(Package.ESSENTIALS, response.streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("lnd", response.metadata().self());
+        Assertions.assertEquals("tutmzl", response.metadata().resourceName());
+        Assertions.assertEquals("ojlvfhrbbpneqvc", response.metadata().createdTimestamp());
+        Assertions.assertEquals("yyurmochpprprsnm", response.metadata().updatedTimestamp());
+        Assertions.assertEquals("ayzejnhlbkpbz", response.metadata().deletedTimestamp());
     }
 }

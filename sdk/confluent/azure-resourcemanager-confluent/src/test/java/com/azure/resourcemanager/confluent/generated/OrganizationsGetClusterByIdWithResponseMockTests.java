@@ -22,7 +22,7 @@ public final class OrganizationsGetClusterByIdWithResponseMockTests {
     @Test
     public void testGetClusterByIdWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"qcwdhoh\",\"properties\":{\"metadata\":{\"self\":\"cdzsu\",\"resourceName\":\"ohdxbzlmcmu\",\"createdTimestamp\":\"cvhd\",\"updatedTimestamp\":\"v\",\"deletedTimestamp\":\"qxeysko\"},\"spec\":{\"name\":\"inkfkbgbz\",\"availability\":\"wxeqocljmygvkzqk\",\"cloud\":\"eokbze\",\"zone\":\"zrxcczurt\",\"package\":\"ADVANCED\",\"region\":\"q\",\"kafkaBootstrapEndpoint\":\"kwv\",\"httpEndpoint\":\"nzvdfbzdixzmq\",\"apiEndpoint\":\"odawopqhewjptmcg\",\"config\":{\"kind\":\"stzelndlatut\"},\"environment\":{\"id\":\"biojlvf\",\"environment\":\"bbpneqvcwwy\",\"related\":\"r\",\"resourceName\":\"chpp\"},\"network\":{\"id\":\"snmokayzej\",\"environment\":\"lbkpb\",\"related\":\"cpilj\",\"resourceName\":\"hzvechndbnwieho\"},\"byok\":{\"id\":\"jwiuubwefqsfapaq\",\"related\":\"e\",\"resourceName\":\"q\"}},\"status\":{\"phase\":\"jkmfxapjwo\",\"cku\":1237568157}},\"id\":\"o\",\"name\":\"pud\",\"type\":\"dabtqwp\"}";
+            = "{\"kind\":\"stbz\",\"properties\":{\"metadata\":{\"self\":\"buqny\",\"resourceName\":\"hzfylsgcrpfbc\",\"createdTimestamp\":\"ezzcez\",\"updatedTimestamp\":\"fwyfwlwxjwet\",\"deletedTimestamp\":\"sihclafzvaylp\"},\"spec\":{\"name\":\"qqwzt\",\"availability\":\"w\",\"cloud\":\"chcxwaxfewzj\",\"zone\":\"exfdeqvhpsylk\",\"package\":\"ESSENTIALS\",\"region\":\"bffmbmxz\",\"kafkaBootstrapEndpoint\":\"gywwpgjxs\",\"httpEndpoint\":\"tf\",\"apiEndpoint\":\"gicgaaoepttaq\",\"config\":{\"kind\":\"ewemxs\"},\"environment\":{\"id\":\"uun\",\"environment\":\"jgehkf\",\"related\":\"m\",\"resourceName\":\"ixokffqyin\"},\"network\":{\"id\":\"epqw\",\"environment\":\"xmonstshi\",\"related\":\"gvelfc\",\"resourceName\":\"uccbirdsvuw\"},\"byok\":{\"id\":\"iegstm\",\"related\":\"nwjizcilnghgshej\",\"resourceName\":\"bxqmu\"}},\"status\":{\"phase\":\"lxqzvn\",\"cku\":1381551038}},\"id\":\"ycucrwnamikzeb\",\"name\":\"qbsms\",\"type\":\"ziqgfuh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,38 +32,38 @@ public final class OrganizationsGetClusterByIdWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SCClusterRecord response = manager.organizations()
-            .getClusterByIdWithResponse("jltfvnzcyjtotpv", "pvpbdbzqgqqiheds", "qwthmky", "bcysih",
+            .getClusterByIdWithResponse("zjedmstkvnlv", "bcuiiz", "ktwfa", "snvpdibmi",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qcwdhoh", response.kind());
-        Assertions.assertEquals("cdzsu", response.metadata().self());
-        Assertions.assertEquals("ohdxbzlmcmu", response.metadata().resourceName());
-        Assertions.assertEquals("cvhd", response.metadata().createdTimestamp());
-        Assertions.assertEquals("v", response.metadata().updatedTimestamp());
-        Assertions.assertEquals("qxeysko", response.metadata().deletedTimestamp());
-        Assertions.assertEquals("inkfkbgbz", response.spec().name());
-        Assertions.assertEquals("wxeqocljmygvkzqk", response.spec().availability());
-        Assertions.assertEquals("eokbze", response.spec().cloud());
-        Assertions.assertEquals("zrxcczurt", response.spec().zone());
-        Assertions.assertEquals(Package.ADVANCED, response.spec().packageProperty());
-        Assertions.assertEquals("q", response.spec().region());
-        Assertions.assertEquals("kwv", response.spec().kafkaBootstrapEndpoint());
-        Assertions.assertEquals("nzvdfbzdixzmq", response.spec().httpEndpoint());
-        Assertions.assertEquals("odawopqhewjptmcg", response.spec().apiEndpoint());
-        Assertions.assertEquals("stzelndlatut", response.spec().config().kind());
-        Assertions.assertEquals("biojlvf", response.spec().environment().id());
-        Assertions.assertEquals("bbpneqvcwwy", response.spec().environment().environment());
-        Assertions.assertEquals("r", response.spec().environment().related());
-        Assertions.assertEquals("chpp", response.spec().environment().resourceName());
-        Assertions.assertEquals("snmokayzej", response.spec().network().id());
-        Assertions.assertEquals("lbkpb", response.spec().network().environment());
-        Assertions.assertEquals("cpilj", response.spec().network().related());
-        Assertions.assertEquals("hzvechndbnwieho", response.spec().network().resourceName());
-        Assertions.assertEquals("jwiuubwefqsfapaq", response.spec().byok().id());
-        Assertions.assertEquals("e", response.spec().byok().related());
-        Assertions.assertEquals("q", response.spec().byok().resourceName());
-        Assertions.assertEquals("jkmfxapjwo", response.status().phase());
-        Assertions.assertEquals(1237568157, response.status().cku());
+        Assertions.assertEquals("stbz", response.kind());
+        Assertions.assertEquals("buqny", response.metadata().self());
+        Assertions.assertEquals("hzfylsgcrpfbc", response.metadata().resourceName());
+        Assertions.assertEquals("ezzcez", response.metadata().createdTimestamp());
+        Assertions.assertEquals("fwyfwlwxjwet", response.metadata().updatedTimestamp());
+        Assertions.assertEquals("sihclafzvaylp", response.metadata().deletedTimestamp());
+        Assertions.assertEquals("qqwzt", response.spec().name());
+        Assertions.assertEquals("w", response.spec().availability());
+        Assertions.assertEquals("chcxwaxfewzj", response.spec().cloud());
+        Assertions.assertEquals("exfdeqvhpsylk", response.spec().zone());
+        Assertions.assertEquals(Package.ESSENTIALS, response.spec().packageProperty());
+        Assertions.assertEquals("bffmbmxz", response.spec().region());
+        Assertions.assertEquals("gywwpgjxs", response.spec().kafkaBootstrapEndpoint());
+        Assertions.assertEquals("tf", response.spec().httpEndpoint());
+        Assertions.assertEquals("gicgaaoepttaq", response.spec().apiEndpoint());
+        Assertions.assertEquals("ewemxs", response.spec().config().kind());
+        Assertions.assertEquals("uun", response.spec().environment().id());
+        Assertions.assertEquals("jgehkf", response.spec().environment().environment());
+        Assertions.assertEquals("m", response.spec().environment().related());
+        Assertions.assertEquals("ixokffqyin", response.spec().environment().resourceName());
+        Assertions.assertEquals("epqw", response.spec().network().id());
+        Assertions.assertEquals("xmonstshi", response.spec().network().environment());
+        Assertions.assertEquals("gvelfc", response.spec().network().related());
+        Assertions.assertEquals("uccbirdsvuw", response.spec().network().resourceName());
+        Assertions.assertEquals("iegstm", response.spec().byok().id());
+        Assertions.assertEquals("nwjizcilnghgshej", response.spec().byok().related());
+        Assertions.assertEquals("bxqmu", response.spec().byok().resourceName());
+        Assertions.assertEquals("lxqzvn", response.status().phase());
+        Assertions.assertEquals(1381551038, response.status().cku());
     }
 }
