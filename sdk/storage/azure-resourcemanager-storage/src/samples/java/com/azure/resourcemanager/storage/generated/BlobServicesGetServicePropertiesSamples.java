@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class BlobServicesGetServicePropertiesSamples {
     /*
-     * x-ms-original-file: 2026-04-01/BlobServicesGet.json
+     * x-ms-original-file: 2026-06-01/BlobServicesGet.json
      */
     /**
      * Sample code: GetBlobServices.

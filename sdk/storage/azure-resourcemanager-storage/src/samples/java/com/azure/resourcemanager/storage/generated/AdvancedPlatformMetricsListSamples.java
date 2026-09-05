@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class AdvancedPlatformMetricsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_List.json
+     * x-ms-original-file: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_List.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_List - List advanced platform metrics rules.

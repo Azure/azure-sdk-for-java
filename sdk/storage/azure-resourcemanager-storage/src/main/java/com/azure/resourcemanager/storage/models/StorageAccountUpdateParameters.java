@@ -857,6 +857,31 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
     }
 
     /**
+     * Get the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @return the allowCrossTenantDelegationSas value.
+     */
+    public Boolean allowCrossTenantDelegationSas() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantDelegationSas();
+    }
+
+    /**
+     * Set the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @param allowCrossTenantDelegationSas the allowCrossTenantDelegationSas value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withAllowCrossTenantDelegationSas(Boolean allowCrossTenantDelegationSas) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAllowCrossTenantDelegationSas(allowCrossTenantDelegationSas);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

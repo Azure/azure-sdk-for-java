@@ -1,14 +1,61 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.58.0 (2026-08-26)
+
+- Package api-version 2026-06-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.ContextCacheUpdate` was added
 
-### Bugs Fixed
+* `models.KeyEncryptionKeyIdentityType` was added
 
-### Other Changes
+* `models.AiProvider` was added
+
+* `models.InfrastructureEncryption` was added
+
+* `models.ContextCacheAccountKind` was added
+
+* `models.SystemAssignedServiceIdentityType` was added
+
+* `models.ContextCacheContainerUpdate` was added
+
+* `models.PolicyViolationAction` was added
+
+* `models.StorageAccountEncryption` was added
+
+* `models.ContextCacheContainerPropertiesUpdate` was added
+
+* `models.CustomerManagedKeyEncryption` was added
+
+* `models.ContextCacheProvisioningState` was added
+
+* `models.KeyEncryptionKeyIdentity` was added
+
+* `models.ContextCacheContainerProperties` was added
+
+* `models.ContextCacheProperties` was added
+
+* `models.ContextCachePropertiesUpdate` was added
+
+* `models.SystemAssignedServiceIdentity` was added
+
+#### `models.SasPolicy` was modified
+
+* `requireUserBoundUserDelegationSas()` was added
+* `withRequireUserBoundUserDelegationSas(java.lang.Boolean)` was added
+* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
+* `requireUserBoundUserDelegationSasAction()` was added
+
+#### `models.StorageAccountUpdateParameters` was modified
+
+* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
+* `allowCrossTenantDelegationSas()` was added
+
+#### `models.StorageAccountCreateParameters` was modified
+
+* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
+* `allowCrossTenantDelegationSas()` was added
 
 ## 2.57.2 (2026-08-18)
 
