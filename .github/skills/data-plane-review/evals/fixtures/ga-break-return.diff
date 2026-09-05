@@ -1,0 +1,10 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
+index 1111111..2222222 100644
+--- a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
++++ b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
+@@ -50,7 +50,7 @@ public final class WidgetClient {
+-    public Widget getWidget(String widgetName) {
++    public BinaryData getWidget(String widgetName) {
+         return service.getWidget(widgetName);
+     }
+ }
