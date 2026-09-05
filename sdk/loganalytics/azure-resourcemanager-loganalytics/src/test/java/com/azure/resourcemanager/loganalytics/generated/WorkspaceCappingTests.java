@@ -12,15 +12,15 @@ public final class WorkspaceCappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceCapping model = BinaryData.fromString(
-            "{\"dailyQuotaGb\":88.22387081583317,\"quotaNextResetTime\":\"pmng\",\"dataIngestionStatus\":\"ApproachingQuota\"}")
+            "{\"dailyQuotaGb\":29.644155348415012,\"quotaNextResetTime\":\"xobnbdxkqpxok\",\"dataIngestionStatus\":\"ApproachingQuota\"}")
             .toObject(WorkspaceCapping.class);
-        Assertions.assertEquals(88.22387081583317D, model.dailyQuotaGb());
+        Assertions.assertEquals(29.644155348415012D, model.dailyQuotaGb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceCapping model = new WorkspaceCapping().withDailyQuotaGb(88.22387081583317D);
+        WorkspaceCapping model = new WorkspaceCapping().withDailyQuotaGb(29.644155348415012D);
         model = BinaryData.fromObject(model).toObject(WorkspaceCapping.class);
-        Assertions.assertEquals(88.22387081583317D, model.dailyQuotaGb());
+        Assertions.assertEquals(29.644155348415012D, model.dailyQuotaGb());
     }
 }

@@ -28,7 +28,7 @@ public final class TablesMigrateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.tables()
-            .migrateWithResponse("foanniyopetx", "vcnrly", "nucaephblkwqpat", com.azure.core.util.Context.NONE);
+            .migrateWithResponse("ypnyghshxc", "lhkgmnsghp", "ycphdrwjjkhvyo", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -29,7 +29,7 @@ public final class LinkedStorageAccountsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.linkedStorageAccounts()
-            .deleteWithResponse("k", "ke", DataSourceType.QUERY, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("s", "zusjsz", DataSourceType.AZURE_WATSON, com.azure.core.util.Context.NONE);
 
     }
 }

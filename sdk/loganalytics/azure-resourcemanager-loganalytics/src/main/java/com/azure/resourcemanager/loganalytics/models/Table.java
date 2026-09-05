@@ -95,6 +95,14 @@ public interface Table {
     TablePlanEnum plan();
 
     /**
+     * Gets the protectionLevel property: The protection level of the table. Determines the default data access
+     * isolation behavior.
+     * 
+     * @return the protectionLevel value.
+     */
+    TableProtectionLevelEnum protectionLevel();
+
+    /**
      * Gets the lastPlanModifiedDate property: The timestamp that table plan was last modified (UTC).
      * 
      * @return the lastPlanModifiedDate value.
@@ -184,7 +192,7 @@ public interface Table {
          */
         interface WithCreate extends DefinitionStages.WithRetentionInDays, DefinitionStages.WithTotalRetentionInDays,
             DefinitionStages.WithSearchResults, DefinitionStages.WithRestoredLogs, DefinitionStages.WithPlan,
-            DefinitionStages.WithSchema {
+            DefinitionStages.WithProtectionLevel, DefinitionStages.WithSchema {
             /**
              * Executes the create request.
              * 
@@ -274,6 +282,21 @@ public interface Table {
         }
 
         /**
+         * The stage of the Table definition allowing to specify protectionLevel.
+         */
+        interface WithProtectionLevel {
+            /**
+             * Specifies the protectionLevel property: The protection level of the table. Determines the default data
+             * access isolation behavior..
+             * 
+             * @param protectionLevel The protection level of the table. Determines the default data access isolation
+             * behavior.
+             * @return the next definition stage.
+             */
+            WithCreate withProtectionLevel(TableProtectionLevelEnum protectionLevel);
+        }
+
+        /**
          * The stage of the Table definition allowing to specify schema.
          */
         interface WithSchema {
@@ -298,7 +321,8 @@ public interface Table {
      * The template for Table update.
      */
     interface Update extends UpdateStages.WithRetentionInDays, UpdateStages.WithTotalRetentionInDays,
-        UpdateStages.WithSearchResults, UpdateStages.WithRestoredLogs, UpdateStages.WithPlan, UpdateStages.WithSchema {
+        UpdateStages.WithSearchResults, UpdateStages.WithRestoredLogs, UpdateStages.WithPlan,
+        UpdateStages.WithProtectionLevel, UpdateStages.WithSchema {
         /**
          * Executes the update request.
          * 
@@ -389,6 +413,21 @@ public interface Table {
              * @return the next definition stage.
              */
             Update withPlan(TablePlanEnum plan);
+        }
+
+        /**
+         * The stage of the Table update allowing to specify protectionLevel.
+         */
+        interface WithProtectionLevel {
+            /**
+             * Specifies the protectionLevel property: The protection level of the table. Determines the default data
+             * access isolation behavior..
+             * 
+             * @param protectionLevel The protection level of the table. Determines the default data access isolation
+             * behavior.
+             * @return the next definition stage.
+             */
+            Update withProtectionLevel(TableProtectionLevelEnum protectionLevel);
         }
 
         /**
