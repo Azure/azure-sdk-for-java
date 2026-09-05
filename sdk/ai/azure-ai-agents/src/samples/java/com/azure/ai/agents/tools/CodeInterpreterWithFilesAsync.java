@@ -19,8 +19,10 @@ import com.openai.client.OpenAIClient;
 import com.openai.models.files.FileCreateParams;
 import com.openai.models.files.FileObject;
 import com.openai.models.files.FilePurpose;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -65,14 +67,19 @@ public class CodeInterpreterWithFilesAsync {
                 new AzureCreateResponseOptions().setAgentReference(SampleUtils.toAgentReference(agent)),
                 ResponseCreateParams.builder().input("Create a CSV summary of quarterly revenue.")))
             .doOnNext(SampleUtils::printResponseText)
-            .flatMap(response -> Mono.fromCallable(() -> {
+            .flatMap(response -> Mono.<Response>fromCallable(() -> {
                 CodeInterpreterWithFilesSync.downloadGeneratedFile(openAIClient,
                     ToolSampleUtils.findContainerFile(response));
                 return response;
-            }))
-            .then(Mono.defer(() -> cleanup(agentsClient, openAIClient, uploaded, csv, agentRef)))
+            }).subscribeOn(Schedulers.boundedElastic()))
             .onErrorResume(error -> cleanup(agentsClient, openAIClient, uploaded, csv, agentRef)
+                .onErrorResume(cleanupError -> {
+                    error.addSuppressed(cleanupError);
+                    return Mono.empty();
+                })
                 .then(Mono.error(error)))
+            .then(Mono.defer(() -> cleanup(agentsClient, openAIClient, uploaded, csv, agentRef)))
+            .doFinally(signal -> openAIClient.close())
             .block();
     }
 
@@ -81,13 +88,13 @@ public class CodeInterpreterWithFilesAsync {
         AgentVersionDetails agent = agentRef.get();
         Mono<Void> deleteAgent = agent == null ? Mono.empty()
             : agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-        return deleteAgent.then(Mono.fromRunnable(() -> {
+        return deleteAgent.then(Mono.<Void>fromRunnable(() -> {
             openAIClient.files().delete(uploaded.id());
             try {
                 Files.deleteIfExists(csv);
             } catch (Exception error) {
                 throw new RuntimeException(error);
             }
-        }));
+        }).subscribeOn(Schedulers.boundedElastic()));
     }
 }

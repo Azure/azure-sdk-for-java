@@ -23,6 +23,7 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,9 +82,14 @@ public class FileSearchStreamingAsync {
                 System.out.println();
                 SampleUtils.printResponseText(accumulator.response());
             }))
-            .then(Mono.defer(() -> cleanup(agentsClient, openAIClient, agentRef, uploaded, vectorStore, document)))
             .onErrorResume(error -> cleanup(agentsClient, openAIClient, agentRef, uploaded, vectorStore, document)
+                .onErrorResume(cleanupError -> {
+                    error.addSuppressed(cleanupError);
+                    return Mono.empty();
+                })
                 .then(Mono.error(error)))
+            .then(Mono.defer(() -> cleanup(agentsClient, openAIClient, agentRef, uploaded, vectorStore, document)))
+            .doFinally(signal -> openAIClient.close())
             .block();
     }
 
@@ -92,7 +98,7 @@ public class FileSearchStreamingAsync {
         AgentVersionDetails agent = agentRef.get();
         Mono<Void> deleteAgent = agent == null ? Mono.empty()
             : agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-        return deleteAgent.then(Mono.fromRunnable(() -> {
+        return deleteAgent.then(Mono.<Void>fromRunnable(() -> {
             openAIClient.vectorStores().delete(vectorStore.id());
             openAIClient.files().delete(uploaded.id());
             try {
@@ -100,6 +106,6 @@ public class FileSearchStreamingAsync {
             } catch (Exception error) {
                 throw new RuntimeException(error);
             }
-        }));
+        }).subscribeOn(Schedulers.boundedElastic()));
     }
 }
