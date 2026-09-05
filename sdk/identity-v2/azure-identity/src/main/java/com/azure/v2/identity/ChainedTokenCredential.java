@@ -81,7 +81,7 @@ public class ChainedTokenCredential implements TokenCredential {
                 try {
                     AccessToken accessToken = credential.getToken(request);
                     LOGGER.atInfo()
-                        .addKeyValue("credentialType", selectedCredential.get().getClass().getCanonicalName())
+                        .addKeyValue("credentialType", credential.getClass().getCanonicalName())
                         .log("Azure Identity => Attempted credential returns a token.");
                     selectedCredential.set(credential);
                     return accessToken;
