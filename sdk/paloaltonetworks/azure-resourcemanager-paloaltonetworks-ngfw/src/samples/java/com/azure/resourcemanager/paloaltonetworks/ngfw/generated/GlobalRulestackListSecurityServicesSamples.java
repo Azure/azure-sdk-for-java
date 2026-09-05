@@ -11,7 +11,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTy
  */
 public final class GlobalRulestackListSecurityServicesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listSecurityServices_MinimumSet_Gen.
@@ -26,7 +26,7 @@ public final class GlobalRulestackListSecurityServicesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listSecurityServices_MaximumSet_Gen.

@@ -13,10 +13,10 @@ public final class ChangelogInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangelogInner model = BinaryData.fromString(
-            "{\"changes\":[\"aos\"],\"lastCommitted\":\"2021-01-29T02:12:36Z\",\"lastModified\":\"2021-10-23T12:01:36Z\"}")
+            "{\"changes\":[\"qxj\"],\"lastCommitted\":\"2021-01-29T11:34:22Z\",\"lastModified\":\"2021-01-04T05:40:41Z\"}")
             .toObject(ChangelogInner.class);
-        Assertions.assertEquals("aos", model.changes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T02:12:36Z"), model.lastCommitted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T12:01:36Z"), model.lastModified());
+        Assertions.assertEquals("qxj", model.changes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T11:34:22Z"), model.lastCommitted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T05:40:41Z"), model.lastModified());
     }
 }

@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class FirewallsGetGlobalRulestackWithResponseMockTests {
     @Test
     public void testGetGlobalRulestackWithResponse() throws Exception {
-        String responseStr = "{\"azureId\":\"rcyrucpcunnu\"}";
+        String responseStr = "{\"azureId\":\"yngydgrpxncaki\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class FirewallsGetGlobalRulestackWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GlobalRulestackInfo response = manager.firewalls()
-            .getGlobalRulestackWithResponse("ytoithgygvfl", "gvdihoynkrxwetwk", com.azure.core.util.Context.NONE)
+            .getGlobalRulestackWithResponse("tuicds", "wdfmmpzhzzwvywr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rcyrucpcunnu", response.azureId());
+        Assertions.assertEquals("yngydgrpxncaki", response.azureId());
     }
 }

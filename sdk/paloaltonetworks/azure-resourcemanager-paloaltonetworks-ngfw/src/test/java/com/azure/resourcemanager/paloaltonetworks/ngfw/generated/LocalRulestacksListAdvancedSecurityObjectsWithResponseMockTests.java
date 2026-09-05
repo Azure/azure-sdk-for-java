@@ -22,7 +22,7 @@ public final class LocalRulestacksListAdvancedSecurityObjectsWithResponseMockTes
     @Test
     public void testListAdvancedSecurityObjectsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"wypusuvjsl\",\"entry\":[{\"name\":\"wci\",\"description\":\"jsllfryvd\"}]},\"nextLink\":\"x\"}";
+            = "{\"value\":{\"type\":\"knrzdajlskzpt\",\"entry\":[{\"name\":\"ulweucyrth\",\"description\":\"lehmcgcjeinueho\"},{\"name\":\"am\",\"description\":\"ejvqnt\"},{\"name\":\"mbqdabzfivfo\",\"description\":\"ysthhza\"},{\"name\":\"jfwyyrlhgenuze\",\"description\":\"vkvebaqsz\"}]},\"nextLink\":\"rzl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class LocalRulestacksListAdvancedSecurityObjectsWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AdvSecurityObjectListResponse response = manager.localRulestacks()
-            .listAdvancedSecurityObjectsWithResponse("jwpindedvabbxbh", "edeilb", AdvSecurityObjectTypeEnum.URL_CUSTOM,
-                "wfcfxzirzz", 1264754105, com.azure.core.util.Context.NONE)
+            .listAdvancedSecurityObjectsWithResponse("ojhpcnabxzfsn", "gyte", AdvSecurityObjectTypeEnum.URL_CUSTOM,
+                "zilmhivzkww", 944626509, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wypusuvjsl", response.value().type());
-        Assertions.assertEquals("wci", response.value().entry().get(0).name());
-        Assertions.assertEquals("jsllfryvd", response.value().entry().get(0).description());
-        Assertions.assertEquals("x", response.nextLink());
+        Assertions.assertEquals("knrzdajlskzpt", response.value().type());
+        Assertions.assertEquals("ulweucyrth", response.value().entry().get(0).name());
+        Assertions.assertEquals("lehmcgcjeinueho", response.value().entry().get(0).description());
+        Assertions.assertEquals("rzl", response.nextLink());
     }
 }

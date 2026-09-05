@@ -12,27 +12,27 @@ public final class EventHubTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHub model = BinaryData.fromString(
-            "{\"id\":\"iglaecx\",\"subscriptionId\":\"t\",\"name\":\"okpvzm\",\"nameSpace\":\"t\",\"policyName\":\"dgxobfircl\"}")
+            "{\"id\":\"nruj\",\"subscriptionId\":\"uhmuouqfprwzwbn\",\"name\":\"itnwuizgazxufi\",\"nameSpace\":\"ckyfih\",\"policyName\":\"idf\"}")
             .toObject(EventHub.class);
-        Assertions.assertEquals("iglaecx", model.id());
-        Assertions.assertEquals("t", model.subscriptionId());
-        Assertions.assertEquals("okpvzm", model.name());
-        Assertions.assertEquals("t", model.nameSpace());
-        Assertions.assertEquals("dgxobfircl", model.policyName());
+        Assertions.assertEquals("nruj", model.id());
+        Assertions.assertEquals("uhmuouqfprwzwbn", model.subscriptionId());
+        Assertions.assertEquals("itnwuizgazxufi", model.name());
+        Assertions.assertEquals("ckyfih", model.nameSpace());
+        Assertions.assertEquals("idf", model.policyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHub model = new EventHub().withId("iglaecx")
-            .withSubscriptionId("t")
-            .withName("okpvzm")
-            .withNameSpace("t")
-            .withPolicyName("dgxobfircl");
+        EventHub model = new EventHub().withId("nruj")
+            .withSubscriptionId("uhmuouqfprwzwbn")
+            .withName("itnwuizgazxufi")
+            .withNameSpace("ckyfih")
+            .withPolicyName("idf");
         model = BinaryData.fromObject(model).toObject(EventHub.class);
-        Assertions.assertEquals("iglaecx", model.id());
-        Assertions.assertEquals("t", model.subscriptionId());
-        Assertions.assertEquals("okpvzm", model.name());
-        Assertions.assertEquals("t", model.nameSpace());
-        Assertions.assertEquals("dgxobfircl", model.policyName());
+        Assertions.assertEquals("nruj", model.id());
+        Assertions.assertEquals("uhmuouqfprwzwbn", model.subscriptionId());
+        Assertions.assertEquals("itnwuizgazxufi", model.name());
+        Assertions.assertEquals("ckyfih", model.nameSpace());
+        Assertions.assertEquals("idf", model.policyName());
     }
 }

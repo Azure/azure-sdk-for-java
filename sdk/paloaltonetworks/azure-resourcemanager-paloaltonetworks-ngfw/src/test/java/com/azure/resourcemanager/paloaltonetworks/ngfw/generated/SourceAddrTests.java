@@ -13,24 +13,24 @@ public final class SourceAddrTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceAddr model = BinaryData.fromString(
-            "{\"cidrs\":[\"hgure\"],\"countries\":[\"wobdagxtibqdx\",\"xwak\",\"ogqxndlkzgxhuri\"],\"feeds\":[\"podxunkb\",\"bxmubyynt\",\"lrb\",\"tkoievseotgq\"],\"prefixLists\":[\"tmuwlauwzi\",\"xbmp\",\"cjefuzmu\",\"pbttdum\"]}")
+            "{\"cidrs\":[\"pmqtaru\",\"ujmkcjhwqy\"],\"countries\":[\"ybn\"],\"feeds\":[\"wgdrjervnaenqp\",\"hin\",\"oygmift\"],\"prefixLists\":[\"d\",\"dslgnayqigynduh\"]}")
             .toObject(SourceAddr.class);
-        Assertions.assertEquals("hgure", model.cidrs().get(0));
-        Assertions.assertEquals("wobdagxtibqdx", model.countries().get(0));
-        Assertions.assertEquals("podxunkb", model.feeds().get(0));
-        Assertions.assertEquals("tmuwlauwzi", model.prefixLists().get(0));
+        Assertions.assertEquals("pmqtaru", model.cidrs().get(0));
+        Assertions.assertEquals("ybn", model.countries().get(0));
+        Assertions.assertEquals("wgdrjervnaenqp", model.feeds().get(0));
+        Assertions.assertEquals("d", model.prefixLists().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SourceAddr model = new SourceAddr().withCidrs(Arrays.asList("hgure"))
-            .withCountries(Arrays.asList("wobdagxtibqdx", "xwak", "ogqxndlkzgxhuri"))
-            .withFeeds(Arrays.asList("podxunkb", "bxmubyynt", "lrb", "tkoievseotgq"))
-            .withPrefixLists(Arrays.asList("tmuwlauwzi", "xbmp", "cjefuzmu", "pbttdum"));
+        SourceAddr model = new SourceAddr().withCidrs(Arrays.asList("pmqtaru", "ujmkcjhwqy"))
+            .withCountries(Arrays.asList("ybn"))
+            .withFeeds(Arrays.asList("wgdrjervnaenqp", "hin", "oygmift"))
+            .withPrefixLists(Arrays.asList("d", "dslgnayqigynduh"));
         model = BinaryData.fromObject(model).toObject(SourceAddr.class);
-        Assertions.assertEquals("hgure", model.cidrs().get(0));
-        Assertions.assertEquals("wobdagxtibqdx", model.countries().get(0));
-        Assertions.assertEquals("podxunkb", model.feeds().get(0));
-        Assertions.assertEquals("tmuwlauwzi", model.prefixLists().get(0));
+        Assertions.assertEquals("pmqtaru", model.cidrs().get(0));
+        Assertions.assertEquals("ybn", model.countries().get(0));
+        Assertions.assertEquals("wgdrjervnaenqp", model.feeds().get(0));
+        Assertions.assertEquals("d", model.prefixLists().get(0));
     }
 }

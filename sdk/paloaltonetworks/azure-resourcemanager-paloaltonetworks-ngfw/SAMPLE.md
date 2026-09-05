@@ -15,6 +15,13 @@
 - [Get](#certificateobjectlocalrulestack_get)
 - [ListByLocalRulestacks](#certificateobjectlocalrulestack_listbylocalrulestacks)
 
+## CustomCaptureConfigurationsFirewallResources
+
+- [CreateOrUpdate](#customcaptureconfigurationsfirewallresources_createorupdate)
+- [Delete](#customcaptureconfigurationsfirewallresources_delete)
+- [Get](#customcaptureconfigurationsfirewallresources_get)
+- [ListByFirewall](#customcaptureconfigurationsfirewallresources_listbyfirewall)
+
 ## FirewallStatus
 
 - [Get](#firewallstatus_get)
@@ -93,6 +100,13 @@
 - [Revert](#localrulestacks_revert)
 - [Update](#localrulestacks_update)
 
+## LogIngestionSettingsResources
+
+- [CreateOrUpdate](#logingestionsettingsresources_createorupdate)
+- [Delete](#logingestionsettingsresources_delete)
+- [Get](#logingestionsettingsresources_get)
+- [ListByFirewall](#logingestionsettingsresources_listbyfirewall)
+
 ## MetricsObjectFirewall
 
 - [CreateOrUpdate](#metricsobjectfirewall_createorupdate)
@@ -155,7 +169,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
  */
 public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -171,7 +185,7 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -200,7 +214,7 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
  */
 public final class CertificateObjectGlobalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_Delete_MaximumSet_Gen.
@@ -213,7 +227,7 @@ public final class CertificateObjectGlobalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_Delete_MinimumSet_Gen.
@@ -235,7 +249,7 @@ public final class CertificateObjectGlobalRulestackDeleteSamples {
  */
 public final class CertificateObjectGlobalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_Get_MinimumSet_Gen.
@@ -249,7 +263,7 @@ public final class CertificateObjectGlobalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_Get_MaximumSet_Gen.
@@ -272,7 +286,7 @@ public final class CertificateObjectGlobalRulestackGetSamples {
  */
 public final class CertificateObjectGlobalRulestackListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_List_MaximumSet_Gen.
@@ -285,7 +299,7 @@ public final class CertificateObjectGlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_List_MinimumSet_Gen.
@@ -309,7 +323,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
  */
 public final class CertificateObjectLocalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -326,7 +340,7 @@ public final class CertificateObjectLocalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -356,7 +370,7 @@ public final class CertificateObjectLocalRulestackCreateOrUpdateSamples {
  */
 public final class CertificateObjectLocalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_Delete_MaximumSet_Gen.
@@ -370,7 +384,7 @@ public final class CertificateObjectLocalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_Delete_MinimumSet_Gen.
@@ -393,7 +407,7 @@ public final class CertificateObjectLocalRulestackDeleteSamples {
  */
 public final class CertificateObjectLocalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_Get_MaximumSet_Gen.
@@ -407,7 +421,7 @@ public final class CertificateObjectLocalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_Get_MinimumSet_Gen.
@@ -430,7 +444,7 @@ public final class CertificateObjectLocalRulestackGetSamples {
  */
 public final class CertificateObjectLocalRulestackListByLocalRulestacksSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.
@@ -444,7 +458,7 @@ public final class CertificateObjectLocalRulestackListByLocalRulestacksSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.
@@ -459,6 +473,191 @@ public final class CertificateObjectLocalRulestackListByLocalRulestacksSamples {
 }
 ```
 
+### CustomCaptureConfigurationsFirewallResources_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CustomCaptureConfigurationsFirewallResourceInner;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CustomCaptureConfigurationsFilter;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CustomCaptureConfigurationsProperties;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CustomCaptureConfigurationsProtocol;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CustomCaptureConfigurationsStage;
+import java.util.Arrays;
+
+/**
+ * Samples for CustomCaptureConfigurationsFirewallResources CreateOrUpdate.
+ */
+public final class CustomCaptureConfigurationsFirewallResourcesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_CreateOrUpdate_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesCreateOrUpdateMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .createOrUpdateWithResponse("firewall-rg", "firewall1",
+                new CustomCaptureConfigurationsFirewallResourceInner()
+                    .withProperties(new CustomCaptureConfigurationsProperties()
+                        .withPcapFilter(Arrays.asList(new CustomCaptureConfigurationsFilter()
+                            .withProtocol(CustomCaptureConfigurationsProtocol.TCP)
+                            .withSourceIpAddress("10.0.0.5")
+                            .withSourcePort(54321)
+                            .withDestinationIpAddress("52.39.204.87")
+                            .withDestinationPort(443)))
+                        .withPcapStages(Arrays.asList(CustomCaptureConfigurationsStage.RECEIVE,
+                            CustomCaptureConfigurationsStage.TRANSMIT, CustomCaptureConfigurationsStage.DROP))
+                        .withDurationInSec(120)
+                        .withStorageAccountResourceId(
+                            "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Storage/storageAccounts/pcapstorage")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_CreateOrUpdate_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_CreateOrUpdate_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesCreateOrUpdateMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .createOrUpdateWithResponse("firewall-rg", "firewall1",
+                new CustomCaptureConfigurationsFirewallResourceInner()
+                    .withProperties(new CustomCaptureConfigurationsProperties()
+                        .withPcapFilter(Arrays.asList(new CustomCaptureConfigurationsFilter()
+                            .withProtocol(CustomCaptureConfigurationsProtocol.TCP)
+                            .withSourceIpAddress("10.0.0.5")
+                            .withDestinationIpAddress("52.39.204.87")
+                            .withDestinationPort(443)))
+                        .withPcapStages(Arrays.asList(CustomCaptureConfigurationsStage.FIREWALL))
+                        .withDurationInSec(30)
+                        .withStorageAccountResourceId(
+                            "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Storage/storageAccounts/pcapstorage")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CustomCaptureConfigurationsFirewallResources_Delete
+
+```java
+/**
+ * Samples for CustomCaptureConfigurationsFirewallResources Delete.
+ */
+public final class CustomCaptureConfigurationsFirewallResourcesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_Delete_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesDeleteMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .deleteByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_Delete_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesDeleteMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .deleteByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CustomCaptureConfigurationsFirewallResources_Get
+
+```java
+/**
+ * Samples for CustomCaptureConfigurationsFirewallResources Get.
+ */
+public final class CustomCaptureConfigurationsFirewallResourcesGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_Get_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_Get_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesGetMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .getWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesGetMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .getWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CustomCaptureConfigurationsFirewallResources_ListByFirewall
+
+```java
+/**
+ * Samples for CustomCaptureConfigurationsFirewallResources ListByFirewall.
+ */
+public final class CustomCaptureConfigurationsFirewallResourcesListByFirewallSamples {
+    /*
+     * x-ms-original-file:
+     * 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_ListByFirewall_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_ListByFirewall_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesListByFirewallMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .listByFirewall("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-07-29-preview/CustomCaptureConfigurationsFirewallResources_ListByFirewall_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: CustomCaptureConfigurationsFirewallResources_ListByFirewall_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void customCaptureConfigurationsFirewallResourcesListByFirewallMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.customCaptureConfigurationsFirewallResources()
+            .listByFirewall("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### FirewallStatus_Get
 
 ```java
@@ -467,7 +666,7 @@ public final class CertificateObjectLocalRulestackListByLocalRulestacksSamples {
  */
 public final class FirewallStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FirewallStatus_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FirewallStatus_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FirewallStatus_Get_MinimumSet_Gen.
@@ -480,7 +679,7 @@ public final class FirewallStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FirewallStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FirewallStatus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FirewallStatus_Get_MaximumSet_Gen.
@@ -502,7 +701,7 @@ public final class FirewallStatusGetSamples {
  */
 public final class FirewallStatusListByFirewallsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FirewallStatus_ListByFirewalls_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FirewallStatus_ListByFirewalls_MaximumSet_Gen.json
      */
     /**
      * Sample code: FirewallStatus_ListByFirewalls_MaximumSet_Gen.
@@ -515,7 +714,7 @@ public final class FirewallStatusListByFirewallsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FirewallStatus_ListByFirewalls_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FirewallStatus_ListByFirewalls_MinimumSet_Gen.json
      */
     /**
      * Sample code: FirewallStatus_ListByFirewalls_MinimumSet_Gen.
@@ -565,7 +764,7 @@ import java.util.Map;
  */
 public final class FirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_CreateOrUpdate_MaximumSet_Gen.
@@ -632,6 +831,7 @@ public final class FirewallsCreateOrUpdateSamples {
                     new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
                         .withPrincipalId("aaaaaaaaaaaaaaa"))))
             .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
+            .withFirewallSku("PREMIUM")
             .withIsPanoramaManaged(BooleanEnum.TRUE)
             .withPanoramaConfig(new PanoramaConfig().withConfigString("bas64EncodedString"))
             .withAssociatedRulestack(
@@ -650,7 +850,7 @@ public final class FirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_CreateOrUpdate_MinimumSet_Gen.
@@ -697,7 +897,7 @@ public final class FirewallsCreateOrUpdateSamples {
  */
 public final class FirewallsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Delete_MinimumSet_Gen.
@@ -710,7 +910,7 @@ public final class FirewallsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Delete_MaximumSet_Gen.
@@ -732,7 +932,7 @@ public final class FirewallsDeleteSamples {
  */
 public final class FirewallsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Get_MaximumSet_Gen.
@@ -746,7 +946,7 @@ public final class FirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Get_MinimumSet_Gen.
@@ -769,7 +969,7 @@ public final class FirewallsGetByResourceGroupSamples {
  */
 public final class FirewallsGetGlobalRulestackSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getGlobalRulestack_MaximumSet_Gen.
@@ -783,7 +983,7 @@ public final class FirewallsGetGlobalRulestackSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getGlobalRulestack_MinimumSet_Gen.
@@ -806,7 +1006,7 @@ public final class FirewallsGetGlobalRulestackSamples {
  */
 public final class FirewallsGetLogProfileSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_getLogProfile_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_getLogProfile_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getLogProfile_MinimumSet_Gen.
@@ -819,7 +1019,7 @@ public final class FirewallsGetLogProfileSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_getLogProfile_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_getLogProfile_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getLogProfile_MaximumSet_Gen.
@@ -841,7 +1041,7 @@ public final class FirewallsGetLogProfileSamples {
  */
 public final class FirewallsGetSupportInfoSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_getSupportInfo_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_getSupportInfo_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getSupportInfo_MinimumSet_Gen.
@@ -855,7 +1055,7 @@ public final class FirewallsGetSupportInfoSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_getSupportInfo_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_getSupportInfo_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_getSupportInfo_MaximumSet_Gen.
@@ -878,7 +1078,7 @@ public final class FirewallsGetSupportInfoSamples {
  */
 public final class FirewallsListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_ListBySubscription_MinimumSet_Gen.
@@ -891,7 +1091,7 @@ public final class FirewallsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_ListBySubscription_MaximumSet_Gen.
@@ -913,7 +1113,7 @@ public final class FirewallsListSamples {
  */
 public final class FirewallsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_ListByResourceGroup_MaximumSet_Gen.
@@ -926,7 +1126,7 @@ public final class FirewallsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_ListByResourceGroup_MinimumSet_Gen.
@@ -957,7 +1157,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.StorageAccount;
  */
 public final class FirewallsSaveLogProfileSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_saveLogProfile_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_saveLogProfile_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_saveLogProfile_MaximumSet_Gen.
@@ -1032,7 +1232,7 @@ public final class FirewallsSaveLogProfileSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_saveLogProfile_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_saveLogProfile_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_saveLogProfile_MinimumSet_Gen.
@@ -1085,7 +1285,7 @@ import java.util.Map;
  */
 public final class FirewallsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Update_MinimumSet_Gen.
@@ -1101,7 +1301,7 @@ public final class FirewallsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Update_MaximumSet_Gen.
@@ -1211,7 +1411,7 @@ import java.util.Arrays;
  */
 public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -1230,7 +1430,7 @@ public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -1255,7 +1455,7 @@ public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
  */
 public final class FqdnListGlobalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_Delete_MaximumSet_Gen.
@@ -1268,7 +1468,7 @@ public final class FqdnListGlobalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_Delete_MinimumSet_Gen.
@@ -1290,7 +1490,7 @@ public final class FqdnListGlobalRulestackDeleteSamples {
  */
 public final class FqdnListGlobalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_Get_MaximumSet_Gen.
@@ -1303,7 +1503,7 @@ public final class FqdnListGlobalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_Get_MinimumSet_Gen.
@@ -1325,7 +1525,7 @@ public final class FqdnListGlobalRulestackGetSamples {
  */
 public final class FqdnListGlobalRulestackListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_List_MinimumSet_Gen.
@@ -1338,7 +1538,7 @@ public final class FqdnListGlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListGlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListGlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListGlobalRulestack_List_MaximumSet_Gen.
@@ -1362,7 +1562,7 @@ import java.util.Arrays;
  */
 public final class FqdnListLocalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -1382,7 +1582,7 @@ public final class FqdnListLocalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -1408,7 +1608,7 @@ public final class FqdnListLocalRulestackCreateOrUpdateSamples {
  */
 public final class FqdnListLocalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_Delete_MinimumSet_Gen.
@@ -1421,7 +1621,7 @@ public final class FqdnListLocalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_Delete_MaximumSet_Gen.
@@ -1443,7 +1643,7 @@ public final class FqdnListLocalRulestackDeleteSamples {
  */
 public final class FqdnListLocalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_Get_MinimumSet_Gen.
@@ -1457,7 +1657,7 @@ public final class FqdnListLocalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_Get_MaximumSet_Gen.
@@ -1480,7 +1680,7 @@ public final class FqdnListLocalRulestackGetSamples {
  */
 public final class FqdnListLocalRulestackListByLocalRulestacksSamples {
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.
@@ -1493,7 +1693,7 @@ public final class FqdnListLocalRulestackListByLocalRulestacksSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/FqdnListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/FqdnListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.json
      */
     /**
      * Sample code: FqdnListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.
@@ -1515,7 +1715,7 @@ public final class FqdnListLocalRulestackListByLocalRulestacksSamples {
  */
 public final class GlobalRulestackCommitSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_commit_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_commit_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_commit_MaximumSet_Gen.
@@ -1528,7 +1728,7 @@ public final class GlobalRulestackCommitSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_commit_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_commit_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_commit_MinimumSet_Gen.
@@ -1561,7 +1761,7 @@ import java.util.Map;
  */
 public final class GlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -1576,7 +1776,7 @@ public final class GlobalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -1632,7 +1832,7 @@ public final class GlobalRulestackCreateOrUpdateSamples {
  */
 public final class GlobalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Delete_MaximumSet_Gen.
@@ -1645,7 +1845,7 @@ public final class GlobalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Delete_MinimumSet_Gen.
@@ -1667,7 +1867,7 @@ public final class GlobalRulestackDeleteSamples {
  */
 public final class GlobalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Get_MinimumSet_Gen.
@@ -1680,7 +1880,7 @@ public final class GlobalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Get_MaximumSet_Gen.
@@ -1702,7 +1902,7 @@ public final class GlobalRulestackGetSamples {
  */
 public final class GlobalRulestackGetChangeLogSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_getChangeLog_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_getChangeLog_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_getChangeLog_MinimumSet_Gen.
@@ -1715,7 +1915,7 @@ public final class GlobalRulestackGetChangeLogSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_getChangeLog_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_getChangeLog_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_getChangeLog_MaximumSet_Gen.
@@ -1737,7 +1937,7 @@ public final class GlobalRulestackGetChangeLogSamples {
  */
 public final class GlobalRulestackListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_List_MinimumSet_Gen.
@@ -1750,7 +1950,7 @@ public final class GlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_List_MaximumSet_Gen.
@@ -1774,7 +1974,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectT
  */
 public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.
@@ -1789,7 +1989,7 @@ public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.
@@ -1813,7 +2013,7 @@ public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
  */
 public final class GlobalRulestackListAppIdsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listAppIds_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listAppIds_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listAppIds_MaximumSet_Gen.
@@ -1827,7 +2027,7 @@ public final class GlobalRulestackListAppIdsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listAppIds_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listAppIds_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listAppIds_MinimumSet_Gen.
@@ -1850,7 +2050,7 @@ public final class GlobalRulestackListAppIdsSamples {
  */
 public final class GlobalRulestackListCountriesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listCountries_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listCountries_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listCountries_MinimumSet_Gen.
@@ -1863,7 +2063,7 @@ public final class GlobalRulestackListCountriesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listCountries_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listCountries_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listCountries_MaximumSet_Gen.
@@ -1885,7 +2085,7 @@ public final class GlobalRulestackListCountriesSamples {
  */
 public final class GlobalRulestackListFirewallsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listFirewalls_MaximumSet_Gen.
@@ -1898,7 +2098,7 @@ public final class GlobalRulestackListFirewallsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listFirewalls_MinimumSet_Gen.
@@ -1920,7 +2120,7 @@ public final class GlobalRulestackListFirewallsSamples {
  */
 public final class GlobalRulestackListPredefinedUrlCategoriesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.
@@ -1934,7 +2134,7 @@ public final class GlobalRulestackListPredefinedUrlCategoriesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.
@@ -1959,7 +2159,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTy
  */
 public final class GlobalRulestackListSecurityServicesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listSecurityServices_MinimumSet_Gen.
@@ -1974,7 +2174,7 @@ public final class GlobalRulestackListSecurityServicesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listSecurityServices_MaximumSet_Gen.
@@ -1998,7 +2198,7 @@ public final class GlobalRulestackListSecurityServicesSamples {
  */
 public final class GlobalRulestackRevertSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_revert_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_revert_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_revert_MinimumSet_Gen.
@@ -2011,7 +2211,7 @@ public final class GlobalRulestackRevertSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_revert_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_revert_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_revert_MaximumSet_Gen.
@@ -2045,7 +2245,7 @@ import java.util.Map;
  */
 public final class GlobalRulestackUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Update_MaximumSet_Gen.
@@ -2080,7 +2280,7 @@ public final class GlobalRulestackUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Update_MinimumSet_Gen.
@@ -2125,7 +2325,7 @@ import java.util.Arrays;
  */
 public final class LocalRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_CreateOrUpdate_MinimumSet_Gen.
@@ -2142,7 +2342,7 @@ public final class LocalRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_CreateOrUpdate_MaximumSet_Gen.
@@ -2193,7 +2393,7 @@ public final class LocalRulesCreateOrUpdateSamples {
  */
 public final class LocalRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_Delete_MaximumSet_Gen.
@@ -2206,7 +2406,7 @@ public final class LocalRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_Delete_MinimumSet_Gen.
@@ -2228,7 +2428,7 @@ public final class LocalRulesDeleteSamples {
  */
 public final class LocalRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_Get_MaximumSet_Gen.
@@ -2241,7 +2441,7 @@ public final class LocalRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_Get_MinimumSet_Gen.
@@ -2263,7 +2463,7 @@ public final class LocalRulesGetSamples {
  */
 public final class LocalRulesGetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_getCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_getCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_getCounters_MaximumSet_Gen.
@@ -2277,7 +2477,7 @@ public final class LocalRulesGetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_getCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_getCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_getCounters_MinimumSet_Gen.
@@ -2300,7 +2500,7 @@ public final class LocalRulesGetCountersSamples {
  */
 public final class LocalRulesListByLocalRulestacksSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_ListByLocalRulestacks_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_ListByLocalRulestacks_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_ListByLocalRulestacks_MinimumSet_Gen.
@@ -2313,7 +2513,7 @@ public final class LocalRulesListByLocalRulestacksSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_ListByLocalRulestacks_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_ListByLocalRulestacks_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_ListByLocalRulestacks_MaximumSet_Gen.
@@ -2335,7 +2535,7 @@ public final class LocalRulesListByLocalRulestacksSamples {
  */
 public final class LocalRulesRefreshCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_refreshCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_refreshCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_refreshCounters_MinimumSet_Gen.
@@ -2349,7 +2549,7 @@ public final class LocalRulesRefreshCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_refreshCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_refreshCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_refreshCounters_MaximumSet_Gen.
@@ -2372,7 +2572,7 @@ public final class LocalRulesRefreshCountersSamples {
  */
 public final class LocalRulesResetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_resetCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_resetCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_resetCounters_MaximumSet_Gen.
@@ -2386,7 +2586,7 @@ public final class LocalRulesResetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_resetCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_resetCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_resetCounters_MinimumSet_Gen.
@@ -2409,7 +2609,7 @@ public final class LocalRulesResetCountersSamples {
  */
 public final class LocalRulestacksCommitSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_commit_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_commit_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_commit_MinimumSet_Gen.
@@ -2422,7 +2622,7 @@ public final class LocalRulestacksCommitSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_commit_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_commit_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_commit_MaximumSet_Gen.
@@ -2454,7 +2654,7 @@ import java.util.Map;
  */
 public final class LocalRulestacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.
@@ -2467,7 +2667,7 @@ public final class LocalRulestacksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.
@@ -2525,7 +2725,7 @@ public final class LocalRulestacksCreateOrUpdateSamples {
  */
 public final class LocalRulestacksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Delete_MaximumSet_Gen.
@@ -2538,7 +2738,7 @@ public final class LocalRulestacksDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Delete_MinimumSet_Gen.
@@ -2560,7 +2760,7 @@ public final class LocalRulestacksDeleteSamples {
  */
 public final class LocalRulestacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Get_MaximumSet_Gen.
@@ -2573,7 +2773,7 @@ public final class LocalRulestacksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Get_MinimumSet_Gen.
@@ -2595,7 +2795,7 @@ public final class LocalRulestacksGetByResourceGroupSamples {
  */
 public final class LocalRulestacksGetChangeLogSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_getChangeLog_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_getChangeLog_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_getChangeLog_MinimumSet_Gen.
@@ -2608,7 +2808,7 @@ public final class LocalRulestacksGetChangeLogSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_getChangeLog_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_getChangeLog_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_getChangeLog_MaximumSet_Gen.
@@ -2630,7 +2830,7 @@ public final class LocalRulestacksGetChangeLogSamples {
  */
 public final class LocalRulestacksGetSupportInfoSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_getSupportInfo_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_getSupportInfo_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_getSupportInfo_MinimumSet_Gen.
@@ -2644,7 +2844,7 @@ public final class LocalRulestacksGetSupportInfoSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_getSupportInfo_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_getSupportInfo_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_getSupportInfo_MaximumSet_Gen.
@@ -2667,7 +2867,7 @@ public final class LocalRulestacksGetSupportInfoSamples {
  */
 public final class LocalRulestacksListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_ListBySubscription_MaximumSet_Gen.
@@ -2680,7 +2880,7 @@ public final class LocalRulestacksListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_ListBySubscription_MinimumSet_Gen.
@@ -2704,7 +2904,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectT
  */
 public final class LocalRulestacksListAdvancedSecurityObjectsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listAdvancedSecurityObjects_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listAdvancedSecurityObjects_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listAdvancedSecurityObjects_MaximumSet_Gen.
@@ -2720,7 +2920,7 @@ public final class LocalRulestacksListAdvancedSecurityObjectsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listAdvancedSecurityObjects_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listAdvancedSecurityObjects_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listAdvancedSecurityObjects_MinimumSet_Gen.
@@ -2744,7 +2944,7 @@ public final class LocalRulestacksListAdvancedSecurityObjectsSamples {
  */
 public final class LocalRulestacksListAppIdsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listAppIds_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listAppIds_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listAppIds_MaximumSet_Gen.
@@ -2758,7 +2958,7 @@ public final class LocalRulestacksListAppIdsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listAppIds_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listAppIds_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listAppIds_MinimumSet_Gen.
@@ -2781,7 +2981,7 @@ public final class LocalRulestacksListAppIdsSamples {
  */
 public final class LocalRulestacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_ListByResourceGroup_MaximumSet_Gen.
@@ -2794,7 +2994,7 @@ public final class LocalRulestacksListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_ListByResourceGroup_MinimumSet_Gen.
@@ -2816,7 +3016,7 @@ public final class LocalRulestacksListByResourceGroupSamples {
  */
 public final class LocalRulestacksListCountriesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listCountries_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listCountries_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listCountries_MaximumSet_Gen.
@@ -2829,7 +3029,7 @@ public final class LocalRulestacksListCountriesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listCountries_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listCountries_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listCountries_MinimumSet_Gen.
@@ -2851,7 +3051,7 @@ public final class LocalRulestacksListCountriesSamples {
  */
 public final class LocalRulestacksListFirewallsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listFirewalls_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listFirewalls_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listFirewalls_MinimumSet_Gen.
@@ -2864,7 +3064,7 @@ public final class LocalRulestacksListFirewallsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listFirewalls_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listFirewalls_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listFirewalls_MaximumSet_Gen.
@@ -2886,7 +3086,7 @@ public final class LocalRulestacksListFirewallsSamples {
  */
 public final class LocalRulestacksListPredefinedUrlCategoriesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.
@@ -2900,7 +3100,7 @@ public final class LocalRulestacksListPredefinedUrlCategoriesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.
@@ -2925,7 +3125,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTy
  */
 public final class LocalRulestacksListSecurityServicesSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listSecurityServices_MinimumSet_Gen.
@@ -2940,7 +3140,7 @@ public final class LocalRulestacksListSecurityServicesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listSecurityServices_MaximumSet_Gen.
@@ -2964,7 +3164,7 @@ public final class LocalRulestacksListSecurityServicesSamples {
  */
 public final class LocalRulestacksRevertSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_revert_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_revert_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_revert_MaximumSet_Gen.
@@ -2977,7 +3177,7 @@ public final class LocalRulestacksRevertSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_revert_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_revert_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_revert_MinimumSet_Gen.
@@ -3011,7 +3211,7 @@ import java.util.Map;
  */
 public final class LocalRulestacksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Update_MaximumSet_Gen.
@@ -3049,7 +3249,7 @@ public final class LocalRulestacksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Update_MinimumSet_Gen.
@@ -3078,6 +3278,191 @@ public final class LocalRulestacksUpdateSamples {
 }
 ```
 
+### LogIngestionSettingsResources_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.LogIngestionSettingsResourceInner;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogDestinationV2;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogIngestionSettingsProperties;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.MonitorLogV2;
+
+/**
+ * Samples for LogIngestionSettingsResources CreateOrUpdate.
+ */
+public final class LogIngestionSettingsResourcesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_CreateOrUpdate_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesCreateOrUpdateMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .createOrUpdateWithResponse("firewall-rg", "firewall1", new LogIngestionSettingsResourceInner()
+                .withProperties(new LogIngestionSettingsProperties().withCommonDestination(
+                    new LogDestinationV2().withMonitorConfigurationsV2(new MonitorLogV2().withDcrId(
+                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Insights/dataCollectionRules/dcr1")
+                        .withLogIngestionEndpoint("https://dce1.eastus-1.ingest.monitor.azure.com")
+                        .withDcrImmutableId("dcr-961d3dcf06f8402ebe071efc3eb19005")
+                        .withStreamName("Custom-PANLogs_CL")))
+                    .withTrafficLogDestination(new LogDestinationV2().withMonitorConfigurationsV2(new MonitorLogV2()
+                        .withDcrId(
+                            "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Insights/dataCollectionRules/dcr1")
+                        .withLogIngestionEndpoint("https://dce1.eastus-1.ingest.monitor.azure.com")
+                        .withDcrImmutableId("dcr-961d3dcf06f8402ebe071efc3eb19005")
+                        .withStreamName("Custom-PANTrafficLogs_CL")))
+                    .withThreatLogDestination(new LogDestinationV2().withMonitorConfigurationsV2(new MonitorLogV2()
+                        .withDcrId(
+                            "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Insights/dataCollectionRules/dcr2")
+                        .withLogIngestionEndpoint("https://dce1.eastus-1.ingest.monitor.azure.com")
+                        .withDcrImmutableId("dcr-772e4ecf17f9513fce182efc4fc2a116")
+                        .withStreamName("Custom-PANThreatLogs_CL")))
+                    .withDecryptLogDestination(new LogDestinationV2().withMonitorConfigurationsV2(new MonitorLogV2()
+                        .withDcrId(
+                            "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Insights/dataCollectionRules/dcr3")
+                        .withLogIngestionEndpoint("https://dce1.eastus-1.ingest.monitor.azure.com")
+                        .withDcrImmutableId("dcr-883f5fdf28fa624dfe293efc5fd3b227")
+                        .withStreamName("Custom-PANDecryptLogs_CL")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_CreateOrUpdate_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_CreateOrUpdate_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesCreateOrUpdateMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .createOrUpdateWithResponse("firewall-rg", "firewall1", new LogIngestionSettingsResourceInner()
+                .withProperties(new LogIngestionSettingsProperties().withCommonDestination(
+                    new LogDestinationV2().withMonitorConfigurationsV2(new MonitorLogV2().withDcrId(
+                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/Microsoft.Insights/dataCollectionRules/dcr1")
+                        .withLogIngestionEndpoint("https://dce1.eastus-1.ingest.monitor.azure.com")
+                        .withDcrImmutableId("dcr-961d3dcf06f8402ebe071efc3eb19005")
+                        .withStreamName("Custom-PANTrafficLogs_CL")))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### LogIngestionSettingsResources_Delete
+
+```java
+/**
+ * Samples for LogIngestionSettingsResources Delete.
+ */
+public final class LogIngestionSettingsResourcesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_Delete_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesDeleteMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .deleteByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_Delete_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesDeleteMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .deleteByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### LogIngestionSettingsResources_Get
+
+```java
+/**
+ * Samples for LogIngestionSettingsResources Get.
+ */
+public final class LogIngestionSettingsResourcesGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesGetMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .getWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_Get_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_Get_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesGetMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .getWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### LogIngestionSettingsResources_ListByFirewall
+
+```java
+/**
+ * Samples for LogIngestionSettingsResources ListByFirewall.
+ */
+public final class LogIngestionSettingsResourcesListByFirewallSamples {
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_ListByFirewall_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_ListByFirewall_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesListByFirewallMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .listByFirewall("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-29-preview/LogIngestionSettingsResources_ListByFirewall_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: LogIngestionSettingsResources_ListByFirewall_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
+     */
+    public static void logIngestionSettingsResourcesListByFirewallMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
+        manager.logIngestionSettingsResources()
+            .listByFirewall("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### MetricsObjectFirewall_CreateOrUpdate
 
 ```java
@@ -3088,7 +3473,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.MetricsObje
  */
 public final class MetricsObjectFirewallCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_CreateOrUpdate_MinimumSet_Gen.
@@ -3105,7 +3490,7 @@ public final class MetricsObjectFirewallCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_CreateOrUpdate_MaximumSet_Gen.
@@ -3132,7 +3517,7 @@ public final class MetricsObjectFirewallCreateOrUpdateSamples {
  */
 public final class MetricsObjectFirewallDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_Delete_MaximumSet_Gen.
@@ -3146,7 +3531,7 @@ public final class MetricsObjectFirewallDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_Delete_MinimumSet_Gen.
@@ -3169,7 +3554,7 @@ public final class MetricsObjectFirewallDeleteSamples {
  */
 public final class MetricsObjectFirewallGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_Get_MinimumSet_Gen.
@@ -3183,7 +3568,7 @@ public final class MetricsObjectFirewallGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_Get_MaximumSet_Gen.
@@ -3206,7 +3591,7 @@ public final class MetricsObjectFirewallGetSamples {
  */
 public final class MetricsObjectFirewallListByFirewallsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_ListByFirewalls_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_ListByFirewalls_MinimumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_ListByFirewalls_MinimumSet_Gen.
@@ -3219,7 +3604,7 @@ public final class MetricsObjectFirewallListByFirewallsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/MetricsObjectFirewall_ListByFirewalls_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/MetricsObjectFirewall_ListByFirewalls_MaximumSet_Gen.json
      */
     /**
      * Sample code: MetricsObjectFirewall_ListByFirewalls_MaximumSet_Gen.
@@ -3241,7 +3626,7 @@ public final class MetricsObjectFirewallListByFirewallsSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -3254,7 +3639,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
@@ -3276,7 +3661,8 @@ public final class OperationsListSamples {
  */
 public final class PaloAltoNetworksCloudngfwOperationsCreateProductSerialNumberSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MinimumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MinimumSet_Gen.
@@ -3290,7 +3676,8 @@ public final class PaloAltoNetworksCloudngfwOperationsCreateProductSerialNumberS
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MaximumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MaximumSet_Gen.
@@ -3313,7 +3700,8 @@ public final class PaloAltoNetworksCloudngfwOperationsCreateProductSerialNumberS
  */
 public final class PaloAltoNetworksCloudngfwOperationsListCloudManagerTenantsSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MinimumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MinimumSet_Gen.
@@ -3327,7 +3715,8 @@ public final class PaloAltoNetworksCloudngfwOperationsListCloudManagerTenantsSam
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MaximumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MaximumSet_Gen.
@@ -3351,7 +3740,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListCloudManagerTenantsSam
 public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberStatusSamples {
     /*
      * x-ms-original-file:
-     * 2025-10-08/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.json
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.
@@ -3366,7 +3755,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberSta
 
     /*
      * x-ms-original-file:
-     * 2025-10-08/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.json
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.
@@ -3389,7 +3778,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberSta
  */
 public final class PaloAltoNetworksCloudngfwOperationsListSupportInfoSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MinimumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listSupportInfo_MinimumSet_Gen.
@@ -3402,7 +3791,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListSupportInfoSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MaximumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listSupportInfo_MaximumSet_Gen.
@@ -3435,7 +3824,7 @@ import java.util.Arrays;
  */
 public final class PostRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_CreateOrUpdate_MaximumSet_Gen.
@@ -3476,7 +3865,7 @@ public final class PostRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_CreateOrUpdate_MinimumSet_Gen.
@@ -3500,7 +3889,7 @@ public final class PostRulesCreateOrUpdateSamples {
  */
 public final class PostRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_Delete_MinimumSet_Gen.
@@ -3513,7 +3902,7 @@ public final class PostRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_Delete_MaximumSet_Gen.
@@ -3535,7 +3924,7 @@ public final class PostRulesDeleteSamples {
  */
 public final class PostRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_Get_MinimumSet_Gen.
@@ -3548,7 +3937,7 @@ public final class PostRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_Get_MaximumSet_Gen.
@@ -3570,7 +3959,7 @@ public final class PostRulesGetSamples {
  */
 public final class PostRulesGetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_getCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_getCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_getCounters_MinimumSet_Gen.
@@ -3583,7 +3972,7 @@ public final class PostRulesGetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_getCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_getCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_getCounters_MaximumSet_Gen.
@@ -3605,7 +3994,7 @@ public final class PostRulesGetCountersSamples {
  */
 public final class PostRulesListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_List_MinimumSet_Gen.
@@ -3618,7 +4007,7 @@ public final class PostRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_List_MaximumSet_Gen.
@@ -3640,7 +4029,7 @@ public final class PostRulesListSamples {
  */
 public final class PostRulesRefreshCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_refreshCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_refreshCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_refreshCounters_MaximumSet_Gen.
@@ -3653,7 +4042,7 @@ public final class PostRulesRefreshCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_refreshCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_refreshCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_refreshCounters_MinimumSet_Gen.
@@ -3675,7 +4064,7 @@ public final class PostRulesRefreshCountersSamples {
  */
 public final class PostRulesResetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_resetCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_resetCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_resetCounters_MaximumSet_Gen.
@@ -3688,7 +4077,7 @@ public final class PostRulesResetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_resetCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_resetCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_resetCounters_MinimumSet_Gen.
@@ -3721,7 +4110,7 @@ import java.util.Arrays;
  */
 public final class PreRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_CreateOrUpdate_MaximumSet_Gen.
@@ -3762,7 +4151,7 @@ public final class PreRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_CreateOrUpdate_MinimumSet_Gen.
@@ -3786,7 +4175,7 @@ public final class PreRulesCreateOrUpdateSamples {
  */
 public final class PreRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_Delete_MinimumSet_Gen.
@@ -3799,7 +4188,7 @@ public final class PreRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_Delete_MaximumSet_Gen.
@@ -3821,7 +4210,7 @@ public final class PreRulesDeleteSamples {
  */
 public final class PreRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_Get_MaximumSet_Gen.
@@ -3834,7 +4223,7 @@ public final class PreRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_Get_MinimumSet_Gen.
@@ -3856,7 +4245,7 @@ public final class PreRulesGetSamples {
  */
 public final class PreRulesGetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_getCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_getCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_getCounters_MinimumSet_Gen.
@@ -3869,7 +4258,7 @@ public final class PreRulesGetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_getCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_getCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_getCounters_MaximumSet_Gen.
@@ -3891,7 +4280,7 @@ public final class PreRulesGetCountersSamples {
  */
 public final class PreRulesListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_List_MinimumSet_Gen.
@@ -3904,7 +4293,7 @@ public final class PreRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_List_MaximumSet_Gen.
@@ -3926,7 +4315,7 @@ public final class PreRulesListSamples {
  */
 public final class PreRulesRefreshCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_refreshCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_refreshCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_refreshCounters_MaximumSet_Gen.
@@ -3939,7 +4328,7 @@ public final class PreRulesRefreshCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_refreshCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_refreshCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_refreshCounters_MinimumSet_Gen.
@@ -3961,7 +4350,7 @@ public final class PreRulesRefreshCountersSamples {
  */
 public final class PreRulesResetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_resetCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_resetCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_resetCounters_MinimumSet_Gen.
@@ -3974,7 +4363,7 @@ public final class PreRulesResetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_resetCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_resetCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_resetCounters_MaximumSet_Gen.
@@ -3999,7 +4388,7 @@ import java.util.Arrays;
  */
 public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -4018,7 +4407,7 @@ public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -4043,7 +4432,7 @@ public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
  */
 public final class PrefixListGlobalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_Delete_MaximumSet_Gen.
@@ -4056,7 +4445,7 @@ public final class PrefixListGlobalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_Delete_MinimumSet_Gen.
@@ -4078,7 +4467,7 @@ public final class PrefixListGlobalRulestackDeleteSamples {
  */
 public final class PrefixListGlobalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_Get_MinimumSet_Gen.
@@ -4091,7 +4480,7 @@ public final class PrefixListGlobalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_Get_MaximumSet_Gen.
@@ -4113,7 +4502,7 @@ public final class PrefixListGlobalRulestackGetSamples {
  */
 public final class PrefixListGlobalRulestackListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_List_MaximumSet_Gen.
@@ -4126,7 +4515,7 @@ public final class PrefixListGlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_List_MinimumSet_Gen.
@@ -4150,7 +4539,7 @@ import java.util.Arrays;
  */
 public final class PrefixListLocalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -4167,7 +4556,7 @@ public final class PrefixListLocalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -4196,7 +4585,7 @@ public final class PrefixListLocalRulestackCreateOrUpdateSamples {
  */
 public final class PrefixListLocalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_Delete_MinimumSet_Gen.
@@ -4209,7 +4598,7 @@ public final class PrefixListLocalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_Delete_MaximumSet_Gen.
@@ -4231,7 +4620,7 @@ public final class PrefixListLocalRulestackDeleteSamples {
  */
 public final class PrefixListLocalRulestackGetSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_Get_MinimumSet_Gen.
@@ -4245,7 +4634,7 @@ public final class PrefixListLocalRulestackGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_Get_MaximumSet_Gen.
@@ -4268,7 +4657,7 @@ public final class PrefixListLocalRulestackGetSamples {
  */
 public final class PrefixListLocalRulestackListByLocalRulestacksSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.
@@ -4282,7 +4671,7 @@ public final class PrefixListLocalRulestackListByLocalRulestacksSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.
