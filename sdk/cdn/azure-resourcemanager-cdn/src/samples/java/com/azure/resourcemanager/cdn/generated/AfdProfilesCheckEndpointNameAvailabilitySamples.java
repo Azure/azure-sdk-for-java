@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cdn.models.ResourceType;
  */
 public final class AfdProfilesCheckEndpointNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDProfiles_CheckEndpointNameAvailability.json
+     * x-ms-original-file: 2026-07-01/AFDProfiles_CheckEndpointNameAvailability.json
      */
     /**
      * Sample code: CheckEndpointNameAvailability.

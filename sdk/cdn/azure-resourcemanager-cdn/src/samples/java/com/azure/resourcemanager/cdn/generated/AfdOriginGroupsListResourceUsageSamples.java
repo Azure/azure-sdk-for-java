@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdOriginGroupsListResourceUsageSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDOriginGroups_ListResourceUsage.json
+     * x-ms-original-file: 2026-07-01/AFDOriginGroups_ListResourceUsage.json
      */
     /**
      * Sample code: AFDOriginGroups_ListResourceUsage.

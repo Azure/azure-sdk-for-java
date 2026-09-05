@@ -28,6 +28,11 @@ public final class SecurityPolicyWebApplicationFirewallAssociation
      */
     private List<String> patternsToMatch;
 
+    /*
+     * List of routes.
+     */
+    private List<ResourceReference> routes;
+
     /**
      * Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class.
      */
@@ -75,6 +80,26 @@ public final class SecurityPolicyWebApplicationFirewallAssociation
     }
 
     /**
+     * Get the routes property: List of routes.
+     * 
+     * @return the routes value.
+     */
+    public List<ResourceReference> routes() {
+        return this.routes;
+    }
+
+    /**
+     * Set the routes property: List of routes.
+     * 
+     * @param routes the routes value to set.
+     * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
+     */
+    public SecurityPolicyWebApplicationFirewallAssociation withRoutes(List<ResourceReference> routes) {
+        this.routes = routes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,6 +107,9 @@ public final class SecurityPolicyWebApplicationFirewallAssociation
     public void validate() {
         if (domains() != null) {
             domains().forEach(e -> e.validate());
+        }
+        if (routes() != null) {
+            routes().forEach(e -> e.validate());
         }
     }
 
@@ -94,6 +122,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation
         jsonWriter.writeArrayField("domains", this.domains, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("patternsToMatch", this.patternsToMatch,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -120,6 +149,9 @@ public final class SecurityPolicyWebApplicationFirewallAssociation
                 } else if ("patternsToMatch".equals(fieldName)) {
                     List<String> patternsToMatch = reader.readArray(reader1 -> reader1.getString());
                     deserializedSecurityPolicyWebApplicationFirewallAssociation.patternsToMatch = patternsToMatch;
+                } else if ("routes".equals(fieldName)) {
+                    List<ResourceReference> routes = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedSecurityPolicyWebApplicationFirewallAssociation.routes = routes;
                 } else {
                     reader.skipChildren();
                 }

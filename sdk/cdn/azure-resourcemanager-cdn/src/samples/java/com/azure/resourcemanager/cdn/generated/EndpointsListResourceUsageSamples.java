@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class EndpointsListResourceUsageSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Endpoints_ListResourceUsage.json
+     * x-ms-original-file: 2026-07-01/Endpoints_ListResourceUsage.json
      */
     /**
      * Sample code: Endpoints_ListResourceUsage.

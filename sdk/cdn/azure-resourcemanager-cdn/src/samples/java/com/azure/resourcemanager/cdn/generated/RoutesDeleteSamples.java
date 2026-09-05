@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RoutesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Routes_Delete.json
+     * x-ms-original-file: 2026-07-01/Routes_Delete.json
      */
     /**
      * Sample code: Routes_Delete.

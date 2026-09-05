@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class EdgeNodesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/EdgeNodes_List.json
+     * x-ms-original-file: 2026-07-01/EdgeNodes_List.json
      */
     /**
      * Sample code: EdgeNodes_List.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/WafPatchPolicy.json
+     * x-ms-original-file: 2026-07-01/WafPatchPolicy.json
      */
     /**
      * Sample code: Creates specific policy.

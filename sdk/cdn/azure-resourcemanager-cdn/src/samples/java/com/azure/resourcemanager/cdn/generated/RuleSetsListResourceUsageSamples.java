@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RuleSetsListResourceUsageSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/RuleSets_ListResourceUsage.json
+     * x-ms-original-file: 2026-07-01/RuleSets_ListResourceUsage.json
      */
     /**
      * Sample code: RuleSets_ListResourceUsage.
