@@ -1,14 +1,38 @@
 # Release History
 
-## 2.56.0-beta.3 (Unreleased)
+## 2.56.0-beta.3 (2026-09-06)
+
+- Package api-version 2026-09-01-preview.
 
 ### Features Added
 
-### Breaking Changes
+* `models.ManagedServiceIdentity` was added
 
-### Bugs Fixed
+* `models.UserAssignedIdentity` was added
 
-### Other Changes
+* `models.AuthType` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+#### `models.SyncUpdateProperties` was modified
+
+* `withAuthType(models.AuthType)` was added
+* `authType()` was added
+
+#### `models.SyncProperties` was modified
+
+* `authType()` was added
+* `withAuthType(models.AuthType)` was added
+
+#### `models.ConnectedRegistryUpdateParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+#### `models.StatusDetailProperties` was modified
+
+* `totalGib()` was added
+* `availableGib()` was added
 
 ## 2.55.4 (2026-08-18)
 
