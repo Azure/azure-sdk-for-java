@@ -102,11 +102,11 @@
 /sdk/ai/azure-ai-inference/                                        @dargilco @glharper @trrwilson @Azure/azure-java-sdk
 
 # PRLabel: %App Configuration
-/sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @rossgrambo @nroutray @Azure/azure-java-sdk
+/sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @mrm9084
 # ServiceLabel: %App Configuration
-# ServiceOwners:                                                   @avanigupta @mrm9084 @rossgrambo @shenmuxiaosen
+# ServiceOwners:                                                   @avanigupta @mrm9084 @shenmuxiaosen @yuanqu72
 
 # PRLabel: %Attestation
 /sdk/attestation/                                                  @anilba06 @Azure/azure-sdk-write-attestation @gkostal @larryosterman @Azure/azure-java-sdk
@@ -154,13 +154,13 @@
 /sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
 # ServiceLabel: %azure-spring
