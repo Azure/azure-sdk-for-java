@@ -82,7 +82,6 @@ public class BlobStorageCustomizations extends Customization {
         customizeQueryFormat(editor, logger);
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         restoreFluentModels(customization, logger);
-        exposeRawSegmentResponses(customization.getPackage(IMPL_PACKAGE), logger);
         // Follow-up stages (ported from the queue customization) build on this removal pass:
         //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
         //   - updateImplToMapInternalException (BlobStorageExceptionInternal -> BlobStorageException)
@@ -328,56 +327,6 @@ public class BlobStorageCustomizations extends Customization {
             }));
     }
 
-
-    // The hand-written BlobServiceClient/BlobContainerClient build their own PagedFlux/PagedIterable so they can map
-    // the XML segment responses onto the shipped public item types. They need the whole segment response, because
-    // blob pages on the NextMarker element carried in the body: the emitter generates a getXmlNextLink helper but
-    // never calls it, so its own single-page helpers hard-code a null continuation token and would silently return
-    // only the first page. Inject raw whole-response accessors and let the hand-written clients read both the items
-    // and NextMarker, which is what the AutoRest single-page methods did
-    // (PagedResponseBase(..., res.getValue().getNextMarker(), ...)).
-    private static void exposeRawSegmentResponses(PackageCustomization implPackage, Logger logger) {
-        injectRawAccessor(implPackage, "ServicesImpl", "listContainersSegment", null, logger);
-        injectRawAccessor(implPackage, "ServicesImpl", "filterBlobs", "filterExpression", logger);
-        injectRawAccessor(implPackage, "ContainersImpl", "listBlobFlatSegment", null, logger);
-        injectRawAccessor(implPackage, "ContainersImpl", "listBlobHierarchySegment", "delimiter", logger);
-        injectRawAccessor(implPackage, "ContainersImpl", "filterBlobs", "filterExpression", logger);
-    }
-
-    // extraParam is the single non-RequestOptions argument the generated service interface takes for this operation
-    // (a @QueryParam), or null when the operation takes none.
-    private static void injectRawAccessor(PackageCustomization implPackage, String className, String operation,
-        String extraParam, Logger logger) {
-        if (implPackage.getClass(className) == null) {
-            logger.info("{} not present; skipping raw {} accessor injection.", className, operation);
-            return;
-        }
-        String param = extraParam == null ? "" : "String " + extraParam + ", ";
-        String arg = extraParam == null ? "" : extraParam + ", ";
-        String methodName = operation + "WithResponse";
-        implPackage.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
-            if (!clazz.getMethodsByName(methodName + "Async").isEmpty()) {
-                logger.info("{}.{}Async already present; skipping.", className, methodName);
-                return;
-            }
-            clazz.addMember(StaticJavaParser.parseMethodDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
-                + "public Mono<Response<BinaryData>> " + methodName + "Async(" + param
-                + "RequestOptions requestOptions) {\n"
-                + "    final String accept = \"application/xml\";\n"
-                + "    return FluxUtil.withContext(context -> service." + operation + "(this.client.getUrl(),\n"
-                + "        this.client.getServiceVersion().getVersion(), " + arg
-                + "accept, requestOptions, context));\n"
-                + "}"));
-            clazz.addMember(StaticJavaParser.parseMethodDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
-                + "public Response<BinaryData> " + methodName + "(" + param + "RequestOptions requestOptions) {\n"
-                + "    final String accept = \"application/xml\";\n"
-                + "    return service." + operation + "Sync(this.client.getUrl(),\n"
-                + "        this.client.getServiceVersion().getVersion(), " + arg
-                + "accept, requestOptions, Context.NONE);\n"
-                + "}"));
-            logger.info("Injected raw {}.{}[Async] accessors.", className, methodName);
-        }));
-    }
 
     // The generated XmlSerializer casts typeReference.getJavaClass() to Class<T>, which javac reports as a redundant
     // cast; the build runs with -Werror, so it fails compilation.
