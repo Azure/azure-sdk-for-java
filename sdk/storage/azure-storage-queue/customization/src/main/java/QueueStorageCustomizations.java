@@ -397,8 +397,8 @@ public class QueueStorageCustomizations extends Customization {
     }
 
     // The generated XmlSerializer casts typeReference.getJavaClass() (already Class<T>) to Class<T> -- a redundant
-    // cast that trips the module's -Werror build. The file backs the relocated convenience clients' XML
-    // (de)serialization, so it cannot be removed; drop the redundant cast here instead.
+    // cast that trips the module's warnings-as-errors build. The file backs the relocated convenience
+    // clients' XML (de)serialization, so it cannot be removed; drop the redundant cast here instead.
     private static void fixXmlSerializerRedundantCast(Editor editor, Logger logger) {
         String path = PKG_ROOT + "implementation/XmlSerializer.java";
         String content = editor.getContents().get(path);
@@ -437,8 +437,9 @@ public class QueueStorageCustomizations extends Customization {
     }
 
     private static void updateImplToMapInternalException(PackageCustomization implPackage, Logger logger) {
-        List<String> implsToUpdate = Arrays.asList("MessageIdsImpl", "MessagesImpl", "QueuesImpl", "ServicesImpl");
-        for (String implToUpdate : implsToUpdate) {
+        List<String> implClassesToUpdate
+            = Arrays.asList("MessageIdsImpl", "MessagesImpl", "QueuesImpl", "ServicesImpl");
+        for (String implToUpdate : implClassesToUpdate) {
             if (implPackage.getClass(implToUpdate) == null) {
                 logger.info("Impl class {} not present; skipping exception mapping.", implToUpdate);
                 continue;
