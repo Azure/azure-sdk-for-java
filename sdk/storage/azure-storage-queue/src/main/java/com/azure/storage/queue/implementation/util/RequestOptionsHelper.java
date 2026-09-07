@@ -6,8 +6,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 
-import java.util.List;
-
 /**
  * Builds the {@link RequestOptions} passed to the generated {@code implementation/*Impl} protocol methods.
  * <p>
@@ -115,33 +113,4 @@ public final class RequestOptionsHelper {
         });
     }
 
-    /**
-     * Builds the {@link RequestOptions} for the {@code listQueues} operation.
-     *
-     * @param context The {@link Context} to thread through the pipeline.
-     * @param prefix The queue name prefix filter.
-     * @param marker The continuation token.
-     * @param maxResults The maximum number of queues to return.
-     * @param include The optional datasets to include.
-     * @return The {@link RequestOptions} for the list-queues call.
-     */
-    public static RequestOptions listQueuesRequestOptions(Context context, String prefix, String marker,
-        Integer maxResults, List<String> include) {
-        RequestOptions requestOptions = requestOptions(context);
-        addOptionalQueryParam(requestOptions, "prefix", prefix);
-        addOptionalQueryParam(requestOptions, "marker", marker);
-        addOptionalQueryParam(requestOptions, "maxresults", maxResults);
-        // Match the AutoRest wire behavior: emit "include=" whenever the list is non-null (an empty list produces an
-        // empty value), rather than omitting it. Keeps the request URL identical to the pre-migration implementation.
-        if (include != null) {
-            requestOptions.addQueryParam("include", String.join(",", include));
-        }
-        return requestOptions;
-    }
-
-    public static void addOptionalQueryParam(RequestOptions requestOptions, String name, Object value) {
-        if (value != null) {
-            requestOptions.addQueryParam(name, String.valueOf(value));
-        }
-    }
 }

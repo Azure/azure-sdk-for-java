@@ -222,7 +222,7 @@ public final class ServicesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setPropertiesWithResponseAsync(BinaryData queueServiceProperties,
+    public Mono<Response<Void>> setPropertiesWithResponseInternalAsync(BinaryData queueServiceProperties,
         RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return FluxUtil
@@ -304,7 +304,8 @@ public final class ServicesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setPropertiesWithResponse(BinaryData queueServiceProperties, RequestOptions requestOptions) {
+    public Response<Void> setPropertiesWithResponseInternal(BinaryData queueServiceProperties,
+        RequestOptions requestOptions) {
         try {
             final String contentType = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -385,7 +386,7 @@ public final class ServicesImpl {
      * @return storage Service Properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getProperties(this.client.getUrl(),
@@ -464,7 +465,7 @@ public final class ServicesImpl {
      * @return storage Service Properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
@@ -523,7 +524,7 @@ public final class ServicesImpl {
      * @return stats for the storage service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStatisticsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getStatisticsWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getStatistics(this.client.getUrl(),
@@ -580,7 +581,7 @@ public final class ServicesImpl {
      * @return stats for the storage service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStatisticsWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getStatisticsWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getStatisticsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
@@ -656,7 +657,7 @@ public final class ServicesImpl {
      * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUserDelegationKeyWithResponseAsync(BinaryData keyInfo,
+    public Mono<Response<BinaryData>> getUserDelegationKeyWithResponseInternalAsync(BinaryData keyInfo,
         RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/xml";
@@ -732,7 +733,8 @@ public final class ServicesImpl {
      * @return a user delegation key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUserDelegationKeyWithResponse(BinaryData keyInfo, RequestOptions requestOptions) {
+    public Response<BinaryData> getUserDelegationKeyWithResponseInternal(BinaryData keyInfo,
+        RequestOptions requestOptions) {
         try {
             final String contentType = "application/xml";
             final String accept = "application/xml";
@@ -812,7 +814,7 @@ public final class ServicesImpl {
      * @return the list queues response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getQueuesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getQueuesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getQueues(this.client.getUrl(),
@@ -889,7 +891,7 @@ public final class ServicesImpl {
      * @return the list queues response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getQueuesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getQueuesWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getQueuesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,

@@ -20,6 +20,8 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.ServiceAsyncRestClient;
+import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.implementation.models.KeyInfo;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
@@ -74,6 +76,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class QueueServiceAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
+    private final ServiceAsyncRestClient serviceRestClient;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
@@ -90,6 +93,7 @@ public final class QueueServiceAsyncClient {
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
         Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.client = azureQueueStorage;
+        this.serviceRestClient = new ServiceAsyncRestClient(azureQueueStorage.getServices());
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
@@ -342,18 +346,18 @@ public final class QueueServiceAsyncClient {
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
         final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
-        final List<String> include = new ArrayList<>();
+        final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
             if (options.isIncludeMetadata()) {
-                include.add("metadata");
+                include.add(ListQueuesIncludeType.METADATA);
             }
         }
 
         BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever = (nextMarker,
-            pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
-                .getQueuesWithResponseAsync(RequestOptionsHelper.listQueuesRequestOptions(context, prefix, nextMarker,
-                    pageSize == null ? maxResultsPerPage : pageSize, include))
+            pageSize) -> StorageImplUtils.applyOptionalTimeout(this.serviceRestClient
+                .getQueuesWithResponse(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, null,
+                    include, RequestOptionsHelper.requestOptions(context))
                 .map(ModelHelper::toQueueItemPage), timeout);
 
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
@@ -423,10 +427,8 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
-        return client.getServices()
-            .getPropertiesWithResponseAsync(RequestOptionsHelper.requestOptions(context))
-            .map(response -> new SimpleResponse<>(response,
-                ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceProperties::fromXml)));
+        return serviceRestClient.getPropertiesWithResponse(null, RequestOptionsHelper.requestOptions(context))
+            .map(response -> response);
     }
 
     /**
@@ -548,9 +550,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
-        return client.getServices()
-            .setPropertiesWithResponseAsync(ModelHelper.serializeXmlBody(properties),
-                RequestOptionsHelper.requestOptions(context));
+        return serviceRestClient
+            .setPropertiesWithResponse(properties, null, RequestOptionsHelper.requestOptions(context))
+            .map(response -> response);
     }
 
     /**
@@ -613,10 +615,8 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
-        return client.getServices()
-            .getStatisticsWithResponseAsync(RequestOptionsHelper.requestOptions(context))
-            .map(response -> new SimpleResponse<>(response,
-                ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceStatistics::fromXml)));
+        return serviceRestClient.getStatisticsWithResponse(null, RequestOptionsHelper.requestOptions(context))
+            .map(response -> response);
     }
 
     /**
@@ -793,10 +793,8 @@ public final class QueueServiceAsyncClient {
         }
 
         KeyInfo keyInfo = new KeyInfo(expiry).setStart(start).setDelegatedUserTenantId(delegatedUserTenantId);
-        return client.getServices()
-            .getUserDelegationKeyWithResponseAsync(ModelHelper.serializeXmlBody(keyInfo),
-                RequestOptionsHelper.requestOptions(context))
-            .map(rb -> new SimpleResponse<>(rb,
-                ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml)));
+        return serviceRestClient
+            .getUserDelegationKeyWithResponse(keyInfo, null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> rb);
     }
 }

@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * TypeSpec customization for azure-storage-queue.
@@ -54,16 +55,34 @@ public class QueueStorageCustomizations extends Customization {
         "QueueRetentionPolicy", "QueueMetrics", "QueueCorsRule", "QueueAnalyticsLogging", "QueueSignedIdentifier",
         "GeoReplication", "QueueItem", "QueueServiceStatistics", "SendMessageResult", "UserDelegationKey");
 
-    // Generated convenience clients + builder + service version emitted by typespec-java on top of the
-    // implementation/*Impl operation layer. The public surface is the hand-written clients, so delete the
-    // generated ones (removeFile is a no-op when a name is absent).
+    // The generated builder and service version duplicate the hand-written QueueClientBuilder /
+    // QueueServiceClientBuilder / QueueServiceVersion, so they are dropped outright. The generated convenience
+    // clients are kept -- see GENERATED_CLIENTS_TO_RELOCATE.
     private static final List<String> GENERATED_CLIENTS_TO_REMOVE = Arrays.asList(
-        "QueueClient", "QueueAsyncClient",
-        "ServiceClient", "ServiceAsyncClient",
-        "MessagesClient", "MessagesAsyncClient",
-        "MessageIdsClient", "MessageIdsAsyncClient",
         "AzureQueueStorageBuilder",
         "QueuesServiceVersion");
+
+    // With max-overload:model the emitter puts the typed ResponseBase<Headers, Model> overloads on these
+    // convenience clients rather than on the implementation/*Impl operation layer, and the hand-written clients
+    // consume them so they never rebuild header models or deserialize bodies by hand. They are generated public in
+    // com.azure.storage.queue, which would both add them to the shipped public API and collide with the
+    // hand-written QueueClient/QueueAsyncClient, so relocate them into the implementation package under
+    // *RestClient names (mirroring the .NET generated layer).
+    private static final String[][] GENERATED_CLIENTS_TO_RELOCATE = {
+        { "ServiceClient", "ServiceRestClient" },
+        { "ServiceAsyncClient", "ServiceAsyncRestClient" },
+        { "QueueClient", "QueueRestClient" },
+        { "QueueAsyncClient", "QueueAsyncRestClient" },
+        { "MessagesClient", "MessagesRestClient" },
+        { "MessagesAsyncClient", "MessagesAsyncRestClient" },
+        { "MessageIdsClient", "MessageIdsRestClient" },
+        { "MessageIdsAsyncClient", "MessageIdsAsyncRestClient" }
+    };
+
+    // Types the generated clients import from com.azure.storage.queue.implementation; once the client itself lives
+    // in that package those imports are same-package and Checkstyle rejects them as redundant.
+    private static final List<String> IMPL_PACKAGE_TYPES = Arrays.asList(
+        "ServicesImpl", "QueuesImpl", "MessagesImpl", "MessageIdsImpl", "XmlSerializerProviders");
 
     // The hand-written clients consume the generated XML list-wrapper models (SignedIdentifiers, ReceivedMessages,
     // PeekedMessages, ListOfSentMessage) directly, so none are removed.
@@ -72,19 +91,15 @@ public class QueueStorageCustomizations extends Customization {
     // module-info.java is hand-authored: the module descriptor carries the full requires/exports/opens (incl. the
     // transitive com.azure.storage.common visibility). typespec-java regenerates a minimal version that overwrites
     // it, so drop the generated copy and keep the hand-written descriptor.
-    //
-    // XmlSerializer/XmlSerializerProviders are only referenced by the generated convenience clients (removed above);
-    // with @@Legacy.disablePageable applied to Service.getQueues for java, the *Impl operation layer no longer
-    // references them either, so the pair is dead code once the clients are gone.
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
-        "src/main/java/module-info.java",
-        PKG_ROOT + "implementation/XmlSerializer.java",
-        PKG_ROOT + "implementation/XmlSerializerProviders.java");
+        "src/main/java/module-info.java");
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
         removeGeneratedFiles(editor, logger);
+        relocateGeneratedConvenienceClients(editor, logger);
+        fixXmlSerializerRedundantCast(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
         restoreMetadataHeaderCollection(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
@@ -318,6 +333,85 @@ public class QueueStorageCustomizations extends Customization {
             String updated = content.replace("QueuesServiceVersion", "QueueServiceVersion");
             editor.replaceFile(path, updated);
             logger.info("Retargeted QueuesServiceVersion -> QueueServiceVersion in {}.", fileName);
+        }
+    }
+
+    // Moves the emitter's max-overload:model convenience clients out of the public package and into
+    // com.azure.storage.queue.implementation under *RestClient names. Renaming is required because the generated
+    // QueueClient/QueueAsyncClient collide with the hand-written public clients of the same name; relocating is
+    // required because the generated classes are public and would otherwise land in the shipped API surface.
+    // Constructors are widened to public so the hand-written clients (a different package) can build them from the
+    // *Impl operation classes.
+    private static void relocateGeneratedConvenienceClients(Editor editor, Logger logger) {
+        for (String[] rename : GENERATED_CLIENTS_TO_RELOCATE) {
+            String oldName = rename[0];
+            String newName = rename[1];
+            String oldPath = PKG_ROOT + oldName + ".java";
+            String content = editor.getContents().get(oldPath);
+            if (content == null) {
+                logger.info("Generated client {} not present; skipping relocation.", oldName);
+                continue;
+            }
+
+            Pattern classNamePattern = Pattern.compile("\\b" + Pattern.quote(oldName) + "\\b");
+            List<String> lines = new ArrayList<>();
+            for (String line : content.split("\r?\n", -1)) {
+                String trimmed = line.trim();
+                // @ServiceClient(builder = AzureQueueStorageBuilder.class) names the generated builder, which is
+                // removed, and the annotation is only meaningful on a public client.
+                if (trimmed.startsWith("@ServiceClient(")
+                    || trimmed.startsWith("@com.azure.core.annotation.ServiceClient(")
+                    || trimmed.equals("import com.azure.core.annotation.ServiceClient;")
+                    || isNowSamePackageImport(trimmed)) {
+                    continue;
+                }
+                if (trimmed.equals("package com.azure.storage.queue;")) {
+                    lines.add("package com.azure.storage.queue.implementation;");
+                    continue;
+                }
+                String renamed = classNamePattern.matcher(line).replaceAll(newName);
+                // The generated constructor is package-private -- it is declared with no modifier, so the class
+                // name starts the line. Widen it so the hand-written clients (a different package) can build the
+                // client. Indentation is not assumed: the editor holds the pre-format emitter output.
+                int declarationStart = renamed.indexOf(newName + "(");
+                if (declarationStart >= 0 && renamed.substring(0, declarationStart).trim().isEmpty()
+                    && renamed.trim().endsWith(") {")) {
+                    renamed = renamed.substring(0, declarationStart) + "public " + renamed.substring(declarationStart);
+                }
+                lines.add(renamed);
+            }
+
+            editor.removeFile(oldPath);
+            editor.addFile(PKG_ROOT + "implementation/" + newName + ".java", String.join("\n", lines));
+            logger.info("Relocated generated client {} -> implementation/{}.", oldName, newName);
+        }
+    }
+
+    private static boolean isNowSamePackageImport(String trimmedLine) {
+        for (String implType : IMPL_PACKAGE_TYPES) {
+            if (trimmedLine.equals("import com.azure.storage.queue.implementation." + implType + ";")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // The generated XmlSerializer casts typeReference.getJavaClass() (already Class<T>) to Class<T> -- a redundant
+    // cast that trips the module's -Werror build. The file backs the relocated convenience clients' XML
+    // (de)serialization, so it cannot be removed; drop the redundant cast here instead.
+    private static void fixXmlSerializerRedundantCast(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/XmlSerializer.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("XmlSerializer not present in editor; skipping cast fix.");
+            return;
+        }
+        String updated = content.replace("(Class<T>) typeReference.getJavaClass()", "typeReference.getJavaClass()");
+        if (!updated.equals(content)) {
+            editor.replaceFile(path, updated);
+            logger.info("Removed redundant cast in XmlSerializer.");
+        } else {
+            logger.info("XmlSerializer redundant cast not found; skipping.");
         }
     }
 

@@ -169,8 +169,8 @@ public final class MessageIdsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String messageId, String popReceipt, int visibilityTimeout,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> updateWithResponseInternalAsync(String messageId, String popReceipt,
+        int visibilityTimeout, RequestOptions requestOptions) {
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -246,7 +246,7 @@ public final class MessageIdsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(String messageId, String popReceipt, int visibilityTimeout,
+    public Response<Void> updateWithResponseInternal(String messageId, String popReceipt, int visibilityTimeout,
         RequestOptions requestOptions) {
         try {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -301,7 +301,7 @@ public final class MessageIdsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String messageId, String popReceipt,
+    public Mono<Response<Void>> deleteWithResponseInternalAsync(String messageId, String popReceipt,
         RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -347,7 +347,8 @@ public final class MessageIdsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String messageId, String popReceipt, RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponseInternal(String messageId, String popReceipt,
+        RequestOptions requestOptions) {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), messageId,
                 popReceipt, requestOptions, Context.NONE);

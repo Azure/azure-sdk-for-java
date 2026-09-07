@@ -192,7 +192,7 @@ public final class MessagesImpl {
      * @return the response of receive messages along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> dequeueWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> dequeueWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.dequeue(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -264,7 +264,7 @@ public final class MessagesImpl {
      * @return the response of receive messages along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> dequeueWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> dequeueWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.dequeueSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
@@ -309,7 +309,7 @@ public final class MessagesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> clearWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> clearWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.clear(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, context))
@@ -351,7 +351,7 @@ public final class MessagesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> clearWithResponse(RequestOptions requestOptions) {
+    public Response<Void> clearWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.clearSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
                 Context.NONE);
@@ -438,7 +438,8 @@ public final class MessagesImpl {
      * @return the response of send message along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> enqueueWithResponseAsync(BinaryData queueMessage, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> enqueueWithResponseInternalAsync(BinaryData queueMessage,
+        RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/xml";
         return FluxUtil
@@ -525,7 +526,7 @@ public final class MessagesImpl {
      * @return the response of send message along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> enqueueWithResponse(BinaryData queueMessage, RequestOptions requestOptions) {
+    public Response<BinaryData> enqueueWithResponseInternal(BinaryData queueMessage, RequestOptions requestOptions) {
         try {
             final String contentType = "application/xml";
             final String accept = "application/xml";
@@ -594,7 +595,7 @@ public final class MessagesImpl {
      * @return the response of peek messages along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> peekWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> peekWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.peek(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -660,7 +661,7 @@ public final class MessagesImpl {
      * @return the response of peek messages along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> peekWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> peekWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.peekSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,

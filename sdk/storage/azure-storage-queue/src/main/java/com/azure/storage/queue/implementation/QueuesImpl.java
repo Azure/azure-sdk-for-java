@@ -194,7 +194,7 @@ public final class QueuesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, context))
@@ -244,7 +244,7 @@ public final class QueuesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(RequestOptions requestOptions) {
+    public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, Context.NONE);
@@ -292,7 +292,7 @@ public final class QueuesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.getProperties(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), requestOptions, context))
@@ -338,7 +338,7 @@ public final class QueuesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, Context.NONE);
@@ -382,7 +382,7 @@ public final class QueuesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, context))
@@ -424,7 +424,7 @@ public final class QueuesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, Context.NONE);
@@ -475,7 +475,7 @@ public final class QueuesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setMetadataWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.setMetadata(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), requestOptions, context))
@@ -524,7 +524,7 @@ public final class QueuesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setMetadataWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 requestOptions, Context.NONE);
@@ -588,7 +588,7 @@ public final class QueuesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAccessPolicyWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAccessPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getAccessPolicy(this.client.getUrl(),
@@ -650,7 +650,7 @@ public final class QueuesImpl {
      * @return the access policy for the specified queue along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAccessPolicyWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
             return service.getAccessPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -722,7 +722,7 @@ public final class QueuesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setAccessPolicyWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -797,7 +797,7 @@ public final class QueuesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setAccessPolicyWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
         try {
             RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
             requestOptionsLocal.addRequestCallback(requestLocal -> {

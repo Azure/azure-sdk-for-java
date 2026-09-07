@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue.implementation.util;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
@@ -24,12 +23,7 @@ import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.UpdateMessageResult;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlWriter;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -102,14 +96,12 @@ public class ModelHelper {
         }
     }
 
-    public static QueueProperties transformQueueProperties(HttpHeaders headers) {
-        QueuesGetPropertiesHeaders propertiesHeaders = new QueuesGetPropertiesHeaders(headers);
+    public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders propertiesHeaders) {
         Long count = propertiesHeaders.getApproximateMessagesCount();
         return new QueueProperties(propertiesHeaders.getMetadata(), count == null ? 0L : count);
     }
 
-    public static UpdateMessageResult transformUpdateMessageResult(HttpHeaders headers) {
-        MessageIdsUpdateHeaders updateHeaders = new MessageIdsUpdateHeaders(headers);
+    public static UpdateMessageResult transformUpdateMessageResult(MessageIdsUpdateHeaders updateHeaders) {
         return new UpdateMessageResult(updateHeaders.getPopReceipt(), updateHeaders.getTimeNextVisible());
     }
 
@@ -154,48 +146,7 @@ public class ModelHelper {
     }
 
     /**
-     * Serializes an {@link XmlSerializable} request body into XML {@link BinaryData} for the protocol layer.
-     *
-     * @param value The value to serialize, may be {@code null}.
-     * @return The XML-encoded {@link BinaryData}, or {@code null} if {@code value} is {@code null}.
-     */
-    public static BinaryData serializeXmlBody(XmlSerializable<?> value) {
-        if (value == null) {
-            return null;
-        }
-        try {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            try (XmlWriter xmlWriter = XmlWriter.toStream(stream)) {
-                value.toXml(xmlWriter);
-                xmlWriter.flush();
-            }
-            return BinaryData.fromBytes(stream.toByteArray());
-        } catch (XMLStreamException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
-    /**
-     * Deserializes an XML {@link BinaryData} protocol response using the provided reader function.
-     *
-     * @param data The XML response body, may be {@code null}.
-     * @param deserializer The {@code fromXml} function of the target type.
-     * @param <T> The deserialized type.
-     * @return The deserialized value, or {@code null} if {@code data} is {@code null}.
-     */
-    public static <T> T deserializeXmlBody(BinaryData data, XmlDeserializer<T> deserializer) {
-        if (data == null) {
-            return null;
-        }
-        try (XmlReader xmlReader = XmlReader.fromBytes(data.toBytes())) {
-            return deserializer.deserialize(xmlReader);
-        } catch (XMLStreamException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
-    /**
-     * Converts a raw {@code List Queues} protocol response into a {@link PagedResponse} of {@link QueueItem}, preserving
+     * Converts a {@code List Queues} response into a {@link PagedResponse} of {@link QueueItem}, preserving
      * the {@code NextMarker}-based continuation the hand-written paging depends on.
      * <p>
      * The service returns an empty {@code NextMarker} element on the final page. {@link com.azure.core.http.rest.PagedFlux}
@@ -203,11 +154,11 @@ public class ModelHelper {
      * so an empty marker is normalized to {@code null} to terminate paging (mirroring the {@code len(NextMarker) > 0}
      * check the other language SDKs use).
      *
-     * @param response The raw XML list response from {@code getQueuesWithResponse[Async]}.
+     * @param response The typed list response from {@code getQueuesWithResponse[Async]}.
      * @return The page of queue items with the continuation token populated from {@code NextMarker}.
      */
-    public static PagedResponse<QueueItem> toQueueItemPage(Response<BinaryData> response) {
-        ListQueuesSegmentResponse body = deserializeXmlBody(response.getValue(), ListQueuesSegmentResponse::fromXml);
+    public static PagedResponse<QueueItem> toQueueItemPage(Response<ListQueuesSegmentResponse> response) {
+        ListQueuesSegmentResponse body = response.getValue();
         List<QueueItem> items = (body == null) ? Collections.emptyList() : body.getQueueItems();
         String nextMarker = (body == null) ? null : body.getNextMarker();
         String continuationToken = (nextMarker == null || nextMarker.isEmpty()) ? null : nextMarker;
@@ -215,21 +166,4 @@ public class ModelHelper {
             response.getHeaders(), items, continuationToken, null);
     }
 
-    /**
-     * Functional interface matching the generated {@code fromXml(XmlReader)} factory methods so protocol responses can
-     * be deserialized generically.
-     *
-     * @param <T> The deserialized type.
-     */
-    @FunctionalInterface
-    public interface XmlDeserializer<T> {
-        /**
-         * Reads an instance of {@code T} from the supplied {@link XmlReader}.
-         *
-         * @param reader The XML reader positioned at the response body.
-         * @return The deserialized value.
-         * @throws XMLStreamException If the XML is malformed.
-         */
-        T deserialize(XmlReader reader) throws XMLStreamException;
-    }
 }
