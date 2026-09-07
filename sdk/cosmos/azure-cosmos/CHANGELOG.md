@@ -34,6 +34,12 @@
 * Added bounded retries for transient "collection routing map / partition key range metadata not available" responses (HTTP 404 with sub-status `0`, `1003`, or `1013`) that can briefly occur right after a container is (re)created, improving the robustness of data-plane operations against the post-creation metadata-propagation race. As part of this change, when the routing map remains unavailable after retries an operation now fails with a `CosmosException` (HTTP 404, sub-status `1024` / `INCORRECT_CONTAINER_RID`) instead of an internal `IllegalStateException`. - See [PR 49639](https://github.com/Azure/azure-sdk-for-java/pull/49639).
 * Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM are configured with the same service endpoint. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed. - See [PR 49560](https://github.com/Azure/azure-sdk-for-java/pull/49560).
 
+### 4.81.1 (2026-09-03)
+#### Bugs Fixed
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed PPCB failback when gateway address refresh returns missing or stale addresses. - See PR [50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+* Added PPCB diagnostics snapshots and improved failback observability. - See PR [50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
+
 ### 4.81.0 (2026-06-08)
 
 #### Features Added
@@ -76,6 +82,17 @@
 * Fixed a `ClientTelemetry` static initialization failure when IMDS access is disabled, preventing `NoClassDefFoundError` during Cosmos client creation in non-Azure environments. - See [PR 48888](https://github.com/Azure/azure-sdk-for-java/pull/48888)
 * Fixed an issue where Netty could log "An exceptionCaught() event was fired, and it reached at the tail of the pipeline" on HTTP/2 connections when the server resets idle TCP connections by adding an exception handler on the HTTP/2 parent channel to handle these connection-level exceptions more appropriately. - See [PR 48890](https://github.com/Azure/azure-sdk-for-java/pull/48890)
 * Fixed an issue where `CustomItemSerializer` configured on `CosmosClientBuilder` was not honored for response deserialization in `CosmosAsyncContainer.upsertItem` when no request-level serializer was set. - See [PR 48962](https://github.com/Azure/azure-sdk-for-java/pull/48962)
+
+### 4.79.1-hotfix (2026-09-04)
+> [!IMPORTANT]
+> Customers upgrading from `4.79.1-hotfix` should upgrade directly to `4.82.0` to receive the latest fixes.
+
+#### Bugs Fixed
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See [PR 49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+
+#### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
 
 ### 4.79.1 (2026-04-06)
 
@@ -126,6 +143,17 @@
 #### Other Changes
 * Remaps sub-status to 1003 for requests to child resources against non-existent container. - [PR 47604](https://github.com/Azure/azure-sdk-for-java/pull/47604)
 
+### 4.76.1-hotfix (2026-09-04)
+> [!IMPORTANT]
+> Customers upgrading from `4.76.1-hotfix` should upgrade directly to `4.82.0` to receive the latest fixes.
+
+#### Bugs Fixed
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+
+#### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
+
 ### 4.76.0 (2025-12-09)
 
 #### Bugs Fixed
@@ -158,6 +186,17 @@
 * Added `MetadataThrottlingRetryPolicy` for `PartitionKeyRange` `RequestRateTooLargeException` handling. - [PR 46823](https://github.com/Azure/azure-sdk-for-java/pull/46823)
 * Ensure effective `DirectConnectionConfig#setNetworkRequestTimeout` is set to at least 5 seconds. - [PR 47024](https://github.com/Azure/azure-sdk-for-java/pull/47024)
 * Wrap JSON parsing exceptions as `CosmosException` to provide better context. - [PR 47040](https://github.com/Azure/azure-sdk-for-java/pull/47040)
+
+### 4.71.3-hotfix (2026-09-04)
+> [!IMPORTANT]
+> Customers upgrading from `4.71.3-hotfix` should upgrade directly to `4.82.0` to receive the latest fixes.
+
+#### Bugs Fixed
+* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See [PR 49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+
+#### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
 
 ### 4.71.2-hotfix (2025-10-16)
 > [!IMPORTANT]
