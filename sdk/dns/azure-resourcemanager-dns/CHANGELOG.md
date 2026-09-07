@@ -1,20 +1,40 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.1 (2026-09-07)
 
-### Features Added
-
-- Added `models.TlsaRecord`, `models.DsRecord`, `models.NaptrRecord` for new DNS record types.
-- Added `models.DelegationSignerInfo`, `models.SigningKey`, `models.Digest` for DNSSEC support.
-- Added `models.RecordSetsCreateOrUpdateHeaders`, `models.RecordSetsCreateOrUpdateResponse`.
-- Added `DnssecConfigs` client for DNSSEC configuration management.
-- Added `TLSA`, `DS`, `NAPTR` values to `models.RecordType`.
+- Package api-version 2023-07-01-preview.
 
 ### Breaking Changes
 
-- Removed `models.ZoneListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
-- Removed `models.RecordSetListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
-- Changed `models.DnsResourceReference` to be an immutable output-only model: constructor is now private, and `withDnsResources()` and `withTargetResource()` setters are removed.
+#### `models.ZoneListResult` was removed
+
+#### `models.RecordSetListResult` was removed
+
+#### `models.DnsResourceReference` was modified
+
+* `DnsResourceReference()` was changed to private access
+* `withTargetResource(com.azure.core.management.SubResource)` was removed
+* `withDnsResources(java.util.List)` was removed
+
+### Features Added
+
+* `models.TlsaRecord` was added
+
+* `models.NaptrRecord` was added
+
+* `models.DelegationSignerInfo` was added
+
+* `models.SigningKey` was added
+
+* `models.Digest` was added
+
+* `models.DsRecord` was added
+
+#### `models.RecordType` was modified
+
+* `TLSA` was added
+* `DS` was added
+* `NAPTR` was added
 
 ## 2.53.10 (2026-08-18)
 
