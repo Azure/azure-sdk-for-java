@@ -12,7 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class UpdateMemoryStore {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String memoryStoreName = "my_memory_store_java";
+        String memoryStoreName = "my-memory-store-java";
 
         // Code sample for updating a memory store
         BetaMemoryStoresClient memoryStoresClient = new AgentsClientBuilder()

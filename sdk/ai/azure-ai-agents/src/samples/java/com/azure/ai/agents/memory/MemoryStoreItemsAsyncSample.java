@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
  * </ul>
  */
 public class MemoryStoreItemsAsyncSample {
-    private static final String MEMORY_STORE_NAME = "memory_items_store_java";
+    private static final String MEMORY_STORE_NAME = "memory-items-store-java-async";
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();

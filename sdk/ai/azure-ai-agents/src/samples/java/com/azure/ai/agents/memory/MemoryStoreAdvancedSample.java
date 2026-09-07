@@ -35,7 +35,7 @@ import java.util.Arrays;
  * </ul>
  */
 public class MemoryStoreAdvancedSample {
-    private static final String MEMORY_STORE_NAME = "memory_advanced_store_java_sync";
+    private static final String MEMORY_STORE_NAME = "memory-advanced-store-java-sync";
     private static final Duration POLL_TIMEOUT = Duration.ofMinutes(3);
 
     public static void main(String[] args) {

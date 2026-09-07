@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.tools;
+package com.azure.ai.agents.memory;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
@@ -58,7 +58,7 @@ public class MemorySearchAsync {
         // Memory store operations use sync client for setup/teardown
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
 
-        String memoryStoreName = "my_memory_store";
+        String memoryStoreName = "my-memory-store";
         String scope = "user_123";
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();

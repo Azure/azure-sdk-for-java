@@ -208,9 +208,9 @@ and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-j
 
 ### Memory item management
 
-`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
+`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See [MemoryStoreItemsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreItemsSample.java) and [MemoryStoreItemsAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreItemsAsyncSample.java) for complete examples.
 
-For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See `MemoryStoreAdvancedSample` and `MemoryStoreAdvancedAsyncSample` for complete synchronous and asynchronous examples.
+For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See [MemoryStoreAdvancedSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreAdvancedSample.java) and [MemoryStoreAdvancedAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreAdvancedAsyncSample.java) for complete synchronous and asynchronous examples.
 
 ### Using OpenAI's official library
 
@@ -475,7 +475,7 @@ MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName()
     .setUpdateDelaySeconds(1);
 ```
 
-See the full sample in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) showing how to create an agent with a memory store and use it across multiple conversations.
+See the full samples in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemorySearchSync.java) and [MemorySearchAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemorySearchAsync.java), which show how to create an agent with a memory store and use it across multiple conversations.
 
 ---
 

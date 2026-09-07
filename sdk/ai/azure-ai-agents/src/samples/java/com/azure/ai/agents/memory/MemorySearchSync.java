@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.tools;
+package com.azure.ai.agents.memory;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
@@ -56,7 +56,7 @@ public class MemorySearchSync {
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
-        String memoryStoreName = "my_memory_store";
+        String memoryStoreName = "my-memory-store";
         String scope = "user_123";
         AgentVersionDetails agent = null;
         String firstConversationId = null;
