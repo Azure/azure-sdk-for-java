@@ -12,6 +12,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingGroundingSearchConfiguration;
 import com.azure.ai.agents.models.BingGroundingSearchToolParameters;
 import com.azure.ai.agents.models.BingGroundingTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -59,7 +60,7 @@ public class BingGroundingSync {
             .setInstructions("You are a helpful assistant. Use Bing to find up-to-date information.")
             .setTools(Collections.singletonList(bingTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("bing-grounding-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("bing-grounding-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

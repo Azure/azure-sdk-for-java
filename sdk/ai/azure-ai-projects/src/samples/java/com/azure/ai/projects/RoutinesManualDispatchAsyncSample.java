@@ -5,6 +5,8 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.InvokeAgentResponsesApiDispatchPayload;
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
+import com.azure.ai.projects.models.RoutineDispatchIdentity;
 import com.azure.ai.projects.models.RoutineTrigger;
 import com.azure.ai.projects.models.TimerRoutineTrigger;
 import com.azure.core.util.BinaryData;
@@ -44,6 +46,8 @@ public class RoutinesManualDispatchAsyncSample {
             .buildBetaRoutinesAsyncClient();
 
         RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
+        RoutineAuthorization authorization
+            = new RoutineAuthorization().setIdentity(RoutineDispatchIdentity.AGENT);
         TimerRoutineTrigger trigger = new TimerRoutineTrigger()
             .setAt(OffsetDateTime.now(ZoneOffset.UTC).plusHours(1));
         Map<String, RoutineTrigger> triggers = new HashMap<>();
@@ -52,7 +56,7 @@ public class RoutinesManualDispatchAsyncSample {
         Mono<Void> workflow = routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Timer routine dispatched before its scheduled fire time.", true, triggers, action))
+                "Timer routine dispatched before its scheduled fire time.", true, triggers, action, authorization))
             .flatMap(created -> {
                 System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
                 return routinesAsyncClient.dispatchRoutine(created.getName(),

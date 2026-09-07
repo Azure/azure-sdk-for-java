@@ -9,6 +9,7 @@ import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
 import com.azure.core.util.Configuration;
@@ -63,7 +64,7 @@ public class WorkIQAsync {
                 + "Teams messages, and other Microsoft 365 content.")
             .setTools(Collections.singletonList(workIqTool));
 
-        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> Mono.usingWhen(
                 Mono.just(agent),
                 createdAgent -> {

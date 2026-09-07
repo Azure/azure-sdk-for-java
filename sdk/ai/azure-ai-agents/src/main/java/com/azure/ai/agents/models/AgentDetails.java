@@ -77,6 +77,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
         jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
+        jsonWriter.writeStringField("digital_worker_type",
+            this.digitalWorkerType == null ? null : this.digitalWorkerType.toString());
         jsonWriter.writeJsonField("agent_card", this.agentCard);
         return jsonWriter.writeEndObject();
     }
@@ -99,6 +101,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             AgentDetailsVersions versions = null;
             AgentStateSource stateSource = null;
             AgentEndpointConfig agentEndpoint = null;
+            DigitalWorkerType digitalWorkerType = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprintIdentity = null;
             AgentBlueprintReference blueprintReference = null;
@@ -118,6 +121,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     stateSource = AgentStateSource.fromString(reader.getString());
                 } else if ("agent_endpoint".equals(fieldName)) {
                     agentEndpoint = AgentEndpointConfig.fromJson(reader);
+                } else if ("digital_worker_type".equals(fieldName)) {
+                    digitalWorkerType = DigitalWorkerType.fromString(reader.getString());
                 } else if ("instance_identity".equals(fieldName)) {
                     instanceIdentity = AgentIdentity.fromJson(reader);
                 } else if ("blueprint".equals(fieldName)) {
@@ -134,6 +139,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             deserializedAgentDetails.state = state;
             deserializedAgentDetails.stateSource = stateSource;
             deserializedAgentDetails.agentEndpoint = agentEndpoint;
+            deserializedAgentDetails.digitalWorkerType = digitalWorkerType;
             deserializedAgentDetails.instanceIdentity = instanceIdentity;
             deserializedAgentDetails.blueprintIdentity = blueprintIdentity;
             deserializedAgentDetails.blueprintReference = blueprintReference;
@@ -285,5 +291,22 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Generated
     public AgentStateSource getStateSource() {
         return this.stateSource;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
     }
 }

@@ -55,7 +55,7 @@ public final class ToolboxesImpl {
 
     /**
      * Initializes an instance of ToolboxesImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ToolboxesImpl(AgentsClientImpl client) {
@@ -66,7 +66,7 @@ public final class ToolboxesImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -249,10 +249,10 @@ public final class ToolboxesImpl {
 
     /**
      * Create a new version of a toolbox
-     * 
+     *
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -262,7 +262,7 @@ public final class ToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -286,9 +286,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -302,7 +302,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -326,7 +326,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -348,10 +348,10 @@ public final class ToolboxesImpl {
 
     /**
      * Create a new version of a toolbox
-     * 
+     *
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -361,7 +361,7 @@ public final class ToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -385,9 +385,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -401,7 +401,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -425,7 +425,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -447,10 +447,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a toolbox
-     * 
+     *
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -460,7 +460,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -479,10 +479,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a toolbox
-     * 
+     *
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -492,7 +492,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -510,7 +510,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     * 
+     *
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -533,7 +533,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -543,7 +543,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -564,7 +564,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     * 
+     *
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -587,7 +587,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -597,7 +597,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -612,7 +612,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     * 
+     *
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -635,7 +635,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -645,7 +645,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -664,7 +664,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     * 
+     *
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -687,7 +687,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -697,7 +697,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -712,7 +712,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     * 
+     *
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -735,7 +735,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -749,7 +749,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -773,7 +773,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -796,7 +796,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     * 
+     *
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -819,7 +819,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -833,7 +833,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -857,7 +857,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -873,7 +873,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     * 
+     *
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -896,7 +896,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -910,7 +910,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -934,7 +934,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -954,7 +954,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     * 
+     *
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -977,7 +977,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -991,7 +991,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -1015,7 +1015,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1031,10 +1031,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a specific version of a toolbox
-     * 
+     *
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1048,7 +1048,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -1072,7 +1072,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1092,10 +1092,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a specific version of a toolbox
-     * 
+     *
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1109,7 +1109,7 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -1133,7 +1133,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1153,10 +1153,10 @@ public final class ToolboxesImpl {
 
     /**
      * Update a toolbox to point to a specific version
-     * 
+     *
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1164,9 +1164,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1176,7 +1176,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1199,10 +1199,10 @@ public final class ToolboxesImpl {
 
     /**
      * Update a toolbox to point to a specific version
-     * 
+     *
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1210,9 +1210,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1222,7 +1222,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1243,9 +1243,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a toolbox
-     * 
+     *
      * Removes the specified toolbox along with all of its versions.
-     * 
+     *
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1262,9 +1262,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a toolbox
-     * 
+     *
      * Removes the specified toolbox along with all of its versions.
-     * 
+     *
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1281,9 +1281,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a specific version of a toolbox
-     * 
+     *
      * Removes the specified version of a toolbox.
-     * 
+     *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1302,9 +1302,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a specific version of a toolbox
-     * 
+     *
      * Removes the specified version of a toolbox.
-     * 
+     *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

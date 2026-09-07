@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FabricIqPreviewTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -59,7 +60,7 @@ public class FabricIQAsync {
             .setTools(Collections.singletonList(fabricIqTool));
 
         Mono<Void> workflow = Mono.usingWhen(
-            agentsAsyncClient.createAgentVersion(agentName, agentDefinition),
+            agentsAsyncClient.createAgentVersion(agentName, new CreateAgentVersionInput(agentDefinition)),
             agent -> {
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 

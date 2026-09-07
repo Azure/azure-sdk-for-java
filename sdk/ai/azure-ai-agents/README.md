@@ -60,9 +60,9 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
                 .buildAgentsAsyncClient();
-``` 
+```
 
-The Agents client library has the following sub-clients which group the different operations that can be performed: 
+The Agents client library has the following sub-clients which group the different operations that can be performed:
 - `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. When `allowPreview(true)` is configured, these clients can also use preview draft versions, hosted-agent sessions, session files, and code package operations.
 - `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
@@ -226,7 +226,7 @@ Remember to adjust your base URL so that your AI Foundry project `endpoint`'s pa
 
 ### Prompt Agent
 
-This example will show how to create the context necessary for a `PromptAgent` to work. Note that the way that context is handled in this scenario would allow you to share the context with multiple agents. 
+This example will show how to create the context necessary for a `PromptAgent` to work. Note that the way that context is handled in this scenario would allow you to share the context with multiple agents.
 
 #### Create an Agent
 
@@ -234,7 +234,7 @@ Creating an Agent can be done like in the following code snippet:
 
 ```java com.azure.ai.agents.create_prompt_agent
 PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
-AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
+AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", new CreateAgentVersionInput(promptAgentDefinition));
 ```
 
 This will return an `AgentVersionDetails` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
@@ -847,11 +847,11 @@ structuredInputDefinitions.put("userRole",
     new StructuredInputDefinition().setDescription("User's role").setRequired(true));
 
 AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
-    new PromptAgentDefinition(model)
+    new CreateAgentVersionInput(new PromptAgentDefinition(model)
         .setInstructions("You are a helpful assistant. "
             + "The user's name is {{userName}} and their role is {{userRole}}. "
             + "Greet them and confirm their details.")
-        .setStructuredInputs(structuredInputDefinitions));
+        .setStructuredInputs(structuredInputDefinitions)));
 ```
 
 #### Create a response with structured input values

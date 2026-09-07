@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -81,7 +82,7 @@ public class FunctionCallStreamingSync {
                     + "When asked about the weather, use the get_weather function.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("function-streaming-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion("function-streaming-agent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName())

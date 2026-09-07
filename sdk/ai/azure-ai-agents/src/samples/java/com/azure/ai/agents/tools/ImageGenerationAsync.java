@@ -13,6 +13,7 @@ import com.azure.ai.agents.models.ImageGenTool;
 import com.azure.ai.agents.models.ImageGenToolModel;
 import com.azure.ai.agents.models.ImageGenToolQuality;
 import com.azure.ai.agents.models.ImageGenToolSize;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -58,7 +59,7 @@ public class ImageGenerationAsync {
             .setInstructions("You are a creative assistant that can generate images based on descriptions.")
             .setTools(Collections.singletonList(imageGenTool));
 
-        agentsAsyncClient.createAgentVersion("image-gen-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("image-gen-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

@@ -13,6 +13,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -67,7 +68,7 @@ public class OpenApiSample {
             .setInstructions("Use the OpenAPI tool for HTTP request metadata.")
             .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
 
-        AgentVersionDetails agentVersion = agentsClient.createAgentVersion("openapi-agent", agentDefinition);
+        AgentVersionDetails agentVersion = agentsClient.createAgentVersion("openapi-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
 
         // Create a conversation and add a user message

@@ -13,6 +13,7 @@ import com.azure.ai.agents.models.AISearchIndexResource;
 import com.azure.ai.agents.models.AzureAISearchQueryType;
 import com.azure.ai.agents.models.AzureAISearchTool;
 import com.azure.ai.agents.models.AzureAISearchToolResource;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -66,7 +67,7 @@ public class AzureAISearchSync {
                 + "Always provide citations for answers using the tool.")
             .setTools(Collections.singletonList(aiSearchTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("ai-search-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("ai-search-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

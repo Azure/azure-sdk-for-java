@@ -24,6 +24,13 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     private ToolboxToolType type = ToolboxToolType.WEB_SEARCH;
 
     /*
+     * Allow live internet access for web search. Defaults to true when omitted. When false, the web search tool runs in
+     * offline/cache-only mode and will not fetch new external content.
+     */
+    @Generated
+    private Boolean externalWebAccess;
+
+    /*
      * The filters property.
      */
     @Generated
@@ -65,6 +72,30 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     @Override
     public ToolboxToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @return the externalWebAccess value.
+     */
+    @Generated
+    public Boolean isExternalWebAccess() {
+        return this.externalWebAccess;
+    }
+
+    /**
+     * Set the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @param externalWebAccess the externalWebAccess value to set.
+     * @return the WebSearchToolboxTool object itself.
+     */
+    @Generated
+    public WebSearchToolboxTool setExternalWebAccess(Boolean externalWebAccess) {
+        this.externalWebAccess = externalWebAccess;
+        return this;
     }
 
     /**
@@ -202,6 +233,7 @@ public final class WebSearchToolboxTool extends ToolboxTool {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("external_web_access", this.externalWebAccess);
         jsonWriter.writeJsonField("filters", this.filters);
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
@@ -234,6 +266,8 @@ public final class WebSearchToolboxTool extends ToolboxTool {
                     deserializedWebSearchToolboxTool.setToolConfigs(toolConfigs);
                 } else if ("type".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.type = ToolboxToolType.fromString(reader.getString());
+                } else if ("external_web_access".equals(fieldName)) {
+                    deserializedWebSearchToolboxTool.externalWebAccess = reader.getNullable(JsonReader::getBoolean);
                 } else if ("filters".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.filters = WebSearchToolFilters.fromJson(reader);
                 } else if ("user_location".equals(fieldName)) {

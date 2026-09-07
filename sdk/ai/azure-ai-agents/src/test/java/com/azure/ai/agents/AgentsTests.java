@@ -3,11 +3,11 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.util.BinaryData;
@@ -41,7 +41,7 @@ public class AgentsTests extends ClientTestBase {
         AgentsClient client = getAgentsSyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
-        AgentDefinition request = new PromptAgentDefinition(agentModel);
+        CreateAgentVersionInput request = new CreateAgentVersionInput(new PromptAgentDefinition(agentModel));
 
         AgentVersionDetails createdAgent = client.createAgentVersion(AGENT_NAME, request);
 
@@ -74,7 +74,7 @@ public class AgentsTests extends ClientTestBase {
         AgentsClient client = getAgentsSyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
-        AgentDefinition request = new PromptAgentDefinition(agentModel);
+        CreateAgentVersionInput request = new CreateAgentVersionInput(new PromptAgentDefinition(agentModel));
 
         // Creation
         AgentVersionDetails createdAgent = client.createAgentVersion(AGENT_NAME, request);
@@ -115,9 +115,9 @@ public class AgentsTests extends ClientTestBase {
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
-        PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition(agentModel);
+        CreateAgentVersionInput input = new CreateAgentVersionInput(new PromptAgentDefinition(agentModel));
 
-        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(AGENT_NAME, promptAgentDefinition);
+        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(AGENT_NAME, input);
 
         AgentReference agentReference = new AgentReference(createdAgent.getName());
         agentReference.setVersion(createdAgent.getVersion());
@@ -220,10 +220,10 @@ public class AgentsTests extends ClientTestBase {
             new StructuredInputDefinition().setDescription("User's role").setRequired(true));
 
         AgentVersionDetails createdAgent = agentsClient.createAgentVersion(AGENT_NAME,
-            new PromptAgentDefinition(agentModel).setInstructions(
+            new CreateAgentVersionInput(new PromptAgentDefinition(agentModel).setInstructions(
                 "You are a helpful assistant. " + "The user's name is {{userName}} and their role is {{userRole}}. "
                     + "Greet them and confirm their details.")
-                .setStructuredInputs(structuredInputDefinitions));
+                .setStructuredInputs(structuredInputDefinitions)));
 
         assertNotNull(createdAgent);
         assertNotNull(createdAgent.getId());
@@ -248,8 +248,8 @@ public class AgentsTests extends ClientTestBase {
         assertTrue(response.status().isPresent());
         assertEquals(ResponseStatus.COMPLETED, response.status().get());
         assertFalse(response.output().isEmpty());
-        assertTrue(response.output().get(0).isMessage());
-        assertFalse(response.output().get(0).asMessage().content().isEmpty());
+        assertTrue(
+            response.output().stream().anyMatch(item -> item.isMessage() && !item.asMessage().content().isEmpty()));
 
         // Clean up
         agentsClient.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());

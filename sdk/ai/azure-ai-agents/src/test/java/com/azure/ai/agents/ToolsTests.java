@@ -7,6 +7,7 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.McpTool;
@@ -73,7 +74,8 @@ public class ToolsTests extends ClientTestBase {
             = new PromptAgentDefinition("gpt-4o").setInstructions("Use the OpenAPI tool for HTTP request metadata.")
                 .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("openapi-tool-test-agent-java", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("openapi-tool-test-agent-java",
+            new CreateAgentVersionInput(agentDefinition));
         assertNotNull(agent);
         assertNotNull(agent.getId());
 
@@ -123,8 +125,8 @@ public class ToolsTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that can execute Python code to solve problems.")
             .setTools(Collections.singletonList(tool));
 
-        AgentVersionDetails agent
-            = agentsClient.createAgentVersion("code-interpreter-test-agent-java", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("code-interpreter-test-agent-java",
+            new CreateAgentVersionInput(agentDefinition));
         assertNotNull(agent);
         assertNotNull(agent.getId());
 
@@ -181,7 +183,8 @@ public class ToolsTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant. When asked about weather, use the get_weather function.")
             .setTools(Collections.singletonList(tool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("function-call-test-agent-java", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("function-call-test-agent-java",
+            new CreateAgentVersionInput(agentDefinition));
         assertNotNull(agent);
 
         try {
@@ -225,7 +228,8 @@ public class ToolsTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that can search the web.")
             .setTools(Collections.singletonList(tool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("web-search-test-agent-java", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("web-search-test-agent-java",
+            new CreateAgentVersionInput(agentDefinition));
         assertNotNull(agent);
 
         try {
@@ -262,7 +266,8 @@ public class ToolsTests extends ClientTestBase {
             .setInstructions("You are a helpful agent that can use MCP tools to assist users.")
             .setTools(Collections.singletonList(tool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("mcp-test-agent-java", agentDefinition);
+        AgentVersionDetails agent
+            = agentsClient.createAgentVersion("mcp-test-agent-java", new CreateAgentVersionInput(agentDefinition));
         assertNotNull(agent);
 
         try {
@@ -353,7 +358,8 @@ public class ToolsTests extends ClientTestBase {
                 .setInstructions("You are a helpful assistant that searches uploaded files to answer questions.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("file-search-test-agent-java", agentDefinition);
+            agent = agentsClient.createAgentVersion("file-search-test-agent-java",
+                new CreateAgentVersionInput(agentDefinition));
             assertNotNull(agent);
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());

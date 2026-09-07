@@ -4,6 +4,8 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
+import com.azure.ai.projects.models.RoutineDispatchIdentity;
 import com.azure.ai.projects.models.RoutineTrigger;
 import com.azure.ai.projects.models.ScheduleRoutineTrigger;
 import com.azure.core.util.Configuration;
@@ -41,6 +43,8 @@ public class RoutinesScheduleTriggerAsyncSample {
             .buildBetaRoutinesAsyncClient();
 
         RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
+        RoutineAuthorization authorization
+            = new RoutineAuthorization().setIdentity(RoutineDispatchIdentity.AGENT);
         ScheduleRoutineTrigger trigger = new ScheduleRoutineTrigger("*/5 * * * *", "UTC");
         Map<String, RoutineTrigger> triggers = new HashMap<>();
         triggers.put("every_five_minutes", trigger);
@@ -48,7 +52,7 @@ public class RoutinesScheduleTriggerAsyncSample {
         routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by the schedule-trigger sample.", true, triggers, action))
+                "Routine used by the schedule-trigger sample.", true, triggers, action, authorization))
             .flatMap(created -> {
                 System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
                 System.out.printf("cron expression: %s; time zone: %s%n",

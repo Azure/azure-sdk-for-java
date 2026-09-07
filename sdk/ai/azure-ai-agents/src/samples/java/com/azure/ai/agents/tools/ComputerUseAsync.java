@@ -12,6 +12,7 @@ import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.tools.ComputerUseUtil.HandleActionResult;
 import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
@@ -124,7 +125,7 @@ public class ComputerUseAsync {
         );
 
         // Create agent and run the interaction loop
-        agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition)
+        agentsClient.createAgentVersion("ComputerUseAgent", new CreateAgentVersionInput(agentDefinition))
             .doOnNext(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",

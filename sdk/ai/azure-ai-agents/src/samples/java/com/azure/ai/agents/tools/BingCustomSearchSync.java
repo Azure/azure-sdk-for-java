@@ -12,6 +12,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingCustomSearchConfiguration;
 import com.azure.ai.agents.models.BingCustomSearchPreviewTool;
 import com.azure.ai.agents.models.BingCustomSearchToolParameters;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -67,7 +68,7 @@ public class BingCustomSearchSync {
                 + "Use the available Bing Custom Search tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(bingCustomSearchTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("bing-custom-search-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("bing-custom-search-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

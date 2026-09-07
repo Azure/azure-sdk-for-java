@@ -8,11 +8,16 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "aisearch"
+  - "BYOS"
   - "byot"
   - "csdl"
   - "dedup"
   - "fourx"
   - "gitmcp"
+  - "pcma"
+  - "pcmu"
   - "sixx"
   - "ubinary"
   - "upia"
+  - "webrtc"
+  - "xhigh"

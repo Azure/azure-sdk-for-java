@@ -12,6 +12,7 @@ import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.tools.ComputerUseUtil.HandleActionResult;
 import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
@@ -100,7 +101,7 @@ public class ComputerUseSync {
                     + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition);
+            agent = agentsClient.createAgentVersion("ComputerUseAgent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
                 agent.getId(), agent.getName(), agent.getVersion());
 

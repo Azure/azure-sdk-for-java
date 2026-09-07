@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -42,7 +43,7 @@ public class CreateResponseWithConversation {
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You are a helpful assistant.");
 
-            agent = agentsClient.createAgentVersion("my-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion("my-agent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName())

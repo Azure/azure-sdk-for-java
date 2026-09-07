@@ -14,6 +14,7 @@ import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.BetaMemoryStoresClient;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
@@ -85,7 +86,7 @@ public class MemorySearchSync {
                 .setInstructions("You are a helpful assistant that answers general questions.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("memory-search-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion("memory-search-agent", new CreateAgentVersionInput(agentDefinition));
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
             AgentReference agentReference = new AgentReference(agent.getName())

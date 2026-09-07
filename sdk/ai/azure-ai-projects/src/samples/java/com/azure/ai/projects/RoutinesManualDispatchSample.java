@@ -7,6 +7,8 @@ import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.InvokeAgentResponsesApiDispatchPayload;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
+import com.azure.ai.projects.models.RoutineAuthorization;
+import com.azure.ai.projects.models.RoutineDispatchIdentity;
 import com.azure.ai.projects.models.RoutineRun;
 import com.azure.ai.projects.models.RoutineTrigger;
 import com.azure.ai.projects.models.TimerRoutineTrigger;
@@ -55,13 +57,15 @@ public class RoutinesManualDispatchSample {
         Routine created = null;
         try {
             RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
+            RoutineAuthorization authorization
+                = new RoutineAuthorization().setIdentity(RoutineDispatchIdentity.AGENT);
             TimerRoutineTrigger trigger = new TimerRoutineTrigger()
                 .setAt(OffsetDateTime.now(ZoneOffset.UTC).plusHours(1));
             Map<String, RoutineTrigger> triggers = new HashMap<>();
             triggers.put("once", trigger);
 
             created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Timer routine dispatched before its scheduled fire time.", true, triggers, action);
+                "Timer routine dispatched before its scheduled fire time.", true, triggers, action, authorization);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
 
             // BEGIN:com.azure.ai.projects.RoutinesManualDispatchSample.dispatch

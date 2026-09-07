@@ -5,6 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
 import com.azure.core.test.TestMode;
@@ -35,14 +36,14 @@ abstract class WorkIQSamplesTestBase extends ClientTestBase {
         return argumentsList.stream();
     }
 
-    PromptAgentDefinition createAgentDefinition() {
+    CreateAgentVersionInput createAgentDefinition() {
         WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(getRecordedConfig("WORK_IQ_PROJECT_CONNECTION_ID"));
 
-        return new PromptAgentDefinition(getRecordedConfig("FOUNDRY_MODEL_NAME"))
+        return new CreateAgentVersionInput(new PromptAgentDefinition(getRecordedConfig("FOUNDRY_MODEL_NAME"))
             .setInstructions("You are a helpful assistant that can access Microsoft 365 data through Work IQ. "
                 + "Use the Work IQ tool to search and retrieve information from emails, calendar events, "
                 + "Teams messages, and other Microsoft 365 content.")
-            .setTools(Collections.singletonList(workIqTool));
+            .setTools(Collections.singletonList(workIqTool)));
     }
 
     String getUserInput() {

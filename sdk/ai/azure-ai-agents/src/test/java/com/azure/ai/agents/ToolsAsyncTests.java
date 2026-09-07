@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.McpTool;
@@ -70,8 +71,9 @@ public class ToolsAsyncTests extends ClientTestBase {
             = new PromptAgentDefinition("gpt-4o").setInstructions("Use the OpenAPI tool for HTTP request metadata.")
                 .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
 
-        StepVerifier.create(
-            agentsClient.createAgentVersion("openapi-tool-test-agent-java-async", agentDefinition).flatMap(agent -> {
+        StepVerifier.create(agentsClient
+            .createAgentVersion("openapi-tool-test-agent-java-async", new CreateAgentVersionInput(agentDefinition))
+            .flatMap(agent -> {
                 assertNotNull(agent);
                 assertNotNull(agent.getId());
 
@@ -112,7 +114,8 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that can execute Python code to solve problems.")
             .setTools(Collections.singletonList(tool));
 
-        StepVerifier.create(agentsClient.createAgentVersion("code-interpreter-test-agent-java-async", agentDefinition)
+        StepVerifier.create(agentsClient
+            .createAgentVersion("code-interpreter-test-agent-java-async", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 assertNotNull(agent);
 
@@ -168,8 +171,9 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant. When asked about weather, use the get_weather function.")
             .setTools(Collections.singletonList(tool));
 
-        StepVerifier.create(
-            agentsClient.createAgentVersion("function-call-test-agent-java-async", agentDefinition).flatMap(agent -> {
+        StepVerifier.create(agentsClient
+            .createAgentVersion("function-call-test-agent-java-async", new CreateAgentVersionInput(agentDefinition))
+            .flatMap(agent -> {
                 assertNotNull(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -209,8 +213,9 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that can search the web.")
             .setTools(Collections.singletonList(tool));
 
-        StepVerifier.create(
-            agentsClient.createAgentVersion("web-search-test-agent-java-async", agentDefinition).flatMap(agent -> {
+        StepVerifier.create(agentsClient
+            .createAgentVersion("web-search-test-agent-java-async", new CreateAgentVersionInput(agentDefinition))
+            .flatMap(agent -> {
                 assertNotNull(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -246,49 +251,50 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful agent that can use MCP tools to assist users.")
             .setTools(Collections.singletonList(tool));
 
-        StepVerifier
-            .create(agentsClient.createAgentVersion("mcp-test-agent-java-async", agentDefinition).flatMap(agent -> {
-                assertNotNull(agent);
+        StepVerifier.create(
+            agentsClient.createAgentVersion("mcp-test-agent-java-async", new CreateAgentVersionInput(agentDefinition))
+                .flatMap(agent -> {
+                    assertNotNull(agent);
 
-                AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+                    AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                return responsesClient
-                    .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder()
-                            .input("Please summarize the Azure REST API specifications Readme"))
-                    .flatMap(response -> {
-                        assertNotNull(response);
-                        assertTrue(response.status().isPresent());
-                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
-
-                        List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
-                        for (ResponseOutputItem item : response.output()) {
-                            if (item.isMcpApprovalRequest()) {
-                                approvals.add(ResponseInputItem
-                                    .ofMcpApprovalResponse(ResponseInputItem.McpApprovalResponse.builder()
-                                        .approvalRequestId(item.asMcpApprovalRequest().id())
-                                        .approve(true)
-                                        .build()));
-                            }
-                        }
-
-                        assertFalse(approvals.isEmpty(), "Expected at least one MCP approval request");
-
-                        return responsesClient.createAzureResponse(
-                            new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    return responsesClient
+                        .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
                             ResponseCreateParams.builder()
-                                .inputOfResponse(approvals)
-                                .previousResponseId(response.id()));
-                    })
-                    .doOnNext(response -> {
-                        assertNotNull(response);
-                        assertTrue(response.status().isPresent());
-                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                        assertFalse(response.output().isEmpty());
-                        assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
-                    })
-                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            }))
+                                .input("Please summarize the Azure REST API specifications Readme"))
+                        .flatMap(response -> {
+                            assertNotNull(response);
+                            assertTrue(response.status().isPresent());
+                            assertEquals(ResponseStatus.COMPLETED, response.status().get());
+
+                            List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
+                            for (ResponseOutputItem item : response.output()) {
+                                if (item.isMcpApprovalRequest()) {
+                                    approvals.add(ResponseInputItem
+                                        .ofMcpApprovalResponse(ResponseInputItem.McpApprovalResponse.builder()
+                                            .approvalRequestId(item.asMcpApprovalRequest().id())
+                                            .approve(true)
+                                            .build()));
+                                }
+                            }
+
+                            assertFalse(approvals.isEmpty(), "Expected at least one MCP approval request");
+
+                            return responsesClient.createAzureResponse(
+                                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                                ResponseCreateParams.builder()
+                                    .inputOfResponse(approvals)
+                                    .previousResponseId(response.id()));
+                        })
+                        .doOnNext(response -> {
+                            assertNotNull(response);
+                            assertTrue(response.status().isPresent());
+                            assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                            assertFalse(response.output().isEmpty());
+                            assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                        })
+                        .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+                }))
             .verifyComplete();
     }
 
@@ -336,8 +342,9 @@ public class ToolsAsyncTests extends ClientTestBase {
                 .setInstructions("You are a helpful assistant that searches uploaded files to answer questions.")
                 .setTools(Collections.singletonList(tool));
 
-            StepVerifier.create(
-                agentsClient.createAgentVersion("file-search-test-agent-java-async", agentDefinition).flatMap(agent -> {
+            StepVerifier.create(agentsClient
+                .createAgentVersion("file-search-test-agent-java-async", new CreateAgentVersionInput(agentDefinition))
+                .flatMap(agent -> {
                     assertNotNull(agent);
 
                     AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());

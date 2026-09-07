@@ -11,6 +11,7 @@ import com.azure.ai.agents.models.A2ATool;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -54,7 +55,7 @@ public class AgentToAgentSync {
             .setInstructions("You are a coordinator agent that can communicate with other agents.")
             .setTools(Collections.singletonList(a2aTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("a2a-agent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("a2a-agent", new CreateAgentVersionInput(agentDefinition));
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {

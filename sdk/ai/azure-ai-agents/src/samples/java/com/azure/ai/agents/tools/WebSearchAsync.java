@@ -9,6 +9,7 @@ import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WebSearchPreviewTool;
 import com.azure.core.util.Configuration;
@@ -54,7 +55,7 @@ public class WebSearchAsync {
                 + "When asked to find information, use the web search tool to gather relevant data.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("web-search-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("web-search-agent", new CreateAgentVersionInput(agentDefinition))
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
