@@ -16,31 +16,37 @@ public final class ResourceProvisionPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProvisionPayload model = BinaryData.fromString(
-            "{\"baseProfile\":{\"glougpbk\":\"\\\"datamnkzsmod\\\"\",\"uqktap\":\"\\\"datatmut\\\"\",\"kdosvqw\":\"\\\"datapwgcuertu\\\"\"},\"resourceOverrides\":[{\"ppbhtqqrolfp\":\"\\\"datagbbjfddgmbmbe\\\"\"},{\"lgbquxig\":\"\\\"datas\\\"\",\"rkujy\":\"\\\"datayjgzjaoyfhrtxiln\\\"\",\"rlyxwjkcprbnw\":\"\\\"datavlejuvfqa\\\"\"},{\"ysszdnrujqguh\":\"\\\"datagjvtbv\\\"\",\"prwzwbnguitnwui\":\"\\\"datauouq\\\"\"}],\"resourceCount\":1403075438,\"resourcePrefix\":\"zxufiz\"}")
+            "{\"baseProfile\":{\"gehoqfbowskany\":\"\\\"datayb\\\"\",\"rvynhzgpph\":\"\\\"datatzlcuiywgqywgn\\\"\"},\"resourceOverrides\":[{\"cpecfvmmcoofs\":\"\\\"datanc\\\"\",\"y\":\"\\\"datalzevgbmqjqab\\\"\",\"wnfnbacf\":\"\\\"datamivkwlzuvcc\\\"\",\"bqqwxrj\":\"\\\"dataonlebxetqgtzxdpn\\\"\"},{\"nwsubisnj\":\"\\\"dataal\\\"\",\"hcbonqvpkvlr\":\"\\\"datampmngnzscxaqwoo\\\"\",\"y\":\"\\\"datanjeaseipheofloke\\\"\",\"jp\":\"\\\"dataenjbdlwtgrhp\\\"\"},{\"lhbxxhejjzzvdud\":\"\\\"datamasxazjpqyegu\\\"\",\"pwlbjnpg\":\"\\\"datawdslfhotwmcy\\\"\",\"nltyfsoppusuesnz\":\"\\\"datacftadeh\\\"\"},{\"avo\":\"\\\"dataej\\\"\",\"vudwx\":\"\\\"dataxzdmohctb\\\"\"}],\"resourceCount\":1222672575,\"resourcePrefix\":\"nvowgujju\"}")
             .toObject(ResourceProvisionPayload.class);
-        Assertions.assertEquals(1403075438, model.resourceCount());
-        Assertions.assertEquals("zxufiz", model.resourcePrefix());
+        Assertions.assertEquals(1222672575, model.resourceCount());
+        Assertions.assertEquals("nvowgujju", model.resourcePrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProvisionPayload model = new ResourceProvisionPayload()
             .withBaseProfile(
-                mapOf("glougpbk", BinaryData.fromBytes("\"datamnkzsmod\"".getBytes(StandardCharsets.UTF_8)), "uqktap",
-                    BinaryData.fromBytes("\"datatmut\"".getBytes(StandardCharsets.UTF_8)), "kdosvqw",
-                    BinaryData.fromBytes("\"datapwgcuertu\"".getBytes(StandardCharsets.UTF_8))))
+                mapOf("gehoqfbowskany", BinaryData.fromBytes("\"datayb\"".getBytes(StandardCharsets.UTF_8)),
+                    "rvynhzgpph", BinaryData.fromBytes("\"datatzlcuiywgqywgn\"".getBytes(StandardCharsets.UTF_8))))
             .withResourceOverrides(Arrays.asList(
-                mapOf("ppbhtqqrolfp", BinaryData.fromBytes("\"datagbbjfddgmbmbe\"".getBytes(StandardCharsets.UTF_8))),
-                mapOf("lgbquxig", BinaryData.fromBytes("\"datas\"".getBytes(StandardCharsets.UTF_8)), "rkujy",
-                    BinaryData.fromBytes("\"datayjgzjaoyfhrtxiln\"".getBytes(StandardCharsets.UTF_8)), "rlyxwjkcprbnw",
-                    BinaryData.fromBytes("\"datavlejuvfqa\"".getBytes(StandardCharsets.UTF_8))),
-                mapOf("ysszdnrujqguh", BinaryData.fromBytes("\"datagjvtbv\"".getBytes(StandardCharsets.UTF_8)),
-                    "prwzwbnguitnwui", BinaryData.fromBytes("\"datauouq\"".getBytes(StandardCharsets.UTF_8)))))
-            .withResourceCount(1403075438)
-            .withResourcePrefix("zxufiz");
+                mapOf("cpecfvmmcoofs", BinaryData.fromBytes("\"datanc\"".getBytes(StandardCharsets.UTF_8)), "y",
+                    BinaryData.fromBytes("\"datalzevgbmqjqab\"".getBytes(StandardCharsets.UTF_8)), "wnfnbacf",
+                    BinaryData.fromBytes("\"datamivkwlzuvcc\"".getBytes(StandardCharsets.UTF_8)), "bqqwxrj",
+                    BinaryData.fromBytes("\"dataonlebxetqgtzxdpn\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("nwsubisnj", BinaryData.fromBytes("\"dataal\"".getBytes(StandardCharsets.UTF_8)), "hcbonqvpkvlr",
+                    BinaryData.fromBytes("\"datampmngnzscxaqwoo\"".getBytes(StandardCharsets.UTF_8)), "y",
+                    BinaryData.fromBytes("\"datanjeaseipheofloke\"".getBytes(StandardCharsets.UTF_8)), "jp",
+                    BinaryData.fromBytes("\"dataenjbdlwtgrhp\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("lhbxxhejjzzvdud", BinaryData.fromBytes("\"datamasxazjpqyegu\"".getBytes(StandardCharsets.UTF_8)),
+                    "pwlbjnpg", BinaryData.fromBytes("\"datawdslfhotwmcy\"".getBytes(StandardCharsets.UTF_8)),
+                    "nltyfsoppusuesnz", BinaryData.fromBytes("\"datacftadeh\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("avo", BinaryData.fromBytes("\"dataej\"".getBytes(StandardCharsets.UTF_8)), "vudwx",
+                    BinaryData.fromBytes("\"dataxzdmohctb\"".getBytes(StandardCharsets.UTF_8)))))
+            .withResourceCount(1222672575)
+            .withResourcePrefix("nvowgujju");
         model = BinaryData.fromObject(model).toObject(ResourceProvisionPayload.class);
-        Assertions.assertEquals(1403075438, model.resourceCount());
-        Assertions.assertEquals("zxufiz", model.resourcePrefix());
+        Assertions.assertEquals(1222672575, model.resourceCount());
+        Assertions.assertEquals("nvowgujju", model.resourcePrefix());
     }
 
     // Use "Map.of" if available

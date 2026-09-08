@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceListKeysSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListKeys.json
+     * x-ms-original-file: 2026-03-01-preview/DPSListKeys.json
      */
     /**
      * Sample code: DPSListKeys.

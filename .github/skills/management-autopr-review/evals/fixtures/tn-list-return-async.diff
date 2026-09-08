@@ -1,0 +1,7 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetsAsyncClient.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetsAsyncClient.java
+index 239136b..ef65f0f 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetsAsyncClient.java
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetsAsyncClient.java
+@@ -18,4 +18,6 @@ public interface WidgetsAsyncClient {
++    PagedFlux<Widget> list();
+ }

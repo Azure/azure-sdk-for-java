@@ -23,6 +23,11 @@ regenerate the fresh endpoints/keys.
 | `New-CosmosLiveTestAccounts.ps1` | Creates `sdk-ci` RG (if missing) + accounts; outputs accounts JSON. |
 | `cosmos-live-test-accounts.definition.json` | Desired accounts (logical selector + config). |
 
+An account entry may set `"regions": [...]` to pin its own regions when `regionDefaults` does not
+suit it. `gsi-single-session` uses this to sit in **East US 2**, because
+`live-gsi-platform-matrix.json` runs it single-region with `PREFERRED_LOCATIONS=["East US 2"]`, and a
+preferred region the account does not have leaves the client with nothing to prefer.
+
 The emitted JSON conforms to the schema at
 `../live-test-accounts.schema.json`, which the pipeline pre-step
 `../resolve-cosmos-test-account.sh` parses.
@@ -46,7 +51,10 @@ The emitted JSON conforms to the schema at
 ```
 
 Idempotent: existing accounts are left in place and missing capabilities are added; the
-JSON is regenerated with current endpoints/keys.
+JSON is regenerated with current endpoints/keys. A single run is enough for a fresh tenant -
+capabilities are applied by ARM PATCH after the account exists, and verified, rather than being
+passed to `New-AzCosmosDBAccount` (some Az.CosmosDB versions ignore `-Capabilities` silently,
+which previously produced accounts with no capabilities and required a second run).
 
 The multi-master accounts are separated by contention domain:
 

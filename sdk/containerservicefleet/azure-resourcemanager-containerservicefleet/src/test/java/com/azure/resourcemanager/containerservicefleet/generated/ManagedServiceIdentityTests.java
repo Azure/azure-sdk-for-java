@@ -16,19 +16,17 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"ebvmgxsabkyqd\",\"tenantId\":\"jitcjczdzevn\",\"type\":\"None\",\"userAssignedIdentities\":{\"nhutjeltmrldhugj\":{\"principalId\":\"pdappds\",\"clientId\":\"kvwrwjfeu\"},\"wyiftyhxhur\":{\"principalId\":\"datqxhocdgeabl\",\"clientId\":\"huticndvkao\"},\"giawx\":{\"principalId\":\"ftyxolniw\",\"clientId\":\"cukjf\"},\"nqgoulzndli\":{\"principalId\":\"ryplwckbasyypn\",\"clientId\":\"hsgcbacphejkot\"}}}")
+            "{\"principalId\":\"ybb\",\"tenantId\":\"odepoogin\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yevc\":{\"principalId\":\"heognarxzxtheo\",\"clientId\":\"si\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-            .withUserAssignedIdentities(
-                mapOf("nhutjeltmrldhugj", new UserAssignedIdentity(), "wyiftyhxhur", new UserAssignedIdentity(),
-                    "giawx", new UserAssignedIdentity(), "nqgoulzndli", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("yevc", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

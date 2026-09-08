@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListNodeImageVersionsSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/NodeImageVersions_List.json
+     * x-ms-original-file: 2026-06-02-preview/NodeImageVersions_List.json
      */
     /**
      * Sample code: List Node Image Versions.

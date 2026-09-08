@@ -32,7 +32,7 @@ public final class IotDpsResourcesListValidSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IotDpsSkuDefinition> response
-            = manager.iotDpsResources().listValidSkus("rmgucnap", "t", com.azure.core.util.Context.NONE);
+            = manager.iotDpsResources().listValidSkus("zewk", "vhqcrail", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(IotDpsSku.S1, response.iterator().next().name());
     }

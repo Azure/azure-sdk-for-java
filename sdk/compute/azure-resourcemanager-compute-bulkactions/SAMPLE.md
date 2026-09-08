@@ -10,6 +10,7 @@
 - [GetAsyncOperationStatus](#bulkcreatecustom_getasyncoperationstatus)
 - [ListByResourceGroup](#bulkcreatecustom_listbyresourcegroup)
 - [ListBySubscription](#bulkcreatecustom_listbysubscription)
+- [VirtualMachinesGetOperationStatus](#bulkcreatecustom_virtualmachinesgetoperationstatus)
 
 ## LaunchBulkInstancesOperation
 
@@ -84,7 +85,7 @@
  */
 public final class BulkCreateCustomCancelSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_Cancel_MaximumSet.
@@ -132,6 +133,8 @@ import com.azure.resourcemanager.compute.bulkactions.models.NetworkProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OSDisk;
 import com.azure.resourcemanager.compute.bulkactions.models.OSProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentMode;
+import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
@@ -153,7 +156,7 @@ import java.util.Map;
  */
 public final class BulkCreateCustomCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_CreateOrUpdate_MaximumSet.
@@ -166,8 +169,10 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
             .define("89f31926-145c-410c-a56a-5bc97359274c")
             .withExistingLocation("rgBulkactions", "eastus")
             .withTags(mapOf("workload", "batch-render", "env", "prod"))
-            .withProperties(new BulkCreateCustomProperties().withCapacity(10)
+            .withProperties(new BulkCreateCustomProperties().withCapacity(2)
                 .withCapacityType(CapacityType.VM)
+                .withMinCapacity(1)
+                .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
                 .withPriorityProfile(new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
                     .withMaxPricePerVM(0.2D)
                     .withEvictionPolicy(EvictionPolicy.DELETE)
@@ -253,7 +258,7 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
  */
 public final class BulkCreateCustomDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_Delete_MaximumSet.
@@ -277,7 +282,7 @@ public final class BulkCreateCustomDeleteSamples {
  */
 public final class BulkCreateCustomGetSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_Get_MaximumSet.
@@ -301,7 +306,7 @@ public final class BulkCreateCustomGetSamples {
  */
 public final class BulkCreateCustomGetAsyncOperationStatusSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_GetAsyncOperationStatus_MaximumSet.
@@ -325,7 +330,7 @@ public final class BulkCreateCustomGetAsyncOperationStatusSamples {
  */
 public final class BulkCreateCustomListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_ListByResourceGroup_MaximumSet.
@@ -347,7 +352,7 @@ public final class BulkCreateCustomListByResourceGroupSamples {
  */
 public final class BulkCreateCustomListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_ListBySubscription_MaximumSet.
@@ -361,6 +366,30 @@ public final class BulkCreateCustomListBySubscriptionSamples {
 }
 ```
 
+### BulkCreateCustom_VirtualMachinesGetOperationStatus
+
+```java
+/**
+ * Samples for BulkCreateCustom VirtualMachinesGetOperationStatus.
+ */
+public final class BulkCreateCustomVirtualMachinesGetOperationStatusSamples {
+    /*
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void bulkCreateCustomVirtualMachinesGetOperationStatusMaximumSet(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.bulkCreateCustoms()
+            .virtualMachinesGetOperationStatus("local-test-rg", "eastus", "00000000-0000-0000-0000-000000000102",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### LaunchBulkInstancesOperation_Cancel
 
 ```java
@@ -369,7 +398,7 @@ public final class BulkCreateCustomListBySubscriptionSamples {
  */
 public final class LaunchBulkInstancesOperationCancelSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_Cancel_Example.
@@ -523,7 +552,7 @@ import java.util.Map;
  */
 public final class LaunchBulkInstancesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_CreateOrUpdate_Example.
@@ -869,7 +898,7 @@ public final class LaunchBulkInstancesOperationCreateOrUpdateSamples {
  */
 public final class LaunchBulkInstancesOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_Delete_Example.
@@ -893,7 +922,7 @@ public final class LaunchBulkInstancesOperationDeleteSamples {
  */
 public final class LaunchBulkInstancesOperationGetSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_Get_Example.
@@ -917,7 +946,7 @@ public final class LaunchBulkInstancesOperationGetSamples {
  */
 public final class LaunchBulkInstancesOperationGetOperationStatusSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_GetOperationStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_GetOperationStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_GetOperationStatus_Example.
@@ -941,7 +970,7 @@ public final class LaunchBulkInstancesOperationGetOperationStatusSamples {
  */
 public final class LaunchBulkInstancesOperationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_ListByResourceGroup_Example - generated by [MinimumSet] rule.
@@ -955,7 +984,7 @@ public final class LaunchBulkInstancesOperationListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_ListByResourceGroup_Example.
@@ -978,7 +1007,7 @@ public final class LaunchBulkInstancesOperationListByResourceGroupSamples {
  */
 public final class LaunchBulkInstancesOperationListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_ListBySubscription_Example.
@@ -991,7 +1020,7 @@ public final class LaunchBulkInstancesOperationListBySubscriptionSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_ListBySubscription_Example - generated by [MinimumSet] rule.
@@ -1013,7 +1042,7 @@ public final class LaunchBulkInstancesOperationListBySubscriptionSamples {
  */
 public final class LaunchBulkInstancesOperationListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_ListVirtualMachines_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_ListVirtualMachines_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_ListVirtualMachines_Example.
@@ -1037,7 +1066,7 @@ public final class LaunchBulkInstancesOperationListVirtualMachinesSamples {
  */
 public final class OccurrenceExtensionListOccurrenceByVmsSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: OccurrenceExtension_ListOccurrenceByVms_MaximumSet - generated by [MaximumSet] rule.
@@ -1065,7 +1094,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Cancel_MaximumSet.
@@ -1095,7 +1124,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesDelaySamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Occurrences_Delay_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Occurrences_Delay_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Delay_MaximumSet.
@@ -1122,7 +1151,7 @@ public final class OccurrencesDelaySamples {
  */
 public final class OccurrencesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Occurrences_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Occurrences_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Get_MaximumSet.
@@ -1146,7 +1175,7 @@ public final class OccurrencesGetSamples {
  */
 public final class OccurrencesListByScheduledActionSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_ListByScheduledAction_MaximumSet.
@@ -1168,7 +1197,7 @@ public final class OccurrencesListByScheduledActionSamples {
  */
 public final class OccurrencesListResourcesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_ListResources_MaximumSet.
@@ -1192,7 +1221,7 @@ public final class OccurrencesListResourcesSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_Minimum_Gen_Example.
@@ -1205,7 +1234,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen_Example.
@@ -1227,7 +1256,7 @@ public final class OperationsListSamples {
  */
 public final class ScheduledActionExtensionListByVmsSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActionExtension_ListByVms_MaximumSet.
@@ -1252,7 +1281,7 @@ public final class ScheduledActionExtensionListByVmsSamples {
  */
 public final class ScheduledActionOperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActionOperationStatus_Get_MaximumSet.
@@ -1282,7 +1311,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_AttachResources_MaximumSet.
@@ -1316,7 +1345,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCancelNextOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_CancelNextOccurrence_MaximumSet.
@@ -1342,12 +1371,12 @@ import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
 import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsSchedule;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
@@ -1360,7 +1389,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_CreateOrUpdate_MaximumSet.
@@ -1374,27 +1403,26 @@ public final class ScheduledActionsCreateOrUpdateSamples {
             .withRegion("eastus")
             .withExistingResourceGroup("rgcompute")
             .withTags(mapOf("key2102", "fakeTokenPlaceholder"))
-            .withProperties(
-                new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                    .withActionType(ScheduledActionType.START)
-                    .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
-                    .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:55.286Z"))
-                    .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
-                        .withTimeZone("America/Los_Angeles")
-                        .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
-                        .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                        .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                        .withExecutionParameters(new RecurringScheduledActionsExecutionParameters()
-                            .withOptimizationPreference(OptimizationPreference.COST)
-                            .withRetryPolicy(new RecurringScheduledActionsRetryPolicy().withRetryCount(17)
-                                .withRetryWindowInMinutes(29)))
-                        .withDeadlineType(RecurringScheduledActionsDeadlineType.UNKNOWN))
-                    .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
-                            .withType(NotificationType.EMAIL)
-                            .withLanguage(Language.EN_US)
-                            .withDisabled(true)))
-                    .withDisabled(true))
+            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                .withActionType(ScheduledActionType.START)
+                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
+                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:55.286Z"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
+                    .withTimeZone("America/Los_Angeles")
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
+                    .withRequestedMonths(Arrays.asList(Month.JANUARY))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
+                    .withExecutionParameters(new ScheduledActionsExecutionParameters()
+                        .withOptimizationPreference(OptimizationPreference.COST)
+                        .withRetryPolicy(
+                            new ScheduledActionsRetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                    .withDeadlineType(ScheduledActionsDeadlineType.UNKNOWN))
+                .withNotificationSettings(
+                    Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                        .withType(NotificationType.EMAIL)
+                        .withLanguage(Language.EN_US)
+                        .withDisabled(true)))
+                .withDisabled(true))
             .create();
     }
 
@@ -1420,7 +1448,7 @@ public final class ScheduledActionsCreateOrUpdateSamples {
  */
 public final class ScheduledActionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Delete_MaximumSet.
@@ -1445,7 +1473,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsDetachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_DetachResources_MaximumSet.
@@ -1470,7 +1498,7 @@ public final class ScheduledActionsDetachResourcesSamples {
  */
 public final class ScheduledActionsDisableSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Disable_MaximumSet.
@@ -1492,7 +1520,7 @@ public final class ScheduledActionsDisableSamples {
  */
 public final class ScheduledActionsEnableSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Enable_MaximumSet.
@@ -1514,7 +1542,7 @@ public final class ScheduledActionsEnableSamples {
  */
 public final class ScheduledActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Get_MaximumSet.
@@ -1537,7 +1565,7 @@ public final class ScheduledActionsGetByResourceGroupSamples {
  */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListBySubscription_MaximumSet.
@@ -1559,7 +1587,7 @@ public final class ScheduledActionsListSamples {
  */
 public final class ScheduledActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListByResourceGroup_MaximumSet.
@@ -1581,7 +1609,7 @@ public final class ScheduledActionsListByResourceGroupSamples {
  */
 public final class ScheduledActionsListResourcesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListResources_MaximumSet.
@@ -1610,7 +1638,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_PatchResources_MaximumSet.
@@ -1641,7 +1669,7 @@ public final class ScheduledActionsPatchResourcesSamples {
  */
 public final class ScheduledActionsTriggerManualOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_TriggerManualOccurrence_MaximumSet.
@@ -1664,13 +1692,13 @@ import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
 import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdateProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsScheduleUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
@@ -1683,7 +1711,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Update_MaximumSet.
@@ -1695,26 +1723,27 @@ public final class ScheduledActionsUpdateSamples {
         manager.scheduledActions()
             .update("rgcompute", "myScheduledAction",
                 new ScheduledActionUpdate().withTags(mapOf("key9989", "fakeTokenPlaceholder"))
-                    .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                        .withActionType(ScheduledActionType.START)
-                        .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                        .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("19:00:00")
-                            .withTimeZone("America/Los_Angeles")
-                            .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
-                            .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                            .withExecutionParameters(new RecurringScheduledActionsExecutionParameters()
-                                .withOptimizationPreference(OptimizationPreference.COST)
-                                .withRetryPolicy(new RecurringScheduledActionsRetryPolicy().withRetryCount(17)
-                                    .withRetryWindowInMinutes(29)))
-                            .withDeadlineType(RecurringScheduledActionsDeadlineType.UNKNOWN))
-                        .withNotificationSettings(
-                            Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true)))
-                        .withDisabled(true)),
+                    .withProperties(
+                        new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                            .withActionType(ScheduledActionType.START)
+                            .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
+                            .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
+                            .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("19:00:00")
+                                .withTimeZone("America/Los_Angeles")
+                                .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
+                                .withRequestedMonths(Arrays.asList(Month.JANUARY))
+                                .withRequestedDaysOfTheMonth(Arrays.asList(15))
+                                .withExecutionParameters(new ScheduledActionsExecutionParameters()
+                                    .withOptimizationPreference(OptimizationPreference.COST)
+                                    .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(17)
+                                        .withRetryWindowInMinutes(29)))
+                                .withDeadlineType(ScheduledActionsDeadlineType.UNKNOWN))
+                            .withNotificationSettings(
+                                Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                                    .withType(NotificationType.EMAIL)
+                                    .withLanguage(Language.EN_US)
+                                    .withDisabled(true)))
+                            .withDisabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -1744,7 +1773,7 @@ import java.util.Arrays;
 public final class VirtualMachineBulkOperationsBulkAcknowledgeOperationErrorsSamples {
     /*
      * x-ms-original-file:
-     * 2026-07-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.json
+     * 2026-08-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.
@@ -1762,7 +1791,7 @@ public final class VirtualMachineBulkOperationsBulkAcknowledgeOperationErrorsSam
 
     /*
      * x-ms-original-file:
-     * 2026-07-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MaximumSet_Gen.json
+     * 2026-08-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_Example.
@@ -1791,7 +1820,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkCancelOperationsSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkCancel_Example.
@@ -1807,7 +1836,7 @@ public final class VirtualMachineBulkOperationsBulkCancelOperationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCancel_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCancel_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkCancel_Example - generated by [MinimumSet] rule.
@@ -1843,7 +1872,7 @@ import java.util.Map;
  */
 public final class VirtualMachineBulkOperationsBulkCreateOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCreate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCreate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkCreate_Example.
@@ -1904,7 +1933,7 @@ public final class VirtualMachineBulkOperationsBulkCreateOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCreate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCreate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkCreate_Example - generated by [MinimumSet] rule.
@@ -1950,7 +1979,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkDeallocateOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkDeallocate - generated by [MinimumSet] rule.
@@ -1968,7 +1997,7 @@ public final class VirtualMachineBulkOperationsBulkDeallocateOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkDeallocate_Example.
@@ -2004,7 +2033,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkDeleteOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDelete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDelete_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkDelete - generated by [MinimumSet] rule.
@@ -2022,7 +2051,7 @@ public final class VirtualMachineBulkOperationsBulkDeleteOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDelete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDelete_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkDelete_Example.
@@ -2054,7 +2083,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkGetOperationsStatus_Example - generated by [MinimumSet] rule.
@@ -2070,7 +2099,7 @@ public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkGetOperationsStatus_Example.
@@ -2104,7 +2133,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkHibernate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkHibernate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkHibernate_Example.
@@ -2126,7 +2155,7 @@ public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkHibernate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkHibernate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkHibernate - generated by [MinimumSet] rule.
@@ -2153,7 +2182,7 @@ public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
  */
 public final class VirtualMachineBulkOperationsBulkListOperationErrorsSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.
@@ -2167,7 +2196,7 @@ public final class VirtualMachineBulkOperationsBulkListOperationErrorsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkListOperationErrors_Example.
@@ -2201,7 +2230,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkReimageOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkReimage_Example.
@@ -2236,6 +2265,7 @@ public final class VirtualMachineBulkOperationsBulkReimageOperationSamples {
 ### VirtualMachineBulkOperations_BulkStartOperation
 
 ```java
+import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendationParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
@@ -2250,7 +2280,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkStart_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkStart_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkStart - generated by [MinimumSet] rule.
@@ -2268,7 +2298,7 @@ public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkStart_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkStart_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkStart_Example.
@@ -2279,9 +2309,14 @@ public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.virtualMachineBulkOperations()
             .bulkStartOperationWithResponse("rgBulkactions", "useast2euap", new ExecuteStartContent()
-                .withExecutionParameters(new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(2)
-                    .withRetryWindowInMinutes(19)
-                    .withOnFailureAction(ResourceOperationType.UNKNOWN)))
+                .withExecutionParameters(new ExecutionParameters()
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(2)
+                        .withRetryWindowInMinutes(19)
+                        .withOnFailureAction(ResourceOperationType.UNKNOWN))
+                    .withCapacityRecommendationParameters(
+                        new CapacityRecommendationParameters().withDesiredLocations(Arrays.asList("eastus", "westus2"))
+                            .withDesiredSizes(Arrays.asList("Standard_D2s_v5", "Standard_D4s_v5"))
+                            .withAvailabilityZones(true)))
                 .withResourcesWithContext(
                     new ResourcesWithContext().withResources(Arrays.asList(new ResourceWithContext().withResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")
@@ -2320,7 +2355,7 @@ import java.util.Map;
  */
 public final class VirtualMachineBulkOperationsBulkVdiFlexCreateOperationSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkVdiFlexCreate_Example.
@@ -2393,7 +2428,7 @@ public final class VirtualMachineBulkOperationsBulkVdiFlexCreateOperationSamples
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkVdiFlexCreate_Example - generated by [MinimumSet] rule.

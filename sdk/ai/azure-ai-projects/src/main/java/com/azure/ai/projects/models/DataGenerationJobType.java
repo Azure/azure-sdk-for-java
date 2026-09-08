@@ -62,4 +62,10 @@ public final class DataGenerationJobType extends ExpandableStringEnum<DataGenera
     public static Collection<DataGenerationJobType> values() {
         return values(DataGenerationJobType.class);
     }
+
+    /**
+     * Simulation seed for evaluation scenarios.
+     */
+    @Generated
+    public static final DataGenerationJobType SIMULATION_SEED = fromString("simulation_seed");
 }

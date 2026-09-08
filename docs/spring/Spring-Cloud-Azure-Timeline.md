@@ -12,9 +12,12 @@ This wiki page is used to track the timeline for Spring Cloud Azure. So we can g
 1. When making external dependencies' versions align to new version of spring-boot-dependencies or spring-cloud-dependencies, this page should be updated.
 2. (Deprecated)In "java - spring - ci" pipeline, unit tests will run after making external dependencies' versions align to specific version of spring-boot-dependencies or spring-cloud-dependencies. When the spring-boot-dependencies or spring-cloud-dependencies updated, this page should be updated.
 3. When release a new version of spring-cloud-azure-dependencies / azure-spring-boot-bom / azure-spring-cloud-dependencies, this page should be updated.
-4. In "java - spring - compatibility - tests" pipeline, it will tests versions from sdk/spring/spring-cloud-azure-supported-spring.json file which supportedStatus is `SUPPORTED`, so when the supported version changed, this page should be updated.
+4. In "java - spring - compatibility - tests" pipeline, it will test versions from sdk/spring/pipeline/spring-cloud-azure-supported-spring.json file which supportStatus is `SUPPORTED`, so when the supported version changed, this page should be updated.
 
 ## Timeline
+ - **2026-08-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:4.1.1 and spring-cloud-dependencies:2025.1.3.
+   - spring-boot-dependencies:4.0.8 and spring-cloud-dependencies:2025.1.3.
  - **2026-07-29**: Released spring-cloud-azure-dependencies:6.5.0, which depends on: SpringBoot:3.5.14 and SpringCloud:2025.0.2.
  - **2026-07-24**: Released spring-cloud-azure-dependencies:7.4.0, which depends on: SpringBoot:4.1.0 and SpringCloud:2025.1.2.
  - **2026-06-15**: In "java - spring - compatibility - tests" pipeline, run unit tests:

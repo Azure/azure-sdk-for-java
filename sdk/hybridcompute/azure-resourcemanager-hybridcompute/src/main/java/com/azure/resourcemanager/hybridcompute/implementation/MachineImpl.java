@@ -18,6 +18,7 @@ import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
@@ -27,7 +28,6 @@ import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.MachineUpdate;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
@@ -80,7 +80,7 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
         }
     }
 
-    public ManagedServiceIdentity identity() {
+    public Identity identity() {
         return this.innerModel().identity();
     }
 
@@ -391,7 +391,7 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
         }
     }
 
-    public MachineImpl withIdentity(ManagedServiceIdentity identity) {
+    public MachineImpl withIdentity(Identity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;

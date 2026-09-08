@@ -99,8 +99,8 @@ public interface AutoUpgradeProfile {
     AutoUpgradeProfileStatus autoUpgradeProfileStatus();
 
     /**
-     * Gets the targetKubernetesVersion property: This is the target Kubernetes version
-     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+     * Gets the targetKubernetesVersion property: This is the target Kubernetes
+     * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
      * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
@@ -274,14 +274,14 @@ public interface AutoUpgradeProfile {
          */
         interface WithTargetKubernetesVersion {
             /**
-             * Specifies the targetKubernetesVersion property: This is the target Kubernetes version
-             * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+             * Specifies the targetKubernetesVersion property: This is the target Kubernetes
+             * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
              * By default, this is empty.
              * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
              * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty..
              * 
-             * @param targetKubernetesVersion This is the target Kubernetes version
-             * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+             * @param targetKubernetesVersion This is the target Kubernetes
+             * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
              * By default, this is empty.
              * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
              * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
@@ -445,14 +445,14 @@ public interface AutoUpgradeProfile {
          */
         interface WithTargetKubernetesVersion {
             /**
-             * Specifies the targetKubernetesVersion property: This is the target Kubernetes version
-             * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+             * Specifies the targetKubernetesVersion property: This is the target Kubernetes
+             * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
              * By default, this is empty.
              * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
              * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty..
              * 
-             * @param targetKubernetesVersion This is the target Kubernetes version
-             * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+             * @param targetKubernetesVersion This is the target Kubernetes
+             * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
              * By default, this is empty.
              * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
              * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.

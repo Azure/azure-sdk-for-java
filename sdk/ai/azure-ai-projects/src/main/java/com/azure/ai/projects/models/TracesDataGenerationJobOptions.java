@@ -76,6 +76,7 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
         jsonWriter.writeNumberField("train_split", getTrainSplit());
         jsonWriter.writeJsonField("model_options", getModelOptions());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("redact_private_content", this.redactPrivateContent);
         return jsonWriter.writeEndObject();
     }
 
@@ -95,6 +96,7 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
             Double trainSplit = null;
             DataGenerationModelOptions modelOptions = null;
             DataGenerationJobType type = DataGenerationJobType.TRACES;
+            Boolean redactPrivateContent = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -106,6 +108,8 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
                     modelOptions = DataGenerationModelOptions.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = DataGenerationJobType.fromString(reader.getString());
+                } else if ("redact_private_content".equals(fieldName)) {
+                    redactPrivateContent = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -115,7 +119,39 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
             deserializedTracesDataGenerationJobOptions.setTrainSplit(trainSplit);
             deserializedTracesDataGenerationJobOptions.setModelOptions(modelOptions);
             deserializedTracesDataGenerationJobOptions.type = type;
+            deserializedTracesDataGenerationJobOptions.redactPrivateContent = redactPrivateContent;
             return deserializedTracesDataGenerationJobOptions;
         });
+    }
+
+    /*
+     * Whether to redact private content from traces. When omitted or set to true, private content is redacted. Set to
+     * false to opt out of redaction.
+     */
+    @Generated
+    private Boolean redactPrivateContent;
+
+    /**
+     * Get the redactPrivateContent property: Whether to redact private content from traces. When omitted or set to
+     * true, private content is redacted. Set to false to opt out of redaction.
+     *
+     * @return the redactPrivateContent value.
+     */
+    @Generated
+    public Boolean isRedactPrivateContent() {
+        return this.redactPrivateContent;
+    }
+
+    /**
+     * Set the redactPrivateContent property: Whether to redact private content from traces. When omitted or set to
+     * true, private content is redacted. Set to false to opt out of redaction.
+     *
+     * @param redactPrivateContent the redactPrivateContent value to set.
+     * @return the TracesDataGenerationJobOptions object itself.
+     */
+    @Generated
+    public TracesDataGenerationJobOptions setRedactPrivateContent(Boolean redactPrivateContent) {
+        this.redactPrivateContent = redactPrivateContent;
+        return this;
     }
 }

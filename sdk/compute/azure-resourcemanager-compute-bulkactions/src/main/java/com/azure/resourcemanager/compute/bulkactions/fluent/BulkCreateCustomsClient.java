@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 
 /**
  * An instance of this class provides access to all the operations defined in BulkCreateCustomsClient.
@@ -258,6 +259,39 @@ public interface BulkCreateCustomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void cancel(String resourceGroupName, String location, String name, Context context);
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name);
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name, Context context);
 
     /**
      * List BulkCreateCustom resources by resource group.

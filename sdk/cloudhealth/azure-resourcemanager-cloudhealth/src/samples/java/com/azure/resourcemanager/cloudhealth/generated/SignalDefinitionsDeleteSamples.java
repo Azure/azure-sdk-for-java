@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class SignalDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/SignalDefinitions_Delete.json
+     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_Delete.json
      */
     /**
      * Sample code: SignalDefinitions_Delete.

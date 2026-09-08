@@ -48,6 +48,7 @@ import com.azure.resourcemanager.compute.fluent.SoftDeletedResourcesClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.TenantLevelSharedGalleryInvitesClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineDiagnosticRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
@@ -56,6 +57,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetLifeCycleHookEventsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMDiagnosticRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
@@ -418,6 +420,34 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands() {
         return this.virtualMachineScaleSetVMRunCommands;
+    }
+
+    /**
+     * The VirtualMachineDiagnosticRunCommandsClient object to access its operations.
+     */
+    private final VirtualMachineDiagnosticRunCommandsClient virtualMachineDiagnosticRunCommands;
+
+    /**
+     * Gets the VirtualMachineDiagnosticRunCommandsClient object to access its operations.
+     * 
+     * @return the VirtualMachineDiagnosticRunCommandsClient object.
+     */
+    public VirtualMachineDiagnosticRunCommandsClient getVirtualMachineDiagnosticRunCommands() {
+        return this.virtualMachineDiagnosticRunCommands;
+    }
+
+    /**
+     * The VirtualMachineScaleSetVMDiagnosticRunCommandsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetVMDiagnosticRunCommandsClient virtualMachineScaleSetVMDiagnosticRunCommands;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMDiagnosticRunCommandsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetVMDiagnosticRunCommandsClient object.
+     */
+    public VirtualMachineScaleSetVMDiagnosticRunCommandsClient getVirtualMachineScaleSetVMDiagnosticRunCommands() {
+        return this.virtualMachineScaleSetVMDiagnosticRunCommands;
     }
 
     /**
@@ -920,6 +950,9 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.interconnectBlocks = new InterconnectBlocksClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
         this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
+        this.virtualMachineDiagnosticRunCommands = new VirtualMachineDiagnosticRunCommandsClientImpl(this);
+        this.virtualMachineScaleSetVMDiagnosticRunCommands
+            = new VirtualMachineScaleSetVMDiagnosticRunCommandsClientImpl(this);
         this.disks = new DisksClientImpl(this);
         this.diskAccesses = new DiskAccessesClientImpl(this);
         this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);

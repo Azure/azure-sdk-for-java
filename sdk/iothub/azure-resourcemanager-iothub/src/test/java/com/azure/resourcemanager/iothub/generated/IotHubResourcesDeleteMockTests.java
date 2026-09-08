@@ -27,7 +27,7 @@ public final class IotHubResourcesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.iotHubResources().delete("wpusdsttwvogv", "bejdcn", com.azure.core.util.Context.NONE);
+        manager.iotHubResources().delete("haz", "khnzbonlw", com.azure.core.util.Context.NONE);
 
     }
 }

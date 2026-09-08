@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class IotDpsSkuDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotDpsSkuDefinitionListResult model = BinaryData
-            .fromString("{\"value\":[{\"name\":\"S1\"},{\"name\":\"S1\"},{\"name\":\"S1\"}],\"nextLink\":\"zj\"}")
+        IotDpsSkuDefinitionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"S1\"},{\"name\":\"S1\"},{\"name\":\"S1\"},{\"name\":\"S1\"}],\"nextLink\":\"hybcibv\"}")
             .toObject(IotDpsSkuDefinitionListResult.class);
         Assertions.assertEquals(IotDpsSku.S1, model.value().get(0).name());
-        Assertions.assertEquals("zj", model.nextLink());
+        Assertions.assertEquals("hybcibv", model.nextLink());
     }
 }

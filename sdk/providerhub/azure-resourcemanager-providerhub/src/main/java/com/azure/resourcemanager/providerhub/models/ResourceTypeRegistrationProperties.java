@@ -144,11 +144,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
     private List<String> disallowedActionVerbs;
 
     /*
-     * The service tree infos.
-     */
-    private List<ServiceTreeInfo> serviceTreeInfos;
-
-    /*
      * The request header options.
      */
     private ResourceTypeRegistrationPropertiesRequestHeaderOptions requestHeaderOptions;
@@ -176,7 +171,32 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
     /*
      * The resource deletion policy.
      */
-    private ResourceDeletionPolicy resourceDeletionPolicy;
+    private RPaaSResourceDeletionPolicy resourceDeletionPolicy;
+
+    /*
+     * List of resource deletion policies added.
+     */
+    private List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies;
+
+    /*
+     * The managed resource group configuration.
+     */
+    private ResourceTypeManagedResourceGroupConfiguration managedResourceGroupConfiguration;
+
+    /*
+     * The private endpoint configuration.
+     */
+    private PrivateEndpointConfiguration privateEndpointConfiguration;
+
+    /*
+     * The write lock configuration.
+     */
+    private WriteLockConfiguration writeLock;
+
+    /*
+     * Indicates whether super scale is enabled.
+     */
+    private Boolean superScaleEnabled;
 
     /*
      * The resource concurrency control options.
@@ -272,11 +292,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
      * The availability zone rule.
      */
     private ResourceTypeRegistrationPropertiesAvailabilityZoneRule availabilityZoneRule;
-
-    /*
-     * The dsts configuration.
-     */
-    private ResourceTypeRegistrationPropertiesDstsConfiguration dstsConfiguration;
 
     /*
      * Async timeout rules
@@ -903,26 +918,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
     }
 
     /**
-     * Get the serviceTreeInfos property: The service tree infos.
-     * 
-     * @return the serviceTreeInfos value.
-     */
-    public List<ServiceTreeInfo> serviceTreeInfos() {
-        return this.serviceTreeInfos;
-    }
-
-    /**
-     * Set the serviceTreeInfos property: The service tree infos.
-     * 
-     * @param serviceTreeInfos the serviceTreeInfos value to set.
-     * @return the ResourceTypeRegistrationProperties object itself.
-     */
-    public ResourceTypeRegistrationProperties withServiceTreeInfos(List<ServiceTreeInfo> serviceTreeInfos) {
-        this.serviceTreeInfos = serviceTreeInfos;
-        return this;
-    }
-
-    /**
      * Get the requestHeaderOptions property: The request header options.
      * 
      * @return the requestHeaderOptions value.
@@ -1031,7 +1026,7 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
      * 
      * @return the resourceDeletionPolicy value.
      */
-    public ResourceDeletionPolicy resourceDeletionPolicy() {
+    public RPaaSResourceDeletionPolicy resourceDeletionPolicy() {
         return this.resourceDeletionPolicy;
     }
 
@@ -1042,8 +1037,111 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
      * @return the ResourceTypeRegistrationProperties object itself.
      */
     public ResourceTypeRegistrationProperties
-        withResourceDeletionPolicy(ResourceDeletionPolicy resourceDeletionPolicy) {
+        withResourceDeletionPolicy(RPaaSResourceDeletionPolicy resourceDeletionPolicy) {
         this.resourceDeletionPolicy = resourceDeletionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the resourceDeletionPolicies property: List of resource deletion policies added.
+     * 
+     * @return the resourceDeletionPolicies value.
+     */
+    public List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies() {
+        return this.resourceDeletionPolicies;
+    }
+
+    /**
+     * Set the resourceDeletionPolicies property: List of resource deletion policies added.
+     * 
+     * @param resourceDeletionPolicies the resourceDeletionPolicies value to set.
+     * @return the ResourceTypeRegistrationProperties object itself.
+     */
+    public ResourceTypeRegistrationProperties
+        withResourceDeletionPolicies(List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies) {
+        this.resourceDeletionPolicies = resourceDeletionPolicies;
+        return this;
+    }
+
+    /**
+     * Get the managedResourceGroupConfiguration property: The managed resource group configuration.
+     * 
+     * @return the managedResourceGroupConfiguration value.
+     */
+    public ResourceTypeManagedResourceGroupConfiguration managedResourceGroupConfiguration() {
+        return this.managedResourceGroupConfiguration;
+    }
+
+    /**
+     * Set the managedResourceGroupConfiguration property: The managed resource group configuration.
+     * 
+     * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
+     * @return the ResourceTypeRegistrationProperties object itself.
+     */
+    public ResourceTypeRegistrationProperties withManagedResourceGroupConfiguration(
+        ResourceTypeManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+        this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConfiguration property: The private endpoint configuration.
+     * 
+     * @return the privateEndpointConfiguration value.
+     */
+    public PrivateEndpointConfiguration privateEndpointConfiguration() {
+        return this.privateEndpointConfiguration;
+    }
+
+    /**
+     * Set the privateEndpointConfiguration property: The private endpoint configuration.
+     * 
+     * @param privateEndpointConfiguration the privateEndpointConfiguration value to set.
+     * @return the ResourceTypeRegistrationProperties object itself.
+     */
+    public ResourceTypeRegistrationProperties
+        withPrivateEndpointConfiguration(PrivateEndpointConfiguration privateEndpointConfiguration) {
+        this.privateEndpointConfiguration = privateEndpointConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the writeLock property: The write lock configuration.
+     * 
+     * @return the writeLock value.
+     */
+    public WriteLockConfiguration writeLock() {
+        return this.writeLock;
+    }
+
+    /**
+     * Set the writeLock property: The write lock configuration.
+     * 
+     * @param writeLock the writeLock value to set.
+     * @return the ResourceTypeRegistrationProperties object itself.
+     */
+    public ResourceTypeRegistrationProperties withWriteLock(WriteLockConfiguration writeLock) {
+        this.writeLock = writeLock;
+        return this;
+    }
+
+    /**
+     * Get the superScaleEnabled property: Indicates whether super scale is enabled.
+     * 
+     * @return the superScaleEnabled value.
+     */
+    public Boolean superScaleEnabled() {
+        return this.superScaleEnabled;
+    }
+
+    /**
+     * Set the superScaleEnabled property: Indicates whether super scale is enabled.
+     * 
+     * @param superScaleEnabled the superScaleEnabled value to set.
+     * @return the ResourceTypeRegistrationProperties object itself.
+     */
+    public ResourceTypeRegistrationProperties withSuperScaleEnabled(Boolean superScaleEnabled) {
+        this.superScaleEnabled = superScaleEnabled;
         return this;
     }
 
@@ -1432,27 +1530,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
     public ResourceTypeRegistrationProperties
         withAvailabilityZoneRule(ResourceTypeRegistrationPropertiesAvailabilityZoneRule availabilityZoneRule) {
         this.availabilityZoneRule = availabilityZoneRule;
-        return this;
-    }
-
-    /**
-     * Get the dstsConfiguration property: The dsts configuration.
-     * 
-     * @return the dstsConfiguration value.
-     */
-    public ResourceTypeRegistrationPropertiesDstsConfiguration dstsConfiguration() {
-        return this.dstsConfiguration;
-    }
-
-    /**
-     * Set the dstsConfiguration property: The dsts configuration.
-     * 
-     * @param dstsConfiguration the dstsConfiguration value to set.
-     * @return the ResourceTypeRegistrationProperties object itself.
-     */
-    public ResourceTypeRegistrationProperties
-        withDstsConfiguration(ResourceTypeRegistrationPropertiesDstsConfiguration dstsConfiguration) {
-        this.dstsConfiguration = dstsConfiguration;
         return this;
     }
 
@@ -1970,9 +2047,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         if (checkNameAvailabilitySpecifications() != null) {
             checkNameAvailabilitySpecifications().validate();
         }
-        if (serviceTreeInfos() != null) {
-            serviceTreeInfos().forEach(e -> e.validate());
-        }
         if (requestHeaderOptions() != null) {
             requestHeaderOptions().validate();
         }
@@ -1987,6 +2061,18 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         }
         if (resourceMovePolicy() != null) {
             resourceMovePolicy().validate();
+        }
+        if (resourceDeletionPolicies() != null) {
+            resourceDeletionPolicies().forEach(e -> e.validate());
+        }
+        if (managedResourceGroupConfiguration() != null) {
+            managedResourceGroupConfiguration().validate();
+        }
+        if (privateEndpointConfiguration() != null) {
+            privateEndpointConfiguration().validate();
+        }
+        if (writeLock() != null) {
+            writeLock().validate();
         }
         if (resourceConcurrencyControlOptions() != null) {
             resourceConcurrencyControlOptions().values().forEach(e -> {
@@ -2027,9 +2113,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         }
         if (availabilityZoneRule() != null) {
             availabilityZoneRule().validate();
-        }
-        if (dstsConfiguration() != null) {
-            dstsConfiguration().validate();
         }
         if (asyncTimeoutRules() != null) {
             asyncTimeoutRules().forEach(e -> e.validate());
@@ -2111,8 +2194,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         jsonWriter.writeJsonField("checkNameAvailabilitySpecifications", this.checkNameAvailabilitySpecifications);
         jsonWriter.writeArrayField("disallowedActionVerbs", this.disallowedActionVerbs,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("serviceTreeInfos", this.serviceTreeInfos,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("requestHeaderOptions", this.requestHeaderOptions);
         jsonWriter.writeArrayField("subscriptionStateRules", this.subscriptionStateRules,
             (writer, element) -> writer.writeJson(element));
@@ -2122,6 +2203,12 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         jsonWriter.writeJsonField("resourceMovePolicy", this.resourceMovePolicy);
         jsonWriter.writeStringField("resourceDeletionPolicy",
             this.resourceDeletionPolicy == null ? null : this.resourceDeletionPolicy.toString());
+        jsonWriter.writeArrayField("resourceDeletionPolicies", this.resourceDeletionPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeJsonField("privateEndpointConfiguration", this.privateEndpointConfiguration);
+        jsonWriter.writeJsonField("writeLock", this.writeLock);
+        jsonWriter.writeBooleanField("superScaleEnabled", this.superScaleEnabled);
         jsonWriter.writeMapField("resourceConcurrencyControlOptions", this.resourceConcurrencyControlOptions,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("resourceGraphConfiguration", this.resourceGraphConfiguration);
@@ -2146,7 +2233,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         jsonWriter.writeStringField("policyExecutionType",
             this.policyExecutionType == null ? null : this.policyExecutionType.toString());
         jsonWriter.writeJsonField("availabilityZoneRule", this.availabilityZoneRule);
-        jsonWriter.writeJsonField("dstsConfiguration", this.dstsConfiguration);
         jsonWriter.writeArrayField("asyncTimeoutRules", this.asyncTimeoutRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("commonApiVersions", this.commonApiVersions,
@@ -2280,10 +2366,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
                 } else if ("disallowedActionVerbs".equals(fieldName)) {
                     List<String> disallowedActionVerbs = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceTypeRegistrationProperties.disallowedActionVerbs = disallowedActionVerbs;
-                } else if ("serviceTreeInfos".equals(fieldName)) {
-                    List<ServiceTreeInfo> serviceTreeInfos
-                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
-                    deserializedResourceTypeRegistrationProperties.serviceTreeInfos = serviceTreeInfos;
                 } else if ("requestHeaderOptions".equals(fieldName)) {
                     deserializedResourceTypeRegistrationProperties.requestHeaderOptions
                         = ResourceTypeRegistrationPropertiesRequestHeaderOptions.fromJson(reader);
@@ -2303,7 +2385,22 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
                         = ResourceTypeRegistrationPropertiesResourceMovePolicy.fromJson(reader);
                 } else if ("resourceDeletionPolicy".equals(fieldName)) {
                     deserializedResourceTypeRegistrationProperties.resourceDeletionPolicy
-                        = ResourceDeletionPolicy.fromString(reader.getString());
+                        = RPaaSResourceDeletionPolicy.fromString(reader.getString());
+                } else if ("resourceDeletionPolicies".equals(fieldName)) {
+                    List<ResourceDeletionPolicyAndProperties> resourceDeletionPolicies
+                        = reader.readArray(reader1 -> ResourceDeletionPolicyAndProperties.fromJson(reader1));
+                    deserializedResourceTypeRegistrationProperties.resourceDeletionPolicies = resourceDeletionPolicies;
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationProperties.managedResourceGroupConfiguration
+                        = ResourceTypeManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("privateEndpointConfiguration".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationProperties.privateEndpointConfiguration
+                        = PrivateEndpointConfiguration.fromJson(reader);
+                } else if ("writeLock".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationProperties.writeLock = WriteLockConfiguration.fromJson(reader);
+                } else if ("superScaleEnabled".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationProperties.superScaleEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("resourceConcurrencyControlOptions".equals(fieldName)) {
                     Map<String, ResourceConcurrencyControlOption> resourceConcurrencyControlOptions
                         = reader.readMap(reader1 -> ResourceConcurrencyControlOption.fromJson(reader1));
@@ -2363,9 +2460,6 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
                 } else if ("availabilityZoneRule".equals(fieldName)) {
                     deserializedResourceTypeRegistrationProperties.availabilityZoneRule
                         = ResourceTypeRegistrationPropertiesAvailabilityZoneRule.fromJson(reader);
-                } else if ("dstsConfiguration".equals(fieldName)) {
-                    deserializedResourceTypeRegistrationProperties.dstsConfiguration
-                        = ResourceTypeRegistrationPropertiesDstsConfiguration.fromJson(reader);
                 } else if ("asyncTimeoutRules".equals(fieldName)) {
                     List<AsyncTimeoutRule> asyncTimeoutRules
                         = reader.readArray(reader1 -> AsyncTimeoutRule.fromJson(reader1));

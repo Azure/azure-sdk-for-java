@@ -12,16 +12,16 @@ public final class ResourceGraphQuerySpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGraphQuerySpecification model
-            = BinaryData.fromString("{\"kind\":\"ResourceGraphQuery\",\"resourceGraphQuery\":\"ynsqyrpfoobr\"}")
+            = BinaryData.fromString("{\"kind\":\"ResourceGraphQuery\",\"resourceGraphQuery\":\"lefaxvxilcbtgn\"}")
                 .toObject(ResourceGraphQuerySpecification.class);
-        Assertions.assertEquals("ynsqyrpfoobr", model.resourceGraphQuery());
+        Assertions.assertEquals("lefaxvxilcbtgn", model.resourceGraphQuery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceGraphQuerySpecification model
-            = new ResourceGraphQuerySpecification().withResourceGraphQuery("ynsqyrpfoobr");
+            = new ResourceGraphQuerySpecification().withResourceGraphQuery("lefaxvxilcbtgn");
         model = BinaryData.fromObject(model).toObject(ResourceGraphQuerySpecification.class);
-        Assertions.assertEquals("ynsqyrpfoobr", model.resourceGraphQuery());
+        Assertions.assertEquals("lefaxvxilcbtgn", model.resourceGraphQuery());
     }
 }

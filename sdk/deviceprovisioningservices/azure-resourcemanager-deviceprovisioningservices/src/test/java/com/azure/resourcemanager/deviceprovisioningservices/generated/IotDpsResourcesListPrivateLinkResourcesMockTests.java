@@ -22,7 +22,7 @@ public final class IotDpsResourcesListPrivateLinkResourcesMockTests {
     @Test
     public void testListPrivateLinkResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"asrru\",\"requiredMembers\":[\"hsqfsubcgjbirxbp\",\"bsrfbj\",\"dtws\",\"otftpvjzbexilz\"],\"requiredZoneNames\":[\"qqnvwpmq\",\"aruoujmkcjhwqyt\",\"r\",\"bnw\"]},\"id\":\"wgdrjervnaenqp\",\"name\":\"hin\",\"type\":\"oygmift\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"mocmbqfqvmk\",\"requiredMembers\":[\"zapvhelx\"],\"requiredZoneNames\":[\"lya\",\"dd\",\"kcbcue\",\"rjxgciqib\"]},\"id\":\"osx\",\"name\":\"dqrhzoymib\",\"type\":\"rq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class IotDpsResourcesListPrivateLinkResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GroupIdInformation> response = manager.iotDpsResources()
-            .listPrivateLinkResources("wfbkrvrns", "shqjohxcrsbf", com.azure.core.util.Context.NONE);
+            .listPrivateLinkResources("mquxvypo", "gkopkwhojvpajqgx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("asrru", response.iterator().next().properties().groupId());
-        Assertions.assertEquals("hsqfsubcgjbirxbp", response.iterator().next().properties().requiredMembers().get(0));
-        Assertions.assertEquals("qqnvwpmq", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("mocmbqfqvmk", response.iterator().next().properties().groupId());
+        Assertions.assertEquals("zapvhelx", response.iterator().next().properties().requiredMembers().get(0));
+        Assertions.assertEquals("lya", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

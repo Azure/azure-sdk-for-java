@@ -16,48 +16,48 @@ public final class ManagedComputeDeploymentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeDeploymentInner model = BinaryData.fromString(
-            "{\"properties\":{\"model\":\"lohap\",\"deploymentTemplate\":\"nfszpyglqdhmrjz\",\"acceleratorType\":\"l\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"capabilities\":{\"enky\":\"yypsjoqc\",\"vsqxfxjelgcmpzqj\":\"fq\",\"s\":\"hhqxuwyvcacoyviv\",\"bscm\":\"zusjsz\"},\"computeId\":\"zijiufehgmv\",\"priority\":\"nwyvq\",\"acceleratorsPerInstance\":1693891675,\"totalAccelerators\":1520441581,\"provisioningState\":\"Moving\",\"provisioningDetails\":{\"message\":\"lylyfwxzutgqz\",\"lastOperationTimestamp\":\"2021-01-01T12:02:36Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"mupgxy\",\"swagger\":\"cdxa\",\"messagesApiScoringPath\":\"u\"}},\"sku\":{\"name\":\"tabenbbk\",\"tier\":\"Basic\",\"size\":\"zucafeddww\",\"family\":\"z\",\"capacity\":1392788602},\"etag\":\"u\",\"id\":\"nhgookrtalvnbw\",\"name\":\"pbeme\",\"type\":\"uclvdjj\"}")
+            "{\"properties\":{\"model\":\"qsdtcjbctvivuzq\",\"deploymentTemplate\":\"tuowogtgitsqh\",\"acceleratorType\":\"b\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"capabilities\":{\"bmwnrdjyibqb\":\"anfzndscxmxeatk\"},\"computeId\":\"omhjrmkuhm\",\"priority\":\"ljalfihcjmobc\",\"acceleratorsPerInstance\":367738618,\"totalAccelerators\":1814973271,\"provisioningState\":\"ResolvingDNS\",\"provisioningDetails\":{\"message\":\"wgaxfgvaknokzwj\",\"lastOperationTimestamp\":\"2020-12-29T19:13:55Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"ixldzyyfy\",\"swagger\":\"qsix\",\"messagesApiScoringPath\":\"m\"}},\"sku\":{\"name\":\"jivyqlkjuv\",\"tier\":\"Standard\",\"size\":\"slzoyov\",\"family\":\"dbpqvybefgvm\",\"capacity\":783627315},\"etag\":\"cvtlubseskvc\",\"id\":\"rtrh\",\"name\":\"nlp\",\"type\":\"rykycndzfqivjr\"}")
             .toObject(ManagedComputeDeploymentInner.class);
-        Assertions.assertEquals("lohap", model.properties().model());
-        Assertions.assertEquals("nfszpyglqdhmrjz", model.properties().deploymentTemplate());
-        Assertions.assertEquals("l", model.properties().acceleratorType());
+        Assertions.assertEquals("qsdtcjbctvivuzq", model.properties().model());
+        Assertions.assertEquals("tuowogtgitsqh", model.properties().deploymentTemplate());
+        Assertions.assertEquals("b", model.properties().acceleratorType());
         Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
             model.properties().versionUpgradeOption());
-        Assertions.assertEquals("zijiufehgmv", model.properties().computeId());
-        Assertions.assertEquals("nwyvq", model.properties().priority());
-        Assertions.assertEquals("tabenbbk", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("zucafeddww", model.sku().size());
-        Assertions.assertEquals("z", model.sku().family());
-        Assertions.assertEquals(1392788602, model.sku().capacity());
+        Assertions.assertEquals("omhjrmkuhm", model.properties().computeId());
+        Assertions.assertEquals("ljalfihcjmobc", model.properties().priority());
+        Assertions.assertEquals("jivyqlkjuv", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("slzoyov", model.sku().size());
+        Assertions.assertEquals("dbpqvybefgvm", model.sku().family());
+        Assertions.assertEquals(783627315, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedComputeDeploymentInner model = new ManagedComputeDeploymentInner()
-            .withProperties(new ManagedComputeDeploymentProperties().withModel("lohap")
-                .withDeploymentTemplate("nfszpyglqdhmrjz")
-                .withAcceleratorType("l")
+            .withProperties(new ManagedComputeDeploymentProperties().withModel("qsdtcjbctvivuzq")
+                .withDeploymentTemplate("tuowogtgitsqh")
+                .withAcceleratorType("b")
                 .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED)
-                .withComputeId("zijiufehgmv")
-                .withPriority("nwyvq"))
-            .withSku(new Sku().withName("tabenbbk")
-                .withTier(SkuTier.BASIC)
-                .withSize("zucafeddww")
-                .withFamily("z")
-                .withCapacity(1392788602));
+                .withComputeId("omhjrmkuhm")
+                .withPriority("ljalfihcjmobc"))
+            .withSku(new Sku().withName("jivyqlkjuv")
+                .withTier(SkuTier.STANDARD)
+                .withSize("slzoyov")
+                .withFamily("dbpqvybefgvm")
+                .withCapacity(783627315));
         model = BinaryData.fromObject(model).toObject(ManagedComputeDeploymentInner.class);
-        Assertions.assertEquals("lohap", model.properties().model());
-        Assertions.assertEquals("nfszpyglqdhmrjz", model.properties().deploymentTemplate());
-        Assertions.assertEquals("l", model.properties().acceleratorType());
+        Assertions.assertEquals("qsdtcjbctvivuzq", model.properties().model());
+        Assertions.assertEquals("tuowogtgitsqh", model.properties().deploymentTemplate());
+        Assertions.assertEquals("b", model.properties().acceleratorType());
         Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
             model.properties().versionUpgradeOption());
-        Assertions.assertEquals("zijiufehgmv", model.properties().computeId());
-        Assertions.assertEquals("nwyvq", model.properties().priority());
-        Assertions.assertEquals("tabenbbk", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("zucafeddww", model.sku().size());
-        Assertions.assertEquals("z", model.sku().family());
-        Assertions.assertEquals(1392788602, model.sku().capacity());
+        Assertions.assertEquals("omhjrmkuhm", model.properties().computeId());
+        Assertions.assertEquals("ljalfihcjmobc", model.properties().priority());
+        Assertions.assertEquals("jivyqlkjuv", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("slzoyov", model.sku().size());
+        Assertions.assertEquals("dbpqvybefgvm", model.sku().family());
+        Assertions.assertEquals(783627315, model.sku().capacity());
     }
 }

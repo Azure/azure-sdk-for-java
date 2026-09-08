@@ -13,18 +13,18 @@ public final class SkuResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuResourceInner model = BinaryData.fromString(
-            "{\"resourceType\":\"mszkkfo\",\"sku\":{\"name\":\"eyfkzikfja\",\"tier\":\"Basic\",\"size\":\"ivx\",\"family\":\"zel\",\"capacity\":1240770029},\"capacity\":{\"minimum\":2047901217,\"maximum\":1960013520,\"step\":1789990861,\"default\":730394428,\"allowedValues\":[1417911120,1449386799]}}")
+            "{\"resourceType\":\"llrxcyjmoad\",\"sku\":{\"name\":\"varmywdmj\",\"tier\":\"Basic\",\"size\":\"jhhyxxrwlycoduhp\",\"family\":\"kgymareqnajxqug\",\"capacity\":432489630},\"capacity\":{\"minimum\":1538408928,\"maximum\":32675843,\"step\":1237082530,\"default\":403214280,\"allowedValues\":[1063119881]}}")
             .toObject(SkuResourceInner.class);
-        Assertions.assertEquals("mszkkfo", model.resourceType());
-        Assertions.assertEquals("eyfkzikfja", model.sku().name());
+        Assertions.assertEquals("llrxcyjmoad", model.resourceType());
+        Assertions.assertEquals("varmywdmj", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("ivx", model.sku().size());
-        Assertions.assertEquals("zel", model.sku().family());
-        Assertions.assertEquals(1240770029, model.sku().capacity());
-        Assertions.assertEquals(2047901217, model.capacity().minimum());
-        Assertions.assertEquals(1960013520, model.capacity().maximum());
-        Assertions.assertEquals(1789990861, model.capacity().step());
-        Assertions.assertEquals(730394428, model.capacity().defaultProperty());
-        Assertions.assertEquals(1417911120, model.capacity().allowedValues().get(0));
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.sku().size());
+        Assertions.assertEquals("kgymareqnajxqug", model.sku().family());
+        Assertions.assertEquals(432489630, model.sku().capacity());
+        Assertions.assertEquals(1538408928, model.capacity().minimum());
+        Assertions.assertEquals(32675843, model.capacity().maximum());
+        Assertions.assertEquals(1237082530, model.capacity().step());
+        Assertions.assertEquals(403214280, model.capacity().defaultProperty());
+        Assertions.assertEquals(1063119881, model.capacity().allowedValues().get(0));
     }
 }

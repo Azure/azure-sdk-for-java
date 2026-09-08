@@ -17,9 +17,8 @@ omitted_paths:
   - "sdk/*/swagger/*"
   - "sdk/*/codegen/*"
   - sdk/*/*-stress/*
-  - doc/*
+  - docs/*
   - eng/*
-  - samples/*
 language: java
 root_check_enabled: True
 required_readme_sections:

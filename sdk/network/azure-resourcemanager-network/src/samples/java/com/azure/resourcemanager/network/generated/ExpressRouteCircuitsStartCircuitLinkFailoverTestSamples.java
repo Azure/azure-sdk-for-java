@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsStartCircuitLinkFailoverTestSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitStartCircuitLinkFailoverTest.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteCircuitStartCircuitLinkFailoverTest.json
      */
     /**
      * Sample code: ExpressRouteCircuitStartCircuitLinkFailoverTest.

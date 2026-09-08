@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -194,8 +195,8 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("synchronizationInterval".equals(fieldName)) {
-                    synchronizationInterval
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                    synchronizationInterval = reader
+                        .getNullable(nonNullReader -> KnowledgeSourceDurationParser.parse(nonNullReader.getString()));
                 } else if ("currentSynchronizationState".equals(fieldName)) {
                     currentSynchronizationState = SynchronizationState.fromJson(reader);
                 } else if ("lastSynchronizationState".equals(fieldName)) {

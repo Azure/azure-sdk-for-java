@@ -24,7 +24,7 @@ public final class ManagedComputeDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"model\":\"myrhkvx\",\"deploymentTemplate\":\"miemqyftgpqos\",\"acceleratorType\":\"fqvjmghpakbqyhls\",\"versionUpgradeOption\":\"NoAutoUpgrade\",\"capabilities\":{\"yevztnjaw\":\"meqagkncjmyb\"},\"computeId\":\"ulem\",\"priority\":\"mbwppxirxbkitzmn\",\"acceleratorsPerInstance\":1863060049,\"totalAccelerators\":1276805401,\"provisioningState\":\"ResolvingDNS\",\"provisioningDetails\":{\"message\":\"tjlxsgcemegdzdvy\",\"lastOperationTimestamp\":\"2021-06-21T09:17:13Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"f\",\"swagger\":\"zufldifnivlutg\",\"messagesApiScoringPath\":\"aacxauhvc\"}},\"sku\":{\"name\":\"xhklsqxt\",\"tier\":\"Free\",\"size\":\"gkts\",\"family\":\"yxxo\",\"capacity\":1864207532},\"etag\":\"bkvecnxfxphsowbe\",\"id\":\"nbwutlvuwmsu\",\"name\":\"ustihtgrafjajvky\",\"type\":\"mmjczvog\"}]}";
+            = "{\"value\":[{\"properties\":{\"model\":\"qbjxgjwsrerukbuu\",\"deploymentTemplate\":\"izwkwkjx\",\"acceleratorType\":\"acedikqel\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"capabilities\":{\"ommki\":\"bevgbn\",\"mzyjjyut\":\"hypw\",\"i\":\"mzqlnaag\",\"fqiywhxpsb\":\"j\"},\"computeId\":\"ialezaydpu\",\"priority\":\"degefxlieggoto\",\"acceleratorsPerInstance\":1802423608,\"totalAccelerators\":1258550316,\"provisioningState\":\"Succeeded\",\"provisioningDetails\":{\"message\":\"zkah\",\"lastOperationTimestamp\":\"2021-10-30T11:32:58Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"fmkcu\",\"swagger\":\"hdgwuzrono\",\"messagesApiScoringPath\":\"hz\"}},\"sku\":{\"name\":\"dn\",\"tier\":\"Standard\",\"size\":\"dcikgxk\",\"family\":\"zfzdjekeb\",\"capacity\":1623904508},\"etag\":\"zsjwyfixirgcj\",\"id\":\"iwu\",\"name\":\"pjkakrxifqnf\",\"type\":\"orxsqtzngxbsale\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class ManagedComputeDeploymentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedComputeDeployment> response
-            = manager.managedComputeDeployments().list("edr", "hxg", com.azure.core.util.Context.NONE);
+            = manager.managedComputeDeployments().list("rjzgkbrauxbo", "fq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("myrhkvx", response.iterator().next().properties().model());
-        Assertions.assertEquals("miemqyftgpqos", response.iterator().next().properties().deploymentTemplate());
-        Assertions.assertEquals("fqvjmghpakbqyhls", response.iterator().next().properties().acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE,
+        Assertions.assertEquals("qbjxgjwsrerukbuu", response.iterator().next().properties().model());
+        Assertions.assertEquals("izwkwkjx", response.iterator().next().properties().deploymentTemplate());
+        Assertions.assertEquals("acedikqel", response.iterator().next().properties().acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
             response.iterator().next().properties().versionUpgradeOption());
-        Assertions.assertEquals("ulem", response.iterator().next().properties().computeId());
-        Assertions.assertEquals("mbwppxirxbkitzmn", response.iterator().next().properties().priority());
-        Assertions.assertEquals("xhklsqxt", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("gkts", response.iterator().next().sku().size());
-        Assertions.assertEquals("yxxo", response.iterator().next().sku().family());
-        Assertions.assertEquals(1864207532, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("ialezaydpu", response.iterator().next().properties().computeId());
+        Assertions.assertEquals("degefxlieggoto", response.iterator().next().properties().priority());
+        Assertions.assertEquals("dn", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("dcikgxk", response.iterator().next().sku().size());
+        Assertions.assertEquals("zfzdjekeb", response.iterator().next().sku().family());
+        Assertions.assertEquals(1623904508, response.iterator().next().sku().capacity());
     }
 }

@@ -10,6 +10,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
@@ -20,6 +21,7 @@ import com.azure.ai.contentunderstanding.models.KnowledgeSource;
 import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -37,7 +39,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * Sample demonstrates how to build analyzers with training labels (labeled data from Azure Blob Storage).
@@ -64,6 +68,9 @@ import java.util.UUID;
  * <p>If neither option is configured the sample runs in <b>demo mode</b>: it creates the
  * analyzer without labeled data so you can still see the API surface and shape of the response.</p>
  *
+ * <p>Option B overwrites blobs with the same names and does not delete uploaded training data. Use a dedicated
+ * container or prefix and manage the uploaded data according to your retention policy.</p>
+ *
  * <p>Each labeled document in the training folder includes:</p>
  * <ul>
  *   <li>The original file (e.g., PDF or image).</li>
@@ -84,6 +91,8 @@ import java.util.UUID;
  *       container with labeled training data.</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} – Path prefix within the container
  *       (e.g., "receipt_labels/"). Omit if files are at the container root.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_FILE_LIST_PATH} – Optional path to a blob that
+ *       lists the training files to include.</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT} – Option B: storage account
  *       name (without {@code .blob.core.windows.net}).</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER} – Option B: container name (created
@@ -96,16 +105,19 @@ public class Sample16_CreateAnalyzerWithLabels {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample16.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = requireEnvironmentValue("CONTENTUNDERSTANDING_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_ENDPOINT"));
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Option A: pre-generated SAS URL with Read + List permissions
         String sasUrl = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL");
         String sasUrlPrefix = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX");
+        String fileListPath = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_FILE_LIST_PATH");
 
         // Option B: auto-upload local label files and generate a User Delegation SAS URL
         String storageAccount = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT");
         String containerName = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER");
+        validateTrainingDataConfiguration(sasUrl, storageAccount, containerName);
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
@@ -167,7 +179,7 @@ public class Sample16_CreateAnalyzerWithLabels {
             // Items array field
             ContentFieldDefinition itemsField = new ContentFieldDefinition();
             itemsField.setType(ContentFieldType.ARRAY);
-            itemsField.setMethod(GenerationMethod.GENERATE);
+            itemsField.setMethod(GenerationMethod.EXTRACT);
             itemsField.setDescription("List of items purchased");
             itemsField.setItemDefinition(itemDefinition);
             fields.put("Items", itemsField);
@@ -209,9 +221,11 @@ public class Sample16_CreateAnalyzerWithLabels {
                 if (sasUrlPrefix != null && !sasUrlPrefix.trim().isEmpty()) {
                     knowledgeSource.setPrefix(sasUrlPrefix);
                 }
+                if (fileListPath != null && !fileListPath.trim().isEmpty()) {
+                    knowledgeSource.setFileListPath(fileListPath);
+                }
                 knowledgeSources.add(knowledgeSource);
-                System.out.println("Using labeled training data from: "
-                    + sasUrl.substring(0, Math.min(50, sasUrl.length())) + "...");
+                System.out.println("Using labeled training data from container: " + sanitizeSasUrl(sasUrl));
             } else {
                 System.out.println("DEMO MODE: no training data configured. The analyzer will be created without labeled data.");
                 System.out.println("  Set CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL (Option A), or both");
@@ -221,8 +235,8 @@ public class Sample16_CreateAnalyzerWithLabels {
 
             // Step 4: Create analyzer (with or without labeled data)
             Map<String, String> models = new HashMap<>();
-            models.put("completion", "gpt-4.1");
-            models.put("embedding", "text-embedding-3-large");
+            models.put("completion", SampleModelConfiguration.getCompletionModel());
+            models.put("embedding", SampleModelConfiguration.getEmbeddingModel());
 
             ContentAnalyzer analyzer = new ContentAnalyzer()
                 .setBaseAnalyzerId("prebuilt-document")
@@ -237,9 +251,11 @@ public class Sample16_CreateAnalyzerWithLabels {
                 analyzer.setKnowledgeSources(knowledgeSources);
             }
 
-            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+            SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = client.beginCreateAnalyzer(analyzerId, analyzer, true);
-            ContentAnalyzer result = createPoller.getFinalResult();
+            ContentAnalyzer result
+                = requireSuccessfulResult(createPoller.waitForCompletion().getStatus(), createPoller::getFinalResult,
+                    "Labeled analyzer creation");
 
             System.out.println("Analyzer created: " + analyzerId);
             System.out.println("  Description: " + result.getDescription());
@@ -251,20 +267,56 @@ public class Sample16_CreateAnalyzerWithLabels {
 
             // Verify analyzer creation
             System.out.println("\nAnalyzer Creation Verification:");
+            requireEqual("prebuilt-document", result.getBaseAnalyzerId(), "base analyzer ID");
+            requireEqual("Receipt analyzer with labeled training data", result.getDescription(), "description");
+            ContentFieldSchema resultSchema = requireNotNull(result.getFieldSchema(), "field schema");
+            requireEqual("receipt_schema", resultSchema.getName(), "field schema name");
             System.out.println("Analyzer created successfully");
 
             // Verify field schema
-            Map<String, ContentFieldDefinition> resultFields = result.getFieldSchema().getFields();
+            Map<String, ContentFieldDefinition> resultFields
+                = requireNotNull(resultSchema.getFields(), "field definitions");
+            requireEqual(3, resultFields.size(), "field count");
+            requireNotNull(resultFields.get("MerchantName"), "MerchantName field");
+            requireNotNull(resultFields.get("TotalPrice"), "TotalPrice field");
             System.out.println("Field schema verified:");
             System.out.println("  MerchantName: String (Extract)");
-            System.out.println("  Items: Array of Objects (Generate)");
+            System.out.println("  Items: Array of Objects (Extract)");
             System.out.println("    - Quantity, Name, Price");
             System.out.println("  TotalPrice: String (Extract)");
 
-            ContentFieldDefinition itemsFieldResult = resultFields.get("Items");
+            ContentFieldDefinition itemsFieldResult = requireNotNull(resultFields.get("Items"), "Items field");
+            requireEqual(ContentFieldType.ARRAY, itemsFieldResult.getType(), "Items field type");
+            requireEqual(GenerationMethod.EXTRACT, itemsFieldResult.getMethod(), "Items generation method");
+            ContentFieldDefinition resultItemDefinition
+                = requireNotNull(itemsFieldResult.getItemDefinition(), "Items item definition");
+            requireEqual(ContentFieldType.OBJECT, resultItemDefinition.getType(), "Items item type");
+            requireEqual(3, requireNotNull(resultItemDefinition.getProperties(), "Items properties").size(),
+                "Items property count");
             System.out.println("Items field verified:");
             System.out.println("  Type: " + itemsFieldResult.getType());
             System.out.println("  Item properties: " + itemsFieldResult.getItemDefinition().getProperties().size());
+
+            if (hasText(sasUrl)) {
+                List<KnowledgeSource> resultKnowledgeSources
+                    = requireNotNull(result.getKnowledgeSources(), "knowledge sources");
+                requireEqual(1, resultKnowledgeSources.size(), "knowledge source count");
+                if (!(resultKnowledgeSources.get(0) instanceof LabeledDataKnowledgeSource)) {
+                    throw new IllegalStateException("Expected a labeled-data knowledge source.");
+                }
+                LabeledDataKnowledgeSource resultKnowledgeSource
+                    = (LabeledDataKnowledgeSource) resultKnowledgeSources.get(0);
+                requireEqual(sanitizeSasUrl(sasUrl), sanitizeSasUrl(resultKnowledgeSource.getContainerUrl()),
+                    "knowledge source container");
+                if (hasText(sasUrlPrefix)) {
+                    requireEqual(sasUrlPrefix, resultKnowledgeSource.getPrefix(), "knowledge source prefix");
+                }
+                if (hasText(fileListPath)) {
+                    requireEqual(fileListPath, resultKnowledgeSource.getFileListPath(),
+                        "knowledge source file list");
+                }
+                System.out.println("Labeled-data knowledge source verified.");
+            }
 
             // If training data was provided, test the analyzer with a sample document.
             if (sasUrl != null && !sasUrl.trim().isEmpty()) {
@@ -275,28 +327,33 @@ public class Sample16_CreateAnalyzerWithLabels {
                 AnalysisInput input = new AnalysisInput();
                 input.setUrl(testDocUrl);
 
+                SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>
+                    analyzePoller = client.beginAnalyze(analyzerId, Arrays.asList(input));
                 AnalysisResult analyzeResult
-                    = client.beginAnalyze(analyzerId, Arrays.asList(input)).getFinalResult();
+                    = requireSuccessfulResult(analyzePoller.waitForCompletion().getStatus(),
+                        analyzePoller::getFinalResult, "Receipt analysis");
 
                 System.out.println("Analysis completed!");
 
-                if (analyzeResult.getContents() != null
-                    && !analyzeResult.getContents().isEmpty()
-                    && analyzeResult.getContents().get(0) instanceof DocumentContent) {
-                    DocumentContent docContent = (DocumentContent) analyzeResult.getContents().get(0);
-                    System.out.println("Extracted fields: " + docContent.getFields().size());
+                if (analyzeResult.getContents() == null || analyzeResult.getContents().isEmpty()
+                    || !(analyzeResult.getContents().get(0) instanceof DocumentContent)) {
+                    throw new IllegalStateException("Receipt analysis did not return DocumentContent.");
+                }
+                DocumentContent docContent = (DocumentContent) analyzeResult.getContents().get(0);
+                Map<String, ContentField> extractedFields
+                    = requireNotNull(docContent.getFields(), "extracted fields");
+                System.out.println("Extracted fields: " + extractedFields.size());
 
-                    if (docContent.getFields().containsKey("MerchantName")) {
-                        ContentField merchantField = docContent.getFields().get("MerchantName");
-                        if (merchantField != null && merchantField.getValue() instanceof String) {
-                            System.out.println("  MerchantName: " + merchantField.getValue());
-                        }
+                if (extractedFields.containsKey("MerchantName")) {
+                    ContentField merchantField = extractedFields.get("MerchantName");
+                    if (merchantField != null && merchantField.getValue() instanceof String) {
+                        System.out.println("  MerchantName: " + merchantField.getValue());
                     }
-                    if (docContent.getFields().containsKey("TotalPrice")) {
-                        ContentField totalField = docContent.getFields().get("TotalPrice");
-                        if (totalField != null && totalField.getValue() instanceof String) {
-                            System.out.println("  TotalPrice: " + totalField.getValue());
-                        }
+                }
+                if (extractedFields.containsKey("TotalPrice")) {
+                    ContentField totalField = extractedFields.get("TotalPrice");
+                    if (totalField != null && totalField.getValue() instanceof String) {
+                        System.out.println("  TotalPrice: " + totalField.getValue());
                     }
                 }
             }
@@ -321,17 +378,78 @@ public class Sample16_CreateAnalyzerWithLabels {
                     "   or CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT + ..._CONTAINER (Option B).");
             }
 
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             // Cleanup
             try {
                 client.deleteAnalyzer(analyzerId);
                 System.out.println("\nAnalyzer deleted: " + analyzerId);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 System.out.println("Note: Failed to delete analyzer: " + e.getMessage());
             }
+        }
+    }
+
+    static String requireEnvironmentValue(String name, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalStateException("Sample16 requires environment variable " + name + ".");
+        }
+        return value.trim();
+    }
+
+    static void validateTrainingDataConfiguration(String sasUrl, String storageAccount, String containerName) {
+        if (hasText(sasUrl)) {
+            return;
+        }
+        if (hasText(storageAccount) != hasText(containerName)) {
+            throw new IllegalStateException("Option B requires both "
+                + "CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT and "
+                + "CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER.");
+        }
+    }
+
+    public static String sanitizeSasUrl(String sasUrl) {
+        if (sasUrl == null) {
+            return null;
+        }
+        int queryIndex = sasUrl.indexOf('?');
+        int fragmentIndex = sasUrl.indexOf('#');
+        int endIndex = sasUrl.length();
+        if (queryIndex >= 0) {
+            endIndex = queryIndex;
+        }
+        if (fragmentIndex >= 0 && fragmentIndex < endIndex) {
+            endIndex = fragmentIndex;
+        }
+        return sasUrl.substring(0, endIndex);
+    }
+
+    static <T> T requireSuccessfulResult(LongRunningOperationStatus status, Supplier<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException(operationName + " completed unsuccessfully with status: " + status);
+        }
+        T result = finalResult.get();
+        if (result == null) {
+            throw new IllegalStateException(operationName + " completed without a final result.");
+        }
+        return result;
+    }
+
+    private static boolean hasText(String value) {
+        return value != null && !value.trim().isEmpty();
+    }
+
+    private static <T> T requireNotNull(T value, String property) {
+        if (value == null) {
+            throw new IllegalStateException(property + " was not returned.");
+        }
+        return value;
+    }
+
+    private static void requireEqual(Object expected, Object actual, String property) {
+        if (!Objects.equals(expected, actual)) {
+            throw new IllegalStateException(property + " did not match. Expected '" + expected + "' but got '"
+                + actual + "'.");
         }
     }
 

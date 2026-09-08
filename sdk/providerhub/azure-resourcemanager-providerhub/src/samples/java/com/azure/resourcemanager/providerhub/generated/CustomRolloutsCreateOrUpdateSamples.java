@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
+import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationAutoProvisionConfig;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationCanary;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinSpecification;
 import java.util.Arrays;
 
 /**
@@ -15,7 +18,7 @@ import java.util.Arrays;
  */
 public final class CustomRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: CustomRollouts_CreateOrUpdate.
@@ -30,7 +33,12 @@ public final class CustomRolloutsCreateOrUpdateSamples {
                 .withAutoProvisionConfig(
                     new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true).withResourceGraph(true))
                 .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("brazilus")))
-                .withRefreshSubscriptionRegistration(true)))
+                .withRefreshSubscriptionRegistration(true)
+                .withRolloutId("Ev2RolloutIdGuid")
+                .withManifestCheckinSpecification(new ManifestCheckinSpecification()
+                    .withManifestCheckinOption(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
+                    .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("Prod")
+                        .withBaselineArmManifestLocation("EastUS2EUAP")))))
             .create();
     }
 }

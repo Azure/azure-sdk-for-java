@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class HorizonDbParameterGroupsListConnectionsMockTests {
     @Test
     public void testListConnections() throws Exception {
-        String responseStr = "{\"value\":[{\"name\":\"maequiahxicslfa\",\"id\":\"z\",\"type\":\"yylhalnswhccsp\"}]}";
+        String responseStr = "{\"value\":[{\"name\":\"sj\",\"id\":\"hszfjvfb\",\"type\":\"feljagrqm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class HorizonDbParameterGroupsListConnectionsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HorizonDbParameterGroupConnectionProperties> response
-            = manager.horizonDbParameterGroups().listConnections("l", "zqhof", com.azure.core.util.Context.NONE);
+            = manager.horizonDbParameterGroups().listConnections("bt", "h", com.azure.core.util.Context.NONE);
 
     }
 }

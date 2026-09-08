@@ -14,11 +14,11 @@ import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
 import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledAction;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -30,7 +30,7 @@ public final class ScheduledActionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-09-01T17:18:48Z\",\"endTime\":\"2020-12-22T02:11:50Z\",\"schedule\":{\"scheduledTime\":\"dnqzbrfkspzhzmt\",\"timeZone\":\"sjcitdigsxc\",\"requestedWeekDays\":[\"Wednesday\"],\"requestedMonths\":[\"December\",\"November\"],\"requestedDaysOfTheMonth\":[918177081],\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":1256156886,\"retryWindowInMinutes\":1553395151,\"onFailureAction\":\"Hibernate\"}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"fmdgycxnms\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"jyslurl\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":false,\"provisioningState\":\"Deleting\"},\"location\":\"qsl\",\"tags\":{\"ndcbrwi\":\"mpqvwwsk\",\"esi\":\"uvqejosovyrrle\"},\"id\":\"uqtljqobbpih\",\"name\":\"hcecybmrqbr\",\"type\":\"bbmpxdlvykfre\"}";
+            = "{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Start\",\"startTime\":\"2021-01-12T16:08:29Z\",\"endTime\":\"2021-04-04T06:33:35Z\",\"schedule\":{\"scheduledTime\":\"pxzuca\",\"timeZone\":\"e\",\"requestedWeekDays\":[\"Friday\",\"Saturday\",\"Thursday\",\"Monday\"],\"requestedMonths\":[\"June\",\"October\",\"November\"],\"requestedDaysOfTheMonth\":[1522841152,1909698338],\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":218152439,\"retryWindowInMinutes\":1747818621,\"onFailureAction\":\"Delete\"}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"pbeme\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"djj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"nqodxahhxhq\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"zoqgyipemchga\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":true,\"provisioningState\":\"Failed\"},\"location\":\"ptlghwzhomewjjst\",\"tags\":{\"ia\":\"hqawmo\",\"vodrrslblxydkxr\":\"cz\",\"hychocokuleh\":\"vvbxiwkgfbqljnq\"},\"id\":\"rqlrqffawe\",\"name\":\"urkphyjdxravju\",\"type\":\"dbrxmrgc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,34 +40,33 @@ public final class ScheduledActionsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ScheduledAction response = manager.scheduledActions()
-            .getByResourceGroupWithResponse("eaarbgjekglklbyu", "idwcwvmzegjon", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("xzutgqztwhghmupg", "yjtcdxabbujftab", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qsl", response.location());
-        Assertions.assertEquals("mpqvwwsk", response.tags().get("ndcbrwi"));
+        Assertions.assertEquals("ptlghwzhomewjjst", response.location());
+        Assertions.assertEquals("hqawmo", response.tags().get("ia"));
         Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET, response.properties().resourceType());
-        Assertions.assertEquals(ScheduledActionType.DEALLOCATE, response.properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T17:18:48Z"), response.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T02:11:50Z"), response.properties().endTime());
-        Assertions.assertEquals("dnqzbrfkspzhzmt", response.properties().schedule().scheduledTime());
-        Assertions.assertEquals("sjcitdigsxc", response.properties().schedule().timeZone());
-        Assertions.assertEquals(WeekDay.WEDNESDAY, response.properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.DECEMBER, response.properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(918177081, response.properties().schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(OptimizationPreference.COST,
+        Assertions.assertEquals(ScheduledActionType.START, response.properties().actionType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T16:08:29Z"), response.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T06:33:35Z"), response.properties().endTime());
+        Assertions.assertEquals("pxzuca", response.properties().schedule().scheduledTime());
+        Assertions.assertEquals("e", response.properties().schedule().timeZone());
+        Assertions.assertEquals(WeekDay.FRIDAY, response.properties().schedule().requestedWeekDays().get(0));
+        Assertions.assertEquals(Month.JUNE, response.properties().schedule().requestedMonths().get(0));
+        Assertions.assertEquals(1522841152, response.properties().schedule().requestedDaysOfTheMonth().get(0));
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             response.properties().schedule().executionParameters().optimizationPreference());
-        Assertions.assertEquals(1256156886,
+        Assertions.assertEquals(218152439,
             response.properties().schedule().executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1553395151,
+        Assertions.assertEquals(1747818621,
             response.properties().schedule().executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(RecurringScheduledActionsResourceOperationType.HIBERNATE,
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.DELETE,
             response.properties().schedule().executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(RecurringScheduledActionsDeadlineType.UNKNOWN,
-            response.properties().schedule().deadlineType());
-        Assertions.assertEquals("fmdgycxnms", response.properties().notificationSettings().get(0).destination());
+        Assertions.assertEquals(ScheduledActionsDeadlineType.UNKNOWN, response.properties().schedule().deadlineType());
+        Assertions.assertEquals("pbeme", response.properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, response.properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.properties().notificationSettings().get(0).language());
         Assertions.assertTrue(response.properties().notificationSettings().get(0).disabled());
-        Assertions.assertFalse(response.properties().disabled());
+        Assertions.assertTrue(response.properties().disabled());
     }
 }

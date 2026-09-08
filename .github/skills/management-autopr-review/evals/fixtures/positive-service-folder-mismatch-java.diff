@@ -1,0 +1,9 @@
+diff --git a/sdk/appservice/azure-resourcemanager-web/src/main/java/com/azure/resourcemanager/web/WebManager.java b/sdk/appservice/azure-resourcemanager-web/src/main/java/com/azure/resourcemanager/web/WebManager.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/appservice/azure-resourcemanager-web/src/main/java/com/azure/resourcemanager/web/WebManager.java
+@@ -0,0 +1,4 @@
++package com.azure.resourcemanager.web;
++
++public final class WebManager {
++}

@@ -11,7 +11,6 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberUpdate;
-import com.azure.resourcemanager.containerservicefleet.models.MeshProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -63,10 +62,6 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
 
     public FleetMemberStatus status() {
         return this.innerModel().status();
-    }
-
-    public MeshProperties meshProperties() {
-        return this.innerModel().meshProperties();
     }
 
     public String resourceGroupName() {

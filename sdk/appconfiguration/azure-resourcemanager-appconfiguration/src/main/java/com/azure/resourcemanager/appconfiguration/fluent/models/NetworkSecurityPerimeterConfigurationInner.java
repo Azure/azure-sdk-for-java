@@ -19,7 +19,7 @@ import java.io.IOException;
 @Immutable
 public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResource {
     /*
-     * The properties property.
+     * Network security configuration properties.
      */
     private NetworkSecurityPerimeterConfigurationProperties properties;
 
@@ -50,7 +50,7 @@ public final class NetworkSecurityPerimeterConfigurationInner extends ProxyResou
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Network security configuration properties.
      * 
      * @return the properties value.
      */

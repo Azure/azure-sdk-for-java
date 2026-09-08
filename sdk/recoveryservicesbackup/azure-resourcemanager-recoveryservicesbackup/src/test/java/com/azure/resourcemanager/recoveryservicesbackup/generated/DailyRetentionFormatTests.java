@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DailyRetentionFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DailyRetentionFormat model = BinaryData.fromString(
-            "{\"daysOfTheMonth\":[{\"date\":17564719,\"isLast\":false},{\"date\":884050511,\"isLast\":true},{\"date\":627294033,\"isLast\":false},{\"date\":1755554048,\"isLast\":true}]}")
-            .toObject(DailyRetentionFormat.class);
-        Assertions.assertEquals(17564719, model.daysOfTheMonth().get(0).date());
-        Assertions.assertFalse(model.daysOfTheMonth().get(0).isLast());
+        DailyRetentionFormat model
+            = BinaryData.fromString("{\"daysOfTheMonth\":[{\"date\":1040750997,\"isLast\":true}]}")
+                .toObject(DailyRetentionFormat.class);
+        Assertions.assertEquals(1040750997, model.daysOfTheMonth().get(0).date());
+        Assertions.assertTrue(model.daysOfTheMonth().get(0).isLast());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DailyRetentionFormat model = new DailyRetentionFormat().withDaysOfTheMonth(Arrays.asList(
-            new Day().withDate(17564719).withIsLast(false), new Day().withDate(884050511).withIsLast(true),
-            new Day().withDate(627294033).withIsLast(false), new Day().withDate(1755554048).withIsLast(true)));
+        DailyRetentionFormat model = new DailyRetentionFormat()
+            .withDaysOfTheMonth(Arrays.asList(new Day().withDate(1040750997).withIsLast(true)));
         model = BinaryData.fromObject(model).toObject(DailyRetentionFormat.class);
-        Assertions.assertEquals(17564719, model.daysOfTheMonth().get(0).date());
-        Assertions.assertFalse(model.daysOfTheMonth().get(0).isLast());
+        Assertions.assertEquals(1040750997, model.daysOfTheMonth().get(0).date());
+        Assertions.assertTrue(model.daysOfTheMonth().get(0).isLast());
     }
 }

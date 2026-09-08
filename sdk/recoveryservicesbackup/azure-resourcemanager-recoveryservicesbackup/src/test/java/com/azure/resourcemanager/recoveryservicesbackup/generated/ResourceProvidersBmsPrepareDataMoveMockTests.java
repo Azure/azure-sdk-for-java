@@ -31,11 +31,11 @@ public final class ResourceProvidersBmsPrepareDataMoveMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceProviders()
-            .bmsPrepareDataMove("jsc", "fp",
-                new PrepareDataMoveRequest().withTargetResourceId("qwtygevgwmseharx")
-                    .withTargetRegion("fv")
-                    .withDataMoveLevel(DataMoveLevel.VAULT)
-                    .withSourceContainerArmIds(Arrays.asList("tmbpjp"))
+            .bmsPrepareDataMove("kpeexpgeumilh", "uitrdexyiono",
+                new PrepareDataMoveRequest().withTargetResourceId("ninbdbzsxcwqqrs")
+                    .withTargetRegion("pcbbprtugav")
+                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
+                    .withSourceContainerArmIds(Arrays.asList("yksivmfogdrtbfc", "krftsjcwjjxsg", "bawvif"))
                     .withIgnoreMoved(true),
                 com.azure.core.util.Context.NONE);
 

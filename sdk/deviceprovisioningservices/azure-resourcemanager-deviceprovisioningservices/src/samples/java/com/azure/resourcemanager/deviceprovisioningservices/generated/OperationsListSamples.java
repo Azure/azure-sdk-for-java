@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSOperations.json
+     * x-ms-original-file: 2026-03-01-preview/DPSOperations.json
      */
     /**
      * Sample code: DPSOperations.

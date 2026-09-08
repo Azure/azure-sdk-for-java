@@ -60,7 +60,7 @@ public interface OccurrenceResource {
      * 
      * @return the provisioningState value.
      */
-    ResourceProvisioningState provisioningState();
+    OccurrenceResourceProvisioningState provisioningState();
 
     /**
      * Gets the errorDetails property: Error details for the resource. Only populated if resource is in failed state.
