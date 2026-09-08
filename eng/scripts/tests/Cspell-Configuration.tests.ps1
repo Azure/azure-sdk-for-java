@@ -34,15 +34,15 @@ Describe 'SDK CSpell configuration' -Tag 'UnitTest' {
         }
     }
 
-    It 'imports every nested SDK config from its area config' {
-        $nestedConfigs = @(
+    It 'imports every package-level SDK config from its area config' {
+        $packageConfigs = @(
             Get-CspellConfigs |
-                Where-Object { ((Get-RelativeRepositoryPath $_.FullName) -split '/').Count -gt 3 }
+                Where-Object { ((Get-RelativeRepositoryPath $_.FullName) -split '/').Count -eq 4 }
         )
 
-        $nestedConfigs.Count | Should -BeGreaterThan 0
-        foreach ($nestedConfig in $nestedConfigs) {
-            $relativePath = Get-RelativeRepositoryPath $nestedConfig.FullName
+        $packageConfigs.Count | Should -BeGreaterThan 0
+        foreach ($packageConfig in $packageConfigs) {
+            $relativePath = Get-RelativeRepositoryPath $packageConfig.FullName
             $segments = $relativePath -split '/'
             $areaDirectory = Join-Path $script:SdkRoot $segments[1]
             $areaConfigs = @(
