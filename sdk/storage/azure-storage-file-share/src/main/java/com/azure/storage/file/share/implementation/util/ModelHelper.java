@@ -570,10 +570,9 @@ public class ModelHelper {
         return new SimpleResponse<>(response, snapshotInfo);
     }
 
-    public static Response<ShareDirectoryInfo>
-        mapShareDirectoryInfo(final ResponseBase<DirectoriesCreateHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+    public static Response<ShareDirectoryInfo> mapShareDirectoryInfo(final Response<DirectoriesCreateHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryInfo shareDirectoryInfo
@@ -582,11 +581,11 @@ public class ModelHelper {
     }
 
     public static Response<ShareDirectoryProperties>
-        mapShareDirectoryPropertiesResponse(ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().getMetadata();
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        mapShareDirectoryPropertiesResponse(Response<DirectoriesGetPropertiesHeaders> response) {
+        Map<String, String> metadata = response.getValue().getMetadata();
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime offsetDateTime = response.getValue().getLastModified();
+        boolean isServerEncrypted = response.getValue().isServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties = ShareDirectoryPropertiesHelper.create(metadata, eTag,
@@ -595,9 +594,9 @@ public class ModelHelper {
     }
 
     public static Response<ShareDirectoryInfo>
-        mapSetPropertiesResponse(final ResponseBase<DirectoriesSetPropertiesHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        mapSetPropertiesResponse(final Response<DirectoriesSetPropertiesHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryInfo shareDirectoryInfo
@@ -606,9 +605,9 @@ public class ModelHelper {
     }
 
     public static Response<ShareDirectorySetMetadataInfo>
-        setShareDirectoryMetadataResponse(final ResponseBase<DirectoriesSetMetadataHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
+        setShareDirectoryMetadataResponse(final Response<DirectoriesSetMetadataHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        boolean isServerEncrypted = response.getValue().isRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo
             = new ShareDirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
