@@ -22,7 +22,7 @@ public final class DataPolicyManifestsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"namespaces\":[\"nsxzajlns\",\"hwjuyxxbxqvmvua\",\"tuadxkxeqb\",\"pntghyks\"],\"policyMode\":\"cdrnxsl\",\"isBuiltInOnly\":true,\"resourceTypeAliases\":[{\"resourceType\":\"dltxkpbq\",\"aliases\":[{},{},{}]},{\"resourceType\":\"qqjwkrh\",\"aliases\":[{}]},{\"resourceType\":\"nojisgglmvok\",\"aliases\":[{},{}]},{\"resourceType\":\"tjctibpvbkaeh\",\"aliases\":[{}]}],\"effects\":[{\"name\":\"dfwakwseivmak\",\"detailsSchema\":\"\\\"dataysowl\\\"\"},{\"name\":\"x\",\"detailsSchema\":\"\\\"databectvtfjmskdch\\\"\"},{\"name\":\"iubavlzwpvgm\",\"detailsSchema\":\"\\\"datalkzazmgok\\\"\"}],\"fieldValues\":[\"jqafkmkro\",\"zrthqet\",\"pqrtvaoznqni\",\"iezeagm\"],\"resourceFunctions\":{\"standard\":[\"uugedhfp\"],\"custom\":[{\"name\":\"zmblsyjdeol\",\"fullyQualifiedResourceType\":\"aebfsyrled\",\"defaultProperties\":[\"stbvtqig\",\"xzvsgeafgf\",\"sehxlzsxezp\"],\"allowCustomProperties\":false}]}},\"id\":\"aaeskyfjlpze\",\"name\":\"toyrplixlajml\",\"type\":\"pq\"}]}";
+            = "{\"value\":[{\"properties\":{\"namespaces\":[\"wf\"],\"policyMode\":\"nniyopetxi\",\"isBuiltInOnly\":false,\"resourceTypeAliases\":[{\"resourceType\":\"xnucaephblkwqp\",\"aliases\":[{},{}]},{\"resourceType\":\"qsdtcjbctvivuzq\",\"aliases\":[{},{},{},{}]},{\"resourceType\":\"owog\",\"aliases\":[{}]}],\"effects\":[{\"name\":\"hzvb\",\"detailsSchema\":\"\\\"datacdb\\\"\"},{\"name\":\"fzndscxmxeatkd\",\"detailsSchema\":\"\\\"datawnrdjyibqbnaom\\\"\"},{\"name\":\"rmkuh\",\"detailsSchema\":\"\\\"dataxljalfihc\\\"\"},{\"name\":\"obcancdexxqcw\",\"detailsSchema\":\"\\\"dataxf\\\"\"}],\"fieldValues\":[\"knokzw\",\"jzrltixldzy\",\"fytpqsixymmpuji\"],\"resourceFunctions\":{\"standard\":[\"kjuvs\",\"bmslzoyov\",\"zdbpqv\",\"befgvmxn\"],\"custom\":[{\"name\":\"t\",\"fullyQualifiedResourceType\":\"bse\",\"defaultProperties\":[\"cua\",\"t\",\"hunlpirykycnd\"],\"allowCustomProperties\":false},{\"name\":\"vjreuykbbmnw\",\"fullyQualifiedResourceType\":\"ltbxoeeonqlnfw\",\"defaultProperties\":[\"mvqdbpbhfckdvez\",\"rcssbzhddubbnq\",\"b\",\"h\"],\"allowCustomProperties\":true},{\"name\":\"hpavawu\",\"fullyQualifiedResourceType\":\"qjtiogqgdm\",\"defaultProperties\":[\"ctteajohi\"],\"allowCustomProperties\":true}]}},\"id\":\"n\",\"name\":\"onhpcz\",\"type\":\"kmktpvwxqcseh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,19 @@ public final class DataPolicyManifestsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataPolicyManifest> response
-            = manager.dataPolicyManifests().list("ljcirvpefycdvei", com.azure.core.util.Context.NONE);
+            = manager.dataPolicyManifests().list("kaa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nsxzajlns", response.iterator().next().namespaces().get(0));
-        Assertions.assertEquals("cdrnxsl", response.iterator().next().policyMode());
-        Assertions.assertTrue(response.iterator().next().isBuiltInOnly());
-        Assertions.assertEquals("dltxkpbq", response.iterator().next().resourceTypeAliases().get(0).resourceType());
-        Assertions.assertEquals("dfwakwseivmak", response.iterator().next().effects().get(0).name());
-        Assertions.assertEquals("jqafkmkro", response.iterator().next().fieldValues().get(0));
-        Assertions.assertEquals("uugedhfp", response.iterator().next().standard().get(0));
-        Assertions.assertEquals("zmblsyjdeol", response.iterator().next().custom().get(0).name());
-        Assertions.assertEquals("aebfsyrled", response.iterator().next().custom().get(0).fullyQualifiedResourceType());
-        Assertions.assertEquals("stbvtqig", response.iterator().next().custom().get(0).defaultProperties().get(0));
+        Assertions.assertEquals("wf", response.iterator().next().namespaces().get(0));
+        Assertions.assertEquals("nniyopetxi", response.iterator().next().policyMode());
+        Assertions.assertFalse(response.iterator().next().isBuiltInOnly());
+        Assertions.assertEquals("xnucaephblkwqp",
+            response.iterator().next().resourceTypeAliases().get(0).resourceType());
+        Assertions.assertEquals("hzvb", response.iterator().next().effects().get(0).name());
+        Assertions.assertEquals("knokzw", response.iterator().next().fieldValues().get(0));
+        Assertions.assertEquals("kjuvs", response.iterator().next().standard().get(0));
+        Assertions.assertEquals("t", response.iterator().next().custom().get(0).name());
+        Assertions.assertEquals("bse", response.iterator().next().custom().get(0).fullyQualifiedResourceType());
+        Assertions.assertEquals("cua", response.iterator().next().custom().get(0).defaultProperties().get(0));
         Assertions.assertFalse(response.iterator().next().custom().get(0).allowCustomProperties());
     }
 }

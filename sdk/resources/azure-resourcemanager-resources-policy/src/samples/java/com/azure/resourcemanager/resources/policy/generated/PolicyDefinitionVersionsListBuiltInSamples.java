@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicyDefinitionVersionsListBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/listBuiltInPolicyDefinitionVersions.json
+     * x-ms-original-file: 2026-07-01/listBuiltInPolicyDefinitionVersions.json
      */
     /**
      * Sample code: List built-in policy definition versions.

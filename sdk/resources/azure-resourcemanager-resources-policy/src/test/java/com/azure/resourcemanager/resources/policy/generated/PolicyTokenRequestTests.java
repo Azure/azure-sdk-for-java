@@ -14,23 +14,23 @@ public final class PolicyTokenRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyTokenRequest model = BinaryData.fromString(
-            "{\"operation\":{\"uri\":\"t\",\"httpMethod\":\"hunlpirykycnd\",\"content\":\"\\\"dataqi\\\"\"},\"changeReference\":\"reuykbbmnwagl\"}")
+            "{\"operation\":{\"uri\":\"kumuikjcjca\",\"httpMethod\":\"tbw\",\"content\":\"\\\"datasqowxwc\\\"\"},\"changeReference\":\"likytwvczcswka\"}")
             .toObject(PolicyTokenRequest.class);
-        Assertions.assertEquals("t", model.operation().uri());
-        Assertions.assertEquals("hunlpirykycnd", model.operation().httpMethod());
-        Assertions.assertEquals("reuykbbmnwagl", model.changeReference());
+        Assertions.assertEquals("kumuikjcjca", model.operation().uri());
+        Assertions.assertEquals("tbw", model.operation().httpMethod());
+        Assertions.assertEquals("likytwvczcswka", model.changeReference());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyTokenRequest model = new PolicyTokenRequest()
-            .withOperation(new PolicyTokenOperation().withUri("t")
-                .withHttpMethod("hunlpirykycnd")
-                .withContent(BinaryData.fromBytes("\"dataqi\"".getBytes(StandardCharsets.UTF_8))))
-            .withChangeReference("reuykbbmnwagl");
+            .withOperation(new PolicyTokenOperation().withUri("kumuikjcjca")
+                .withHttpMethod("tbw")
+                .withContent(BinaryData.fromBytes("\"datasqowxwc\"".getBytes(StandardCharsets.UTF_8))))
+            .withChangeReference("likytwvczcswka");
         model = BinaryData.fromObject(model).toObject(PolicyTokenRequest.class);
-        Assertions.assertEquals("t", model.operation().uri());
-        Assertions.assertEquals("hunlpirykycnd", model.operation().httpMethod());
-        Assertions.assertEquals("reuykbbmnwagl", model.changeReference());
+        Assertions.assertEquals("kumuikjcjca", model.operation().uri());
+        Assertions.assertEquals("tbw", model.operation().httpMethod());
+        Assertions.assertEquals("likytwvczcswka", model.changeReference());
     }
 }

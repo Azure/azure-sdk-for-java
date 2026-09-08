@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinitionWithGroups.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionWithGroups.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups.
@@ -66,7 +66,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicySetDefinition.json
+     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinition.json
      */
     /**
      * Sample code: Create or update a policy set definition.

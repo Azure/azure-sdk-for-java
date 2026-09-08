@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicyAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/listPolicyAssignments.json
+     * x-ms-original-file: 2026-07-01/listPolicyAssignments.json
      */
     /**
      * Sample code: List policy assignments that apply to a subscription.

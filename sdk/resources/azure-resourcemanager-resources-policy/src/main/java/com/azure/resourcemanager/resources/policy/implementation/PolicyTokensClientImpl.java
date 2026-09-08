@@ -89,6 +89,24 @@ public final class PolicyTokensClientImpl implements PolicyTokensClient {
             @PathParam("managementGroupName") String managementGroupName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PolicyTokenRequest parameters, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/acquirePolicyToken")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicyTokenResponseInner>> acquireAtResourceGroup(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") PolicyTokenRequest parameters,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/acquirePolicyToken")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PolicyTokenResponseInner> acquireAtResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") PolicyTokenRequest parameters,
+            Context context);
     }
 
     /**
@@ -246,5 +264,88 @@ public final class PolicyTokensClientImpl implements PolicyTokensClient {
     public PolicyTokenResponseInner acquireAtManagementGroup(String managementGroupName,
         PolicyTokenRequest parameters) {
         return acquireAtManagementGroupWithResponse(managementGroupName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Acquires a policy token at resource group level.
+     * 
+     * This operation acquires a policy token in the given resource group for the given request body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The policy token properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy token response properties along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PolicyTokenResponseInner>> acquireAtResourceGroupWithResponseAsync(String resourceGroupName,
+        PolicyTokenRequest parameters) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.acquireAtResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, contentType, accept, parameters, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Acquires a policy token at resource group level.
+     * 
+     * This operation acquires a policy token in the given resource group for the given request body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The policy token properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy token response properties on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PolicyTokenResponseInner> acquireAtResourceGroupAsync(String resourceGroupName,
+        PolicyTokenRequest parameters) {
+        return acquireAtResourceGroupWithResponseAsync(resourceGroupName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Acquires a policy token at resource group level.
+     * 
+     * This operation acquires a policy token in the given resource group for the given request body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The policy token properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy token response properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyTokenResponseInner> acquireAtResourceGroupWithResponse(String resourceGroupName,
+        PolicyTokenRequest parameters, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.acquireAtResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, contentType, accept, parameters, context);
+    }
+
+    /**
+     * Acquires a policy token at resource group level.
+     * 
+     * This operation acquires a policy token in the given resource group for the given request body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The policy token properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy token response properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyTokenResponseInner acquireAtResourceGroup(String resourceGroupName, PolicyTokenRequest parameters) {
+        return acquireAtResourceGroupWithResponse(resourceGroupName, parameters, Context.NONE).getValue();
     }
 }
