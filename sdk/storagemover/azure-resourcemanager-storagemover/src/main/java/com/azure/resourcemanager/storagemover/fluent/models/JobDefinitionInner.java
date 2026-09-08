@@ -18,6 +18,7 @@ import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -467,6 +468,141 @@ public final class JobDefinitionInner extends ProxyResource {
             this.innerProperties = new JobDefinitionProperties();
         }
         this.innerProperties().withPreservePermissions(preservePermissions);
+        return this;
+    }
+
+    /**
+     * Get the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the isCrossTenantJob value.
+     */
+    public Boolean isCrossTenantJob() {
+        return this.innerProperties() == null ? null : this.innerProperties().isCrossTenantJob();
+    }
+
+    /**
+     * Set the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @param isCrossTenantJob the isCrossTenantJob value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withIsCrossTenantJob(Boolean isCrossTenantJob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withIsCrossTenantJob(isCrossTenantJob);
+        return this;
+    }
+
+    /**
+     * Get the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the crossTenantEndpointTenantId value.
+     */
+    public String crossTenantEndpointTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().crossTenantEndpointTenantId();
+    }
+
+    /**
+     * Set the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @param crossTenantEndpointTenantId the crossTenantEndpointTenantId value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withCrossTenantEndpointTenantId(String crossTenantEndpointTenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withCrossTenantEndpointTenantId(crossTenantEndpointTenantId);
+        return this;
+    }
+
+    /**
+     * Get the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @return the crossTenantEndpointResourceId value.
+     */
+    public String crossTenantEndpointResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().crossTenantEndpointResourceId();
+    }
+
+    /**
+     * Set the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @param crossTenantEndpointResourceId the crossTenantEndpointResourceId value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withCrossTenantEndpointResourceId(String crossTenantEndpointResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withCrossTenantEndpointResourceId(crossTenantEndpointResourceId);
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @return the syncMode value.
+     */
+    public String syncMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncMode();
+    }
+
+    /**
+     * Set the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withSyncMode(String syncMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withSyncMode(syncMode);
+        return this;
+    }
+
+    /**
+     * Get the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @return the moverSyncedUntil value.
+     */
+    public OffsetDateTime moverSyncedUntil() {
+        return this.innerProperties() == null ? null : this.innerProperties().moverSyncedUntil();
+    }
+
+    /**
+     * Set the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @param moverSyncedUntil the moverSyncedUntil value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withMoverSyncedUntil(OffsetDateTime moverSyncedUntil) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withMoverSyncedUntil(moverSyncedUntil);
         return this;
     }
 
