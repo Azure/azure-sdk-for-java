@@ -11,7 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined in OperationsClient.
@@ -50,7 +49,7 @@ public interface OperationsClient {
      * @return the operations supported by the given provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<OperationsDefinitionInner>> listByProviderRegistrationWithResponse(String providerNamespace,
+    Response<OperationsPutContentInner> listByProviderRegistrationWithResponse(String providerNamespace,
         Context context);
 
     /**
@@ -63,7 +62,7 @@ public interface OperationsClient {
      * @return the operations supported by the given provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<OperationsDefinitionInner> listByProviderRegistration(String providerNamespace);
+    OperationsPutContentInner listByProviderRegistration(String providerNamespace);
 
     /**
      * Creates or updates the operation supported by the given provider.
