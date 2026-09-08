@@ -40,6 +40,7 @@ stages:
         steps:
           - checkout: self
             fetchDepth: 1
+            fetchTags: false
             path: azure-sdk-for-java
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools

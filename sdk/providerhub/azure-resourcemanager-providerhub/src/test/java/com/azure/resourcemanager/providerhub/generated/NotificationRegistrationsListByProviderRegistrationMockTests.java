@@ -24,7 +24,7 @@ public final class NotificationRegistrationsListByProviderRegistrationMockTests 
     @Test
     public void testListByProviderRegistration() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"nmhkrezsd\",\"uxh\",\"qdgcrux\",\"pinymmqgwokmikp\"],\"notificationEndpoints\":[{\"notificationDestination\":\"mjxuvjipfdvhaxd\",\"locations\":[\"ae\",\"pphthdklmvetatla\",\"fqoixwgiksbbvt\"]},{\"notificationDestination\":\"xrpo\",\"locations\":[\"hchgjtnhtukf\",\"cihmbfntumeezbxv\",\"xbnuvwcga\",\"gomtm\"]},{\"notificationDestination\":\"wxuq\",\"locations\":[\"sxpwwztjfmkkh\"]}],\"provisioningState\":\"Deleted\"},\"id\":\"edmls\",\"name\":\"grllcc\",\"type\":\"aovjow\"}]}";
+            = "{\"value\":[{\"properties\":{\"notificationMode\":\"EventHub\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"bh\"],\"notificationEndpoints\":[{\"notificationDestination\":\"drmmttjxoph\",\"locations\":[\"hsmvgohtwz\",\"qilrixysfn\",\"msqywwwmhkruwae\",\"rympmlq\"]},{\"notificationDestination\":\"nhzd\",\"locations\":[\"ihapfjiiknjdiq\"]}],\"provisioningState\":\"TransientFailure\"},\"id\":\"jh\",\"name\":\"cl\",\"type\":\"iedfsbwcei\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class NotificationRegistrationsListByProviderRegistrationMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NotificationRegistration> response = manager.notificationRegistrations()
-            .listByProviderRegistration("aewzgiudjp", com.azure.core.util.Context.NONE);
+            .listByProviderRegistration("psimsf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(NotificationMode.WEB_HOOK, response.iterator().next().properties().notificationMode());
+        Assertions.assertEquals(NotificationMode.EVENT_HUB, response.iterator().next().properties().notificationMode());
         Assertions.assertEquals(MessageScope.NOT_SPECIFIED, response.iterator().next().properties().messageScope());
-        Assertions.assertEquals("nmhkrezsd", response.iterator().next().properties().includedEvents().get(0));
-        Assertions.assertEquals("mjxuvjipfdvhaxd",
+        Assertions.assertEquals("bh", response.iterator().next().properties().includedEvents().get(0));
+        Assertions.assertEquals("drmmttjxoph",
             response.iterator().next().properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("ae",
+        Assertions.assertEquals("hsmvgohtwz",
             response.iterator().next().properties().notificationEndpoints().get(0).locations().get(0));
     }
 }

@@ -148,6 +148,7 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
         jsonWriter.writeStringField("folderPath", this.folderPath);
         jsonWriter.writeBooleanField("isADLSGen2", this.adlsGen2);
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
+        jsonWriter.writeJsonField("queryHints", this.queryHints);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,6 +169,7 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             String folderPath = null;
             Boolean adlsGen2 = null;
             KnowledgeSourceIngestionParameters ingestionParameters = null;
+            SearchIndexKnowledgeSourceQueryHints queryHints = null;
             CreatedResources createdResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -182,6 +184,8 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
                     adlsGen2 = reader.getNullable(JsonReader::getBoolean);
                 } else if ("ingestionParameters".equals(fieldName)) {
                     ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
+                } else if ("queryHints".equals(fieldName)) {
+                    queryHints = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     createdResources = CreatedResources.fromJson(reader);
                 } else {
@@ -193,6 +197,7 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             deserializedAzureBlobKnowledgeSourceParameters.folderPath = folderPath;
             deserializedAzureBlobKnowledgeSourceParameters.adlsGen2 = adlsGen2;
             deserializedAzureBlobKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
+            deserializedAzureBlobKnowledgeSourceParameters.queryHints = queryHints;
             deserializedAzureBlobKnowledgeSourceParameters.createdResources = createdResources;
             return deserializedAzureBlobKnowledgeSourceParameters;
         });
@@ -223,6 +228,37 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     @Generated
     public AzureBlobKnowledgeSourceParameters setAdlsGen2(Boolean adlsGen2) {
         this.adlsGen2 = adlsGen2;
+        return this;
+    }
+
+    /*
+     * Default hints that guide query planning toward useful filters and boosts for this index-backed knowledge source.
+     * Request-time query hints replace these defaults as a complete object.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceQueryHints queryHints;
+
+    /**
+     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @return the queryHints value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
+        return this.queryHints;
+    }
+
+    /**
+     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @param queryHints the queryHints value to set.
+     * @return the AzureBlobKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public AzureBlobKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
+        this.queryHints = queryHints;
         return this;
     }
 }

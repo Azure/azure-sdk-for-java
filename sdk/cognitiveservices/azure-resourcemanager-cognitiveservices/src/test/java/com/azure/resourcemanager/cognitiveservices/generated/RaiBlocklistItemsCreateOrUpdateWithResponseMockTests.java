@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pattern\":\"klajvcfocz\",\"isRegex\":false},\"etag\":\"jovtkwxnhwhhn\",\"tags\":{\"ee\":\"zaa\",\"jeatea\":\"pmjen\"},\"id\":\"crxoxdj\",\"name\":\"l\",\"type\":\"n\"}";
+            = "{\"properties\":{\"pattern\":\"mmmkvavucgjiuaiq\",\"isRegex\":false},\"etag\":\"fzhrchx\",\"tags\":{\"wlvi\":\"zdmh\",\"pdviscotyxbrii\":\"jmxmlitqdsj\"},\"id\":\"f\",\"name\":\"dslvrqo\",\"type\":\"mwsieeailwdqmqf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("vwglgwzpv")
-            .withExistingRaiBlocklist("bkhxsdplaum", "dmhweqjfyxydgto", "vq")
-            .withTags(mapOf("q", "qgsoyqyxyjrc", "eaoo", "bispglqjoxtdah"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("glhpse").withIsRegex(false))
+            .define("eubkqiqmlf")
+            .withExistingRaiBlocklist("nrnjrcuf", "bgacnr", "fdtncmspsanma")
+            .withTags(mapOf("uuonjkkxukguehvv", "eipuugkwdrqmrpa"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("qcs").withIsRegex(false))
             .create();
 
-        Assertions.assertEquals("klajvcfocz", response.properties().pattern());
+        Assertions.assertEquals("mmmkvavucgjiuaiq", response.properties().pattern());
         Assertions.assertFalse(response.properties().isRegex());
-        Assertions.assertEquals("zaa", response.tags().get("ee"));
+        Assertions.assertEquals("zdmh", response.tags().get("wlvi"));
     }
 
     // Use "Map.of" if available

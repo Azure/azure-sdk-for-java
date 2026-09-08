@@ -22,7 +22,7 @@ public final class EntitiesGetDataAnnotationsWithResponseMockTests {
     @Test
     public void testGetDataAnnotationsWithResponse() throws Exception {
         String responseStr
-            = "{\"entityName\":\"rxmunjdxvgln\",\"annotations\":[{\"annotationId\":\"lxpaglqivbgkcv\",\"createdAt\":\"2021-10-11T22:54:01Z\",\"annotationDetails\":{\"lvoniy\":\"vuqd\",\"hjknidibg\":\"fpubcpzgpxti\",\"ik\":\"jxgpnrhgovfg\"},\"description\":\"hh\"}],\"nextMarker\":\"wjrmzvuporqzd\"}";
+            = "{\"entityName\":\"gqoweyirdhlisn\",\"annotations\":[{\"annotationId\":\"lqqmpiz\",\"createdAt\":\"2021-04-24T19:03:12Z\",\"annotationDetails\":{\"wfcngjsaas\":\"pqxpx\"},\"description\":\"xtmkzjvkviir\"}],\"nextMarker\":\"fgrwsdpgratzvz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class EntitiesGetDataAnnotationsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetDataAnnotationsResponse response = manager.entities()
-            .getDataAnnotationsWithResponse("vmtygj", "mzyospspshck", "kyjpmspbps",
-                new GetDataAnnotationsRequest().withStartAt(OffsetDateTime.parse("2021-03-22T17:32:57Z"))
-                    .withEndAt(OffsetDateTime.parse("2021-10-10T20:16:17Z"))
-                    .withTop(2112807448)
-                    .withNextMarker("tieyujtvczkcny"),
+            .getDataAnnotationsWithResponse("njqhdenxa", "l", "pakdkifmjnnawt",
+                new GetDataAnnotationsRequest().withStartAt(OffsetDateTime.parse("2020-12-24T01:47:50Z"))
+                    .withEndAt(OffsetDateTime.parse("2021-05-21T23:06:13Z"))
+                    .withTop(1193273500)
+                    .withNextMarker("p"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rxmunjdxvgln", response.entityName());
-        Assertions.assertEquals("vuqd", response.annotations().get(0).annotationDetails().get("lvoniy"));
-        Assertions.assertEquals("hh", response.annotations().get(0).description());
-        Assertions.assertEquals("wjrmzvuporqzd", response.nextMarker());
+        Assertions.assertEquals("gqoweyirdhlisn", response.entityName());
+        Assertions.assertEquals("pqxpx", response.annotations().get(0).annotationDetails().get("wfcngjsaas"));
+        Assertions.assertEquals("xtmkzjvkviir", response.annotations().get(0).description());
+        Assertions.assertEquals("fgrwsdpgratzvz", response.nextMarker());
     }
 }

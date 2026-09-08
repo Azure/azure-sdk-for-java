@@ -653,11 +653,13 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
+     * @param itemId       the document ID.
      * @param document     the document represented as a POJO or Document object.
      * @param options      the request options.
      * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
-    Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
+    Mono<ResourceResponse<Document>> replaceDocument(String documentLink, String itemId, Object document,
+                                                      RequestOptions options);
 
     /**
      * Apply patch on an item.
@@ -667,25 +669,15 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
+     * @param itemId the document ID.
      * @param cosmosPatchOperations container with the list of patch operations.
      * @param options the request options.
      *
      * @return a {@link Mono} containing the single resource response with the patched document or an error.
      */
-    Mono<ResourceResponse<Document>> patchDocument(String documentLink, CosmosPatchOperations cosmosPatchOperations, RequestOptions options);
-
-    /**
-     * Replaces a document with the passed in document.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced document.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param document the document to replace (containing the document id).
-     * @param options  the request options.
-     * @return a {@link Mono} containing the single resource response with the replaced document or an error.
-     */
-    Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
+    Mono<ResourceResponse<Document>> patchDocument(String documentLink, String itemId,
+                                                    CosmosPatchOperations cosmosPatchOperations,
+                                                    RequestOptions options);
 
     /**
      * Deletes a document
@@ -695,10 +687,11 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
+     * @param itemId       the document ID.
      * @param options      the request options.
      * @return a {@link Mono} containing the single resource response for the deleted document or an error.
      */
-    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
+    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, String itemId, RequestOptions options);
 
     /**
      * Deletes a document
@@ -707,11 +700,14 @@ public interface AsyncDocumentClient {
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
      * In case of failure the {@link Mono} will error.
      *
+     * @param documentLink the document link.
+     * @param itemId the document ID.
      * @param internalObjectNode the internalObjectNode to delete (containing the id).
      * @param options  the request options.
      * @return a {@link Mono} containing the single resource response for the deleted document or an error.
      */
-    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options);
+    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, String itemId,
+                                                    InternalObjectNode internalObjectNode, RequestOptions options);
 
     Mono<ResourceResponse<Document>> deleteAllDocumentsByPartitionKey(String collectionLink, PartitionKey partitionKey, RequestOptions options);
     /**
@@ -722,10 +718,11 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Mono} will error.
      *
      * @param documentLink the document link.
+     * @param itemId       the document ID.
      * @param options      the request options.
      * @return a {@link Mono} containing the single resource response with the read document or an error.
      */
-    Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options);
+    Mono<ResourceResponse<Document>> readDocument(String documentLink, String itemId, RequestOptions options);
 
     /**
      * Reads all documents in a document collection.

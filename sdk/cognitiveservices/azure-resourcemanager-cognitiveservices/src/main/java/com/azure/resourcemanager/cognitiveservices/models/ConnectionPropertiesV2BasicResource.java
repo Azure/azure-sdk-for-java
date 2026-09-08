@@ -84,14 +84,13 @@ public interface ConnectionPropertiesV2BasicResource {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, accountName, projectName.
+             * Specifies resourceGroupName, accountName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of Cognitive Services account.
-             * @param projectName The name of Cognitive Services account's project.
              * @return the next definition stage.
              */
-            WithProperties withExistingProject(String resourceGroupName, String accountName, String projectName);
+            WithProperties withExistingAccount(String resourceGroupName, String accountName);
         }
 
         /**
