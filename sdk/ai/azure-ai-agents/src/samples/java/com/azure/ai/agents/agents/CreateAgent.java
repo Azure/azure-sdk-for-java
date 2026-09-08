@@ -19,11 +19,10 @@ public class CreateAgent {
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.valueOf("V2025-11-15-preview"))
                 .buildAgentsClient();
 
         PromptAgentDefinition request = new PromptAgentDefinition(model);
-        AgentVersionDetails agent = agentsClient.createAgentVersion("agent_created_from_java", request);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("agent-created-from-java", request);
 
         System.out.println("Agent ID: " + agent.getId());
         System.out.println("Agent Name: " + agent.getName());

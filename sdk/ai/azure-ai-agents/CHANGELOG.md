@@ -62,6 +62,8 @@
 - Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
   advanced memory-store workflows, and agent optimization.
 - Added a sample demonstrating a prompt agent invoking `ShellToolboxTool` through a toolbox's versioned MCP endpoint.
+- Fixed basic agent and conversation samples by removing an obsolete preview service-version override, using a valid
+  hyphenated agent name consistently, and serializing conversation metadata timestamps as strings.
 - Improved the Fabric IQ sync and async samples with configurable agent names, readable response and annotation
   output, and reliable asynchronous cleanup.
 
