@@ -729,6 +729,29 @@ System.out.printf("Tool type: %s%n", version.getTools().get(0).getType());
 
 See the full samples in [ReminderPreviewToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ReminderPreviewToolboxSample.java) and [ReminderPreviewToolboxAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ReminderPreviewToolboxAsyncSample.java).
 
+##### **Shell**
+
+The Shell toolbox tool runs commands in an isolated container. This example uses an automatically provisioned
+container, which has outbound network access disabled by default. A prompt agent consumes the toolbox through its
+versioned MCP endpoint.
+
+```java com.azure.ai.agents.toolboxes.ShellToolboxSample.createShellToolbox
+
+ShellToolboxTool shellTool = new ShellToolboxTool(new ToolboxShellContainerAutoEnvironment())
+    .setDescription("Runs shell commands in a sandboxed container.");
+
+ToolboxVersionDetails toolboxVersion = toolboxesClient.createToolboxVersion(
+    toolboxName,
+    Collections.<ToolboxTool>singletonList(shellTool),
+    "Toolbox with a shell tool running in an auto-provisioned container.",
+    null,
+    null,
+    null);
+
+```
+
+See the full end-to-end sample in [ShellToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ShellToolboxSample.java).
+
 ---
 
 ### Streaming responses
