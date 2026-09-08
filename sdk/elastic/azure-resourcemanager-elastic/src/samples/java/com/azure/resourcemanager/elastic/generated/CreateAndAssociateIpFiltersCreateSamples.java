@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class CreateAndAssociateIpFiltersCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/IPTrafficFilter_Create.json
+     * x-ms-original-file: 2026-03-15-preview/IPTrafficFilter_Create.json
      */
     /**
      * Sample code: createAndAssociateIPFilter_Create.
