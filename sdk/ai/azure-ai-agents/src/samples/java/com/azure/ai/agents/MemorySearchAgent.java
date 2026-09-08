@@ -54,6 +54,7 @@ public class MemorySearchAgent {
         String description = "Example memory store for conversations";
         String scope = "user_123";
 
+        AgentVersionDetails agent = null;
         String firstConversationId = null;
         String followUpConversationId = null;
 
@@ -74,47 +75,52 @@ public class MemorySearchAgent {
                     .setInstructions("You are a helpful assistant that answers general questions.")
                     .setTools(Collections.singletonList(tool));
 
-            // Create the agent version and point the agent endpoint at the new version.
-            AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
-            try {
-                agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                    new AgentEndpointConfig()
-                        .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                            new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                        .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            agent = agentsClient.createAgentVersion(agentName, agentDefinition);
+            System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
-                OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+            agentsClient.updateAgentDetails(agent.getName(),
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
 
-                Conversation conversation = conversationService.create();
-                firstConversationId = conversation.id();
-                System.out.println("Created conversation (id: " + firstConversationId + ")");
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-                Response response = openAIClient.responses().create(ResponseCreateParams.builder()
-                    .conversation(firstConversationId)
-                    .input("I prefer dark roast coffee")
-                    .build());
-                System.out.println("Response output: " + getResponseText(response));
+            Conversation conversation = conversationService.create();
+            firstConversationId = conversation.id();
+            System.out.println("Created conversation (id: " + firstConversationId + ")");
 
-                System.out.println("Waiting for memories to be stored...");
-                sleepSeconds(MEMORY_WRITE_DELAY_SECONDS);
 
-                Conversation newConversation = conversationService.create();
-                followUpConversationId = newConversation.id();
-                System.out.println("Created new conversation (id: " + followUpConversationId + ")");
+            Response response = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .conversation(firstConversationId)
+                        .input("I prefer dark roast coffee")
+                        .build());
+            System.out.println("Response output: " + getResponseText(response));
 
-                Response followUpResponse = openAIClient.responses().create(ResponseCreateParams.builder()
-                    .conversation(followUpConversationId)
-                    .input("Please order my usual coffee")
-                    .build());
-                System.out.println("Response output: " + getResponseText(followUpResponse));
+            System.out.println("Waiting for memories to be stored...");
+            sleepSeconds(MEMORY_WRITE_DELAY_SECONDS);
 
-                System.out.println("Sample completed successfully.");
-            } finally {
-                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
-            }
+            Conversation newConversation = conversationService.create();
+            followUpConversationId = newConversation.id();
+            System.out.println("Created new conversation (id: " + followUpConversationId + ")");
+
+            Response followUpResponse = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .conversation(followUpConversationId)
+                        .input("Please order my usual coffee")
+                        .build());
+            System.out.println("Response output: " + getResponseText(followUpResponse));
+
+            System.out.println("Sample completed successfully.");
         } finally {
             deleteConversation(conversationService, firstConversationId);
             deleteConversation(conversationService, followUpConversationId);
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted");
+            }
             cleanupMemoryStore(memoryStoresClient, memoryStoreName);
         }
     }

@@ -25,11 +25,9 @@ import com.openai.services.blocking.ConversationService;
 import java.util.Collections;
 
 /**
- * This sample shows how multiple agents can consume a centralized context source (conversation) and provide different
- * responses based on it.
+ * This sample how multiple agents can consume a centralized context source (conversation) and provide different responses
+ * based on it.
  *
- * <p>Each agent's identity is baked into its agent endpoint URL. To route requests to a specific agent, build an
- * agent-scoped OpenAI client and call {@code responses().create(...)} through it.</p>
  */
 public class MultipleAgentsConversation {
     /**
@@ -38,7 +36,7 @@ public class MultipleAgentsConversation {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
-
+        // Code sample for creating an agent
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .serviceVersion(AgentsServiceVersion.getLatest())
@@ -54,66 +52,60 @@ public class MultipleAgentsConversation {
 
         printConversationItems(conversationsClient, conversation.id(), 2);
 
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model);
+        // creating a new agent and their references for future responses
+        AgentVersionDetails agent1 = createPromptAgent(agentsClient, model, "weather-agent-1");
+        AgentVersionDetails agent2 = createPromptAgent(agentsClient, model, "weather-agent-2");
 
-        // Create two agents and configure each agent's endpoint to route 100% of traffic to the newly created version.
-        String agent1Name = "weather-agent-1";
-        String agent2Name = "weather-agent-2";
-        AgentVersionDetails agent1 = agentsClient.createAgentVersion(agent1Name, agentDefinition);
-        try {
-            configureAgentEndpoint(agentsClient, agent1Name, agent1.getVersion());
+        AgentEndpointConfig agent1EndpointConfig = new AgentEndpointConfig()
+            .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent1.getVersion()))))
+            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+        agentsClient.updateAgentDetails(agent1.getName(),
+            new UpdateAgentDetailsOptions().setAgentEndpoint(agent1EndpointConfig));
 
-            AgentVersionDetails agent2 = agentsClient.createAgentVersion(agent2Name, agentDefinition);
-            try {
-                configureAgentEndpoint(agentsClient, agent2Name, agent2.getVersion());
+        AgentEndpointConfig agent2EndpointConfig = new AgentEndpointConfig()
+            .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent2.getVersion()))))
+            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+        agentsClient.updateAgentDetails(agent2.getName(),
+            new UpdateAgentDetailsOptions().setAgentEndpoint(agent2EndpointConfig));
+        OpenAIClient agent1Client = builder.buildAgentScopedOpenAIClient(agent1.getName());
+        OpenAIClient agent2Client = builder.buildAgentScopedOpenAIClient(agent2.getName());
 
-                OpenAIClient agent1Client = builder.buildAgentScopedOpenAIClient(agent1Name);
-                OpenAIClient agent2Client = builder.buildAgentScopedOpenAIClient(agent2Name);
+        // Get response from agent1
+        Response response = agent1Client.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
+        System.out.println("Agent response from: " + agent1.getName());
+        System.out.println("\tResponse: " + response.output().get(0).asMessage().content().get(0).asOutputText().text());
 
-                // Get response from agent1
-                Response response = agent1Client.responses().create(ResponseCreateParams.builder()
-                    .conversation(conversation.id())
-                    .build());
-                System.out.println("Agent response from: " + agent1Name);
-                System.out.println("\tResponse: " + response.output().get(0).asMessage().content().get(0).asOutputText().text());
+        // Add clarification to the conversation
+        addMessageToConversation(conversationsClient, conversation.id(),
+                "You can make assumptions based on historical data. Today is October 7th.", EasyInputMessage.Role.USER);
+        printConversationItems(conversationsClient, conversation.id(), 3);
 
-                // Add clarification to the conversation
-                addMessageToConversation(conversationsClient, conversation.id(),
-                    "You can make assumptions based on historical data. Today is October 7th.", EasyInputMessage.Role.USER);
-                printConversationItems(conversationsClient, conversation.id(), 3);
+        // Get follow-up response from agent1
+        Response followUpResponse = agent1Client.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
+        System.out.println("Agent response from: " + agent1.getName());
+        System.out.println("\tResponse: " + followUpResponse.output().get(0).asMessage().content().get(0).asOutputText().text());
 
-                // Get follow-up response from agent1
-                Response followUpResponse = agent1Client.responses().create(ResponseCreateParams.builder()
-                    .conversation(conversation.id())
-                    .build());
-                System.out.println("Agent response from: " + agent1Name);
-                System.out.println("\tResponse: " + followUpResponse.output().get(0).asMessage().content().get(0).asOutputText().text());
+        // Provide all the past context and more to agent2
+        addMessageToConversation(conversationsClient, conversation.id(),
+                "Provide suggestions opposite of what historical data indicates.", EasyInputMessage.Role.SYSTEM);
+        printConversationItems(conversationsClient, conversation.id(), 4);
 
-                // Provide all the past context and more to agent2
-                addMessageToConversation(conversationsClient, conversation.id(),
-                    "Provide suggestions opposite of what historical data indicates.", EasyInputMessage.Role.SYSTEM);
-                printConversationItems(conversationsClient, conversation.id(), 4);
-
-                Response newMessageThread = agent2Client.responses().create(ResponseCreateParams.builder()
-                    .conversation(conversation.id())
-                    .build());
-                System.out.println("Agent response from: " + agent2Name);
-                System.out.println("\tResponse: " + newMessageThread.output().get(0).asMessage().content().get(0).asOutputText().text());
-            } finally {
-                agentsClient.deleteAgentVersion(agent2Name, agent2.getVersion());
-            }
-        } finally {
-            agentsClient.deleteAgentVersion(agent1Name, agent1.getVersion());
-        }
+        Response newMessageThread = agent2Client.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
+        System.out.println("Agent response from: " + agent2.getName());
+        System.out.println("\tResponse: " + newMessageThread.output().get(0).asMessage().content().get(0).asOutputText().text());
     }
 
-    // Points the agent endpoint at the specified version and enables the OpenAI Responses protocol on it.
-    private static void configureAgentEndpoint(AgentsClient agentsClient, String agentName, String agentVersion) {
-        agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-            new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agentVersion))))
-                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+    private static AgentVersionDetails createPromptAgent(AgentsClient agentsClient, String model, String name) {
+        PromptAgentDefinition request = new PromptAgentDefinition(model);
+        return agentsClient.createAgentVersion(name, request);
     }
 
     private static Conversation startConversation(ConversationService conversationsClient) {

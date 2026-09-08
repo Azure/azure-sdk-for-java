@@ -5,24 +5,19 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseFunctionToolCall;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import reactor.core.publisher.Mono;
-import com.openai.client.OpenAIClientAsync;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -30,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates how to create an agent with a Function Calling tool
@@ -51,6 +47,9 @@ public class FunctionCallAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("function-call-agent");
+
+        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Create a FunctionTool with parameters schema
         // Use BinaryData.fromObject() to produce correct JSON types (not double-encoded strings)
@@ -81,45 +80,46 @@ public class FunctionCallAsync {
                 + "When asked about the weather, use the get_weather function to retrieve weather data.")
             .setTools(Collections.singletonList(tool));
 
-        String agentName = "function-call-agent";
-        Mono.usingWhen(
-                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
-                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
-                            new UpdateAgentDetailsOptions().setAgentEndpoint(
-                                new AgentEndpointConfig()
-                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
-                        .thenReturn(agent)),
-                agent -> {
-                    OpenAIClientAsync openAIAsyncClient
-                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
-                    return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
-                            .input("What's the weather like in Seattle?")
-                            .build()))
-                        .doOnNext(response -> {
-                            for (ResponseOutputItem outputItem : response.output()) {
-                                if (outputItem.message().isPresent()) {
-                                    ResponseOutputMessage message = outputItem.message().get();
-                                    message.content().forEach(content -> {
-                                        content.outputText().ifPresent(text -> {
-                                            System.out.println("Assistant: " + text.text());
-                                        });
-                                    });
-                                }
+        agentsAsyncClient.createAgentVersion("function-call-agent", agentDefinition)
+            .flatMap(agent -> {
+                agentRef.set(agent);
+                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                                if (outputItem.functionCall().isPresent()) {
-                                    ResponseFunctionToolCall functionCall = outputItem.functionCall().get();
-                                    System.out.println("\n--- Function Tool Call ---");
-                                    System.out.println("Call ID: " + functionCall.callId());
-                                    System.out.println("Function Name: " + functionCall.name());
-                                    System.out.println("Arguments: " + functionCall.arguments());
-                                    System.out.println("Status: " + functionCall.status());
-                                }
-                            }
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent.getName(), agent)
+                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                        ResponseCreateParams.builder()
+                            .input("What's the weather like in Seattle?")
+                            .build())));
+            })
+            .doOnNext(response -> {
+                for (ResponseOutputItem outputItem : response.output()) {
+                    if (outputItem.message().isPresent()) {
+                        ResponseOutputMessage message = outputItem.message().get();
+                        message.content().forEach(content -> {
+                            content.outputText().ifPresent(text -> {
+                                System.out.println("Assistant: " + text.text());
+                            });
                         });
-                },
-                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
+                    }
+
+                    if (outputItem.functionCall().isPresent()) {
+                        ResponseFunctionToolCall functionCall = outputItem.functionCall().get();
+                        System.out.println("\n--- Function Tool Call ---");
+                        System.out.println("Call ID: " + functionCall.callId());
+                        System.out.println("Function Name: " + functionCall.name());
+                        System.out.println("Arguments: " + functionCall.arguments());
+                        System.out.println("Status: " + functionCall.status());
+                    }
+                }
+            })
+            .then(Mono.defer(() -> {
+                AgentVersionDetails agent = agentRef.get();
+                if (agent != null) {
+                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
+                        .doOnSuccess(v -> System.out.println("Agent deleted"));
+                }
+                return Mono.empty();
+            }))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .timeout(Duration.ofSeconds(30))
             .block();

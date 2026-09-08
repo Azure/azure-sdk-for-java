@@ -5,19 +5,14 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaMemoryStoresClient;
-import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
+import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -61,6 +56,7 @@ public class MemorySearchSync {
 
         String memoryStoreName = "my_memory_store";
         String scope = "user_123";
+        AgentVersionDetails agent = null;
         String firstConversationId = null;
         String followUpConversationId = null;
 
@@ -87,52 +83,50 @@ public class MemorySearchSync {
                 .setInstructions("You are a helpful assistant that answers general questions.")
                 .setTools(Collections.singletonList(tool));
 
-            // Create the agent version and point the agent endpoint at the new version.
-            String agentName = "memory-search-agent";
-            AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
-            try {
-                agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                    new AgentEndpointConfig()
-                        .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                            new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                        .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            agent = agentsClient.createAgentVersion("memory-search-agent", agentDefinition);
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
 
-                // First conversation: teach the agent a preference
-                Conversation conversation = conversationService.create();
-                firstConversationId = conversation.id();
-                System.out.println("Created conversation (id: " + firstConversationId + ")");
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-                Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+            // First conversation: teach the agent a preference
+            Conversation conversation = conversationService.create();
+            firstConversationId = conversation.id();
+            System.out.println("Created conversation (id: " + firstConversationId + ")");
+
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
                     .conversation(firstConversationId)
                     .input("I prefer dark roast coffee")
                     .build());
-                System.out.println("Response: " + getResponseText(response));
+            System.out.println("Response: " + getResponseText(response));
 
-                // Wait for memories to be extracted and stored
-                System.out.println("Waiting for memories to be stored...");
-                TimeUnit.SECONDS.sleep(MEMORY_WRITE_DELAY_SECONDS);
+            // Wait for memories to be extracted and stored
+            System.out.println("Waiting for memories to be stored...");
+            TimeUnit.SECONDS.sleep(MEMORY_WRITE_DELAY_SECONDS);
 
-                // Second conversation: test memory recall
-                Conversation newConversation = conversationService.create();
-                followUpConversationId = newConversation.id();
-                System.out.println("Created new conversation (id: " + followUpConversationId + ")");
+            // Second conversation: test memory recall
+            Conversation newConversation = conversationService.create();
+            followUpConversationId = newConversation.id();
+            System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-                Response followUpResponse = openAIClient.responses().create(ResponseCreateParams.builder()
+            Response followUpResponse = openAIClient.responses().create(
+                ResponseCreateParams.builder()
                     .conversation(followUpConversationId)
                     .input("Please order my usual coffee")
                     .build());
-                System.out.println("Response: " + getResponseText(followUpResponse));
-            } finally {
-                agentsClient.deleteAgentVersion(agentName, agent.getVersion());
-            }
+            System.out.println("Response: " + getResponseText(followUpResponse));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Sleep interrupted", e);
         } finally {
             deleteConversationQuietly(conversationService, firstConversationId);
             deleteConversationQuietly(conversationService, followUpConversationId);
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted");
+            }
             deleteMemoryStoreQuietly(memoryStoresClient, memoryStoreName);
         }
     }

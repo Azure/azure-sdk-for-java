@@ -5,7 +5,9 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -25,13 +27,6 @@ import com.openai.models.responses.ResponseInputImage;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseInputText;
 import com.openai.models.responses.ResponseOutputItem;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -87,30 +82,28 @@ public class ComputerUseSync {
             return;
         }
 
-        // BEGIN: com.azure.ai.agents.define_computer_use
-        ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
-            ComputerEnvironment.WINDOWS,
-            1026,
-            769
-        );
-        // END: com.azure.ai.agents.define_computer_use
+        AgentVersionDetails agent = null;
 
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("You are a computer automation assistant."
-                + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
-            .setTools(Collections.singletonList(tool));
-
-        String agentName = "ComputerUseAgent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            // BEGIN: com.azure.ai.agents.define_computer_use
+            ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
+                ComputerEnvironment.WINDOWS,
+                1026,
+                769
+            );
+            // END: com.azure.ai.agents.define_computer_use
 
+            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+                .setInstructions("You are a computer automation assistant."
+                    + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
+                .setTools(Collections.singletonList(tool));
 
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            agent = agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition);
+            System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
+                agent.getId(), agent.getName(), agent.getVersion());
+
+            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Initial request with screenshot - start with Bing search page
             System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
@@ -140,10 +133,11 @@ public class ComputerUseSync {
                         .build())
             );
 
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
-                    .inputOfResponse(initialInput)
-                    .truncation(ResponseCreateParams.Truncation.AUTO)
-                    .build());
+            Response response = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .inputOfResponse(initialInput)
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build());
 
             System.out.printf("Initial response received (ID: %s)%n", response.id());
 
@@ -196,16 +190,25 @@ public class ComputerUseSync {
                             .build())
                 );
 
-                response = openAIClient.responses().create(ResponseCreateParams.builder()
-                    .previousResponseId(response.id())
-                    .inputOfResponse(followUpInput)
-                    .truncation(ResponseCreateParams.Truncation.AUTO)
-                    .build());
+                response = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .previousResponseId(response.id())
+                        .inputOfResponse(followUpInput)
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build());
 
                 System.out.printf("Follow-up response received (ID: %s)%n", response.id());
             }
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            System.out.println("\nCleaning up...");
+            if (agent != null) {
+                try {
+                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                    System.out.println("Agent deleted");
+                } catch (Exception e) {
+                    System.out.println("Failed to delete agent: " + e.getMessage());
+                }
+            }
         }
     }
 }

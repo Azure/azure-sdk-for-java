@@ -5,8 +5,15 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -17,13 +24,6 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,45 +53,47 @@ public class FunctionCallStreamingSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
 
-        // Define a function tool with parameter schema
-        Map<String, Object> locationProp = new LinkedHashMap<>();
-        locationProp.put("type", "string");
-        locationProp.put("description", "The city and state, e.g. Seattle, WA");
+        AgentVersionDetails agent = null;
 
-        Map<String, Object> unitProp = new LinkedHashMap<>();
-        unitProp.put("type", "string");
-        unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
-
-        Map<String, Object> properties = new LinkedHashMap<>();
-        properties.put("location", locationProp);
-        properties.put("unit", unitProp);
-
-        Map<String, BinaryData> parameters = new HashMap<>();
-        parameters.put("type", BinaryData.fromObject("object"));
-        parameters.put("properties", BinaryData.fromObject(properties));
-        parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
-        parameters.put("additionalProperties", BinaryData.fromObject(false));
-
-        FunctionTool tool = new FunctionTool("get_weather", parameters, true)
-            .setDescription("Get the current weather in a given location");
-
-        // Create agent with function tool
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("You are a helpful assistant that can get weather information. "
-                + "When asked about the weather, use the get_weather function.")
-            .setTools(Collections.singletonList(tool));
-
-        String agentName = "function-streaming-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            // Define a function tool with parameter schema
+            Map<String, Object> locationProp = new LinkedHashMap<>();
+            locationProp.put("type", "string");
+            locationProp.put("description", "The city and state, e.g. Seattle, WA");
 
+            Map<String, Object> unitProp = new LinkedHashMap<>();
+            unitProp.put("type", "string");
+            unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
 
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            Map<String, Object> properties = new LinkedHashMap<>();
+            properties.put("location", locationProp);
+            properties.put("unit", unitProp);
+
+            Map<String, BinaryData> parameters = new HashMap<>();
+            parameters.put("type", BinaryData.fromObject("object"));
+            parameters.put("properties", BinaryData.fromObject(properties));
+            parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
+            parameters.put("additionalProperties", BinaryData.fromObject(false));
+
+            FunctionTool tool = new FunctionTool("get_weather", parameters, true)
+                .setDescription("Get the current weather in a given location");
+
+            // Create agent with function tool
+            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+                .setInstructions("You are a helpful assistant that can get weather information. "
+                    + "When asked about the weather, use the get_weather function.")
+                .setTools(Collections.singletonList(tool));
+
+            agent = agentsClient.createAgentVersion("function-streaming-agent", agentDefinition);
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+
+            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+            agentsClient.updateAgentDetails(agent.getName(),
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // BEGIN: com.azure.ai.agents.streaming.function_call_sync
             // Stream response with function tool - observe function call arguments and text as they arrive
@@ -127,7 +129,10 @@ public class FunctionCallStreamingSync {
             }
             // END: com.azure.ai.agents.streaming.function_call_sync
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted");
+            }
         }
     }
 }

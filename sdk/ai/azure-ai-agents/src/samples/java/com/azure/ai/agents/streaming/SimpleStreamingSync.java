@@ -5,7 +5,14 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
@@ -16,13 +23,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
 
 import java.util.Collections;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 /**
  * This sample demonstrates how to create a streaming response using the synchronous client.
@@ -45,21 +45,23 @@ public class SimpleStreamingSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
 
-        // Create an agent
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("You are a helpful assistant that tells short, engaging stories.");
+        AgentVersionDetails agent = null;
 
-        String agentName = "streaming-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            // Create an agent
+            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+                .setInstructions("You are a helpful assistant that tells short, engaging stories.");
 
+            agent = agentsClient.createAgentVersion("streaming-agent", agentDefinition);
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+            agentsClient.updateAgentDetails(agent.getName(),
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // BEGIN: com.azure.ai.agents.streaming.simple_sync
             // Use ResponseAccumulator to collect streamed events into a final Response
@@ -84,7 +86,10 @@ public class SimpleStreamingSync {
             System.out.println("\nResponse ID: " + response.id());
             // END: com.azure.ai.agents.streaming.simple_sync
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted");
+            }
         }
     }
 }

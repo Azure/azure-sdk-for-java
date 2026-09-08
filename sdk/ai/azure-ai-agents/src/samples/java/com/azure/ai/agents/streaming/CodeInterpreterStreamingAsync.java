@@ -15,7 +15,6 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import reactor.core.publisher.Mono;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
