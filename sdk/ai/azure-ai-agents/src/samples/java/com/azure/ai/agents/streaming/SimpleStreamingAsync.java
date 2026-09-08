@@ -5,14 +5,9 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
@@ -23,7 +18,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -58,10 +52,6 @@ public class SimpleStreamingAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agent.getName());
 
                 // BEGIN: com.azure.ai.agents.streaming.simple_async
@@ -89,9 +79,7 @@ public class SimpleStreamingAsync {
                 });
                 // END: com.azure.ai.agents.streaming.simple_async
 
-                return agentsAsyncClient.updateAgentDetails(agent.getName(),
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
-                    .then(streamingCompletion);
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent).then(streamingCompletion);
             })
             .then(Mono.defer(() -> {
                 AgentVersionDetails agent = agentRef.get();

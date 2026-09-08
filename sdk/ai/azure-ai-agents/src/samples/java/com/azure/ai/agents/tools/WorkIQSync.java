@@ -66,7 +66,7 @@ public class WorkIQSync {
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {
-            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Response response = openAIClient.responses().create(

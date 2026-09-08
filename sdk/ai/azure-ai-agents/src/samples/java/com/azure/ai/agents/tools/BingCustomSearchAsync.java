@@ -66,7 +66,7 @@ public class BingCustomSearchAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent.getName(), agent)
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
                     .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                         ResponseCreateParams.builder()
                             .input("Search for the latest Azure AI documentation")

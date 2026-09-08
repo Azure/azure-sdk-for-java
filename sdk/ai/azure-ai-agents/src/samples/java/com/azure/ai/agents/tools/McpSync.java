@@ -66,7 +66,7 @@ public class McpSync {
             agent = agentsClient.createAgentVersion("mcp-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            SampleUtils.pinAgentVersion(agentsClient, agent);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 

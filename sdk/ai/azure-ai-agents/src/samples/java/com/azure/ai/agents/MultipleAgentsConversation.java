@@ -3,14 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
@@ -21,8 +15,6 @@ import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
-
-import java.util.Collections;
 
 /**
  * This sample how multiple agents can consume a centralized context source (conversation) and provide different responses
@@ -56,19 +48,8 @@ public class MultipleAgentsConversation {
         AgentVersionDetails agent1 = createPromptAgent(agentsClient, model, "weather-agent-1");
         AgentVersionDetails agent2 = createPromptAgent(agentsClient, model, "weather-agent-2");
 
-        AgentEndpointConfig agent1EndpointConfig = new AgentEndpointConfig()
-            .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent1.getVersion()))))
-            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-        agentsClient.updateAgentDetails(agent1.getName(),
-            new UpdateAgentDetailsOptions().setAgentEndpoint(agent1EndpointConfig));
-
-        AgentEndpointConfig agent2EndpointConfig = new AgentEndpointConfig()
-            .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent2.getVersion()))))
-            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-        agentsClient.updateAgentDetails(agent2.getName(),
-            new UpdateAgentDetailsOptions().setAgentEndpoint(agent2EndpointConfig));
+        SampleUtils.pinAgentVersion(agentsClient, agent1);
+        SampleUtils.pinAgentVersion(agentsClient, agent2);
         OpenAIClient agent1Client = builder.buildAgentScopedOpenAIClient(agent1.getName());
         OpenAIClient agent2Client = builder.buildAgentScopedOpenAIClient(agent2.getName());
 

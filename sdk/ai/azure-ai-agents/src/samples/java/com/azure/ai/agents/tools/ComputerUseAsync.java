@@ -134,7 +134,7 @@ public class ComputerUseAsync {
                 System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
 
                 // Send initial request
-                return SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent)
+                return SampleUtils.pinAgentVersion(agentsClient, agent)
                     .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                         ResponseCreateParams.builder()
                             .inputOfResponse(initialInput)
