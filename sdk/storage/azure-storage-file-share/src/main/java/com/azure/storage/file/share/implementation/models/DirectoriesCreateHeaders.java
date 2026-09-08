@@ -51,19 +51,19 @@ public final class DirectoriesCreateHeaders {
      * The x-ms-file-creation-time property.
      */
     @Generated
-    private final String fileCreationTime;
+    private final OffsetDateTime fileCreationTime;
 
     /*
      * The x-ms-file-last-write-time property.
      */
     @Generated
-    private final String fileLastWriteTime;
+    private final OffsetDateTime fileLastWriteTime;
 
     /*
      * The x-ms-file-change-time property.
      */
     @Generated
-    private final String fileChangeTime;
+    private final OffsetDateTime fileChangeTime;
 
     /*
      * The x-ms-file-id property.
@@ -176,9 +176,24 @@ public final class DirectoriesCreateHeaders {
         }
         this.filePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.fileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
-        this.fileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
-        this.fileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
-        this.fileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
+        String fileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
+        if (fileCreationTime != null) {
+            this.fileCreationTime = OffsetDateTime.parse(fileCreationTime);
+        } else {
+            this.fileCreationTime = null;
+        }
+        String fileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
+        if (fileLastWriteTime != null) {
+            this.fileLastWriteTime = OffsetDateTime.parse(fileLastWriteTime);
+        } else {
+            this.fileLastWriteTime = null;
+        }
+        String fileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
+        if (fileChangeTime != null) {
+            this.fileChangeTime = OffsetDateTime.parse(fileChangeTime);
+        } else {
+            this.fileChangeTime = null;
+        }
         this.fileId = rawHeaders.getValue(X_MS_FILE_ID);
         this.fileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         this.fileMode = rawHeaders.getValue(X_MS_MODE);
@@ -260,7 +275,7 @@ public final class DirectoriesCreateHeaders {
      * @return the fileCreationTime value.
      */
     @Generated
-    public String getFileCreationTime() {
+    public OffsetDateTime getFileCreationTime() {
         return this.fileCreationTime;
     }
 
@@ -270,7 +285,7 @@ public final class DirectoriesCreateHeaders {
      * @return the fileLastWriteTime value.
      */
     @Generated
-    public String getFileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return this.fileLastWriteTime;
     }
 
@@ -280,7 +295,7 @@ public final class DirectoriesCreateHeaders {
      * @return the fileChangeTime value.
      */
     @Generated
-    public String getFileChangeTime() {
+    public OffsetDateTime getFileChangeTime() {
         return this.fileChangeTime;
     }
 

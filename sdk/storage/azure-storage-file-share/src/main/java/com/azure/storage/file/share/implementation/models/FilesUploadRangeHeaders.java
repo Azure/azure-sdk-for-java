@@ -46,7 +46,7 @@ public final class FilesUploadRangeHeaders {
      * The x-ms-file-last-write-time property.
      */
     @Generated
-    private final String fileLastWriteTime;
+    private final OffsetDateTime fileLastWriteTime;
 
     /*
      * The x-ms-structured-body property.
@@ -114,7 +114,12 @@ public final class FilesUploadRangeHeaders {
         } else {
             this.requestServerEncrypted = null;
         }
-        this.fileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
+        String fileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
+        if (fileLastWriteTime != null) {
+            this.fileLastWriteTime = OffsetDateTime.parse(fileLastWriteTime);
+        } else {
+            this.fileLastWriteTime = null;
+        }
         this.structuredBodyType = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
@@ -176,7 +181,7 @@ public final class FilesUploadRangeHeaders {
      * @return the fileLastWriteTime value.
      */
     @Generated
-    public String getFileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return this.fileLastWriteTime;
     }
 

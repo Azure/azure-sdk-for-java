@@ -21,7 +21,6 @@ import com.azure.storage.file.share.implementation.accesshelpers.FilePosixProper
 import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
-import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
@@ -34,7 +33,6 @@ import com.azure.storage.file.share.implementation.models.FileProperty;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
-import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
@@ -235,6 +233,7 @@ public class ModelHelper {
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
         properties
             .setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
+        properties.setSmbDirectoryLeaseEnabled(sharePropertiesInternal.isEnableSmbDirectoryLease());
         properties.setPaidBurstingEnabled(sharePropertiesInternal.isPaidBurstingEnabled());
         properties.setPaidBurstingMaxIops(sharePropertiesInternal.getPaidBurstingMaxIops());
         properties.setPaidBurstingMaxBandwidthMibps(sharePropertiesInternal.getPaidBurstingMaxBandwidthMibps());
@@ -285,14 +284,13 @@ public class ModelHelper {
         return new ServicesListSharesSegmentHeaders(headers);
     }
 
-    public static ShareFileDownloadHeaders transformFileDownloadHeaders(FilesDownloadHeaders headers,
+    public static ShareFileDownloadHeaders transformFileDownloadHeaders(ShareFileDownloadHeaders headers,
         HttpHeaders rawHeaders) {
         if (headers == null) {
             return null;
         }
 
-        return ShareFileDownloadHeadersConstructorProxy.create(headers)
-            .setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
+        return headers.setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
     }
 
     public static String getETag(HttpHeaders headers) {

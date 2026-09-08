@@ -26,7 +26,6 @@ import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHea
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
-import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
@@ -51,6 +50,7 @@ import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import java.util.Map;
 
@@ -167,9 +167,10 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -270,9 +271,10 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
@@ -360,9 +362,10 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-lease-duration</td><td>String</td><td>The lease duration.</td></tr>
@@ -510,9 +513,10 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -839,7 +843,7 @@ public final class ShareFileClientInternal {
      * <tr><td>Content-MD5</td><td>byte[]</td><td>An MD5 hash returned for the content.</td></tr>
      * <tr><td>x-ms-request-server-encrypted</td><td>boolean</td><td>The value of this header is set to true if the
      * contents of the request are successfully encrypted.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>The file last write time.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>The file last write time.</td></tr>
      * <tr><td>x-ms-structured-body</td><td>String</td><td>Specifies the response content should be returned as a
      * structured message and specifies the message schema version and properties.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
@@ -912,7 +916,7 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>CRC64 hash of the range content.</td></tr>
      * <tr><td>x-ms-request-server-encrypted</td><td>boolean</td><td>The value of this header is set to true if the
      * contents of the request are successfully encrypted.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>The file last write time.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>The file last write time.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
      * request.</td></tr>
      * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
@@ -1394,9 +1398,10 @@ public final class ShareFileClientInternal {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
@@ -1456,9 +1461,9 @@ public final class ShareFileClientInternal {
      * resource.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>The file creation time.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>The file last write time.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>The file change time.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>The file last write time.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>The file change time.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -1558,9 +1563,9 @@ public final class ShareFileClientInternal {
      * resource.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>Returns the date and time the resource was last
      * modified.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>The file creation time.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>The file last write time.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>The file change time.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>The file last write time.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>The file change time.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the file.</td></tr>
      * <tr><td>x-ms-link-count</td><td>int</td><td>NFS only. The link count.</td></tr>
@@ -1928,7 +1933,7 @@ public final class ShareFileClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<FilesDownloadHeaders, BinaryData> downloadWithResponse(Integer timeout, String range,
+    public ResponseBase<ShareFileDownloadHeaders, BinaryData> downloadWithResponse(Integer timeout, String range,
         Boolean rangeGetContentMD5, String leaseId, String structuredBodyType, RequestOptions requestOptions) {
         // Generated convenience method for downloadWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -1951,7 +1956,7 @@ public final class ShareFileClientInternal {
         Response<BinaryData> protocolMethodResponse = downloadWithResponseInternal(requestOptions);
         return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
             protocolMethodResponse.getHeaders(), protocolMethodResponse.getValue(),
-            new FilesDownloadHeaders(protocolMethodResponse.getHeaders()));
+            new ShareFileDownloadHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**

@@ -43,7 +43,7 @@ public class ShareStorageCustomization extends Customization {
     // restores the shipped fluent shape per-model. Expand this list from the RevApi "method removed" report.
     private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "FileRange", "ClearRange", "ShareCorsRule", "ShareFileRangeList", "ShareMetrics", "ShareRetentionPolicy",
-        "ShareSignedIdentifier", "UserDelegationKey");
+        "ShareSignedIdentifier", "UserDelegationKey", "ShareFileDownloadHeaders");
 
     // Generated builders / main service-client surface emitted by typespec-java on top of the
     // implementation/*Impl operation layer. These are deleted; the shipped public surface is the
@@ -58,8 +58,7 @@ public class ShareStorageCustomization extends Customization {
         "AzureFileStorageClient", "AzureFileStorageAsyncClient", "AzureFileStorageClientBuilder",
         "AzureFileStorageBuilder",
         // The hand-written ShareServiceVersion is authoritative; the generated enum is discarded and new service
-        // versions are added by hand. To instead generate it, remove this entry and restore the @clientApiVersions
-        // block in client.tsp + the FileServiceVersion->ShareServiceVersion rename customization.
+        // versions are added by hand. 
         "FileServiceVersion");
 
     // Per-resource convenience clients emitted by typespec-java. They carry the typed WithResponse
@@ -75,7 +74,6 @@ public class ShareStorageCustomization extends Customization {
         "ShareClient", "ShareAsyncClient");
 
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
-        "src/main/java/module-info.java",
         "src/main/java/com/azure/storage/file/share/package-info.java",
         "src/main/java/com/azure/storage/file/share/models/package-info.java",
         "src/main/java/com/azure/storage/file/share/implementation/package-info.java");
@@ -84,14 +82,6 @@ public class ShareStorageCustomization extends Customization {
     // favor of the hand-written public ShareServiceVersion. These are retyped to ShareServiceVersion after generation.
     private static final List<String> IMPLS_USING_SERVICE_VERSION
         = Arrays.asList("AzureFileStorageImpl", "DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl");
-
-    // Generated response-header models that expose user metadata (x-ms-meta-*). typespec-java types the getter as
-    // Map<String, String> (via @alternateType(Record<string>, "java")) but deserializes a single "x-ms-meta" header
-    // instead of the x-ms-meta-* header collection, so the map is always empty. fixMetadataHeaderCollection rewrites
-    // the parsing to the prefix-collection form. Remove this (and the @alternateType java flavor) once typespec-java
-    // supports a header-collection-prefix client option for Java.
-    private static final List<String> METADATA_HEADER_CLASSES = Arrays.asList("DirectoriesGetPropertiesHeaders",
-        "FilesDownloadHeaders", "FilesGetPropertiesHeaders", "SharesGetPropertiesHeaders");
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
@@ -107,9 +97,11 @@ public class ShareStorageCustomization extends Customization {
 
         fixXmlSerializerRedundantCast(customization, logger);
 
+        relocateDownloadHeadersToModels(customization, logger);
+
         restoreFluentModels(customization, logger);
 
-        fixMetadataHeaderCollection(customization, logger);
+        renameDownloadHeaderMethods(customization, logger);
 
         customization.getClass("com.azure.storage.file.share.models", "ShareTokenIntent")
             .customizeAst(ast -> ast.getClassByName("ShareTokenIntent").ifPresent(clazz -> clazz.setJavadocComment(
@@ -197,57 +189,85 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Rewrites the metadata deserialization in the generated response-header models from the (broken) single
-     * {@code x-ms-meta} header read to an {@code x-ms-meta-*} prefix-collection loop, matching the generator's own
-     * header-collection deserialization. typespec-java types the getter as {@code Map<String, String>} (via
-     * {@code @alternateType(Record<string>, "java")}) but does not yet honor a header-collection-prefix client option,
-     * so the emitted parsing reads a lone {@code x-ms-meta} header and always yields an empty map. Also drops the
-     * now-unused serializer/IO imports and the {@code X_MS_META} constant, and adds the header-iteration imports.
+     * Relocates the generated {@code implementation.models.FilesDownloadHeaders} response-header model into the public
+     * {@code models} package as {@code ShareFileDownloadHeaders}, the shipped public type for the File download
+     * operation. The synthesized response-header model cannot be named or placed via spec decorators, so the move and
+     * rename are done here. Two members that shipped on the hand-written wrapper but are not modeled on the response
+     * headers -- {@code errorCode} and {@code contentType} -- are added back. References in the relocated convenience
+     * clients ({@code ShareFileClientInternal}/{@code ShareFileAsyncClientInternal}) are repointed to the new type.
+     * Runs before {@code restoreFluentModels}/{@code renameDownloadHeaderMethods}.
      *
      * @param customization The library customization.
      * @param logger The logger.
      */
-    private static void fixMetadataHeaderCollection(LibraryCustomization customization, Logger logger) {
-        for (String className : METADATA_HEADER_CLASSES) {
-            customization.getClass("com.azure.storage.file.share.implementation.models", className).customizeAst(ast -> {
-                ast.addImport("com.azure.core.http.HttpHeader");
-                ast.addImport("java.util.LinkedHashMap");
-                ast.getImports().removeIf(imp -> {
-                    String n = imp.getNameAsString();
-                    return n.equals("com.azure.core.util.serializer.JacksonAdapter")
-                        || n.equals("com.azure.core.util.serializer.TypeReference") || n.equals("java.io.IOException")
-                        || n.equals("java.io.UncheckedIOException");
-                });
-                ast.getClassByName(className).ifPresent(clazz -> {
-                    clazz.getFieldByName("X_MS_META").ifPresent(field -> field.remove());
-                    clazz.getConstructors().forEach(ctor -> {
-                        NodeList<Statement> stmts = ctor.getBody().getStatements();
-                        for (int i = 0; i < stmts.size(); i++) {
-                            Statement s = stmts.get(i);
-                            if (s.isTryStmt() && s.toString().contains("this.metadata")) {
-                                // Drop the preceding `String metadata = rawHeaders.getValue(X_MS_META);` declaration.
-                                if (i > 0 && stmts.get(i - 1).toString().contains("X_MS_META")) {
-                                    stmts.remove(i - 1);
-                                    i--;
-                                }
-                                stmts.set(i, StaticJavaParser
-                                    .parseStatement("Map<String, String> metadataHeaderCollection = new LinkedHashMap<>();"));
-                                stmts.add(i + 1,
-                                    StaticJavaParser.parseStatement("for (HttpHeader header : rawHeaders) {"
-                                        + " String headerName = header.getName();"
-                                        + " if (headerName.startsWith(\"x-ms-meta-\")) {"
-                                        + " metadataHeaderCollection.put(headerName.substring(10), header.getValue()); }"
-                                        + "}"));
-                                stmts.add(i + 2, StaticJavaParser.parseStatement(
-                                    "this.metadata = metadataHeaderCollection.isEmpty() ? null : metadataHeaderCollection;"));
-                                break;
-                            }
-                        }
-                    });
-                });
-                logger.info("Fixed metadata header-collection deserialization in {}", className);
-            });
+    private static void relocateDownloadHeadersToModels(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String oldPath = PKG_ROOT + "implementation/models/FilesDownloadHeaders.java";
+        String content = editor.getFileContent(oldPath);
+        content = content.replace("package com.azure.storage.file.share.implementation.models;",
+            "package com.azure.storage.file.share.models;");
+        content = content.replaceAll("\\bFilesDownloadHeaders\\b", "ShareFileDownloadHeaders");
+        // Add the errorCode and contentType members that shipped on the public headers type but are not part of the
+        // generated response-header model. restoreFluentModels (run next) skips fields that already have a setter.
+        String extraMembers = "\n"
+            + "    private String errorCode;\n\n"
+            + "    /**\n     * Get the errorCode property.\n     *\n     * @return the errorCode value.\n     */\n"
+            + "    public String getErrorCode() {\n        return this.errorCode;\n    }\n\n"
+            + "    /**\n     * Set the errorCode property.\n     *\n     * @param errorCode the errorCode value to set.\n"
+            + "     * @return the ShareFileDownloadHeaders object itself.\n     */\n"
+            + "    public ShareFileDownloadHeaders setErrorCode(String errorCode) {\n"
+            + "        this.errorCode = errorCode;\n        return this;\n    }\n\n"
+            + "    private String contentType;\n\n"
+            + "    /**\n     * Get the contentType property.\n     *\n     * @return the contentType value.\n     */\n"
+            + "    public String getContentType() {\n        return this.contentType;\n    }\n\n"
+            + "    /**\n     * Set the contentType property.\n     *\n     * @param contentType the contentType value to set.\n"
+            + "     * @return the ShareFileDownloadHeaders object itself.\n     */\n"
+            + "    public ShareFileDownloadHeaders setContentType(String contentType) {\n"
+            + "        this.contentType = contentType;\n        return this;\n    }\n";
+        int lastBrace = content.lastIndexOf('}');
+        content = content.substring(0, lastBrace) + extraMembers + "}\n";
+        editor.removeFile(oldPath);
+        // Remove the hand-written wrapper (now replaced by this relocated model) and its now-dead constructor proxy.
+        editor.removeFile(PKG_ROOT + "models/ShareFileDownloadHeaders.java");
+        editor.removeFile(PKG_ROOT + "implementation/accesshelpers/ShareFileDownloadHeadersConstructorProxy.java");
+        editor.addFile(PKG_ROOT + "models/ShareFileDownloadHeaders.java", content);
+        logger.info("Relocated FilesDownloadHeaders -> models.ShareFileDownloadHeaders");
+
+        for (String clientName : Arrays.asList("ShareFileClientInternal", "ShareFileAsyncClientInternal")) {
+            String clientPath = PKG_ROOT + "implementation/" + clientName + ".java";
+            String c = editor.getFileContent(clientPath);
+            c = c.replace("com.azure.storage.file.share.implementation.models.FilesDownloadHeaders",
+                "com.azure.storage.file.share.models.ShareFileDownloadHeaders");
+            c = c.replaceAll("\\bFilesDownloadHeaders\\b", "ShareFileDownloadHeaders");
+            editor.removeFile(clientPath);
+            editor.addFile(clientPath, c);
+            logger.info("Repointed {} to models.ShareFileDownloadHeaders", clientName);
         }
+    }
+
+    /**
+     * Renames the generated getters/setters on {@code ShareFileDownloadHeaders} to the shipped public names. The
+     * emitter derives them from the response-header property names, which differ in casing/spelling from the historical
+     * public API: {@code getEtag}->{@code getETag}, {@code getContentMD5}->{@code getContentMd5},
+     * {@code getFileContentMD5}->{@code getFileContentMd5}, {@code getDate}->{@code getDateProperty} (and matching
+     * setters). Runs after {@code restoreFluentModels} so the setters exist to be renamed.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void renameDownloadHeaderMethods(LibraryCustomization customization, Logger logger) {
+        customization.getClass(MODELS_PACKAGE, "ShareFileDownloadHeaders")
+            .customizeAst(ast -> ast.getClassByName("ShareFileDownloadHeaders").ifPresent(clazz -> {
+                clazz.getMethodsByName("getEtag").forEach(m -> m.setName("getETag"));
+                clazz.getMethodsByName("setEtag").forEach(m -> m.setName("setETag"));
+                clazz.getMethodsByName("getContentMD5").forEach(m -> m.setName("getContentMd5"));
+                clazz.getMethodsByName("setContentMD5").forEach(m -> m.setName("setContentMd5"));
+                clazz.getMethodsByName("getFileContentMD5").forEach(m -> m.setName("getFileContentMd5"));
+                clazz.getMethodsByName("setFileContentMD5").forEach(m -> m.setName("setFileContentMd5"));
+                clazz.getMethodsByName("getDate").forEach(m -> m.setName("getDateProperty"));
+                clazz.getMethodsByName("setDate").forEach(m -> m.setName("setDateProperty"));
+                logger.info("Renamed ShareFileDownloadHeaders getters/setters to shipped public names");
+            }));
     }
 
     /**
@@ -442,9 +462,20 @@ public class ShareStorageCustomization extends Customization {
                         setter.setName(setterName);
                         setter.setModifiers(Modifier.Keyword.PUBLIC);
                         setter.setType(modelName);
-                        setter.addParameter(variable.getTypeAsString(), fieldName);
-                        setter.setBody(StaticJavaParser.parseBlock(
-                            "{ this." + fieldName + " = " + fieldName + "; return this; }"));
+                        // Header models back RFC1123 date headers with a DateTimeRfc1123 field but expose an
+                        // OffsetDateTime getter; the public setter must take OffsetDateTime and wrap, otherwise the
+                        // shipped setter signature changes (breaking) and leaks the internal DateTimeRfc1123 type.
+                        if ("DateTimeRfc1123".equals(variable.getTypeAsString())) {
+                            ast.addImport("java.time.OffsetDateTime");
+                            ast.addImport("com.azure.core.util.DateTimeRfc1123");
+                            setter.addParameter("OffsetDateTime", fieldName);
+                            setter.setBody(StaticJavaParser.parseBlock("{ this." + fieldName + " = " + fieldName
+                                + " == null ? null : new DateTimeRfc1123(" + fieldName + "); return this; }"));
+                        } else {
+                            setter.addParameter(variable.getTypeAsString(), fieldName);
+                            setter.setBody(StaticJavaParser.parseBlock(
+                                "{ this." + fieldName + " = " + fieldName + "; return this; }"));
+                        }
                         setter.addMarkerAnnotation("Generated");
                         setter.setJavadocComment(new Javadoc(
                             JavadocDescription.parseText("Set the " + fieldName + " property."))

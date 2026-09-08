@@ -343,9 +343,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -434,9 +435,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -495,9 +497,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
@@ -557,9 +560,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>The value of this header indicates whether the file data
@@ -726,9 +730,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -813,9 +818,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-mode</td><td>String</td><td>NFS only. The file mode.</td></tr>
@@ -1507,9 +1513,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
@@ -1588,9 +1595,10 @@ public final class DirectoriesImpl {
      * <tr><td>x-ms-file-permission-key</td><td>String</td><td>Key of the permission set for the
      * directory/file.</td></tr>
      * <tr><td>x-ms-file-attributes</td><td>String</td><td>Attributes set for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-creation-time</td><td>String</td><td>Creation time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-last-write-time</td><td>String</td><td>Last write time for the file/directory.</td></tr>
-     * <tr><td>x-ms-file-change-time</td><td>String</td><td>Change time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-creation-time</td><td>OffsetDateTime</td><td>Creation time for the file/directory.</td></tr>
+     * <tr><td>x-ms-file-last-write-time</td><td>OffsetDateTime</td><td>Last write time for the
+     * file/directory.</td></tr>
+     * <tr><td>x-ms-file-change-time</td><td>OffsetDateTime</td><td>Change time for the file/directory.</td></tr>
      * <tr><td>x-ms-file-id</td><td>String</td><td>The fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-file-parent-id</td><td>String</td><td>The parent fileId of the directory/file.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
