@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * TypeSpec customization for azure-storage-queue.
@@ -75,9 +74,6 @@ public class QueueStorageCustomizations extends Customization {
         "MessagesClient", "MessagesAsyncClient",
         "MessageIdsClient", "MessageIdsAsyncClient");
 
-    // Generated response-header models that expose user metadata (x-ms-meta-*). See fixMetadataHeaderCollection.
-    private static final List<String> METADATA_HEADER_CLASSES = Arrays.asList("QueuesGetPropertiesHeaders");
-
     // Types the generated clients import from com.azure.storage.queue.implementation; once the client itself lives
     // in that package those imports are same-package and Checkstyle rejects them as redundant.
     private static final List<String> IMPL_PACKAGE_TYPES = Arrays.asList(
@@ -101,65 +97,7 @@ public class QueueStorageCustomizations extends Customization {
         fixXmlSerializerRedundantCast(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
-        fixMetadataHeaderCollection(customization, logger);
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
-    }
-
-    /**
-     * Rewrites the metadata deserialization in the generated response-header models from the single {@code x-ms-meta}
-     * header read to an {@code x-ms-meta-*} prefix-collection loop, and retypes the property to
-     * {@code Map<String, String>}. On the wire queue metadata is a dynamic {@code x-ms-meta-<key>} collection, but
-     * typespec-java has no header-collection-prefix client option for Java, so the emitted parsing reads a lone
-     * {@code x-ms-meta} header. Mirrors azure-storage-file-share's ShareStorageCustomization.fixMetadataHeaderCollection,
-     * except that the assembled map is assigned as-is: {@code QueueProperties.getMetadata()} shipped returning an empty
-     * map (not null) when the queue carries no metadata, and the setAndClearMetadata tests assert that. Remove this
-     * once typespec-java supports a header-collection prefix for Java.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void fixMetadataHeaderCollection(LibraryCustomization customization, Logger logger) {
-        PackageCustomization implModelsPackage = customization.getPackage(IMPL_PACKAGE + ".models");
-        for (String className : METADATA_HEADER_CLASSES) {
-            if (implModelsPackage.getClass(className) == null) {
-                logger.info("{} not present; skipping metadata header-collection fix.", className);
-                continue;
-            }
-            implModelsPackage.getClass(className).customizeAst(ast -> {
-                ast.addImport("com.azure.core.http.HttpHeader");
-                ast.addImport("java.util.LinkedHashMap");
-                ast.addImport("java.util.Map");
-                ast.getClassByName(className).ifPresent(clazz -> {
-                    clazz.getFieldByName("metadata")
-                        .ifPresent(field -> field.getVariable(0).setType("Map<String, String>"));
-                    clazz.getMethodsByName("getMetadata").forEach(method -> method.setType("Map<String, String>"));
-                    clazz.getFieldByName("X_MS_META").ifPresent(FieldDeclaration::remove);
-                    if (!clazz.getFieldByName("X_MS_META_PREFIX").isPresent()) {
-                        clazz.getMembers().add(0, StaticJavaParser
-                            .parseBodyDeclaration("private static final String X_MS_META_PREFIX = \"x-ms-meta-\";"));
-                    }
-                    clazz.getConstructors().forEach(ctor -> {
-                        NodeList<Statement> statements = ctor.getBody().getStatements();
-                        for (int i = 0; i < statements.size(); i++) {
-                            if (statements.get(i).toString().contains("this.metadata = ")) {
-                                statements.remove(i);
-                                statements.add(i,
-                                    StaticJavaParser.parseStatement("this.metadata = metadataHeaderCollection;"));
-                                statements.add(i, StaticJavaParser.parseStatement("for (HttpHeader header : rawHeaders) {"
-                                    + " String headerName = header.getName();"
-                                    + " if (headerName.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {"
-                                    + " metadataHeaderCollection.put(headerName.substring(X_MS_META_PREFIX.length()),"
-                                    + " header.getValue()); } }"));
-                                statements.add(i, StaticJavaParser.parseStatement(
-                                    "Map<String, String> metadataHeaderCollection = new LinkedHashMap<>();"));
-                                break;
-                            }
-                        }
-                    });
-                });
-            });
-            logger.info("Fixed metadata header-collection deserialization in {}", className);
-        }
     }
 
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {

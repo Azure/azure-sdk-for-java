@@ -26,6 +26,7 @@ import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataHeaders;
 import com.azure.storage.queue.implementation.models.SignedIdentifiers;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,7 +67,7 @@ public final class QueueAsyncClientInternal {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -113,7 +114,7 @@ public final class QueueAsyncClientInternal {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-approximate-messages-count</td><td>long</td><td>The approximate number of messages in the queue.
      * This number is not lower than the actual number of
      * messages in the queue, but could be higher.</td></tr>
@@ -197,7 +198,7 @@ public final class QueueAsyncClientInternal {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -374,15 +375,15 @@ public final class QueueAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesCreateHeaders, Void>> createWithResponse(Integer timeout, String metadata,
-        RequestOptions requestOptions) {
+    public Mono<ResponseBase<QueuesCreateHeaders, Void>> createWithResponse(Integer timeout,
+        Map<String, String> metadata, RequestOptions requestOptions) {
         // Generated convenience method for createWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
         }
         return createWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -409,14 +410,14 @@ public final class QueueAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> create(Integer timeout, String metadata) {
+    public Mono<Void> create(Integer timeout, Map<String, String> metadata) {
         // Generated convenience method for createWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
         }
         return createWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -610,15 +611,15 @@ public final class QueueAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesSetMetadataHeaders, Void>> setMetadataWithResponse(Integer timeout, String metadata,
-        RequestOptions requestOptions) {
+    public Mono<ResponseBase<QueuesSetMetadataHeaders, Void>> setMetadataWithResponse(Integer timeout,
+        Map<String, String> metadata, RequestOptions requestOptions) {
         // Generated convenience method for setMetadataWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
         }
         return setMetadataWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -644,14 +645,14 @@ public final class QueueAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setMetadata(Integer timeout, String metadata) {
+    public Mono<Void> setMetadata(Integer timeout, Map<String, String> metadata) {
         // Generated convenience method for setMetadataWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
         }
         return setMetadataWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
     }
