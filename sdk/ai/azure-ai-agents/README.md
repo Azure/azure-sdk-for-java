@@ -65,7 +65,7 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
 - `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. When `allowPreview(true)` is configured, these clients can also use preview draft versions, hosted-agent sessions, session files, and code package operations.
 - `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent optimization operations.
-- `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
+- `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through a configured agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 
@@ -102,7 +102,11 @@ The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can
 OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIAsyncClient = builder.buildOpenAIAsyncClient();
 
-// OpenAI SDK ResponseService accessed from ResponsesClient
+// Agent-scoped OpenAI clients for invoking a configured agent endpoint.
+OpenAIClient agentScopedOpenAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+OpenAIClientAsync agentScopedOpenAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
+
+// ResponsesClient wraps the OpenAI SDK's ResponseService with Azure-specific options.
 ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponseService responseService = responsesClient.getResponseService();
 
@@ -221,13 +225,13 @@ ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
 Response result = client.responses().create(responseRequest);
 ```
 
-Remember to adjust your base URL so that your AI Foundry project `endpoint`'s path ends with `openai/v1` like it's shown in the above code snippet.
+For this direct setup, ensure that the AI Foundry project `endpoint` path ends with `openai/v1`, as shown above.
 
 ## Examples
 
 ### Prompt Agent
 
-This example will show how to create the context necessary for a `PromptAgent` to work. Note that the way that context is handled in this scenario would allow you to share the context with multiple agents. 
+This example shows how to create and invoke a `PromptAgent` with conversation context that can be shared across multiple agents.
 
 #### Create an Agent
 
@@ -238,7 +242,7 @@ PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o"
 AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
 ```
 
-This will return an `AgentVersionDetails` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
+This returns an `AgentVersionDetails` containing the name and version used to configure the agent endpoint. The following steps also create a `Conversation` to provide centralized context that can be shared across agents.
 
 #### Create conversation
 
@@ -248,7 +252,7 @@ First we need to create our `Conversation` object so we can attach items to it:
 Conversation conversation = conversationsClient.create();
 ```
 
-With `conversation.id()` contains the reference we will use to append messages to this `Conversation`. `Conversation` objects can be used by multiple agents and serve the purpose of being a centralized source of context. To add items:
+The value returned by `conversation.id()` identifies the conversation when appending messages. `Conversation` objects can be used by multiple agents as a centralized source of context. To add items:
 
 ```java com.azure.ai.agents.add_message_to_conversation
 conversationsClient.items().create(
@@ -270,7 +274,7 @@ To scope conversation operations to a delegated end user, set `FOUNDRY_USER_IDEN
 
 #### Configure the agent endpoint
 
-Before invoking the agent, point its endpoint at the version you just created and enable the OpenAI Responses protocol on it:
+An agent can have multiple versions. Before invoking it through the OpenAI Responses API, configure its endpoint with a version-selection rule and enable the Responses protocol. This example sends all endpoint traffic to the version just created; the endpoint configuration remains in effect until it is updated again:
 
 ```java com.azure.ai.agents.configure_agent_endpoint
 AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
@@ -284,7 +288,7 @@ agentsClient.updateAgentDetails(agent.getName(),
 
 #### Text generation with Responses
 
-With the agent endpoint configured, invoke the OpenAI Responses API through an agent-scoped OpenAI client:
+With the agent endpoint configured, build an agent-scoped OpenAI client and invoke the OpenAI Responses API:
 
 ```java com.azure.ai.agents.create_response
 OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
@@ -293,6 +297,8 @@ Response response = agentScopedClient.responses().create(ResponseCreateParams.bu
     .conversation(conversation.id())
     .build());
 ```
+
+For asynchronous calls, use `buildAgentScopedOpenAIAsyncClient`.
 
 ### Using Agent tools
 
@@ -462,7 +468,7 @@ AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
 );
 ```
 
-*After calling `responsesClient.createAzureResponse()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
+*When the agent handles a response, it enqueues function arguments to the input queue. Your Azure Function processes the request and returns results through the output queue.*
 
 See the full sample in [AzureFunctionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureFunctionSync.java).
 
@@ -770,11 +776,11 @@ See the full end-to-end sample in [ShellToolboxSample.java](https://github.com/A
 
 ### Streaming responses
 
-The `ResponsesClient` and `ResponsesAsyncClient` support streaming, which allows you to process response events as they arrive rather than waiting for the full response. This is useful for displaying text to users in real time and observing tool execution progress.
+An agent-scoped OpenAI client can stream response events as they arrive instead of waiting for the complete response. This is useful for displaying text in real time and observing tool execution progress.
 
 #### Synchronous streaming
 
-The synchronous streaming methods return `IterableStream<ResponseStreamEvent>`, which can be consumed with a standard for-each loop. Use the `ResponseAccumulator` from the OpenAI SDK to collect events into a final `Response`:
+The OpenAI SDK's synchronous `createStreaming` method returns a `StreamResponse<ResponseStreamEvent>`. Close it with try-with-resources, and use `ResponseAccumulator` to collect the events into a final `Response`:
 
 ```java com.azure.ai.agents.streaming.simple_sync
 // Use ResponseAccumulator to collect streamed events into a final Response
@@ -803,7 +809,7 @@ See the full samples in [SimpleStreamingSync.java](https://github.com/Azure/azur
 
 #### Asynchronous streaming
 
-The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrating naturally with Reactor pipelines:
+The OpenAI SDK's asynchronous `createStreaming` method returns an `AsyncStreamResponse<ResponseStreamEvent>`. Subscribe to its event callbacks and use `onCompleteFuture()` to track terminal completion:
 
 ```java com.azure.ai.agents.streaming.simple_async
 // OpenAI streaming events arrive through callbacks. This Mono only tracks terminal completion.
