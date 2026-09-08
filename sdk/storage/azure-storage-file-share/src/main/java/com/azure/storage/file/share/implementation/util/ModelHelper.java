@@ -377,10 +377,10 @@ public class ModelHelper {
         }
     }
 
-    public static Response<ShareFileInfo> createFileInfoResponse(ResponseBase<FilesCreateHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
+    public static Response<ShareFileInfo> createFileInfoResponse(Response<FilesCreateHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
+        boolean isServerEncrypted = response.getValue().isRequestServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
@@ -389,8 +389,8 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileProperties>
-        getPropertiesResponse(final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
-        FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
+        getPropertiesResponse(final Response<FilesGetPropertiesHeaders> response) {
+        FilesGetPropertiesHeaders headers = response.getValue();
         String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
         Map<String, String> metadata = headers.getMetadata();
@@ -425,11 +425,10 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
-    public static Response<ShareFileInfo>
-        setPropertiesResponse(final ResponseBase<FilesSetHttpHeadersHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
+    public static Response<ShareFileInfo> setPropertiesResponse(final Response<FilesSetHttpHeadersHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
+        boolean isServerEncrypted = response.getValue().isRequestServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
@@ -438,9 +437,9 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileMetadataInfo>
-        setMetadataResponse(final ResponseBase<FilesSetMetadataHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        Boolean isServerEncrypted = response.getDeserializedHeaders().isRequestServerEncrypted();
+        setMetadataResponse(final Response<FilesSetMetadataHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        Boolean isServerEncrypted = response.getValue().isRequestServerEncrypted();
         ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, shareFileMetadataInfo);
     }
@@ -469,9 +468,8 @@ public class ModelHelper {
         }
     }
 
-    public static Response<ShareFileUploadInfo>
-        transformUploadResponse(ResponseBase<FilesUploadRangeHeaders, Void> response) {
-        FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
+    public static Response<ShareFileUploadInfo> transformUploadResponse(Response<FilesUploadRangeHeaders> response) {
+        FilesUploadRangeHeaders headers = response.getValue();
         String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
         byte[] contentMD5 = headers.getContentMD5();
@@ -534,8 +532,8 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileUploadInfo>
-        uploadRangeHeadersToShareFileInfo(ResponseBase<FilesUploadRangeHeaders, Void> response) {
-        FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
+        uploadRangeHeadersToShareFileInfo(Response<FilesUploadRangeHeaders> response) {
+        FilesUploadRangeHeaders headers = response.getValue();
         String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
         byte[] contentMD5 = headers.getContentMD5();
@@ -551,8 +549,8 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileUploadRangeFromUrlInfo>
-        mapUploadRangeFromUrlResponse(final ResponseBase<FilesUploadRangeFromUrlHeaders, Void> response) {
-        FilesUploadRangeFromUrlHeaders headers = response.getDeserializedHeaders();
+        mapUploadRangeFromUrlResponse(final Response<FilesUploadRangeFromUrlHeaders> response) {
+        FilesUploadRangeFromUrlHeaders headers = response.getValue();
         String eTag = headers.getEtag();
         OffsetDateTime lastModified = headers.getLastModified();
         Boolean isServerEncrypted = headers.isRequestServerEncrypted();
@@ -570,7 +568,8 @@ public class ModelHelper {
         return new SimpleResponse<>(response, snapshotInfo);
     }
 
-    public static Response<ShareDirectoryInfo> mapShareDirectoryInfo(final Response<DirectoriesCreateHeaders> response) {
+    public static Response<ShareDirectoryInfo>
+        mapShareDirectoryInfo(final Response<DirectoriesCreateHeaders> response) {
         String eTag = response.getValue().getEtag();
         OffsetDateTime lastModified = response.getValue().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
@@ -639,10 +638,9 @@ public class ModelHelper {
         return new ArrayList<>(shareFileItems);
     }
 
-    public static Response<ShareFileInfo>
-        createHardLinkResponse(final ResponseBase<FilesCreateHardLinkHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+    public static Response<ShareFileInfo> createHardLinkResponse(final Response<FilesCreateHardLinkHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
@@ -651,9 +649,9 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileInfo>
-        createSymbolicLinkResponse(final ResponseBase<FilesCreateSymbolicLinkHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        createSymbolicLinkResponse(final Response<FilesCreateSymbolicLinkHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
@@ -662,10 +660,10 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileSymbolicLinkInfo>
-        getSymbolicLinkResponse(final ResponseBase<FilesGetSymbolicLinkHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getEtag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        String linkText = response.getDeserializedHeaders().getLinkText();
+        getSymbolicLinkResponse(final Response<FilesGetSymbolicLinkHeaders> response) {
+        String eTag = response.getValue().getEtag();
+        OffsetDateTime lastModified = response.getValue().getLastModified();
+        String linkText = response.getValue().getLinkText();
         ShareFileSymbolicLinkInfo shareFileSymbolicLinkInfo
             = ShareFileSymbolicLinkInfoHelper.create(eTag, lastModified, linkText);
         return new SimpleResponse<>(response, shareFileSymbolicLinkInfo);
