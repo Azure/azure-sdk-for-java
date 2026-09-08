@@ -32,9 +32,13 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 
+import reactor.core.publisher.Mono;
+
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +92,8 @@ public final class CommunicationIdentityClientBuilder implements
     private static final String SDK_VERSION = "version";
 
     private static final String COMMUNICATION_IDENTITY_PROPERTIES = "azure-communication-identity.properties";
+
+    private static final String API_VERSION_QUERY_PARAM = "api-version";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
@@ -367,13 +373,14 @@ public final class CommunicationIdentityClientBuilder implements
     private IdentityClientImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
 
-        HttpPipeline builderPipeline = this.pipeline;
-        if (this.pipeline == null) {
-            builderPipeline = createHttpPipeline(httpClient, createHttpPipelineAuthPolicy(), customPolicies);
-        }
-
         CommunicationIdentityServiceVersion apiVersion
             = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
+
+        HttpPipeline builderPipeline = this.pipeline;
+        if (this.pipeline == null) {
+            builderPipeline = createHttpPipeline(httpClient, createHttpPipelineAuthPolicy(), customPolicies,
+                apiVersion.getVersion());
+        }
 
         return new IdentityClientImpl(builderPipeline, endpoint, mapServiceVersion(apiVersion));
     }
@@ -382,9 +389,11 @@ public final class CommunicationIdentityClientBuilder implements
      * Maps the public {@link CommunicationIdentityServiceVersion} onto the generated
      * {@link IdentityServiceVersion}.
      *
-     * <p>The generated client accepts only api-versions declared in the TypeSpec {@code Versions} enum.
-     * Older values remain part of the public API of this library but cannot be routed to the generated
-     * client until they are added upstream.</p>
+     * <p>The generated client only declares the api-versions present in the TypeSpec {@code Versions}
+     * enum, which is a subset of the versions this library has shipped. For a value with no generated
+     * counterpart this returns the newest generated version purely to satisfy the constructor; the
+     * api-version actually sent is pinned by {@link #createApiVersionPolicy(String)}, so the caller's
+     * selection is what reaches the service.</p>
      */
     private IdentityServiceVersion mapServiceVersion(CommunicationIdentityServiceVersion apiVersion) {
         for (IdentityServiceVersion generated : IdentityServiceVersion.values()) {
@@ -393,16 +402,33 @@ public final class CommunicationIdentityClientBuilder implements
             }
         }
 
-        StringBuilder supported = new StringBuilder();
-        for (IdentityServiceVersion generated : IdentityServiceVersion.values()) {
-            if (supported.length() > 0) {
-                supported.append(", ");
-            }
-            supported.append(generated.getVersion());
-        }
+        return IdentityServiceVersion.getLatest();
+    }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException("Service version " + apiVersion.getVersion()
-            + " is not supported by the generated client. Supported versions: " + supported + "."));
+    /**
+     * Pins the {@code api-version} query parameter to the service version selected on this builder.
+     *
+     * <p>This is the seam that decouples the public {@link CommunicationIdentityServiceVersion} from the
+     * generated {@link IdentityServiceVersion}. The generated client takes a typed enum rather than a
+     * string, so without this policy any version absent from that enum could not be reached at all.</p>
+     *
+     * @param apiVersion the api-version string to send.
+     * @return a policy that overwrites the api-version query parameter on every request.
+     */
+    private HttpPipelinePolicy createApiVersionPolicy(String apiVersion) {
+        return (context, next) -> {
+            UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            if (urlBuilder.getQuery().containsKey(API_VERSION_QUERY_PARAM)) {
+                urlBuilder.setQueryParameter(API_VERSION_QUERY_PARAM, apiVersion);
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.toUrl());
+                } catch (MalformedURLException ex) {
+                    return Mono
+                        .error(logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex)));
+                }
+            }
+            return next.process();
+        };
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
@@ -422,10 +448,11 @@ public final class CommunicationIdentityClientBuilder implements
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient, HttpPipelinePolicy authorizationPolicy,
-        List<HttpPipelinePolicy> customPolicies) {
+        List<HttpPipelinePolicy> customPolicies, String apiVersion) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         applyRequiredPolicies(policies, authorizationPolicy);
+        policies.add(createApiVersionPolicy(apiVersion));
 
         if (customPolicies != null && customPolicies.size() > 0) {
             policies.addAll(customPolicies);

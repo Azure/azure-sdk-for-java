@@ -9,10 +9,6 @@
 
 ### Breaking Changes
 
-- The client library is now generated from TypeSpec. Service versions earlier than `2025-06-30`
-  are no longer supported by the underlying generated client; selecting one via
-  `CommunicationIdentityClientBuilder.serviceVersion` throws `IllegalArgumentException`.
-
 ### Bugs Fixed
 
 ### Other Changes
