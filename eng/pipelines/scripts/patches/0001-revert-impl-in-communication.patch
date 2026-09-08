@@ -1,0 +1,268 @@
+From 46e470e80eeb94ef3da2346bce9e6368792ad4ae Mon Sep 17 00:00:00 2001
+From: Weidong Xu <weidxu@microsoft.com>
+Date: Thu, 7 Aug 2025 14:13:06 +0800
+Subject: [PATCH] revert impl in communication
+
+---
+ .../JobRouterAdministrationClientImpl.java    | 48 +++++++++++--------
+ .../implementation/JobRouterClientImpl.java   | 22 +++++----
+ 2 files changed, 41 insertions(+), 29 deletions(-)
+
+diff --git a/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterAdministrationClientImpl.java b/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterAdministrationClientImpl.java
+index 78b69849b85..3a598fb5a4e 100644
+--- a/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterAdministrationClientImpl.java
++++ b/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterAdministrationClientImpl.java
+@@ -234,8 +234,8 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Mono<Response<Void>> deleteDistributionPolicy(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion,
+-            @PathParam("distributionPolicyId") String distributionPolicyId, RequestOptions requestOptions,
+-            Context context);
++            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
++            RequestOptions requestOptions, Context context);
+ 
+         @Delete("/routing/distributionPolicies/{distributionPolicyId}")
+         @ExpectedResponses({ 204 })
+@@ -245,8 +245,8 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Response<Void> deleteDistributionPolicySync(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion,
+-            @PathParam("distributionPolicyId") String distributionPolicyId, RequestOptions requestOptions,
+-            Context context);
++            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
++            RequestOptions requestOptions, Context context);
+ 
+         @Patch("/routing/classificationPolicies/{classificationPolicyId}")
+         @ExpectedResponses({ 200, 201 })
+@@ -324,8 +324,8 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Mono<Response<Void>> deleteClassificationPolicy(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion,
+-            @PathParam("classificationPolicyId") String classificationPolicyId, RequestOptions requestOptions,
+-            Context context);
++            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
++            RequestOptions requestOptions, Context context);
+ 
+         @Delete("/routing/classificationPolicies/{classificationPolicyId}")
+         @ExpectedResponses({ 204 })
+@@ -335,8 +335,8 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Response<Void> deleteClassificationPolicySync(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion,
+-            @PathParam("classificationPolicyId") String classificationPolicyId, RequestOptions requestOptions,
+-            Context context);
++            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
++            RequestOptions requestOptions, Context context);
+ 
+         @Patch("/routing/exceptionPolicies/{exceptionPolicyId}")
+         @ExpectedResponses({ 200, 201 })
+@@ -410,7 +410,7 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Mono<Response<Void>> deleteExceptionPolicy(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Delete("/routing/exceptionPolicies/{exceptionPolicyId}")
+         @ExpectedResponses({ 204 })
+@@ -420,7 +420,7 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Response<Void> deleteExceptionPolicySync(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Patch("/routing/queues/{queueId}")
+         @ExpectedResponses({ 200, 201 })
+@@ -494,7 +494,7 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Mono<Response<Void>> deleteQueue(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Delete("/routing/queues/{queueId}")
+         @ExpectedResponses({ 204 })
+@@ -504,7 +504,7 @@ public final class JobRouterAdministrationClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Response<Void> deleteQueueSync(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Get("{nextLink}")
+         @ExpectedResponses({ 200 })
+@@ -1032,8 +1032,9 @@ public final class JobRouterAdministrationClientImpl {
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String distributionPolicyId,
+         RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return FluxUtil.withContext(context -> service.deleteDistributionPolicy(this.getEndpoint(),
+-            this.getServiceVersion().getVersion(), distributionPolicyId, requestOptions, context));
++            this.getServiceVersion().getVersion(), distributionPolicyId, accept, requestOptions, context));
+     }
+ 
+     /**
+@@ -1050,8 +1051,9 @@ public final class JobRouterAdministrationClientImpl {
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Response<Void> deleteDistributionPolicyWithResponse(String distributionPolicyId,
+         RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return service.deleteDistributionPolicySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+-            distributionPolicyId, requestOptions, Context.NONE);
++            distributionPolicyId, accept, requestOptions, Context.NONE);
+     }
+ 
+     /**
+@@ -1569,8 +1571,9 @@ public final class JobRouterAdministrationClientImpl {
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String classificationPolicyId,
+         RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return FluxUtil.withContext(context -> service.deleteClassificationPolicy(this.getEndpoint(),
+-            this.getServiceVersion().getVersion(), classificationPolicyId, requestOptions, context));
++            this.getServiceVersion().getVersion(), classificationPolicyId, accept, requestOptions, context));
+     }
+ 
+     /**
+@@ -1587,8 +1590,9 @@ public final class JobRouterAdministrationClientImpl {
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Response<Void> deleteClassificationPolicyWithResponse(String classificationPolicyId,
+         RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return service.deleteClassificationPolicySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+-            classificationPolicyId, requestOptions, Context.NONE);
++            classificationPolicyId, accept, requestOptions, Context.NONE);
+     }
+ 
+     /**
+@@ -2106,8 +2110,9 @@ public final class JobRouterAdministrationClientImpl {
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String exceptionPolicyId,
+         RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return FluxUtil.withContext(context -> service.deleteExceptionPolicy(this.getEndpoint(),
+-            this.getServiceVersion().getVersion(), exceptionPolicyId, requestOptions, context));
++            this.getServiceVersion().getVersion(), exceptionPolicyId, accept, requestOptions, context));
+     }
+ 
+     /**
+@@ -2123,8 +2128,9 @@ public final class JobRouterAdministrationClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Response<Void> deleteExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return service.deleteExceptionPolicySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+-            exceptionPolicyId, requestOptions, Context.NONE);
++            exceptionPolicyId, accept, requestOptions, Context.NONE);
+     }
+ 
+     /**
+@@ -2548,8 +2554,9 @@ public final class JobRouterAdministrationClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Mono<Response<Void>> deleteQueueWithResponseAsync(String queueId, RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return FluxUtil.withContext(context -> service.deleteQueue(this.getEndpoint(),
+-            this.getServiceVersion().getVersion(), queueId, requestOptions, context));
++            this.getServiceVersion().getVersion(), queueId, accept, requestOptions, context));
+     }
+ 
+     /**
+@@ -2565,7 +2572,8 @@ public final class JobRouterAdministrationClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Response<Void> deleteQueueWithResponse(String queueId, RequestOptions requestOptions) {
+-        return service.deleteQueueSync(this.getEndpoint(), this.getServiceVersion().getVersion(), queueId,
++        final String accept = "application/json";
++        return service.deleteQueueSync(this.getEndpoint(), this.getServiceVersion().getVersion(), queueId, accept,
+             requestOptions, Context.NONE);
+     }
+ 
+diff --git a/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterClientImpl.java b/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterClientImpl.java
+index 1ab1634dd63..e0d6dc7f6e7 100644
+--- a/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterClientImpl.java
++++ b/sdk/communication/azure-communication-jobrouter/src/main/java/com/azure/communication/jobrouter/implementation/JobRouterClientImpl.java
+@@ -210,7 +210,7 @@ public final class JobRouterClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Delete("/routing/jobs/{jobId}")
+         @ExpectedResponses({ 204 })
+@@ -220,7 +220,7 @@ public final class JobRouterClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Post("/routing/jobs/{jobId}:reclassify")
+         @ExpectedResponses({ 200 })
+@@ -484,7 +484,7 @@ public final class JobRouterClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Mono<Response<Void>> deleteWorker(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Delete("/routing/workers/{workerId}")
+         @ExpectedResponses({ 204 })
+@@ -494,7 +494,7 @@ public final class JobRouterClientImpl {
+         @UnexpectedResponseExceptionType(HttpResponseException.class)
+         Response<Void> deleteWorkerSync(@HostParam("endpoint") String endpoint,
+             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
+-            RequestOptions requestOptions, Context context);
++            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+ 
+         @Get("/routing/workers")
+         @ExpectedResponses({ 200 })
+@@ -1012,8 +1012,9 @@ public final class JobRouterClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Mono<Response<Void>> deleteJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
+-            this.getServiceVersion().getVersion(), jobId, requestOptions, context));
++            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+     }
+ 
+     /**
+@@ -1029,8 +1030,9 @@ public final class JobRouterClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
+-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, requestOptions,
+-            Context.NONE);
++        final String accept = "application/json";
++        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
++            requestOptions, Context.NONE);
+     }
+ 
+     /**
+@@ -2671,8 +2673,9 @@ public final class JobRouterClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId, RequestOptions requestOptions) {
++        final String accept = "application/json";
+         return FluxUtil.withContext(context -> service.deleteWorker(this.getEndpoint(),
+-            this.getServiceVersion().getVersion(), workerId, requestOptions, context));
++            this.getServiceVersion().getVersion(), workerId, accept, requestOptions, context));
+     }
+ 
+     /**
+@@ -2688,7 +2691,8 @@ public final class JobRouterClientImpl {
+      */
+     @ServiceMethod(returns = ReturnType.SINGLE)
+     public Response<Void> deleteWorkerWithResponse(String workerId, RequestOptions requestOptions) {
+-        return service.deleteWorkerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId,
++        final String accept = "application/json";
++        return service.deleteWorkerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId, accept,
+             requestOptions, Context.NONE);
+     }
+ 
+-- 
+2.50.1.windows.1
+

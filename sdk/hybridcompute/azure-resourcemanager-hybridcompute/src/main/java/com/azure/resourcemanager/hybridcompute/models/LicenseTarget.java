@@ -22,6 +22,11 @@ public final class LicenseTarget extends ExpandableStringEnum<LicenseTarget> {
     public static final LicenseTarget WINDOWS_SERVER_2012_R2 = fromString("Windows Server 2012 R2");
 
     /**
+     * Windows Server 2016 license target.
+     */
+    public static final LicenseTarget WINDOWS_SERVER_2016 = fromString("Windows Server 2016");
+
+    /**
      * Creates a new instance of LicenseTarget value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

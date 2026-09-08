@@ -23,7 +23,7 @@ public final class DedicatedHsmsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"xitmmqtgqqq\"},\"networkInterfaces\":[{\"resourceId\":\"xrxc\",\"privateIpAddress\":\"uisavokq\"},{\"resourceId\":\"fvazivjlfrqttba\",\"privateIpAddress\":\"katnwxyi\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"kqqfk\"},\"networkInterfaces\":[{\"resourceId\":\"xkdmligo\",\"privateIpAddress\":\"brxk\"}]},\"stampId\":\"loazuruocbgoo\",\"statusMessage\":\"te\",\"provisioningState\":\"Provisioning\"},\"sku\":{\"name\":\"payShield10K_LMK2_CPS60\"},\"zones\":[\"akvvjgslordi\",\"mywwtkgkxnyed\",\"b\"],\"location\":\"vudtjuewbcihx\",\"tags\":{\"ybvpay\":\"hcjyxc\",\"gwjplmag\":\"kkudzp\"},\"id\":\"tcyohpfkyrk\",\"name\":\"bdgiogsjk\",\"type\":\"nwqjnoba\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"xwdofdb\"},\"networkInterfaces\":[{\"resourceId\":\"eiiqbim\",\"privateIpAddress\":\"mwwinhehfqpofv\"},{\"resourceId\":\"cblembnkbwv\",\"privateIpAddress\":\"xk\"},{\"resourceId\":\"vqihebwtswbzuwf\",\"privateIpAddress\":\"urageg\"},{\"resourceId\":\"vcjfelisdjubggb\",\"privateIpAddress\":\"gkxkbsazgakg\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"cmjdmspof\"},\"networkInterfaces\":[{\"resourceId\":\"hryl\",\"privateIpAddress\":\"ofrzgb\"},{\"resourceId\":\"edm\",\"privateIpAddress\":\"kvnlvxbcuiiznkt\"}]},\"stampId\":\"ansnvp\",\"statusMessage\":\"bmikost\",\"provisioningState\":\"Failed\"},\"sku\":{\"name\":\"SafeNet Luna Network HSM A790\"},\"zones\":[\"uqn\",\"ophzfylsgcrp\"],\"location\":\"cunezzcezelfw\",\"tags\":{\"sihclafzvaylp\":\"lwxjwetn\"},\"id\":\"rsqqwztcm\",\"name\":\"qkc\",\"type\":\"cxwaxfewz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class DedicatedHsmsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DedicatedHsm> response
-            = manager.dedicatedHsms().listByResourceGroup("tx", 118535522, com.azure.core.util.Context.NONE);
+            = manager.dedicatedHsms().listByResourceGroup("yqo", 1604903119, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vudtjuewbcihx", response.iterator().next().location());
-        Assertions.assertEquals("hcjyxc", response.iterator().next().tags().get("ybvpay"));
-        Assertions.assertEquals("xitmmqtgqqq",
+        Assertions.assertEquals("cunezzcezelfw", response.iterator().next().location());
+        Assertions.assertEquals("lwxjwetn", response.iterator().next().tags().get("sihclafzvaylp"));
+        Assertions.assertEquals("xwdofdb",
             response.iterator().next().properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("uisavokq",
+        Assertions.assertEquals("mwwinhehfqpofv",
             response.iterator().next().properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("kqqfk",
+        Assertions.assertEquals("cmjdmspof",
             response.iterator().next().properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("brxk",
+        Assertions.assertEquals("ofrzgb",
             response.iterator()
                 .next()
                 .properties()
@@ -51,8 +51,8 @@ public final class DedicatedHsmsListByResourceGroupMockTests {
                 .networkInterfaces()
                 .get(0)
                 .privateIpAddress());
-        Assertions.assertEquals("loazuruocbgoo", response.iterator().next().properties().stampId());
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS60, response.iterator().next().sku().name());
-        Assertions.assertEquals("akvvjgslordi", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("ansnvp", response.iterator().next().properties().stampId());
+        Assertions.assertEquals(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790, response.iterator().next().sku().name());
+        Assertions.assertEquals("uqn", response.iterator().next().zones().get(0));
     }
 }

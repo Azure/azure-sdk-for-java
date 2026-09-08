@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.RedirectPolicyHelper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
@@ -112,6 +113,15 @@ public class TelemetryPipeline {
                 locationUrl = new URI(location).toURL();
             } catch (MalformedURLException | URISyntaxException e) {
                 listener.onException(request, "Invalid redirect: " + location, e);
+                result.fail();
+                return;
+            }
+            if (!RedirectPolicyHelper.isTrustedRedirect(request.getUrl(), locationUrl)) {
+                // Reported as a non-retryable response so the payload isn't persisted and replayed against the same
+                // redirect for the next 48 hours.
+                LOGGER.warning("Refused untrusted redirect to {}", location);
+                listener.onResponse(request, new TelemetryPipelineResponse(responseCode, responseBody));
+                result.fail();
                 return;
             }
             redirectCache.put(request.getConnectionString(), locationUrl);

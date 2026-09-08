@@ -42,6 +42,12 @@ public final class ResourceOperationType extends ExpandableStringEnum<ResourceOp
     public static final ResourceOperationType DELETE = fromString("Delete");
 
     /**
+     * Post-Start VM agent health-check sub-operation; surfaced when the customer opts into verifyVmAgentHealth on a
+     * Start request.
+     */
+    public static final ResourceOperationType GET_INSTANCE_VIEW = fromString("GetInstanceView");
+
+    /**
      * Creates a new instance of ResourceOperationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

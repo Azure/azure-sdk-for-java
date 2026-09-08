@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -252,7 +253,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             }
 
             String faultInjectedRegion = preferredRegions.get(0);
-            String dbId = UUID.randomUUID().toString();
+            String dbId = CosmosDatabaseForTest.generateId("metadataRetryPolicy");
             String containerId = UUID.randomUUID().toString();
 
             client.createDatabase(dbId).block();

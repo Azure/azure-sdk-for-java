@@ -5,6 +5,7 @@
 package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AnalyzeBinaryOptions;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.LlmInputHelper;
@@ -13,12 +14,14 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -61,6 +64,7 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalysisResult result = operation.getFinalResult();
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
         // END:ContentUnderstandingAnalyzeBinary
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeBinary
@@ -71,6 +75,7 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         assertNotNull(binaryData, "Binary data should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
         assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(usage, "Terminal operation status should retain usage details");
         System.out.println("Analysis operation properties verified");
 
         assertNotNull(result, "Analysis result should not be null");
@@ -100,16 +105,11 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
         assertNotNull(content, "Content should not be null");
         assertTrue(content instanceof AnalysisContent, "Content should be of type AnalysisContent");
-
-        // Only validate markdown content if we have a real file
-        if (hasRealFile && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-            assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be just whitespace");
-            System.out
-                .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
-        } else {
-            System.out
-                .println("⚠️ Skipping markdown content validation (using minimal test PDF or no markdown available)");
-        }
+        assertInstanceOf(DocumentContent.class, content, "PDF analysis should return DocumentContent");
+        assertNotNull(content.getMarkdown(), "Markdown content should not be null");
+        assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be blank");
+        System.out
+            .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
         // END:Assertion_ContentUnderstandingExtractMarkdown
 
         // BEGIN:ContentUnderstandingAccessDocumentProperties
@@ -273,7 +273,7 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         // BEGIN:Assertion_ContentUnderstandingConvertToLlmInput
         assertNotNull(llmText, "LLM input text should not be null");
         assertTrue(llmText.startsWith("---\n"));
-        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("mimeType: application/pdf"));
         System.out.println("LLM input text generated (" + llmText.length() + " characters)");
         // END:Assertion_ContentUnderstandingConvertToLlmInput
     }
@@ -297,8 +297,8 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         // BEGIN:ContentUnderstandingAnalyzeBinaryWithSinglePage
         // ---- Page(2) — single page ----
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> page2Operation
-            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData, ContentRange.page(2),
-                "application/octet-stream", null);
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.page(2)));
         DocumentContent page2Doc = (DocumentContent) page2Operation.getFinalResult().getContents().get(0);
         // END:ContentUnderstandingAnalyzeBinaryWithSinglePage
 
@@ -313,7 +313,7 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         // ---- Pages(1, 3) — page range ----
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pages13Operation
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.pages(1, 3), "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.pages(1, 3)));
         DocumentContent pages13Doc = (DocumentContent) pages13Operation.getFinalResult().getContents().get(0);
         // END:ContentUnderstandingAnalyzeBinaryWithPages
 
@@ -326,9 +326,9 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
         // ---- Combine(Page(1), Pages(3, 4)) — combined single page and page range ----
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
-            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.combine(ContentRange.page(1), ContentRange.pages(3, 4)), "application/octet-stream", null);
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation = contentUnderstandingClient
+            .beginAnalyzeBinary("prebuilt-documentSearch", binaryData, new AnalyzeBinaryOptions()
+                .setContentRange(ContentRange.combine(ContentRange.page(1), ContentRange.pages(3, 4))));
         DocumentContent combineDoc = (DocumentContent) combineOperation.getFinalResult().getContents().get(0);
         // END:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
 
@@ -350,7 +350,7 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         // ---- PagesFrom(3) — extract pages 3 to end ----
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.pagesFrom(3), "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.pagesFrom(3)));
         AnalysisResult rangeResult = rangeOperation.getFinalResult();
         // END:ContentUnderstandingAnalyzeBinaryWithPagesFrom
 
@@ -371,8 +371,8 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         // ---- Combine(Pages(1,3), Page(5), PagesFrom(9)) — combined page ranges ----
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineRangeOperation
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)),
-                "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(
+                    ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9))));
         AnalysisResult combineRangeResult = combineRangeOperation.getFinalResult();
         // END:ContentUnderstandingAnalyzeBinaryWithCombinedPages
 
@@ -393,5 +393,28 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
             "Combine(Pages(1,3), Page(5), PagesFrom(9)) should extract pages 1, 2, 3, 5, 9, 10");
         assertTrue(fullDoc.getMarkdown().length() >= combineRangeDoc.getMarkdown().length());
         // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPages
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithRawContentRange
+        // A raw range string is useful when the value is supplied dynamically by a user or configuration.
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new AnalyzeBinaryOptions().setContentRange(new ContentRange("1-3,5,9-")));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+        // END:ContentUnderstandingAnalyzeBinaryWithRawContentRange
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithRawContentRange
+        assertNotNull(rawRangeResult);
+        assertNotNull(rawRangeResult.getContents());
+        DocumentContent rawRangeDoc = (DocumentContent) rawRangeResult.getContents().get(0);
+        java.util.List<Integer> rawRangePageNumbers = rawRangeDoc.getPages()
+            .stream()
+            .map(DocumentPage::getPageNumber)
+            .sorted()
+            .collect(java.util.stream.Collectors.toList());
+        assertEquals(combineRangePageNumbers, rawRangePageNumbers,
+            "Raw ContentRange(1-3,5,9-) should return the same pages as the typed combine");
+        assertEquals(combineRangeDoc.getMarkdown().length(), rawRangeDoc.getMarkdown().length(),
+            "Raw range should return the same markdown as the typed combine");
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithRawContentRange
     }
 }

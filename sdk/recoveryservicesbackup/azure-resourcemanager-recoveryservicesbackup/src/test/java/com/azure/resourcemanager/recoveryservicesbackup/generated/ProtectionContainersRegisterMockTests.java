@@ -25,7 +25,7 @@ public final class ProtectionContainersRegisterMockTests {
     @Test
     public void testRegister() throws Exception {
         String responseStr
-            = "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"nmhkrezsd\",\"backupManagementType\":\"AzureIaasVM\",\"registrationStatus\":\"eqdgcruxsp\",\"healthStatus\":\"ymmqgwokmikp\",\"protectableObjectType\":\"fbmjxuvji\"},\"tags\":{\"vwzaehp\":\"vhax\",\"oixwgiksb\":\"hthdklmvetatlakf\"},\"location\":\"tooxrpog\",\"eTag\":\"hchgjtnhtukf\",\"id\":\"ihmbfntume\",\"name\":\"zbxvqxbnuvw\",\"type\":\"gasgomtmjzwx\"}";
+            = "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"repdqhqyhwq\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"xqabckmzeoxi\",\"healthStatus\":\"greohtwhlpuzjp\",\"protectableObjectType\":\"eznzangprbfaxyxz\",\"sourceLocation\":\"ciphmsexr\"},\"tags\":{\"nfee\":\"ndktxfv\",\"bgnixxoww\":\"gpkrie\"},\"location\":\"yfwnw\",\"eTag\":\"wxeiicrmpepk\",\"id\":\"maxxijvskwsdgkjg\",\"name\":\"acwras\",\"type\":\"kwefc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,26 +35,27 @@ public final class ProtectionContainersRegisterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionContainerResource response = manager.protectionContainers()
-            .define("klzmijajw")
-            .withExistingBackupFabric("nkfscjfn", "jwvuag", "qwtltngvmreupt")
-            .withRegion("bfe")
-            .withTags(mapOf("zslp", "dnievwffcvvy", "trkxgpazwu", "xgcbdsvalpnpt", "qvn", "x"))
-            .withProperties(new ProtectionContainer().withFriendlyName("fsvagh")
-                .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                .withRegistrationStatus("wl")
-                .withHealthStatus("rcigtzjcvbxq")
-                .withProtectableObjectType("psnssovyxp"))
-            .withEtag("ldiuhzzgqlm")
+            .define("wcpjqduqgi")
+            .withExistingBackupFabric("x", "qvfqepdxc", "tuubwyvpjb")
+            .withRegion("wtjoxz")
+            .withTags(
+                mapOf("nzjotvmr", "ajclyzgsnorbjg", "ayfluiyuosnu", "khlobvvjbhvhdi", "hbuubpy", "dtelvhyibdrqrs"))
+            .withProperties(new ProtectionContainer().withFriendlyName("kydfbwljavhuerkj")
+                .withBackupManagementType(BackupManagementType.AZURE_SQL)
+                .withRegistrationStatus("gliegftcvbiif")
+                .withHealthStatus("sdwgdnkefgmwd")
+                .withProtectableObjectType("eb"))
+            .withEtag("wfqchvcz")
             .create();
 
-        Assertions.assertEquals("nmhkrezsd", response.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, response.properties().backupManagementType());
-        Assertions.assertEquals("eqdgcruxsp", response.properties().registrationStatus());
-        Assertions.assertEquals("ymmqgwokmikp", response.properties().healthStatus());
-        Assertions.assertEquals("fbmjxuvji", response.properties().protectableObjectType());
-        Assertions.assertEquals("vhax", response.tags().get("vwzaehp"));
-        Assertions.assertEquals("tooxrpog", response.location());
-        Assertions.assertEquals("hchgjtnhtukf", response.etag());
+        Assertions.assertEquals("repdqhqyhwq", response.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, response.properties().backupManagementType());
+        Assertions.assertEquals("xqabckmzeoxi", response.properties().registrationStatus());
+        Assertions.assertEquals("greohtwhlpuzjp", response.properties().healthStatus());
+        Assertions.assertEquals("eznzangprbfaxyxz", response.properties().protectableObjectType());
+        Assertions.assertEquals("ndktxfv", response.tags().get("nfee"));
+        Assertions.assertEquals("yfwnw", response.location());
+        Assertions.assertEquals("wxeiicrmpepk", response.etag());
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computelimit.models.MemberCapOverrideProperties
  */
 public final class MemberCapOverridesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a single member cap override.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class ApprovalDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Approvals_Delete.json
+     * x-ms-original-file: 2026-04-01/Approvals_Delete.json
      */
     /**
      * Sample code: Approval_Delete.

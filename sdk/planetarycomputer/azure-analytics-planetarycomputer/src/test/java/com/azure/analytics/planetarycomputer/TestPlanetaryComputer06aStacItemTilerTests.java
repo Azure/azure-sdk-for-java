@@ -3,7 +3,6 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
 import com.azure.analytics.planetarycomputer.models.StacItemBounds;
 import com.azure.analytics.planetarycomputer.models.TileMatrix;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
@@ -67,7 +66,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
         System.out.println("Testing getTileMatrices to get all available tile matrix set IDs");
 
-        List<String> tileMatrixIds = dataClient.listTileMatrices();
+        List<String> tileMatrixIds = dataClient.getTileMatrices();
 
         assertNotNull(tileMatrixIds, "Tile matrix IDs should not be null");
         System.out.println("Number of tile matrices: " + tileMatrixIds.size());
@@ -90,7 +89,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
         // Use listAvailableAssets (/assets endpoint) instead of getItemAssetDetails (/info endpoint)
         // which returns 424 "Unknown reference spec version" for this collection
-        List<String> assets = dataClient.listAvailableAssets(collectionId, itemId);
+        List<String> assets = dataClient.getItemAvailableAssets(collectionId, itemId);
 
         assertNotNull(assets, "Assets list should not be null");
         assertTrue(assets.size() > 0, "Should have at least one asset");
@@ -115,7 +114,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        StacItemBounds boundsResult = dataClient.getBounds(collectionId, itemId);
+        StacItemBounds boundsResult = dataClient.getItemBounds(collectionId, itemId);
 
         assertNotNull(boundsResult, "Bounds result should not be null");
         assertNotNull(boundsResult.getBounds(), "Bounds array should not be null");
@@ -144,11 +143,11 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - item_id: " + itemId);
         System.out.println("Input - dimensions: 512x512");
 
-        // Recording shows Accept: image/png but server returns image/jpeg
-        // This is server behavior - it may return JPEG for performance reasons
-        GetPreviewOptions options
-            = new GetPreviewOptions().setWidth(512).setHeight(512).setAssets(Arrays.asList("image"));
-        BinaryData imageData = dataClient.getPreview(collectionId, itemId, options);
+        // Use protocol method to pass required assets parameter
+        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        BinaryData imageData = dataClient.getItemPreviewWithResponse(collectionId, itemId, requestOptions).getValue();
 
         byte[] imageBytes = imageData.toBytes();
 

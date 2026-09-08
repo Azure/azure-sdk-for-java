@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ActionsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Actions_List.json
+     * x-ms-original-file: 2026-08-01-preview/Actions_List.json
      */
     /**
      * Sample code: List all Actions for westus2 location.

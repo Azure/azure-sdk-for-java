@@ -15,13 +15,13 @@ public final class RecoveryPointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"apnyiropuhpig\",\"threatDescription\":\"gylgqgitxmedjvcs\",\"lastUpdatedTime\":\"2021-02-26T17:22:44Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-01-28T21:50:56Z\",\"threatEndTime\":\"2021-09-17T17:00:46Z\",\"threatURI\":\"zhxgktrmgucn\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"eoellwptfdygp\",\"threatDescription\":\"b\",\"lastUpdatedTime\":\"2021-01-13T17:58:58Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-09-04T05:04:19Z\",\"threatEndTime\":\"2021-04-15T23:44:21Z\",\"threatURI\":\"hhuao\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"qeqxo\",\"threatDescription\":\"dahzxctobg\",\"lastUpdatedTime\":\"2021-09-01T00:32:36Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-01-29T19:09:38Z\",\"threatEndTime\":\"2021-09-15T16:01:55Z\",\"threatURI\":\"tmgrcfbun\",\"threatSeverity\":\"Informational\"}]},\"tags\":{\"jy\":\"hhkxbp\",\"u\":\"jhxxjyn\"},\"location\":\"vkr\",\"eTag\":\"wbxqzvszjfau\",\"id\":\"fdxxivetvtcqaqtd\",\"name\":\"qmcbxvwvxyslqbhs\",\"type\":\"xoblytkbl\"}")
+            "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"btdzumveekg\",\"threatDescription\":\"ozuhkfp\",\"lastUpdatedTime\":\"2021-02-19T22:50:40Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-01-11T16:44:39Z\",\"threatEndTime\":\"2021-03-14T10:54:45Z\",\"threatURI\":\"us\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"uwaboekqvke\",\"threatDescription\":\"smv\",\"lastUpdatedTime\":\"2021-08-06T12:01:01Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-09-20T16:59Z\",\"threatEndTime\":\"2021-05-30T09:03:19Z\",\"threatURI\":\"caalnjixisxyaw\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"qcslyjpkiid\",\"threatDescription\":\"exznelixhnr\",\"lastUpdatedTime\":\"2021-05-07T02:19:01Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-05-23T04:05:07Z\",\"threatEndTime\":\"2021-12-04T17:09:45Z\",\"threatURI\":\"nalaulppg\",\"threatSeverity\":\"Informational\"}]},\"tags\":{\"pgylg\":\"apnyiropuhpig\",\"medjvcslynqwwncw\":\"git\",\"pkteo\":\"zhxgktrmgucn\",\"pfqbuaceopzf\":\"llwptfdy\"},\"location\":\"hhuao\",\"eTag\":\"pcqeqx\",\"id\":\"z\",\"name\":\"ahzxctobgbk\",\"type\":\"moizpos\"}")
             .toObject(RecoveryPointResourceInner.class);
         Assertions.assertEquals(ThreatStatus.NOT_AVAILABLE, model.properties().threatStatus());
-        Assertions.assertEquals(ThreatState.IGNORED, model.properties().threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.CRITICAL, model.properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("hhkxbp", model.tags().get("jy"));
-        Assertions.assertEquals("vkr", model.location());
-        Assertions.assertEquals("wbxqzvszjfau", model.etag());
+        Assertions.assertEquals(ThreatState.ACTIVE, model.properties().threatInfo().get(0).threatState());
+        Assertions.assertEquals(ThreatSeverity.WARNING, model.properties().threatInfo().get(0).threatSeverity());
+        Assertions.assertEquals("apnyiropuhpig", model.tags().get("pgylg"));
+        Assertions.assertEquals("hhuao", model.location());
+        Assertions.assertEquals("pcqeqx", model.etag());
     }
 }

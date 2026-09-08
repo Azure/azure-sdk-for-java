@@ -22,7 +22,7 @@ public final class HorizonDbParameterGroupsListVersionsMockTests {
     @Test
     public void testListVersions() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"ai\",\"description\":\"brgz\",\"value\":\"msweypqwdxggicc\",\"dataType\":\"xqhuexm\",\"allowedValues\":\"tlstvlzywem\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"dtclusiypb\",\"unit\":\"gytguslfead\"},{\"name\":\"gq\",\"description\":\"yhejhzisxgfp\",\"value\":\"olppvksrpqvujz\",\"dataType\":\"ehtwdwrft\",\"allowedValues\":\"iby\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"shfwpracstwity\",\"unit\":\"evxccedcp\"},{\"name\":\"dyodnwzxltj\",\"description\":\"nhltiugcxn\",\"value\":\"vwxqibyqunyo\",\"dataType\":\"wlmdjrkv\",\"allowedValues\":\"bvfvpdbod\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"q\",\"unit\":\"krribdeibqi\"},{\"name\":\"kghv\",\"description\":\"dzwmkrefajpj\",\"value\":\"wkqnyhg\",\"dataType\":\"j\",\"allowedValues\":\"ivfxzsjabibsyst\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"pvkvpbjxbk\",\"unit\":\"zkdvncja\"}],\"description\":\"durgkakmokz\",\"pgVersion\":523614486,\"version\":615814676,\"applyImmediately\":false,\"provisioningState\":\"Provisioning\"},\"location\":\"uwqlgzrfzeey\",\"tags\":{\"ayuhqlbjbsy\":\"zi\",\"pgvmpipaslthaqfx\":\"bqwrvtldgm\",\"hneuyowqkd\":\"smwutwbdsrezpd\"},\"id\":\"ytisibir\",\"name\":\"gpikpzimejza\",\"type\":\"lfzxiavrmbzonoki\"}]}";
+            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"xsowu\",\"description\":\"uqhhahhxvrh\",\"value\":\"kwpjgwwspughftqs\",\"dataType\":\"qxujxukndxd\",\"allowedValues\":\"rjguufzdmsyqtf\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"tzingamvpph\",\"unit\":\"zqzudph\"},{\"name\":\"mvdk\",\"description\":\"ynwcvtbv\",\"value\":\"yhmtnvyqiat\",\"dataType\":\"wp\",\"allowedValues\":\"p\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"sgvvsccyajguq\",\"unit\":\"wygzlvdnkfxusem\"}],\"description\":\"zrmuhapfcqdps\",\"pgVersion\":399879139,\"version\":124988622,\"applyImmediately\":false,\"provisioningState\":\"Failed\"},\"location\":\"mgccelvezrypq\",\"tags\":{\"edkowepbqpcrfk\":\"eokerqwkyhkobopg\"},\"id\":\"wccsnjvcdwxlpqek\",\"name\":\"tn\",\"type\":\"htjsying\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,15 @@ public final class HorizonDbParameterGroupsListVersionsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HorizonDbParameterGroup> response = manager.horizonDbParameterGroups()
-            .listVersions("kaivwit", "scywuggwoluhc", 219242582, com.azure.core.util.Context.NONE);
+            .listVersions("hldvriii", "jnalghf", 1358973508, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uwqlgzrfzeey", response.iterator().next().location());
-        Assertions.assertEquals("zi", response.iterator().next().tags().get("ayuhqlbjbsy"));
-        Assertions.assertEquals("ai", response.iterator().next().properties().parameters().get(0).name());
-        Assertions.assertEquals("msweypqwdxggicc", response.iterator().next().properties().parameters().get(0).value());
-        Assertions.assertEquals("durgkakmokz", response.iterator().next().properties().description());
-        Assertions.assertEquals(523614486, response.iterator().next().properties().pgVersion());
+        Assertions.assertEquals("mgccelvezrypq", response.iterator().next().location());
+        Assertions.assertEquals("eokerqwkyhkobopg", response.iterator().next().tags().get("edkowepbqpcrfk"));
+        Assertions.assertEquals("xsowu", response.iterator().next().properties().parameters().get(0).name());
+        Assertions.assertEquals("kwpjgwwspughftqs",
+            response.iterator().next().properties().parameters().get(0).value());
+        Assertions.assertEquals("zrmuhapfcqdps", response.iterator().next().properties().description());
+        Assertions.assertEquals(399879139, response.iterator().next().properties().pgVersion());
         Assertions.assertFalse(response.iterator().next().properties().applyImmediately());
     }
 }

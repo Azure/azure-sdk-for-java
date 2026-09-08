@@ -11,11 +11,12 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.horizondb.models.HorizonDbClusterProperties;
+import com.azure.resourcemanager.horizondb.models.ManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represents the HorizonDb cluster.
+ * Represents the HorizonDB cluster.
  */
 @Fluent
 public final class HorizonDbClusterInner extends Resource {
@@ -23,6 +24,11 @@ public final class HorizonDbClusterInner extends Resource {
      * The resource-specific properties for this resource.
      */
     private HorizonDbClusterProperties properties;
+
+    /*
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -67,6 +73,26 @@ public final class HorizonDbClusterInner extends Resource {
      */
     public HorizonDbClusterInner withProperties(HorizonDbClusterProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the HorizonDbClusterInner object itself.
+     */
+    public HorizonDbClusterInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -136,6 +162,7 @@ public final class HorizonDbClusterInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,6 +195,8 @@ public final class HorizonDbClusterInner extends Resource {
                     deserializedHorizonDbClusterInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedHorizonDbClusterInner.properties = HorizonDbClusterProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedHorizonDbClusterInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedHorizonDbClusterInner.systemData = SystemData.fromJson(reader);
                 } else {

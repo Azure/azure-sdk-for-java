@@ -34,7 +34,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      * Geometry object defining the feature's shape
      */
     @Generated
-    private Geometry geometry;
+    private GeoJsonGeometry geometry;
 
     /*
      * Unique identifier for the feature
@@ -108,7 +108,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      * @return the geometry value.
      */
     @Generated
-    public Geometry getGeometry() {
+    public GeoJsonGeometry getGeometry() {
         return this.geometry;
     }
 
@@ -120,7 +120,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      * @return the StacItem object itself.
      */
     @Generated
-    public StacItem setGeometry(Geometry geometry) {
+    public StacItem setGeometry(GeoJsonGeometry geometry) {
         this.geometry = geometry;
         this.updatedProperties.add("geometry");
         return this;
@@ -428,9 +428,9 @@ public final class StacItem extends StacItemOrStacItemCollection {
             if (this.geometry == null) {
                 jsonWriter.writeNullField("geometry");
             } else {
-                JsonMergePatchHelper.getGeometryAccessor().prepareModelForJsonMergePatch(this.geometry, true);
+                JsonMergePatchHelper.getGeoJsonGeometryAccessor().prepareModelForJsonMergePatch(this.geometry, true);
                 jsonWriter.writeJsonField("geometry", this.geometry);
-                JsonMergePatchHelper.getGeometryAccessor().prepareModelForJsonMergePatch(this.geometry, false);
+                JsonMergePatchHelper.getGeoJsonGeometryAccessor().prepareModelForJsonMergePatch(this.geometry, false);
             }
         }
         if (updatedProperties.contains("collection")) {
@@ -535,7 +535,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
                 } else if ("type".equals(fieldName)) {
                     deserializedStacItem.type = StacModelType.fromString(reader.getString());
                 } else if ("geometry".equals(fieldName)) {
-                    deserializedStacItem.geometry = Geometry.fromJson(reader);
+                    deserializedStacItem.geometry = GeoJsonGeometry.fromJson(reader);
                 } else if ("collection".equals(fieldName)) {
                     deserializedStacItem.collection = reader.getString();
                 } else if ("bbox".equals(fieldName)) {

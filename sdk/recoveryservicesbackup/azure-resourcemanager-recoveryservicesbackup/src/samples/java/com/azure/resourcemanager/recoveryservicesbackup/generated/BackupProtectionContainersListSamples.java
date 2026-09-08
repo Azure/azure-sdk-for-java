@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupProtectionContainersListSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_List.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
@@ -23,7 +23,7 @@ public final class BackupProtectionContainersListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_List_WithAccessType.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_List_WithAccessType.json
      */
     /**
      * Sample code: List Backup Protection Containers with Access Type.

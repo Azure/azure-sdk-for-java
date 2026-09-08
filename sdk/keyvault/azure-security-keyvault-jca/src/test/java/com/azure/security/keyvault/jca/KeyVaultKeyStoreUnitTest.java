@@ -3,18 +3,31 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.ByteArrayInputStream;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+
+import org.mockito.MockedConstruction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mockConstruction;
 
+@ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeyStoreUnitTest {
 
     /**
@@ -47,19 +60,6 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testGetRefreshInterval() {
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval");
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms");
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        assertEquals(keystore.getRefreshInterval(), 0);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "2000");
-        keystore = new KeyVaultKeyStore();
-        assertEquals(keystore.getRefreshInterval(), 2000);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
-        assertEquals(keystore.getRefreshInterval(), 1000);
-    }
-
-    @Test
     public void testEngineGetCertificateAlias() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         X509Certificate certificate;
@@ -89,6 +89,54 @@ public class KeyVaultKeyStoreUnitTest {
 
         keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificate("setcert"));
+    }
+
+    @Test
+    public void testEngineLoadParameterOverridesSystemProperties() {
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN, "/ambient/well-known");
+        System.setProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM, "/ambient/custom");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE,
+            "false");
+
+        KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(null).setCertPathWellKnown("/explicit/well-known")
+                .setCertPathCustom("/explicit/custom")
+                .setRefreshCertificatesWhenHaveUnTrustCertificate(true);
+
+        keyStore.engineLoad(parameter);
+
+        assertEquals("/explicit/well-known", keyStore.certPathWellKnown);
+        assertEquals("/explicit/custom", keyStore.certPathCustom);
+        assertTrue(keyStore.refreshCertificatesWhenHaveUnTrustCertificate);
+    }
+
+    @Test
+    public void testEngineLoadPassesExplicitParameterToKeyVaultClient() {
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "https://ambient.vault.azure.net");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter("https://explicit.vault.azure.net");
+        parameter.disableAiaDownload();
+        List<List<?>> constructorArguments = new ArrayList<>();
+
+        try (MockedConstruction<KeyVaultClient> mockedConstruction = mockConstruction(KeyVaultClient.class,
+            (mock, context) -> constructorArguments.add(context.arguments()))) {
+            KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+            keyStore.engineLoad(parameter);
+            assertEquals(2, mockedConstruction.constructed().size());
+        }
+
+        assertEquals(2, constructorArguments.size());
+        assertSame(parameter, constructorArguments.get(1).get(0));
+        assertTrue(((KeyVaultLoadStoreParameter) constructorArguments.get(1).get(0)).isAiaDownloadDisabled());
+    }
+
+    @BeforeEach
+    @AfterEach
+    public void clearCertificateAliasFilterPatternProperties() {
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        System.clearProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN);
+        System.clearProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE);
     }
 
 }

@@ -32,10 +32,10 @@ public final class BackupsTriggerWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backups()
-            .triggerWithResponse("jfowxwy", "vcxjsgbipcukdvek", "buhoduchv", "scrdp", "bfdyjduss",
-                new BackupRequestResource().withLocation("szekbh")
-                    .withTags(mapOf("bfrnuybffljfii", "aaggkre", "e", "reoagsqtaadus", "i", "xfavsqwudoh"))
-                    .withETag("mnlikpsi")
+            .triggerWithResponse("ojkpoyh", "wwdjuxdbdl", "zgdyrcvuqbs", "zlrqhbjnqogdx", "bsfp",
+                new BackupRequestResource().withLocation("x")
+                    .withTags(mapOf("xxdhilzzdzzqjm", "flecominxojjl", "vribqlotokht", "ezay"))
+                    .withETag("taznkcqwwxwjyof")
                     .withProperties(new BackupRequest()),
                 com.azure.core.util.Context.NONE);
 

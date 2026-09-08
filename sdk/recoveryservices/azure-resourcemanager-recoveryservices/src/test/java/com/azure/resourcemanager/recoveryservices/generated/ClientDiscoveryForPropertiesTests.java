@@ -12,11 +12,10 @@ public final class ClientDiscoveryForPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryForProperties model = BinaryData.fromString(
-            "{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"oq\",\"displayName\":\"mkljavb\",\"blobDuration\":\"dtqajzyulpkudj\"},{\"name\":\"lkhbz\",\"displayName\":\"epgzgqexz\",\"blobDuration\":\"c\"},{\"name\":\"c\",\"displayName\":\"ierhhbcsglummaj\",\"blobDuration\":\"aodxo\"},{\"name\":\"bdxkqpxokaj\",\"displayName\":\"npime\",\"blobDuration\":\"stxgc\"}]}}")
+            "{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"osfqpteehzzv\",\"displayName\":\"yqrimzin\",\"blobDuration\":\"swjdkirso\"},{\"name\":\"qxhcrmn\",\"displayName\":\"jtckwhdso\",\"blobDuration\":\"iy\"},{\"name\":\"jxsqwpgrjbz\",\"displayName\":\"rcjxvsnbyxqabn\",\"blobDuration\":\"cpc\"}]}}")
             .toObject(ClientDiscoveryForProperties.class);
-        Assertions.assertEquals("oq", model.serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("mkljavb", model.serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("dtqajzyulpkudj",
-            model.serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("osfqpteehzzv", model.serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("yqrimzin", model.serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("swjdkirso", model.serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

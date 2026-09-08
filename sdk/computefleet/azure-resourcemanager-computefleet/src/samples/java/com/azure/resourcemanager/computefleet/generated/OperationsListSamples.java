@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -21,7 +21,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

@@ -72,6 +72,7 @@ class RequestResponseChannelTest {
     private final TestPublisher<Delivery> deliveryProcessor = TestPublisher.createCold();
     private final TestPublisher<EndpointState> receiveEndpoints = TestPublisher.createCold();
     private final TestPublisher<EndpointState> sendEndpoints = TestPublisher.createCold();
+    private final TestPublisher<Integer> sendCredits = TestPublisher.createCold();
     private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
     private final boolean isV2 = false;
 
@@ -122,6 +123,7 @@ class RequestResponseChannelTest {
         when(receiveLinkHandler.getEndpointStates()).thenReturn(receiveEndpoints.flux());
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor.flux());
         when(sendLinkHandler.getEndpointStates()).thenReturn(sendEndpoints.flux());
+        when(sendLinkHandler.getLinkCredits()).thenReturn(sendCredits.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
@@ -204,6 +206,31 @@ class RequestResponseChannelTest {
         verify(receiver).close();
 
         assertTrue(channel.isDisposed());
+    }
+
+    /**
+     * Verifies that the channel subscribes to the send link credit flux so it is drained, preventing the
+     * unbounded credit buffer leak described in https://github.com/Azure/azure-sdk-for-java/issues/47261.
+     */
+    @Test
+    void subscribesToSendLinkCreditsToPreventLeak() {
+        // Arrange & Act
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            ENTITY_PATH, sessionWrapper(session), retryOptions, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, AmqpMetricsProvider.noop(), isV2);
+
+        // Assert: the channel subscribed to the credit flux (so emitted credits are consumed, not buffered forever).
+        sendCredits.assertSubscribers();
+
+        // Closing the channel disposes the credit subscription.
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+        StepVerifier.create(channel.closeAsync()).then(() -> {
+            sendEndpoints.complete();
+            receiveEndpoints.complete();
+        }).expectComplete().verify(VERIFY_TIMEOUT);
+
+        sendCredits.assertCancelled();
     }
 
     @Test

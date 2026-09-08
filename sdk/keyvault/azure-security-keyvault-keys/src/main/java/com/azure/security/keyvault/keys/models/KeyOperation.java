@@ -49,6 +49,18 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
     public static final KeyOperation UNWRAP_KEY = fromString("unwrapKey");
 
     /**
+     * Indicates that the key can be used to securely wrap another key.
+     */
+    @Generated
+    public static final KeyOperation SECURE_WRAP_KEY = fromString("secureWrapKey");
+
+    /**
+     * Indicates that the key can be used to securely unwrap another key.
+     */
+    @Generated
+    public static final KeyOperation SECURE_UNWRAP_KEY = fromString("secureUnwrapKey");
+
+    /**
      * Indicates that the key can be imported during creation.
      */
     @Generated

@@ -254,7 +254,7 @@ public interface ServiceResource {
     ServiceResource refresh(Context context);
 
     /**
-     * The restartReplica operation.
+     * A long-running resource action.
      * 
      * @param parameters The parameters for restarting replicas.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +264,7 @@ public interface ServiceResource {
     void restartReplica(RestartReplicaRequest parameters);
 
     /**
-     * The restartReplica operation.
+     * A long-running resource action.
      * 
      * @param parameters The parameters for restarting replicas.
      * @param context The context to associate with this operation.

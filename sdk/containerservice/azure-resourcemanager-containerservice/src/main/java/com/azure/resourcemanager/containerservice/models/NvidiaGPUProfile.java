@@ -24,6 +24,13 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
     private ManagementMode managementMode;
 
     /*
+     * 
+     * NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+     * Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+     */
+    private NvidiaDriverMode driverMode;
+
+    /*
      * Sets the MIG (Multi-Instance GPU) strategy that will be used for managed MIG support. For more information about
      * the different strategies, visit aka.ms/aks/managed-gpu. When not specified, the default is None.
      */
@@ -56,6 +63,30 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
      */
     public NvidiaGPUProfile withManagementMode(ManagementMode managementMode) {
         this.managementMode = managementMode;
+        return this;
+    }
+
+    /**
+     * Get the driverMode property:
+     * NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+     * Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+     * 
+     * @return the driverMode value.
+     */
+    public NvidiaDriverMode driverMode() {
+        return this.driverMode;
+    }
+
+    /**
+     * Set the driverMode property:
+     * NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+     * Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+     * 
+     * @param driverMode the driverMode value to set.
+     * @return the NvidiaGPUProfile object itself.
+     */
+    public NvidiaGPUProfile withDriverMode(NvidiaDriverMode driverMode) {
+        this.driverMode = driverMode;
         return this;
     }
 
@@ -99,6 +130,7 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("managementMode",
             this.managementMode == null ? null : this.managementMode.toString());
+        jsonWriter.writeStringField("driverMode", this.driverMode == null ? null : this.driverMode.toString());
         jsonWriter.writeStringField("migStrategy", this.migStrategy == null ? null : this.migStrategy.toString());
         return jsonWriter.writeEndObject();
     }
@@ -120,6 +152,8 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
 
                 if ("managementMode".equals(fieldName)) {
                     deserializedNvidiaGPUProfile.managementMode = ManagementMode.fromString(reader.getString());
+                } else if ("driverMode".equals(fieldName)) {
+                    deserializedNvidiaGPUProfile.driverMode = NvidiaDriverMode.fromString(reader.getString());
                 } else if ("migStrategy".equals(fieldName)) {
                     deserializedNvidiaGPUProfile.migStrategy = MigStrategy.fromString(reader.getString());
                 } else {

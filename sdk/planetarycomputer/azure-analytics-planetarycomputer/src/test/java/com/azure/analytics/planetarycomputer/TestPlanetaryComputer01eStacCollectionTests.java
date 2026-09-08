@@ -3,6 +3,8 @@
 
 package com.azure.analytics.planetarycomputer;
 
+import com.azure.core.util.BinaryData;
+
 import com.azure.analytics.planetarycomputer.models.StacMosaic;
 import com.azure.core.exception.HttpResponseException;
 import org.junit.jupiter.api.Test;
@@ -45,7 +47,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
 
         // Create mosaic
         StacMosaic mosaic
-            = new StacMosaic("test-mosaic-1", "Test Most recent available", new ArrayList<Map<String, Object>>());
+            = new StacMosaic("test-mosaic-1", "Test Most recent available", new ArrayList<Map<String, BinaryData>>());
 
         // Act
         StacMosaic createdMosaic = stacClient.addMosaic(collectionId, mosaic);
@@ -72,7 +74,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
 
         // First create the mosaic (matching recording)
         StacMosaic createMosaic
-            = new StacMosaic("mosaic-get-3945", "Test Mosaic for Get", new ArrayList<Map<String, Object>>());
+            = new StacMosaic("mosaic-get-3945", "Test Mosaic for Get", new ArrayList<Map<String, BinaryData>>());
         stacClient.addMosaic(collectionId, createMosaic);
 
         // Act
@@ -104,12 +106,12 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
 
         // First create the mosaic (matching recording)
         StacMosaic createMosaic
-            = new StacMosaic("mosaic-rep-5643", "Test Mosaic Original", new ArrayList<Map<String, Object>>());
+            = new StacMosaic("mosaic-rep-5643", "Test Mosaic Original", new ArrayList<Map<String, BinaryData>>());
         stacClient.addMosaic(collectionId, createMosaic);
 
         // Create updated mosaic
         StacMosaic mosaic
-            = new StacMosaic("mosaic-rep-5643", "Test Mosaic Updated", new ArrayList<Map<String, Object>>());
+            = new StacMosaic("mosaic-rep-5643", "Test Mosaic Updated", new ArrayList<Map<String, BinaryData>>());
 
         // Act
         StacMosaic updatedMosaic = stacClient.replaceMosaic(collectionId, "mosaic-rep-5643", mosaic);
@@ -140,8 +142,8 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
         System.out.println("Testing deleteMosaic for collection: " + collectionId);
 
         // Create a mosaic to be deleted
-        StacMosaic mosaic
-            = new StacMosaic("test-mosaic-delete", "Test Mosaic To Be Deleted", new ArrayList<Map<String, Object>>());
+        StacMosaic mosaic = new StacMosaic("test-mosaic-delete", "Test Mosaic To Be Deleted",
+            new ArrayList<Map<String, BinaryData>>());
 
         System.out.println("Creating mosaic for deletion");
         stacClient.addMosaic(collectionId, mosaic);

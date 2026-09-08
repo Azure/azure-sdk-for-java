@@ -19,6 +19,12 @@ public final class IngestionType extends ExpandableStringEnum<IngestionType> {
     public static final IngestionType STATIC_CATALOG = fromString("StaticCatalog");
 
     /**
+     * Ingestion STAC Geoparquet catalog.
+     */
+    @Generated
+    public static final IngestionType STAC_GEOPARQUET = fromString("StacGeoparquet");
+
+    /**
      * Creates a new instance of IngestionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

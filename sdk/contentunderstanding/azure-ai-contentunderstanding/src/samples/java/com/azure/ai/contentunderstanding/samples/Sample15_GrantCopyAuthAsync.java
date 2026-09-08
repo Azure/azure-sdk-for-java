@@ -10,26 +10,32 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.CopyAuthorization;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.CopyAuthorization;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
- * Sample demonstrates how to grant copy authorization and copy an analyzer from a source
- * Microsoft Foundry resource to a target Microsoft Foundry resource (cross-resource copying)
- * using the async client.
+ * Sample demonstrates how to grant copy authorization and copy an analyzer asynchronously from a source Microsoft
+ * Foundry resource to a target Microsoft Foundry resource.
  *
- * <p>For same-resource copying, see Sample14_CopyAnalyzerAsync.</p>
+ * <p>For same-resource copying, see {@link Sample14_CopyAnalyzerAsync}.</p>
+ *
+ * <p>Cross-resource copying supports multi-region deployment, resource migration, subscription-to-subscription
+ * copying, and environment promotion. The source resource grants a time-limited authorization, and the target
+ * resource performs the copy before that authorization expires.</p>
  *
  * <p>Required environment variables:</p>
  * <ul>
@@ -43,42 +49,31 @@ import java.util.concurrent.TimeUnit;
  *   <li>CONTENTUNDERSTANDING_TARGET_REGION: Region of the target resource</li>
  * </ul>
  *
- * <p>Note: If API keys are not provided, DefaultAzureCredential will be used.
- * Cross-resource copying with DefaultAzureCredential requires 'Cognitive Services User' role
- * on both source and target resources.</p>
+ * <p>If API keys are not provided, DefaultAzureCredential is used. The credential requires the 'Cognitive Services
+ * User' role on both resources. Configure model deployment defaults on both resources before running this sample; see
+ * {@link Sample00_UpdateDefaultsAsync}.</p>
  */
 public class Sample15_GrantCopyAuthAsync {
 
-    public static void main(String[] args) throws InterruptedException {
-        // Get configuration from environment variables
-        String sourceEndpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+    public static void main(String[] args) {
+        String sourceEndpoint = requireEnvironmentValue("CONTENTUNDERSTANDING_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_ENDPOINT"));
         String sourceKey = System.getenv("CONTENTUNDERSTANDING_KEY");
-        String sourceResourceId = System.getenv("CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID");
-        String sourceRegion = System.getenv("CONTENTUNDERSTANDING_SOURCE_REGION");
-        String targetEndpoint = System.getenv("CONTENTUNDERSTANDING_TARGET_ENDPOINT");
+        String sourceResourceId = requireEnvironmentValue("CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID",
+            System.getenv("CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID"));
+        String sourceRegion = requireEnvironmentValue("CONTENTUNDERSTANDING_SOURCE_REGION",
+            System.getenv("CONTENTUNDERSTANDING_SOURCE_REGION"));
+        String targetEndpoint = requireEnvironmentValue("CONTENTUNDERSTANDING_TARGET_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_TARGET_ENDPOINT"));
         String targetKey = System.getenv("CONTENTUNDERSTANDING_TARGET_KEY");
-        String targetResourceId = System.getenv("CONTENTUNDERSTANDING_TARGET_RESOURCE_ID");
-        String targetRegion = System.getenv("CONTENTUNDERSTANDING_TARGET_REGION");
-
-        // Validate required environment variables
-        if (sourceEndpoint == null || targetEndpoint == null || sourceResourceId == null
-            || targetResourceId == null || sourceRegion == null || targetRegion == null) {
-            System.out.println("Cross-resource copying requires the following environment variables:");
-            System.out.println("  - CONTENTUNDERSTANDING_ENDPOINT: Source resource endpoint");
-            System.out.println("  - CONTENTUNDERSTANDING_KEY (optional): API key for source resource");
-            System.out.println("  - CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID: Azure resource ID of the source resource");
-            System.out.println("  - CONTENTUNDERSTANDING_SOURCE_REGION: Region of the source resource");
-            System.out.println("  - CONTENTUNDERSTANDING_TARGET_ENDPOINT: Endpoint of the target resource");
-            System.out.println("  - CONTENTUNDERSTANDING_TARGET_KEY (optional): API key for target resource");
-            System.out.println("  - CONTENTUNDERSTANDING_TARGET_RESOURCE_ID: Azure resource ID of the target resource");
-            System.out.println("  - CONTENTUNDERSTANDING_TARGET_REGION: Region of the target resource");
-            return;
-        }
+        String targetResourceId = requireEnvironmentValue("CONTENTUNDERSTANDING_TARGET_RESOURCE_ID",
+            System.getenv("CONTENTUNDERSTANDING_TARGET_RESOURCE_ID"));
+        String targetRegion = requireEnvironmentValue("CONTENTUNDERSTANDING_TARGET_REGION",
+            System.getenv("CONTENTUNDERSTANDING_TARGET_REGION"));
 
         // BEGIN: com.azure.ai.contentunderstanding.grantCopyAuthAsync
-        // Build source async client with appropriate authentication
-        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder()
-            .endpoint(sourceEndpoint);
+        ContentUnderstandingClientBuilder sourceBuilder
+            = new ContentUnderstandingClientBuilder().endpoint(sourceEndpoint);
         ContentUnderstandingAsyncClient sourceClient;
         if (sourceKey != null && !sourceKey.trim().isEmpty()) {
             sourceClient = sourceBuilder.credential(new AzureKeyCredential(sourceKey)).buildAsyncClient();
@@ -86,9 +81,8 @@ public class Sample15_GrantCopyAuthAsync {
             sourceClient = sourceBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
         }
 
-        // Build target async client with appropriate authentication
-        ContentUnderstandingClientBuilder targetBuilder = new ContentUnderstandingClientBuilder()
-            .endpoint(targetEndpoint);
+        ContentUnderstandingClientBuilder targetBuilder
+            = new ContentUnderstandingClientBuilder().endpoint(targetEndpoint);
         ContentUnderstandingAsyncClient targetClient;
         if (targetKey != null && !targetKey.trim().isEmpty()) {
             targetClient = targetBuilder.credential(new AzureKeyCredential(targetKey)).buildAsyncClient();
@@ -96,128 +90,205 @@ public class Sample15_GrantCopyAuthAsync {
             targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
         }
 
-        String sourceAnalyzerId = "my_source_analyzer";
-        String targetAnalyzerId = "my_target_analyzer";
+        String sourceAnalyzerId = "copy_source_" + UUID.randomUUID().toString().replace("-", "");
+        String targetAnalyzerId = "copy_target_" + UUID.randomUUID().toString().replace("-", "");
 
-        // Step 1: Create the source analyzer
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setLayoutEnabled(true);
-        config.setOcrEnabled(true);
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig().setFormulaEnabled(false)
+            .setLayoutEnabled(true)
+            .setOcrEnabled(true)
+            .setEstimateFieldSourceAndConfidence(true)
+            .setReturnDetails(true);
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
-        ContentFieldDefinition companyNameField = new ContentFieldDefinition();
-        companyNameField.setType(ContentFieldType.STRING);
-        companyNameField.setMethod(GenerationMethod.EXTRACT);
-        companyNameField.setDescription("Name of the company");
-        fields.put("company_name", companyNameField);
+        fields.put("company_name",
+            new ContentFieldDefinition().setType(ContentFieldType.STRING)
+                .setMethod(GenerationMethod.EXTRACT)
+                .setDescription("Name of the company"));
+        fields.put("total_amount",
+            new ContentFieldDefinition().setType(ContentFieldType.NUMBER)
+                .setMethod(GenerationMethod.EXTRACT)
+                .setDescription("Total amount on the document"));
 
-        ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
-        totalAmountField.setType(ContentFieldType.NUMBER);
-        totalAmountField.setMethod(GenerationMethod.EXTRACT);
-        totalAmountField.setDescription("Total amount on the document");
-        fields.put("total_amount", totalAmountField);
-
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("company_schema");
-        fieldSchema.setDescription("Schema for extracting company information");
-        fieldSchema.setFields(fields);
-
-        ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
-        sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
-        sourceAnalyzer.setDescription("Source analyzer for cross-resource copying");
-        sourceAnalyzer.setConfig(config);
-        sourceAnalyzer.setFieldSchema(fieldSchema);
+        ContentFieldSchema fieldSchema = new ContentFieldSchema().setName("company_schema")
+            .setDescription("Schema for extracting company information")
+            .setFields(fields);
 
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        sourceAnalyzer.setModels(models);
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+        ContentAnalyzer sourceAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Source analyzer for cross-resource copying")
+            .setConfig(config)
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
             = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
-        
-        String finalSourceAnalyzerId = sourceAnalyzerId; // For use in lambda
-        String finalTargetAnalyzerId = targetAnalyzerId; // For use in lambda
-        String finalSourceResourceId = sourceResourceId; // For use in lambda
-        String finalSourceRegion = sourceRegion; // For use in lambda
-        String finalTargetResourceId = targetResourceId; // For use in lambda
-        String finalTargetRegion = targetRegion; // For use in lambda
 
-        CountDownLatch latch = new CountDownLatch(1);
-        createPoller.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
+        Mono<CrossResourceCopyState> workflow = createPoller.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Source analyzer creation"))
+            .map(sourceResult -> {
+                System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
+                return new CrossResourceCopyState(sourceResult);
             })
-            .doOnNext(sourceResult -> {
-                System.out.println("Source analyzer '" + finalSourceAnalyzerId + "' created successfully!");
-            })
-            .then(sourceClient.grantCopyAuthorization(finalSourceAnalyzerId, finalTargetResourceId, finalTargetRegion))
-            .doOnNext(copyAuth -> {
-                System.out.println("Copy authorization granted successfully!");
-                System.out.println("  Target Azure Resource ID: " + copyAuth.getTargetAzureResourceId());
-                System.out.println("  Expires at: " + copyAuth.getExpiresAt());
-            })
-            .flatMap(copyAuth -> {
-                // Step 3: Copy analyzer to target resource using target async client
+            .flatMap(state -> sourceClient.grantCopyAuthorization(sourceAnalyzerId, targetResourceId, targetRegion)
+                .switchIfEmpty(Mono.error(new IllegalStateException("Copy authorization returned no result.")))
+                .map(copyAuthorization -> {
+                    verifyCopyAuthorization(copyAuthorization, targetResourceId);
+                    System.out.println("Copy authorization granted successfully!");
+                    System.out.println("  Target Azure Resource ID: "
+                        + copyAuthorization.getTargetAzureResourceId());
+                    System.out.println("  Target Region: " + targetRegion);
+                    System.out.println("  Expires at: " + copyAuthorization.getExpiresAt());
+                    return state;
+                }))
+            .flatMap(state -> {
                 PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                    = targetClient.beginCopyAnalyzer(finalTargetAnalyzerId, finalSourceAnalyzerId, false,
-                        finalSourceResourceId, finalSourceRegion);
-
+                    = targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false,
+                        sourceResourceId, sourceRegion);
                 return copyPoller.last()
-                    .flatMap(pollResponse -> {
-                        if (pollResponse.getStatus().isComplete()) {
-                            System.out.println("Copy polling completed successfully");
-                            return pollResponse.getFinalResult();
-                        } else {
-                            return Mono.error(new RuntimeException(
-                                "Copy polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                        }
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Cross-resource analyzer copy"))
+                    .map(targetResult -> {
+                        verifyCopiedAnalyzer(state.sourceResult, targetResult);
+                        state.targetResult = targetResult;
+                        System.out.println("Target analyzer '" + targetAnalyzerId + "' copied successfully!");
+                        return state;
                     });
             })
-            .doOnNext(targetResult -> {
-                System.out.println("Target analyzer '" + finalTargetAnalyzerId + "' copied successfully!");
-                System.out.println("  Description: " + targetResult.getDescription());
-                // END: com.azure.ai.contentunderstanding.grantCopyAuthAsync
-            })
-            .doFinally(signalType -> {
-                // Cleanup: delete both analyzers
-                sourceClient.deleteAnalyzer(finalSourceAnalyzerId)
-                    .onErrorResume(e -> {
-                        System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
-                        return Mono.empty();
-                    })
-                    .doOnSuccess(v -> System.out.println("Source analyzer '" + finalSourceAnalyzerId + "' deleted."))
-                    .subscribe();
-                
-                targetClient.deleteAnalyzer(finalTargetAnalyzerId)
-                    .onErrorResume(e -> {
-                        System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
-                        return Mono.empty();
-                    })
-                    .doOnSuccess(v -> System.out.println("Target analyzer '" + finalTargetAnalyzerId + "' deleted."))
-                    .subscribe();
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
+            .flatMap(state -> targetClient.getAnalyzer(targetAnalyzerId)
+                .switchIfEmpty(Mono.error(new IllegalStateException("Copied analyzer retrieval returned no result.")))
+                .map(copiedAnalyzer -> {
+                    verifyCopiedAnalyzer(state.targetResult, copiedAnalyzer);
+                    System.out.println("Cross-resource copy properties verified.");
+                    return state;
+                }))
+            .switchIfEmpty(
+                Mono.error(new IllegalStateException("Cross-resource copy workflow completed without a result.")));
 
-        // Wait for async operations to complete
-        latch.await(3, TimeUnit.MINUTES);
+        CrossResourceCopyState result = runWithCleanup(workflow,
+            () -> deleteAnalyzers(sourceClient, targetClient, sourceAnalyzerId, targetAnalyzerId)).block();
+        if (result == null) {
+            throw new IllegalStateException("Cross-resource copy workflow completed without a result.");
+        }
+        // END: com.azure.ai.contentunderstanding.grantCopyAuthAsync
+
+        System.out.println("Sample completed successfully!");
+    }
+
+    static String requireEnvironmentValue(String name, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalStateException("Cross-resource copying requires environment variable " + name + ".");
+        }
+        return value.trim();
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<T> runWithCleanup(Mono<T> workflow, Supplier<Mono<Void>> cleanup) {
+        return Mono.usingWhen(Mono.just(Boolean.TRUE),
+            ignored -> workflow
+                .switchIfEmpty(Mono.error(new IllegalStateException("Workflow completed without a result."))),
+            ignored -> cleanup.get(), (ignored, error) -> cleanup.get(), ignored -> cleanup.get());
+    }
+
+    private static Mono<Void> deleteAnalyzers(ContentUnderstandingAsyncClient sourceClient,
+        ContentUnderstandingAsyncClient targetClient, String sourceAnalyzerId, String targetAnalyzerId) {
+        return Mono.when(deleteAnalyzer(sourceClient, sourceAnalyzerId, "Source"),
+            deleteAnalyzer(targetClient, targetAnalyzerId, "Target"));
+    }
+
+    private static Mono<Void> deleteAnalyzer(ContentUnderstandingAsyncClient client, String analyzerId, String label) {
+        return client.deleteAnalyzer(analyzerId)
+            .doOnSuccess(ignored -> System.out.println(label + " analyzer '" + analyzerId + "' deleted."))
+            .onErrorResume(error -> {
+                System.out.println(
+                    "Note: Failed to delete " + label.toLowerCase() + " analyzer (may not exist): "
+                        + error.getMessage());
+                return Mono.empty();
+            });
+    }
+
+    private static void verifyCopyAuthorization(CopyAuthorization copyAuthorization, String targetResourceId) {
+        requireNotNull(copyAuthorization, "copy authorization");
+        requireEqual(targetResourceId, copyAuthorization.getTargetAzureResourceId(), "target Azure resource ID");
+        OffsetDateTime expiresAt
+            = requireNotNull(copyAuthorization.getExpiresAt(), "copy authorization expiration");
+        if (!expiresAt.isAfter(OffsetDateTime.now())) {
+            throw new IllegalStateException("Copy authorization has already expired at " + expiresAt + ".");
+        }
+    }
+
+    private static void verifyCopiedAnalyzer(ContentAnalyzer expected, ContentAnalyzer actual) {
+        requireNotNull(expected, "expected analyzer");
+        requireNotNull(actual, "copied analyzer");
+        requireEqual(expected.getBaseAnalyzerId(), actual.getBaseAnalyzerId(), "base analyzer ID");
+        requireEqual(expected.getDescription(), actual.getDescription(), "description");
+
+        ContentFieldSchema expectedSchema = requireNotNull(expected.getFieldSchema(), "expected field schema");
+        ContentFieldSchema actualSchema = requireNotNull(actual.getFieldSchema(), "copied field schema");
+        requireEqual(expectedSchema.getName(), actualSchema.getName(), "field schema name");
+        requireEqual(expectedSchema.getDescription(), actualSchema.getDescription(), "field schema description");
+        Map<String, ContentFieldDefinition> expectedFields
+            = requireNotNull(expectedSchema.getFields(), "expected fields");
+        Map<String, ContentFieldDefinition> actualFields = requireNotNull(actualSchema.getFields(), "copied fields");
+        requireEqual(expectedFields.size(), actualFields.size(), "field count");
+        for (Map.Entry<String, ContentFieldDefinition> expectedField : expectedFields.entrySet()) {
+            ContentFieldDefinition actualField
+                = requireNotNull(actualFields.get(expectedField.getKey()), expectedField.getKey());
+            requireEqual(expectedField.getValue().getType(), actualField.getType(),
+                expectedField.getKey() + " field type");
+            requireEqual(expectedField.getValue().getMethod(), actualField.getMethod(),
+                expectedField.getKey() + " generation method");
+            requireEqual(expectedField.getValue().getDescription(), actualField.getDescription(),
+                expectedField.getKey() + " description");
+        }
+
+        ContentAnalyzerConfig expectedConfig = requireNotNull(expected.getConfig(), "expected config");
+        ContentAnalyzerConfig actualConfig = requireNotNull(actual.getConfig(), "copied config");
+        requireEqual(expectedConfig.isFormulaEnabled(), actualConfig.isFormulaEnabled(), "formula setting");
+        requireEqual(expectedConfig.isLayoutEnabled(), actualConfig.isLayoutEnabled(), "layout setting");
+        requireEqual(expectedConfig.isOcrEnabled(), actualConfig.isOcrEnabled(), "OCR setting");
+        requireEqual(expectedConfig.isEstimateFieldSourceAndConfidence(),
+            actualConfig.isEstimateFieldSourceAndConfidence(), "field source and confidence setting");
+        requireEqual(expectedConfig.isReturnDetails(), actualConfig.isReturnDetails(), "return details setting");
+
+        Map<String, String> expectedModels = requireNotNull(expected.getModels(), "expected models");
+        Map<String, String> actualModels = requireNotNull(actual.getModels(), "copied models");
+        for (Map.Entry<String, String> expectedModel : expectedModels.entrySet()) {
+            requireEqual(expectedModel.getValue(), actualModels.get(expectedModel.getKey()),
+                expectedModel.getKey() + " model");
+        }
+    }
+
+    private static <T> T requireNotNull(T value, String property) {
+        if (value == null) {
+            throw new IllegalStateException(property + " was not returned.");
+        }
+        return value;
+    }
+
+    private static void requireEqual(Object expected, Object actual, String property) {
+        if (!Objects.equals(expected, actual)) {
+            throw new IllegalStateException(property + " did not match. Expected '" + expected + "' but got '"
+                + actual + "'.");
+        }
+    }
+
+    private static final class CrossResourceCopyState {
+        private final ContentAnalyzer sourceResult;
+        private ContentAnalyzer targetResult;
+
+        private CrossResourceCopyState(ContentAnalyzer sourceResult) {
+            this.sourceResult = sourceResult;
+        }
     }
 }

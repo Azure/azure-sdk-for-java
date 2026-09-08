@@ -12,8 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout &amp; stderr logs etc.
- * See aka.ms/AzureMonitorContainerInsights for an overview.
+ * Azure Monitor Container Insights profile. Represents the configuration for collecting Kubernetes events, inventory,
+ * and container stdout &amp; stderr logs. See aka.ms/AzureMonitorContainerInsights for an overview.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileContainerInsights
@@ -35,22 +35,15 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
     private Long syslogPort;
 
     /*
-     * Indicates whether custom metrics collection has to be disabled or not. If not specified the default is false. No
-     * custom metrics will be emitted if this field is false but the container insights enabled field is false
-     */
-    private Boolean disableCustomMetrics;
-
-    /*
-     * Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false. No
-     * prometheus metrics will be emitted if this field is false but the container insights enabled field is false
+     * Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false i.e. the
+     * prometheus scraping is enabled.
      */
     private Boolean disablePrometheusMetricsScraping;
 
     /*
-     * Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is controlled by the
-     * CRD found in the following links. No network logs are ingested by default. More information on container network
-     * logs can be found at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network
-     * log can be found at https://aka.ms/acns/howtoenablecnl. If not specified, the default is Disabled.
+     * Configures container network logs ingestion with Azure Monitor. The log types ingested are controlled by the
+     * associated CRD; if unspecified, defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc and
+     * https://aka.ms/acns/howtoenablecnl for details.
      */
     private ContainerNetworkLogs containerNetworkLogs;
 
@@ -124,33 +117,8 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
     }
 
     /**
-     * Get the disableCustomMetrics property: Indicates whether custom metrics collection has to be disabled or not. If
-     * not specified the default is false. No custom metrics will be emitted if this field is false but the container
-     * insights enabled field is false.
-     * 
-     * @return the disableCustomMetrics value.
-     */
-    public Boolean disableCustomMetrics() {
-        return this.disableCustomMetrics;
-    }
-
-    /**
-     * Set the disableCustomMetrics property: Indicates whether custom metrics collection has to be disabled or not. If
-     * not specified the default is false. No custom metrics will be emitted if this field is false but the container
-     * insights enabled field is false.
-     * 
-     * @param disableCustomMetrics the disableCustomMetrics value to set.
-     * @return the ManagedClusterAzureMonitorProfileContainerInsights object itself.
-     */
-    public ManagedClusterAzureMonitorProfileContainerInsights withDisableCustomMetrics(Boolean disableCustomMetrics) {
-        this.disableCustomMetrics = disableCustomMetrics;
-        return this;
-    }
-
-    /**
      * Get the disablePrometheusMetricsScraping property: Indicates whether prometheus metrics scraping is disabled or
-     * not. If not specified the default is false. No prometheus metrics will be emitted if this field is false but the
-     * container insights enabled field is false.
+     * not. If not specified the default is false i.e. the prometheus scraping is enabled.
      * 
      * @return the disablePrometheusMetricsScraping value.
      */
@@ -160,8 +128,7 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
 
     /**
      * Set the disablePrometheusMetricsScraping property: Indicates whether prometheus metrics scraping is disabled or
-     * not. If not specified the default is false. No prometheus metrics will be emitted if this field is false but the
-     * container insights enabled field is false.
+     * not. If not specified the default is false i.e. the prometheus scraping is enabled.
      * 
      * @param disablePrometheusMetricsScraping the disablePrometheusMetricsScraping value to set.
      * @return the ManagedClusterAzureMonitorProfileContainerInsights object itself.
@@ -173,11 +140,9 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
     }
 
     /**
-     * Get the containerNetworkLogs property: Configures container network logs ingestion with Azure Monitor. Which
-     * network logs to ingest is controlled by the CRD found in the following links. No network logs are ingested by
-     * default. More information on container network logs can be found at https://aka.ms/ContainerNetworkLogsDoc. More
-     * information on configuring container network log can be found at https://aka.ms/acns/howtoenablecnl. If not
-     * specified, the default is Disabled.
+     * Get the containerNetworkLogs property: Configures container network logs ingestion with Azure Monitor. The log
+     * types ingested are controlled by the associated CRD; if unspecified, defaults to `Disabled`. See
+     * https://aka.ms/ContainerNetworkLogsDoc and https://aka.ms/acns/howtoenablecnl for details.
      * 
      * @return the containerNetworkLogs value.
      */
@@ -186,11 +151,9 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
     }
 
     /**
-     * Set the containerNetworkLogs property: Configures container network logs ingestion with Azure Monitor. Which
-     * network logs to ingest is controlled by the CRD found in the following links. No network logs are ingested by
-     * default. More information on container network logs can be found at https://aka.ms/ContainerNetworkLogsDoc. More
-     * information on configuring container network log can be found at https://aka.ms/acns/howtoenablecnl. If not
-     * specified, the default is Disabled.
+     * Set the containerNetworkLogs property: Configures container network logs ingestion with Azure Monitor. The log
+     * types ingested are controlled by the associated CRD; if unspecified, defaults to `Disabled`. See
+     * https://aka.ms/ContainerNetworkLogsDoc and https://aka.ms/acns/howtoenablecnl for details.
      * 
      * @param containerNetworkLogs the containerNetworkLogs value to set.
      * @return the ManagedClusterAzureMonitorProfileContainerInsights object itself.
@@ -218,7 +181,6 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("logAnalyticsWorkspaceResourceId", this.logAnalyticsWorkspaceResourceId);
         jsonWriter.writeNumberField("syslogPort", this.syslogPort);
-        jsonWriter.writeBooleanField("disableCustomMetrics", this.disableCustomMetrics);
         jsonWriter.writeBooleanField("disablePrometheusMetricsScraping", this.disablePrometheusMetricsScraping);
         jsonWriter.writeStringField("containerNetworkLogs",
             this.containerNetworkLogs == null ? null : this.containerNetworkLogs.toString());
@@ -251,9 +213,6 @@ public final class ManagedClusterAzureMonitorProfileContainerInsights
                 } else if ("syslogPort".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfileContainerInsights.syslogPort
                         = reader.getNullable(JsonReader::getLong);
-                } else if ("disableCustomMetrics".equals(fieldName)) {
-                    deserializedManagedClusterAzureMonitorProfileContainerInsights.disableCustomMetrics
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("disablePrometheusMetricsScraping".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfileContainerInsights.disablePrometheusMetricsScraping
                         = reader.getNullable(JsonReader::getBoolean);

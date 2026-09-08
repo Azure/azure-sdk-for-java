@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteGatewaysStartSiteFailoverTestSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteGatewayStartSiteFailoverTest.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteGatewayStartSiteFailoverTest.json
      */
     /**
      * Sample code: ExpressRouteGatewayStartSiteFailoverTest.

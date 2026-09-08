@@ -194,6 +194,13 @@ public interface CognitiveServicesManagementClient {
     QuotaTiersClient getQuotaTiers();
 
     /**
+     * Gets the ArcDeploymentsClient object to access its operations.
+     * 
+     * @return the ArcDeploymentsClient object.
+     */
+    ArcDeploymentsClient getArcDeployments();
+
+    /**
      * Gets the AgentApplicationsClient object to access its operations.
      * 
      * @return the AgentApplicationsClient object.

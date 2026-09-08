@@ -353,6 +353,8 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureIaaSClassicComputeVMProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

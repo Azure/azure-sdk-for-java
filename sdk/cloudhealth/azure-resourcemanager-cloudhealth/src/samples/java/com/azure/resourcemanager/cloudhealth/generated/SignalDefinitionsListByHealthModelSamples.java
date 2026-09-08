@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class SignalDefinitionsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/SignalDefinitions_ListByHealthModel.json
+     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_ListByHealthModel.json
      */
     /**
      * Sample code: SignalDefinitions_ListByHealthModel.

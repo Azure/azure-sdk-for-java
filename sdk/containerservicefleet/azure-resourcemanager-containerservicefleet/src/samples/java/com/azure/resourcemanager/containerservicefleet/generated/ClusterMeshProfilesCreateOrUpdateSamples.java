@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
  */
 public final class ClusterMeshProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a ClusterMeshProfile.

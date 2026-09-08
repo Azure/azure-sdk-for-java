@@ -22,7 +22,7 @@ public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTest
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"lves\",\"endpoints\":[{\"domainName\":\"xrrilozapee\",\"endpointDetails\":[{\"ipAddress\":\"xlktwkuzi\",\"port\":463707796,\"protocol\":\"evufuztck\",\"description\":\"h\"},{\"ipAddress\":\"qedcgzulwm\",\"port\":652058818,\"protocol\":\"zrrjvpgly\",\"description\":\"gkrvqeevto\"},{\"ipAddress\":\"r\",\"port\":108809884,\"protocol\":\"wytpzdmovz\",\"description\":\"va\"},{\"ipAddress\":\"zqadf\",\"port\":97417905,\"protocol\":\"riglaec\",\"description\":\"dticokpvzml\"}]}]}]}";
+            = "{\"value\":[{\"category\":\"sxoa\",\"endpoints\":[{\"domainName\":\"zpnpbswv\",\"endpointDetails\":[{\"ipAddress\":\"ccsrmozihmipgaw\",\"port\":328580194,\"protocol\":\"ky\",\"description\":\"xcjxgrytfmpcy\"},{\"ipAddress\":\"lrmcaykg\",\"port\":243577623,\"protocol\":\"uztrksxwpndfcpf\",\"description\":\"nthjtwkjaosrxuzv\"},{\"ipAddress\":\"mktcqiosmgbza\",\"port\":1221237045,\"protocol\":\"dl\",\"description\":\"tlt\"}]},{\"domainName\":\"prltzkatbhjmz\",\"endpointDetails\":[{\"ipAddress\":\"oqeq\",\"port\":418171935,\"protocol\":\"vlagun\",\"description\":\"gfebwlnb\"},{\"ipAddress\":\"yreeudz\",\"port\":1880601088,\"protocol\":\"pdqmjxlyyzglgouw\",\"description\":\"mjjyuojq\"},{\"ipAddress\":\"baxk\",\"port\":798856536,\"protocol\":\"unlbfjkwr\",\"description\":\"nkqbhsyrq\"}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OutboundEnvironmentEndpoint> response = manager.dedicatedHsms()
-            .listOutboundNetworkDependenciesEndpoints("eqvldspast", "bkkd", com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("hflzokxco", "pelnjetag", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lves", response.iterator().next().category());
-        Assertions.assertEquals("xrrilozapee", response.iterator().next().endpoints().get(0).domainName());
-        Assertions.assertEquals("xlktwkuzi",
+        Assertions.assertEquals("sxoa", response.iterator().next().category());
+        Assertions.assertEquals("zpnpbswv", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("ccsrmozihmipgaw",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(463707796,
+        Assertions.assertEquals(328580194,
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("evufuztck",
+        Assertions.assertEquals("ky",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("h",
+        Assertions.assertEquals("xcjxgrytfmpcy",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).description());
     }
 }

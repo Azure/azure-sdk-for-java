@@ -6,19 +6,28 @@ package com.azure.resourcemanager.compute.bulkactions.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.AcknowledgeBulkOperationErrorsResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.HibernateResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ReimageResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.StartResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOperationErrorsRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
+import com.azure.resourcemanager.compute.bulkactions.models.ExecuteCreateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.compute.bulkactions.models.ExecuteReimageRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
+import com.azure.resourcemanager.compute.bulkactions.models.ExecuteVdiCreateRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusContent;
 
 /**
@@ -125,6 +134,72 @@ public interface VirtualMachineBulkOperationsClient {
         ExecuteStartContent requestBody);
 
     /**
+     * BulkCreate: Execute create operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CreateResourceOperationResponseInner> bulkCreateOperationWithResponse(String resourceGroupName,
+        String location, ExecuteCreateContent requestBody, Context context);
+
+    /**
+     * BulkCreate: Execute create operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateResourceOperationResponseInner bulkCreateOperation(String resourceGroupName, String location,
+        ExecuteCreateContent requestBody);
+
+    /**
+     * BulkVdiFlexCreate: Bulk create operation for a batch of virtual machines, this operation supports flex properties
+     * to give options on Sku and zone selection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CreateResourceOperationResponseInner> bulkVdiFlexCreateOperationWithResponse(String resourceGroupName,
+        String location, ExecuteVdiCreateRequest requestBody, Context context);
+
+    /**
+     * BulkVdiFlexCreate: Bulk create operation for a batch of virtual machines, this operation supports flex properties
+     * to give options on Sku and zone selection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateResourceOperationResponseInner bulkVdiFlexCreateOperation(String resourceGroupName, String location,
+        ExecuteVdiCreateRequest requestBody);
+
+    /**
      * BulkDelete: Execute delete operation for a batch of virtual machines, this operation is triggered as soon as
      * Computeschedule receives it.
      * 
@@ -218,4 +293,97 @@ public interface VirtualMachineBulkOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CancelOperationsResponseInner bulkCancelOperations(String resourceGroupName, String location,
         CancelOperationsContent requestBody);
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ReimageResourceOperationResponseInner> bulkReimageOperationWithResponse(String resourceGroupName,
+        String location, ExecuteReimageRequest requestBody, Context context);
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReimageResourceOperationResponseInner bulkReimageOperation(String resourceGroupName, String location,
+        ExecuteReimageRequest requestBody);
+
+    /**
+     * BulkListOperationErrors: List bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from listing bulk operation errors as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceOperationInner> bulkListOperationErrors(String resourceGroupName, String location);
+
+    /**
+     * BulkListOperationErrors: List bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes to look back for errors.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from listing bulk operation errors as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceOperationInner> bulkListOperationErrors(String resourceGroupName, String location,
+        Integer lookbackInMinutes, Context context);
+
+    /**
+     * BulkAcknowledgeOperationErrors: Acknowledge bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The list of operation ids to acknowledge.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from acknowledging bulk operation errors along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AcknowledgeBulkOperationErrorsResponseInner> bulkAcknowledgeOperationErrorsWithResponse(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context);
+
+    /**
+     * BulkAcknowledgeOperationErrors: Acknowledge bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The list of operation ids to acknowledge.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from acknowledging bulk operation errors.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AcknowledgeBulkOperationErrorsResponseInner bulkAcknowledgeOperationErrors(String resourceGroupName,
+        String location, AcknowledgeBulkOperationErrorsRequest body);
 }

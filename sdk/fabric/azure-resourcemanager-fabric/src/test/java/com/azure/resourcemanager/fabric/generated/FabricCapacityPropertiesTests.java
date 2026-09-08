@@ -6,6 +6,8 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacityProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,16 +16,22 @@ public final class FabricCapacityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Provisioning\",\"state\":\"Resuming\",\"administration\":{\"members\":[\"glhqg\",\"ufo\"]}}")
+            "{\"provisioningState\":\"Provisioning\",\"state\":\"Suspending\",\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":1979108310},\"administration\":{\"members\":[\"kwm\"]}}")
             .toObject(FabricCapacityProperties.class);
-        Assertions.assertEquals("glhqg", model.administration().members().get(0));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.overage().state());
+        Assertions.assertEquals(1979108310, model.overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("kwm", model.administration().members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FabricCapacityProperties model = new FabricCapacityProperties()
-            .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("glhqg", "ufo")));
+            .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
+                .withThresholdCapacityUnitHours(1979108310))
+            .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("kwm")));
         model = BinaryData.fromObject(model).toObject(FabricCapacityProperties.class);
-        Assertions.assertEquals("glhqg", model.administration().members().get(0));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.overage().state());
+        Assertions.assertEquals(1979108310, model.overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("kwm", model.administration().members().get(0));
     }
 }

@@ -95,6 +95,16 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private ManagedClusterNatGatewayProfile natGatewayProfile;
 
     /*
+     * The Azure resource ID of the NAT gateway to use for egress at cluster startup when outboundType is
+     * 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load balancer type is
+     * service SKU. This is of the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{
+     * natGatewayName}'. When using managed NATGateway this field is auto populated. For more information, see
+     * https://aka.ms/aks/container-native-slb
+     */
+    private String natGatewayId;
+
+    /*
      * The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see
      * https://aka.ms/aks/static-egress-gateway.
      */
@@ -439,6 +449,36 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
+     * Get the natGatewayId property: The Azure resource ID of the NAT gateway to use for egress at cluster startup when
+     * outboundType is 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load
+     * balancer type is service SKU. This is of the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
+     * When using managed NATGateway this field is auto populated. For more information, see
+     * https://aka.ms/aks/container-native-slb.
+     * 
+     * @return the natGatewayId value.
+     */
+    public String natGatewayId() {
+        return this.natGatewayId;
+    }
+
+    /**
+     * Set the natGatewayId property: The Azure resource ID of the NAT gateway to use for egress at cluster startup when
+     * outboundType is 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load
+     * balancer type is service SKU. This is of the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
+     * When using managed NATGateway this field is auto populated. For more information, see
+     * https://aka.ms/aks/container-native-slb.
+     * 
+     * @param natGatewayId the natGatewayId value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNatGatewayId(String natGatewayId) {
+        this.natGatewayId = natGatewayId;
+        return this;
+    }
+
+    /**
      * Get the staticEgressGatewayProfile property: The profile for Static Egress Gateway addon. For more details about
      * Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
      * 
@@ -633,6 +673,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
         jsonWriter.writeJsonField("bastionProfile", this.bastionProfile);
         jsonWriter.writeJsonField("natGatewayProfile", this.natGatewayProfile);
+        jsonWriter.writeStringField("natGatewayId", this.natGatewayId);
         jsonWriter.writeJsonField("staticEgressGatewayProfile", this.staticEgressGatewayProfile);
         jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
@@ -696,6 +737,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("natGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.natGatewayProfile
                         = ManagedClusterNatGatewayProfile.fromJson(reader);
+                } else if ("natGatewayId".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.natGatewayId = reader.getString();
                 } else if ("staticEgressGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.staticEgressGatewayProfile
                         = ManagedClusterStaticEgressGatewayProfile.fromJson(reader);

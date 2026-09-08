@@ -105,8 +105,10 @@ public class BufferStagingAreaTests {
             Arguments.of(1000, 1000, 1000), // _
             Arguments.of(10000, 1000, 1000), // _
             Arguments.of(10000, 1, 1000), // These test variation in buffSize.
-            Arguments.of(100, 1, Constants.MB * 4), // _
-            Arguments.of(100, Constants.MB * 4, Constants.MB * 8) // _
+            // Exercise repartitioning of many variably-sized buffers by maxBuffSize. The buffer count and size
+            // variation are what matter here, not the absolute MB size; sizes were reduced from 4-8 MiB.
+            Arguments.of(100, 1, Constants.KB * 256), // _
+            Arguments.of(100, Constants.KB * 256, Constants.KB * 512) // _
         );
     }
 

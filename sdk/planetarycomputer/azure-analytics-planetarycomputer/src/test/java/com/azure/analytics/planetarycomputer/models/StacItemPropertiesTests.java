@@ -43,7 +43,7 @@ public final class StacItemPropertiesTests {
         Assertions.assertEquals(OffsetDateTime.of(2021, 6, 15, 14, 0, 0, 0, ZoneOffset.UTC), model.getStartDatetime());
         Assertions.assertEquals(OffsetDateTime.of(2021, 6, 15, 15, 0, 0, 0, ZoneOffset.UTC), model.getEndDatetime());
         Assertions.assertNotNull(model.getAdditionalProperties());
-        Assertions.assertEquals(42, ((Number) model.getAdditionalProperties().get("custom_prop")).intValue());
+        Assertions.assertEquals(42, model.getAdditionalProperties().get("custom_prop").toObject(Integer.class));
     }
 
     @Test
@@ -60,7 +60,7 @@ public final class StacItemPropertiesTests {
             .setDatetime("2021-06-15T14:30:00Z")
             .setStartDatetime(OffsetDateTime.of(2021, 6, 15, 14, 0, 0, 0, ZoneOffset.UTC))
             .setEndDatetime(OffsetDateTime.of(2021, 6, 15, 15, 0, 0, 0, ZoneOffset.UTC))
-            .setAdditionalProperties(mapOf("custom_prop", 42));
+            .setAdditionalProperties(mapOf("custom_prop", BinaryData.fromString("42")));
         model = BinaryData.fromObject(model).toObject(StacItemProperties.class);
         Assertions.assertEquals("sentinel-2", model.getPlatform());
         Assertions.assertEquals(2, model.getInstruments().size());

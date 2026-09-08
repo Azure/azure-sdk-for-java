@@ -348,6 +348,35 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
     }
 
     /**
+     * Get the enableConnectionTracking property: Enables UDP flow tracking for traffic associated with the frontend IP
+     * configuration. When enabled, packets belonging to the same UDP flow are consistently directed to the same backend
+     * instance. This setting applies to all associated load balancing rules and takes precedence over rule-level
+     * enableConnectionTracking settings.
+     * 
+     * @return the enableConnectionTracking value.
+     */
+    public Boolean enableConnectionTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableConnectionTracking();
+    }
+
+    /**
+     * Set the enableConnectionTracking property: Enables UDP flow tracking for traffic associated with the frontend IP
+     * configuration. When enabled, packets belonging to the same UDP flow are consistently directed to the same backend
+     * instance. This setting applies to all associated load balancing rules and takes precedence over rule-level
+     * enableConnectionTracking settings.
+     * 
+     * @param enableConnectionTracking the enableConnectionTracking value to set.
+     * @return the FrontendIpConfigurationInner object itself.
+     */
+    public FrontendIpConfigurationInner withEnableConnectionTracking(Boolean enableConnectionTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withEnableConnectionTracking(enableConnectionTracking);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

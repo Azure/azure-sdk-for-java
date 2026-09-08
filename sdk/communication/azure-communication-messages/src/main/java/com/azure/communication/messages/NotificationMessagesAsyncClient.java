@@ -78,6 +78,16 @@ public final class NotificationMessagesAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Repeatability-Result</td><td>String</td><td>Indicates whether the repeatable request was accepted or
+     * rejected.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -103,6 +113,14 @@ public final class NotificationMessagesAsyncClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

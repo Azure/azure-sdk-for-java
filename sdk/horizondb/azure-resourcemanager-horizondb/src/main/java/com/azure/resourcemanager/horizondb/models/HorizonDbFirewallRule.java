@@ -86,8 +86,8 @@ public interface HorizonDbFirewallRule {
              * Specifies resourceGroupName, clusterName, poolName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param clusterName The name of the HorizonDb cluster.
-             * @param poolName The name of the HorizonDb pool.
+             * @param clusterName The name of the HorizonDB cluster.
+             * @param poolName The name of the HorizonDB pool.
              * @return the next definition stage.
              */
             WithCreate withExistingPool(String resourceGroupName, String clusterName, String poolName);

@@ -106,3 +106,9 @@ in `sdk/cosmos/azure-cosmos-tests/pom.xml`. Other profiles (`direct`, `multi-mas
   checks locally.
 - To run a single test, add `'-Dit.test=CustomerWorkflowSingleMasterAvailabilityTest#<method>'`
   (failsafe uses `it.test`, not `test`).
+- `PerPartitionCircuitBreakerE2ETests` also supports filtering string-keyed data-provider rows:
+  add `'-DCOSMOS.TEST_CASE_FILTER=<unique test-id substring>'`. Pair targeted local runs with
+  `'-Dfailsafe.failIfNoTests=true'` so a typo cannot produce a false green.
+- Do not run multiple Failsafe invocations concurrently from the same worktree. They share generated
+  state under `target/` and can execute another invocation's selector. Run sequentially or use one
+  isolated worktree per concurrent process.

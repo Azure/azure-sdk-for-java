@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class CapabilityTypesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CapabilityTypes_List.json
+     * x-ms-original-file: 2026-08-01-preview/CapabilityTypes_List.json
      */
     /**
      * Sample code: List all Capability Types for a virtual machine Target resource on westus2 location.

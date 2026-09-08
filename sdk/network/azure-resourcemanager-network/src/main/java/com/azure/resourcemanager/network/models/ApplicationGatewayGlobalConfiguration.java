@@ -27,6 +27,11 @@ public final class ApplicationGatewayGlobalConfiguration
      */
     private Boolean enableResponseBuffering;
 
+    /*
+     * Disable default server header in response.
+     */
+    private Boolean disableDefaultServerHeaderInResponse;
+
     /**
      * Creates an instance of ApplicationGatewayGlobalConfiguration class.
      */
@@ -74,6 +79,27 @@ public final class ApplicationGatewayGlobalConfiguration
     }
 
     /**
+     * Get the disableDefaultServerHeaderInResponse property: Disable default server header in response.
+     * 
+     * @return the disableDefaultServerHeaderInResponse value.
+     */
+    public Boolean disableDefaultServerHeaderInResponse() {
+        return this.disableDefaultServerHeaderInResponse;
+    }
+
+    /**
+     * Set the disableDefaultServerHeaderInResponse property: Disable default server header in response.
+     * 
+     * @param disableDefaultServerHeaderInResponse the disableDefaultServerHeaderInResponse value to set.
+     * @return the ApplicationGatewayGlobalConfiguration object itself.
+     */
+    public ApplicationGatewayGlobalConfiguration
+        withDisableDefaultServerHeaderInResponse(Boolean disableDefaultServerHeaderInResponse) {
+        this.disableDefaultServerHeaderInResponse = disableDefaultServerHeaderInResponse;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -89,6 +115,7 @@ public final class ApplicationGatewayGlobalConfiguration
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enableRequestBuffering", this.enableRequestBuffering);
         jsonWriter.writeBooleanField("enableResponseBuffering", this.enableResponseBuffering);
+        jsonWriter.writeBooleanField("disableDefaultServerHeaderInResponse", this.disableDefaultServerHeaderInResponse);
         return jsonWriter.writeEndObject();
     }
 
@@ -113,6 +140,9 @@ public final class ApplicationGatewayGlobalConfiguration
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableResponseBuffering".equals(fieldName)) {
                     deserializedApplicationGatewayGlobalConfiguration.enableResponseBuffering
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableDefaultServerHeaderInResponse".equals(fieldName)) {
+                    deserializedApplicationGatewayGlobalConfiguration.disableDefaultServerHeaderInResponse
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

@@ -33,6 +33,7 @@ import com.azure.resourcemanager.computelimit.fluent.MemberCapOverridesClient;
 import com.azure.resourcemanager.computelimit.fluent.OperationsClient;
 import com.azure.resourcemanager.computelimit.fluent.SharedLimitCapsClient;
 import com.azure.resourcemanager.computelimit.fluent.SharedLimitsClient;
+import com.azure.resourcemanager.computelimit.fluent.TrustedHostSubscriptionsClient;
 import com.azure.resourcemanager.computelimit.fluent.VmFamiliesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -161,6 +162,20 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
     }
 
     /**
+     * The TrustedHostSubscriptionsClient object to access its operations.
+     */
+    private final TrustedHostSubscriptionsClient trustedHostSubscriptions;
+
+    /**
+     * Gets the TrustedHostSubscriptionsClient object to access its operations.
+     * 
+     * @return the TrustedHostSubscriptionsClient object.
+     */
+    public TrustedHostSubscriptionsClient getTrustedHostSubscriptions() {
+        return this.trustedHostSubscriptions;
+    }
+
+    /**
      * The SharedLimitsClient object to access its operations.
      */
     private final SharedLimitsClient sharedLimits;
@@ -247,9 +262,10 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01";
+        this.apiVersion = "2026-07-31";
         this.operations = new OperationsClientImpl(this);
         this.guestSubscriptions = new GuestSubscriptionsClientImpl(this);
+        this.trustedHostSubscriptions = new TrustedHostSubscriptionsClientImpl(this);
         this.sharedLimits = new SharedLimitsClientImpl(this);
         this.features = new FeaturesClientImpl(this);
         this.vmFamilies = new VmFamiliesClientImpl(this);

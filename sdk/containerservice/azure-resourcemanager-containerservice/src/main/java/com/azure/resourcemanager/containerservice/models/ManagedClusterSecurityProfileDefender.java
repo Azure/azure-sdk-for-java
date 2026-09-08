@@ -30,9 +30,10 @@ public final class ManagedClusterSecurityProfileDefender
     private ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring;
 
     /*
-     * Microsoft Defender settings for security gating, validates container images eligibility for deployment based on
-     * Defender for Containers security findings. Using Admission Controller, it either audits or prevents the
-     * deployment of images that do not meet security standards.
+     * Microsoft Defender settings for security gating. This validates container images eligibility for deployment based
+     * on Defender for Containers security findings. Using Admission Controller, it either audits or prevents deployment
+     * of images that do not meet security standards. For more information, see
+     * https://aka.ms/KubernetesDefenderAuditRule.
      */
     private ManagedClusterSecurityProfileDefenderSecurityGating securityGating;
 
@@ -91,9 +92,10 @@ public final class ManagedClusterSecurityProfileDefender
     }
 
     /**
-     * Get the securityGating property: Microsoft Defender settings for security gating, validates container images
+     * Get the securityGating property: Microsoft Defender settings for security gating. This validates container images
      * eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it
-     * either audits or prevents the deployment of images that do not meet security standards.
+     * either audits or prevents deployment of images that do not meet security standards. For more information, see
+     * https://aka.ms/KubernetesDefenderAuditRule.
      * 
      * @return the securityGating value.
      */
@@ -102,9 +104,10 @@ public final class ManagedClusterSecurityProfileDefender
     }
 
     /**
-     * Set the securityGating property: Microsoft Defender settings for security gating, validates container images
+     * Set the securityGating property: Microsoft Defender settings for security gating. This validates container images
      * eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it
-     * either audits or prevents the deployment of images that do not meet security standards.
+     * either audits or prevents deployment of images that do not meet security standards. For more information, see
+     * https://aka.ms/KubernetesDefenderAuditRule.
      * 
      * @param securityGating the securityGating value to set.
      * @return the ManagedClusterSecurityProfileDefender object itself.

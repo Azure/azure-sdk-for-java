@@ -4,123 +4,52 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 
 /**
- * High level response from an operation on a resource.
+ * An immutable client-side representation of ResourceOperation.
  */
-@Immutable
-public final class ResourceOperation implements JsonSerializable<ResourceOperation> {
-    /*
-     * Unique identifier for the resource involved in the operation, for example Azure resource ID
-     */
-    private String resourceId;
-
-    /*
-     * Resource level error code if it exists
-     */
-    private String errorCode;
-
-    /*
-     * Resource level error details if they exist
-     */
-    private String errorDetails;
-
-    /*
-     * Details of the operation performed on a resource
-     */
-    private ResourceOperationDetails operation;
-
+public interface ResourceOperation {
     /**
-     * Creates an instance of ResourceOperation class.
-     */
-    private ResourceOperation() {
-    }
-
-    /**
-     * Get the resourceId property: Unique identifier for the resource involved in the operation, for example Azure
+     * Gets the resourceId property: Unique identifier for the resource involved in the operation, for example Azure
      * resource ID.
      * 
      * @return the resourceId value.
      */
-    public String resourceId() {
-        return this.resourceId;
-    }
+    String resourceId();
 
     /**
-     * Get the errorCode property: Resource level error code if it exists.
+     * Gets the errorCode property: Resource level error code if it exists.
      * 
      * @return the errorCode value.
      */
-    public String errorCode() {
-        return this.errorCode;
-    }
+    String errorCode();
 
     /**
-     * Get the errorDetails property: Resource level error details if they exist.
+     * Gets the errorDetails property: Resource level error details if they exist.
      * 
      * @return the errorDetails value.
      */
-    public String errorDetails() {
-        return this.errorDetails;
-    }
+    String errorDetails();
 
     /**
-     * Get the operation property: Details of the operation performed on a resource.
+     * Gets the operation property: Details of the operation performed on a resource.
      * 
      * @return the operation value.
      */
-    public ResourceOperationDetails operation() {
-        return this.operation;
-    }
+    ResourceOperationDetails operation();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceId", this.resourceId);
-        jsonWriter.writeStringField("errorCode", this.errorCode);
-        jsonWriter.writeStringField("errorDetails", this.errorDetails);
-        jsonWriter.writeJsonField("operation", this.operation);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ResourceOperation from the JsonReader.
+     * Gets the virtualMachineInfo property: Information about the virtual machine.
      * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceOperation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceOperation.
+     * @return the virtualMachineInfo value.
      */
-    public static ResourceOperation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResourceOperation deserializedResourceOperation = new ResourceOperation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    VirtualMachineInfo virtualMachineInfo();
 
-                if ("resourceId".equals(fieldName)) {
-                    deserializedResourceOperation.resourceId = reader.getString();
-                } else if ("errorCode".equals(fieldName)) {
-                    deserializedResourceOperation.errorCode = reader.getString();
-                } else if ("errorDetails".equals(fieldName)) {
-                    deserializedResourceOperation.errorDetails = reader.getString();
-                } else if ("operation".equals(fieldName)) {
-                    deserializedResourceOperation.operation = ResourceOperationDetails.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedResourceOperation;
-        });
-    }
+    /**
+     * Gets the inner com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner object.
+     * 
+     * @return the inner object.
+     */
+    ResourceOperationInner innerModel();
 }

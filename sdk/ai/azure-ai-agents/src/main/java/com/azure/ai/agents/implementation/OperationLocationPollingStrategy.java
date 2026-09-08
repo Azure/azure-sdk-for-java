@@ -56,8 +56,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public OperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
-        super(PollingUtils.OPERATION_LOCATION_HEADER,
-            AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));
+        super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
