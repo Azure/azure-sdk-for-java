@@ -16,15 +16,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.storage.queue.implementation.models.MessageIdsDeleteHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
+import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the synchronous AzureQueueStorage type.
+ * Initializes a new instance of the asynchronous AzureQueueStorage type.
  */
-public final class MessageIdsRestClient {
+public final class QueueMessageIdsAsyncClientInternal {
     @Generated
     private static final ObjectSerializer XML_SERIALIZER = XmlSerializerProviders.createInstance();
 
@@ -32,12 +34,12 @@ public final class MessageIdsRestClient {
     private final MessageIdsImpl serviceClient;
 
     /**
-     * Initializes an instance of MessageIdsRestClient class.
+     * Initializes an instance of QueueMessageIdsAsyncClientInternal class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    public MessageIdsRestClient(MessageIdsImpl serviceClient) {
+    public QueueMessageIdsAsyncClientInternal(MessageIdsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -101,13 +103,14 @@ public final class MessageIdsRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponseInternal(String messageId, String popReceipt, int visibilityTimeout,
+    Mono<Response<Void>> updateWithResponseInternal(String messageId, String popReceipt, int visibilityTimeout,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions);
+        return this.serviceClient.updateWithResponseInternalAsync(messageId, popReceipt, visibilityTimeout,
+            requestOptions);
     }
 
     /**
@@ -145,12 +148,13 @@ public final class MessageIdsRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponseInternal(String messageId, String popReceipt, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseInternal(messageId, popReceipt, requestOptions);
+    Mono<Response<Void>> deleteWithResponseInternal(String messageId, String popReceipt,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseInternalAsync(messageId, popReceipt, requestOptions);
     }
 
     /**
@@ -176,11 +180,11 @@ public final class MessageIdsRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MessageIdsUpdateHeaders> updateWithResponse(String messageId, String popReceipt,
+    public Mono<Response<MessageIdsUpdateHeaders>> updateWithResponse(String messageId, String popReceipt,
         int visibilityTimeout, Integer timeout, QueueMessage queueMessage, RequestOptions requestOptions) {
         // Generated convenience method for updateWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -190,10 +194,9 @@ public final class MessageIdsRestClient {
         if (queueMessage != null) {
             requestOptions.setBody(BinaryData.fromObject(queueMessage, XML_SERIALIZER));
         }
-        Response<Void> protocolMethodResponse
-            = updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions);
-        return new SimpleResponse<>(protocolMethodResponse,
-            new MessageIdsUpdateHeaders(protocolMethodResponse.getHeaders()));
+        return updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions)
+            .map(protocolMethodResponse -> new SimpleResponse<>(protocolMethodResponse,
+                new MessageIdsUpdateHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -218,12 +221,12 @@ public final class MessageIdsRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MessageIdsUpdateHeaders update(String messageId, String popReceipt, int visibilityTimeout, Integer timeout,
-        QueueMessage queueMessage) {
+    public Mono<MessageIdsUpdateHeaders> update(String messageId, String popReceipt, int visibilityTimeout,
+        Integer timeout, QueueMessage queueMessage) {
         // Generated convenience method for updateWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
@@ -232,9 +235,8 @@ public final class MessageIdsRestClient {
         if (queueMessage != null) {
             requestOptions.setBody(BinaryData.fromObject(queueMessage, XML_SERIALIZER));
         }
-        Response<Void> protocolMethodResponse
-            = updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions);
-        return new MessageIdsUpdateHeaders(protocolMethodResponse.getHeaders());
+        return updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions)
+            .map(protocolMethodResponse -> new MessageIdsUpdateHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -253,16 +255,15 @@ public final class MessageIdsRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MessageIdsUpdateHeaders update(String messageId, String popReceipt, int visibilityTimeout) {
+    public Mono<MessageIdsUpdateHeaders> update(String messageId, String popReceipt, int visibilityTimeout) {
         // Generated convenience method for updateWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        Response<Void> protocolMethodResponse
-            = updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions);
-        return new MessageIdsUpdateHeaders(protocolMethodResponse.getHeaders());
+        return updateWithResponseInternal(messageId, popReceipt, visibilityTimeout, requestOptions)
+            .map(protocolMethodResponse -> new MessageIdsUpdateHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -282,21 +283,21 @@ public final class MessageIdsRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<MessageIdsDeleteHeaders, Void> deleteWithResponse(String messageId, String popReceipt,
+    public Mono<ResponseBase<MessageIdsDeleteHeaders, Void>> deleteWithResponse(String messageId, String popReceipt,
         Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for deleteWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        Response<Void> protocolMethodResponse = deleteWithResponseInternal(messageId, popReceipt, requestOptions);
-        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
-            protocolMethodResponse.getHeaders(), null,
-            new MessageIdsDeleteHeaders(protocolMethodResponse.getHeaders()));
+        return deleteWithResponseInternal(messageId, popReceipt, requestOptions)
+            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
+                new MessageIdsDeleteHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -315,16 +316,17 @@ public final class MessageIdsRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String messageId, String popReceipt, Integer timeout) {
+    public Mono<Void> delete(String messageId, String popReceipt, Integer timeout) {
         // Generated convenience method for deleteWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        deleteWithResponseInternal(messageId, popReceipt, requestOptions).getValue();
+        return deleteWithResponseInternal(messageId, popReceipt, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -339,12 +341,13 @@ public final class MessageIdsRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String messageId, String popReceipt) {
+    public Mono<Void> delete(String messageId, String popReceipt) {
         // Generated convenience method for deleteWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponseInternal(messageId, popReceipt, requestOptions).getValue();
+        return deleteWithResponseInternal(messageId, popReceipt, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

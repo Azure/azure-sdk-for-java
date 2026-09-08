@@ -19,7 +19,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.ServiceRestClient;
+import com.azure.storage.queue.implementation.QueueServiceClientInternal;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
@@ -76,7 +76,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.submitThr
 public final class QueueServiceClient {
     private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClient.class);
     private final AzureQueueStorageImpl azureQueueStorage;
-    private final ServiceRestClient serviceRestClient;
+    private final QueueServiceClientInternal serviceClientInternal;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
@@ -99,7 +99,7 @@ public final class QueueServiceClient {
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
         Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.azureQueueStorage = azureQueueStorage;
-        this.serviceRestClient = new ServiceRestClient(azureQueueStorage.getServices());
+        this.serviceClientInternal = new QueueServiceClientInternal(azureQueueStorage.getServices());
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
@@ -340,7 +340,7 @@ public final class QueueServiceClient {
         }
         BiFunction<String, Integer, PagedResponse<QueueItem>> retriever = (nextMarker, pageSize) -> {
             Supplier<PagedResponse<QueueItem>> operation
-                = () -> ModelHelper.toQueueItemPage(this.serviceRestClient.getQueuesWithResponse(prefix, nextMarker,
+                = () -> ModelHelper.toQueueItemPage(this.serviceClientInternal.getQueuesWithResponse(prefix, nextMarker,
                     pageSize == null ? maxResultsPerPage : pageSize, null, include,
                     RequestOptionsHelper.requestOptions(finalContext)));
 
@@ -408,7 +408,7 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<QueueServiceProperties>> operation = () -> this.serviceRestClient
+        Supplier<Response<QueueServiceProperties>> operation = () -> this.serviceClientInternal
             .getPropertiesWithResponse(null, RequestOptionsHelper.requestOptions(finalContext));
 
         return submitThreadPool(operation, LOGGER, timeout);
@@ -542,8 +542,8 @@ public final class QueueServiceClient {
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () -> this.serviceRestClient.setPropertiesWithResponse(properties, null,
-            RequestOptionsHelper.requestOptions(finalContext));
+        Supplier<Response<Void>> operation = () -> this.serviceClientInternal.setPropertiesWithResponse(properties,
+            null, RequestOptionsHelper.requestOptions(finalContext));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -601,7 +601,7 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<QueueServiceStatistics>> operation = () -> this.serviceRestClient
+        Supplier<Response<QueueServiceStatistics>> operation = () -> this.serviceClientInternal
             .getStatisticsWithResponse(null, RequestOptionsHelper.requestOptions(finalContext));
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -761,7 +761,7 @@ public final class QueueServiceClient {
 
         KeyInfo keyInfo = new KeyInfo(options.getExpiresOn()).setStart(options.getStartsOn())
             .setDelegatedUserTenantId(options.getDelegatedUserTenantId());
-        Callable<Response<UserDelegationKey>> operation = () -> this.serviceRestClient
+        Callable<Response<UserDelegationKey>> operation = () -> this.serviceClientInternal
             .getUserDelegationKeyWithResponse(keyInfo, null, RequestOptionsHelper.requestOptions(finalContext));
 
         Response<UserDelegationKey> response = sendRequest(operation, timeout, QueueStorageException.class);

@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.storage.queue.implementation.models.KeyInfo;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
@@ -30,11 +31,12 @@ import com.azure.storage.queue.models.UserDelegationKey;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the synchronous AzureQueueStorage type.
+ * Initializes a new instance of the asynchronous AzureQueueStorage type.
  */
-public final class ServiceRestClient {
+public final class QueueServiceAsyncClientInternal {
     @Generated
     private static final ObjectSerializer XML_SERIALIZER = XmlSerializerProviders.createInstance();
 
@@ -42,12 +44,12 @@ public final class ServiceRestClient {
     private final ServicesImpl serviceClient;
 
     /**
-     * Initializes an instance of ServiceRestClient class.
+     * Initializes an instance of QueueServiceAsyncClientInternal class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    public ServiceRestClient(ServicesImpl serviceClient) {
+    public QueueServiceAsyncClientInternal(ServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -120,12 +122,13 @@ public final class ServiceRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setPropertiesWithResponseInternal(BinaryData queueServiceProperties, RequestOptions requestOptions) {
-        return this.serviceClient.setPropertiesWithResponseInternal(queueServiceProperties, requestOptions);
+    Mono<Response<Void>> setPropertiesWithResponseInternal(BinaryData queueServiceProperties,
+        RequestOptions requestOptions) {
+        return this.serviceClient.setPropertiesWithResponseInternalAsync(queueServiceProperties, requestOptions);
     }
 
     /**
@@ -196,12 +199,12 @@ public final class ServiceRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return storage Service Properties along with {@link Response}.
+     * @return storage Service Properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.getPropertiesWithResponseInternal(requestOptions);
+    Mono<Response<BinaryData>> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getPropertiesWithResponseInternalAsync(requestOptions);
     }
 
     /**
@@ -250,12 +253,12 @@ public final class ServiceRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return stats for the storage service along with {@link Response}.
+     * @return stats for the storage service along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getStatisticsWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.getStatisticsWithResponseInternal(requestOptions);
+    Mono<Response<BinaryData>> getStatisticsWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getStatisticsWithResponseInternalAsync(requestOptions);
     }
 
     /**
@@ -321,12 +324,13 @@ public final class ServiceRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a user delegation key along with {@link Response}.
+     * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getUserDelegationKeyWithResponseInternal(BinaryData keyInfo, RequestOptions requestOptions) {
-        return this.serviceClient.getUserDelegationKeyWithResponseInternal(keyInfo, requestOptions);
+    Mono<Response<BinaryData>> getUserDelegationKeyWithResponseInternal(BinaryData keyInfo,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getUserDelegationKeyWithResponseInternalAsync(keyInfo, requestOptions);
     }
 
     /**
@@ -395,12 +399,12 @@ public final class ServiceRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list queues response along with {@link Response}.
+     * @return the list queues response along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getQueuesWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.getQueuesWithResponseInternal(requestOptions);
+    Mono<Response<BinaryData>> getQueuesWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getQueuesWithResponseInternalAsync(requestOptions);
     }
 
     /**
@@ -419,22 +423,22 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesWithResponse(
+    public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponse(
         QueueServiceProperties queueServiceProperties, Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for setPropertiesWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        Response<Void> protocolMethodResponse = setPropertiesWithResponseInternal(
-            BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER), requestOptions);
-        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
-            protocolMethodResponse.getHeaders(), null,
-            new ServicesSetPropertiesHeaders(protocolMethodResponse.getHeaders()));
+        return setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER),
+            requestOptions)
+                .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                    protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
+                    new ServicesSetPropertiesHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -452,17 +456,18 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setProperties(QueueServiceProperties queueServiceProperties, Integer timeout) {
+    public Mono<Void> setProperties(QueueServiceProperties queueServiceProperties, Integer timeout) {
         // Generated convenience method for setPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER), requestOptions)
-            .getValue();
+        return setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER),
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -476,14 +481,15 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setProperties(QueueServiceProperties queueServiceProperties) {
+    public Mono<Void> setProperties(QueueServiceProperties queueServiceProperties) {
         // Generated convenience method for setPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER), requestOptions)
-            .getValue();
+        return setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER),
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -501,22 +507,22 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Service Properties along with {@link ResponseBase}.
+     * @return storage Service Properties along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties> getPropertiesWithResponse(Integer timeout,
-        RequestOptions requestOptions) {
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties>>
+        getPropertiesWithResponse(Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for getPropertiesWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        Response<BinaryData> protocolMethodResponse = getPropertiesWithResponseInternal(requestOptions);
-        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
-            protocolMethodResponse.getHeaders(),
-            protocolMethodResponse.getValue().toObject(QueueServiceProperties.class, XML_SERIALIZER),
-            new ServicesGetPropertiesHeaders(protocolMethodResponse.getHeaders()));
+        return getPropertiesWithResponseInternal(requestOptions)
+            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
+                protocolMethodResponse.getValue().toObject(QueueServiceProperties.class, XML_SERIALIZER),
+                new ServicesGetPropertiesHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -533,18 +539,18 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Service Properties.
+     * @return storage Service Properties on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueServiceProperties getProperties(Integer timeout) {
+    public Mono<QueueServiceProperties> getProperties(Integer timeout) {
         // Generated convenience method for getPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return getPropertiesWithResponseInternal(requestOptions).getValue()
-            .toObject(QueueServiceProperties.class, XML_SERIALIZER);
+        return getPropertiesWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(QueueServiceProperties.class, XML_SERIALIZER));
     }
 
     /**
@@ -556,15 +562,15 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Service Properties.
+     * @return storage Service Properties on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueServiceProperties getProperties() {
+    public Mono<QueueServiceProperties> getProperties() {
         // Generated convenience method for getPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getPropertiesWithResponseInternal(requestOptions).getValue()
-            .toObject(QueueServiceProperties.class, XML_SERIALIZER);
+        return getPropertiesWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(QueueServiceProperties.class, XML_SERIALIZER));
     }
 
     /**
@@ -582,22 +588,22 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service along with {@link ResponseBase}.
+     * @return stats for the storage service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics> getStatisticsWithResponse(Integer timeout,
-        RequestOptions requestOptions) {
+    public Mono<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>>
+        getStatisticsWithResponse(Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for getStatisticsWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        Response<BinaryData> protocolMethodResponse = getStatisticsWithResponseInternal(requestOptions);
-        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
-            protocolMethodResponse.getHeaders(),
-            protocolMethodResponse.getValue().toObject(QueueServiceStatistics.class, XML_SERIALIZER),
-            new ServicesGetStatisticsHeaders(protocolMethodResponse.getHeaders()));
+        return getStatisticsWithResponseInternal(requestOptions)
+            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
+                protocolMethodResponse.getValue().toObject(QueueServiceStatistics.class, XML_SERIALIZER),
+                new ServicesGetStatisticsHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -614,18 +620,18 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
+     * @return stats for the storage service on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueServiceStatistics getStatistics(Integer timeout) {
+    public Mono<QueueServiceStatistics> getStatistics(Integer timeout) {
         // Generated convenience method for getStatisticsWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return getStatisticsWithResponseInternal(requestOptions).getValue()
-            .toObject(QueueServiceStatistics.class, XML_SERIALIZER);
+        return getStatisticsWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(QueueServiceStatistics.class, XML_SERIALIZER));
     }
 
     /**
@@ -637,15 +643,15 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
+     * @return stats for the storage service on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueServiceStatistics getStatistics() {
+    public Mono<QueueServiceStatistics> getStatistics() {
         // Generated convenience method for getStatisticsWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getStatisticsWithResponseInternal(requestOptions).getValue()
-            .toObject(QueueServiceStatistics.class, XML_SERIALIZER);
+        return getStatisticsWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(QueueServiceStatistics.class, XML_SERIALIZER));
     }
 
     /**
@@ -664,23 +670,22 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key along with {@link ResponseBase}.
+     * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>
+    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
         getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for getUserDelegationKeyWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        Response<BinaryData> protocolMethodResponse
-            = getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions);
-        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
-            protocolMethodResponse.getHeaders(),
-            protocolMethodResponse.getValue().toObject(UserDelegationKey.class, XML_SERIALIZER),
-            new ServicesGetUserDelegationKeyHeaders(protocolMethodResponse.getHeaders()));
+        return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
+            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
+                protocolMethodResponse.getValue().toObject(UserDelegationKey.class, XML_SERIALIZER),
+                new ServicesGetUserDelegationKeyHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -698,19 +703,19 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key.
+     * @return a user delegation key on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout) {
+    public Mono<UserDelegationKey> getUserDelegationKey(KeyInfo keyInfo, Integer timeout) {
         // Generated convenience method for getUserDelegationKeyWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
-            .getValue()
-            .toObject(UserDelegationKey.class, XML_SERIALIZER);
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UserDelegationKey.class, XML_SERIALIZER));
     }
 
     /**
@@ -724,16 +729,16 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key.
+     * @return a user delegation key on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo) {
+    public Mono<UserDelegationKey> getUserDelegationKey(KeyInfo keyInfo) {
         // Generated convenience method for getUserDelegationKeyWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
-            .getValue()
-            .toObject(UserDelegationKey.class, XML_SERIALIZER);
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UserDelegationKey.class, XML_SERIALIZER));
     }
 
     /**
@@ -760,11 +765,11 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list queues response along with {@link ResponseBase}.
+     * @return the list queues response along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesGetQueuesHeaders, ListQueuesSegmentResponse> getQueuesWithResponse(String prefix,
+    public Mono<ResponseBase<ServicesGetQueuesHeaders, ListQueuesSegmentResponse>> getQueuesWithResponse(String prefix,
         String marker, Integer maxresults, Integer timeout, List<ListQueuesIncludeType> include,
         RequestOptions requestOptions) {
         // Generated convenience method for getQueuesWithResponseInternal
@@ -788,11 +793,11 @@ public final class ServiceRestClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        Response<BinaryData> protocolMethodResponse = getQueuesWithResponseInternal(requestOptions);
-        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
-            protocolMethodResponse.getHeaders(),
-            protocolMethodResponse.getValue().toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER),
-            new ServicesGetQueuesHeaders(protocolMethodResponse.getHeaders()));
+        return getQueuesWithResponseInternal(requestOptions)
+            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
+                protocolMethodResponse.getValue().toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER),
+                new ServicesGetQueuesHeaders(protocolMethodResponse.getHeaders())));
     }
 
     /**
@@ -818,11 +823,11 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list queues response.
+     * @return the list queues response on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQueuesSegmentResponse getQueues(String prefix, String marker, Integer maxresults, Integer timeout,
+    public Mono<ListQueuesSegmentResponse> getQueues(String prefix, String marker, Integer maxresults, Integer timeout,
         List<ListQueuesIncludeType> include) {
         // Generated convenience method for getQueuesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
@@ -845,8 +850,8 @@ public final class ServiceRestClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getQueuesWithResponseInternal(requestOptions).getValue()
-            .toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER);
+        return getQueuesWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER));
     }
 
     /**
@@ -857,14 +862,14 @@ public final class ServiceRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list queues response.
+     * @return the list queues response on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQueuesSegmentResponse getQueues() {
+    public Mono<ListQueuesSegmentResponse> getQueues() {
         // Generated convenience method for getQueuesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getQueuesWithResponseInternal(requestOptions).getValue()
-            .toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER);
+        return getQueuesWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER));
     }
 }

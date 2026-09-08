@@ -11,46 +11,49 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.storage.queue.implementation.models.QueuesCreateHeaders;
-import com.azure.storage.queue.implementation.models.QueuesDeleteHeaders;
-import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
-import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyHeaders;
-import com.azure.storage.queue.implementation.models.QueuesSetMetadataHeaders;
-import com.azure.storage.queue.implementation.models.SignedIdentifiers;
-import reactor.core.publisher.Mono;
+import com.azure.storage.queue.implementation.models.KeyInfo;
+import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
+import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
+import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetQueuesHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetUserDelegationKeyHeaders;
+import com.azure.storage.queue.implementation.models.ServicesSetPropertiesHeaders;
+import com.azure.storage.queue.models.QueueServiceProperties;
+import com.azure.storage.queue.models.QueueServiceStatistics;
+import com.azure.storage.queue.models.UserDelegationKey;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
- * Initializes a new instance of the asynchronous AzureQueueStorage type.
+ * Initializes a new instance of the synchronous AzureQueueStorage type.
  */
-public final class QueueAsyncRestClient {
+public final class QueueServiceClientInternal {
     @Generated
     private static final ObjectSerializer XML_SERIALIZER = XmlSerializerProviders.createInstance();
 
     @Generated
-    private final QueuesImpl serviceClient;
+    private final ServicesImpl serviceClient;
 
     /**
-     * Initializes an instance of QueueAsyncRestClient class.
+     * Initializes an instance of QueueServiceClientInternal class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    public QueueAsyncRestClient(QueuesImpl serviceClient) {
+    public QueueServiceClientInternal(ServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
-     * Creates a new queue. If a queue with the same name already exists, the operation succeeds when the metadata
-     * is identical. If the metadata differs, the operation fails.
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics
+     * and CORS (Cross-Origin Resource Sharing) rules.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -62,13 +65,41 @@ public final class QueueAsyncRestClient {
      * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     Logging (Optional): {
+     *         Version: String (Required)
+     *         Delete: boolean (Required)
+     *         Read: boolean (Required)
+     *         Write: boolean (Required)
+     *         RetentionPolicy (Required): {
+     *             Enabled: boolean (Required)
+     *             Days: Integer (Optional)
+     *         }
+     *     }
+     *     HourMetrics (Optional): {
+     *         Version: String (Optional)
+     *         Enabled: boolean (Required)
+     *         IncludeAPIs: Boolean (Optional)
+     *         RetentionPolicy (Optional): (recursive schema, see RetentionPolicy above)
+     *     }
+     *     MinuteMetrics (Optional): (recursive schema, see MinuteMetrics above)
+     *     Cors (Optional): [
+     *          (Optional){
+     *             AllowedOrigins: String (Required)
+     *             AllowedMethods: String (Required)
+     *             AllowedHeaders: String (Required)
+     *             ExposedHeaders: String (Required)
+     *             MaxAgeInSeconds: int (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -83,152 +114,23 @@ public final class QueueAsyncRestClient {
      * at which the response was initiated.</td></tr>
      * </table>
      * 
+     * @param queueServiceProperties The storage service properties to set.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> createWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseInternalAsync(requestOptions);
+    Response<Void> setPropertiesWithResponseInternal(BinaryData queueServiceProperties, RequestOptions requestOptions) {
+        return this.serviceClient.setPropertiesWithResponseInternal(queueServiceProperties, requestOptions);
     }
 
     /**
-     * Returns all user-defined metadata and system properties for the specified queue.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
-     * information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
-     * <tr><td>x-ms-approximate-messages-count</td><td>long</td><td>The approximate number of messages in the queue.
-     * This number is not lower than the actual number of
-     * messages in the queue, but could be higher.</td></tr>
-     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
-     * request.</td></tr>
-     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
-     * the request.</td></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * <tr><td>Date</td><td>OffsetDateTime</td><td>UTC date/time value generated by the service that indicates the time
-     * at which the response was initiated.</td></tr>
-     * </table>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.getPropertiesWithResponseInternalAsync(requestOptions);
-    }
-
-    /**
-     * Permanently deletes the specified queue.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
-     * information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
-     * request.</td></tr>
-     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
-     * the request.</td></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * <tr><td>Date</td><td>OffsetDateTime</td><td>UTC date/time value generated by the service that indicates the time
-     * at which the response was initiated.</td></tr>
-     * </table>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseInternalAsync(requestOptions);
-    }
-
-    /**
-     * Sets user-defined metadata for the specified queue.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
-     * information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
-     * request.</td></tr>
-     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
-     * the request.</td></tr>
-     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
-     * identifier for the request.</td></tr>
-     * <tr><td>Date</td><td>OffsetDateTime</td><td>UTC date/time value generated by the service that indicates the time
-     * at which the response was initiated.</td></tr>
-     * </table>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> setMetadataWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.setMetadataWithResponseInternalAsync(requestOptions);
-    }
-
-    /**
-     * Gets the access policy for the specified queue.
+     * Retrieves properties of a storage account's Queue service, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -245,14 +147,30 @@ public final class QueueAsyncRestClient {
      * <pre>
      * {@code
      * {
-     *     SignedIdentifier (Required): [
-     *          (Required){
-     *             Id: String (Required)
-     *             AccessPolicy (Required): {
-     *                 Start: OffsetDateTime (Optional)
-     *                 Expiry: OffsetDateTime (Optional)
-     *                 Permission: String (Optional)
-     *             }
+     *     Logging (Optional): {
+     *         Version: String (Required)
+     *         Delete: boolean (Required)
+     *         Read: boolean (Required)
+     *         Write: boolean (Required)
+     *         RetentionPolicy (Required): {
+     *             Enabled: boolean (Required)
+     *             Days: Integer (Optional)
+     *         }
+     *     }
+     *     HourMetrics (Optional): {
+     *         Version: String (Optional)
+     *         Enabled: boolean (Required)
+     *         IncludeAPIs: Boolean (Optional)
+     *         RetentionPolicy (Optional): (recursive schema, see RetentionPolicy above)
+     *     }
+     *     MinuteMetrics (Optional): (recursive schema, see MinuteMetrics above)
+     *     Cors (Optional): [
+     *          (Optional){
+     *             AllowedOrigins: String (Required)
+     *             AllowedMethods: String (Required)
+     *             AllowedHeaders: String (Required)
+     *             ExposedHeaders: String (Required)
+     *             MaxAgeInSeconds: int (Required)
      *         }
      *     ]
      * }
@@ -278,17 +196,17 @@ public final class QueueAsyncRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the access policy for the specified queue along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return storage Service Properties along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.getAccessPolicyWithResponseInternalAsync(requestOptions);
+    Response<BinaryData> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getPropertiesWithResponseInternal(requestOptions);
     }
 
     /**
-     * Sets the permissions for the specified queue.
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary
+     * location endpoint when read-access geo-redundant replication is enabled for the storage account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -300,29 +218,15 @@ public final class QueueAsyncRestClient {
      * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/xml".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
+     * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     SignedIdentifier (Required): [
-     *          (Required){
-     *             Id: String (Required)
-     *             AccessPolicy (Required): {
-     *                 Start: OffsetDateTime (Optional)
-     *                 Expiry: OffsetDateTime (Optional)
-     *                 Permission: String (Optional)
-     *             }
-     *         }
-     *     ]
+     *     GeoReplication (Optional): {
+     *         Status: String(live/bootstrap/unavailable) (Required)
+     *         LastSyncTime: DateTimeRfc1123 (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -346,23 +250,168 @@ public final class QueueAsyncRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return stats for the storage service along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> setAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.setAccessPolicyWithResponseInternalAsync(requestOptions);
+    Response<BinaryData> getStatisticsWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getStatisticsWithResponseInternal(requestOptions);
     }
 
     /**
-     * Creates a new queue. If a queue with the same name already exists, the operation succeeds when the metadata
-     * is identical. If the metadata differs, the operation fails.
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer
+     * token authentication.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
+     * information, see
+     * &lt;a
+     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
      * 
+     * <pre>
+     * {@code
+     * {
+     *     Start: OffsetDateTime (Optional)
+     *     Expiry: OffsetDateTime (Required)
+     *     DelegatedUserTid: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     SignedOid: String (Required)
+     *     SignedTid: String (Required)
+     *     SignedStart: OffsetDateTime (Required)
+     *     SignedExpiry: OffsetDateTime (Required)
+     *     SignedService: String (Required)
+     *     SignedVersion: String (Required)
+     *     SignedDelegatedUserTid: String (Optional)
+     *     Value: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>UTC date/time value generated by the service that indicates the time
+     * at which the response was initiated.</td></tr>
+     * </table>
+     * 
+     * @param keyInfo Key information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a user delegation key along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getUserDelegationKeyWithResponseInternal(BinaryData keyInfo, RequestOptions requestOptions) {
+        return this.serviceClient.getUserDelegationKeyWithResponseInternal(keyInfo, requestOptions);
+    }
+
+    /**
+     * Returns a list of queues.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>prefix</td><td>String</td><td>No</td><td>Filters the results to return only queues whose name begins with
+     * the specified prefix.</td></tr>
+     * <tr><td>marker</td><td>String</td><td>No</td><td>Identifies the portion of the list of queues to be returned with
+     * the next listing operation. The operation
+     * returns the marker value if the listing operation did not return all queues remaining. The marker value can
+     * be used as the value for the marker parameter in a subsequent call to request the next page of list items.
+     * The marker value is opaque to the client.</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Specifies the maximum number of queues to return. If the
+     * request does not specify maxresults, or specifies
+     * a value greater than 5000, the server will return up to 5000 items.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
+     * information, see
+     * &lt;a
+     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;</td></tr>
+     * <tr><td>include</td><td>List&lt;String&gt;</td><td>No</td><td>Specify to include additional, optional
+     * information. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     ServiceEndpoint: String (Required)
+     *     Prefix: String (Required)
+     *     Marker: String (Optional)
+     *     MaxResults: int (Required)
+     *     Queues (Optional): [
+     *          (Optional){
+     *             Name: String (Required)
+     *             Metadata (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     NextMarker: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>UTC date/time value generated by the service that indicates the time
+     * at which the response was initiated.</td></tr>
+     * </table>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list queues response along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getQueuesWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.getQueuesWithResponseInternal(requestOptions);
+    }
+
+    /**
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics
+     * and CORS (Cross-Origin Resource Sharing) rules.
+     * 
+     * @param queueServiceProperties The storage service properties to set.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
      * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param metadata The metadata headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -370,78 +419,76 @@ public final class QueueAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesCreateHeaders, Void>> createWithResponse(Integer timeout, String metadata,
-        RequestOptions requestOptions) {
-        // Generated convenience method for createWithResponseInternal
+    public ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesWithResponse(
+        QueueServiceProperties queueServiceProperties, Integer timeout, RequestOptions requestOptions) {
+        // Generated convenience method for setPropertiesWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
-        }
-        return createWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
-                new QueuesCreateHeaders(protocolMethodResponse.getHeaders())));
+        Response<Void> protocolMethodResponse = setPropertiesWithResponseInternal(
+            BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER), requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(), null,
+            new ServicesSetPropertiesHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
-     * Creates a new queue. If a queue with the same name already exists, the operation succeeds when the metadata
-     * is identical. If the metadata differs, the operation fails.
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics
+     * and CORS (Cross-Origin Resource Sharing) rules.
      * 
+     * @param queueServiceProperties The storage service properties to set.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
      * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param metadata The metadata headers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> create(Integer timeout, String metadata) {
-        // Generated convenience method for createWithResponseInternal
+    public void setProperties(QueueServiceProperties queueServiceProperties, Integer timeout) {
+        // Generated convenience method for setPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
-        }
-        return createWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER), requestOptions)
+            .getValue();
     }
 
     /**
-     * Creates a new queue. If a queue with the same name already exists, the operation succeeds when the metadata
-     * is identical. If the metadata differs, the operation fails.
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics
+     * and CORS (Cross-Origin Resource Sharing) rules.
      * 
+     * @param queueServiceProperties The storage service properties to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> create() {
-        // Generated convenience method for createWithResponseInternal
+    public void setProperties(QueueServiceProperties queueServiceProperties) {
+        // Generated convenience method for setPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        setPropertiesWithResponseInternal(BinaryData.fromObject(queueServiceProperties, XML_SERIALIZER), requestOptions)
+            .getValue();
     }
 
     /**
-     * Returns all user-defined metadata and system properties for the specified queue.
+     * Retrieves properties of a storage account's Queue service, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
@@ -454,24 +501,27 @@ public final class QueueAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return storage Service Properties along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueuesGetPropertiesHeaders>> getPropertiesWithResponse(Integer timeout,
+    public ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties> getPropertiesWithResponse(Integer timeout,
         RequestOptions requestOptions) {
         // Generated convenience method for getPropertiesWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return getPropertiesWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new SimpleResponse<>(protocolMethodResponse,
-                new QueuesGetPropertiesHeaders(protocolMethodResponse.getHeaders())));
+        Response<BinaryData> protocolMethodResponse = getPropertiesWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(QueueServiceProperties.class, XML_SERIALIZER),
+            new ServicesGetPropertiesHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
-     * Returns all user-defined metadata and system properties for the specified queue.
+     * Retrieves properties of a storage account's Queue service, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
@@ -483,41 +533,43 @@ public final class QueueAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return storage Service Properties.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesGetPropertiesHeaders> getProperties(Integer timeout) {
+    public QueueServiceProperties getProperties(Integer timeout) {
         // Generated convenience method for getPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return getPropertiesWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new QueuesGetPropertiesHeaders(protocolMethodResponse.getHeaders()));
+        return getPropertiesWithResponseInternal(requestOptions).getValue()
+            .toObject(QueueServiceProperties.class, XML_SERIALIZER);
     }
 
     /**
-     * Returns all user-defined metadata and system properties for the specified queue.
+     * Retrieves properties of a storage account's Queue service, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return storage Service Properties.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesGetPropertiesHeaders> getProperties() {
+    public QueueServiceProperties getProperties() {
         // Generated convenience method for getPropertiesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getPropertiesWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new QueuesGetPropertiesHeaders(protocolMethodResponse.getHeaders()));
+        return getPropertiesWithResponseInternal(requestOptions).getValue()
+            .toObject(QueueServiceProperties.class, XML_SERIALIZER);
     }
 
     /**
-     * Permanently deletes the specified queue.
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary
+     * location endpoint when read-access geo-redundant replication is enabled for the storage account.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
@@ -530,25 +582,27 @@ public final class QueueAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return stats for the storage service along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesDeleteHeaders, Void>> deleteWithResponse(Integer timeout,
+    public ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics> getStatisticsWithResponse(Integer timeout,
         RequestOptions requestOptions) {
-        // Generated convenience method for deleteWithResponseInternal
+        // Generated convenience method for getStatisticsWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return deleteWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
-                new QueuesDeleteHeaders(protocolMethodResponse.getHeaders())));
+        Response<BinaryData> protocolMethodResponse = getStatisticsWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(QueueServiceStatistics.class, XML_SERIALIZER),
+            new ServicesGetStatisticsHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
-     * Permanently deletes the specified queue.
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary
+     * location endpoint when read-access geo-redundant replication is enabled for the storage account.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
@@ -560,45 +614,49 @@ public final class QueueAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return stats for the storage service.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(Integer timeout) {
-        // Generated convenience method for deleteWithResponseInternal
+    public QueueServiceStatistics getStatistics(Integer timeout) {
+        // Generated convenience method for getStatisticsWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return deleteWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        return getStatisticsWithResponseInternal(requestOptions).getValue()
+            .toObject(QueueServiceStatistics.class, XML_SERIALIZER);
     }
 
     /**
-     * Permanently deletes the specified queue.
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary
+     * location endpoint when read-access geo-redundant replication is enabled for the storage account.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return stats for the storage service.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete() {
-        // Generated convenience method for deleteWithResponseInternal
+    public QueueServiceStatistics getStatistics() {
+        // Generated convenience method for getStatisticsWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        return getStatisticsWithResponseInternal(requestOptions).getValue()
+            .toObject(QueueServiceStatistics.class, XML_SERIALIZER);
     }
 
     /**
-     * Sets user-defined metadata for the specified queue.
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer
+     * token authentication.
      * 
+     * @param keyInfo Key information.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
      * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param metadata The metadata headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -606,233 +664,207 @@ public final class QueueAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return a user delegation key along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesSetMetadataHeaders, Void>> setMetadataWithResponse(Integer timeout, String metadata,
+    public ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>
+        getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout, RequestOptions requestOptions) {
+        // Generated convenience method for getUserDelegationKeyWithResponseInternal
+        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        Response<BinaryData> protocolMethodResponse
+            = getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(UserDelegationKey.class, XML_SERIALIZER),
+            new ServicesGetUserDelegationKeyHeaders(protocolMethodResponse.getHeaders()));
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer
+     * token authentication.
+     * 
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see
+     * &lt;a
+     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout) {
+        // Generated convenience method for getUserDelegationKeyWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
+            .getValue()
+            .toObject(UserDelegationKey.class, XML_SERIALIZER);
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer
+     * token authentication.
+     * 
+     * @param keyInfo Key information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo) {
+        // Generated convenience method for getUserDelegationKeyWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
+            .getValue()
+            .toObject(UserDelegationKey.class, XML_SERIALIZER);
+    }
+
+    /**
+     * Returns a list of queues.
+     * 
+     * @param prefix Filters the results to return only queues whose name begins with the specified prefix.
+     * @param marker Identifies the portion of the list of queues to be returned with the next listing operation. The
+     * operation
+     * returns the marker value if the listing operation did not return all queues remaining. The marker value can
+     * be used as the value for the marker parameter in a subsequent call to request the next page of list items.
+     * The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of queues to return. If the request does not specify maxresults,
+     * or specifies
+     * a value greater than 5000, the server will return up to 5000 items.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see
+     * &lt;a
+     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param include Specify to include additional, optional information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list queues response along with {@link ResponseBase}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetQueuesHeaders, ListQueuesSegmentResponse> getQueuesWithResponse(String prefix,
+        String marker, Integer maxresults, Integer timeout, List<ListQueuesIncludeType> include,
         RequestOptions requestOptions) {
-        // Generated convenience method for setMetadataWithResponseInternal
+        // Generated convenience method for getQueuesWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
+        if (include != null) {
+            requestOptions.addQueryParam("include",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
-        return setMetadataWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
-                new QueuesSetMetadataHeaders(protocolMethodResponse.getHeaders())));
+        Response<BinaryData> protocolMethodResponse = getQueuesWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER),
+            new ServicesGetQueuesHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
-     * Sets user-defined metadata for the specified queue.
+     * Returns a list of queues.
      * 
+     * @param prefix Filters the results to return only queues whose name begins with the specified prefix.
+     * @param marker Identifies the portion of the list of queues to be returned with the next listing operation. The
+     * operation
+     * returns the marker value if the listing operation did not return all queues remaining. The marker value can
+     * be used as the value for the marker parameter in a subsequent call to request the next page of list items.
+     * The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of queues to return. If the request does not specify maxresults,
+     * or specifies
+     * a value greater than 5000, the server will return up to 5000 items.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see
      * &lt;a
      * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param metadata The metadata headers.
+     * @param include Specify to include additional, optional information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the list queues response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setMetadata(Integer timeout, String metadata) {
-        // Generated convenience method for setMetadataWithResponseInternal
+    public ListQueuesSegmentResponse getQueues(String prefix, String marker, Integer maxresults, Integer timeout,
+        List<ListQueuesIncludeType> include) {
+        // Generated convenience method for getQueuesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), metadata);
+        if (include != null) {
+            requestOptions.addQueryParam("include",
+                include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
-        return setMetadataWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        return getQueuesWithResponseInternal(requestOptions).getValue()
+            .toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER);
     }
 
     /**
-     * Sets user-defined metadata for the specified queue.
+     * Returns a list of queues.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the list queues response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setMetadata() {
-        // Generated convenience method for setMetadataWithResponseInternal
+    public ListQueuesSegmentResponse getQueues() {
+        // Generated convenience method for getQueuesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return setMetadataWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the access policy for the specified queue.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy for the specified queue along with {@link ResponseBase} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers>>
-        getAccessPolicyWithResponse(Integer timeout, RequestOptions requestOptions) {
-        // Generated convenience method for getAccessPolicyWithResponseInternal
-        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
-        }
-        return getAccessPolicyWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(SignedIdentifiers.class, XML_SERIALIZER),
-                new QueuesGetAccessPolicyHeaders(protocolMethodResponse.getHeaders())));
-    }
-
-    /**
-     * Gets the access policy for the specified queue.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy for the specified queue on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SignedIdentifiers> getAccessPolicy(Integer timeout) {
-        // Generated convenience method for getAccessPolicyWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
-        }
-        return getAccessPolicyWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SignedIdentifiers.class, XML_SERIALIZER));
-    }
-
-    /**
-     * Gets the access policy for the specified queue.
-     * 
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy for the specified queue on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SignedIdentifiers> getAccessPolicy() {
-        // Generated convenience method for getAccessPolicyWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        return getAccessPolicyWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SignedIdentifiers.class, XML_SERIALIZER));
-    }
-
-    /**
-     * Sets the permissions for the specified queue.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param queueAcl The access control list.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponse(Integer timeout,
-        SignedIdentifiers queueAcl, RequestOptions requestOptions) {
-        // Generated convenience method for setAccessPolicyWithResponseInternal
-        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
-        }
-        if (queueAcl != null) {
-            requestOptions.setBody(BinaryData.fromObject(queueAcl, XML_SERIALIZER));
-        }
-        return setAccessPolicyWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
-                new QueuesSetAccessPolicyHeaders(protocolMethodResponse.getHeaders())));
-    }
-
-    /**
-     * Sets the permissions for the specified queue.
-     * 
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see
-     * &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations"&gt;Setting
-     * Timeouts for Queue Service Operations.&lt;/a&gt;.
-     * @param queueAcl The access control list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicy(Integer timeout, SignedIdentifiers queueAcl) {
-        // Generated convenience method for setAccessPolicyWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
-        }
-        if (queueAcl != null) {
-            requestOptions.setBody(BinaryData.fromObject(queueAcl, XML_SERIALIZER));
-        }
-        return setAccessPolicyWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Sets the permissions for the specified queue.
-     * 
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicy() {
-        // Generated convenience method for setAccessPolicyWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        return setAccessPolicyWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        return getQueuesWithResponseInternal(requestOptions).getValue()
+            .toObject(ListQueuesSegmentResponse.class, XML_SERIALIZER);
     }
 }

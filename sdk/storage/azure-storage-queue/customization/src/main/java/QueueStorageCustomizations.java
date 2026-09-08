@@ -62,22 +62,21 @@ public class QueueStorageCustomizations extends Customization {
         "AzureQueueStorageBuilder",
         "QueuesServiceVersion");
 
-    // With max-overload:model the emitter puts the typed ResponseBase<Headers, Model> overloads on these
-    // convenience clients rather than on the implementation/*Impl operation layer, and the hand-written clients
-    // consume them so they never rebuild header models or deserialize bodies by hand. They are generated public in
-    // com.azure.storage.queue, which would both add them to the shipped public API and collide with the
-    // hand-written QueueClient/QueueAsyncClient, so relocate them into the implementation package under
-    // *RestClient names (mirroring the .NET generated layer).
-    private static final String[][] GENERATED_CLIENTS_TO_RELOCATE = {
-        { "ServiceClient", "ServiceRestClient" },
-        { "ServiceAsyncClient", "ServiceAsyncRestClient" },
-        { "QueueClient", "QueueRestClient" },
-        { "QueueAsyncClient", "QueueAsyncRestClient" },
-        { "MessagesClient", "MessagesRestClient" },
-        { "MessagesAsyncClient", "MessagesAsyncRestClient" },
-        { "MessageIdsClient", "MessageIdsRestClient" },
-        { "MessageIdsAsyncClient", "MessageIdsAsyncRestClient" }
-    };
+    // Per-operation-group convenience clients emitted by typespec-java under max-overload:model. They carry the
+    // typed WithResponse methods (ResponseBase<XxxHeaders, Model> / Response<XxxHeaders>) that wrap the protocol
+    // *WithResponseInternal methods, so they are RETAINED as the internal typed layer rather than deleted. They are
+    // moved out of the public package into implementation so they add no public API, and the hand-written Queue*
+    // clients delegate to them. The generated QueueClient/QueueAsyncClient names collide with the hand-written
+    // public ones; relocating into implementation resolves it. Mirrors azure-storage-file-share's
+    // ShareStorageCustomization.relocateConvenienceClientsToImplementation.
+    private static final List<String> CONVENIENCE_CLIENTS_TO_RELOCATE = Arrays.asList(
+        "ServiceClient", "ServiceAsyncClient",
+        "QueueClient", "QueueAsyncClient",
+        "MessagesClient", "MessagesAsyncClient",
+        "MessageIdsClient", "MessageIdsAsyncClient");
+
+    // Generated response-header models that expose user metadata (x-ms-meta-*). See fixMetadataHeaderCollection.
+    private static final List<String> METADATA_HEADER_CLASSES = Arrays.asList("QueuesGetPropertiesHeaders");
 
     // Types the generated clients import from com.azure.storage.queue.implementation; once the client itself lives
     // in that package those imports are same-package and Checkstyle rejects them as redundant.
@@ -98,56 +97,69 @@ public class QueueStorageCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
         removeGeneratedFiles(editor, logger);
-        relocateGeneratedConvenienceClients(editor, logger);
+        relocateConvenienceClientsToImplementation(customization, logger);
         fixXmlSerializerRedundantCast(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
-        restoreMetadataHeaderCollection(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
+        fixMetadataHeaderCollection(customization, logger);
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
     }
 
-    // typespec-java's response header model reads the metadata header as a single x-ms-meta value; on the wire queue
-    // metadata is a dynamic x-ms-meta-<key> collection, so responseHeadersAsModel cannot represent it. Reshape
-    // QueuesGetPropertiesHeaders so getMetadata() returns the assembled Map<String, String> (the shape the shipped
-    // public API and the hand-written ModelHelper consume), matching what AutoRest generated.
-    private static void restoreMetadataHeaderCollection(PackageCustomization implModelsPackage, Logger logger) {
-        if (implModelsPackage.getClass("QueuesGetPropertiesHeaders") == null) {
-            logger.info("QueuesGetPropertiesHeaders not present; skipping metadata header-collection restore.");
-            return;
-        }
-        implModelsPackage.getClass("QueuesGetPropertiesHeaders").customizeAst(ast -> {
-            ast.addImport("com.azure.core.http.HttpHeader");
-            ast.addImport("java.util.LinkedHashMap");
-            ast.addImport("java.util.Map");
-            ast.getClassByName("QueuesGetPropertiesHeaders").ifPresent(clazz -> {
-                clazz.getFieldByName("metadata")
-                    .ifPresent(field -> field.getVariable(0).setType("Map<String, String>"));
-                clazz.getMethodsByName("getMetadata").forEach(method -> method.setType("Map<String, String>"));
-                clazz.getFieldByName("X_MS_META").ifPresent(FieldDeclaration::remove);
-                if (!clazz.getFieldByName("X_MS_META_PREFIX").isPresent()) {
-                    clazz.getMembers().add(0,
-                        StaticJavaParser.parseBodyDeclaration("private static final String X_MS_META_PREFIX = \"x-ms-meta-\";"));
-                }
-                clazz.getConstructors().forEach(ctor -> {
-                    NodeList<Statement> statements = ctor.getBody().getStatements();
-                    for (int i = 0; i < statements.size(); i++) {
-                        if (statements.get(i).toString().contains("this.metadata = ")) {
-                            statements.remove(i);
-                            statements.add(i, StaticJavaParser.parseStatement("this.metadata = metadataHeaderCollection;"));
-                            statements.add(i, StaticJavaParser.parseStatement("for (HttpHeader header : rawHeaders) {"
-                                + " String headerName = header.getName();"
-                                + " if (headerName.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {"
-                                + " metadataHeaderCollection.put(headerName.substring(X_MS_META_PREFIX.length()),"
-                                + " header.getValue()); } }"));
-                            statements.add(i,
-                                StaticJavaParser.parseStatement("Map<String, String> metadataHeaderCollection = new LinkedHashMap<>();"));
-                            break;
-                        }
+    /**
+     * Rewrites the metadata deserialization in the generated response-header models from the single {@code x-ms-meta}
+     * header read to an {@code x-ms-meta-*} prefix-collection loop, and retypes the property to
+     * {@code Map<String, String>}. On the wire queue metadata is a dynamic {@code x-ms-meta-<key>} collection, but
+     * typespec-java has no header-collection-prefix client option for Java, so the emitted parsing reads a lone
+     * {@code x-ms-meta} header. Mirrors azure-storage-file-share's ShareStorageCustomization.fixMetadataHeaderCollection,
+     * except that the assembled map is assigned as-is: {@code QueueProperties.getMetadata()} shipped returning an empty
+     * map (not null) when the queue carries no metadata, and the setAndClearMetadata tests assert that. Remove this
+     * once typespec-java supports a header-collection prefix for Java.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void fixMetadataHeaderCollection(LibraryCustomization customization, Logger logger) {
+        PackageCustomization implModelsPackage = customization.getPackage(IMPL_PACKAGE + ".models");
+        for (String className : METADATA_HEADER_CLASSES) {
+            if (implModelsPackage.getClass(className) == null) {
+                logger.info("{} not present; skipping metadata header-collection fix.", className);
+                continue;
+            }
+            implModelsPackage.getClass(className).customizeAst(ast -> {
+                ast.addImport("com.azure.core.http.HttpHeader");
+                ast.addImport("java.util.LinkedHashMap");
+                ast.addImport("java.util.Map");
+                ast.getClassByName(className).ifPresent(clazz -> {
+                    clazz.getFieldByName("metadata")
+                        .ifPresent(field -> field.getVariable(0).setType("Map<String, String>"));
+                    clazz.getMethodsByName("getMetadata").forEach(method -> method.setType("Map<String, String>"));
+                    clazz.getFieldByName("X_MS_META").ifPresent(FieldDeclaration::remove);
+                    if (!clazz.getFieldByName("X_MS_META_PREFIX").isPresent()) {
+                        clazz.getMembers().add(0, StaticJavaParser
+                            .parseBodyDeclaration("private static final String X_MS_META_PREFIX = \"x-ms-meta-\";"));
                     }
+                    clazz.getConstructors().forEach(ctor -> {
+                        NodeList<Statement> statements = ctor.getBody().getStatements();
+                        for (int i = 0; i < statements.size(); i++) {
+                            if (statements.get(i).toString().contains("this.metadata = ")) {
+                                statements.remove(i);
+                                statements.add(i,
+                                    StaticJavaParser.parseStatement("this.metadata = metadataHeaderCollection;"));
+                                statements.add(i, StaticJavaParser.parseStatement("for (HttpHeader header : rawHeaders) {"
+                                    + " String headerName = header.getName();"
+                                    + " if (headerName.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {"
+                                    + " metadataHeaderCollection.put(headerName.substring(X_MS_META_PREFIX.length()),"
+                                    + " header.getValue()); } }"));
+                                statements.add(i, StaticJavaParser.parseStatement(
+                                    "Map<String, String> metadataHeaderCollection = new LinkedHashMap<>();"));
+                                break;
+                            }
+                        }
+                    });
                 });
             });
-        });
-        logger.info("Restored x-ms-meta-* header-collection Map on QueuesGetPropertiesHeaders.");
+            logger.info("Fixed metadata header-collection deserialization in {}", className);
+        }
     }
 
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {
@@ -336,64 +348,69 @@ public class QueueStorageCustomizations extends Customization {
         }
     }
 
-    // Moves the emitter's max-overload:model convenience clients out of the public package and into
-    // com.azure.storage.queue.implementation under *RestClient names. Renaming is required because the generated
-    // QueueClient/QueueAsyncClient collide with the hand-written public clients of the same name; relocating is
-    // required because the generated classes are public and would otherwise land in the shipped API surface.
-    // Constructors are widened to public so the hand-written clients (a different package) can build them from the
-    // *Impl operation classes.
-    private static void relocateGeneratedConvenienceClients(Editor editor, Logger logger) {
-        for (String[] rename : GENERATED_CLIENTS_TO_RELOCATE) {
-            String oldName = rename[0];
-            String newName = rename[1];
-            String oldPath = PKG_ROOT + oldName + ".java";
+    /**
+     * Moves the generated per-operation-group convenience clients from the public
+     * {@code com.azure.storage.queue} package into {@code com.azure.storage.queue.implementation} and renames them
+     * to the hand-written {@code Queue*} naming with an {@code Internal} suffix (e.g. {@code MessagesClient} ->
+     * {@code QueueMessagesClientInternal}, {@code QueueClient} -> {@code QueueClientInternal}).
+     * They carry the typed {@code WithResponse} methods (e.g.
+     * {@code ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers> getAccessPolicyWithResponse(...)}) that
+     * wrap the protocol {@code *WithResponseInternal} methods, so they are kept as the internal typed layer instead
+     * of being hand-written. Relocating them (1) keeps them off the public API surface (implementation is not
+     * exported) and (2) resolves the name collision between the generated {@code QueueClient}/{@code QueueAsyncClient}
+     * and the hand-written public ones. The package-private constructors are made public so the hand-written Queue*
+     * clients (now in a different package) can construct them from {@code AzureQueueStorageImpl.get*()}. The
+     * {@code @ServiceClient} marker annotation is dropped because its {@code AzureQueueStorageBuilder} is deleted.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void relocateConvenienceClientsToImplementation(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        for (String className : CONVENIENCE_CLIENTS_TO_RELOCATE) {
+            String newName = internalClientName(className);
+            String oldPath = PKG_ROOT + className + ".java";
             String content = editor.getContents().get(oldPath);
             if (content == null) {
-                logger.info("Generated client {} not present; skipping relocation.", oldName);
+                logger.info("Generated convenience client {} not present; skipping relocation.", className);
                 continue;
             }
 
-            Pattern classNamePattern = Pattern.compile("\\b" + Pattern.quote(oldName) + "\\b");
-            List<String> lines = new ArrayList<>();
-            for (String line : content.split("\r?\n", -1)) {
-                String trimmed = line.trim();
-                // @ServiceClient(builder = AzureQueueStorageBuilder.class) names the generated builder, which is
-                // removed, and the annotation is only meaningful on a public client.
-                if (trimmed.startsWith("@ServiceClient(")
-                    || trimmed.startsWith("@com.azure.core.annotation.ServiceClient(")
-                    || trimmed.equals("import com.azure.core.annotation.ServiceClient;")
-                    || isNowSamePackageImport(trimmed)) {
-                    continue;
-                }
-                if (trimmed.equals("package com.azure.storage.queue;")) {
-                    lines.add("package com.azure.storage.queue.implementation;");
-                    continue;
-                }
-                String renamed = classNamePattern.matcher(line).replaceAll(newName);
-                // The generated constructor is package-private -- it is declared with no modifier, so the class
-                // name starts the line. Widen it so the hand-written clients (a different package) can build the
-                // client. Indentation is not assumed: the editor holds the pre-format emitter output.
-                int declarationStart = renamed.indexOf(newName + "(");
-                if (declarationStart >= 0 && renamed.substring(0, declarationStart).trim().isEmpty()
-                    && renamed.trim().endsWith(") {")) {
-                    renamed = renamed.substring(0, declarationStart) + "public " + renamed.substring(declarationStart);
-                }
-                lines.add(renamed);
+            // Move to the implementation package.
+            content = content.replace("package com.azure.storage.queue;",
+                "package com.azure.storage.queue.implementation;");
+            // Drop the @ServiceClient marker annotation (its builder AzureQueueStorageBuilder is deleted). The class
+            // literally named ServiceClient carries the annotation fully-qualified to avoid the name clash, so match
+            // both @ServiceClient(...) and @com.azure.core.annotation.ServiceClient(...).
+            content = content.replaceAll("(?m)^@(com\\.azure\\.core\\.annotation\\.)?ServiceClient\\([^)]*\\)\\r?\\n", "");
+            content = content.replace("import com.azure.core.annotation.ServiceClient;\n", "");
+            // The *Impl operation classes and XmlSerializerProviders are same-package once the client moves, so
+            // their imports become redundant and Checkstyle rejects them.
+            for (String implType : IMPL_PACKAGE_TYPES) {
+                content = content.replace("import com.azure.storage.queue.implementation." + implType + ";\n", "");
             }
-
+            // Make the package-private constructor public; callers now live in a different package.
+            content = content.replaceFirst("(?m)^(\\s*)" + className + "\\(", "$1public " + className + "(");
+            // Rename the class (declaration, constructor, self-references) to the Queue*-Internal name.
+            content = content.replaceAll("\\b" + className + "\\b", newName);
             editor.removeFile(oldPath);
-            editor.addFile(PKG_ROOT + "implementation/" + newName + ".java", String.join("\n", lines));
-            logger.info("Relocated generated client {} -> implementation/{}.", oldName, newName);
+            editor.addFile(PKG_ROOT + "implementation/" + newName + ".java", content);
+            logger.info("Relocated convenience client {} -> implementation/{}", className, newName);
         }
     }
 
-    private static boolean isNowSamePackageImport(String trimmedLine) {
-        for (String implType : IMPL_PACKAGE_TYPES) {
-            if (trimmedLine.equals("import com.azure.storage.queue.implementation." + implType + ";")) {
-                return true;
-            }
-        }
-        return false;
+    /**
+     * Maps a generated convenience client name to its internal name: the hand-written {@code Queue*} naming with an
+     * {@code Internal} suffix. E.g. {@code ServiceClient} -> {@code QueueServiceClientInternal},
+     * {@code MessageIdsAsyncClient} -> {@code QueueMessageIdsAsyncClientInternal}, {@code QueueClient} ->
+     * {@code QueueClientInternal}.
+     *
+     * @param generatedName The generated convenience client name.
+     * @return The internal client name.
+     */
+    private static String internalClientName(String generatedName) {
+        String withQueuePrefix = generatedName.startsWith("Queue") ? generatedName : "Queue" + generatedName;
+        return withQueuePrefix + "Internal";
     }
 
     // The generated XmlSerializer casts typeReference.getJavaClass() (already Class<T>) to Class<T> -- a redundant

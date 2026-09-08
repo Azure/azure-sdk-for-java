@@ -15,7 +15,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.storage.queue.implementation.models.ListOfSentMessage;
 import com.azure.storage.queue.implementation.models.MessagesClearHeaders;
@@ -25,12 +24,11 @@ import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessages;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.ReceivedMessages;
-import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous AzureQueueStorage type.
+ * Initializes a new instance of the synchronous AzureQueueStorage type.
  */
-public final class MessagesAsyncRestClient {
+public final class QueueMessagesClientInternal {
     @Generated
     private static final ObjectSerializer XML_SERIALIZER = XmlSerializerProviders.createInstance();
 
@@ -38,12 +36,12 @@ public final class MessagesAsyncRestClient {
     private final MessagesImpl serviceClient;
 
     /**
-     * Initializes an instance of MessagesAsyncRestClient class.
+     * Initializes an instance of QueueMessagesClientInternal class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    public MessagesAsyncRestClient(MessagesImpl serviceClient) {
+    public QueueMessagesClientInternal(MessagesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -108,12 +106,12 @@ public final class MessagesAsyncRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of receive messages along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of receive messages along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> dequeueWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.dequeueWithResponseInternalAsync(requestOptions);
+    Response<BinaryData> dequeueWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.dequeueWithResponseInternal(requestOptions);
     }
 
     /**
@@ -148,12 +146,12 @@ public final class MessagesAsyncRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> clearWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.clearWithResponseInternalAsync(requestOptions);
+    Response<Void> clearWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.clearWithResponseInternal(requestOptions);
     }
 
     /**
@@ -231,12 +229,12 @@ public final class MessagesAsyncRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of send message along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of send message along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> enqueueWithResponseInternal(BinaryData queueMessage, RequestOptions requestOptions) {
-        return this.serviceClient.enqueueWithResponseInternalAsync(queueMessage, requestOptions);
+    Response<BinaryData> enqueueWithResponseInternal(BinaryData queueMessage, RequestOptions requestOptions) {
+        return this.serviceClient.enqueueWithResponseInternal(queueMessage, requestOptions);
     }
 
     /**
@@ -294,12 +292,12 @@ public final class MessagesAsyncRestClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of peek messages along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of peek messages along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> peekWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.peekWithResponseInternalAsync(requestOptions);
+    Response<BinaryData> peekWithResponseInternal(RequestOptions requestOptions) {
+        return this.serviceClient.peekWithResponseInternal(requestOptions);
     }
 
     /**
@@ -324,12 +322,11 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of receive messages along with {@link ResponseBase} on successful completion of
-     * {@link Mono}.
+     * @return the response of receive messages along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesDequeueHeaders, ReceivedMessages>> dequeueWithResponse(Integer numberOfMessages,
+    public ResponseBase<MessagesDequeueHeaders, ReceivedMessages> dequeueWithResponse(Integer numberOfMessages,
         Integer visibilityTimeout, Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for dequeueWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -342,11 +339,11 @@ public final class MessagesAsyncRestClient {
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return dequeueWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(ReceivedMessages.class, XML_SERIALIZER),
-                new MessagesDequeueHeaders(protocolMethodResponse.getHeaders())));
+        Response<BinaryData> protocolMethodResponse = dequeueWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(ReceivedMessages.class, XML_SERIALIZER),
+            new MessagesDequeueHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -370,11 +367,11 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of receive messages on successful completion of {@link Mono}.
+     * @return the response of receive messages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReceivedMessages> dequeue(Integer numberOfMessages, Integer visibilityTimeout, Integer timeout) {
+    public ReceivedMessages dequeue(Integer numberOfMessages, Integer visibilityTimeout, Integer timeout) {
         // Generated convenience method for dequeueWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (numberOfMessages != null) {
@@ -386,8 +383,7 @@ public final class MessagesAsyncRestClient {
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return dequeueWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ReceivedMessages.class, XML_SERIALIZER));
+        return dequeueWithResponseInternal(requestOptions).getValue().toObject(ReceivedMessages.class, XML_SERIALIZER);
     }
 
     /**
@@ -398,15 +394,14 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of receive messages on successful completion of {@link Mono}.
+     * @return the response of receive messages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReceivedMessages> dequeue() {
+    public ReceivedMessages dequeue() {
         // Generated convenience method for dequeueWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return dequeueWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ReceivedMessages.class, XML_SERIALIZER));
+        return dequeueWithResponseInternal(requestOptions).getValue().toObject(ReceivedMessages.class, XML_SERIALIZER);
     }
 
     /**
@@ -423,21 +418,19 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesClearHeaders, Void>> clearWithResponse(Integer timeout,
-        RequestOptions requestOptions) {
+    public ResponseBase<MessagesClearHeaders, Void> clearWithResponse(Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for clearWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return clearWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(), null,
-                new MessagesClearHeaders(protocolMethodResponse.getHeaders())));
+        Response<Void> protocolMethodResponse = clearWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(), null, new MessagesClearHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -453,17 +446,16 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> clear(Integer timeout) {
+    public void clear(Integer timeout) {
         // Generated convenience method for clearWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return clearWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        clearWithResponseInternal(requestOptions).getValue();
     }
 
     /**
@@ -474,14 +466,13 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> clear() {
+    public void clear() {
         // Generated convenience method for clearWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return clearWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);
+        clearWithResponseInternal(requestOptions).getValue();
     }
 
     /**
@@ -512,11 +503,11 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of send message along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the response of send message along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesEnqueueHeaders, ListOfSentMessage>> enqueueWithResponse(QueueMessage queueMessage,
+    public ResponseBase<MessagesEnqueueHeaders, ListOfSentMessage> enqueueWithResponse(QueueMessage queueMessage,
         Integer visibilityTimeout, Integer messageTimeToLive, Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for enqueueWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -529,11 +520,12 @@ public final class MessagesAsyncRestClient {
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return enqueueWithResponseInternal(BinaryData.fromObject(queueMessage, XML_SERIALIZER), requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(ListOfSentMessage.class, XML_SERIALIZER),
-                new MessagesEnqueueHeaders(protocolMethodResponse.getHeaders())));
+        Response<BinaryData> protocolMethodResponse
+            = enqueueWithResponseInternal(BinaryData.fromObject(queueMessage, XML_SERIALIZER), requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(ListOfSentMessage.class, XML_SERIALIZER),
+            new MessagesEnqueueHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -563,12 +555,12 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of send message on successful completion of {@link Mono}.
+     * @return the response of send message.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListOfSentMessage> enqueue(QueueMessage queueMessage, Integer visibilityTimeout,
-        Integer messageTimeToLive, Integer timeout) {
+    public ListOfSentMessage enqueue(QueueMessage queueMessage, Integer visibilityTimeout, Integer messageTimeToLive,
+        Integer timeout) {
         // Generated convenience method for enqueueWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (visibilityTimeout != null) {
@@ -581,8 +573,8 @@ public final class MessagesAsyncRestClient {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         return enqueueWithResponseInternal(BinaryData.fromObject(queueMessage, XML_SERIALIZER), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListOfSentMessage.class, XML_SERIALIZER));
+            .getValue()
+            .toObject(ListOfSentMessage.class, XML_SERIALIZER);
     }
 
     /**
@@ -599,16 +591,16 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of send message on successful completion of {@link Mono}.
+     * @return the response of send message.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListOfSentMessage> enqueue(QueueMessage queueMessage) {
+    public ListOfSentMessage enqueue(QueueMessage queueMessage) {
         // Generated convenience method for enqueueWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return enqueueWithResponseInternal(BinaryData.fromObject(queueMessage, XML_SERIALIZER), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListOfSentMessage.class, XML_SERIALIZER));
+            .getValue()
+            .toObject(ListOfSentMessage.class, XML_SERIALIZER);
     }
 
     /**
@@ -629,12 +621,12 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of peek messages along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the response of peek messages along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesPeekHeaders, PeekedMessages>> peekWithResponse(Integer numberOfMessages,
-        Integer timeout, RequestOptions requestOptions) {
+    public ResponseBase<MessagesPeekHeaders, PeekedMessages> peekWithResponse(Integer numberOfMessages, Integer timeout,
+        RequestOptions requestOptions) {
         // Generated convenience method for peekWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (numberOfMessages != null) {
@@ -643,11 +635,11 @@ public final class MessagesAsyncRestClient {
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return peekWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(PeekedMessages.class, XML_SERIALIZER),
-                new MessagesPeekHeaders(protocolMethodResponse.getHeaders())));
+        Response<BinaryData> protocolMethodResponse = peekWithResponseInternal(requestOptions);
+        return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
+            protocolMethodResponse.getHeaders(),
+            protocolMethodResponse.getValue().toObject(PeekedMessages.class, XML_SERIALIZER),
+            new MessagesPeekHeaders(protocolMethodResponse.getHeaders()));
     }
 
     /**
@@ -667,11 +659,11 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of peek messages on successful completion of {@link Mono}.
+     * @return the response of peek messages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PeekedMessages> peek(Integer numberOfMessages, Integer timeout) {
+    public PeekedMessages peek(Integer numberOfMessages, Integer timeout) {
         // Generated convenience method for peekWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (numberOfMessages != null) {
@@ -680,8 +672,7 @@ public final class MessagesAsyncRestClient {
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return peekWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PeekedMessages.class, XML_SERIALIZER));
+        return peekWithResponseInternal(requestOptions).getValue().toObject(PeekedMessages.class, XML_SERIALIZER);
     }
 
     /**
@@ -692,14 +683,13 @@ public final class MessagesAsyncRestClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of peek messages on successful completion of {@link Mono}.
+     * @return the response of peek messages.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PeekedMessages> peek() {
+    public PeekedMessages peek() {
         // Generated convenience method for peekWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return peekWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PeekedMessages.class, XML_SERIALIZER));
+        return peekWithResponseInternal(requestOptions).getValue().toObject(PeekedMessages.class, XML_SERIALIZER);
     }
 }
