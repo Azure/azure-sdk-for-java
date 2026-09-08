@@ -14,6 +14,7 @@ import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -161,6 +162,8 @@ public class AzureMonitorExporterBuilderTest {
 
         Set<Thread> existingThreads = Thread.getAllStackTraces().keySet();
         AzureMonitorExporterBuilder builder = new AzureMonitorExporterBuilder();
+        SpanExporter spanExporter = null;
+        SdkTracerProvider tracerProvider = null;
         try {
             builder.initializeIfNot(options, config, Resource.empty());
 
@@ -174,18 +177,21 @@ public class AzureMonitorExporterBuilderTest {
                     || name.startsWith("CustomerSdkStats-"));
             verify(config).getString(DISABLED_ALL);
 
-            try (SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-                .addSpanProcessor(SimpleSpanProcessor.create(builder.buildSpanExporter()))
-                .build()) {
-                tracerProvider.get("test").spanBuilder("application-span").startSpan().end();
-                assertThat(tracerProvider.forceFlush().join(10, SECONDS).isSuccess()).isTrue();
-            }
+            spanExporter = builder.buildSpanExporter();
+            tracerProvider
+                = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(spanExporter)).build();
+            tracerProvider.get("test").spanBuilder("application-span").startSpan().end();
+            assertThat(tracerProvider.forceFlush().join(10, SECONDS).isSuccess()).isTrue();
             assertThat(validationPolicy.getActualTelemetryItems()).hasSize(1);
             RemoteDependencyData dependency = TestUtils
                 .toRemoteDependencyData(validationPolicy.getActualTelemetryItems().get(0).getData().getBaseData());
             assertThat(dependency.getName()).isEqualTo("application-span");
         } finally {
-            builder.buildSpanExporter().shutdown().join(10, SECONDS);
+            if (tracerProvider != null) {
+                tracerProvider.close();
+            } else if (spanExporter != null) {
+                spanExporter.shutdown().join(10, SECONDS);
+            }
         }
     }
 }

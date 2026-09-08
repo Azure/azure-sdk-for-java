@@ -34,6 +34,7 @@ import reactor.util.annotation.Nullable;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -57,7 +58,8 @@ public class AzureMonitorStatsbeatTest {
     public void testStatsbeat(String disabledAll, String globalDisabledAll, String publicDisable) throws Exception {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+        CustomValidationPolicy customValidationPolicy
+            = new CustomValidationPolicy(countDownLatch, AzureMonitorStatsbeatTest::hasExpectedStatsbeatTelemetry);
         Map<String, String> configuration = getStatsbeatConfiguration();
         if (disabledAll != null) {
             configuration.put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", disabledAll);
@@ -97,14 +99,24 @@ public class AzureMonitorStatsbeatTest {
             openTelemetry.close();
         }
 
-        Thread.sleep(2000);
-
-        // wait for export
-        countDownLatch.await(10, SECONDS);
+        assertThat(countDownLatch.await(10, SECONDS)).as("Attach and Feature Statsbeat telemetry was exported")
+            .isTrue();
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
         verifyStatsbeatTelemetry(customValidationPolicy);
+    }
+
+    private static boolean hasExpectedStatsbeatTelemetry(List<TelemetryItem> telemetryItems) {
+        return hasStatsbeatMetric(telemetryItems, "Attach") && hasStatsbeatMetric(telemetryItems, "Feature");
+    }
+
+    private static boolean hasStatsbeatMetric(List<TelemetryItem> telemetryItems, String metricName) {
+        return telemetryItems.stream()
+            .filter(item -> item.getName().equals("Statsbeat"))
+            .map(item -> TestUtils.toMetricsData(item.getData().getBaseData()))
+            .flatMap(metricsData -> metricsData.getMetrics().stream())
+            .anyMatch(metric -> metric.getName().equals(metricName));
     }
 
     @Test
