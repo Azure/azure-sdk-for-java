@@ -35,6 +35,7 @@ public class BrowserAutomationAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "browser-agent";
         String connectionId = Configuration.getGlobalConfiguration().get("BROWSER_AUTOMATION_PROJECT_CONNECTION_ID");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -42,7 +43,7 @@ public class BrowserAutomationAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("browser-agent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -57,7 +58,7 @@ public class BrowserAutomationAsync {
             .setInstructions("You are a helpful assistant that can interact with web pages.")
             .setTools(Collections.singletonList(browserTool));
 
-        agentsAsyncClient.createAgentVersion("browser-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

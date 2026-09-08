@@ -44,6 +44,7 @@ public class MemorySearchAsync {
     public static void main(String[] args) throws Exception {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "memory-search-agent";
         String chatModel = Configuration.getGlobalConfiguration().get("AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME");
         String embeddingModel = Configuration.getGlobalConfiguration().get("AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME");
 
@@ -52,7 +53,7 @@ public class MemorySearchAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("memory-search-agent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
         ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Memory store operations use sync client for setup/teardown
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
@@ -84,7 +85,7 @@ public class MemorySearchAsync {
             .setInstructions("You are a helpful assistant that answers general questions.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("memory-search-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

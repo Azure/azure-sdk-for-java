@@ -36,13 +36,14 @@ public class CodeInterpreterAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "code-interpreter-agent";
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("code-interpreter-agent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -54,7 +55,7 @@ public class CodeInterpreterAsync {
                 + "When asked to perform calculations or data analysis, use the code interpreter to run Python code.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("code-interpreter-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

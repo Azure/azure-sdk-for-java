@@ -45,6 +45,7 @@ public class AzureFunctionAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "azure-function-agent";
         String inputQueueName = Configuration.getGlobalConfiguration().get("STORAGE_INPUT_QUEUE_NAME");
         String outputQueueName = Configuration.getGlobalConfiguration().get("STORAGE_OUTPUT_QUEUE_NAME");
         String queueServiceEndpoint = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_SERVICE_ENDPOINT");
@@ -54,7 +55,7 @@ public class AzureFunctionAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("azure-function-agent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -84,7 +85,7 @@ public class AzureFunctionAsync {
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(azureFunctionTool));
 
-        agentsAsyncClient.createAgentVersion("azure-function-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

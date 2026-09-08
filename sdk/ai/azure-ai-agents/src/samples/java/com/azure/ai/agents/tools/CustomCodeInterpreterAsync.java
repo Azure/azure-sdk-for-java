@@ -35,6 +35,7 @@ public class CustomCodeInterpreterAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "CustomCodeInterpreterAgent";
         String mcpServerUrl = Configuration.getGlobalConfiguration().get("MCP_SERVER_URL");
         String connectionId = Configuration.getGlobalConfiguration().get("MCP_PROJECT_CONNECTION_ID");
 
@@ -43,7 +44,7 @@ public class CustomCodeInterpreterAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("CustomCodeInterpreterAgent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -56,7 +57,7 @@ public class CustomCodeInterpreterAsync {
             .setInstructions("You are a helpful assistant that can run Python code to analyze data and solve problems.")
             .setTools(Collections.singletonList(customCodeInterpreter));
 
-        agentsAsyncClient.createAgentVersion("CustomCodeInterpreterAgent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
