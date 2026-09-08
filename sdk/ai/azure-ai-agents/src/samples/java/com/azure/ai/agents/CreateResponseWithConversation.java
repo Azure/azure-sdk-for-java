@@ -24,8 +24,8 @@ import com.openai.services.blocking.ConversationService;
 import java.util.Collections;
 
 /**
- * This sample demonstrates how to to create a response with a conversation
- * against an agent.
+ * This sample demonstrates how to invoke the OpenAI Responses API against a Prompt Agent,
+ * routing all traffic through the agent's endpoint URL.
  */
 public class CreateResponseWithConversation {
     public static void main(String[] args) {
