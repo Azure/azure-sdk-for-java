@@ -736,8 +736,7 @@ public final class ShareDirectoryClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -822,8 +821,7 @@ public final class ShareDirectoryClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -1223,8 +1221,7 @@ public final class ShareDirectoryClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         Response<Void> protocolMethodResponse = setMetadataWithResponseInternal(requestOptions);
@@ -1255,8 +1252,7 @@ public final class ShareDirectoryClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         Response<Void> protocolMethodResponse = setMetadataWithResponseInternal(requestOptions);
@@ -1716,8 +1712,7 @@ public final class ShareDirectoryClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         Response<Void> protocolMethodResponse = renameWithResponseInternal(renameSource, requestOptions);
@@ -1802,8 +1797,7 @@ public final class ShareDirectoryClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         renameWithResponseInternal(renameSource, requestOptions).getValue();

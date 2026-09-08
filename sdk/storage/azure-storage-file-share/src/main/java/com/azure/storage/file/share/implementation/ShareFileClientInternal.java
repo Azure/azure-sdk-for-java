@@ -1683,8 +1683,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -1832,8 +1831,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -2452,8 +2450,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (leaseId != null) {
@@ -2488,8 +2485,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (leaseId != null) {
@@ -3455,8 +3451,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -3565,8 +3560,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -4000,8 +3994,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (fileContentType != null) {
@@ -4090,8 +4083,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (fileContentType != null) {
@@ -4152,8 +4144,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (fileCreationTime != null) {
@@ -4207,8 +4198,7 @@ public final class ShareFileClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (fileCreationTime != null) {

@@ -7,13 +7,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareAsyncClientInternal;
+import com.azure.storage.file.share.implementation.ShareFileAsyncClientInternal;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
@@ -55,20 +59,32 @@ public final class ShareLeaseAsyncClient {
     private final boolean isShareFile;
     private final AzureFileStorageImpl client;
     private final String accountName;
+    private final ShareFileAsyncClientInternal fileLeaseInternal;
+    private final ShareAsyncClientInternal shareLeaseInternal;
 
     private volatile String leaseId;
 
     ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String shareName, String shareSnapshot,
-        String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion,
-        boolean allowTrailingDot, boolean allowSourceTrailingDot, ShareTokenIntent shareTokenIntent) {
+        String resourcePath, String leaseId, boolean isShareFile, String accountName,
+        ShareServiceVersion serviceVersion, boolean allowTrailingDot, boolean allowSourceTrailingDot,
+        ShareTokenIntent shareTokenIntent) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
-        this.client = new AzureFileStorageImpl(pipeline, serviceVersion, shareTokenIntent, url, allowTrailingDot,
-            allowSourceTrailingDot);
+        this.client = new AzureFileStorageImpl(pipeline, url, shareTokenIntent, allowTrailingDot,
+            allowSourceTrailingDot, serviceVersion);
         this.accountName = accountName;
         this.shareName = shareName;
         this.shareSnapshot = shareSnapshot;
         this.resourcePath = resourcePath;
+        if (isShareFile) {
+            this.fileLeaseInternal = new ShareFileAsyncClientInternal(
+                this.client.withUrl(this.client.getUrl() + "/" + shareName + "/" + resourcePath).getFiles());
+            this.shareLeaseInternal = null;
+        } else {
+            this.fileLeaseInternal = null;
+            this.shareLeaseInternal
+                = new ShareAsyncClientInternal(this.client.withUrl(this.client.getUrl() + "/" + shareName).getShares());
+        }
     }
 
     /**
@@ -176,15 +192,15 @@ public final class ShareLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isShareFile) {
-            response = this.client.getFiles()
-                .acquireLeaseWithResponseAsync(shareName, resourcePath, null, options.getDuration(), this.leaseId, null,
-                    context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = fileLeaseInternal
+                .acquireLeaseWithResponse(null, options.getDuration(), this.leaseId,
+                    new RequestOptions().setContext(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            response = this.client.getShares()
-                .acquireLeaseWithResponseAsync(shareName, null, options.getDuration(), this.leaseId, shareSnapshot,
-                    null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = shareLeaseInternal
+                .acquireLeaseWithResponse(null, options.getDuration(), this.leaseId, shareSnapshot,
+                    new RequestOptions().setContext(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
 
         response = response.doOnSuccess(r -> this.leaseId = r.getValue());
@@ -235,13 +251,13 @@ public final class ShareLeaseAsyncClient {
     Mono<Response<Void>> releaseLeaseWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         if (this.isShareFile) {
-            return this.client.getFiles()
-                .releaseLeaseNoCustomHeadersWithResponseAsync(shareName, resourcePath, this.leaseId, null, null,
-                    context);
+            return fileLeaseInternal
+                .releaseLeaseWithResponse(this.leaseId, null, new RequestOptions().setContext(context))
+                .map(response -> (Response<Void>) response);
         } else {
-            return this.client.getShares()
-                .releaseLeaseNoCustomHeadersWithResponseAsync(shareName, this.leaseId, null, shareSnapshot, null,
-                    context);
+            return shareLeaseInternal
+                .releaseLeaseWithResponse(this.leaseId, null, shareSnapshot, new RequestOptions().setContext(context))
+                .map(response -> (Response<Void>) response);
         }
     }
 
@@ -317,12 +333,13 @@ public final class ShareLeaseAsyncClient {
         Integer breakPeriod
             = options.getBreakPeriod() == null ? null : Math.toIntExact(options.getBreakPeriod().getSeconds());
         if (this.isShareFile) {
-            return this.client.getFiles()
-                .breakLeaseNoCustomHeadersWithResponseAsync(shareName, resourcePath, null, null, null, context);
+            return fileLeaseInternal.breakLeaseWithResponse(null, null, new RequestOptions().setContext(context))
+                .map(response -> (Response<Void>) response);
         } else {
-            return this.client.getShares()
-                .breakLeaseNoCustomHeadersWithResponseAsync(shareName, null, breakPeriod, null, null, shareSnapshot,
-                    context);
+            return shareLeaseInternal
+                .breakLeaseWithResponse(null, breakPeriod, null, shareSnapshot,
+                    new RequestOptions().setContext(context))
+                .map(response -> (Response<Void>) response);
         }
     }
 
@@ -374,13 +391,14 @@ public final class ShareLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isShareFile) {
-            response = this.client.getFiles()
-                .changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null, proposedId, null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = fileLeaseInternal
+                .changeLeaseWithResponse(this.leaseId, null, proposedId, new RequestOptions().setContext(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            response = this.client.getShares()
-                .changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId, shareSnapshot, null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = shareLeaseInternal
+                .changeLeaseWithResponse(this.leaseId, proposedId, null, shareSnapshot,
+                    new RequestOptions().setContext(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
 
         response = response.doOnSuccess(r -> this.leaseId = r.getValue());
@@ -436,9 +454,9 @@ public final class ShareLeaseAsyncClient {
             throw LOGGER
                 .logExceptionAsError(new UnsupportedOperationException("Cannot renew a lease on a share file."));
         } else {
-            response = this.client.getShares()
-                .renewLeaseWithResponseAsync(shareName, this.leaseId, null, shareSnapshot, null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = shareLeaseInternal
+                .renewLeaseWithResponse(this.leaseId, null, shareSnapshot, new RequestOptions().setContext(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
 
         response = response.doOnSuccess(r -> this.leaseId = r.getValue());

@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -25,6 +26,8 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareAsyncClientInternal;
+import com.azure.storage.file.share.implementation.ShareServiceAsyncClientInternal;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
@@ -82,6 +85,7 @@ public final class ShareServiceAsyncClient {
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
+    private final ShareServiceAsyncClientInternal serviceClientInternal;
 
     /**
      * Creates a ShareServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
@@ -94,6 +98,7 @@ public final class ShareServiceAsyncClient {
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
+        this.serviceClientInternal = new ShareServiceAsyncClientInternal(azureFileStorage.getServices());
     }
 
     /**
@@ -256,17 +261,21 @@ public final class ShareServiceAsyncClient {
         }
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever = (nextMarker,
-            pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
-                .listSharesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
-                    include, null, context)
+            pageSize) -> StorageImplUtils.applyOptionalTimeout(serviceClientInternal
+                .listSharesSegmentWithResponse(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
+                    null, include, new RequestOptions().setContext(context))
                 .map(response -> {
-                    List<ShareItem> value = response.getValue() == null
+                    List<ShareItem> value = response.getValue() == null || response.getValue().getShareItems() == null
                         ? Collections.emptyList()
-                        : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
+                        : response.getValue()
+                            .getShareItems()
+                            .stream()
+                            .map(ModelHelper::populateShareItem)
+                            .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, response.getContinuationToken(),
-                        ModelHelper.transformListSharesHeaders(response.getHeaders()));
+                        response.getHeaders(), value, response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
                 }), timeout);
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
@@ -334,8 +343,7 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getServices()
-            .getPropertiesWithResponseAsync(null, context)
+        return serviceClientInternal.getPropertiesWithResponse(null, new RequestOptions().setContext(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -456,8 +464,9 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(properties, null, context);
+        return serviceClientInternal
+            .setPropertiesWithResponse(properties, null, new RequestOptions().setContext(context))
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -657,8 +666,10 @@ public final class ShareServiceAsyncClient {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context);
+        return new ShareAsyncClientInternal(
+            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName).getShares())
+                .deleteWithResponse(snapshot, null, deleteSnapshots, null, new RequestOptions().setContext(context))
+                .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -853,9 +864,11 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Context context) {
-        return this.azureFileStorageClient.getShares()
-            .restoreWithResponseAsync(deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
-            .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
+        return new ShareAsyncClientInternal(
+            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + deletedShareName).getShares())
+                .restoreWithResponse(null, deletedShareName, deletedShareVersion,
+                    new RequestOptions().setContext(context))
+                .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 
     /**
@@ -930,12 +943,10 @@ public final class ShareServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        return this.azureFileStorageClient.getServices()
-            .getUserDelegationKeyWithResponseAsync(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                    .setDelegatedUserTenantId(delegatedUserTenantId),
-                null, null, context)
+        return serviceClientInternal
+            .getUserDelegationKeyWithResponse(new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+                .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                .setDelegatedUserTenantId(delegatedUserTenantId), null, new RequestOptions().setContext(context))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }

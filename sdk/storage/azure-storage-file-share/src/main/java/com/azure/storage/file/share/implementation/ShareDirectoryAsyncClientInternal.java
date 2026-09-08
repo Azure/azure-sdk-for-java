@@ -739,8 +739,7 @@ public final class ShareDirectoryAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -825,8 +824,7 @@ public final class ShareDirectoryAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (filePermission != null) {
@@ -1228,8 +1226,7 @@ public final class ShareDirectoryAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         return setMetadataWithResponseInternal(requestOptions)
@@ -1260,8 +1257,7 @@ public final class ShareDirectoryAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         return setMetadataWithResponseInternal(requestOptions)
@@ -1724,8 +1720,7 @@ public final class ShareDirectoryAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         return renameWithResponseInternal(renameSource, requestOptions)
@@ -1811,8 +1806,7 @@ public final class ShareDirectoryAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         return renameWithResponseInternal(renameSource, requestOptions).flatMap(FluxUtil::toMono);

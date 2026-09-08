@@ -1129,8 +1129,7 @@ public final class ShareAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (quota != null) {
@@ -1220,8 +1219,7 @@ public final class ShareAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (quota != null) {
@@ -1969,8 +1967,7 @@ public final class ShareAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         return createSnapshotWithResponseInternal(requestOptions)
@@ -2001,8 +1998,7 @@ public final class ShareAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         return createSnapshotWithResponseInternal(requestOptions)
@@ -2408,8 +2404,7 @@ public final class ShareAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (leaseId != null) {
@@ -2445,8 +2440,7 @@ public final class ShareAsyncClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (leaseId != null) {

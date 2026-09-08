@@ -1124,8 +1124,7 @@ public final class ShareClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (quota != null) {
@@ -1213,8 +1212,7 @@ public final class ShareClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (quota != null) {
@@ -1947,8 +1945,7 @@ public final class ShareClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         Response<Void> protocolMethodResponse = createSnapshotWithResponseInternal(requestOptions);
@@ -1979,8 +1976,7 @@ public final class ShareClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         Response<Void> protocolMethodResponse = createSnapshotWithResponseInternal(requestOptions);
@@ -2385,8 +2381,7 @@ public final class ShareClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (leaseId != null) {
@@ -2421,8 +2416,7 @@ public final class ShareClientInternal {
         }
         if (metadata != null) {
             for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
-                    entry.getValue());
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
             }
         }
         if (leaseId != null) {

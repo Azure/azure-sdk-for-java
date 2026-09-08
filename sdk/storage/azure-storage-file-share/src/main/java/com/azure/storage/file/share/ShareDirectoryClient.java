@@ -136,8 +136,9 @@ public class ShareDirectoryClient {
             directoryUrlString.append("?sharesnapshot=").append(snapshot);
         }
         this.directoryUrl = directoryUrlString.toString();
-        this.directoryClientInternal = new ShareDirectoryClientInternal(azureFileStorageClient
-            .withUrl(azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath).getDirectories());
+        this.directoryClientInternal = new ShareDirectoryClientInternal(
+            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
+                .getDirectories());
     }
 
     /**
@@ -497,8 +498,8 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> directoryClientInternal.deleteWithResponse(null,
-            new RequestOptions().setContext(finalContext));
+        Callable<Response<Void>> operation
+            = () -> directoryClientInternal.deleteWithResponse(null, new RequestOptions().setContext(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -625,9 +626,8 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<DirectoriesGetPropertiesHeaders>> operation
-            = () -> directoryClientInternal.getPropertiesWithResponse(snapshot, null,
-                new RequestOptions().setContext(finalContext));
+        Callable<Response<DirectoriesGetPropertiesHeaders>> operation = () -> directoryClientInternal
+            .getPropertiesWithResponse(snapshot, null, new RequestOptions().setContext(finalContext));
 
         return ModelHelper
             .mapShareDirectoryPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -833,9 +833,8 @@ public class ShareDirectoryClient {
     public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<DirectoriesSetMetadataHeaders>> operation
-            = () -> directoryClientInternal.setMetadataWithResponse(null, metadata,
-                new RequestOptions().setContext(finalContext));
+        Callable<Response<DirectoriesSetMetadataHeaders>> operation = () -> directoryClientInternal
+            .setMetadataWithResponse(null, metadata, new RequestOptions().setContext(finalContext));
 
         return ModelHelper
             .setShareDirectoryMetadataResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -1100,9 +1099,8 @@ public class ShareDirectoryClient {
         Response<DirectoriesForceCloseHandlesHeaders> response
             = sendRequest(operation, timeout, ShareStorageException.class);
 
-        return new SimpleResponse<>(response,
-            new CloseHandlesInfo(response.getValue().getNumberOfHandlesClosed(),
-                response.getValue().getNumberOfHandlesFailedToClose()));
+        return new SimpleResponse<>(response, new CloseHandlesInfo(response.getValue().getNumberOfHandlesClosed(),
+            response.getValue().getNumberOfHandlesFailedToClose()));
     }
 
     /**
