@@ -491,9 +491,8 @@ public class ModelHelper {
             new ShareInfo(eTag, lastModified));
     }
 
-    public static Response<ShareProperties>
-        mapGetPropertiesResponse(ResponseBase<SharesGetPropertiesHeaders, Void> response) {
-        SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
+    public static Response<ShareProperties> mapGetPropertiesResponse(Response<SharesGetPropertiesHeaders> response) {
+        SharesGetPropertiesHeaders headers = response.getValue();
         ShareProperties shareProperties = new ShareProperties().setETag(headers.getEtag())
             .setLastModified(headers.getLastModified())
             .setMetadata(headers.getMetadata())
@@ -560,8 +559,8 @@ public class ModelHelper {
     }
 
     public static Response<ShareSnapshotInfo>
-        mapCreateSnapshotResponse(ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
-        SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
+        mapCreateSnapshotResponse(Response<SharesCreateSnapshotHeaders> response) {
+        SharesCreateSnapshotHeaders headers = response.getValue();
         ShareSnapshotInfo snapshotInfo
             = new ShareSnapshotInfo(headers.getSnapshot(), headers.getEtag(), headers.getLastModified());
 
