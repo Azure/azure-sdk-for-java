@@ -38,6 +38,7 @@ public class BingCustomSearchAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "bing-custom-search-agent";
         String connectionId = Configuration.getGlobalConfiguration().get("BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID");
         String instanceName = Configuration.getGlobalConfiguration().get("BING_CUSTOM_SEARCH_INSTANCE_NAME");
 
@@ -46,7 +47,7 @@ public class BingCustomSearchAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("bing-custom-search-agent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -61,7 +62,7 @@ public class BingCustomSearchAsync {
                 + "Use the available Bing Custom Search tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(bingCustomSearchTool));
 
-        agentsAsyncClient.createAgentVersion("bing-custom-search-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

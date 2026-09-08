@@ -85,11 +85,10 @@ public class OpenApiSync {
             SampleUtils.pinAgentVersion(agentsClient, agentVersion);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentVersion.getName());
 
-            ResponseCreateParams.Builder options = ResponseCreateParams.builder()
-                .maxOutputTokens(300L);
-
             Response response = openAIClient.responses().create(
-                options.conversation(conversation.id())
+                ResponseCreateParams.builder()
+                    .maxOutputTokens(300L)
+                    .conversation(conversation.id())
                     .build());
 
             String text = response.output().stream()

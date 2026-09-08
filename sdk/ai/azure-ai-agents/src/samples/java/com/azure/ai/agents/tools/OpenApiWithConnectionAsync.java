@@ -39,6 +39,7 @@ public class OpenApiWithConnectionAsync {
     public static void main(String[] args) throws Exception {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "openapi-connection-agent";
         String connectionId = Configuration.getGlobalConfiguration().get("OPENAPI_PROJECT_CONNECTION_ID");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -46,7 +47,7 @@ public class OpenApiWithConnectionAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("openapi-connection-agent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -65,7 +66,7 @@ public class OpenApiWithConnectionAsync {
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(openApiTool));
 
-        agentsAsyncClient.createAgentVersion("openapi-connection-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

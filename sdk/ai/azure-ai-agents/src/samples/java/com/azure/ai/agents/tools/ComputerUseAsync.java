@@ -5,8 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
@@ -64,6 +64,7 @@ public class ComputerUseAsync {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "computer-use-preview");
+        String agentName = "ComputerUseAgent";
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -71,7 +72,7 @@ public class ComputerUseAsync {
             .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsAsyncClient agentsClient = builder.buildAgentsAsyncClient();
-        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("ComputerUseAgent");
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         // Load screenshot assets
         Map<String, ScreenshotInfo> screenshots;
@@ -123,7 +124,7 @@ public class ComputerUseAsync {
         );
 
         // Create agent and run the interaction loop
-        agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition)
+        agentsClient.createAgentVersion(agentName, agentDefinition)
             .doOnNext(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
