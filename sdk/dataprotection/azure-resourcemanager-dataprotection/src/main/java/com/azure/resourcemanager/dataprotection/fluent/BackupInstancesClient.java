@@ -16,6 +16,7 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtend
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
+import com.azure.resourcemanager.dataprotection.models.ResumeProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
@@ -647,6 +648,7 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -655,7 +657,7 @@ public interface BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context);
+        String backupInstanceName, ResumeProtectionRequest parameters, Context context);
 
     /**
      * This operation will resume protection for a stopped backup instance.
@@ -676,13 +678,15 @@ public interface BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        ResumeProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.

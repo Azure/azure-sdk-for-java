@@ -21,7 +21,7 @@ import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
  */
 public final class BackupInstancesTriggerCrossRegionRestoreSamples {
     /*
-     * x-ms-original-file: 2026-03-01/CrossRegionRestore/TriggerCrossRegionRestore.json
+     * x-ms-original-file: 2026-04-01-preview/CrossRegionRestore/TriggerCrossRegionRestore.json
      */
     /**
      * Sample code: Trigger Cross Region Restore.

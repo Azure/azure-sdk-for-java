@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class DeletedBackupVaultsListByLocationSamples {
     /*
-     * x-ms-original-file: 2026-03-01/DeletedBackupVaults_ListByLocation.json
+     * x-ms-original-file: 2026-04-01-preview/DeletedBackupVaults_ListByLocation.json
      */
     /**
      * Sample code: List deleted backup vaults by location.

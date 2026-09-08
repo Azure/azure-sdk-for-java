@@ -338,12 +338,13 @@ public interface BackupInstanceResource {
     /**
      * This operation will resume protection for a stopped backup instance.
      * 
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resumeProtection(Context context);
+    void resumeProtection(ResumeProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.

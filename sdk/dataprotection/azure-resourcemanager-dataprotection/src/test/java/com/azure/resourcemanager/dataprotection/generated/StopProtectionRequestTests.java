@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StopProtectionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StopProtectionRequest model
-            = BinaryData.fromString("{\"resourceGuardOperationRequests\":[\"bglaocqxtccm\",\"yudxytlmoy\",\"xv\"]}")
-                .toObject(StopProtectionRequest.class);
-        Assertions.assertEquals("bglaocqxtccm", model.resourceGuardOperationRequests().get(0));
+        StopProtectionRequest model = BinaryData.fromString("{\"resourceGuardOperationRequests\":[\"xy\"]}")
+            .toObject(StopProtectionRequest.class);
+        Assertions.assertEquals("xy", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StopProtectionRequest model = new StopProtectionRequest()
-            .withResourceGuardOperationRequests(Arrays.asList("bglaocqxtccm", "yudxytlmoy", "xv"));
+        StopProtectionRequest model
+            = new StopProtectionRequest().withResourceGuardOperationRequests(Arrays.asList("xy"));
         model = BinaryData.fromObject(model).toObject(StopProtectionRequest.class);
-        Assertions.assertEquals("bglaocqxtccm", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("xy", model.resourceGuardOperationRequests().get(0));
     }
 }

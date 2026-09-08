@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class OperationResultGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/GetOperationResult.json
+     * x-ms-original-file: 2026-04-01-preview/GetOperationResult.json
      */
     /**
      * Sample code: Get OperationResult.

@@ -10,6 +10,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.ResumeProtectionRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,9 @@ public final class BackupInstancesResumeProtectionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupInstances()
-            .resumeProtection("qxzhem", "yhohujswtwkozzwc", "lkb", com.azure.core.util.Context.NONE);
+            .resumeProtection("qxzhem", "yhohujswtwkozzwc", "lkb", new ResumeProtectionRequest().withIdentityDetails(
+                new IdentityDetails().withUseSystemAssignedIdentity(true).withUserAssignedIdentityArmUrl("jnjwltlwt")),
+                com.azure.core.util.Context.NONE);
 
     }
 }

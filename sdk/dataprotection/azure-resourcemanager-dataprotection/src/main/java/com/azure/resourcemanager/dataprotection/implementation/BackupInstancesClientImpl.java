@@ -40,6 +40,7 @@ import com.azure.resourcemanager.dataprotection.implementation.models.BackupInst
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
+import com.azure.resourcemanager.dataprotection.models.ResumeProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
@@ -305,7 +306,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> resumeProtection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName, Context context);
+            @PathParam("backupInstanceName") String backupInstanceName,
+            @BodyParam("application/json") ResumeProtectionRequest parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeProtection")
@@ -314,7 +316,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Response<BinaryData> resumeProtectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName, Context context);
+            @PathParam("backupInstanceName") String backupInstanceName,
+            @BodyParam("application/json") ResumeProtectionRequest parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/stopProtection")
@@ -2175,6 +2178,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2182,10 +2186,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeProtectionWithResponseAsync(String resourceGroupName,
-        String vaultName, String backupInstanceName) {
+        String vaultName, String backupInstanceName, ResumeProtectionRequest parameters) {
         return FluxUtil
             .withContext(context -> service.resumeProtection(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, context))
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2195,6 +2199,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2202,9 +2207,10 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeProtectionWithResponse(String resourceGroupName, String vaultName,
-        String backupInstanceName) {
+        String backupInstanceName, ResumeProtectionRequest parameters) {
         return service.resumeProtectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -2213,6 +2219,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2221,9 +2228,30 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeProtectionWithResponse(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, ResumeProtectionRequest parameters, Context context) {
         return service.resumeProtectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, context);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, context);
+    }
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginResumeProtectionAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, ResumeProtectionRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2240,10 +2268,31 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResumeProtectionAsync(String resourceGroupName, String vaultName,
         String backupInstanceName) {
+        final ResumeProtectionRequest parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+            = resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
+    }
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
+        String backupInstanceName, ResumeProtectionRequest parameters) {
+        Response<BinaryData> response
+            = resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2260,7 +2309,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        Response<BinaryData> response = resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName);
+        final ResumeProtectionRequest parameters = null;
+        Response<BinaryData> response
+            = resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
@@ -2270,6 +2321,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2278,10 +2330,29 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
-        String backupInstanceName, Context context) {
+        String backupInstanceName, ResumeProtectionRequest parameters, Context context) {
         Response<BinaryData> response
-            = resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
+            = resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> resumeProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        ResumeProtectionRequest parameters) {
+        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2297,7 +2368,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName).last()
+        final ResumeProtectionRequest parameters = null;
+        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2313,7 +2385,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName) {
-        beginResumeProtection(resourceGroupName, vaultName, backupInstanceName).getFinalResult();
+        final ResumeProtectionRequest parameters = null;
+        beginResumeProtection(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
     }
 
     /**
@@ -2322,6 +2395,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the BackupInstanceResource.
+     * @param parameters The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2329,8 +2403,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
-        Context context) {
-        beginResumeProtection(resourceGroupName, vaultName, backupInstanceName, context).getFinalResult();
+        ResumeProtectionRequest parameters, Context context) {
+        beginResumeProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context).getFinalResult();
     }
 
     /**

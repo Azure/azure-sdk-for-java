@@ -12,8 +12,8 @@ public final class OperationJobExtendedInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationJobExtendedInfoInner model
-            = BinaryData.fromString("{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"njampm\"}")
+            = BinaryData.fromString("{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"cbonqvpk\"}")
                 .toObject(OperationJobExtendedInfoInner.class);
-        Assertions.assertEquals("njampm", model.jobId());
+        Assertions.assertEquals("cbonqvpk", model.jobId());
     }
 }

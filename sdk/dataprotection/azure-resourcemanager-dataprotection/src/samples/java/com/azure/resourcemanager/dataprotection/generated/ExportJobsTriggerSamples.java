@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ExportJobsTriggerSamples {
     /*
-     * x-ms-original-file: 2026-03-01/JobCRUD/TriggerExportJobs.json
+     * x-ms-original-file: 2026-04-01-preview/JobCRUD/TriggerExportJobs.json
      */
     /**
      * Sample code: Trigger Export Jobs.

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.dataprotection.models.BackupInstanceResource;
 import com.azure.resourcemanager.dataprotection.models.BackupInstances;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
+import com.azure.resourcemanager.dataprotection.models.ResumeProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
@@ -196,8 +197,8 @@ public final class BackupInstancesImpl implements BackupInstances {
     }
 
     public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
-        Context context) {
-        this.serviceClient().resumeProtection(resourceGroupName, vaultName, backupInstanceName, context);
+        ResumeProtectionRequest parameters, Context context) {
+        this.serviceClient().resumeProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName) {

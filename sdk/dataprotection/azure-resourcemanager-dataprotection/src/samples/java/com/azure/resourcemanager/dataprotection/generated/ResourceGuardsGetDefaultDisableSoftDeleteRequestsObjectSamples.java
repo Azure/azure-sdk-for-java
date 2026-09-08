@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
+     * x-ms-original-file: 2026-04-01-preview/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.

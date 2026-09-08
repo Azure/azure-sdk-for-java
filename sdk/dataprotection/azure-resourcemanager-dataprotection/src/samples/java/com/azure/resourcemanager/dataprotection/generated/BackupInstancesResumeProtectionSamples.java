@@ -4,12 +4,15 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.ResumeProtectionRequest;
+
 /**
  * Samples for BackupInstances ResumeProtection.
  */
 public final class BackupInstancesResumeProtectionSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ResumeProtection.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/ResumeProtection.json
      */
     /**
      * Sample code: ResumeProtection.
@@ -17,6 +20,12 @@ public final class BackupInstancesResumeProtectionSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void resumeProtection(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().resumeProtection("testrg", "testvault", "testbi", com.azure.core.util.Context.NONE);
+        manager.backupInstances()
+            .resumeProtection("testrg", "testvault", "testbi",
+                new ResumeProtectionRequest().withIdentityDetails(new IdentityDetails()
+                    .withUseSystemAssignedIdentity(false)
+                    .withUserAssignedIdentityArmUrl(
+                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami")),
+                com.azure.core.util.Context.NONE);
     }
 }

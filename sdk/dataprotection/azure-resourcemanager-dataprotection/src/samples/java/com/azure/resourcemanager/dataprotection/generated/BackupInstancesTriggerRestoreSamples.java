@@ -25,7 +25,7 @@ import com.azure.resourcemanager.dataprotection.models.TargetDetails;
  */
 public final class BackupInstancesTriggerRestoreSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/TriggerRestoreAsFiles.json
      */
     /**
      * Sample code: Trigger Restore As Files.
@@ -50,7 +50,7 @@ public final class BackupInstancesTriggerRestoreSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/TriggerRestoreWithRehydration.json
      */
     /**
      * Sample code: Trigger Restore With Rehydration.
@@ -90,7 +90,7 @@ public final class BackupInstancesTriggerRestoreSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/TriggerRestore.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/TriggerRestore.json
      */
     /**
      * Sample code: Trigger Restore.
@@ -129,7 +129,7 @@ public final class BackupInstancesTriggerRestoreSamples {
                         "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
                     .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
                         .withUserAssignedIdentityArmUrl(
-                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
+                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                     .withRecoveryPointId("hardcodedRP"),
                 com.azure.core.util.Context.NONE);
     }

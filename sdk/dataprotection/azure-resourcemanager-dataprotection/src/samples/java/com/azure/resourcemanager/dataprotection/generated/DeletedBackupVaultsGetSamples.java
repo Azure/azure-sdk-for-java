@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class DeletedBackupVaultsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/DeletedBackupVaults_Get.json
+     * x-ms-original-file: 2026-04-01-preview/DeletedBackupVaults_Get.json
      */
     /**
      * Sample code: Get a deleted backup vault.

@@ -30,9 +30,8 @@ public final class BackupInstancesSuspendBackupsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupInstances()
-            .suspendBackups(
-                "jhlfzswpchwahf", "ousnfepgfewe", "wlyxgncxyk", new SuspendBackupRequest()
-                    .withResourceGuardOperationRequests(Arrays.asList("jhlimmbcxfhbcpo", "xvxcjzhq")),
+            .suspendBackups("lcsethwwnpj", "l", "zswpchwa", new SuspendBackupRequest()
+                .withResourceGuardOperationRequests(Arrays.asList("ousnfepgfewe", "wlyxgncxyk")),
                 com.azure.core.util.Context.NONE);
 
     }

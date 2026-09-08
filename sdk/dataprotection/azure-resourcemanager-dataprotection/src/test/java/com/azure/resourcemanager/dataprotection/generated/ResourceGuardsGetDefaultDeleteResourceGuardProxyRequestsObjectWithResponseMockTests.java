@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectWithResponseMockTests {
     @Test
     public void testGetDefaultDeleteResourceGuardProxyRequestsObjectWithResponse() throws Exception {
-        String responseStr = "{\"id\":\"ifhpf\",\"name\":\"oajvgcxtxjcs\",\"type\":\"eafidltugsresm\"}";
+        String responseStr = "{\"id\":\"hgppipifhpfeoa\",\"name\":\"vgcxtx\",\"type\":\"csheafidltugsr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjec
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DppBaseResource response = manager.resourceGuards()
-            .getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse("uutlwxezwzhok", "bwnhhtql", "ehgpp",
+            .getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse("jeuut", "wxezwzhok", "bwnhhtql",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

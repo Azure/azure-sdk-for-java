@@ -12,18 +12,18 @@ public final class CrossRegionRestoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CrossRegionRestoreDetails model
-            = BinaryData.fromString("{\"sourceRegion\":\"urqhaka\",\"sourceBackupInstanceId\":\"hashsfwxosow\"}")
+            = BinaryData.fromString("{\"sourceRegion\":\"ali\",\"sourceBackupInstanceId\":\"urqhaka\"}")
                 .toObject(CrossRegionRestoreDetails.class);
-        Assertions.assertEquals("urqhaka", model.sourceRegion());
-        Assertions.assertEquals("hashsfwxosow", model.sourceBackupInstanceId());
+        Assertions.assertEquals("ali", model.sourceRegion());
+        Assertions.assertEquals("urqhaka", model.sourceBackupInstanceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CrossRegionRestoreDetails model
-            = new CrossRegionRestoreDetails().withSourceRegion("urqhaka").withSourceBackupInstanceId("hashsfwxosow");
+            = new CrossRegionRestoreDetails().withSourceRegion("ali").withSourceBackupInstanceId("urqhaka");
         model = BinaryData.fromObject(model).toObject(CrossRegionRestoreDetails.class);
-        Assertions.assertEquals("urqhaka", model.sourceRegion());
-        Assertions.assertEquals("hashsfwxosow", model.sourceBackupInstanceId());
+        Assertions.assertEquals("ali", model.sourceRegion());
+        Assertions.assertEquals("urqhaka", model.sourceBackupInstanceId());
     }
 }

@@ -1,14 +1,36 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
+## 1.6.0-beta.2 (2026-08-31)
 
-### Features Added
+- Azure Resource Manager Data Protection client library for Java. This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2026-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.BackupInstanceResource` was modified
 
-### Other Changes
+* `resumeProtection(com.azure.core.util.Context)` was removed
+
+#### `models.BackupInstances` was modified
+
+* `resumeProtection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.ResumeProtectionRequest` was added
+
+* `models.PostgreSqlFlexibleServerBackupDatasourceParameters` was added
+
+* `models.ResumeProtectionRequestObjectType` was added
+
+* `models.BackupSolutionType` was added
+
+#### `models.BackupInstanceResource` was modified
+
+* `resumeProtection(models.ResumeProtectionRequest,com.azure.core.util.Context)` was added
+
+#### `models.BackupInstances` was modified
+
+* `resumeProtection(java.lang.String,java.lang.String,java.lang.String,models.ResumeProtectionRequest,com.azure.core.util.Context)` was added
 
 ## 1.6.0-beta.1 (2026-04-01)
 

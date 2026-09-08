@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupInstancesListSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ListBackupInstances.json
+     * x-ms-original-file: 2026-04-01-preview/BackupInstanceOperations/ListBackupInstances.json
      */
     /**
      * Sample code: List BackupInstances in a Vault.
