@@ -6,6 +6,7 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiTool;
@@ -20,16 +21,8 @@ import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -71,33 +64,30 @@ public class OpenApiSample {
             .setInstructions("Use the OpenAPI tool for HTTP request metadata.")
             .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
 
-        String agentName = "openapi-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
-        try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+        AgentVersionDetails agentVersion = agentsClient.createAgentVersion("openapi-agent", agentDefinition);
+        System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
 
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
-
-            // Create a conversation and add a user message
-            Conversation conversation = conversationService.create();
-            conversationService.items().create(
-                ItemCreateParams.builder()
-                    .conversationId(conversation.id())
-                    .addItem(EasyInputMessage.builder()
-                        .role(EasyInputMessage.Role.USER)
-                        .content("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
-                        .build())
-                    .build());
-
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
-                .maxOutputTokens(300L)
-                .conversation(conversation.id())
+        // Create a conversation and add a user message
+        Conversation conversation = conversationService.create();
+        conversationService.items().create(
+            ItemCreateParams.builder()
+                .conversationId(conversation.id())
+                .addItem(EasyInputMessage.builder()
+                    .role(EasyInputMessage.Role.USER)
+                    .content("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
+                    .build())
                 .build());
+
+        try {
+            SampleUtils.pinAgentVersion(agentsClient, agentVersion.getName(), agentVersion);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentVersion.getName());
+
+            ResponseCreateParams.Builder options = ResponseCreateParams.builder()
+                .maxOutputTokens(300L);
+
+            Response response = openAIClient.responses().create(
+                options.conversation(conversation.id())
+                    .build());
 
             String text = response.output().stream()
                 .filter(item -> item.isMessage())
@@ -111,7 +101,8 @@ public class OpenApiSample {
             System.out.println("Status: " + response.status().map(Object::toString).orElse("unknown"));
             System.out.println("Response: " + text);
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            agentsClient.deleteAgentVersion(agentVersion.getName(), agentVersion.getVersion());
+            System.out.println("Agent deleted");
         }
     }
 }

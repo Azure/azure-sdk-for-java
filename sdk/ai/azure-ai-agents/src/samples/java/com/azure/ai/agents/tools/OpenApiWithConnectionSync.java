@@ -6,6 +6,7 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiProjectConnectionAuthDetails;
 import com.azure.ai.agents.models.OpenApiProjectConnectionSecurityScheme;
@@ -14,16 +15,9 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.client.OpenAIClient;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 import java.util.Map;
@@ -77,25 +71,22 @@ public class OpenApiWithConnectionSync {
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(openApiTool));
 
-        String agentName = "openapi-connection-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("openapi-connection-agent", agentDefinition);
+        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
-
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
                     .input("Call the API and summarize the returned URL and origin.")
-                .build());
+                    .build());
 
             System.out.println("Response: " + response.output());
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Agent deleted");
         }
     }
 }

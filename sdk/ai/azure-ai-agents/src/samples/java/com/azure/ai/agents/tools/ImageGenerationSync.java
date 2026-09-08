@@ -5,6 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ImageGenTool;
 import com.azure.ai.agents.models.ImageGenToolModel;
 import com.azure.ai.agents.models.ImageGenToolQuality;
@@ -12,16 +14,9 @@ import com.azure.ai.agents.models.ImageGenToolSize;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import com.openai.client.OpenAIClient;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 
@@ -61,21 +56,18 @@ public class ImageGenerationSync {
             .setInstructions("You are a creative assistant that can generate images based on descriptions.")
             .setTools(Collections.singletonList(imageGenTool));
 
-        String agentName = "image-gen-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("image-gen-agent", agentDefinition);
+        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            // Create a response
+            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
-
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
                     .input("Generate an image of a sunset over a mountain range")
-                .build());
+                    .build());
 
             // The response output may include image_generation_call items with base64-encoded image data.
             // This sample prints the response status and the number of output items; image extraction
@@ -83,7 +75,8 @@ public class ImageGenerationSync {
             System.out.println("Response status: " + response.status().map(Object::toString).orElse("unknown"));
             System.out.println("Output items: " + response.output().size());
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
         }
     }
 }

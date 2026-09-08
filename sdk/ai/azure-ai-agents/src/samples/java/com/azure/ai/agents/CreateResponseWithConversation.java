@@ -24,8 +24,8 @@ import com.openai.services.blocking.ConversationService;
 import java.util.Collections;
 
 /**
- * This sample demonstrates how to invoke the OpenAI Responses API against a Prompt Agent,
- * routing all traffic through the agent's endpoint URL.
+ * This sample demonstrates how to to create a response with a conversation
+ * against an agent.
  */
 public class CreateResponseWithConversation {
     public static void main(String[] args) {
@@ -40,22 +40,25 @@ public class CreateResponseWithConversation {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("You are a helpful assistant.");
-
-        String agentName = "my-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
-        System.out.printf("Agent created (id: %s, version: %s)%n", agent.getId(), agent.getVersion());
+        AgentVersionDetails agent = null;
         String conversationId = null;
-        try {
-            // Point the agent endpoint at the newly created version and enable the OpenAI Responses protocol.
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
 
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+        try {
+            // Create a prompt agent
+            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+                .setInstructions("You are a helpful assistant.");
+
+            agent = agentsClient.createAgentVersion("my-agent", agentDefinition);
+            System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
+
+            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+            agentsClient.updateAgentDetails(agent.getName(),
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Create a conversation
             Conversation conversation = conversationService.create();
@@ -63,10 +66,11 @@ public class CreateResponseWithConversation {
             System.out.println("Created conversation: " + conversationId);
 
             // Create a response using the conversation
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
-                .conversation(conversationId)
-                .input("Hi, how can you help me?")
-                .build());
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
+                    .conversation(conversationId)
+                    .input("Hi, how can you help me?")
+                    .build());
 
             // Process and display the response
             System.out.println("\n=== Agent Response ===");
@@ -81,16 +85,20 @@ public class CreateResponseWithConversation {
                 }
             }
             System.out.println("Response ID: " + response.id());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         } finally {
+            // Cleanup conversation
             if (conversationId != null) {
-                try {
-                    conversationService.delete(conversationId);
-                    System.out.println("Conversation deleted.");
-                } catch (Exception ignored) {
-                    // best-effort cleanup
-                }
+                conversationService.delete(conversationId);
+                System.out.println("Conversation deleted.");
             }
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            // Cleanup agent
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted.");
+            }
         }
     }
 }

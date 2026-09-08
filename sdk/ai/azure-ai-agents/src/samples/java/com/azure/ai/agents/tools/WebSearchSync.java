@@ -5,6 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WebSearchPreviewTool;
 import com.azure.core.util.Configuration;
@@ -14,13 +16,6 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 
@@ -45,32 +40,31 @@ public class WebSearchSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
 
-        // BEGIN: com.azure.ai.agents.define_web_search
-        // Create a WebSearchPreviewTool
-        WebSearchPreviewTool tool = new WebSearchPreviewTool();
-        // END: com.azure.ai.agents.define_web_search
+        AgentVersionDetails agent = null;
 
-        // Create the agent definition with Web Search tool enabled
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("You are a helpful assistant that can perform web searches to find information. "
-                + "When asked to find information, use the web search tool to gather relevant data.")
-            .setTools(Collections.singletonList(tool));
-
-        String agentName = "web-search-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            // BEGIN: com.azure.ai.agents.define_web_search
+            // Create a WebSearchPreviewTool
+            WebSearchPreviewTool tool = new WebSearchPreviewTool();
+            // END: com.azure.ai.agents.define_web_search
 
+            // Create the agent definition with Web Search tool enabled
+            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+                .setInstructions("You are a helpful assistant that can perform web searches to find information. "
+                    + "When asked to find information, use the web search tool to gather relevant data.")
+                .setTools(Collections.singletonList(tool));
 
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            agent = agentsClient.createAgentVersion("web-search-agent", agentDefinition);
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
-                .input("What are the latest trends in renewable energy?")
-                .build());
+            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
+                    .input("What are the latest trends in renewable energy?")
+                    .build());
 
             // Process and display the response
             for (ResponseOutputItem outputItem : response.output()) {
@@ -84,7 +78,10 @@ public class WebSearchSync {
                 }
             }
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted");
+            }
         }
     }
 }

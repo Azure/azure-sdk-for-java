@@ -5,6 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -16,13 +18,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.services.blocking.ConversationService;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,26 +64,22 @@ public class McpWithConnectionSync {
             .setInstructions("Use MCP tools as needed")
             .setTools(Collections.singletonList(mcpTool));
 
-        String agentName = "mcp-connection-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("mcp-connection-agent", agentDefinition);
+        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
-
-
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Create a conversation for context
             Conversation conversation = conversationService.create();
 
             // Send initial request that triggers the MCP tool
-            Response response = openAIClient.responses().create(ResponseCreateParams.builder()
-                .conversation(conversation.id())
-                .input("What is my username in GitHub profile?")
-                .build());
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
+                    .conversation(conversation.id())
+                    .input("What is my username in GitHub profile?")
+                    .build());
 
             // Process MCP approval requests: approve each one so the agent can proceed
             List<ResponseInputItem> approvals = new ArrayList<>();
@@ -110,18 +101,20 @@ public class McpWithConnectionSync {
                 System.out.println("Sending " + approvals.size() + " approval(s)...");
 
                 // Send approvals back to continue the agent's work
-                Response followUp = openAIClient.responses().create(ResponseCreateParams.builder()
-                    .conversation(conversation.id())
-                    .inputOfResponse(approvals)
-                    .previousResponseId(response.id())
-                    .build());
+                Response followUp = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .conversation(conversation.id())
+                        .inputOfResponse(approvals)
+                        .previousResponseId(response.id())
+                        .build());
 
                 System.out.println("Response: " + followUp.output());
             } else {
                 System.out.println("Response: " + response.output());
             }
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Agent deleted");
         }
     }
 }

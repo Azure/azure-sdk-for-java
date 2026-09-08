@@ -5,8 +5,15 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
@@ -15,13 +22,6 @@ import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.util.Collections;
 
@@ -47,26 +47,28 @@ public class CodeInterpreterStreamingSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
 
-        // Create a CodeInterpreterTool - an Azure-specific tool for executing Python code
-        CodeInterpreterTool tool = new CodeInterpreterTool();
+        AgentVersionDetails agent = null;
 
-        // Create agent with Code Interpreter tool
-        PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("You are a helpful assistant that can execute Python code to solve problems. "
-                + "When asked to perform calculations, use the code interpreter to run Python code.")
-            .setTools(Collections.singletonList(tool));
-
-        String agentName = "code-interpreter-streaming-agent";
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, agentDefinition);
         try {
-            agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(
-                new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))));
+            // Create a CodeInterpreterTool - an Azure-specific tool for executing Python code
+            CodeInterpreterTool tool = new CodeInterpreterTool();
 
+            // Create agent with Code Interpreter tool
+            PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
+                .setInstructions("You are a helpful assistant that can execute Python code to solve problems. "
+                    + "When asked to perform calculations, use the code interpreter to run Python code.")
+                .setTools(Collections.singletonList(tool));
 
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+            agent = agentsClient.createAgentVersion("code-interpreter-streaming-agent", agentDefinition);
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+
+            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+            agentsClient.updateAgentDetails(agent.getName(),
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // BEGIN: com.azure.ai.agents.streaming.code_interpreter_sync
             // Stream response with Code Interpreter - observe code execution events as they arrive
@@ -99,7 +101,10 @@ public class CodeInterpreterStreamingSync {
             System.out.println("\nResponse ID: " + response.id());
             // END: com.azure.ai.agents.streaming.code_interpreter_sync
         } finally {
-            agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+            if (agent != null) {
+                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+                System.out.println("Agent deleted");
+            }
         }
     }
 }

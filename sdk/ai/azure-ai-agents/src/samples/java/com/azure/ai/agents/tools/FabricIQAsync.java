@@ -5,6 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FabricIqPreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -15,13 +17,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import reactor.core.publisher.Mono;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -52,6 +47,7 @@ public class FabricIQAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
             .setServerLabel("fabric-iq-tool")
@@ -61,27 +57,30 @@ public class FabricIQAsync {
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(fabricIqTool));
 
-        Mono.usingWhen(
-                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
-                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
-                            new UpdateAgentDetailsOptions().setAgentEndpoint(
-                                new AgentEndpointConfig()
-                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
-                        .thenReturn(agent)),
-                agent -> {
-                    OpenAIClientAsync openAIAsyncClient
-                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
-                    return Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+        Mono<Void> workflow = Mono.usingWhen(
+            agentsAsyncClient.createAgentVersion(agentName, agentDefinition),
+            agent -> {
+                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
+
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent.getName(), agent)
+                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                        ResponseCreateParams.builder()
                             .input(userInput)
-                            .build()))
-                        .doOnNext(FabricIQAsync::printResponse);
-                },
-                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
-            .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-            .timeout(Duration.ofSeconds(300))
-            .block();
+                            .build())))
+                    .doOnNext(FabricIQAsync::printResponse)
+                    .then();
+            },
+            agent -> cleanup(agentsAsyncClient, agent),
+            (agent, error) -> cleanup(agentsAsyncClient, agent),
+            agent -> cleanup(agentsAsyncClient, agent))
+            .timeout(Duration.ofSeconds(300));
+
+        workflow.block();
+    }
+
+    private static Mono<Void> cleanup(AgentsAsyncClient agentsAsyncClient, AgentVersionDetails agent) {
+        return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
+            .doOnSuccess(v -> System.out.println("Agent deleted"));
     }
 
     private static void printResponse(Response response) {

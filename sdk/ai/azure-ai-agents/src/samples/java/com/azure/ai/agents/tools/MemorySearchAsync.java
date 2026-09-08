@@ -5,18 +5,14 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.BetaMemoryStoresClient;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -56,6 +52,7 @@ public class MemorySearchAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient("memory-search-agent");
         ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Memory store operations use sync client for setup/teardown
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
@@ -63,6 +60,7 @@ public class MemorySearchAsync {
         String memoryStoreName = "my_memory_store";
         String scope = "user_123";
 
+        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
         AtomicReference<String> firstConvRef = new AtomicReference<>();
         AtomicReference<String> secondConvRef = new AtomicReference<>();
 
@@ -86,44 +84,38 @@ public class MemorySearchAsync {
             .setInstructions("You are a helpful assistant that answers general questions.")
             .setTools(Collections.singletonList(tool));
 
-        String agentName = "memory-search-agent";
-        Mono.usingWhen(
-                agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
-                    .flatMap(agent -> agentsAsyncClient.updateAgentDetails(agentName,
-                            new UpdateAgentDetailsOptions().setAgentEndpoint(
-                                new AgentEndpointConfig()
-                                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                                        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()))))
-                        .thenReturn(agent)),
-                agent -> {
-                    OpenAIClientAsync openAIAsyncClient
-                        = builder.buildAgentScopedOpenAIAsyncClient(agentName);
+        agentsAsyncClient.createAgentVersion("memory-search-agent", agentDefinition)
+            .flatMap(agent -> {
+                agentRef.set(agent);
+                System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                    // First conversation: teach a preference
-                    return Mono.fromFuture(conversationServiceAsync.create())
-                        .<Response>flatMap(conv -> {
-                            firstConvRef.set(conv.id());
-                            return Mono.fromFuture(openAIAsyncClient.responses().create(
-                                ResponseCreateParams.builder()
-                                    .conversation(conv.id())
-                                    .input("I prefer dark roast coffee")
-                                    .build()));
-                        })
-                        .doOnNext(response -> System.out.println("First response received"))
-                        .delayElement(Duration.ofSeconds(MEMORY_WRITE_DELAY_SECONDS))
-                        .flatMap(ignored -> Mono.fromFuture(conversationServiceAsync.create())
-                            .<Response>flatMap(conv -> {
-                                secondConvRef.set(conv.id());
-                                return Mono.fromFuture(openAIAsyncClient.responses().create(
-                                    ResponseCreateParams.builder()
-                                        .conversation(conv.id())
-                                        .input("Please order my usual coffee")
-                                        .build()));
-                            }))
-                        .doOnNext(response -> System.out.println("Response: " + response.output()));
-                },
-                agent -> agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion()))
+                // First conversation: teach a preference
+                return Mono.fromFuture(conversationServiceAsync.create())
+                    .<Response>flatMap(conv -> {
+                        firstConvRef.set(conv.id());
+                        return SampleUtils.pinAgentVersion(agentsAsyncClient, agent.getName(), agent)
+                            .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("I prefer dark roast coffee")
+                                .build())));
+                    });
+            })
+            .doOnNext(response -> System.out.println("First response received"))
+            .delayElement(Duration.ofSeconds(MEMORY_WRITE_DELAY_SECONDS))
+            .flatMap(ignored -> {
+                // Second conversation: test memory recall
+                return Mono.fromFuture(conversationServiceAsync.create())
+                    .<Response>flatMap(conv -> {
+                        secondConvRef.set(conv.id());
+                        return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("Please order my usual coffee")
+                                .build()));
+                    });
+            })
+            .doOnNext(response -> System.out.println("Response: " + response.output()))
             .doFinally(signal -> {
                 // Cleanup — await conversation deletes before proceeding
                 try {
@@ -137,6 +129,11 @@ public class MemorySearchAsync {
                     }
                 } catch (Exception ignored) {
                     // best-effort
+                }
+                AgentVersionDetails agent = agentRef.get();
+                if (agent != null) {
+                    agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
+                    System.out.println("Agent deleted");
                 }
                 try {
                     memoryStoresClient.deleteMemoryStore(memoryStoreName);
