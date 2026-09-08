@@ -26,24 +26,24 @@ public class SampleUtils {
      * Pins an agent endpoint to a specific agent version and enables the OpenAI Responses protocol.
      *
      * @param agentsClient the agents client
-     * @param agentName the agent name
-     * @param agent the agent version to pin
+     * @param versionDetails the agent version to pin
+     * @return the updated agent details
      */
-    public static void pinAgentVersion(AgentsClient agentsClient, String agentName, AgentVersionDetails agent) {
-        agentsClient.updateAgentDetails(agentName, createPinnedEndpointOptions(agent));
+    public static AgentDetails pinAgentVersion(AgentsClient agentsClient, AgentVersionDetails versionDetails) {
+        return agentsClient.updateAgentDetails(versionDetails.getName(), createPinnedEndpointOptions(versionDetails));
     }
 
     /**
      * Pins an agent endpoint to a specific agent version and enables the OpenAI Responses protocol.
      *
      * @param agentsAsyncClient the asynchronous agents client
-     * @param agentName the agent name
-     * @param agent the agent version to pin
+     * @param versionDetails the agent version to pin
      * @return a publisher containing the updated agent details
      */
-    public static Mono<AgentDetails> pinAgentVersion(AgentsAsyncClient agentsAsyncClient, String agentName,
-        AgentVersionDetails agent) {
-        return agentsAsyncClient.updateAgentDetails(agentName, createPinnedEndpointOptions(agent));
+    public static Mono<AgentDetails> pinAgentVersion(AgentsAsyncClient agentsAsyncClient,
+        AgentVersionDetails versionDetails) {
+        return agentsAsyncClient.updateAgentDetails(versionDetails.getName(),
+            createPinnedEndpointOptions(versionDetails));
     }
 
     /**
@@ -73,10 +73,10 @@ public class SampleUtils {
         throw new RuntimeException("Sample resource file not found: " + fileName);
     }
 
-    private static UpdateAgentDetailsOptions createPinnedEndpointOptions(AgentVersionDetails agent) {
+    private static UpdateAgentDetailsOptions createPinnedEndpointOptions(AgentVersionDetails versionDetails) {
         AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
             .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                new FixedRatioVersionSelectionRule(100).setAgentVersion(versionDetails.getVersion()))))
             .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
         return new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig);

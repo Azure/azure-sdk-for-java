@@ -61,7 +61,7 @@ public class ImageGenerationSync {
 
         try {
             // Create a response
-            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Response response = openAIClient.responses().create(

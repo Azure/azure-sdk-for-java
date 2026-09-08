@@ -102,7 +102,7 @@ public class ComputerUseSync {
             System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
                 agent.getId(), agent.getName(), agent.getVersion());
 
-            SampleUtils.pinAgentVersion(agentsClient, agent.getName(), agent);
+            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Initial request with screenshot - start with Bing search page

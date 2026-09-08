@@ -93,7 +93,7 @@ public class MemorySearchAsync {
                 return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         firstConvRef.set(conv.id());
-                        return SampleUtils.pinAgentVersion(agentsAsyncClient, agent.getName(), agent)
+                        return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
                             .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                             ResponseCreateParams.builder()
                                 .conversation(conv.id())

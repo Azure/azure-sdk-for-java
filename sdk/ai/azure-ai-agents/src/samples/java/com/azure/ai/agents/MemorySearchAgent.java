@@ -3,18 +3,12 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -78,12 +72,7 @@ public class MemorySearchAgent {
             agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
-            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
-                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-            agentsClient.updateAgentDetails(agent.getName(),
-                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+            SampleUtils.pinAgentVersion(agentsClient, agent);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 

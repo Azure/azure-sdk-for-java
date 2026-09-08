@@ -82,7 +82,7 @@ public class OpenApiSync {
                 .build());
 
         try {
-            SampleUtils.pinAgentVersion(agentsClient, agentVersion.getName(), agentVersion);
+            SampleUtils.pinAgentVersion(agentsClient, agentVersion);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentVersion.getName());
 
             ResponseCreateParams.Builder options = ResponseCreateParams.builder()

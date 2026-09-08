@@ -69,7 +69,7 @@ public class WorkIQAsync {
                     System.out.printf("Agent created: %s (version %s)%n",
                         createdAgent.getName(), createdAgent.getVersion());
 
-                    return SampleUtils.pinAgentVersion(agentsAsyncClient, createdAgent.getName(), createdAgent)
+                    return SampleUtils.pinAgentVersion(agentsAsyncClient, createdAgent)
                         .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                         ResponseCreateParams.builder()
                             .toolChoice(ToolChoiceOptions.REQUIRED)
