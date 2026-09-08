@@ -56,6 +56,16 @@ public final class DirectoriesImpl {
         this.client = client;
     }
 
+    // Reuses an existing (URL-independent) proxy so URL-rebased clients avoid re-creating RestProxy.
+    DirectoriesImpl(AzureFileStorageImpl client, DirectoriesService service) {
+        this.service = service;
+        this.client = client;
+    }
+
+    DirectoriesService getService() {
+        return this.service;
+    }
+
     /**
      * Gets Service version.
      *

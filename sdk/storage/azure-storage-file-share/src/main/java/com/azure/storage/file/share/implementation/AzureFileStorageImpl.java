@@ -229,4 +229,30 @@ public final class AzureFileStorageImpl {
         this.services = new ServicesImpl(this);
         this.shares = new SharesImpl(this);
     }
+
+    // Resource-URL-scoped view that reuses this client's operation proxies. The service URL is a per-call @HostParam,
+    // so proxies are URL-independent and safe to share; this avoids re-creating RestProxy for every sub-client.
+    private AzureFileStorageImpl(AzureFileStorageImpl parent, String url) {
+        this.httpPipeline = parent.httpPipeline;
+        this.serializerAdapter = parent.serializerAdapter;
+        this.url = url;
+        this.fileRequestIntent = parent.fileRequestIntent;
+        this.allowTrailingDot = parent.allowTrailingDot;
+        this.allowSourceTrailingDot = parent.allowSourceTrailingDot;
+        this.serviceVersion = parent.serviceVersion;
+        this.directories = new DirectoriesImpl(this, parent.directories.getService());
+        this.files = new FilesImpl(this, parent.files.getService());
+        this.services = new ServicesImpl(this, parent.services.getService());
+        this.shares = new SharesImpl(this, parent.shares.getService());
+    }
+
+    /**
+     * Creates a resource-URL-scoped view of this client that shares this client's operation proxies.
+     *
+     * @param url the resource URL to target.
+     * @return an AzureFileStorageImpl targeting {@code url} and reusing this client's proxies.
+     */
+    public AzureFileStorageImpl withUrl(String url) {
+        return new AzureFileStorageImpl(this, url);
+    }
 }

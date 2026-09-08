@@ -58,6 +58,16 @@ public final class FilesImpl {
         this.client = client;
     }
 
+    // Reuses an existing (URL-independent) proxy so URL-rebased clients avoid re-creating RestProxy.
+    FilesImpl(AzureFileStorageImpl client, FilesService service) {
+        this.service = service;
+        this.client = client;
+    }
+
+    FilesService getService() {
+        return this.service;
+    }
+
     /**
      * Gets Service version.
      *

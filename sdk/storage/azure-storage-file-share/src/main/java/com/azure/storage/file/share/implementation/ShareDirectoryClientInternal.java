@@ -735,7 +735,10 @@ public final class ShareDirectoryClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         if (filePermission != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
@@ -818,7 +821,10 @@ public final class ShareDirectoryClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         if (filePermission != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
@@ -1216,7 +1222,10 @@ public final class ShareDirectoryClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         Response<Void> protocolMethodResponse = setMetadataWithResponseInternal(requestOptions);
         return new SimpleResponse<>(protocolMethodResponse,
@@ -1245,7 +1254,10 @@ public final class ShareDirectoryClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         Response<Void> protocolMethodResponse = setMetadataWithResponseInternal(requestOptions);
         return new DirectoriesSetMetadataHeaders(protocolMethodResponse.getHeaders());
@@ -1703,7 +1715,10 @@ public final class ShareDirectoryClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         Response<Void> protocolMethodResponse = renameWithResponseInternal(renameSource, requestOptions);
         return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
@@ -1786,7 +1801,10 @@ public final class ShareDirectoryClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         renameWithResponseInternal(renameSource, requestOptions).getValue();
     }

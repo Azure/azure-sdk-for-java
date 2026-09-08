@@ -95,6 +95,10 @@ public class ShareStorageCustomization extends Customization {
 
         exposeRawListHandles(customization, logger);
 
+        addProxyReuseForResourceScoping(customization, logger);
+
+        fixMetadataHeaderSerialization(customization, logger);
+
         fixXmlSerializerRedundantCast(customization, logger);
 
         relocateDownloadHeadersToModels(customization, logger);
@@ -289,6 +293,113 @@ public class ShareStorageCustomization extends Customization {
             if (content.contains("FileServiceVersion")) {
                 editor.replaceFile(path, content.replace("FileServiceVersion", "ShareServiceVersion"));
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
+            }
+        }
+    }
+
+    /**
+     * Adds a URL-rebasing capability to the generated implementation so that resource-URL-scoped clients can reuse the
+     * account-scoped client's operation proxies instead of re-creating {@code RestProxy} for every sub-client. The
+     * service URL is a per-call {@code @HostParam}, so the operation proxies are URL-independent and safe to share.
+     * Each sub-impl ({@code DirectoriesImpl}/{@code FilesImpl}/{@code ServicesImpl}/{@code SharesImpl}) gains a
+     * package-private {@code (AzureFileStorageImpl, <Service>)} constructor plus a {@code getService()} accessor, and
+     * {@code AzureFileStorageImpl} gains a public {@code withUrl(String)} plus a private rebasing constructor.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void addProxyReuseForResourceScoping(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String implRoot = PKG_ROOT + "implementation/";
+
+        String[][] subImpls = {
+            { "DirectoriesImpl", "DirectoriesService" },
+            { "FilesImpl", "FilesService" },
+            { "ServicesImpl", "ServicesService" },
+            { "SharesImpl", "SharesService" } };
+        String ctorEnd = "        this.client = client;\n    }";
+        for (String[] pair : subImpls) {
+            String implName = pair[0];
+            String svc = pair[1];
+            String path = implRoot + implName + ".java";
+            String content = editor.getFileContent(path);
+            String injected = ctorEnd + "\n\n"
+                + "    // Reuses an existing (URL-independent) proxy so URL-rebased clients avoid re-creating RestProxy.\n"
+                + "    " + implName + "(AzureFileStorageImpl client, " + svc + " service) {\n"
+                + "        this.service = service;\n"
+                + "        this.client = client;\n"
+                + "    }\n\n"
+                + "    " + svc + " getService() {\n"
+                + "        return this.service;\n"
+                + "    }";
+            content = content.replace(ctorEnd, injected);
+            editor.replaceFile(path, content);
+            logger.info("Added proxy-reuse constructor + getService() to {}", implName);
+        }
+
+        // AzureFileStorageImpl: add the private rebasing constructor + public withUrl(String).
+        String afsPath = implRoot + "AzureFileStorageImpl.java";
+        String afs = editor.getFileContent(afsPath);
+        String sharesInit = "        this.shares = new SharesImpl(this);\n    }";
+        String rebase = sharesInit + "\n\n"
+            + "    // Resource-URL-scoped view that reuses this client's operation proxies. The service URL is a per-call @HostParam,\n"
+            + "    // so proxies are URL-independent and safe to share; this avoids re-creating RestProxy for every sub-client.\n"
+            + "    private AzureFileStorageImpl(AzureFileStorageImpl parent, String url) {\n"
+            + "        this.httpPipeline = parent.httpPipeline;\n"
+            + "        this.serializerAdapter = parent.serializerAdapter;\n"
+            + "        this.url = url;\n"
+            + "        this.fileRequestIntent = parent.fileRequestIntent;\n"
+            + "        this.allowTrailingDot = parent.allowTrailingDot;\n"
+            + "        this.allowSourceTrailingDot = parent.allowSourceTrailingDot;\n"
+            + "        this.serviceVersion = parent.serviceVersion;\n"
+            + "        this.directories = new DirectoriesImpl(this, parent.directories.getService());\n"
+            + "        this.files = new FilesImpl(this, parent.files.getService());\n"
+            + "        this.services = new ServicesImpl(this, parent.services.getService());\n"
+            + "        this.shares = new SharesImpl(this, parent.shares.getService());\n"
+            + "    }\n\n"
+            + "    /**\n"
+            + "     * Creates a resource-URL-scoped view of this client that shares this client's operation proxies.\n"
+            + "     *\n"
+            + "     * @param url the resource URL to target.\n"
+            + "     * @return an AzureFileStorageImpl targeting {@code url} and reusing this client's proxies.\n"
+            + "     */\n"
+            + "    public AzureFileStorageImpl withUrl(String url) {\n"
+            + "        return new AzureFileStorageImpl(this, url);\n"
+            + "    }";
+        afs = afs.replace(sharesInit, rebase);
+        editor.replaceFile(afsPath, afs);
+        logger.info("Added withUrl(String) + rebasing constructor to AzureFileStorageImpl");
+    }
+
+    /**
+     * Corrects the metadata request-header serialization in the relocated {@code Share*Internal} convenience clients.
+     * The emitter writes the {@code Record<string>} metadata as a single {@code x-ms-meta} header via
+     * {@code String.valueOf(metadata)} (Java {@code Map.toString()}), instead of the per-entry
+     * {@code x-ms-meta-<name>: <value>} headers the service expects. This rewrites each occurrence to emit one header
+     * per map entry, preserving the behavior of the retired AutoRest client. Remove once the emitter honors the
+     * {@code collectionHeaderPrefix}/{@code x-ms-meta-} client option for Java.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void fixMetadataHeaderSerialization(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String implRoot = PKG_ROOT + "implementation/";
+        String[] internalClients = { "ShareAsyncClientInternal", "ShareClientInternal",
+            "ShareDirectoryAsyncClientInternal", "ShareDirectoryClientInternal", "ShareFileAsyncClientInternal",
+            "ShareFileClientInternal" };
+        String broken
+            = "requestOptions.setHeader(HttpHeaderName.fromString(\"x-ms-meta\"), String.valueOf(metadata));";
+        String fixed = "for (Map.Entry<String, String> entry : metadata.entrySet()) {\n"
+            + "                requestOptions.setHeader(HttpHeaderName.fromString(\"x-ms-meta-\" + entry.getKey()),\n"
+            + "                    entry.getValue());\n"
+            + "            }";
+        for (String name : internalClients) {
+            String path = implRoot + name + ".java";
+            String content = editor.getFileContent(path);
+            if (content.contains(broken)) {
+                editor.replaceFile(path, content.replace(broken, fixed));
+                logger.info("Fixed metadata header serialization in {}", name);
             }
         }
     }

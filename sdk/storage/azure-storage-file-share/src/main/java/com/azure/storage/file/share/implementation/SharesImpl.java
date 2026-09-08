@@ -57,6 +57,16 @@ public final class SharesImpl {
         this.client = client;
     }
 
+    // Reuses an existing (URL-independent) proxy so URL-rebased clients avoid re-creating RestProxy.
+    SharesImpl(AzureFileStorageImpl client, SharesService service) {
+        this.service = service;
+        this.client = client;
+    }
+
+    SharesService getService() {
+        return this.service;
+    }
+
     /**
      * Gets Service version.
      *

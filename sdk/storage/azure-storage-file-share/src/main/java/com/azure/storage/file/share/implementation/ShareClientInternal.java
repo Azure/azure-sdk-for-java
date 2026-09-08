@@ -1123,7 +1123,10 @@ public final class ShareClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         if (quota != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-quota"), String.valueOf(quota));
@@ -1209,7 +1212,10 @@ public final class ShareClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         if (quota != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-quota"), String.valueOf(quota));
@@ -1940,7 +1946,10 @@ public final class ShareClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         Response<Void> protocolMethodResponse = createSnapshotWithResponseInternal(requestOptions);
         return new SimpleResponse<>(protocolMethodResponse,
@@ -1969,7 +1978,10 @@ public final class ShareClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         Response<Void> protocolMethodResponse = createSnapshotWithResponseInternal(requestOptions);
         return new SharesCreateSnapshotHeaders(protocolMethodResponse.getHeaders());
@@ -2372,7 +2384,10 @@ public final class ShareClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -2405,7 +2420,10 @@ public final class ShareClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()),
+                    entry.getValue());
+            }
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
