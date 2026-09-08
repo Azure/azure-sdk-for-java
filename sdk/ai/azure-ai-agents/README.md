@@ -782,25 +782,28 @@ See the full samples in [SimpleStreamingSync.java](https://github.com/Azure/azur
 The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrating naturally with Reactor pipelines:
 
 ```java com.azure.ai.agents.streaming.simple_async
-// Use ResponseAccumulator to collect streamed events into a final Response
-ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+// OpenAI streaming events arrive through callbacks. This Mono only tracks terminal completion.
+Mono<Void> streamingCompletion = Mono.defer(() -> {
+    ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer.")
+            .build());
 
-// Stream response asynchronously - text is printed as each chunk arrives
-return Mono.fromFuture(openAIAsyncClient.responses()
-    .createStreaming(ResponseCreateParams.builder()
-        .input("Tell me a short story about a brave explorer.")
-        .build())
-    .subscribe(event -> responseAccumulator.accumulate(event)
+    stream.subscribe(event -> responseAccumulator.accumulate(event)
         .outputTextDelta()
-        .ifPresent(textEvent -> System.out.print(textEvent.delta())))
-    .onCompleteFuture())
-    .doOnSuccess(unused -> {
-        System.out.println(); // newline after streamed text
+        .ifPresent(textEvent -> System.out.print(textEvent.delta())));
 
-        // Access the complete accumulated response
-        Response response = responseAccumulator.response();
-        System.out.println("\nResponse ID: " + response.id());
-    });
+    return Mono.fromFuture(stream.onCompleteFuture())
+        .doOnSuccess(unused -> {
+            System.out.println(); // newline after streamed text
+
+            // Access the complete accumulated response
+            Response response = responseAccumulator.response();
+            System.out.println("\nResponse ID: " + response.id());
+        })
+        .doFinally(signal -> stream.close());
+});
 ```
 
 See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
