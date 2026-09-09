@@ -14,17 +14,17 @@ public final class ProtectionIntentResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionIntentResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"Invalid\",\"sourceResourceId\":\"ypmbltoormkfq\",\"itemId\":\"xldykalsygaolnjp\",\"policyId\":\"bmjk\",\"protectionState\":\"ProtectionFailed\"},\"tags\":{\"ahmrnadzyqegxyi\":\"sjjx\",\"mbk\":\"pinbmhwbjijkgqxn\",\"ujvaannggi\":\"znj\"},\"location\":\"wkdtaawxwf\",\"eTag\":\"aumrrqmbzmqkrat\",\"id\":\"xwbjs\",\"name\":\"dbirkfpksokdgo\",\"type\":\"ewijymrhbguz\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"Invalid\",\"sourceResourceId\":\"wnf\",\"itemId\":\"hhhqosm\",\"policyId\":\"jkutycyarnr\",\"protectionState\":\"ProtectionFailed\"},\"tags\":{\"ocnhzqrottjzcfyj\":\"abzoghktdpyczhco\",\"rl\":\"pt\",\"pqinf\":\"h\"},\"location\":\"pyglqdhmrjzral\",\"eTag\":\"pjby\",\"id\":\"sjoqcjenkyhfqzvs\",\"name\":\"xfxjelgcmpzqj\",\"type\":\"hhqxuwyvcacoyviv\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"sjsz\",\"itemId\":\"scmnlziji\",\"policyId\":\"ehgmvflnwyv\",\"protectionState\":\"Protecting\"},\"tags\":{\"lyfwxzutg\":\"rlniyl\",\"yjtcdxabbujftab\":\"ztwhghmupg\",\"wwnlzafwxudgnh\":\"nbbklqpxzucafed\"},\"location\":\"okrtalvnb\",\"eTag\":\"pbeme\",\"id\":\"clvdjjukyrdnqod\",\"name\":\"ahhxhqfaqnvzoqg\",\"type\":\"ipemchgavscz\"}],\"nextLink\":\"jdtxptlghwzhomew\"}")
+            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"cyar\",\"itemId\":\"oohguabzoghkt\",\"policyId\":\"yczhco\",\"protectionState\":\"Protecting\"},\"tags\":{\"tjzcfyjzpt\":\"zqro\",\"h\":\"rl\"},\"location\":\"qinfszpyglqd\",\"eTag\":\"rjzralcx\",\"id\":\"byypsjoqcjenky\",\"name\":\"fq\",\"type\":\"vsqxfxjelgcmpzqj\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"uwyvcacoyvi\",\"itemId\":\"s\",\"policyId\":\"usjszlbscm\",\"protectionState\":\"Protected\"},\"tags\":{\"nwyvq\":\"iufehgmvf\"},\"location\":\"rerlniy\",\"eTag\":\"lyfwxzutg\",\"id\":\"twhghmupgxyjtc\",\"name\":\"xabb\",\"type\":\"jf\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"Invalid\",\"sourceResourceId\":\"bbklqpxzuca\",\"itemId\":\"ddwwnlzafwxudgnh\",\"policyId\":\"okrtalvnb\",\"protectionState\":\"Protecting\"},\"tags\":{\"kyrdnqodx\":\"meluclvdjj\",\"aqnvzoqgyipemchg\":\"hhxhq\"},\"location\":\"sczuejdtxptlghwz\",\"eTag\":\"mewjjstliuhq\",\"id\":\"moaiancz\",\"name\":\"vodrrslblxydkxr\",\"type\":\"vvbxiwkgfbqljnq\"}],\"nextLink\":\"ychocokulehu\"}")
             .toObject(ProtectionIntentResourceList.class);
-        Assertions.assertEquals("jdtxptlghwzhomew", model.nextLink());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("ypmbltoormkfq", model.value().get(0).properties().sourceResourceId());
-        Assertions.assertEquals("xldykalsygaolnjp", model.value().get(0).properties().itemId());
-        Assertions.assertEquals("bmjk", model.value().get(0).properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED,
-            model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("sjjx", model.value().get(0).tags().get("ahmrnadzyqegxyi"));
-        Assertions.assertEquals("wkdtaawxwf", model.value().get(0).location());
-        Assertions.assertEquals("aumrrqmbzmqkrat", model.value().get(0).etag());
+        Assertions.assertEquals("ychocokulehu", model.nextLink());
+        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM,
+            model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("cyar", model.value().get(0).properties().sourceResourceId());
+        Assertions.assertEquals("oohguabzoghkt", model.value().get(0).properties().itemId());
+        Assertions.assertEquals("yczhco", model.value().get(0).properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("zqro", model.value().get(0).tags().get("tjzcfyjzpt"));
+        Assertions.assertEquals("qinfszpyglqd", model.value().get(0).location());
+        Assertions.assertEquals("rjzralcx", model.value().get(0).etag());
     }
 }

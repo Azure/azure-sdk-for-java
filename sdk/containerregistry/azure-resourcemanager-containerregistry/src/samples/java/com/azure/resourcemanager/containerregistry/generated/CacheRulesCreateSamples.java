@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class CacheRulesCreateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CacheRuleCreate.json
+     * x-ms-original-file: 2026-09-01-preview/CacheRuleCreate.json
      */
     /**
      * Sample code: CacheRuleCreate.
@@ -35,7 +35,7 @@ public final class CacheRulesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
+     * x-ms-original-file: 2026-09-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
      */
     /**
      * Sample code: CacheRuleCreateUserAssignedMIAuthentication.
@@ -56,7 +56,7 @@ public final class CacheRulesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
+     * x-ms-original-file: 2026-09-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
      */
     /**
      * Sample code: CacheRuleCreateUserAssignedMIAuthGoogle.

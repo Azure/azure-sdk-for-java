@@ -46,6 +46,10 @@ parameters:
     displayName: azure-resourcemanager-resources-bicep
     type: boolean
     default: false
+  - name: release_azureresourcemanagerresourcesdeployments
+    displayName: azure-resourcemanager-resources-deployments
+    type: boolean
+    default: false
   - name: release_azureresourcemanagerresourcespolicy
     displayName: azure-resourcemanager-resources-policy
     type: boolean
@@ -68,6 +72,10 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcesbicep
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesbicep }}
+      - name: azure-resourcemanager-resources-deployments
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcesdeployments
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesdeployments }}
       - name: azure-resourcemanager-resources-policy
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcespolicy

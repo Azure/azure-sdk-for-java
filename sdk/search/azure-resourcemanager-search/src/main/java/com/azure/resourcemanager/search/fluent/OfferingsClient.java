@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.search.fluent.models.OfferingsListResultInner;
+import com.azure.resourcemanager.search.fluent.models.OfferingsResultInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,55 +16,53 @@ import reactor.core.publisher.Mono;
  */
 public interface OfferingsClient {
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OfferingsListResultInner>> listWithResponseAsync();
+    Mono<Response<OfferingsResultInner>> fetchWithResponseAsync();
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region on successful
-     * completion of {@link Mono}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OfferingsListResultInner> listAsync();
+    Mono<OfferingsResultInner> fetchAsync();
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region along with
-     * {@link Response}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OfferingsListResultInner> listWithResponse(Context context);
+    Response<OfferingsResultInner> fetchWithResponse(Context context);
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OfferingsListResultInner list();
+    OfferingsResultInner fetch();
 }
