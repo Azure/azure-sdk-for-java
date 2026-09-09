@@ -8,15 +8,15 @@
 
 #### `models.DataMaskingFunction` was modified
 
-* `valueOf(java.lang.String)` was removed
 * `models.DataMaskingFunction[] values()` -> `java.util.Collection values()`
 * `toString()` was removed
+* `valueOf(java.lang.String)` was removed
 
 #### `models.DataMaskingRuleState` was modified
 
-* `valueOf(java.lang.String)` was removed
 * `toString()` was removed
 * `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
 
 #### `models.PrivateEndpointProvisioningState` was modified
 
@@ -61,14 +61,6 @@
 * `CREATED` was added
 * `SUCCEEDED` was added
 * `CANCELED` was added
-
-- Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
-  SQL authentication, and doesn't support Microsoft Entra ID or managed identities. For distributed applications, use
-  `SqlDatabase.DefinitionStages.WithSourceDatabaseId.withSourceDatabase` to create a database copy. For globally
-  distributed applications, additionally use
-  `SqlDatabase.DefinitionStages.WithCreateMode.withMode(CreateMode.ONLINE_SECONDARY)` for active geo-replication. Refer
-  to the [official retirement migration guidance](https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration)
-  for more alternatives.
 
 ## 2.54.0 (2026-07-16)
 
