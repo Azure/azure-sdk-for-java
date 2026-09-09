@@ -151,7 +151,11 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                serverSentResult = processTextEventStream(response.body().byteStream(), listener);
+                try {
+                    serverSentResult = processTextEventStream(response.body().byteStream(), listener);
+                } finally {
+                    response.body().close();
+                }
 
                 if (serverSentResult.getException() != null) {
                     // If an exception occurred while processing the text event stream, emit listener onError.
@@ -163,6 +167,7 @@ class OkHttpHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
+                response.body().close();
                 throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }

@@ -6,6 +6,7 @@ package io.clientcore.core.serialization.json;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonFactory;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.IOExceptionCheckedBiConsumer;
 
 import java.io.Closeable;
@@ -13,6 +14,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -1313,6 +1317,8 @@ public final class JsonWriter implements Closeable {
             return writeFloat((float) value);
         } else if (value instanceof Double) {
             return writeDouble((double) value);
+        } else if (value instanceof Number) {
+            return writeNumber((Number) value);
         } else if (value instanceof Boolean) {
             return writeBoolean((boolean) value);
         } else if (value instanceof byte[]) {
@@ -1326,6 +1332,10 @@ public final class JsonWriter implements Closeable {
         } else if (value instanceof BinaryData) {
             ((BinaryData) value).writeTo(this);
             return this;
+        } else if (value instanceof Duration) {
+            return writeString(CoreUtils.durationToStringWithDays((Duration) value));
+        } else if (value instanceof OffsetDateTime) {
+            return writeString(DateTimeFormatter.ISO_OFFSET_DATE_TIME.format((OffsetDateTime) value));
         } else if (value instanceof Object[]) {
             writeStartArray();
             for (Object element : (Object[]) value) {

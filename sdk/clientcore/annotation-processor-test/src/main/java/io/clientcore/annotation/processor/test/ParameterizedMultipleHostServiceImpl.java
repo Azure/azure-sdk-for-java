@@ -47,11 +47,10 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         return new ParameterizedMultipleHostServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get(String scheme, String hostPart1, String hostPart2) {
         // Create the HttpRequest.
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + hostPart1 + hostPart2 + "/get");
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri((scheme == null ? "" : scheme) + "://" + (hostPart1 == null ? "" : hostPart1) + (hostPart2 == null ? "" : hostPart2) + "/get");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -59,18 +58,19 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         if (!expectedResponse) {
             // Handle unexpected response
             GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
-            networkResponse.close();
         }
-        HttpBinJSON deserializedResult;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+        try (Response<BinaryData> networkResponseToClose = networkResponse) {
+            HttpBinJSON deserializedResult;
+            ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+            SerializationFormat responseSerializationFormat = CoreUtils.serializationFormatFromContentType(networkResponseToClose.getHeaders());
+            if (jsonSerializer.supportsFormat(responseSerializationFormat) || responseSerializationFormat == SerializationFormat.TEXT) {
+                deserializedResult = CoreUtils.decodeNetworkResponse(networkResponseToClose.getValue(), jsonSerializer, returnType);
+            } else if (xmlSerializer.supportsFormat(responseSerializationFormat)) {
+                deserializedResult = CoreUtils.decodeNetworkResponse(networkResponseToClose.getValue(), xmlSerializer, returnType);
+            } else {
+                throw LOGGER.throwableAtError().addKeyValue("serializationFormat", responseSerializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
+            }
+            return deserializedResult;
         }
-        return deserializedResult;
     }
 }

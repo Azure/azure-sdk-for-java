@@ -5,6 +5,8 @@ package io.clientcore.annotation.processor.models;
 
 import java.util.List;
 import java.util.Map;
+import javax.lang.model.type.TypeKind;
+import io.clientcore.annotation.processor.mocks.MockTypeMirror;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,6 +48,17 @@ public class HttpRequestContextTest {
         assertEquals(2, values.size());
         assertTrue(values.contains("v1"));
         assertTrue(values.contains("v2"));
+    }
+
+    @Test
+    void testDynamicHeaderReplacesStaticHeaderCaseInsensitively() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addStaticHeaders(new String[] { "X-Test:static" });
+
+        context.setHeader("x-test", "dynamicValue");
+
+        assertEquals(1, context.getHeaders().size());
+        assertEquals("dynamicValue", context.getHeaders().get("x-test").get(0));
     }
 
     @Test
@@ -98,5 +111,16 @@ public class HttpRequestContextTest {
         assertEquals(body, ctx.getBody());
         assertEquals("application/json", ctx.getBody().getContentType());
         assertEquals("param", ctx.getBody().getParameterName());
+    }
+
+    @Test
+    void testAddFormParameter() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addFormParameter(new HttpRequestContext.FormParameter("display name",
+            new MockTypeMirror(TypeKind.DECLARED, "java.lang.String"), "displayName", true));
+
+        assertEquals(1, context.getFormParameters().size());
+        assertEquals("display name", context.getFormParameters().get(0).getName());
+        assertTrue(context.getFormParameters().get(0).shouldEncode());
     }
 }

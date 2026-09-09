@@ -4,8 +4,11 @@
 package io.clientcore.annotation.processor.utils;
 
 import io.clientcore.annotation.processor.exceptions.MissingSubstitutionException;
+import io.clientcore.annotation.processor.mocks.MockDeclaredType;
+import io.clientcore.annotation.processor.mocks.MockTypeMirror;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
+import javax.lang.model.type.TypeKind;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -414,5 +417,31 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("nextLink", "nextLinkVar"));
         String result = PathBuilder.buildPath("{nextLink}", context);
         assertEquals("nextLinkVar", result);
+    }
+
+    @Test
+    public void omitsNullOptionalPathParameter() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("name", "name", true));
+        context.addParameter(new HttpRequestContext.MethodParameter(
+            new MockDeclaredType(TypeKind.DECLARED, "java.lang.String"), "String", "name", null));
+
+        String result = PathBuilder.buildPath("/parameters/path/optional{name}", context);
+
+        assertEquals(
+            "\"/parameters/path/optional\" + (name == null ? \"\" : " + "UriEscapers.PATH_ESCAPER.escape(name))",
+            result);
+    }
+
+    @Test
+    public void encodesPrimitivePathParameter() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("id", "id", true));
+        context.addParameter(
+            new HttpRequestContext.MethodParameter(new MockTypeMirror(TypeKind.INT, "int"), "int", "id", null));
+
+        String result = PathBuilder.buildPath("/items/{id}", context);
+
+        assertEquals("\"/items/\" + UriEscapers.PATH_ESCAPER.escape(String.valueOf(id))", result);
     }
 }

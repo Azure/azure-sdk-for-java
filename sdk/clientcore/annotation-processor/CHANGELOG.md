@@ -3,10 +3,18 @@
 ## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
+- Added support for `FormParam`, header collections, server-sent event listeners, and nested generic response types.
+- Added support for text responses, standard Base64 responses, optional path parameters, and pre-serialized multipart
+  request bodies.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed response lifecycle handling so eagerly decoded responses are closed exactly once while streaming responses
+  remain open for callers.
+- Fixed request body handling for unknown-length `BinaryData`, direct and sliced `ByteBuffer` values, dynamic content
+  types, and JSON media types with parameters.
+- Fixed dynamic headers replacing static headers and collection query parameters honoring their expansion setting.
 
 ### Other Changes
 

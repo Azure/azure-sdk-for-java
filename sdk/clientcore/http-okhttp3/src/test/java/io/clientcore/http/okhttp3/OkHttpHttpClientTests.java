@@ -14,6 +14,14 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSource;
+import okio.ForwardingSource;
+import okio.Okio;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.clientcore.http.okhttp3.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -167,6 +176,85 @@ public class OkHttpHttpClientTests {
 
             assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
             assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValues());
+        }
+    }
+
+    @Test
+    public void missingServerSentEventListenerClosesResponseBody() {
+        AtomicBoolean bodyClosed = new AtomicBoolean();
+        ResponseBody responseBody = new TrackingResponseBody(bodyClosed);
+        OkHttpClient okHttpClient = createServerSentEventClient(responseBody);
+        HttpClient client = new OkHttpHttpClient(okHttpClient);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/server-sent-events");
+
+        assertThrows(IllegalStateException.class, () -> client.send(request));
+
+        assertTrue(bodyClosed.get());
+    }
+
+    @Test
+    public void processedServerSentEventClosesResponseBody() {
+        AtomicBoolean bodyClosed = new AtomicBoolean();
+        HttpClient client = new OkHttpHttpClient(createServerSentEventClient(new TrackingResponseBody(bodyClosed)));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("https://localhost/server-sent-events")
+            .setServerSentEventListener(event -> {
+            });
+
+        try (Response<BinaryData> response = client.send(request)) {
+            assertEquals(200, response.getStatusCode());
+            assertTrue(bodyClosed.get());
+        }
+    }
+
+    private static OkHttpClient createServerSentEventClient(ResponseBody responseBody) {
+        return new OkHttpClient.Builder()
+            .addInterceptor(chain -> new okhttp3.Response.Builder().request(chain.request())
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .header("Content-Type", "text/event-stream")
+                .body(responseBody)
+                .build())
+            .build();
+    }
+
+    private static final class TrackingResponseBody extends ResponseBody {
+        private final BufferedSource source;
+
+        private TrackingResponseBody(AtomicBoolean closed) {
+            this.source = Okio.buffer(new TrackingSource(new Buffer().writeUtf8("data: value\n\n"), closed));
+        }
+
+        @Override
+        public MediaType contentType() {
+            return MediaType.parse("text/event-stream");
+        }
+
+        @Override
+        public long contentLength() {
+            return -1;
+        }
+
+        @Override
+        public BufferedSource source() {
+            return source;
+        }
+    }
+
+    private static final class TrackingSource extends ForwardingSource {
+        private final AtomicBoolean closed;
+
+        private TrackingSource(Buffer source, AtomicBoolean closed) {
+            super(source);
+            this.closed = closed;
+        }
+
+        @Override
+        public void close() throws IOException {
+            closed.set(true);
+            super.close();
         }
     }
 

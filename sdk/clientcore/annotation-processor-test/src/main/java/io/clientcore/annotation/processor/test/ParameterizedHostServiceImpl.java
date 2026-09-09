@@ -14,6 +14,10 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.GeneratedCodeUtils;
+import java.util.Arrays;
+import java.util.Base64;
+import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.serialization.SerializationFormat;
 
 /**
  * Initializes a new instance of the ParameterizedHostServiceImpl type.
@@ -43,21 +47,23 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
         return new ParameterizedHostServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String scheme, String host, int numberOfBytes) {
         // Create the HttpRequest.
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + host + "/bytes/" + numberOfBytes);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri((scheme == null ? "" : scheme) + "://" + (host == null ? "" : host) + "/bytes/" + UriEscapers.PATH_ESCAPER.escape(String.valueOf(numberOfBytes)));
         // Send the request through the httpPipeline
-        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
-            int responseCode = networkResponse.getStatusCode();
-            boolean expectedResponse = responseCode == 200;
-            if (!expectedResponse) {
-                // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
-            }
-            BinaryData responseBody = networkResponse.getValue();
-            return responseBody != null ? responseBody.toBytes() : null;
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 200;
+        if (!expectedResponse) {
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+        }
+        try (Response<BinaryData> networkResponseToClose = networkResponse) {
+            BinaryData responseBody = networkResponseToClose.getValue();
+            byte[] responseBytes = responseBody != null ? responseBody.toBytes() : null;
+            boolean quotedBase64 = responseBytes != null && responseBytes.length >= 2 && responseBytes[0] == '"' && responseBytes[responseBytes.length - 1] == '"' && GeneratedCodeUtils.isJsonContentType(networkResponseToClose.getHeaders());
+            return quotedBase64 ? Base64.getDecoder().decode(Arrays.copyOfRange(responseBytes, 1, responseBytes.length - 1)) : responseBytes;
         }
     }
 }
