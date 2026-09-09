@@ -1,5 +1,15 @@
 # Release History
 
+## 2.56.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.56.0-beta.3 (2026-09-06)
 
 - Package api-version 2026-09-01-preview.
