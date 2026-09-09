@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class DistributedAvailabilityGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/DistributedAvailabilityGroupsUpdateDatabases.json
+     * x-ms-original-file: 2026-08-01-preview/DistributedAvailabilityGroupsUpdateDatabases.json
      */
     /**
      * Sample code: Update the databases of a distributed availability group.
@@ -34,7 +34,7 @@ public final class DistributedAvailabilityGroupsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/DistributedAvailabilityGroupsUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/DistributedAvailabilityGroupsUpdate.json
      */
     /**
      * Sample code: Update the distributed availability group replication mode before deleting it.

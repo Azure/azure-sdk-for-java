@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public final class ExtendedServerBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ExtendedServerBlobAuditingCreateMin.json
+     * x-ms-original-file: 2026-08-01-preview/ExtendedServerBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Update a server's extended blob auditing policy with minimal parameters.
@@ -34,7 +34,7 @@ public final class ExtendedServerBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ExtendedServerBlobAuditingCreateMax.json
+     * x-ms-original-file: 2026-08-01-preview/ExtendedServerBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Update a server's extended blob auditing policy with all parameters.

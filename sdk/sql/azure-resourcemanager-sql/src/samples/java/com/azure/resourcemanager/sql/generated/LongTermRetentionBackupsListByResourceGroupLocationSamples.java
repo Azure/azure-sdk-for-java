@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsListByResourceGroupLocationSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocationWithPagination.json
+     * x-ms-original-file: 2026-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocationWithPagination.json
      */
     /**
      * Sample code: Get long term retention backups under the location based on resource group with pagination.
@@ -20,12 +20,12 @@ public final class LongTermRetentionBackupsListByResourceGroupLocationSamples {
         com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getLongTermRetentionBackups()
-            .listByResourceGroupLocation("testResourceGroup", "japaneast", null, null,
+            .listByResourceGroupLocation("testResourceGroup", "japaneast", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
+     * x-ms-original-file: 2026-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
      */
     /**
      * Sample code: Get all long term retention backups under the location based on resource group.
@@ -36,7 +36,7 @@ public final class LongTermRetentionBackupsListByResourceGroupLocationSamples {
         com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getLongTermRetentionBackups()
-            .listByResourceGroupLocation("testResourceGroup", "japaneast", null, null,
+            .listByResourceGroupLocation("testResourceGroup", "japaneast", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }

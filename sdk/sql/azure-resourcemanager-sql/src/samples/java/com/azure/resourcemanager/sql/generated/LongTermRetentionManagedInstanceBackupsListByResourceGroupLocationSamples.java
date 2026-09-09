@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationSamples {
     /*
      * x-ms-original-file:
-     * 2025-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
+     * 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
      */
     /**
      * Sample code: Get all long term retention backups under the location.
@@ -27,7 +27,7 @@ public final class LongTermRetentionManagedInstanceBackupsListByResourceGroupLoc
 
     /*
      * x-ms-original-file:
-     * 2025-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocationMax.json
+     * 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocationMax.json
      */
     /**
      * Sample code: Get all long term retention backups under the location with maximal parameters.

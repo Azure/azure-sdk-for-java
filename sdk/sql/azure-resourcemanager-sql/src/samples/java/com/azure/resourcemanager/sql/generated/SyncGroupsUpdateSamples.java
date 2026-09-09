@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class SyncGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupPatchWithIdentity.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupPatchWithIdentity.json
      */
     /**
      * Sample code: Update a sync group with user assigned identity.
@@ -43,7 +43,7 @@ public final class SyncGroupsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupPatch.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupPatch.json
      */
     /**
      * Sample code: Update a sync group.
@@ -65,7 +65,7 @@ public final class SyncGroupsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
      */
     /**
      * Sample code: Update a sync group with new user assigned identity and remove older assigned identity.

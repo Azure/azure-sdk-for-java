@@ -15,7 +15,7 @@ import com.azure.resourcemanager.sql.models.Sku;
  */
 public final class ElasticPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateMax.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateMax.json
      */
     /**
      * Sample code: Update an elastic pool with all parameter.
@@ -36,7 +36,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
+     * x-ms-original-file: 2026-08-01-preview/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
      */
     /**
      * Sample code: Update high availability replica count of a Hyperscale elastic pool.
@@ -52,7 +52,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
      */
     /**
      * Sample code: Update an elastic pool with preferred enclave type parameter as VBS.
@@ -70,7 +70,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateMin.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateMin.json
      */
     /**
      * Sample code: Update an elastic pool with minimum parameters.
@@ -86,7 +86,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateAssignMaintenanceConfiguration.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateAssignMaintenanceConfiguration.json
      */
     /**
      * Sample code: Assigns maintenance configuration to an elastic pool.
@@ -104,7 +104,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
      */
     /**
      * Sample code: Update an elastic pool with preferred enclave type parameter as Default.
@@ -122,7 +122,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateResetMaintenanceConfiguration.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateResetMaintenanceConfiguration.json
      */
     /**
      * Sample code: Resets maintenance configuration of an elastic pool to default.
@@ -140,7 +140,7 @@ public final class ElasticPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ElasticPoolUpdateServerlessProperties.json
+     * x-ms-original-file: 2026-08-01-preview/ElasticPoolUpdateServerlessProperties.json
      */
     /**
      * Sample code: Update an elastic pool with serverless properties.

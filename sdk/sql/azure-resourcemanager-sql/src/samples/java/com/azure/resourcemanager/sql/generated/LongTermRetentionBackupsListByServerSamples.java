@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/LongTermRetentionBackupListByServerWithPagination.json
+     * x-ms-original-file: 2026-08-01-preview/LongTermRetentionBackupListByServerWithPagination.json
      */
     /**
      * Sample code: Get long term retention backups under the server with pagination.
@@ -20,11 +20,11 @@ public final class LongTermRetentionBackupsListByServerSamples {
         com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getLongTermRetentionBackups()
-            .listByServer("japaneast", "testserver", null, null, com.azure.core.util.Context.NONE);
+            .listByServer("japaneast", "testserver", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/LongTermRetentionBackupListByServer.json
+     * x-ms-original-file: 2026-08-01-preview/LongTermRetentionBackupListByServer.json
      */
     /**
      * Sample code: Get all long term retention backups under the server.
@@ -35,6 +35,6 @@ public final class LongTermRetentionBackupsListByServerSamples {
         getAllLongTermRetentionBackupsUnderTheServer(com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getLongTermRetentionBackups()
-            .listByServer("japaneast", "testserver", null, null, com.azure.core.util.Context.NONE);
+            .listByServer("japaneast", "testserver", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
  */
 public final class EncryptionProtectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/EncryptionProtectorCreateOrUpdateKeyVaultWithVersionlessKey.json
+     * x-ms-original-file: 2026-08-01-preview/EncryptionProtectorCreateOrUpdateKeyVaultWithVersionlessKey.json
      */
     /**
      * Sample code: Update the encryption protector to key vault with versionless key.
@@ -32,7 +32,7 @@ public final class EncryptionProtectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/EncryptionProtectorCreateOrUpdateKeyVault.json
+     * x-ms-original-file: 2026-08-01-preview/EncryptionProtectorCreateOrUpdateKeyVault.json
      */
     /**
      * Sample code: Update the encryption protector to key vault.
@@ -50,7 +50,7 @@ public final class EncryptionProtectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/EncryptionProtectorCreateOrUpdateServiceManaged.json
+     * x-ms-original-file: 2026-08-01-preview/EncryptionProtectorCreateOrUpdateServiceManaged.json
      */
     /**
      * Sample code: Update the encryption protector to service managed.

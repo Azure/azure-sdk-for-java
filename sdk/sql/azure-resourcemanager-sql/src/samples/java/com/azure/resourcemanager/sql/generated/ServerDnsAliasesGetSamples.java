@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerDnsAliasesGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ServerDnsAliasGet.json
+     * x-ms-original-file: 2026-08-01-preview/ServerDnsAliasGet.json
      */
     /**
      * Sample code: Get server DNS alias.

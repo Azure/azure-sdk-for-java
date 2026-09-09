@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceKeysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceKeyDelete.json
+     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceKeyDelete.json
      */
     /**
      * Sample code: Delete the managed instance key.

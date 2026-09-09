@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
  */
 public final class DataMaskingRulesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/DataMaskingRuleListByDatabase.json
+     * x-ms-original-file: 2026-08-01-preview/DataMaskingRuleListByDatabase.json
      */
     /**
      * Sample code: Gets a list of database data masking rules.

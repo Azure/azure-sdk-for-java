@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsListSyncDatabaseIdsSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupGetSyncDatabaseId.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupGetSyncDatabaseId.json
      */
     /**
      * Sample code: Get a sync database ID.

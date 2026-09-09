@@ -17,6 +17,7 @@ import com.azure.resourcemanager.sql.models.LinkRole;
 import com.azure.resourcemanager.sql.models.ReplicationMode;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -317,6 +318,33 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
         }
         this.innerProperties().withLinkMode(linkMode);
         return this;
+    }
+
+    /**
+     * Get the mostRecentError property: Most recent error code for the distributed availability group.
+     * 
+     * @return the mostRecentError value.
+     */
+    public String mostRecentError() {
+        return this.innerProperties() == null ? null : this.innerProperties().mostRecentError();
+    }
+
+    /**
+     * Get the mostRecentErrorTime property: Time of the most recent error for the distributed availability group.
+     * 
+     * @return the mostRecentErrorTime value.
+     */
+    public OffsetDateTime mostRecentErrorTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().mostRecentErrorTime();
+    }
+
+    /**
+     * Get the mostRecentErrorMessage property: Most recent error message for the distributed availability group.
+     * 
+     * @return the mostRecentErrorMessage value.
+     */
+    public String mostRecentErrorMessage() {
+        return this.innerProperties() == null ? null : this.innerProperties().mostRecentErrorMessage();
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseAdvisorsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/DatabaseAdvisorGet.json
+     * x-ms-original-file: 2026-08-01-preview/DatabaseAdvisorGet.json
      */
     /**
      * Sample code: Get database advisor.

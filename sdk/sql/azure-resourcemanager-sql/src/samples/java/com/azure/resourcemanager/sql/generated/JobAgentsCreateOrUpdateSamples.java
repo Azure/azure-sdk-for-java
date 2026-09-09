@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class JobAgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrUpdateJobAgentWithIdentity.json
+     * x-ms-original-file: 2026-08-01-preview/CreateOrUpdateJobAgentWithIdentity.json
      */
     /**
      * Sample code: Create or update a job agent with identity.
@@ -38,7 +38,7 @@ public final class JobAgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrUpdateJobAgentWithSku.json
+     * x-ms-original-file: 2026-08-01-preview/CreateOrUpdateJobAgentWithSku.json
      */
     /**
      * Sample code: Create or update a job agent with sku.
@@ -56,7 +56,7 @@ public final class JobAgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrUpdateJobAgent.json
+     * x-ms-original-file: 2026-08-01-preview/CreateOrUpdateJobAgent.json
      */
     /**
      * Sample code: Create or update a job agent.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/LongTermRetentionBackupListByDatabaseWithPagination.json
+     * x-ms-original-file: 2026-08-01-preview/LongTermRetentionBackupListByDatabaseWithPagination.json
      */
     /**
      * Sample code: Get long term retention backups under the database with pagination.
@@ -24,7 +24,7 @@ public final class LongTermRetentionBackupsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/LongTermRetentionBackupListByDatabase.json
+     * x-ms-original-file: 2026-08-01-preview/LongTermRetentionBackupListByDatabase.json
      */
     /**
      * Sample code: Get all long term retention backups under the database.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class EndpointCertificatesGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/EndpointCertificatesGet.json
+     * x-ms-original-file: 2026-08-01-preview/EndpointCertificatesGet.json
      */
     /**
      * Sample code: Gets an endpoint certificate.
@@ -23,7 +23,7 @@ public final class EndpointCertificatesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/EndpointCertificatesGetWithTrustedRootCertificate.json
+     * x-ms-original-file: 2026-08-01-preview/EndpointCertificatesGetWithTrustedRootCertificate.json
      */
     /**
      * Sample code: Gets an endpoint certificate including trusted root certificates.

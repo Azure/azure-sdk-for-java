@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class EndpointCertificatesListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/EndpointCertificatesListByInstanceWithTrustedRootCertificates.json
+     * x-ms-original-file: 2026-08-01-preview/EndpointCertificatesListByInstanceWithTrustedRootCertificates.json
      */
     /**
      * Sample code: Get a list of endpoint certificates including trusted root certificates.
@@ -24,7 +24,7 @@ public final class EndpointCertificatesListByInstanceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/EndpointCertificatesListByInstance.json
+     * x-ms-original-file: 2026-08-01-preview/EndpointCertificatesListByInstance.json
      */
     /**
      * Sample code: Get a list of endpoint certificates.

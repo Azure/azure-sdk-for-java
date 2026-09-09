@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupGet.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupGet.json
      */
     /**
      * Sample code: Get a sync group.
@@ -24,7 +24,7 @@ public final class SyncGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupGetWithIdentity.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupGetWithIdentity.json
      */
     /**
      * Sample code: Get a sync group with user assigned identity.

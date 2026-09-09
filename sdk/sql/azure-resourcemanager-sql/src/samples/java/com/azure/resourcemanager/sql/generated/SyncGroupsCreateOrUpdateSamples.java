@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class SyncGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupUpdate.json
      */
     /**
      * Sample code: Update a sync group.
@@ -38,7 +38,7 @@ public final class SyncGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupCreate.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupCreate.json
      */
     /**
      * Sample code: Create a sync group.
@@ -59,7 +59,7 @@ public final class SyncGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupCreateWithIdentity.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupCreateWithIdentity.json
      */
     /**
      * Sample code: Create a sync group with user assigned identity.

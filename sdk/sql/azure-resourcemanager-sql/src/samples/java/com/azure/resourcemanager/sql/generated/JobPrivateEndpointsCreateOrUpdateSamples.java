@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.JobPrivateEndpointInner;
  */
 public final class JobPrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrUpdateJobPrivateEndpoint.json
+     * x-ms-original-file: 2026-08-01-preview/CreateOrUpdateJobPrivateEndpoint.json
      */
     /**
      * Sample code: Create a private endpoint.

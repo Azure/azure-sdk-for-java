@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseQueriesGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceQueryGet.json
+     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceQueryGet.json
      */
     /**
      * Sample code: Obtain query properties.

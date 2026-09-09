@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerTrustGroupsListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ServerTrustGroupListByManagedInstance.json
+     * x-ms-original-file: 2026-08-01-preview/ServerTrustGroupListByManagedInstance.json
      */
     /**
      * Sample code: List server trust groups by managed instance.

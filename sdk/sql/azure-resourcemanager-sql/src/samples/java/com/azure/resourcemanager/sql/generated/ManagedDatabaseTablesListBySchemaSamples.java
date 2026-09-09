@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseTablesListBySchemaSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ManagedDatabaseTableListBySchema.json
+     * x-ms-original-file: 2026-08-01-preview/ManagedDatabaseTableListBySchema.json
      */
     /**
      * Sample code: List managed database tables.

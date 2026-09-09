@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.ShortTermRetentionPolicyName;
  */
 public final class BackupShortTermRetentionPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/UpdateShortTermRetentionPolicy.json
+     * x-ms-original-file: 2026-08-01-preview/UpdateShortTermRetentionPolicy.json
      */
     /**
      * Sample code: Update the short term retention policy for the database.
@@ -26,7 +26,8 @@ public final class BackupShortTermRetentionPoliciesUpdateSamples {
             .getBackupShortTermRetentionPolicies()
             .update("resourceGroup", "testsvr", "testdb", ShortTermRetentionPolicyName.DEFAULT,
                 new BackupShortTermRetentionPolicyInner().withRetentionDays(7)
-                    .withDiffBackupIntervalInHours(DiffBackupIntervalInHours.TWO_FOUR),
+                    .withDiffBackupIntervalInHours(DiffBackupIntervalInHours.TWO_FOUR)
+                    .withLockImmutability(false),
                 com.azure.core.util.Context.NONE);
     }
 }

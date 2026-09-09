@@ -9,7 +9,23 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RestorableDroppedDatabasesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ListRestorableDroppedDatabasesByServer.json
+     * x-ms-original-file: 2026-08-01-preview/ListRestorableDroppedDatabasesByServerWithOdata.json
+     */
+    /**
+     * Sample code: Gets a list of restorable dropped databases with OData filtering.
+     * 
+     * @param manager Entry point to SqlServerManager.
+     */
+    public static void getsAListOfRestorableDroppedDatabasesWithODataFiltering(
+        com.azure.resourcemanager.sql.SqlServerManager manager) {
+        manager.serviceClient()
+            .getRestorableDroppedDatabases()
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr",
+                "eyJuYW1lIjoidGVzdERiMCwxMzE1OTIzODQwMDAwMDAwMDAifQ==", 25L, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-01-preview/ListRestorableDroppedDatabasesByServer.json
      */
     /**
      * Sample code: Gets a list of restorable dropped databases.
@@ -19,6 +35,6 @@ public final class RestorableDroppedDatabasesListByServerSamples {
     public static void getsAListOfRestorableDroppedDatabases(com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getRestorableDroppedDatabases()
-            .listByServer("Default-SQL-SouthEastAsia", "testsvr", com.azure.core.util.Context.NONE);
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, null, com.azure.core.util.Context.NONE);
     }
 }

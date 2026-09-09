@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.SyncAgentInner;
  */
 public final class SyncAgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncAgentCreate.json
+     * x-ms-original-file: 2026-08-01-preview/SyncAgentCreate.json
      */
     /**
      * Sample code: Create a new sync agent.
@@ -28,7 +28,7 @@ public final class SyncAgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncAgentUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/SyncAgentUpdate.json
      */
     /**
      * Sample code: Update a sync agent.

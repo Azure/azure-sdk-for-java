@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.sql.models.LinkRole;
 import com.azure.resourcemanager.sql.models.ReplicationMode;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,6 +82,21 @@ public final class DistributedAvailabilityGroupProperties
      * Specifies whether the link operates in single-database or multi-database mode.
      */
     private LinkModeType linkMode;
+
+    /*
+     * Most recent error code for the distributed availability group.
+     */
+    private String mostRecentError;
+
+    /*
+     * Time of the most recent error for the distributed availability group.
+     */
+    private OffsetDateTime mostRecentErrorTime;
+
+    /*
+     * Most recent error message for the distributed availability group.
+     */
+    private String mostRecentErrorMessage;
 
     /*
      * Databases in the distributed availability group
@@ -286,6 +303,33 @@ public final class DistributedAvailabilityGroupProperties
     }
 
     /**
+     * Get the mostRecentError property: Most recent error code for the distributed availability group.
+     * 
+     * @return the mostRecentError value.
+     */
+    public String mostRecentError() {
+        return this.mostRecentError;
+    }
+
+    /**
+     * Get the mostRecentErrorTime property: Time of the most recent error for the distributed availability group.
+     * 
+     * @return the mostRecentErrorTime value.
+     */
+    public OffsetDateTime mostRecentErrorTime() {
+        return this.mostRecentErrorTime;
+    }
+
+    /**
+     * Get the mostRecentErrorMessage property: Most recent error message for the distributed availability group.
+     * 
+     * @return the mostRecentErrorMessage value.
+     */
+    public String mostRecentErrorMessage() {
+        return this.mostRecentErrorMessage;
+    }
+
+    /**
      * Get the databases property: Databases in the distributed availability group.
      * 
      * @return the databases value.
@@ -384,6 +428,13 @@ public final class DistributedAvailabilityGroupProperties
                 } else if ("linkMode".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.linkMode
                         = LinkModeType.fromString(reader.getString());
+                } else if ("mostRecentError".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.mostRecentError = reader.getString();
+                } else if ("mostRecentErrorTime".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.mostRecentErrorTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("mostRecentErrorMessage".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.mostRecentErrorMessage = reader.getString();
                 } else if ("databases".equals(fieldName)) {
                     List<DistributedAvailabilityGroupDatabase> databases
                         = reader.readArray(reader1 -> DistributedAvailabilityGroupDatabase.fromJson(reader1));

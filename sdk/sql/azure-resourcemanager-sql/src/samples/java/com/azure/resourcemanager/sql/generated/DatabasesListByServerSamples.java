@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ListVCoreDatabasesByServerWithOdata.json
+     * x-ms-original-file: 2026-08-01-preview/ListVCoreDatabasesByServerWithOdata.json
      */
     /**
      * Sample code: Gets a list of databases with OData filtering.
@@ -24,7 +24,7 @@ public final class DatabasesListByServerSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
+     * x-ms-original-file: 2026-08-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
      */
     /**
      * Sample code: Gets a list of databases configured with enclave type.
@@ -40,7 +40,7 @@ public final class DatabasesListByServerSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ListVCoreDatabasesByServer.json
+     * x-ms-original-file: 2026-08-01-preview/ListVCoreDatabasesByServer.json
      */
     /**
      * Sample code: Gets a list of databases.

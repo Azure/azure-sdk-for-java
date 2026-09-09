@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceOperationsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/GetManagedInstanceOperation.json
+     * x-ms-original-file: 2026-08-01-preview/GetManagedInstanceOperation.json
      */
     /**
      * Sample code: Gets the managed instance management operation.

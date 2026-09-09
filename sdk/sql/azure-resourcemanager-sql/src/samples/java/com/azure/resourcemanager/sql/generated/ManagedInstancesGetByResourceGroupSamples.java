@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceGetWithExpandEqualsAdministrators.json
+     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceGetWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: Get managed instance with $expand=administrators/activedirectory.
@@ -24,7 +24,7 @@ public final class ManagedInstancesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceGet.json
+     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceGet.json
      */
     /**
      * Sample code: Get managed instance.
@@ -38,7 +38,7 @@ public final class ManagedInstancesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceGetWhileUpdating.json
+     * x-ms-original-file: 2026-08-01-preview/ManagedInstanceGetWhileUpdating.json
      */
     /**
      * Sample code: Get managed instance while resource is updating.

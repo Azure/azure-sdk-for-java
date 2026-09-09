@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
  */
 public final class DatabaseEncryptionProtectorsRevertSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/DatabaseEncryptionProtectorRevert.json
+     * x-ms-original-file: 2026-08-01-preview/DatabaseEncryptionProtectorRevert.json
      */
     /**
      * Sample code: Reverts the encryption protector for a particular database.

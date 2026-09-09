@@ -2,7 +2,7 @@
 
 ## 2.55.0-beta.1 (2026-09-09)
 
-- Package api-version 2025-08-01-preview.
+- Package api-version 2026-08-01-preview.
 
 - Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
   SQL authentication, and doesn't support Microsoft Entra ID or managed identities. For distributed applications, use
@@ -17,14 +17,14 @@
 #### `models.DataMaskingFunction` was modified
 
 * `models.DataMaskingFunction[] values()` -> `java.util.Collection values()`
-* `toString()` was removed
 * `valueOf(java.lang.String)` was removed
+* `toString()` was removed
 
 #### `models.DataMaskingRuleState` was modified
 
-* `toString()` was removed
-* `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
 * `valueOf(java.lang.String)` was removed
+* `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
 
 #### `models.PrivateEndpointProvisioningState` was modified
 
@@ -38,6 +38,8 @@
 * `models.ManagedInstanceAdministratorPrincipalType` was added
 
 * `models.LinkModeType` was added
+
+* `models.ImmutabilityStatus` was added
 
 * `models.EndpointTrustedRootCertificateInfo` was added
 

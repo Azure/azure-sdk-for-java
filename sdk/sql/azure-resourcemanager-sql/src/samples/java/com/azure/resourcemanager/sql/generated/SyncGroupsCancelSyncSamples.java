@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsCancelSyncSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/SyncGroupCancelSync.json
+     * x-ms-original-file: 2026-08-01-preview/SyncGroupCancelSync.json
      */
     /**
      * Sample code: Cancel a sync group synchronization.

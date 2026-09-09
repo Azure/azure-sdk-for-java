@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceSamples {
     /*
      * x-ms-original-file:
-     * 2025-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
+     * 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
      */
     /**
      * Sample code: Get all long term retention backups under the managed instance.

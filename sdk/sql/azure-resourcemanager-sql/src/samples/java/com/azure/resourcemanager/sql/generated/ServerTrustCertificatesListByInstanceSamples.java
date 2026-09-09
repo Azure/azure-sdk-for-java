@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerTrustCertificatesListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/ServerTrustCertificatesListByInstance.json
+     * x-ms-original-file: 2026-08-01-preview/ServerTrustCertificatesListByInstance.json
      */
     /**
      * Sample code: Gets a list of server trust certificates on a given server.
