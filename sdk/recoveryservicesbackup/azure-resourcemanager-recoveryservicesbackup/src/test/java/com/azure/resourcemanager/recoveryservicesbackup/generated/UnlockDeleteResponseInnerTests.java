@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UnlockDeleteResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnlockDeleteResponseInner model = BinaryData.fromString("{\"unlockDeleteExpiryTime\":\"twmykyut\"}")
-            .toObject(UnlockDeleteResponseInner.class);
-        Assertions.assertEquals("twmykyut", model.unlockDeleteExpiryTime());
+        UnlockDeleteResponseInner model
+            = BinaryData.fromString("{\"unlockDeleteExpiryTime\":\"r\"}").toObject(UnlockDeleteResponseInner.class);
+        Assertions.assertEquals("r", model.unlockDeleteExpiryTime());
     }
 }
