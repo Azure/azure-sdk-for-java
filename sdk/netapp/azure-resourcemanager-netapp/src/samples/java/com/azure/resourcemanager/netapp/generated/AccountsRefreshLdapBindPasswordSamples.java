@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class AccountsRefreshLdapBindPasswordSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_RefreshLdapBindPassword.json
+     * x-ms-original-file: 2026-06-15-preview/Accounts_RefreshLdapBindPassword.json
      */
     /**
      * Sample code: NetAppAccounts_RefreshLdapBindPassword.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_Get.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: Get a private endpoint connection.

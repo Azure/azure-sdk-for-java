@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.recommender.generated;
  */
 public final class SpotPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GetSpotPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GetSpotPlacementScores.json
      */
     /**
      * Sample code: Gets the metadata of Spot Placement Scores.

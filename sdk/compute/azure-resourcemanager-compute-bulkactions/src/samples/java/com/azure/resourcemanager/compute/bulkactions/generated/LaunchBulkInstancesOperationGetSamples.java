@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class LaunchBulkInstancesOperationGetSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_Get_Example.

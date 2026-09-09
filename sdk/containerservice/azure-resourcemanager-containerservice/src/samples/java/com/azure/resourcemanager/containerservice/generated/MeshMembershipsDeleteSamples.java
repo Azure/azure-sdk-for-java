@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MeshMembershipsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/MeshMemberships_Delete.json
+     * x-ms-original-file: 2026-06-02-preview/MeshMemberships_Delete.json
      */
     /**
      * Sample code: Delete Mesh Membership.

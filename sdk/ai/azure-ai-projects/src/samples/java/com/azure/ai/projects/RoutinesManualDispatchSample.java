@@ -3,27 +3,28 @@
 
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.CustomRoutineTrigger;
 import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.InvokeAgentResponsesApiDispatchPayload;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
 import com.azure.ai.projects.models.RoutineRun;
 import com.azure.ai.projects.models.RoutineTrigger;
+import com.azure.ai.projects.models.TimerRoutineTrigger;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
-import java.util.Collections;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Sample demonstrating manual dispatch of a routine using the synchronous {@link BetaRoutinesClient}.
  *
- * <p>The routine is created with a manual {@link CustomRoutineTrigger}, dispatched on demand with an input
- * payload, and the resulting run is polled until completion. Routines are a preview feature. Before running, set:</p>
+ * <p>The routine is created with a timer trigger scheduled in the future, dispatched early with an input payload,
+ * and the resulting run is polled until completion. Routines are a preview feature. Before running, set:</p>
  * <ul>
  *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - the Azure AI Foundry project endpoint.</li>
  *   <li>{@code HOSTED_AGENT_NAME} - the name of a deployed hosted agent.</li>
@@ -51,15 +52,16 @@ public class RoutinesManualDispatchSample {
             // The sample routine does not already exist.
         }
 
+        Routine created = null;
         try {
             RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
-            CustomRoutineTrigger trigger = new CustomRoutineTrigger("manual",
-                Collections.<String, BinaryData>emptyMap());
+            TimerRoutineTrigger trigger = new TimerRoutineTrigger()
+                .setAt(OffsetDateTime.now(ZoneOffset.UTC).plusHours(1));
             Map<String, RoutineTrigger> triggers = new HashMap<>();
-            triggers.put("manual", trigger);
+            triggers.put("once", trigger);
 
-            Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by manual dispatch sample.", true, triggers, action);
+            created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
+                "Timer routine dispatched before its scheduled fire time.", true, triggers, action);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
 
             // BEGIN:com.azure.ai.projects.RoutinesManualDispatchSample.dispatch
@@ -71,11 +73,13 @@ public class RoutinesManualDispatchSample {
 
             System.out.printf("Waiting up to %d minutes for the dispatched run...%n", RUN_TIMEOUT.toMinutes());
             RoutineRun completedRun = RoutinesSampleUtils.waitForCompletedRun(routinesClient, created.getName(),
-                RUN_TIMEOUT);
+                dispatch.getDispatchId(), RUN_TIMEOUT);
             RoutinesSampleUtils.reportRun(completedRun, RUN_TIMEOUT);
         } finally {
-            routinesClient.deleteRoutine(ROUTINE_NAME);
-            System.out.println("Routine deleted");
+            if (created != null) {
+                routinesClient.deleteRoutine(ROUTINE_NAME);
+                System.out.println("Routine deleted");
+            }
         }
     }
 }

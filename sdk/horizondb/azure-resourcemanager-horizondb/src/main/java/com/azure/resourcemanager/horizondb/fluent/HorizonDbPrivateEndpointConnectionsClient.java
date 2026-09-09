@@ -13,9 +13,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
-import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,7 +26,7 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * Gets a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +42,7 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * Gets a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +58,7 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * Gets a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -77,7 +75,7 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * Gets a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,10 +88,10 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
         String privateEndpointConnectionName);
 
     /**
-     * Lists private endpoint connections in a HorizonDb cluster.
+     * Lists private endpoint connections in a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -104,10 +102,10 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
     PagedFlux<PrivateEndpointConnectionResourceInner> listAsync(String resourceGroupName, String clusterName);
 
     /**
-     * Lists private endpoint connections in a HorizonDb cluster.
+     * Lists private endpoint connections in a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -118,10 +116,10 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
     PagedIterable<PrivateEndpointConnectionResourceInner> list(String resourceGroupName, String clusterName);
 
     /**
-     * Lists private endpoint connections in a HorizonDb cluster.
+     * Lists private endpoint connections in a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,125 +132,81 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
         Context context);
 
     /**
-     * Updates a private endpoint connection.
+     * Approves or rejects a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
-     * @param properties The resource properties to be updated.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource along with {@link Response} on successful completion of
+     * @return a private endpoint connection resource along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties);
+    Mono<Response<PrivateEndpointConnectionResourceInner>> updateStatusWithResponseAsync(String resourceGroupName,
+        String clusterName, String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource);
 
     /**
-     * Updates a private endpoint connection.
+     * Approves or rejects a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
-     * @param properties The resource properties to be updated.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the private endpoint connection resource.
+     * @return a private endpoint connection resource on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateAsync(
-        String resourceGroupName, String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PrivateEndpointConnectionResourceInner> updateStatusAsync(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource);
 
     /**
-     * Updates a private endpoint connection.
+     * Approves or rejects a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName, String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties);
-
-    /**
-     * Updates a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection resource.
+     * @return a private endpoint connection resource along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName, String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateEndpointConnectionResourceInner> updateStatusWithResponse(String resourceGroupName,
+        String clusterName, String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource,
         Context context);
 
     /**
-     * Updates a private endpoint connection.
+     * Approves or rejects a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
-     * @param properties The resource properties to be updated.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource on successful completion of {@link Mono}.
+     * @return a private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String privateEndpointConnectionName,
-        PrivateEndpointConnectionUpdate properties);
-
-    /**
-     * Updates a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(String resourceGroupName, String privateEndpointConnectionName,
-        PrivateEndpointConnectionUpdate properties);
-
-    /**
-     * Updates a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(String resourceGroupName, String privateEndpointConnectionName,
-        PrivateEndpointConnectionUpdate properties, Context context);
+    PrivateEndpointConnectionResourceInner updateStatus(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,13 +215,14 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,12 +231,14 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,12 +247,14 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -305,13 +264,14 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointConnectionName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,12 +280,13 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointConnectionName);
+    Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,12 +294,13 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String privateEndpointConnectionName);
+    void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -347,5 +309,5 @@ public interface HorizonDbPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
 }

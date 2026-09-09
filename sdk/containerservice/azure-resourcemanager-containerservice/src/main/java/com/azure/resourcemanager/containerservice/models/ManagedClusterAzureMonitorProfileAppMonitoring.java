@@ -25,14 +25,14 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     private ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation autoInstrumentation;
 
     /*
-     * Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application
+     * Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application
      * using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
      * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      */
     private ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics openTelemetryMetrics;
 
     /*
-     * Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of
+     * Application Monitoring OpenTelemetry logs and traces profile for AKS. Collects OpenTelemetry logs and traces of
      * the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
      * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      */
@@ -72,7 +72,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Get the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for AKS. Collects
+     * Get the openTelemetryMetrics property: Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects
      * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
      * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
@@ -83,7 +83,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Set the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for AKS. Collects
+     * Set the openTelemetryMetrics property: Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects
      * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
      * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
@@ -97,7 +97,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Get the openTelemetryLogsAndTraces property: Application Monitoring Open Telemetry Logs and Traces Profile for
+     * Get the openTelemetryLogsAndTraces property: Application Monitoring OpenTelemetry logs and traces profile for
      * AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
      * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
@@ -108,7 +108,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Set the openTelemetryLogsAndTraces property: Application Monitoring Open Telemetry Logs and Traces Profile for
+     * Set the openTelemetryLogsAndTraces property: Application Monitoring OpenTelemetry logs and traces profile for
      * AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
      * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 

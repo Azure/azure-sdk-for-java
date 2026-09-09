@@ -15,22 +15,22 @@ public final class ResourceTypeExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeExtension model = BinaryData.fromString(
-            "{\"endpointUri\":\"tad\",\"extensionCategories\":[\"NotSpecified\",\"ResourceReadValidate\"],\"timeout\":\"PT89H6M26S\"}")
+            "{\"endpointUri\":\"b\",\"extensionCategories\":[\"ResourceCreationBegin\",\"ResourceCreationCompleted\",\"ResourceCreationValidate\"],\"timeout\":\"PT131H10M45S\"}")
             .toObject(ResourceTypeExtension.class);
-        Assertions.assertEquals("tad", model.endpointUri());
-        Assertions.assertEquals(ExtensionCategory.NOT_SPECIFIED, model.extensionCategories().get(0));
-        Assertions.assertEquals(Duration.parse("PT89H6M26S"), model.timeout());
+        Assertions.assertEquals("b", model.endpointUri());
+        Assertions.assertEquals(ExtensionCategory.RESOURCE_CREATION_BEGIN, model.extensionCategories().get(0));
+        Assertions.assertEquals(Duration.parse("PT131H10M45S"), model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceTypeExtension model = new ResourceTypeExtension().withEndpointUri("tad")
-            .withExtensionCategories(
-                Arrays.asList(ExtensionCategory.NOT_SPECIFIED, ExtensionCategory.RESOURCE_READ_VALIDATE))
-            .withTimeout(Duration.parse("PT89H6M26S"));
+        ResourceTypeExtension model = new ResourceTypeExtension().withEndpointUri("b")
+            .withExtensionCategories(Arrays.asList(ExtensionCategory.RESOURCE_CREATION_BEGIN,
+                ExtensionCategory.RESOURCE_CREATION_COMPLETED, ExtensionCategory.RESOURCE_CREATION_VALIDATE))
+            .withTimeout(Duration.parse("PT131H10M45S"));
         model = BinaryData.fromObject(model).toObject(ResourceTypeExtension.class);
-        Assertions.assertEquals("tad", model.endpointUri());
-        Assertions.assertEquals(ExtensionCategory.NOT_SPECIFIED, model.extensionCategories().get(0));
-        Assertions.assertEquals(Duration.parse("PT89H6M26S"), model.timeout());
+        Assertions.assertEquals("b", model.endpointUri());
+        Assertions.assertEquals(ExtensionCategory.RESOURCE_CREATION_BEGIN, model.extensionCategories().get(0));
+        Assertions.assertEquals(Duration.parse("PT131H10M45S"), model.timeout());
     }
 }

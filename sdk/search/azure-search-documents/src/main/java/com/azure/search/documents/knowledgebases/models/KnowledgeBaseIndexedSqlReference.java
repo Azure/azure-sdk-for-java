@@ -74,6 +74,7 @@ public final class KnowledgeBaseIndexedSqlReference extends KnowledgeBaseReferen
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("docUrl", this.docUrl);
+        jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -95,6 +96,7 @@ public final class KnowledgeBaseIndexedSqlReference extends KnowledgeBaseReferen
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.INDEXED_SQL;
             String docUrl = null;
+            String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -110,6 +112,8 @@ public final class KnowledgeBaseIndexedSqlReference extends KnowledgeBaseReferen
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("docUrl".equals(fieldName)) {
                     docUrl = reader.getString();
+                } else if ("citationUrl".equals(fieldName)) {
+                    citationUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -120,7 +124,25 @@ public final class KnowledgeBaseIndexedSqlReference extends KnowledgeBaseReferen
             deserializedKnowledgeBaseIndexedSqlReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseIndexedSqlReference.type = type;
             deserializedKnowledgeBaseIndexedSqlReference.docUrl = docUrl;
+            deserializedKnowledgeBaseIndexedSqlReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseIndexedSqlReference;
         });
+    }
+
+    /*
+     * A Search-owned URL that points at the backing document for this reference, usable as a citation target.
+     */
+    @Generated
+    private String citationUrl;
+
+    /**
+     * Get the citationUrl property: A Search-owned URL that points at the backing document for this reference, usable
+     * as a citation target.
+     *
+     * @return the citationUrl value.
+     */
+    @Generated
+    public String getCitationUrl() {
+        return this.citationUrl;
     }
 }

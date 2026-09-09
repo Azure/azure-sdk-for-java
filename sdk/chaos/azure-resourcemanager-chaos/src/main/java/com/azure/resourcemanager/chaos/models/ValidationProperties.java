@@ -40,6 +40,19 @@ public final class ValidationProperties implements JsonSerializable<ValidationPr
     private OffsetDateTime endTime;
 
     /*
+     * Resources that matched the scenario's target resource types and will be impacted
+     * by the run, resolved after applying the configuration's resource-targeting filters.
+     */
+    private List<ScenarioRunResource> resources;
+
+    /*
+     * Resources that matched the scenario's target resource types but were excluded
+     * from fault injection by the configuration's resource-targeting filters
+     * (for example zone, location, or explicit exclusions). These resources will not be impacted.
+     */
+    private List<ScenarioRunResource> excludedResources;
+
+    /*
      * System or infrastructure errors encountered during validation.
      */
     private List<OperationError> errors;
@@ -90,6 +103,27 @@ public final class ValidationProperties implements JsonSerializable<ValidationPr
      */
     public OffsetDateTime endTime() {
         return this.endTime;
+    }
+
+    /**
+     * Get the resources property: Resources that matched the scenario's target resource types and will be impacted
+     * by the run, resolved after applying the configuration's resource-targeting filters.
+     * 
+     * @return the resources value.
+     */
+    public List<ScenarioRunResource> resources() {
+        return this.resources;
+    }
+
+    /**
+     * Get the excludedResources property: Resources that matched the scenario's target resource types but were excluded
+     * from fault injection by the configuration's resource-targeting filters
+     * (for example zone, location, or explicit exclusions). These resources will not be impacted.
+     * 
+     * @return the excludedResources value.
+     */
+    public List<ScenarioRunResource> excludedResources() {
+        return this.excludedResources;
     }
 
     /**
@@ -147,6 +181,14 @@ public final class ValidationProperties implements JsonSerializable<ValidationPr
                 } else if ("endTime".equals(fieldName)) {
                     deserializedValidationProperties.endTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resources".equals(fieldName)) {
+                    List<ScenarioRunResource> resources
+                        = reader.readArray(reader1 -> ScenarioRunResource.fromJson(reader1));
+                    deserializedValidationProperties.resources = resources;
+                } else if ("excludedResources".equals(fieldName)) {
+                    List<ScenarioRunResource> excludedResources
+                        = reader.readArray(reader1 -> ScenarioRunResource.fromJson(reader1));
+                    deserializedValidationProperties.excludedResources = excludedResources;
                 } else if ("errors".equals(fieldName)) {
                     List<OperationError> errors = reader.readArray(reader1 -> OperationError.fromJson(reader1));
                     deserializedValidationProperties.errors = errors;

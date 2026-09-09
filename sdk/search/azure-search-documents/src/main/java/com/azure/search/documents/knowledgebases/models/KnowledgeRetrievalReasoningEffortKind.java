@@ -61,4 +61,11 @@ public final class KnowledgeRetrievalReasoningEffortKind
      */
     @Generated
     public static final KnowledgeRetrievalReasoningEffortKind MEDIUM = fromString("medium");
+
+    /**
+     * Automatically select the reasoning effort during retrieval, escalating from the cheapest tier only as far as
+     * needed.
+     */
+    @Generated
+    public static final KnowledgeRetrievalReasoningEffortKind AUTO = fromString("auto");
 }

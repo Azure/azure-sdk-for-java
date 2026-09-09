@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSize model = BinaryData.fromString("{\"sku\":\"vqwhbmdgbbjfd\"}").toObject(ResourceSize.class);
-        Assertions.assertEquals("vqwhbmdgbbjfd", model.sku());
+        ResourceSize model = BinaryData.fromString("{\"sku\":\"xppbhtqqro\"}").toObject(ResourceSize.class);
+        Assertions.assertEquals("xppbhtqqro", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSize model = new ResourceSize().withSku("vqwhbmdgbbjfd");
+        ResourceSize model = new ResourceSize().withSku("xppbhtqqro");
         model = BinaryData.fromObject(model).toObject(ResourceSize.class);
-        Assertions.assertEquals("vqwhbmdgbbjfd", model.sku());
+        Assertions.assertEquals("xppbhtqqro", model.sku());
     }
 }

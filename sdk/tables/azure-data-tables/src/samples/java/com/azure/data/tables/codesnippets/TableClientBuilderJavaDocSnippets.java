@@ -50,7 +50,7 @@ public class TableClientBuilderJavaDocSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link TableClientBuilder#buildClient()} using a sas tokwn
+     * Generates a code sample for using {@link TableClientBuilder#buildClient()} using a sas token
      */
     public void buildClientWithSasToken() {
         // BEGIN: com.azure.data.tables.tableClientBuilder.sasToken#string
@@ -76,7 +76,7 @@ public class TableClientBuilderJavaDocSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link TableClientBuilder#buildAsyncClient()} to build an asynchraonous client.
+     * Generates a code sample for using {@link TableClientBuilder#buildAsyncClient()} to build an asynchronous client.
      */
     public void buildAsyncClient() {
         // BEGIN: com.azure.data.tables.tableClientBuilder.buildAsyncClient

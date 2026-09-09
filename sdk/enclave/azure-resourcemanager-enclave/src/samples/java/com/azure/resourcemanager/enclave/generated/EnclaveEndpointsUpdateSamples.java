@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Update.json
+     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_Update.json
      */
     /**
      * Sample code: EnclaveEndpoints_Update.

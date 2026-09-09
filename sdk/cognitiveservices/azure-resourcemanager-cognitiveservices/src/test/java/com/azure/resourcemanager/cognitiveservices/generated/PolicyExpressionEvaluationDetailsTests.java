@@ -12,13 +12,13 @@ public final class PolicyExpressionEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyExpressionEvaluationDetails model = BinaryData.fromString(
-            "{\"expression\":\"qzeqqkdltfzxm\",\"expressionKind\":\"v\",\"operator\":\"ur\",\"result\":\"dkwobdagx\",\"targetValue\":\"bqdxbx\",\"expressionValue\":\"kbogqxndlkzgx\"}")
+            "{\"expression\":\"qlfmmdnbb\",\"expressionKind\":\"zpswiydmc\",\"operator\":\"hzdxssadbzm\",\"result\":\"dfznudaodv\",\"targetValue\":\"bncblylpstdbhhx\",\"expressionValue\":\"zdzucerscdntnevf\"}")
             .toObject(PolicyExpressionEvaluationDetails.class);
-        Assertions.assertEquals("qzeqqkdltfzxm", model.expression());
-        Assertions.assertEquals("v", model.expressionKind());
-        Assertions.assertEquals("ur", model.operator());
-        Assertions.assertEquals("dkwobdagx", model.result());
-        Assertions.assertEquals("bqdxbx", model.targetValue());
-        Assertions.assertEquals("kbogqxndlkzgx", model.expressionValue());
+        Assertions.assertEquals("qlfmmdnbb", model.expression());
+        Assertions.assertEquals("zpswiydmc", model.expressionKind());
+        Assertions.assertEquals("hzdxssadbzm", model.operator());
+        Assertions.assertEquals("dfznudaodv", model.result());
+        Assertions.assertEquals("bncblylpstdbhhx", model.targetValue());
+        Assertions.assertEquals("zdzucerscdntnevf", model.expressionValue());
     }
 }

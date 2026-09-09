@@ -13,19 +13,19 @@ public final class LoggingHiddenPropertyPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoggingHiddenPropertyPath model = BinaryData.fromString(
-            "{\"hiddenPathsOnRequest\":[\"rwfndiod\"],\"hiddenPathsOnResponse\":[\"lwejdpv\",\"ryo\",\"psoacctazakljl\"]}")
+            "{\"hiddenPathsOnRequest\":[\"ojakhmsbzjhcrze\",\"dphlxaolt\",\"qtrgqjbpfzfsinzg\",\"f\"],\"hiddenPathsOnResponse\":[\"wzo\",\"xjtfelluwfzit\",\"np\",\"qfpjk\"]}")
             .toObject(LoggingHiddenPropertyPath.class);
-        Assertions.assertEquals("rwfndiod", model.hiddenPathsOnRequest().get(0));
-        Assertions.assertEquals("lwejdpv", model.hiddenPathsOnResponse().get(0));
+        Assertions.assertEquals("ojakhmsbzjhcrze", model.hiddenPathsOnRequest().get(0));
+        Assertions.assertEquals("wzo", model.hiddenPathsOnResponse().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoggingHiddenPropertyPath model
-            = new LoggingHiddenPropertyPath().withHiddenPathsOnRequest(Arrays.asList("rwfndiod"))
-                .withHiddenPathsOnResponse(Arrays.asList("lwejdpv", "ryo", "psoacctazakljl"));
+        LoggingHiddenPropertyPath model = new LoggingHiddenPropertyPath()
+            .withHiddenPathsOnRequest(Arrays.asList("ojakhmsbzjhcrze", "dphlxaolt", "qtrgqjbpfzfsinzg", "f"))
+            .withHiddenPathsOnResponse(Arrays.asList("wzo", "xjtfelluwfzit", "np", "qfpjk"));
         model = BinaryData.fromObject(model).toObject(LoggingHiddenPropertyPath.class);
-        Assertions.assertEquals("rwfndiod", model.hiddenPathsOnRequest().get(0));
-        Assertions.assertEquals("lwejdpv", model.hiddenPathsOnResponse().get(0));
+        Assertions.assertEquals("ojakhmsbzjhcrze", model.hiddenPathsOnRequest().get(0));
+        Assertions.assertEquals("wzo", model.hiddenPathsOnResponse().get(0));
     }
 }

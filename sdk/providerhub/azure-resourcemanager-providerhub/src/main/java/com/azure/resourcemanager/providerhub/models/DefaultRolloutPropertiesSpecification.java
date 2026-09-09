@@ -121,6 +121,16 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultRolloutPropertiesSpecification
+        withManifestCheckinSpecification(ManifestCheckinSpecification manifestCheckinSpecification) {
+        super.withManifestCheckinSpecification(manifestCheckinSpecification);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -157,6 +167,9 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
         if (autoProvisionConfig() != null) {
             autoProvisionConfig().validate();
         }
+        if (manifestCheckinSpecification() != null) {
+            manifestCheckinSpecification().validate();
+        }
     }
 
     /**
@@ -176,6 +189,7 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
         jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("autoProvisionConfig", autoProvisionConfig());
+        jsonWriter.writeJsonField("manifestCheckinSpecification", manifestCheckinSpecification());
         return jsonWriter.writeEndObject();
     }
 
@@ -227,6 +241,9 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
                 } else if ("autoProvisionConfig".equals(fieldName)) {
                     deserializedDefaultRolloutPropertiesSpecification
                         .withAutoProvisionConfig(DefaultRolloutSpecificationAutoProvisionConfig.fromJson(reader));
+                } else if ("manifestCheckinSpecification".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withManifestCheckinSpecification(ManifestCheckinSpecification.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

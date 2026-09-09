@@ -14,11 +14,11 @@ public final class HealthStateTransitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthStateTransition model = BinaryData.fromString(
-            "{\"previousState\":\"Deleted\",\"newState\":\"Degraded\",\"occurredAt\":\"2021-12-03T21:15:41Z\",\"reason\":\"wwtkg\"}")
+            "{\"previousState\":\"Healthy\",\"newState\":\"Healthy\",\"occurredAt\":\"2021-09-21T02:12:50Z\",\"reason\":\"ookk\"}")
             .toObject(HealthStateTransition.class);
-        Assertions.assertEquals(HealthState.DELETED, model.previousState());
-        Assertions.assertEquals(HealthState.DEGRADED, model.newState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T21:15:41Z"), model.occurredAt());
-        Assertions.assertEquals("wwtkg", model.reason());
+        Assertions.assertEquals(HealthState.HEALTHY, model.previousState());
+        Assertions.assertEquals(HealthState.HEALTHY, model.newState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T02:12:50Z"), model.occurredAt());
+        Assertions.assertEquals("ookk", model.reason());
     }
 }

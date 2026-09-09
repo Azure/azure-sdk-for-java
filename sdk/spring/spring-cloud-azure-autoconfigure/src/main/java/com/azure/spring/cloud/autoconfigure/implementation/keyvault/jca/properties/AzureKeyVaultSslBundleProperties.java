@@ -75,6 +75,10 @@ public class AzureKeyVaultSslBundleProperties {
          */
         private boolean refreshCertificatesWhenHaveUntrustedCertificate;
         /**
+         * Whether to disable automatic Authority Information Access (AIA) certificate chain completion downloads.
+         */
+        private boolean disableAiaDownload;
+        /**
          * Time interval to refresh all Key Vault certificate.
          */
         private Duration certificatesRefreshInterval;
@@ -102,6 +106,14 @@ public class AzureKeyVaultSslBundleProperties {
 
         public void setRefreshCertificatesWhenHaveUntrustedCertificate(boolean refreshCertificatesWhenHaveUntrustedCertificate) {
             this.refreshCertificatesWhenHaveUntrustedCertificate = refreshCertificatesWhenHaveUntrustedCertificate;
+        }
+
+        public boolean isDisableAiaDownload() {
+            return disableAiaDownload;
+        }
+
+        public void setDisableAiaDownload(boolean disableAiaDownload) {
+            this.disableAiaDownload = disableAiaDownload;
         }
 
         public Duration getCertificatesRefreshInterval() {

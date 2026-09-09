@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgezones.generated;
  */
 public final class ExtendedZonesListSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/ExtendedZones_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01/ExtendedZones_ListBySubscription.json
      */
     /**
      * Sample code: ListExtendedZones.

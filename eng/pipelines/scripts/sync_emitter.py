@@ -30,6 +30,16 @@ skip_artifacts: List[str] = [
     # "azure-developer-devcenter",  # 2 breaks introduced into stable api-version
 ]
 
+GENERATED_SOURCE_CLEANUP_EXCLUDED_MODULES = {
+    # This module contains generated code for API versions that are not all represented by its
+    # current TypeSpec project, so deleting before regeneration removes valid existing APIs.
+    "azure-resourcemanager-resources",
+}
+
+
+def should_remove_generated_source_code(module: str) -> bool:
+    return module not in GENERATED_SOURCE_CLEANUP_EXCLUDED_MODULES
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -372,9 +382,12 @@ def update_sdks():
         generated_test_exists = os.path.isdir(generated_test_path)
 
         if arm_module:
-            logging.info("Delete generated source code of resourcemanager module %s", artifact)
-            shutil.rmtree(os.path.join(module_path, "src", "main", "resources"), ignore_errors=True)
-            delete_generated_source_code(os.path.join(module_path, "src", "main", "java"))
+            if should_remove_generated_source_code(artifact):
+                logging.info("Delete generated source code of resourcemanager module %s", artifact)
+                shutil.rmtree(os.path.join(module_path, "src", "main", "resources"), ignore_errors=True)
+                delete_generated_source_code(os.path.join(module_path, "src", "main", "java"))
+            else:
+                logging.info("Skip generated source cleanup for module %s", artifact)
 
         logging.info(f"Generate for module {artifact}")
         try:

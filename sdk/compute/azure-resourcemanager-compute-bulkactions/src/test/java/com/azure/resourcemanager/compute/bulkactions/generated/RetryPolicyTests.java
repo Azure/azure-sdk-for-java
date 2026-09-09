@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetryPolicy model = BinaryData
-            .fromString("{\"retryCount\":1846033,\"retryWindowInMinutes\":649847293,\"onFailureAction\":\"Start\"}")
+        RetryPolicy model = BinaryData.fromString(
+            "{\"retryCount\":127605943,\"retryWindowInMinutes\":2028392349,\"onFailureAction\":\"GetInstanceView\"}")
             .toObject(RetryPolicy.class);
-        Assertions.assertEquals(1846033, model.retryCount());
-        Assertions.assertEquals(649847293, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START, model.onFailureAction());
+        Assertions.assertEquals(127605943, model.retryCount());
+        Assertions.assertEquals(2028392349, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetryPolicy model = new RetryPolicy().withRetryCount(1846033)
-            .withRetryWindowInMinutes(649847293)
-            .withOnFailureAction(ResourceOperationType.START);
+        RetryPolicy model = new RetryPolicy().withRetryCount(127605943)
+            .withRetryWindowInMinutes(2028392349)
+            .withOnFailureAction(ResourceOperationType.GET_INSTANCE_VIEW);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(1846033, model.retryCount());
-        Assertions.assertEquals(649847293, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START, model.onFailureAction());
+        Assertions.assertEquals(127605943, model.retryCount());
+        Assertions.assertEquals(2028392349, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW, model.onFailureAction());
     }
 }
