@@ -1,23 +1,19 @@
 # Release History
 
-## 2.5.0 (Unreleased)
+## 2.5.0 (2026-09-09)
 
 ### Features Added
 
-- Added a preview Agent Insights surface: `BetaAgentInsightMonitorsClient` / `BetaAgentInsightMonitorsAsyncClient`, obtained from `AIProjectClientBuilder.beta()`. The clients opt in to `Foundry-Features: AgentInsights=V1Preview` (new `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW`) and support:
-  - Managing agent insight monitors (`create`, `get`, `list`, `update`, `delete`, `reset`).
-  - Starting and tracking insight runs (`beginCreateRun`, `listRuns`, `getRun`, `cancelRun`).
-  - Reading and updating the insights a monitor produces (`listInsights`, `getInsight`, `updateInsight`), including optional expanded details via `getInsight(monitorId, insightId, includeDetails)`.
-  - New models: `AgentInsightMonitor` (plus `AgentInsightMonitorCreate` / `AgentInsightMonitorUpdate` / `AgentInsightMonitorListItem`), `AgentInsightRun` (plus `AgentInsightRunCreate` / `AgentInsightRunResult`), `AgentInsight` / `AgentInsightUpdate` / `AgentInsightDetails`, `AgentInsightsOverview`, `AgentInsightProposedFix`, and related enums and supporting types.
-- Added optional dispatch authorization for routines: `RoutineAuthorization` and `RoutineDispatchIdentity` (`AGENT`, `CREATOR`) let you choose the identity used when dispatching a newly created routine. The value is ignored when updating an existing routine.
+- Added preview `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient`, available through `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and `buildBetaAgentInsightMonitorsAsyncClient()`. These clients automatically opt in to `Foundry-Features: AgentInsights=V1Preview` using the new `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW` value and support:
+  - Managing monitors with `createAgentInsightMonitor`, `getAgentInsightMonitor`, `listAgentInsightMonitors`, `updateAgentInsightMonitor`, `deleteAgentInsightMonitor`, and `resetAgentInsightMonitor`.
+  - Starting and tracking runs with `beginCreateAgentInsightRun`, `listAgentInsightRuns`, `getAgentInsightRun`, and `cancelAgentInsightRun`.
+  - Reading and updating insights with `listAgentInsights`, `getAgentInsight`, and `updateAgentInsight`, including optional expanded details through `getAgentInsight(monitorId, insightId, includeDetails)`.
+  - New models for monitors, runs, and insights, including `AgentInsightMonitor`, `AgentInsightMonitorCreate`, `AgentInsightMonitorUpdate`, `AgentInsightRun`, `AgentInsightRunCreate`, `AgentInsightRunResult`, `AgentInsight`, `AgentInsightDetails`, `AgentInsightUpdate`, `AgentInsightsOverview`, `AgentInsightProposedFix`, and related types.
+- Added optional routine dispatch authorization through `RoutineAuthorization.setIdentity(RoutineDispatchIdentity)`. Dispatch defaults to `RoutineDispatchIdentity.AGENT`; use `RoutineDispatchIdentity.CREATOR` to explicitly dispatch as the principal that created a new routine. Authorization is ignored when updating an existing routine.
 
 ### Breaking Changes
 
-- `BetaRoutinesClient.createOrUpdateRoutine(String, String, Boolean, Map<String, RoutineTrigger>, RoutineAction)` and its `BetaRoutinesAsyncClient` counterpart were replaced by overloads that take an additional trailing `RoutineAuthorization authorization` parameter. Pass `null` to keep the previous behavior.
-
-### Bugs Fixed
-
-### Other Changes
+- `BetaRoutinesClient.createOrUpdateRoutine(String, String, Boolean, Map<String, RoutineTrigger>, RoutineAction)` and its `BetaRoutinesAsyncClient` counterpart now require an additional trailing `RoutineAuthorization authorization` parameter. Pass `null` to retain the previous agent-identity dispatch behavior.
 
 - Regenerated client from the updated TypeSpec specification.
 

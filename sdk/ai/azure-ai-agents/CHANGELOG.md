@@ -1,59 +1,45 @@
 # Release History
 
-## 2.5.0 (Unreleased)
+## 2.5.0 (2026-09-09)
 
 ### Features Added
 
-- Added persisted realtime message items for voice-agent conversations:
-  `RealtimeConversationItemMessageSystem`, `RealtimeConversationItemMessageUser`, and
-  `RealtimeConversationItemMessageAssistant`, including role-specific content models and
-  `RealtimeConversationItemType.MESSAGE`.
-- Added `VoiceAgentInputTranscription.setLanguages(...)` and `setKeywords(...)`.
-- Added `WebSearchTool.setExternalWebAccess(...)` and `WebSearchToolboxTool.setExternalWebAccess(...)`.
-- Added `ImageGenToolModel.GPT_IMAGE_2` and `GPT_IMAGE_2_2026_04_21`.
-- Added broad voice-agent support: `VoiceAgentDefinition` (agent kind `voice`) with audio input/output configuration,
-  avatar rendering, turn-detection (server and semantic VAD), noise reduction, input transcription, greeting
-  configuration, and function/MCP/toolbox/system tools. Realtime conversation items now also support MCP tool calls
-  and list-tools results (`RealtimeMCPToolCall`, `RealtimeMCPListTools`, `RealtimeMCPApprovalRequest` /
-  `RealtimeMCPApprovalResponse`).
-- Added the beta `BetaAgentEndpointConversationsClient` / `BetaAgentEndpointConversationsAsyncClient` (via
-  `AgentsClientBuilder.beta()`) for listing/getting/deleting persisted voice-agent conversations, their responses and
-  conversation items, and the associated audio content.
 - Added Microsoft 365 agent publishing. `AgentsClient` / `AgentsAsyncClient` gained `publishAgentToMicrosoft365`,
-  `getMicrosoft365AppPackage`, and `getMicrosoft365PublishDefaults` (plus `WithResponse` overloads), backed by new
-  `PublishAgentToMicrosoft365Options`, `GetMicrosoft365AppPackageOptions`, `Microsoft365PublishResponse`,
+  `getMicrosoft365AppPackage`, and `getMicrosoft365PublishDefaults` (plus `WithResponse` methods), backed by new
+  `PublishAgentToMicrosoft365Options`, `GetMicrosoft365AppPackageOptions`, `Microsoft365PublishResult`,
   `Microsoft365PublishDefaults`, `Microsoft365PublishScope`, and `Microsoft365PermissionScopes` models.
   `AgentEndpointConfig.getPublishApprovalStatus()` exposes the Microsoft 365 store review status through the new
   `PublishApprovalStatus` enum.
-- Added digital-worker (formerly "autopilot") support: the `DigitalWorkerType` enum, `AgentDetails.getDigitalWorkerType()`,
-  and a `publishAsAutopilot` option on the Microsoft 365 publish/app-package options to publish an agent as a
-  Microsoft 365 digital worker.
-- Added activity-protocol access boundaries: the `ActivityProtocolAccessBoundary` enum and
-  `ActivityProtocolConfiguration.getAccessBoundaries()`, plus matching `accessBoundaries` options on the Microsoft 365
-  publish/app-package options, to scope developer/manager/tenant read and write access for one-on-one and group
-  conversations.
-- Added Model Router support: `ModelRouterDetails`, `ModelRouterMode`, `ModelRouterAttempt` /
-  `ModelRouterAttemptResult` / `ModelRouterAttemptError`, `RoutingTraceEntry`, and `ModelSelectionDetails` (exposed via
-  `AzureCreateResponseDetails.getModelSelectionDetails()`) provide visibility into automatic model-selection routing
-  decisions.
-- Added `WebIqPreviewTool` / `WebIqPreviewToolboxTool` for connecting an agent to a WebIQ MCP server.
-- Added `ShellToolboxTool` for running shell commands in an automatically provisioned or existing container,
-  configured via `ToolboxShellEnvironment`, `ToolboxShellContainerAutoEnvironment`,
-  `ToolboxShellContainerReferenceEnvironment`, and `ToolboxShellNetworkPolicy`.
-- Added hosted-agent session configuration: `SessionConfiguration` and
-  `HostedAgentDefinition.setSessionConfiguration()` / `getSessionConfiguration()` let callers set the idle-timeout
-  default applied to sessions created for a hosted-agent version.
-- Added the `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW` opt-in flag for the Agent Insights preview feature
-  area.
-- Added `AgentsClient.generateAgent` / `generateAgentWithResponse` (and async equivalents) to generate and create an
-  agent from kind-specific, high-level inputs.
+- Added the `CreateAgentVersionOptions` model for configuring agent-version metadata, description, blueprint reference,
+  digital-worker type, and draft status.
+- Added preview support for Microsoft 365 digital workers (formerly "autopilot") through `DigitalWorkerType`,
+  `AgentDetails.getDigitalWorkerType()`, `CreateAgentVersionInput.setDigitalWorkerType(...)`, and the
+  `publishAsAutopilot` option on the Microsoft 365 publish and app-package options.
+- Added activity-protocol access boundaries through `ActivityProtocolAccessBoundary`,
+  `ActivityProtocolConfiguration.getAccessBoundaries()`, and the Microsoft 365 publish and app-package options. These
+  boundaries scope developer, manager, allowlisted-user, and tenant access to one-on-one and group conversations.
+- Added preview Model Router details through `AzureCreateResponseDetails.getModelSelectionDetails()` and the new
+  `ModelSelectionDetails`, `ModelRouterDetails`, `ModelRouterMode`, `RoutingTraceEntry`, `ModelRouterAttempt`,
+  `ModelRouterAttemptResult`, and `ModelRouterAttemptError` models.
+- Added `WebIqPreviewTool` and `WebIqPreviewToolboxTool` for connecting an agent to a WebIQ MCP server.
+- Added `ShellToolboxTool` for running shell commands in an automatically provisioned or existing container, with
+  environment and network configuration provided by `ToolboxShellEnvironment`,
+  `ToolboxShellContainerAutoEnvironment`, `ToolboxShellContainerReferenceEnvironment`, and
+  `ToolboxShellNetworkPolicy`.
+- Added `WebSearchTool.setExternalWebAccess(...)` and `WebSearchToolboxTool.setExternalWebAccess(...)` to control
+  whether web search can fetch live external content.
+- Added hosted-agent session defaults through `SessionConfiguration` and
+  `HostedAgentDefinition.setSessionConfiguration(...)`, including configuration of the session idle timeout.
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-- Fixed realtime message deserialization through `RealtimeConversationItem` and `VoiceResponse.getOutput()` so
-  concrete message roles and the persisted `created_at` and `response_id` values are preserved.
+- Updated preview agent-optimization APIs:
+  - Renamed `AgentOptimizationEvaluatorRef` to `AgentOptimizationEvaluatorReference`; the
+    `AgentOptimizationJobInputs` constructor and `getEvaluators()` now use the renamed type.
+  - Renamed `AgentOptimizationDatasetItem.getDesiredNumTurns()` / `setDesiredNumTurns(...)` to
+    `getDesiredNumberTurns()` / `setDesiredNumberTurns(...)`.
+  - Replaced `AgentOptimizationJobProgress.getElapsedSeconds()`, which returned `double`, with `getElapsed()`, which
+    returns `java.time.Duration`.
 
 ### Other Changes
 
