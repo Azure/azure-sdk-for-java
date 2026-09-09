@@ -1,14 +1,48 @@
 # Release History
 
-## 2.56.0-beta.3 (Unreleased)
+## 2.56.0-beta.3 (2026-09-06)
 
-### Features Added
+- Package api-version 2026-09-01-preview.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SyncProperties` was modified
 
-### Other Changes
+* `tokenId` is no longer required by client-side validation. This is a validation relaxation, not a Java source or binary compatibility break: `tokenId()` and `withTokenId(java.lang.String)` are unchanged.
+
+### Features Added
+
+* `models.ManagedServiceIdentity` was added for managed identity configuration
+
+* `models.UserAssignedIdentity` was added with principal and client IDs
+
+* `models.AuthType` was added with `SYNC_TOKEN` and `MANAGED_IDENTITY` values for connected registry synchronization
+
+* `models.ManagedServiceIdentityType` was added with `NONE`, `SYSTEM_ASSIGNED`, `USER_ASSIGNED`, and `SYSTEM_ASSIGNED_USER_ASSIGNED` values
+
+#### `fluent.models.ConnectedRegistryInner` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` and `identity()` were added for user-assigned managed identity configuration when creating a connected registry. Requires synchronization `authType` to be `MANAGED_IDENTITY`.
+
+#### `models.SyncUpdateProperties` was modified
+
+* `withAuthType(models.AuthType)` was added
+* `authType()` was added
+
+#### `models.SyncProperties` was modified
+
+* `authType()` was added
+* `withAuthType(models.AuthType)` was added
+
+#### `models.ConnectedRegistryUpdateParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added for updating the connected registry's user-assigned managed identity. Requires synchronization `authType` to be `MANAGED_IDENTITY`.
+* `identity()` was added
+
+#### `models.StatusDetailProperties` was modified
+
+* `totalGib()` was added to report total disk space in gibibytes
+* `availableGib()` was added to report available disk space in gibibytes
 
 ## 2.55.4 (2026-08-18)
 
