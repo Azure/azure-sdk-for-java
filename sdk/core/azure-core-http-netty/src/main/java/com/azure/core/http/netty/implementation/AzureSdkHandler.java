@@ -12,11 +12,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundBuffer;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.FileRegion;
+import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class containing all ChannelHandler concepts that the Azure SDKs use.
@@ -34,6 +37,7 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
 
     private final long writeTimeoutMillis;
     private final ProgressReporter progressReporter;
+    private final AtomicBoolean expectContinueReceivedHolder;
     private long lastWriteMillis;
     private long lastWriteProgress;
     private boolean writeTrackingStarted;
@@ -65,6 +69,7 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
         long readTimeoutMillis) {
         this.writeTimeoutMillis = writeTimeoutMillis;
         this.progressReporter = (context != null) ? context.getProgressReporter() : null;
+        this.expectContinueReceivedHolder = (context != null) ? context.getExpectContinueReceivedHolder() : null;
         this.responseTimeoutMillis = (context != null && context.getResponseTimeoutOverride() != null)
             ? context.getResponseTimeoutOverride()
             : responseTimeoutMillis;
@@ -215,6 +220,15 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        // Observe the interim "100 Continue" response before it is consumed by Reactor Netty. This does not change
+        // how or when the request body is sent; it only records that the service engaged in the handshake so that
+        // calling code can see it. Scoped to the exact 100 status so final responses are never matched.
+        if (expectContinueReceivedHolder != null
+            && msg instanceof HttpResponse
+            && ((HttpResponse) msg).status().code() == HttpResponseStatus.CONTINUE.code()) {
+            expectContinueReceivedHolder.set(true);
+        }
+
         if (responseTrackingStarted) {
             endResponseTracking();
             startReadTracking();
