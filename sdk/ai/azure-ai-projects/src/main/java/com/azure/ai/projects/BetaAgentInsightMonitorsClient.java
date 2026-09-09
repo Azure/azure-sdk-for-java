@@ -693,7 +693,7 @@ public final class BetaAgentInsightMonitorsClient {
      *                 trace_id: String (Required)
      *                 summary: String (Required)
      *                 duration_ms: long (Required)
-     *                 total_tokens: Integer (Optional)
+     *                 total_tokens: Long (Optional)
      *                 timestamp: long (Required)
      *             }
      *         ]
@@ -772,7 +772,7 @@ public final class BetaAgentInsightMonitorsClient {
      *                 trace_id: String (Required)
      *                 summary: String (Required)
      *                 duration_ms: long (Required)
-     *                 total_tokens: Integer (Optional)
+     *                 total_tokens: Long (Optional)
      *                 timestamp: long (Required)
      *             }
      *         ]
@@ -855,7 +855,7 @@ public final class BetaAgentInsightMonitorsClient {
      *                 trace_id: String (Required)
      *                 summary: String (Required)
      *                 duration_ms: long (Required)
-     *                 total_tokens: Integer (Optional)
+     *                 total_tokens: Long (Optional)
      *                 timestamp: long (Required)
      *             }
      *         ]

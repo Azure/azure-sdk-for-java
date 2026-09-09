@@ -36,17 +36,11 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
     private final String summary;
 
     /*
-     * The end-to-end duration of the trace in milliseconds.
-     */
-    @Generated
-    private final long durationMs;
-
-    /*
      * Aggregate input and output tokens reported across all model inference calls in this trace, including calls to
      * different models. Intended for relative usage comparison, not cost estimation.
      */
     @Generated
-    private Integer totalTokens;
+    private Long totalTokens;
 
     /*
      * The time when the trace was recorded.
@@ -58,16 +52,16 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
      * Creates an instance of AgentInsightHighlightedTrace class.
      *
      * @param summary the summary value to set.
-     * @param durationMs the durationMs value to set.
+     * @param duration the duration value to set.
      * @param timestamp the timestamp value to set.
      */
     @Generated
-    private AgentInsightHighlightedTrace(String summary, Duration durationMs, OffsetDateTime timestamp) {
+    private AgentInsightHighlightedTrace(String summary, Duration duration, OffsetDateTime timestamp) {
         this.summary = summary;
-        if (durationMs == null) {
-            this.durationMs = 0L;
+        if (duration == null) {
+            this.duration = 0L;
         } else {
-            this.durationMs = durationMs.toMillis();
+            this.duration = duration.toMillis();
         }
         if (timestamp == null) {
             this.timestamp = 0L;
@@ -97,23 +91,13 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
     }
 
     /**
-     * Get the durationMs property: The end-to-end duration of the trace in milliseconds.
-     *
-     * @return the durationMs value.
-     */
-    @Generated
-    public Duration getDurationMs() {
-        return Duration.ofMillis(this.durationMs);
-    }
-
-    /**
      * Get the totalTokens property: Aggregate input and output tokens reported across all model inference calls in this
      * trace, including calls to different models. Intended for relative usage comparison, not cost estimation.
      *
      * @return the totalTokens value.
      */
     @Generated
-    public Integer getTotalTokens() {
+    public Long getTotalTokens() {
         return this.totalTokens;
     }
 
@@ -135,7 +119,7 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("summary", this.summary);
-        jsonWriter.writeLongField("duration_ms", this.durationMs);
+        jsonWriter.writeLongField("duration_ms", this.duration);
         jsonWriter.writeLongField("timestamp", this.timestamp);
         jsonWriter.writeNumberField("total_tokens", this.totalTokens);
         return jsonWriter.writeEndObject();
@@ -155,9 +139,9 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
         return jsonReader.readObject(reader -> {
             String traceId = null;
             String summary = null;
-            Duration durationMs = null;
+            Duration duration = null;
             OffsetDateTime timestamp = null;
-            Integer totalTokens = null;
+            Long totalTokens = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -166,20 +150,36 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
                 } else if ("summary".equals(fieldName)) {
                     summary = reader.getString();
                 } else if ("duration_ms".equals(fieldName)) {
-                    durationMs = Duration.ofMillis(reader.getLong());
+                    duration = Duration.ofMillis(reader.getLong());
                 } else if ("timestamp".equals(fieldName)) {
                     timestamp = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("total_tokens".equals(fieldName)) {
-                    totalTokens = reader.getNullable(JsonReader::getInt);
+                    totalTokens = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             AgentInsightHighlightedTrace deserializedAgentInsightHighlightedTrace
-                = new AgentInsightHighlightedTrace(summary, durationMs, timestamp);
+                = new AgentInsightHighlightedTrace(summary, duration, timestamp);
             deserializedAgentInsightHighlightedTrace.traceId = traceId;
             deserializedAgentInsightHighlightedTrace.totalTokens = totalTokens;
             return deserializedAgentInsightHighlightedTrace;
         });
+    }
+
+    /*
+     * The end-to-end duration of the trace in milliseconds.
+     */
+    @Generated
+    private final long duration;
+
+    /**
+     * Get the duration property: The end-to-end duration of the trace in milliseconds.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
     }
 }
