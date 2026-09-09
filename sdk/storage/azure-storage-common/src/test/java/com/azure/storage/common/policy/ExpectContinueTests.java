@@ -406,15 +406,6 @@ public class ExpectContinueTests {
                     assertEquals(BODY.length, server.bodyBytesBeforeContinue, name + " unexpectedly withheld the body");
                     break;
 
-                case DEPENDS_ON_CORE_VERSION:
-                    // Assert only what holds either way: the exchange completes and the body arrives in full. Whether
-                    // it was withheld depends on the azure-core version providing the transport.
-                    if (server.bodyBytesBeforeContinue == 0) {
-                        assertEquals(CONTINUE, server.expectHeader,
-                            name + " withheld the body without putting the header on the wire");
-                    }
-                    break;
-
                 default:
                     throw new IllegalStateException("Unhandled expectation: " + expected);
             }
@@ -425,11 +416,8 @@ public class ExpectContinueTests {
         Object[][] clients = {
             { "netty", "com.azure.core.http.netty.NettyAsyncHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY },
             { "okhttp", "com.azure.core.http.okhttp.OkHttpAsyncClientProvider", ContinueSupport.DEFERS_BODY },
-            {
-                "jdk",
-                "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider",
-                ContinueSupport.DEPENDS_ON_CORE_VERSION },
-            { "vertx", "com.azure.core.http.vertx.VertxHttpClientProvider", ContinueSupport.DEPENDS_ON_CORE_VERSION } };
+            { "jdk", "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider", ContinueSupport.DEFERS_BODY },
+            { "vertx", "com.azure.core.http.vertx.VertxHttpClientProvider", ContinueSupport.DEFERS_BODY } };
 
         return Stream.of(clients)
             .flatMap(client -> Stream.of(Arguments.of(client[0] + " sync", client[1], client[2], true),
@@ -562,14 +550,7 @@ public class ExpectContinueTests {
         SENDS_HEADER_ONLY,
 
         /** Drops the header, as {@code Expect} is restricted by {@code java.net.http.HttpClient}. */
-        DROPS_HEADER,
-
-        /**
-         * Honours the handshake from azure-core 1.2.0-beta.1 onwards but not in the versions released before it, so
-         * the behaviour depends on which artifact is on the classpath. Once Storage consumes a release carrying the
-         * fix this becomes {@link #DEFERS_BODY}.
-         */
-        DEPENDS_ON_CORE_VERSION
+        DROPS_HEADER
     }
 
     /**
