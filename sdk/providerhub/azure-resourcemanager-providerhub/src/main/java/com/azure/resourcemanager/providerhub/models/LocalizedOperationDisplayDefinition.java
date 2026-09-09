@@ -107,6 +107,11 @@ public class LocalizedOperationDisplayDefinition implements JsonSerializable<Loc
      */
     private LocalizedOperationDisplayDefinitionZhHant zhHant;
 
+    /*
+     * Display information of the operation for qps-Ploc pseudo locale.
+     */
+    private LocalizedOperationDisplayDefinitionQpsPloc qpsPloc;
+
     /**
      * Creates an instance of LocalizedOperationDisplayDefinition class.
      */
@@ -475,6 +480,26 @@ public class LocalizedOperationDisplayDefinition implements JsonSerializable<Loc
     }
 
     /**
+     * Get the qpsPloc property: Display information of the operation for qps-Ploc pseudo locale.
+     * 
+     * @return the qpsPloc value.
+     */
+    public LocalizedOperationDisplayDefinitionQpsPloc qpsPloc() {
+        return this.qpsPloc;
+    }
+
+    /**
+     * Set the qpsPloc property: Display information of the operation for qps-Ploc pseudo locale.
+     * 
+     * @param qpsPloc the qpsPloc value to set.
+     * @return the LocalizedOperationDisplayDefinition object itself.
+     */
+    public LocalizedOperationDisplayDefinition withQpsPloc(LocalizedOperationDisplayDefinitionQpsPloc qpsPloc) {
+        this.qpsPloc = qpsPloc;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -538,6 +563,9 @@ public class LocalizedOperationDisplayDefinition implements JsonSerializable<Loc
         if (zhHant() != null) {
             zhHant().validate();
         }
+        if (qpsPloc() != null) {
+            qpsPloc().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LocalizedOperationDisplayDefinition.class);
@@ -566,6 +594,7 @@ public class LocalizedOperationDisplayDefinition implements JsonSerializable<Loc
         jsonWriter.writeJsonField("sv", this.sv);
         jsonWriter.writeJsonField("zhHans", this.zhHans);
         jsonWriter.writeJsonField("zhHant", this.zhHant);
+        jsonWriter.writeJsonField("qpsPloc", this.qpsPloc);
         return jsonWriter.writeEndObject();
     }
 
@@ -640,6 +669,9 @@ public class LocalizedOperationDisplayDefinition implements JsonSerializable<Loc
                 } else if ("zhHant".equals(fieldName)) {
                     deserializedLocalizedOperationDisplayDefinition.zhHant
                         = LocalizedOperationDisplayDefinitionZhHant.fromJson(reader);
+                } else if ("qpsPloc".equals(fieldName)) {
+                    deserializedLocalizedOperationDisplayDefinition.qpsPloc
+                        = LocalizedOperationDisplayDefinitionQpsPloc.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
