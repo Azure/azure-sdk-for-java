@@ -615,7 +615,8 @@ public class KeyVaultClientTest {
             configureHttpUtilityMethods(utilities);
             utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
                 .thenReturn(JsonConverterUtil.toJson(secretBundle));
-            certificateUtilities.when(() -> CertificateUtil.loadCertificatesFromSecretBundleValue("valid-empty-chain"))
+            certificateUtilities
+                .when(() -> CertificateUtil.loadCertificatesFromSecretBundleValue("valid-empty-chain", false))
                 .thenReturn(new Certificate[0]);
 
             KeyVaultClient keyVaultClient = createClientWithAccessToken();

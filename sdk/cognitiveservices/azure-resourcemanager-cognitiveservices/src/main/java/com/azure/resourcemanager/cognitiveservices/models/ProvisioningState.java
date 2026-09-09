@@ -52,6 +52,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState RESOLVING_DNS = fromString("ResolvingDNS");
 
     /**
+     * Static value ExtensionUnreachable for ProvisioningState.
+     */
+    public static final ProvisioningState EXTENSION_UNREACHABLE = fromString("ExtensionUnreachable");
+
+    /**
      * Creates a new instance of ProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

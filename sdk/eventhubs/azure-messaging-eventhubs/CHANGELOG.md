@@ -16,6 +16,15 @@
 
 ### Other Changes
 
+## 5.21.6 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.12.0` to version `2.12.1`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
 ## 5.21.5 (2026-07-01)
 
 ### Other Changes

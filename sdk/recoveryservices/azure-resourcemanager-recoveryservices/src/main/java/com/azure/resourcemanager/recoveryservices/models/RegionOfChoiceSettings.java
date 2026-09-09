@@ -12,8 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Region of choice settings at the vault level. This setting allows customers to configure backups for data sources
- * from a different region.
+ * Region of choice settings at vault level.
+ * This setting allows customers to configure backups for datasources from different region.
  */
 @Fluent
 public final class RegionOfChoiceSettings implements JsonSerializable<RegionOfChoiceSettings> {

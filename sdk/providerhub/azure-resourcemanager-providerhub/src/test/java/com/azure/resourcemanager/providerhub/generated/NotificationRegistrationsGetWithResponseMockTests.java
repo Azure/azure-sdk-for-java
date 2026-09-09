@@ -23,7 +23,7 @@ public final class NotificationRegistrationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"notificationMode\":\"NotSpecified\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"cayer\",\"rransyb\",\"lpolwzrghsrle\",\"nkfscjfn\"],\"notificationEndpoints\":[{\"notificationDestination\":\"uagfqwtltngv\",\"locations\":[\"uptrklz\"]},{\"notificationDestination\":\"jajwolxfsvag\",\"locations\":[\"ynwlslrcigtzjcv\",\"xqlaps\",\"ssov\",\"xpavid\"]},{\"notificationDestination\":\"ev\",\"locations\":[\"cvvy\",\"zslp\"]}],\"provisioningState\":\"MovingResources\"},\"id\":\"bdsval\",\"name\":\"nptw\",\"type\":\"rkxgpazwugxyqvnj\"}";
+            = "{\"properties\":{\"notificationMode\":\"EventHub\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"iqbplvfidusz\"],\"notificationEndpoints\":[{\"notificationDestination\":\"byjgmsfepx\",\"locations\":[\"pqadagrhrdicxdwy\",\"fowxwyovcxjsgbi\",\"cu\",\"dveksbuhoduch\"]},{\"notificationDestination\":\"scrdp\",\"locations\":[\"dyjdussp\",\"szekbh\"]}],\"provisioningState\":\"TransientFailure\"},\"id\":\"aggkrehbfrn\",\"name\":\"ybff\",\"type\":\"jfiimreoa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class NotificationRegistrationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NotificationRegistration response = manager.notificationRegistrations()
-            .getWithResponse("jz", "py", com.azure.core.util.Context.NONE)
+            .getWithResponse("wg", "btmkekxpkzwaq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(NotificationMode.NOT_SPECIFIED, response.properties().notificationMode());
+        Assertions.assertEquals(NotificationMode.EVENT_HUB, response.properties().notificationMode());
         Assertions.assertEquals(MessageScope.NOT_SPECIFIED, response.properties().messageScope());
-        Assertions.assertEquals("cayer", response.properties().includedEvents().get(0));
-        Assertions.assertEquals("uagfqwtltngv",
+        Assertions.assertEquals("iqbplvfidusz", response.properties().includedEvents().get(0));
+        Assertions.assertEquals("byjgmsfepx",
             response.properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("uptrklz", response.properties().notificationEndpoints().get(0).locations().get(0));
+        Assertions.assertEquals("pqadagrhrdicxdwy",
+            response.properties().notificationEndpoints().get(0).locations().get(0));
     }
 }

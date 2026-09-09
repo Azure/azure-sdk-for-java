@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/VirtualEnclave_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualEnclave_CreateOrUpdate.

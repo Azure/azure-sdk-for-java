@@ -22,7 +22,7 @@ public final class HorizonDbPoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"location\":\"ertgccymva\",\"state\":\"Stopping\",\"replicaCount\":10940345,\"version\":\"qlfmmdnbb\",\"createMode\":\"Update\",\"provisioningState\":\"Canceled\"},\"tags\":{\"bzmnvdfznud\":\"ydmcwyhzdxssa\",\"xzb\":\"od\",\"dzu\":\"cblylpstdbhhxsr\"},\"id\":\"rsc\",\"name\":\"ntnev\",\"type\":\"iwjmygtdssls\"}]}";
+            = "{\"value\":[{\"properties\":{\"location\":\"cjwvn\",\"state\":\"Starting\",\"replicaCount\":3568430,\"version\":\"gx\",\"createMode\":\"Update\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"egrpkhj\":\"utwu\",\"pdggkzzlvm\":\"niyqslui\"},\"id\":\"paxmodfvuefywsb\",\"name\":\"fvmwy\",\"type\":\"rfouyftaakcpw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class HorizonDbPoolsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HorizonDbPool> response
-            = manager.horizonDbPools().list("nduhavhqlkthum", "qolbgyc", com.azure.core.util.Context.NONE);
+            = manager.horizonDbPools().list("rhvoods", "tbobz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ertgccymva", response.iterator().next().properties().location());
-        Assertions.assertEquals("ydmcwyhzdxssa", response.iterator().next().tags().get("bzmnvdfznud"));
+        Assertions.assertEquals("cjwvn", response.iterator().next().properties().location());
+        Assertions.assertEquals("utwu", response.iterator().next().tags().get("egrpkhj"));
     }
 }

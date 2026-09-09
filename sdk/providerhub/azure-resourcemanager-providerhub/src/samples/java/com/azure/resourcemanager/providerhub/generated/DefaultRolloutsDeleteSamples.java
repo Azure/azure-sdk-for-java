@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class DefaultRolloutsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_Delete.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_Delete.json
      */
     /**
      * Sample code: DefaultRollouts_Delete.

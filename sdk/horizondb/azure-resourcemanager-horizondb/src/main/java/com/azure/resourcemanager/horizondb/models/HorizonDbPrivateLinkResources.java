@@ -16,7 +16,7 @@ public interface HorizonDbPrivateLinkResources {
      * Gets a private link resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param groupName The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +31,7 @@ public interface HorizonDbPrivateLinkResources {
      * Gets a private link resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,10 +41,10 @@ public interface HorizonDbPrivateLinkResources {
     HorizonDbPrivateLinkResource get(String resourceGroupName, String clusterName, String groupName);
 
     /**
-     * Lists private link resources in a HorizonDb cluster.
+     * Lists private link resources in a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,10 +54,10 @@ public interface HorizonDbPrivateLinkResources {
     PagedIterable<HorizonDbPrivateLinkResource> list(String resourceGroupName, String clusterName);
 
     /**
-     * Lists private link resources in a HorizonDb cluster.
+     * Lists private link resources in a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

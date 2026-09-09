@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class UpdateRunsStopSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Stop.json
+     * x-ms-original-file: 2026-06-02-preview/UpdateRuns_Stop.json
      */
     /**
      * Sample code: Stops an UpdateRun.

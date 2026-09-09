@@ -23,16 +23,6 @@ public final class WorkIQKnowledgeSource extends KnowledgeSource {
     private KnowledgeSourceKind kind = KnowledgeSourceKind.WORK_IQ;
 
     /**
-     * Creates an instance of WorkIQKnowledgeSource class.
-     *
-     * @param name the name value to set.
-     */
-    @Generated
-    public WorkIQKnowledgeSource(String name) {
-        super(name);
-    }
-
-    /**
      * Get the kind property: The type of the knowledge source.
      *
      * @return the kind value.
@@ -82,8 +72,11 @@ public final class WorkIQKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
+        jsonWriter.writeJsonField("workIQParameters", this.workIQParameters);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -102,8 +95,10 @@ public final class WorkIQKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
+            WorkIQKnowledgeSourceParameters workIQParameters = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.WORK_IQ;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,22 +107,67 @@ public final class WorkIQKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                } else if ("workIQParameters".equals(fieldName)) {
+                    workIQParameters = WorkIQKnowledgeSourceParameters.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            WorkIQKnowledgeSource deserializedWorkIQKnowledgeSource = new WorkIQKnowledgeSource(name);
+            WorkIQKnowledgeSource deserializedWorkIQKnowledgeSource = new WorkIQKnowledgeSource(name, workIQParameters);
             deserializedWorkIQKnowledgeSource.setDescription(description);
+            deserializedWorkIQKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedWorkIQKnowledgeSource.setETag(eTag);
             deserializedWorkIQKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedWorkIQKnowledgeSource.kind = kind;
             return deserializedWorkIQKnowledgeSource;
         });
+    }
+
+    /*
+     * The parameters for the WorkIQ knowledge source, including the customer-owned Entra app configuration used for
+     * on-behalf-of authentication.
+     */
+    @Generated
+    private final WorkIQKnowledgeSourceParameters workIQParameters;
+
+    /**
+     * Creates an instance of WorkIQKnowledgeSource class.
+     *
+     * @param name the name value to set.
+     * @param workIQParameters the workIQParameters value to set.
+     */
+    @Generated
+    public WorkIQKnowledgeSource(String name, WorkIQKnowledgeSourceParameters workIQParameters) {
+        super(name);
+        this.workIQParameters = workIQParameters;
+    }
+
+    /**
+     * Get the workIQParameters property: The parameters for the WorkIQ knowledge source, including the customer-owned
+     * Entra app configuration used for on-behalf-of authentication.
+     *
+     * @return the workIQParameters value.
+     */
+    @Generated
+    public WorkIQKnowledgeSourceParameters getWorkIQParameters() {
+        return this.workIQParameters;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WorkIQKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

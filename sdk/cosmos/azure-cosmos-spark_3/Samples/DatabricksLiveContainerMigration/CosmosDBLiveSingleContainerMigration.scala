@@ -103,7 +103,7 @@ spark.sql(createTargetResources)
 val changeFeedDF = spark.readStream.format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)  
       .load
-/*this will preserve the source document fields and retain the "_etag" and "_ts" property values as "_origin_etag" and "_origin_ts" in the sink documnet*/
+/*this will preserve the source document fields and retain the "_etag" and "_ts" property values as "_origin_etag" and "_origin_ts" in the sink document*/
  val df_withAuditFields = changeFeedDF.withColumnRenamed("_rawbody", "_origin_rawBody")
 
 // COMMAND ----------
@@ -123,7 +123,7 @@ def calculatePK(rawBody: String): String = {
   val originalTimestamp = body.get("_ts")
   //change _syntheticPK below to be the name if the synthetic pk field     
   body.put("_syntheticPK", syntheticPKValue)
-  //retain orignal _etag and _ts to use in later validation
+  //retain original _etag and _ts to use in later validation
   body.put("_origin_etag", originalEtag)
   body.put("_origin_ts", originalTimestamp)
   parser.writeValueAsString(body)

@@ -84,6 +84,11 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      */
     private ResourceNotificationDetails resourceNotificationDetails;
 
+    /*
+     * The capacity/placement recommendation computed for the operation, if requested
+     */
+    private CapacityRecommendation capacityRecommendation;
+
     /**
      * Creates an instance of ResourceOperationDetails class.
      */
@@ -209,6 +214,16 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
+     * Get the capacityRecommendation property: The capacity/placement recommendation computed for the operation, if
+     * requested.
+     * 
+     * @return the capacityRecommendation value.
+     */
+    public CapacityRecommendation capacityRecommendation() {
+        return this.capacityRecommendation;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -229,6 +244,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
             this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         jsonWriter.writeJsonField("resourceNotificationDetails", this.resourceNotificationDetails);
+        jsonWriter.writeJsonField("capacityRecommendation", this.capacityRecommendation);
         return jsonWriter.writeEndObject();
     }
 
@@ -278,6 +294,9 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
                 } else if ("resourceNotificationDetails".equals(fieldName)) {
                     deserializedResourceOperationDetails.resourceNotificationDetails
                         = ResourceNotificationDetails.fromJson(reader);
+                } else if ("capacityRecommendation".equals(fieldName)) {
+                    deserializedResourceOperationDetails.capacityRecommendation
+                        = CapacityRecommendation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

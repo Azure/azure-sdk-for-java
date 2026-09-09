@@ -544,6 +544,9 @@ public class BlobClientBase {
                     case ETAG:
                         // Target the user specified eTag by default. If not provided, target the latest eTag.
                         if (requestConditions.getIfMatch() == null) {
+                            // Preserve the service-returned value here to keep retry/download locking on the existing wire
+                            // format. Do not normalize through StorageImplUtils.toETagHeaderValue() unless a deliberate
+                            // compatibility change is intended.
                             requestConditions.setIfMatch(eTag);
                         }
                         break;
@@ -618,6 +621,9 @@ public class BlobClientBase {
                 requestConditions = requestConditions != null ? requestConditions : new BlobRequestConditions();
                 // If etag locking but no explicitly specified etag, use the etag from prefetch
                 if (requestConditions.getIfMatch() == null) {
+                    // Preserve the service-returned value here to keep the existing retry/read-lock wire format.
+                    // Do not normalize through StorageImplUtils.toETagHeaderValue() unless a deliberate compatibility
+                    // change is intended.
                     requestConditions.setIfMatch(properties.getETag());
                 }
                 break;

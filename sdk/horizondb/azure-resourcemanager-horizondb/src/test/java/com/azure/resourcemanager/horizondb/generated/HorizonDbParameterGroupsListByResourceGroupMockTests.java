@@ -22,7 +22,7 @@ public final class HorizonDbParameterGroupsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"lsyxkqjnsjervt\",\"description\":\"gxsds\",\"value\":\"e\",\"dataType\":\"sbzkf\",\"allowedValues\":\"eyvpnqicvinvkj\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"uukzclewyhmlw\",\"unit\":\"ztzp\"}],\"description\":\"ncckw\",\"pgVersion\":2069096730,\"version\":407754161,\"applyImmediately\":false,\"provisioningState\":\"Canceled\"},\"location\":\"yq\",\"tags\":{\"or\":\"feqztppriol\",\"ncwsob\":\"altol\",\"pfuvglsbjjca\":\"wcsdbnwdcfhucq\"},\"id\":\"vxb\",\"name\":\"t\",\"type\":\"udutnco\"}]}";
+            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"bminrfdwoyuhhzi\",\"description\":\"efozbhdms\",\"value\":\"mzqhoftrmaequi\",\"dataType\":\"xicslfao\",\"allowedValues\":\"piyylhalnswhccsp\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"itqscywuggwoluhc\",\"unit\":\"wem\"},{\"name\":\"i\",\"description\":\"brgz\",\"value\":\"msweypqwdxggicc\",\"dataType\":\"xqhuexm\",\"allowedValues\":\"tlstvlzywem\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"dtclusiypb\",\"unit\":\"gytguslfead\"},{\"name\":\"gq\",\"description\":\"yhejhzisxgfp\",\"value\":\"olppvksrpqvujz\",\"dataType\":\"ehtwdwrft\",\"allowedValues\":\"iby\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"shfwpracstwity\",\"unit\":\"evxccedcp\"}],\"description\":\"dyodnwzxltj\",\"pgVersion\":424916927,\"version\":798686502,\"applyImmediately\":true,\"provisioningState\":\"Canceled\"},\"location\":\"xnavvwxq\",\"tags\":{\"vfgbvfvpdboda\":\"qunyowxwlmdjr\"},\"id\":\"izsjqlhkrr\",\"name\":\"bdeibqipqk\",\"type\":\"hvxndzwmkrefajpj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class HorizonDbParameterGroupsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HorizonDbParameterGroup> response
-            = manager.horizonDbParameterGroups().listByResourceGroup("ggkfpagaowpul", com.azure.core.util.Context.NONE);
+            = manager.horizonDbParameterGroups().listByResourceGroup("u", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yq", response.iterator().next().location());
-        Assertions.assertEquals("feqztppriol", response.iterator().next().tags().get("or"));
-        Assertions.assertEquals("lsyxkqjnsjervt", response.iterator().next().properties().parameters().get(0).name());
-        Assertions.assertEquals("e", response.iterator().next().properties().parameters().get(0).value());
-        Assertions.assertEquals("ncckw", response.iterator().next().properties().description());
-        Assertions.assertEquals(2069096730, response.iterator().next().properties().pgVersion());
-        Assertions.assertFalse(response.iterator().next().properties().applyImmediately());
+        Assertions.assertEquals("xnavvwxq", response.iterator().next().location());
+        Assertions.assertEquals("qunyowxwlmdjr", response.iterator().next().tags().get("vfgbvfvpdboda"));
+        Assertions.assertEquals("bminrfdwoyuhhzi", response.iterator().next().properties().parameters().get(0).name());
+        Assertions.assertEquals("mzqhoftrmaequi", response.iterator().next().properties().parameters().get(0).value());
+        Assertions.assertEquals("dyodnwzxltj", response.iterator().next().properties().description());
+        Assertions.assertEquals(424916927, response.iterator().next().properties().pgVersion());
+        Assertions.assertTrue(response.iterator().next().properties().applyImmediately());
     }
 }

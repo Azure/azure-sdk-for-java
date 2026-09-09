@@ -40,6 +40,7 @@ public class StoreResult {
     final public boolean isAvoidQuorumSelectionException;
     final public Uri storePhysicalAddress;
     final public boolean isThroughputControlRequestRateTooLargeException;
+    final public boolean isThrottledException;
     final public Double backendLatencyInMs;
     final public Double retryAfterInMs;
 
@@ -85,6 +86,11 @@ public class StoreResult {
         this.itemLSN = itemLSN;
         this.sessionToken = sessionToken;
         this.isThroughputControlRequestRateTooLargeException = this.exception != null && Exceptions.isThroughputControlRequestRateTooLargeException(this.exception);
+        // Only treat server-side throttling (429) as a throttled exception for early-yield purposes.
+        // Client-side throughput control 429s are excluded to avoid falsely triggering early yield.
+        this.isThrottledException = this.exception != null
+                && this.exception.getStatusCode() == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                && !this.isThroughputControlRequestRateTooLargeException;
         this.backendLatencyInMs = backendLatencyInMs;
         this.retryAfterInMs = retryAfterInMs;
         this.isAvoidQuorumSelectionException = this.exception != null && Exceptions.isAvoidQuorumSelectionException(this.exception);

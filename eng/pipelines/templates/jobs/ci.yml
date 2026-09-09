@@ -502,6 +502,22 @@ jobs:
             parameters:
               ServiceDirectory: ${{parameters.ServiceDirectory}}
               ExcludePaths: ${{parameters.ExcludePaths}}
+          - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            # Phase 1 keeps Build and Analyze enabled so their unique validation is preserved.
+            # Clearing only this job's PackageInfo folder produces an empty test matrix.
+            - task: PowerShell@2
+              displayName: Classify PR changes for Java test matrix
+              name: classify_changes
+              inputs:
+                pwsh: true
+                filePath: eng/scripts/Classify-PRChanges.ps1
+                arguments: >
+                  -DiffPath '$(Build.ArtifactStagingDirectory)/diff/diff.json'
+                  -PackageInfoDirectory '$(Build.ArtifactStagingDirectory)/PackageInfo'
+              # Define ForceFullValidation=true on the pipeline to disable test suppression
+              # without requiring a code change.
+              env:
+                FORCE_FULL_VALIDATION: $(ForceFullValidation)
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
