@@ -158,6 +158,10 @@ The [Managed identity authentication](https://learn.microsoft.com/entra/identity
 - [Azure Virtual Machines](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token)
 - [Azure Virtual Machines Scale Sets](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
 
+Azure Arc supports system-assigned and user-assigned managed identities. `ManagedIdentityCredential` can select a
+user-assigned identity by client ID, resource ID, or object ID. `DefaultAzureCredential` supports client ID and
+resource ID.
+
 **Note:** Use `azure-identity` version `1.7.0` or later to utilize [token caching](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md) support for managed identity authentication.
 
 ## Cloud / Sovereign configuration

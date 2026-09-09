@@ -12,11 +12,14 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
@@ -28,12 +31,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 public class ManagedIdentityCredentialTest {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
     private static final String OBJECT_ID = UUID.randomUUID().toString();
+    private static final String RESOURCE_ID = "/subscriptions/" + UUID.randomUUID()
+        + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
@@ -128,52 +134,103 @@ public class ManagedIdentityCredentialTest {
         }
     }
 
-    @Test
-    public void testArcUserAssigned() {
+    @ParameterizedTest
+    @ValueSource(strings = { "clientId", "resourceId", "objectId" })
+    public void testArcUserAssigned(String identityType) {
         // setup
-        String endpoint = "http://localhost";
+        String token = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        Configuration configuration = TestUtils.createTestConfiguration(
-            new TestConfigurationSource().put("IDENTITY_ENDPOINT", endpoint).put("IMDS_ENDPOINT", endpoint));
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
 
-        // test
-        ManagedIdentityCredential credential
-            = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
-            .verify();
+        String clientId = "clientId".equals(identityType) ? CLIENT_ID : null;
+        String resourceId = "resourceId".equals(identityType) ? RESOURCE_ID : null;
+        String objectId = "objectId".equals(identityType) ? OBJECT_ID : null;
+
+        // mock
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class);
+            MockedConstruction<IdentityClient> identityClientMock
+                = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                    assertEquals(clientId, context.arguments().get(1));
+                    assertEquals(resourceId, context.arguments().get(5));
+                    assertEquals(objectId, context.arguments().get(6));
+                    when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                        .thenReturn(TestUtils.getMockAccessToken(token, expiresAt));
+                })) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.AZURE_ARC);
+
+            // test
+            ManagedIdentityCredentialBuilder builder
+                = new ManagedIdentityCredentialBuilder().configuration(configuration);
+            if (clientId != null) {
+                builder.clientId(clientId);
+            } else if (resourceId != null) {
+                builder.resourceId(resourceId);
+            } else {
+                builder.objectId(objectId);
+            }
+
+            StepVerifier.create(builder.build().getToken(request))
+                .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            assertEquals(1, identityClientMock.constructed().size());
+        }
     }
 
     @Test
     public void testCloudshellUserAssigned() {
         // setup
-        String endpoint = "http://localhost";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        Configuration configuration
-            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint));
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
 
-        // test
-        ManagedIdentityCredential credential
-            = new ManagedIdentityCredentialBuilder().configuration(configuration).objectId(OBJECT_ID).build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
-            .verify();
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class)) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.CLOUD_SHELL);
+
+            // test
+            ManagedIdentityCredential credential
+                = new ManagedIdentityCredentialBuilder().configuration(configuration).objectId(OBJECT_ID).build();
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(t -> t instanceof CredentialUnavailableException
+                    && t.getMessage().contains("User-assigned managed identity is not supported in CLOUD_SHELL"))
+                .verify();
+        }
+    }
+
+    @Test
+    public void testServiceFabricUserAssigned() {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
+
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class)) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.SERVICE_FABRIC);
+
+            // test
+            ManagedIdentityCredential credential
+                = new ManagedIdentityCredentialBuilder().configuration(configuration).resourceId(RESOURCE_ID).build();
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(t -> t instanceof CredentialUnavailableException
+                    && t.getMessage().contains("Service Fabric managed identity environment"))
+                .verify();
+        }
     }
 
     @Test
     public void testInvalidIdCombination() {
         // setup
-        String resourceId = "/subscriptions/" + UUID.randomUUID()
-            + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
         String objectId = "2323-sd2323s-32323-32334-34343";
 
         // test
         assertThrows(IllegalStateException.class,
-            () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build());
+            () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(RESOURCE_ID).build());
 
         assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID)
-                .resourceId(resourceId)
+                .resourceId(RESOURCE_ID)
                 .objectId(objectId)
                 .build());
 
@@ -181,7 +238,7 @@ public class ManagedIdentityCredentialTest {
             () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).objectId(objectId).build());
 
         assertThrows(IllegalStateException.class,
-            () -> new ManagedIdentityCredentialBuilder().resourceId(resourceId).objectId(objectId).build());
+            () -> new ManagedIdentityCredentialBuilder().resourceId(RESOURCE_ID).objectId(objectId).build());
     }
 
     @Test

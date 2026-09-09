@@ -13,12 +13,15 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -37,12 +40,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 public class DefaultAzureCredentialTest {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String RESOURCE_ID = "/subscriptions/" + UUID.randomUUID()
+        + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
 
     @Test
     public void testUseEnvironmentCredential() {
@@ -110,6 +116,48 @@ public class DefaultAzureCredentialTest {
                 .verifyComplete();
             Assertions.assertNotNull(mocked);
             Assertions.assertNotNull(ijcredential);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "clientId", "resourceId" })
+    public void testUseArcUserAssignedManagedIdentityCredential(String identityType) {
+        // setup
+        String token = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+
+        // mock
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class);
+            MockedConstruction<IdentityClient> mocked
+                = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                    when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
+                    when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                        .thenReturn(TestUtils.getMockAccessToken(token, expiresAt));
+                });
+            MockedConstruction<IntelliJCredential> intelliJCredentialMock
+                = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+                    when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
+                })) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.AZURE_ARC);
+
+            DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder().configuration(configuration);
+            if ("clientId".equals(identityType)) {
+                builder.managedIdentityClientId(CLIENT_ID);
+            } else {
+                builder.managedIdentityResourceId(RESOURCE_ID);
+            }
+
+            // test
+            StepVerifier.create(builder.build().getToken(request))
+                .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(intelliJCredentialMock);
         }
     }
 
@@ -450,14 +498,10 @@ public class DefaultAzureCredentialTest {
 
     @Test
     public void testInvalidIdCombination() {
-        // setup
-        String resourceId = "/subscriptions/" + UUID.randomUUID()
-            + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
-
         // test
         Assertions.assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID)
-                .managedIdentityResourceId(resourceId)
+                .managedIdentityResourceId(RESOURCE_ID)
                 .build());
     }
 

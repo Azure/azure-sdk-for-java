@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -13,6 +15,10 @@
 ### Other Changes
 
 - Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
+
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
 
 ## 1.18.5 (2026-08-24)
 

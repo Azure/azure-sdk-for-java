@@ -45,6 +45,11 @@ import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowT
  *     Sets</a></li>
  * </ol>
  *
+ * <p>On Azure Arc-enabled servers, this credential supports both system-assigned and user-assigned managed
+ * identities. Use {@link ManagedIdentityCredentialBuilder#clientId(String)},
+ * {@link ManagedIdentityCredentialBuilder#resourceId(String)}, or
+ * {@link ManagedIdentityCredentialBuilder#objectId(String)} to select a user-assigned identity.</p>
+ *
  * <p><strong>Sample: Construct a simple ManagedIdentityCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a ManagedIdentityCredential,
@@ -97,8 +102,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
-            if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
-                || ManagedIdentitySourceType.AZURE_ARC.equals(managedIdentitySourceType)) {
+            if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)) {
                 throw LOGGER.throwableAtError()
                     .log("ManagedIdentityCredential authentication unavailable. "
                         + "User-assigned managed identity is not supported in " + managedIdentitySourceType
