@@ -43,7 +43,7 @@ public class CreateToolboxVersion {
         );
 
         ToolboxVersionDetails toolboxVersion = toolboxesClient.createToolboxVersion(
-                "toolbox-created-from-java", tools,
+                "toolbox_created_from_java", tools,
                 "Toolbox with MCP tool requiring approval 'never'.", null, null, null);
 
         System.out.println("Toolbox Name: " + toolboxVersion.getName());

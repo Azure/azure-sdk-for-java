@@ -104,16 +104,6 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
     private final double elapsed;
 
     /**
-     * Get the elapsed property: Wall-clock time elapsed in seconds since the job began executing.
-     *
-     * @return the elapsed value.
-     */
-    @Generated
-    public Duration getElapsed() {
-        return Duration.ofNanos((long) (this.elapsed * 1000_000_000L));
-    }
-
-    /**
      * Creates an instance of AgentOptimizationJobProgress class.
      *
      * @param candidatesCompleted the candidatesCompleted value to set.
@@ -129,5 +119,15 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
         } else {
             this.elapsed = (double) elapsed.toNanos() / 1000_000_000L;
         }
+    }
+
+    /**
+     * Get the elapsed property: Wall-clock time elapsed in seconds since the job began executing.
+     *
+     * @return the elapsed value.
+     */
+    @Generated
+    public Duration getElapsed() {
+        return Duration.ofNanos((long) (this.elapsed * 1000_000_000L));
     }
 }

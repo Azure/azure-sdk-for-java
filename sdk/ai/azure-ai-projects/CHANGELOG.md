@@ -24,6 +24,10 @@
 ### Breaking Changes
 
 - `BetaRoutinesClient.createOrUpdateRoutine(String, String, Boolean, Map<String, RoutineTrigger>, RoutineAction)` and its `BetaRoutinesAsyncClient` counterpart now require an additional trailing `RoutineAuthorization authorization` parameter. Pass `null` to retain the previous agent-identity dispatch behavior.
+- Replaced `Target` with `FoundryEvaluationTarget`. `AzureAIAgentTarget` and `AzureAIModelTarget` now inherit from `FoundryEvaluationTarget`; update imports and declarations that use `Target`.
+- `AgentTaxonomyInput` now accepts `FoundryEvaluationTarget` instead of `Target` in its constructor, and `getTarget()` returns `FoundryEvaluationTarget`.
+
+### Bugs Fixed
 
 - Regenerated client from the updated TypeSpec specification.
 

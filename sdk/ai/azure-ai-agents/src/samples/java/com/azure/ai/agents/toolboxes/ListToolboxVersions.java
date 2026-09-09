@@ -24,7 +24,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ListToolboxVersions {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String toolboxName = "toolbox-created-from-java";
+        String toolboxName = "toolbox_created_from_java";
         // Code sample for listing all versions of a toolbox
         ToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())

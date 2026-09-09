@@ -26,7 +26,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  * </ul>
  */
 public class MemoryStoreItemsSample {
-    private static final String MEMORY_STORE_NAME = "memory-items-store-java";
+    private static final String MEMORY_STORE_NAME = "memory_items_store_java";
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();

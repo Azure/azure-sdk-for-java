@@ -11,7 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class DeleteMemoryStore {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String memoryStoreName = "my-memory-store-java";
+        String memoryStoreName = "my_memory_store_java";
 
         // Code sample for deleting a memory store
         BetaMemoryStoresClient memoryStoresClient = new AgentsClientBuilder()

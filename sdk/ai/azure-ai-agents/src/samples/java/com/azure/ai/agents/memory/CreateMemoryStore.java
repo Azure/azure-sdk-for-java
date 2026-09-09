@@ -24,7 +24,7 @@ public class CreateMemoryStore {
                 .beta()
                 .buildBetaMemoryStoresClient();
 
-        String memoryStoreName = "my-memory-store-java";
+        String memoryStoreName = "my_memory_store_java";
         String description = "Example memory store for conversations";
 
         MemoryStoreDefaultDefinition definition = new MemoryStoreDefaultDefinition(chatModel, embeddingModel);

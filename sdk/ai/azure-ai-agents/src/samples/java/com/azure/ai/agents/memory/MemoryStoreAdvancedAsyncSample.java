@@ -5,7 +5,6 @@ package com.azure.ai.agents.memory;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaMemoryStoresAsyncClient;
-import com.azure.ai.agents.models.ApiError;
 import com.azure.ai.agents.models.MemoryOperation;
 import com.azure.ai.agents.models.MemorySearchItem;
 import com.azure.ai.agents.models.MemorySearchOptions;
@@ -39,7 +38,7 @@ import java.util.Arrays;
  * </ul>
  */
 public class MemoryStoreAdvancedAsyncSample {
-    private static final String MEMORY_STORE_NAME = "memory-advanced-store-java-async";
+    private static final String MEMORY_STORE_NAME = "memory_advanced_store_java_async";
     private static final Duration POLL_TIMEOUT = Duration.ofMinutes(3);
     private static final Duration CLEANUP_TIMEOUT = Duration.ofMinutes(1);
 
@@ -158,15 +157,7 @@ public class MemoryStoreAdvancedAsyncSample {
         PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> poller) {
         return poller.takeUntil(response -> response.getStatus().isComplete())
             .last()
-            .flatMap(response -> {
-                MemoryStoreUpdateResponse update = response.getValue();
-                ApiError error = update == null ? null : update.getError();
-                if (error != null) {
-                    return Mono.error(new IllegalStateException(String.format(
-                        "Memory update failed: [%s] %s", error.getCode(), error.getMessage())));
-                }
-                return response.getFinalResult();
-            })
+            .flatMap(AsyncPollResponse::getFinalResult)
             .timeout(POLL_TIMEOUT);
     }
 

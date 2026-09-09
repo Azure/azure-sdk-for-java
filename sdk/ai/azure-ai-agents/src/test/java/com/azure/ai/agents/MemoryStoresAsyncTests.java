@@ -42,7 +42,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     public void basicMemoryStoresCrud(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         BetaMemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
 
-        String memoryStoreName = "my-memory-store-java";
+        String memoryStoreName = "my_memory_store_java";
         String initialDescription = "Example memory store for conversations";
         String updatedDescription = "Updated description";
 
@@ -104,7 +104,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     public void basicMemoryStores(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         BetaMemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
 
-        String memoryStoreName = "my-memory-store";
+        String memoryStoreName = "my_memory_store";
         String description = "Example memory store for conversations";
         String scope = "user_123";
         String userMessageContent = "I prefer dark roast coffee and usually drink it in the morning";
@@ -164,7 +164,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     public void advancedMemoryStores(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         BetaMemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
 
-        String memoryStoreName = "my-memory-store";
+        String memoryStoreName = "my_memory_store";
         String description = "Example memory store for conversations";
         String scope = "user_123";
         String firstMessageContent = "I prefer dark roast coffee and usually drink it in the morning";
