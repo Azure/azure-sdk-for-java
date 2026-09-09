@@ -73,10 +73,7 @@ public class ShareStorageCustomization extends Customization {
         "FileClient", "FileAsyncClient",
         "ShareClient", "ShareAsyncClient");
 
-    private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
-        "src/main/java/com/azure/storage/file/share/package-info.java",
-        "src/main/java/com/azure/storage/file/share/models/package-info.java",
-        "src/main/java/com/azure/storage/file/share/implementation/package-info.java");
+    private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList("src/main/java/module-info.java");
 
     // Generated implementation classes typed to the generated FileServiceVersion enum, which is deleted (above) in
     // favor of the hand-written public ShareServiceVersion. These are retyped to ShareServiceVersion after generation.
@@ -652,9 +649,12 @@ public class ShareStorageCustomization extends Customization {
                 ast.addImport("com.azure.storage.file.share.models.ShareStorageException");
                 ast.addImport("com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal");
                 ast.getClassByName(implToUpdate).ifPresent(clazz -> {
-                    clazz.getFields();
-
                     clazz.getMethods().forEach(methodDeclaration -> {
+                        // getService() is a plain accessor for the RestProxy service instance; it never does I/O.
+                        if (methodDeclaration.getNameAsString().equals("getService")) {
+                            return;
+                        }
+
                         Type returnType = methodDeclaration.getType();
                         // The way code generation works we only need to update the methods that have a class return type.
                         // As non-class return types, such as "void", call into the Response<Void> methods.
