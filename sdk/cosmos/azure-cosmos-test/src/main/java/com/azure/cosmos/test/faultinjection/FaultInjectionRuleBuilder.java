@@ -183,6 +183,11 @@ public final class FaultInjectionRuleBuilder {
             return true;
         }
 
+        if (this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH) {
+            return serverErrorType == FaultInjectionServerErrorType.COMPUTE_SERVICE_UNAVAILABLE
+                || serverErrorType == FaultInjectionServerErrorType.COMPUTE_INTERNAL_SERVER_ERROR;
+        }
+
         return this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES
             && (serverErrorType == FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
             || serverErrorType == FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ);

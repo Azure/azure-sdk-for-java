@@ -5918,8 +5918,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 20 * TIMEOUT)
-    public void ppcbRecoveryResolvesAddressesAfterInitialAddressRefreshFailures() throws Exception {
+    @DataProvider(name = "addressRefreshFailureTypes")
+    public Object[][] addressRefreshFailureTypes() {
+        return new Object[][] {
+            {FaultInjectionServerErrorType.RESPONSE_DELAY},
+            {FaultInjectionServerErrorType.COMPUTE_SERVICE_UNAVAILABLE},
+            {FaultInjectionServerErrorType.COMPUTE_INTERNAL_SERVER_ERROR}
+        };
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "addressRefreshFailureTypes", timeOut = 20 * TIMEOUT)
+    public void ppcbRecoveryResolvesAddressesAfterInitialAddressRefreshFailures(
+        FaultInjectionServerErrorType errorType) throws Exception {
         if (this.readRegions == null || this.readRegions.size() <= 1) {
             throw new SkipException("Test requires a multi-region account");
         }
@@ -6000,20 +6010,21 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 .getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
             locationContextMapField.setAccessible(true);
 
-            addressRefreshRule = new FaultInjectionRuleBuilder(
-                "ppcb-address-refresh-connection-delay-" + UUID.randomUUID())
+            boolean isResponseDelay = errorType == FaultInjectionServerErrorType.RESPONSE_DELAY;
+            String addressRefreshRuleId = "ppcb-address-refresh-" + errorType + "-" + UUID.randomUUID();
+            addressRefreshRule = new FaultInjectionRuleBuilder(addressRefreshRuleId)
                 .condition(new FaultInjectionConditionBuilder()
                     .region(this.readRegions.get(0))
                     .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
                     .build())
                 .result(FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                    .delay(Duration.ofSeconds(11))
-                    .times(3)
+                    .getResultBuilder(errorType)
+                    .delay(isResponseDelay ? Duration.ofSeconds(11) : Duration.ZERO)
+                    .times(isResponseDelay ? 3 : Integer.MAX_VALUE)
                     .build())
                 .duration(Duration.ofMinutes(10))
                 // Keep recovery probes faulted until the test has observed failover.
-                .hitLimit(60)
+                .hitLimit(isResponseDelay ? 60 : Integer.MAX_VALUE)
                 .build();
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
                 container,
@@ -6022,6 +6033,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
             CosmosDiagnostics lastDiagnostics = null;
+            boolean observedAddressFailure = false;
             for (int i = 0; i < 20
                 && !hasUnavailableLocationForPartition(
                     partitionKeyRangeWrapper,
@@ -6036,9 +6048,19 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 } catch (CosmosException exception) {
                     lastDiagnostics = exception.getDiagnostics();
                 }
+
+                assertThat(lastDiagnostics).isNotNull();
+                observedAddressFailure |= cosmosDiagnosticsAccessor.getClientSideRequestStatistics(lastDiagnostics)
+                    .stream()
+                    .flatMap(statistics -> statistics.getAddressResolutionStatistics().values().stream())
+                    .anyMatch(statistics -> addressRefreshRuleId.equals(statistics.getFaultInjectionRuleId())
+                        && statistics.getExceptionMessage() != null);
             }
 
-            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(30);
+            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(isResponseDelay ? 30 : 1);
+            assertThat(observedAddressFailure)
+                .as("Address resolution diagnostics should record the injected %s failure", errorType)
+                .isTrue();
             assertThat(hasUnavailableLocationForPartition(
                 partitionKeyRangeWrapper,
                 partitionUnavailabilityMap,
