@@ -49,6 +49,18 @@ public final class PageBlobsClearPagesHeaders {
     private final Long blobSequenceNumber;
 
     /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @Generated
+    private final Boolean isServerEncrypted;
+
+    /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    @Generated
+    private final String encryptionKeySha256;
+
+    /*
      * The Date property.
      */
     @Generated
@@ -76,6 +88,12 @@ public final class PageBlobsClearPagesHeaders {
 
     private static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER
         = HttpHeaderName.fromString("x-ms-blob-sequence-number");
+
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -111,6 +129,13 @@ public final class PageBlobsClearPagesHeaders {
         } else {
             this.blobSequenceNumber = null;
         }
+        String isServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        if (isServerEncrypted != null) {
+            this.isServerEncrypted = Boolean.parseBoolean(isServerEncrypted);
+        } else {
+            this.isServerEncrypted = null;
+        }
+        this.encryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -173,6 +198,26 @@ public final class PageBlobsClearPagesHeaders {
     @Generated
     public Long getBlobSequenceNumber() {
         return this.blobSequenceNumber;
+    }
+
+    /**
+     * Get the isServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @return the isServerEncrypted value.
+     */
+    @Generated
+    public Boolean isServerEncrypted() {
+        return this.isServerEncrypted;
+    }
+
+    /**
+     * Get the encryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     * 
+     * @return the encryptionKeySha256 value.
+     */
+    @Generated
+    public String getEncryptionKeySha256() {
+        return this.encryptionKeySha256;
     }
 
     /**

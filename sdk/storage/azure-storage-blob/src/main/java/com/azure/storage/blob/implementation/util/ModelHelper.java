@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -81,6 +82,8 @@ import javax.xml.stream.XMLStreamException;
  */
 public final class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    private static final String METADATA_HEADER_PREFIX = "x-ms-meta-";
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
@@ -776,6 +779,25 @@ public final class ModelHelper {
          * @throws XMLStreamException If deserialization fails.
          */
         T deserialize(XmlReader reader) throws XMLStreamException;
+    }
+
+    /**
+     * Serializes user metadata as the {@code x-ms-meta-<key>} header collection on {@code requestOptions}.
+     * <p>
+     * The generated typed methods take metadata as a {@code Map<String, String>} parameter but emit it as a single
+     * {@code x-ms-meta} header holding the map's {@code toString()}, so callers pass {@code null} for that parameter
+     * and populate the headers here instead. Revisit once a published typespec-java contains the request-side
+     * collection header prefix support (microsoft/typespec#11887).
+     *
+     * @param requestOptions The request options to mutate.
+     * @param metadata The metadata to serialize; may be {@code null} or empty.
+     */
+    public static void addMetadataHeaders(RequestOptions requestOptions, Map<String, String> metadata) {
+        if (metadata != null) {
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.addHeader(METADATA_HEADER_PREFIX + entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     private ModelHelper() {
