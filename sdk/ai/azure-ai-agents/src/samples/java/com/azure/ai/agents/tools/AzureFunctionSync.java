@@ -5,9 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureFunctionBinding;
 import com.azure.ai.agents.models.AzureFunctionDefinition;
@@ -18,6 +16,7 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ToolChoiceOptions;
@@ -53,7 +52,6 @@ public class AzureFunctionSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // Define function parameters
         // Use BinaryData.fromObject() to produce correct JSON types
@@ -91,14 +89,14 @@ public class AzureFunctionSync {
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
                     .toolChoice(ToolChoiceOptions.REQUIRED)
-                    .input("What is the weather in Seattle?"));
+                    .input("What is the weather in Seattle?")
+                    .build());
 
             System.out.println("Response: " + response.output());
         } finally {

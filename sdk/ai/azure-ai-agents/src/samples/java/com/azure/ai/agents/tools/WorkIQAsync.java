@@ -5,14 +5,13 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputMessage;
@@ -53,7 +52,7 @@ public class WorkIQAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(workIqConnectionId);
 
@@ -70,14 +69,12 @@ public class WorkIQAsync {
                     System.out.printf("Agent created: %s (version %s)%n",
                         createdAgent.getName(), createdAgent.getVersion());
 
-                    AgentReference agentReference = new AgentReference(createdAgent.getName())
-                        .setVersion(createdAgent.getVersion());
-
-                    return responsesAsyncClient.createAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    return SampleUtils.pinAgentVersion(agentsAsyncClient, createdAgent)
+                        .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                         ResponseCreateParams.builder()
                             .toolChoice(ToolChoiceOptions.REQUIRED)
-                            .input(userInput))
+                            .input(userInput)
+                            .build())))
                         .doOnNext(response -> {
                             System.out.println("Response status: "
                                 + response.status().map(Object::toString).orElse("unknown"));

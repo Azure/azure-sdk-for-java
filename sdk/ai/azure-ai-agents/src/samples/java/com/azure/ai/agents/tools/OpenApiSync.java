@@ -5,10 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
@@ -17,6 +14,7 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
@@ -49,7 +47,6 @@ public class OpenApiSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
 
@@ -85,15 +82,14 @@ public class OpenApiSync {
                 .build());
 
         try {
-            AgentReference agentReference = new AgentReference(agentVersion.getName())
-                .setVersion(agentVersion.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agentVersion);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentVersion.getName());
 
-            ResponseCreateParams.Builder options = ResponseCreateParams.builder()
-                .maxOutputTokens(300L);
-
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
-                options.conversation(conversation.id()));
+            Response response = openAIClient.responses().create(
+                ResponseCreateParams.builder()
+                    .maxOutputTokens(300L)
+                    .conversation(conversation.id())
+                    .build());
 
             String text = response.output().stream()
                 .filter(item -> item.isMessage())

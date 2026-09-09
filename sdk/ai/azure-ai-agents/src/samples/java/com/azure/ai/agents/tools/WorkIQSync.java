@@ -5,14 +5,13 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputMessage;
@@ -51,7 +50,6 @@ public class WorkIQSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_work_iq
         // Create a Work IQ tool with a fully qualified project connection resource ID
@@ -68,14 +66,14 @@ public class WorkIQSync {
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
                     .toolChoice(ToolChoiceOptions.REQUIRED)
-                    .input(userInput));
+                    .input(userInput)
+                    .build());
 
             System.out.println("Response status: " + response.status().map(Object::toString).orElse("unknown"));
             System.out.println("Agent response: " + getResponseText(response));

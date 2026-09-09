@@ -5,14 +5,13 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WebSearchPreviewTool;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
@@ -40,7 +39,6 @@ public class WebSearchSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         AgentVersionDetails agent = null;
 
@@ -59,13 +57,14 @@ public class WebSearchSync {
             agent = agentsClient.createAgentVersion("web-search-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
-                    .input("What are the latest trends in renewable energy?"));
+                    .input("What are the latest trends in renewable energy?")
+                    .build());
 
             // Process and display the response
             for (ResponseOutputItem outputItem : response.output()) {
