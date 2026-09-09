@@ -426,10 +426,18 @@ public final class CommunicationIdentityClientBuilder implements
     /**
      * Overwrites the {@code api-version} query parameter with the version selected on the builder.
      *
-     * <p>Implemented as a named class rather than a lambda so that the synchronous path can be
-     * overridden. {@link HttpPipelinePolicy} supplies a default {@code processSync} that calls
-     * {@code process(...).block()}, which would make every synchronous request block a thread in
-     * order to perform a string substitution on the URL.</p>
+     * <p><strong>Do not replace this class with a lambda.</strong> {@link HttpPipelinePolicy} is a
+     * functional interface, so a lambda compiles and behaves correctly - the api-version still
+     * reaches the wire on both paths, and every test still passes. What is lost is
+     * {@code processSync}: a lambda inherits the interface default, which calls
+     * {@code process(...).block()}, so each synchronous request blocks a thread in Reactor solely
+     * to substitute a string in the request URL. Built-in azure-core policies override
+     * {@code processSync} for this same reason.</p>
+     *
+     * <p>The regression is invisible to the test suite. It is a performance characteristic rather
+     * than a behavioural one, so no assertion here distinguishes the two forms, and a fault
+     * introduced this way would be hard to attribute later - thread starvation under load is not
+     * an obvious symptom of an api-version rewrite.</p>
      */
     private static final class ApiVersionPolicy implements HttpPipelinePolicy {
         private final String apiVersion;
