@@ -95,6 +95,11 @@
           "code": "java\\.class\\.removed",
           "old": "class com\\.azure\\.ai\\.agents\\.models\\.(AgentOptimizationEvaluatorRef|OptimizationAgentIdentifier|OptimizationCandidate|OptimizationDatasetCriterion|OptimizationDatasetInput|OptimizationDatasetInputType|OptimizationDatasetItem|OptimizationEvaluatorRef|OptimizationInlineDatasetInput|OptimizationJob|OptimizationJobInputs|OptimizationJobListItem|OptimizationJobProgress|OptimizationJobResult|OptimizationOptions|OptimizationReferenceDatasetInput|ProgrammaticToolCallingParameter)",
           "justification": "Breaking change in beta operation: legacy optimization and programmatic tool-calling models were removed or replaced while aligning with the current preview service contract."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method double com.azure.ai.agents.models.AgentOptimizationJobProgress::getElapsedSeconds()",
+          "justification": "Breaking change in beta operation: getElapsedSeconds was replaced by the Duration-returning getElapsed method to align with the current AgentsOptimization preview contract."
         }
       ]
     }

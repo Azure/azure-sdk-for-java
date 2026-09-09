@@ -77,6 +77,25 @@
           "code": "java\\.method\\.numberOfParametersChanged",
           "old": "method .* com\\.azure\\.ai\\.projects\\.BetaRoutines(Async)?Client::createOrUpdateRoutine\\(.*\\)",
           "justification": "Breaking change in beta operation: BetaRoutines(Async)Client createOrUpdateRoutine takes an additional optional 'authorization' parameter to align with the current Routines preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeChanged)",
+          "old": "(parameter void|method com\\.azure\\.ai\\.projects\\.models\\.Target) com\\.azure\\.ai\\.projects\\.models\\.AgentTaxonomyInput::(<init>|getTarget)\\(.*\\)",
+          "justification": "Breaking change in beta operation: AgentTaxonomyInput now uses FoundryEvaluationTarget after Target was renamed to align with the current Evaluations preview contract."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.projects\\.models\\.(AzureAIAgentTarget|AzureAIModelTarget)"
+          },
+          "justification": "Breaking change in beta operation: evaluation target models now inherit from FoundryEvaluationTarget after Target was renamed to align with the current Evaluations preview contract."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.Target",
+          "justification": "Breaking change in beta operation: Target was renamed to FoundryEvaluationTarget to align with the current Evaluations preview contract."
         }
       ]
     }
