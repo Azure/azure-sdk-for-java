@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -89,7 +90,7 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
             gen.writeStartObject();
             if (snapshot != PerPartitionAutomaticFailoverDiagnostics.EMPTY) {
                 gen.writeStringField("currWriteRegion", snapshot.getCurrentWriteRegion());
-                gen.writeStringField("since", snapshot.getSince().toString());
+                gen.writeStringField("since", DiagnosticsInstantSerializer.fromInstant(snapshot.getSince()));
             }
             gen.writeEndObject();
         }
