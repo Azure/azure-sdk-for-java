@@ -271,7 +271,7 @@ public final class PageBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>Indicates the tier to be set on the page blob. Allowed
      * values: "P4", "P6", "P10", "P15", "P20", "P30", "P40", "P50", "P60", "P70", "P80".</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
@@ -350,7 +350,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponseAsync(long size, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseInternalAsync(long size, RequestOptions requestOptions) {
         final int contentLength = 0;
         final String blobType = "PageBlob";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(),
@@ -373,7 +373,7 @@ public final class PageBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>Indicates the tier to be set on the page blob. Allowed
      * values: "P4", "P6", "P10", "P15", "P20", "P30", "P40", "P50", "P60", "P70", "P80".</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
@@ -452,7 +452,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(long size, RequestOptions requestOptions) {
+    public Response<Void> createWithResponseInternal(long size, RequestOptions requestOptions) {
         final int contentLength = 0;
         final String blobType = "PageBlob";
         return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), size,
@@ -559,7 +559,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadPagesWithResponseAsync(long contentLength, String range, BinaryData body,
+    public Mono<Response<Void>> uploadPagesWithResponseInternalAsync(long contentLength, String range, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String pageWrite = "update";
@@ -668,7 +668,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadPagesWithResponse(long contentLength, String range, BinaryData body,
+    public Response<Void> uploadPagesWithResponseInternal(long contentLength, String range, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String pageWrite = "update";
@@ -749,7 +749,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> clearPagesWithResponseAsync(String range, RequestOptions requestOptions) {
+    public Mono<Response<Void>> clearPagesWithResponseInternalAsync(String range, RequestOptions requestOptions) {
         final int contentLength = 0;
         final String pageWrite = "clear";
         return FluxUtil.withContext(context -> service.clearPages(this.client.getUrl(),
@@ -829,7 +829,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> clearPagesWithResponse(String range, RequestOptions requestOptions) {
+    public Response<Void> clearPagesWithResponseInternal(String range, RequestOptions requestOptions) {
         final int contentLength = 0;
         final String pageWrite = "clear";
         return service.clearPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentLength,
@@ -941,7 +941,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadPagesFromUrlWithResponseAsync(String sourceUrl, String sourceRange,
+    public Mono<Response<Void>> uploadPagesFromUrlWithResponseInternalAsync(String sourceUrl, String sourceRange,
         long contentLength, String range, RequestOptions requestOptions) {
         final String pageWrite = "update";
         return FluxUtil.withContext(
@@ -1054,8 +1054,8 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadPagesFromUrlWithResponse(String sourceUrl, String sourceRange, long contentLength,
-        String range, RequestOptions requestOptions) {
+    public Response<Void> uploadPagesFromUrlWithResponseInternal(String sourceUrl, String sourceRange,
+        long contentLength, String range, RequestOptions requestOptions) {
         final String pageWrite = "update";
         return service.uploadPagesFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, Context.NONE);
@@ -1145,7 +1145,7 @@ public final class PageBlobsImpl {
      * @return the result of the Get Pages API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPageRangesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getPageRangesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getPageRanges(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -1235,7 +1235,7 @@ public final class PageBlobsImpl {
      * @return the result of the Get Pages API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPageRangesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getPageRangesWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return service.getPageRangesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
@@ -1329,7 +1329,7 @@ public final class PageBlobsImpl {
      * @return the result of the Get Pages API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPageRangesDiffWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getPageRangesDiffWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getPageRangesDiff(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -1423,7 +1423,7 @@ public final class PageBlobsImpl {
      * @return the result of the Get Pages API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPageRangesDiffWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getPageRangesDiffWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return service.getPageRangesDiffSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
@@ -1493,7 +1493,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizeWithResponseAsync(long size, RequestOptions requestOptions) {
+    public Mono<Response<Void>> resizeWithResponseInternalAsync(long size, RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.resize(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), size, requestOptions, context));
     }
@@ -1562,7 +1562,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizeWithResponse(long size, RequestOptions requestOptions) {
+    public Response<Void> resizeWithResponseInternal(long size, RequestOptions requestOptions) {
         return service.resizeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), size,
             requestOptions, Context.NONE);
     }
@@ -1627,7 +1627,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setSequenceNumberWithResponseAsync(String sequenceNumberAction,
+    public Mono<Response<Void>> setSequenceNumberWithResponseInternalAsync(String sequenceNumberAction,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.setSequenceNumber(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), sequenceNumberAction, requestOptions, context));
@@ -1693,7 +1693,8 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setSequenceNumberWithResponse(String sequenceNumberAction, RequestOptions requestOptions) {
+    public Response<Void> setSequenceNumberWithResponseInternal(String sequenceNumberAction,
+        RequestOptions requestOptions) {
         return service.setSequenceNumberSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             sequenceNumberAction, requestOptions, Context.NONE);
     }
@@ -1755,7 +1756,8 @@ public final class PageBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> copyIncrementalWithResponseAsync(String copySource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> copyIncrementalWithResponseInternalAsync(String copySource,
+        RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.copyIncremental(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), copySource, requestOptions, context));
     }
@@ -1817,7 +1819,7 @@ public final class PageBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> copyIncrementalWithResponse(String copySource, RequestOptions requestOptions) {
+    public Response<Void> copyIncrementalWithResponseInternal(String copySource, RequestOptions requestOptions) {
         return service.copyIncrementalSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             copySource, requestOptions, Context.NONE);
     }

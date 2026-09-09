@@ -14,10 +14,10 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 
 /**
- * The AppendBlobsAppendBlockFromUrlHeaders model.
+ * The BlockBlobsUploadBlobFromUrlHeaders model.
  */
 @Immutable
-public final class AppendBlobsAppendBlockFromUrlHeaders {
+public final class BlockBlobsUploadBlobFromUrlHeaders {
     /*
      * The ETag property.
      */
@@ -43,16 +43,10 @@ public final class AppendBlobsAppendBlockFromUrlHeaders {
     private final byte[] contentCrc64;
 
     /*
-     * The x-ms-blob-append-offset property.
+     * The x-ms-version-id property.
      */
     @Generated
-    private final String blobAppendOffset;
-
-    /*
-     * The x-ms-blob-committed-block-count property.
-     */
-    @Generated
-    private final Integer blobCommittedBlockCount;
+    private final String versionId;
 
     /*
      * The x-ms-request-server-encrypted property.
@@ -98,10 +92,7 @@ public final class AppendBlobsAppendBlockFromUrlHeaders {
 
     private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
-    private static final HttpHeaderName X_MS_BLOB_APPEND_OFFSET = HttpHeaderName.fromString("x-ms-blob-append-offset");
-
-    private static final HttpHeaderName X_MS_BLOB_COMMITTED_BLOCK_COUNT
-        = HttpHeaderName.fromString("x-ms-blob-committed-block-count");
+    private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
 
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
@@ -115,11 +106,11 @@ public final class AppendBlobsAppendBlockFromUrlHeaders {
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of AppendBlobsAppendBlockFromUrlHeaders class.
+     * Creates an instance of BlockBlobsUploadBlobFromUrlHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public AppendBlobsAppendBlockFromUrlHeaders(HttpHeaders rawHeaders) {
+    public BlockBlobsUploadBlobFromUrlHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -139,13 +130,7 @@ public final class AppendBlobsAppendBlockFromUrlHeaders {
         } else {
             this.contentCrc64 = null;
         }
-        this.blobAppendOffset = rawHeaders.getValue(X_MS_BLOB_APPEND_OFFSET);
-        String blobCommittedBlockCount = rawHeaders.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT);
-        if (blobCommittedBlockCount != null) {
-            this.blobCommittedBlockCount = Integer.parseInt(blobCommittedBlockCount);
-        } else {
-            this.blobCommittedBlockCount = null;
-        }
+        this.versionId = rawHeaders.getValue(X_MS_VERSION_ID);
         String isServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (isServerEncrypted != null) {
             this.isServerEncrypted = Boolean.parseBoolean(isServerEncrypted);
@@ -209,23 +194,13 @@ public final class AppendBlobsAppendBlockFromUrlHeaders {
     }
 
     /**
-     * Get the blobAppendOffset property: The x-ms-blob-append-offset property.
+     * Get the versionId property: The x-ms-version-id property.
      * 
-     * @return the blobAppendOffset value.
+     * @return the versionId value.
      */
     @Generated
-    public String getBlobAppendOffset() {
-        return this.blobAppendOffset;
-    }
-
-    /**
-     * Get the blobCommittedBlockCount property: The x-ms-blob-committed-block-count property.
-     * 
-     * @return the blobCommittedBlockCount value.
-     */
-    @Generated
-    public Integer getBlobCommittedBlockCount() {
-        return this.blobCommittedBlockCount;
+    public String getVersionId() {
+        return this.versionId;
     }
 
     /**

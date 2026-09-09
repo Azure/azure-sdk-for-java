@@ -12,28 +12,10 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The BlobsRenewLeaseHeaders model.
+ * The ServicesListContainersSegmentHeaders model.
  */
 @Immutable
-public final class BlobsRenewLeaseHeaders {
-    /*
-     * The ETag property.
-     */
-    @Generated
-    private final String eTag;
-
-    /*
-     * The Last-Modified property.
-     */
-    @Generated
-    private final DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-lease-id property.
-     */
-    @Generated
-    private final String leaseId;
-
+public final class ServicesListContainersSegmentHeaders {
     /*
      * The Date property.
      */
@@ -58,25 +40,15 @@ public final class BlobsRenewLeaseHeaders {
     @Generated
     private final String clientRequestId;
 
-    private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
-
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of BlobsRenewLeaseHeaders class.
+     * Creates an instance of ServicesListContainersSegmentHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public BlobsRenewLeaseHeaders(HttpHeaders rawHeaders) {
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
-        if (lastModified != null) {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
-        }
-        this.leaseId = rawHeaders.getValue(X_MS_LEASE_ID);
+    public ServicesListContainersSegmentHeaders(HttpHeaders rawHeaders) {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -86,39 +58,6 @@ public final class BlobsRenewLeaseHeaders {
         this.version = rawHeaders.getValue(X_MS_VERSION);
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-    }
-
-    /**
-     * Get the eTag property: The ETag property.
-     * 
-     * @return the eTag value.
-     */
-    @Generated
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Get the lastModified property: The Last-Modified property.
-     * 
-     * @return the lastModified value.
-     */
-    @Generated
-    public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
-    }
-
-    /**
-     * Get the leaseId property: The x-ms-lease-id property.
-     * 
-     * @return the leaseId value.
-     */
-    @Generated
-    public String getLeaseId() {
-        return this.leaseId;
     }
 
     /**

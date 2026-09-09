@@ -12,10 +12,10 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The BlobsRenewLeaseHeaders model.
+ * The PageBlobsSetSequenceNumberHeaders model.
  */
 @Immutable
-public final class BlobsRenewLeaseHeaders {
+public final class PageBlobsSetSequenceNumberHeaders {
     /*
      * The ETag property.
      */
@@ -29,10 +29,10 @@ public final class BlobsRenewLeaseHeaders {
     private final DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-lease-id property.
+     * The x-ms-blob-sequence-number property.
      */
     @Generated
-    private final String leaseId;
+    private final Long blobSequenceNumber;
 
     /*
      * The Date property.
@@ -58,17 +58,18 @@ public final class BlobsRenewLeaseHeaders {
     @Generated
     private final String clientRequestId;
 
-    private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+    private static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER
+        = HttpHeaderName.fromString("x-ms-blob-sequence-number");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of BlobsRenewLeaseHeaders class.
+     * Creates an instance of PageBlobsSetSequenceNumberHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public BlobsRenewLeaseHeaders(HttpHeaders rawHeaders) {
+    public PageBlobsSetSequenceNumberHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -76,7 +77,12 @@ public final class BlobsRenewLeaseHeaders {
         } else {
             this.lastModified = null;
         }
-        this.leaseId = rawHeaders.getValue(X_MS_LEASE_ID);
+        String blobSequenceNumber = rawHeaders.getValue(X_MS_BLOB_SEQUENCE_NUMBER);
+        if (blobSequenceNumber != null) {
+            this.blobSequenceNumber = Long.parseLong(blobSequenceNumber);
+        } else {
+            this.blobSequenceNumber = null;
+        }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -112,13 +118,13 @@ public final class BlobsRenewLeaseHeaders {
     }
 
     /**
-     * Get the leaseId property: The x-ms-lease-id property.
+     * Get the blobSequenceNumber property: The x-ms-blob-sequence-number property.
      * 
-     * @return the leaseId value.
+     * @return the blobSequenceNumber value.
      */
     @Generated
-    public String getLeaseId() {
-        return this.leaseId;
+    public Long getBlobSequenceNumber() {
+        return this.blobSequenceNumber;
     }
 
     /**

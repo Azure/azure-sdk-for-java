@@ -163,7 +163,7 @@ public final class AppendBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
      * this property is stored with the blob and returned with a read request.</td></tr>
      * <tr><td>x-ms-blob-content-encoding</td><td>String</td><td>No</td><td>Specifies the blob's Content-Encoding. If
@@ -237,7 +237,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
         final int contentLength = 0;
         final String blobType = "AppendBlob";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(),
@@ -260,7 +260,7 @@ public final class AppendBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
      * this property is stored with the blob and returned with a read request.</td></tr>
      * <tr><td>x-ms-blob-content-encoding</td><td>String</td><td>No</td><td>Specifies the blob's Content-Encoding. If
@@ -334,7 +334,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(RequestOptions requestOptions) {
+    public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
         final int contentLength = 0;
         final String blobType = "AppendBlob";
         return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentLength,
@@ -443,7 +443,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendBlockWithResponseAsync(long contentLength, BinaryData body,
+    public Mono<Response<Void>> appendBlockWithResponseInternalAsync(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         return FluxUtil.withContext(context -> service.appendBlock(this.client.getUrl(),
@@ -552,7 +552,8 @@ public final class AppendBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendBlockWithResponse(long contentLength, BinaryData body, RequestOptions requestOptions) {
+    public Response<Void> appendBlockWithResponseInternal(long contentLength, BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         return service.appendBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
             contentLength, body, requestOptions, Context.NONE);
@@ -667,7 +668,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendBlockFromUrlWithResponseAsync(String sourceUrl, long contentLength,
+    public Mono<Response<Void>> appendBlockFromUrlWithResponseInternalAsync(String sourceUrl, long contentLength,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.appendBlockFromUrl(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), sourceUrl, contentLength, requestOptions, context));
@@ -782,7 +783,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendBlockFromUrlWithResponse(String sourceUrl, long contentLength,
+    public Response<Void> appendBlockFromUrlWithResponseInternal(String sourceUrl, long contentLength,
         RequestOptions requestOptions) {
         return service.appendBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             sourceUrl, contentLength, requestOptions, Context.NONE);
@@ -844,7 +845,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sealWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> sealWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.seal(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -905,7 +906,7 @@ public final class AppendBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sealWithResponse(RequestOptions requestOptions) {
+    public Response<Void> sealWithResponseInternal(RequestOptions requestOptions) {
         return service.sealSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
             Context.NONE);
     }

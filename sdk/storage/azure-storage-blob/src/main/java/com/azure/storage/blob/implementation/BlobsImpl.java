@@ -574,7 +574,7 @@ public final class BlobsImpl {
      * the request.</td></tr>
      * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
      * identifier for the request.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
@@ -653,7 +653,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.download(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -722,7 +722,7 @@ public final class BlobsImpl {
      * the request.</td></tr>
      * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
      * identifier for the request.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
@@ -801,7 +801,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> downloadWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return service.downloadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
@@ -851,7 +851,7 @@ public final class BlobsImpl {
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Content-Type</td><td>String</td><td>Content-type.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
@@ -932,7 +932,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getPropertiesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -981,7 +981,7 @@ public final class BlobsImpl {
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Content-Type</td><td>String</td><td>Content-type.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
@@ -1062,7 +1062,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getPropertiesWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
@@ -1129,7 +1129,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.delete(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -1196,7 +1196,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
         return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
             Context.NONE);
     }
@@ -1235,7 +1235,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> undeleteWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> undeleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.undelete(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -1274,7 +1274,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> undeleteWithResponse(RequestOptions requestOptions) {
+    public Response<Void> undeleteWithResponseInternal(RequestOptions requestOptions) {
         return service.undeleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
             Context.NONE);
     }
@@ -1324,7 +1324,8 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setExpiryWithResponseAsync(String expiryOptions, RequestOptions requestOptions) {
+    public Mono<Response<Void>> setExpiryWithResponseInternalAsync(String expiryOptions,
+        RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.setExpiry(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), expiryOptions, requestOptions, context));
     }
@@ -1374,7 +1375,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setExpiryWithResponse(String expiryOptions, RequestOptions requestOptions) {
+    public Response<Void> setExpiryWithResponseInternal(String expiryOptions, RequestOptions requestOptions) {
         return service.setExpirySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), expiryOptions,
             requestOptions, Context.NONE);
     }
@@ -1446,7 +1447,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setHttpHeadersWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setHttpHeadersWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.setHttpHeaders(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -1518,7 +1519,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setHttpHeadersWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setHttpHeadersWithResponseInternal(RequestOptions requestOptions) {
         return service.setHttpHeadersSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
@@ -1574,7 +1575,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setImmutabilityPolicyWithResponseAsync(OffsetDateTime expiry,
+    public Mono<Response<Void>> setImmutabilityPolicyWithResponseInternalAsync(OffsetDateTime expiry,
         RequestOptions requestOptions) {
         DateTimeRfc1123 expiryConverted = new DateTimeRfc1123(expiry);
         return FluxUtil.withContext(context -> service.setImmutabilityPolicy(this.client.getUrl(),
@@ -1632,7 +1633,8 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setImmutabilityPolicyWithResponse(OffsetDateTime expiry, RequestOptions requestOptions) {
+    public Response<Void> setImmutabilityPolicyWithResponseInternal(OffsetDateTime expiry,
+        RequestOptions requestOptions) {
         DateTimeRfc1123 expiryConverted = new DateTimeRfc1123(expiry);
         return service.setImmutabilityPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             expiryConverted, requestOptions, Context.NONE);
@@ -1674,7 +1676,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteImmutabilityPolicyWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteImmutabilityPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.deleteImmutabilityPolicy(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -1715,7 +1717,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteImmutabilityPolicyWithResponse(RequestOptions requestOptions) {
+    public Response<Void> deleteImmutabilityPolicyWithResponseInternal(RequestOptions requestOptions) {
         return service.deleteImmutabilityPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
@@ -1758,7 +1760,8 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setLegalHoldWithResponseAsync(boolean legalHold, RequestOptions requestOptions) {
+    public Mono<Response<Void>> setLegalHoldWithResponseInternalAsync(boolean legalHold,
+        RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.setLegalHold(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), legalHold, requestOptions, context));
     }
@@ -1801,7 +1804,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setLegalHoldWithResponse(boolean legalHold, RequestOptions requestOptions) {
+    public Response<Void> setLegalHoldWithResponseInternal(boolean legalHold, RequestOptions requestOptions) {
         return service.setLegalHoldSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), legalHold,
             requestOptions, Context.NONE);
     }
@@ -1822,7 +1825,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
@@ -1876,7 +1879,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setMetadataWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.setMetadata(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -1897,7 +1900,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
@@ -1951,7 +1954,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setMetadataWithResponse(RequestOptions requestOptions) {
+    public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
         return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
@@ -2012,7 +2015,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> acquireLeaseWithResponseAsync(int duration, RequestOptions requestOptions) {
+    public Mono<Response<Void>> acquireLeaseWithResponseInternalAsync(int duration, RequestOptions requestOptions) {
         final String action = "acquire";
         return FluxUtil.withContext(context -> service.acquireLease(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), duration, action, requestOptions, context));
@@ -2074,7 +2077,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> acquireLeaseWithResponse(int duration, RequestOptions requestOptions) {
+    public Response<Void> acquireLeaseWithResponseInternal(int duration, RequestOptions requestOptions) {
         final String action = "acquire";
         return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), duration,
             action, requestOptions, Context.NONE);
@@ -2134,7 +2137,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> releaseLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "release";
         return FluxUtil.withContext(context -> service.releaseLease(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context));
@@ -2194,7 +2197,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> releaseLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> releaseLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         final String action = "release";
         return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
             action, requestOptions, Context.NONE);
@@ -2254,7 +2257,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renewLeaseWithResponseAsync(String leaseId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> renewLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "renew";
         return FluxUtil.withContext(context -> service.renewLease(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context));
@@ -2314,7 +2317,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renewLeaseWithResponse(String leaseId, RequestOptions requestOptions) {
+    public Response<Void> renewLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
         final String action = "renew";
         return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
             action, requestOptions, Context.NONE);
@@ -2375,7 +2378,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> changeLeaseWithResponseAsync(String leaseId, String proposedLeaseId,
+    public Mono<Response<Void>> changeLeaseWithResponseInternalAsync(String leaseId, String proposedLeaseId,
         RequestOptions requestOptions) {
         final String action = "change";
         return FluxUtil.withContext(context -> service.changeLease(this.client.getUrl(),
@@ -2437,7 +2440,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> changeLeaseWithResponse(String leaseId, String proposedLeaseId,
+    public Response<Void> changeLeaseWithResponseInternal(String leaseId, String proposedLeaseId,
         RequestOptions requestOptions) {
         final String action = "change";
         return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
@@ -2501,7 +2504,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> breakLeaseWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> breakLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
         final String action = "break";
         return FluxUtil.withContext(context -> service.breakLease(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), action, requestOptions, context));
@@ -2564,7 +2567,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> breakLeaseWithResponse(RequestOptions requestOptions) {
+    public Response<Void> breakLeaseWithResponseInternal(RequestOptions requestOptions) {
         final String action = "break";
         return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
             requestOptions, Context.NONE);
@@ -2586,7 +2589,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
      * data provided in the request.</td></tr>
      * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>No</td><td>The SHA-256 hash of the provided encryption
@@ -2638,7 +2641,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createSnapshotWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> createSnapshotWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.createSnapshot(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -2659,7 +2662,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
      * data provided in the request.</td></tr>
      * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>No</td><td>The SHA-256 hash of the provided encryption
@@ -2711,7 +2714,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createSnapshotWithResponse(RequestOptions requestOptions) {
+    public Response<Void> createSnapshotWithResponseInternal(RequestOptions requestOptions) {
         return service.createSnapshotSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
@@ -2732,7 +2735,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>The tier to be set on the blob. Allowed values: "P4",
      * "P6", "P10", "P15", "P20", "P30", "P40", "P50", "P60", "P70", "P80", "Hot", "Cool", "Archive", "Premium", "Cold",
      * "Smart".</td></tr>
@@ -2799,7 +2802,8 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startCopyFromUrlWithResponseAsync(String copySource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> startCopyFromUrlWithResponseInternalAsync(String copySource,
+        RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.startCopyFromUrl(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), copySource, requestOptions, context));
     }
@@ -2820,7 +2824,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>The tier to be set on the blob. Allowed values: "P4",
      * "P6", "P10", "P15", "P20", "P30", "P40", "P50", "P60", "P70", "P80", "Hot", "Cool", "Archive", "Premium", "Cold",
      * "Smart".</td></tr>
@@ -2887,7 +2891,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startCopyFromUrlWithResponse(String copySource, RequestOptions requestOptions) {
+    public Response<Void> startCopyFromUrlWithResponseInternal(String copySource, RequestOptions requestOptions) {
         return service.startCopyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             copySource, requestOptions, Context.NONE);
     }
@@ -2908,7 +2912,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>The tier to be set on the blob. Allowed values: "P4",
      * "P6", "P10", "P15", "P20", "P30", "P40", "P50", "P60", "P70", "P80", "Hot", "Cool", "Archive", "Premium", "Cold",
      * "Smart".</td></tr>
@@ -2983,7 +2987,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> copyFromUrlWithResponseAsync(String copySource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> copyFromUrlWithResponseInternalAsync(String copySource, RequestOptions requestOptions) {
         final String requiresSync = "true";
         return FluxUtil.withContext(context -> service.copyFromUrl(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), copySource, requiresSync, requestOptions, context));
@@ -3005,7 +3009,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-access-tier</td><td>String</td><td>No</td><td>The tier to be set on the blob. Allowed values: "P4",
      * "P6", "P10", "P15", "P20", "P30", "P40", "P50", "P60", "P70", "P80", "Hot", "Cool", "Archive", "Premium", "Cold",
      * "Smart".</td></tr>
@@ -3080,7 +3084,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> copyFromUrlWithResponse(String copySource, RequestOptions requestOptions) {
+    public Response<Void> copyFromUrlWithResponseInternal(String copySource, RequestOptions requestOptions) {
         final String requiresSync = "true";
         return service.copyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), copySource,
             requiresSync, requestOptions, Context.NONE);
@@ -3129,7 +3133,8 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> abortCopyFromUrlWithResponseAsync(String copyId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> abortCopyFromUrlWithResponseInternalAsync(String copyId,
+        RequestOptions requestOptions) {
         final String copyActionAbortConstant = "abort";
         return FluxUtil.withContext(context -> service.abortCopyFromUrl(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), copyId, copyActionAbortConstant, requestOptions, context));
@@ -3178,7 +3183,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> abortCopyFromUrlWithResponse(String copyId, RequestOptions requestOptions) {
+    public Response<Void> abortCopyFromUrlWithResponseInternal(String copyId, RequestOptions requestOptions) {
         final String copyActionAbortConstant = "abort";
         return service.abortCopyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), copyId,
             copyActionAbortConstant, requestOptions, Context.NONE);
@@ -3234,7 +3239,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setTierWithResponseAsync(String tier, RequestOptions requestOptions) {
+    public Mono<Response<Void>> setTierWithResponseInternalAsync(String tier, RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.setTier(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), tier, requestOptions, context));
     }
@@ -3289,7 +3294,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setTierWithResponse(String tier, RequestOptions requestOptions) {
+    public Response<Void> setTierWithResponseInternal(String tier, RequestOptions requestOptions) {
         return service.setTierSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), tier,
             requestOptions, Context.NONE);
     }
@@ -3332,7 +3337,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getAccountInfoWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<Void>> getAccountInfoWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.getAccountInfo(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
@@ -3375,7 +3380,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getAccountInfoWithResponse(RequestOptions requestOptions) {
+    public Response<Void> getAccountInfoWithResponseInternal(RequestOptions requestOptions) {
         return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
@@ -3449,7 +3454,7 @@ public final class BlobsImpl {
      * @return the tags of the specified blob along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTagsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTagsWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getTags(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -3524,7 +3529,7 @@ public final class BlobsImpl {
      * @return the tags of the specified blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTagsWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getTagsWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return service.getTagsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
@@ -3603,7 +3608,7 @@ public final class BlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setTagsWithResponseAsync(BinaryData tags, RequestOptions requestOptions) {
+    public Mono<Response<Void>> setTagsWithResponseInternalAsync(BinaryData tags, RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return FluxUtil.withContext(context -> service.setTags(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), contentType, tags, requestOptions, context));
@@ -3682,7 +3687,7 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setTagsWithResponse(BinaryData tags, RequestOptions requestOptions) {
+    public Response<Void> setTagsWithResponseInternal(BinaryData tags, RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return service.setTagsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
             tags, requestOptions, Context.NONE);

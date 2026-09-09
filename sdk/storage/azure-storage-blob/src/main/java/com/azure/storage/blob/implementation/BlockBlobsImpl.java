@@ -237,7 +237,7 @@ public final class BlockBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>Content-MD5</td><td>byte[]</td><td>No</td><td>Specifies the transactional MD5 hash for the
      * body.</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
@@ -336,7 +336,7 @@ public final class BlockBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadWithResponseAsync(long contentLength, BinaryData body,
+    public Mono<Response<Void>> uploadWithResponseInternalAsync(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String blobType = "BlockBlob";
@@ -362,7 +362,7 @@ public final class BlockBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>Content-MD5</td><td>byte[]</td><td>No</td><td>Specifies the transactional MD5 hash for the
      * body.</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
@@ -461,7 +461,8 @@ public final class BlockBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadWithResponse(long contentLength, BinaryData body, RequestOptions requestOptions) {
+    public Response<Void> uploadWithResponseInternal(long contentLength, BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String blobType = "BlockBlob";
         return service.uploadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
@@ -485,7 +486,7 @@ public final class BlockBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>Content-MD5</td><td>byte[]</td><td>No</td><td>Specifies the transactional MD5 hash for the
      * body.</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
@@ -589,7 +590,8 @@ public final class BlockBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadBlobFromUrlWithResponseAsync(String copySource, RequestOptions requestOptions) {
+    public Mono<Response<Void>> uploadBlobFromUrlWithResponseInternalAsync(String copySource,
+        RequestOptions requestOptions) {
         final int contentLength = 0;
         final String blobType = "BlockBlob";
         return FluxUtil.withContext(
@@ -614,7 +616,7 @@ public final class BlockBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>Content-MD5</td><td>byte[]</td><td>No</td><td>Specifies the transactional MD5 hash for the
      * body.</td></tr>
      * <tr><td>x-ms-blob-content-type</td><td>String</td><td>No</td><td>Specifies the blob's Content-Type. If specified,
@@ -718,7 +720,7 @@ public final class BlockBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadBlobFromUrlWithResponse(String copySource, RequestOptions requestOptions) {
+    public Response<Void> uploadBlobFromUrlWithResponseInternal(String copySource, RequestOptions requestOptions) {
         final int contentLength = 0;
         final String blobType = "BlockBlob";
         return service.uploadBlobFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
@@ -808,7 +810,7 @@ public final class BlockBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stageBlockWithResponseAsync(String blockId, long contentLength, BinaryData body,
+    public Mono<Response<Void>> stageBlockWithResponseInternalAsync(String blockId, long contentLength, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         return FluxUtil.withContext(
@@ -899,7 +901,7 @@ public final class BlockBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stageBlockWithResponse(String blockId, long contentLength, BinaryData body,
+    public Response<Void> stageBlockWithResponseInternal(String blockId, long contentLength, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         return service.stageBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
@@ -994,8 +996,8 @@ public final class BlockBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stageBlockFromUrlWithResponseAsync(String blockId, long contentLength, String sourceUrl,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> stageBlockFromUrlWithResponseInternalAsync(String blockId, long contentLength,
+        String sourceUrl, RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.stageBlockFromUrl(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), blockId, contentLength, sourceUrl, requestOptions, context));
     }
@@ -1088,7 +1090,7 @@ public final class BlockBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stageBlockFromUrlWithResponse(String blockId, long contentLength, String sourceUrl,
+    public Response<Void> stageBlockFromUrlWithResponseInternal(String blockId, long contentLength, String sourceUrl,
         RequestOptions requestOptions) {
         return service.stageBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             blockId, contentLength, sourceUrl, requestOptions, Context.NONE);
@@ -1124,7 +1126,7 @@ public final class BlockBlobsImpl {
      * body.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>No</td><td>Specifies the transactional CRC64 hash for the
      * body.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-blob-content-disposition</td><td>String</td><td>No</td><td>Specifies the blob's Content-Disposition.
@@ -1205,7 +1207,8 @@ public final class BlockBlobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> commitBlockListWithResponseAsync(BinaryData blocks, RequestOptions requestOptions) {
+    public Mono<Response<Void>> commitBlockListWithResponseInternalAsync(BinaryData blocks,
+        RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return FluxUtil.withContext(context -> service.commitBlockList(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), contentType, blocks, requestOptions, context));
@@ -1241,7 +1244,7 @@ public final class BlockBlobsImpl {
      * body.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>No</td><td>Specifies the transactional CRC64 hash for the
      * body.</td></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>No</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>No</td><td>The metadata headers.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-blob-content-disposition</td><td>String</td><td>No</td><td>Specifies the blob's Content-Disposition.
@@ -1322,7 +1325,7 @@ public final class BlockBlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> commitBlockListWithResponse(BinaryData blocks, RequestOptions requestOptions) {
+    public Response<Void> commitBlockListWithResponseInternal(BinaryData blocks, RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return service.commitBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
             contentType, blocks, requestOptions, Context.NONE);
@@ -1397,7 +1400,8 @@ public final class BlockBlobsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBlockListWithResponseAsync(String listType, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getBlockListWithResponseInternalAsync(String listType,
+        RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getBlockList(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), listType, accept, requestOptions, context));
@@ -1471,7 +1475,7 @@ public final class BlockBlobsImpl {
      * @return contains the committed and uncommitted blocks in a block blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBlockListWithResponse(String listType, RequestOptions requestOptions) {
+    public Response<BinaryData> getBlockListWithResponseInternal(String listType, RequestOptions requestOptions) {
         final String accept = "application/xml";
         return service.getBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), listType,
             accept, requestOptions, Context.NONE);
@@ -1568,7 +1572,7 @@ public final class BlockBlobsImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>Content-Length</td><td>long</td><td>The number of bytes present in the response body.</td></tr>
      * <tr><td>Content-Range</td><td>String</td><td>Indicates the range of bytes returned in this response.</td></tr>
@@ -1626,7 +1630,8 @@ public final class BlockBlobsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> queryWithResponseAsync(BinaryData queryRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> queryWithResponseInternalAsync(BinaryData queryRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.query(this.client.getUrl(), contentType,
@@ -1724,7 +1729,7 @@ public final class BlockBlobsImpl {
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>x-ms-meta</td><td>String</td><td>The metadata headers.</td></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>Content-Length</td><td>long</td><td>The number of bytes present in the response body.</td></tr>
      * <tr><td>Content-Range</td><td>String</td><td>Indicates the range of bytes returned in this response.</td></tr>
@@ -1782,7 +1787,7 @@ public final class BlockBlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponse(BinaryData queryRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> queryWithResponseInternal(BinaryData queryRequest, RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/octet-stream";
         return service.querySync(this.client.getUrl(), contentType, this.client.getServiceVersion().getVersion(),

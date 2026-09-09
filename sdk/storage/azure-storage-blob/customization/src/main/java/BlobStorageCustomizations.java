@@ -79,6 +79,7 @@ public class BlobStorageCustomizations extends Customization {
         Editor editor = customization.getRawEditor();
         removeGeneratedFiles(editor, logger);
         fixXmlSerializerRedundantCast(editor, logger);
+        fixUrlAcronymHeaderNames(editor, logger);
         customizeQueryFormat(editor, logger);
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         restoreFluentModels(customization, logger);
@@ -381,5 +382,34 @@ public class BlobStorageCustomizations extends Customization {
         editor.replaceFile(path, updated);
         removeFileIfPresent(editor, PKG_ROOT + "implementation/models/ParquetTextConfiguration.java", logger);
         logger.info("Retyped QueryFormat.parquetTextConfiguration to Object and removed the generated model.");
+    }
+
+    // typespec-java writes these five header models to a file named ...FromURLHeaders.java but declares the class
+    // as ...FromUrlHeaders, which does not compile ("class X is public, should be declared in a file named X.java").
+    // The file name matches the shipped AutoRest name that the hand-written clients reference, so the class (and
+    // every reference to it) is renamed to match the file. Only these five are affected: the emitter normalises the
+    // URL acronym in the file name for this subset, while AppendBlockFromUrl/PutBlobFromUrl generate consistently
+    // as ...FromUrlHeaders and are deliberately left alone, since the hand-written clients expect that spelling.
+    private static final List<String> URL_ACRONYM_HEADER_MODELS = Arrays.asList(
+        "BlobsAbortCopyFromUrlHeaders", "BlobsCopyFromUrlHeaders", "BlobsStartCopyFromUrlHeaders",
+        "BlockBlobsStageBlockFromUrlHeaders", "PageBlobsUploadPagesFromUrlHeaders");
+
+    private static void fixUrlAcronymHeaderNames(Editor editor, Logger logger) {
+        int renamed = 0;
+        for (String path : new ArrayList<>(editor.getContents().keySet())) {
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                continue;
+            }
+            String updated = content;
+            for (String wrongName : URL_ACRONYM_HEADER_MODELS) {
+                updated = updated.replace(wrongName, wrongName.replace("FromUrlHeaders", "FromURLHeaders"));
+            }
+            if (!updated.equals(content)) {
+                editor.replaceFile(path, updated);
+                renamed++;
+            }
+        }
+        logger.info("Aligned FromUrlHeaders class names with their FromURLHeaders file names in {} file(s).", renamed);
     }
 }
