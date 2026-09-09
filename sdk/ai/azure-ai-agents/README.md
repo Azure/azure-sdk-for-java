@@ -155,6 +155,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
 | `ReminderPreviewTool` | Reminder scheduling |
 | `SharepointPreviewTool` | SharePoint grounding |
+| `WebIqPreviewTool` | WebIQ MCP servers |
 | `WebSearchPreviewTool` | Web search |
 | `WorkIqPreviewTool` | Work IQ |
 
