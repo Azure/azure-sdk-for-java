@@ -28,7 +28,7 @@ public final class ResourceGuardProxyOperationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceGuardProxyOperations()
-            .deleteWithResponse("bjop", "ouhbq", "zkqxsalu", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("unerke", "uxzshxz", "zbzuzudlev", com.azure.core.util.Context.NONE);
 
     }
 }
