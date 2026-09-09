@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class CGProfilesOperationListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfilesList.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupProfilesList.json
      */
     /**
      * Sample code: ContainerGroupProfilesList.

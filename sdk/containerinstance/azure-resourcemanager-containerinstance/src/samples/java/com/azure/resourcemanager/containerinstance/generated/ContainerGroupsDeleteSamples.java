@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class ContainerGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsDelete.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsDelete.json
      */
     /**
      * Sample code: ContainerGroupsDelete.

@@ -42,6 +42,11 @@ public final class AzureFileVolume implements JsonSerializable<AzureFileVolume> 
      */
     private String storageAccountKeyReference;
 
+    /*
+     * The client id of the user-assigned managed identity that has access to the Azure File share.
+     */
+    private String userAssignedIdentityClientId;
+
     /**
      * Creates an instance of AzureFileVolume class.
      */
@@ -151,6 +156,28 @@ public final class AzureFileVolume implements JsonSerializable<AzureFileVolume> 
     }
 
     /**
+     * Get the userAssignedIdentityClientId property: The client id of the user-assigned managed identity that has
+     * access to the Azure File share.
+     * 
+     * @return the userAssignedIdentityClientId value.
+     */
+    public String userAssignedIdentityClientId() {
+        return this.userAssignedIdentityClientId;
+    }
+
+    /**
+     * Set the userAssignedIdentityClientId property: The client id of the user-assigned managed identity that has
+     * access to the Azure File share.
+     * 
+     * @param userAssignedIdentityClientId the userAssignedIdentityClientId value to set.
+     * @return the AzureFileVolume object itself.
+     */
+    public AzureFileVolume withUserAssignedIdentityClientId(String userAssignedIdentityClientId) {
+        this.userAssignedIdentityClientId = userAssignedIdentityClientId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -180,6 +207,7 @@ public final class AzureFileVolume implements JsonSerializable<AzureFileVolume> 
         jsonWriter.writeBooleanField("readOnly", this.readOnly);
         jsonWriter.writeStringField("storageAccountKey", this.storageAccountKey);
         jsonWriter.writeStringField("storageAccountKeyReference", this.storageAccountKeyReference);
+        jsonWriter.writeStringField("userAssignedIdentityClientId", this.userAssignedIdentityClientId);
         return jsonWriter.writeEndObject();
     }
 
@@ -209,6 +237,8 @@ public final class AzureFileVolume implements JsonSerializable<AzureFileVolume> 
                     deserializedAzureFileVolume.storageAccountKey = reader.getString();
                 } else if ("storageAccountKeyReference".equals(fieldName)) {
                     deserializedAzureFileVolume.storageAccountKeyReference = reader.getString();
+                } else if ("userAssignedIdentityClientId".equals(fieldName)) {
+                    deserializedAzureFileVolume.userAssignedIdentityClientId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
