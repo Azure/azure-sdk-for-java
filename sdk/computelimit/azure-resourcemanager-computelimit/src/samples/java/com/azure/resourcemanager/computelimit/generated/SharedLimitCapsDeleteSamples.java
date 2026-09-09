@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class SharedLimitCapsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_Delete.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_Delete.json
      */
     /**
      * Sample code: Delete the shared limit cap for a VM family.

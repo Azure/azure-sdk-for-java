@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/portalservicescopilot/ci.yml
+      - sdk/portalservicescopilot/azure-resourcemanager-portalservicescopilot/
+    exclude:
+      - sdk/portalservicescopilot/pom.xml
+      - sdk/portalservicescopilot/azure-resourcemanager-portalservicescopilot/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/portalservicescopilot/ci.yml
+      - sdk/portalservicescopilot/azure-resourcemanager-portalservicescopilot/
+    exclude:
+      - sdk/portalservicescopilot/pom.xml
+      - sdk/portalservicescopilot/azure-resourcemanager-portalservicescopilot/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerportalservicescopilot
+    displayName: azure-resourcemanager-portalservicescopilot
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: portalservicescopilot
+    Artifacts:
+      - name: azure-resourcemanager-portalservicescopilot
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerportalservicescopilot
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerportalservicescopilot }}

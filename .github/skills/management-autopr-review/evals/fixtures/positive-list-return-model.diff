@@ -1,0 +1,21 @@
+diff --git a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateListDescription.java b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateListDescription.java
+new file mode 100644
+index 0000000..d39ce47
+--- /dev/null
++++ b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateListDescription.java
+@@ -0,0 +1,18 @@
++package com.azure.resourcemanager.deviceprovisioningservices.models;
++
++import java.util.List;
++
++/**
++ * The JSON-serialized array of certificate objects.
++ */
++public interface CertificateListDescription {
++    /**
++     * Gets the certificate collection.
++     *
++     * @return the certificate collection.
++     */
++    List<CertificateResponse> value();
++}

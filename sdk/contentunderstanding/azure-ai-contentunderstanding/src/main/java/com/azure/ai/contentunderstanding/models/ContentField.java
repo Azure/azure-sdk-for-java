@@ -222,7 +222,7 @@ public class ContentField implements JsonSerializable<ContentField> {
      * - {@link ContentNumberField#getValue()} returns {@code Double}
      * - {@link ContentIntegerField#getValue()} returns {@code Long}
      * - {@link ContentDateField#getValue()} returns {@code LocalDate}
-     * - {@link ContentTimeField#getValue()} returns {@code String}
+     * - {@link ContentTimeField#getValue()} returns {@code LocalTime}
      * - {@link ContentBooleanField#getValue()} returns {@code Boolean}
      * - {@link ContentObjectField#getValue()} returns {@code Map<String, ContentField>}
      * - {@link ContentArrayField#getValue()} returns {@code List<ContentField>}
@@ -248,7 +248,7 @@ public class ContentField implements JsonSerializable<ContentField> {
             return ((ContentDateField) this).getValueDate();
         }
         if (this instanceof ContentTimeField) {
-            return ((ContentTimeField) this).getValueTime();
+            return ((ContentTimeField) this).getValue();
         }
         if (this instanceof ContentBooleanField) {
             return ((ContentBooleanField) this).isValueBoolean();

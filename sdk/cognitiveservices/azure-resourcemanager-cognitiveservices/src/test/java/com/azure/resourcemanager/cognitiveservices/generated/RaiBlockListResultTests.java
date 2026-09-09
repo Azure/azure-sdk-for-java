@@ -12,10 +12,10 @@ public final class RaiBlockListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"uzqgnjdgkynsc\",\"value\":[{\"properties\":{\"description\":\"vhxnk\"},\"etag\":\"tkubotppn\",\"tags\":{\"frbbc\":\"zxhi\"},\"id\":\"qagt\",\"name\":\"tdhlfkqo\",\"type\":\"py\"},{\"properties\":{\"description\":\"trdcnifmzzs\"},\"etag\":\"m\",\"tags\":{\"ocxvdfffwafqr\":\"ysuxmprafwgck\",\"vkbunzozudh\":\"udaspavehh\",\"moy\":\"xg\",\"f\":\"cdyuibhmfdnbzyd\"},\"id\":\"cjnaeoisrvhmgor\",\"name\":\"fukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"},{\"properties\":{\"description\":\"eyqxtjjfzql\"},\"etag\":\"ycavodggxdbees\",\"tags\":{\"wqfbylyrfgiagt\":\"knlrariaawiuagy\",\"zjvusfzldmo\":\"ojocqwogf\"},\"id\":\"xylfsb\",\"name\":\"kadpysown\",\"type\":\"tgkbugrjqctojc\"}]}")
+            "{\"nextLink\":\"gafcqu\",\"value\":[{\"properties\":{\"description\":\"t\"},\"etag\":\"sdtutnwlduyc\",\"tags\":{\"kuqgsjjxundxgket\":\"hyrmewipmvekdx\",\"gpmuneqsxvmhfbuz\":\"zhhzjhfjmhvvmu\",\"ms\":\"yihsasbhudypohyu\"},\"id\":\"nsqyrpfoobrltt\",\"name\":\"msjnygqdnfw\",\"type\":\"zdzgtilaxhnfhqly\"},{\"properties\":{\"description\":\"ouwivkxoyzunbixx\"},\"etag\":\"ikvcpwp\",\"tags\":{\"vtsoxf\":\"rc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\",\"npqfrtqlkzmeg\":\"vmm\"},\"id\":\"tgvkxlzyqd\",\"name\":\"fegcea\",\"type\":\"zxwhcansymoyqhlw\"}]}")
             .toObject(RaiBlockListResult.class);
-        Assertions.assertEquals("uzqgnjdgkynsc", model.nextLink());
-        Assertions.assertEquals("vhxnk", model.value().get(0).properties().description());
-        Assertions.assertEquals("zxhi", model.value().get(0).tags().get("frbbc"));
+        Assertions.assertEquals("gafcqu", model.nextLink());
+        Assertions.assertEquals("t", model.value().get(0).properties().description());
+        Assertions.assertEquals("hyrmewipmvekdx", model.value().get(0).tags().get("kuqgsjjxundxgket"));
     }
 }

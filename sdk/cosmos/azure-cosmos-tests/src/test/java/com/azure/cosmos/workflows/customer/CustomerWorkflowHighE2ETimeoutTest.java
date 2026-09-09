@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -99,7 +100,8 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
         }
     }
 
-    @Test(groups = {"fi-customer-workflows"}, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"fi-customer-workflows"}, timeOut = 2 * TIMEOUT,
+        retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void partitionMigratingFaultWithE2EPolicyWorkflow() {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();

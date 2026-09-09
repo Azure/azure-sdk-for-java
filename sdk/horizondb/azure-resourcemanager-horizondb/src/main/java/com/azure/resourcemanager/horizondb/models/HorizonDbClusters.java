@@ -13,36 +13,36 @@ import com.azure.core.util.Context;
  */
 public interface HorizonDbClusters {
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster along with {@link Response}.
+     * @return information about a HorizonDB cluster along with {@link Response}.
      */
     Response<HorizonDbCluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context);
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster.
+     * @return information about a HorizonDB cluster.
      */
     HorizonDbCluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,10 +50,10 @@ public interface HorizonDbClusters {
     void deleteByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,7 +62,7 @@ public interface HorizonDbClusters {
     void delete(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +73,7 @@ public interface HorizonDbClusters {
     PagedIterable<HorizonDbCluster> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all HorizonDb clusters in a resource group.
+     * Lists all HorizonDB clusters in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -85,7 +85,7 @@ public interface HorizonDbClusters {
     PagedIterable<HorizonDbCluster> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,7 +94,7 @@ public interface HorizonDbClusters {
     PagedIterable<HorizonDbCluster> list();
 
     /**
-     * Lists all HorizonDb clusters in a subscription.
+     * Lists all HorizonDB clusters in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,30 +105,99 @@ public interface HorizonDbClusters {
     PagedIterable<HorizonDbCluster> list(Context context);
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(String resourceGroupName, String clusterName);
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop(String resourceGroupName, String clusterName);
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart(String resourceGroupName, String clusterName);
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Gets information about a HorizonDB cluster.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster along with {@link Response}.
+     * @return information about a HorizonDB cluster along with {@link Response}.
      */
     HorizonDbCluster getById(String id);
 
     /**
-     * Gets information about a HorizonDb cluster.
+     * Gets information about a HorizonDB cluster.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb cluster along with {@link Response}.
+     * @return information about a HorizonDB cluster along with {@link Response}.
      */
     Response<HorizonDbCluster> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +207,7 @@ public interface HorizonDbClusters {
     void deleteById(String id);
 
     /**
-     * Deletes a HorizonDb cluster.
+     * Deletes a HorizonDB cluster.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class SharedLimitCapsSetMemberCapOverridesSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_SetMemberCapOverrides.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_SetMemberCapOverrides.json
      */
     /**
      * Sample code: Replace the full set of member cap overrides for a shared limit cap.
@@ -31,7 +31,7 @@ public final class SharedLimitCapsSetMemberCapOverridesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_SetMemberCapOverrides_ClearAll.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_SetMemberCapOverrides_ClearAll.json
      */
     /**
      * Sample code: Clear all member cap overrides (supply an empty array).

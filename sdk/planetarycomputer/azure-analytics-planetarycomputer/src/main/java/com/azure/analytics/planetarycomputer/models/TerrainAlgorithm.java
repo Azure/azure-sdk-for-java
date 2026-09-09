@@ -43,6 +43,66 @@ public final class TerrainAlgorithm extends ExpandableStringEnum<TerrainAlgorith
     public static final TerrainAlgorithm TERRAINRGB = fromString("terrainrgb");
 
     /**
+     * Calculates slope from elevation data.
+     */
+    @Generated
+    public static final TerrainAlgorithm SLOPE = fromString("slope");
+
+    /**
+     * Casts data to a different type.
+     */
+    @Generated
+    public static final TerrainAlgorithm CAST = fromString("cast");
+
+    /**
+     * Rounds values up to the nearest integer.
+     */
+    @Generated
+    public static final TerrainAlgorithm CEIL = fromString("ceil");
+
+    /**
+     * Rounds values down to the nearest integer.
+     */
+    @Generated
+    public static final TerrainAlgorithm FLOOR = fromString("floor");
+
+    /**
+     * Computes the minimum value across bands.
+     */
+    @Generated
+    public static final TerrainAlgorithm MIN = fromString("min");
+
+    /**
+     * Computes the maximum value across bands.
+     */
+    @Generated
+    public static final TerrainAlgorithm MAX = fromString("max");
+
+    /**
+     * Computes the median value across bands.
+     */
+    @Generated
+    public static final TerrainAlgorithm MEDIAN = fromString("median");
+
+    /**
+     * Computes the mean value across bands.
+     */
+    @Generated
+    public static final TerrainAlgorithm MEAN = fromString("mean");
+
+    /**
+     * Computes the standard deviation across bands.
+     */
+    @Generated
+    public static final TerrainAlgorithm STD = fromString("std");
+
+    /**
+     * Computes the variance across bands.
+     */
+    @Generated
+    public static final TerrainAlgorithm VAR = fromString("var");
+
+    /**
      * Creates a new instance of TerrainAlgorithm value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

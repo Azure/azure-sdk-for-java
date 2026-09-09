@@ -372,6 +372,7 @@ public final class BetaMemoryStoresAsyncClient {
      *         input_tokens: long (Required)
      *         input_tokens_details (Required): {
      *             cached_tokens: long (Required)
+     *             cache_write_tokens: long (Required)
      *         }
      *         output_tokens: long (Required)
      *         output_tokens_details (Required): {
@@ -514,6 +515,7 @@ public final class BetaMemoryStoresAsyncClient {
      *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
      *                 cached_tokens: long (Required)
+     *                 cache_write_tokens: long (Required)
      *             }
      *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
@@ -634,6 +636,7 @@ public final class BetaMemoryStoresAsyncClient {
      *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
      *                 cached_tokens: long (Required)
+     *                 cache_write_tokens: long (Required)
      *             }
      *             output_tokens: long (Required)
      *             output_tokens_details (Required): {

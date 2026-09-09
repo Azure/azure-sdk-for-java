@@ -10,6 +10,23 @@
 
 ### Other Changes
 
+- Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
+  SQL authentication, and doesn't support Microsoft Entra ID or managed identities. For distributed applications, use
+  `SqlDatabase.DefinitionStages.WithSourceDatabaseId.withSourceDatabase` to create a database copy. For globally
+  distributed applications, additionally use
+  `SqlDatabase.DefinitionStages.WithCreateMode.withMode(CreateMode.ONLINE_SECONDARY)` for active geo-replication. Refer
+  to the [official retirement migration guidance](https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration)
+  for more alternatives.
+
+## 2.54.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+
 ## 2.54.0 (2026-07-16)
 
 ### Features Added

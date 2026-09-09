@@ -144,6 +144,30 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        /**
+         * Asserts the results CONTAIN all of the expected resource IDs, allowing additional
+         * unexpected results. Unlike {@link #exactlyContainsInAnyOrder(List)} this does not
+         * require the result set to be limited to the expected IDs, so it is safe for
+         * account-global reads (e.g. readAllDatabases) that run against shared test accounts
+         * where other resources may exist concurrently.
+         */
+        public Builder<T> containsResourceIds(List<String> expectedIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                            .stream()
+                            .flatMap(f -> f.getResults().stream())
+                            .map(r -> getResource(r).getResourceId())
+                            .collect(Collectors.toList());
+                    assertThat(actualIds)
+                    .describedAs("Resource IDs of results")
+                    .containsAll(expectedIds);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> exactlyContainsIdsInAnyOrder(List<String> expectedIds) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override

@@ -5,6 +5,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.implementation.accesshelpers.BlockBlobItemConstructorProxy;
 
 import java.time.OffsetDateTime;
 
@@ -20,6 +21,11 @@ public class BlockBlobItem {
     private final String encryptionKeySha256;
     private final String encryptionScope;
     private final String versionId;
+    private final byte[] contentCrc64;
+
+    static {
+        BlockBlobItemConstructorProxy.setAccessor(BlockBlobItem::new);
+    }
 
     /**
      * Constructs a {@link BlockBlobItem}.
@@ -88,6 +94,12 @@ public class BlockBlobItem {
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
         final String versionId) {
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, encryptionScope, versionId, null);
+    }
+
+    private BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final String versionId, final byte[] contentCrc64) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -95,6 +107,7 @@ public class BlockBlobItem {
         this.encryptionKeySha256 = encryptionKeySha256;
         this.encryptionScope = encryptionScope;
         this.versionId = versionId;
+        this.contentCrc64 = CoreUtils.clone(contentCrc64);
     }
 
     /**
@@ -149,6 +162,15 @@ public class BlockBlobItem {
      */
     public byte[] getContentMd5() {
         return CoreUtils.clone(contentMd5);
+    }
+
+    /**
+     * Gets the calculated CRC64 of the block blob.
+     *
+     * @return the calculated CRC64 of the block blob
+     */
+    public byte[] getContentCrc64() {
+        return CoreUtils.clone(contentCrc64);
     }
 
     /**

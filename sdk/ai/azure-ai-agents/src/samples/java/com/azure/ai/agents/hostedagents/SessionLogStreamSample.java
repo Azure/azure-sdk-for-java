@@ -46,7 +46,7 @@ public class SessionLogStreamSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
+        AgentsClient agentsClient = builder.buildAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {

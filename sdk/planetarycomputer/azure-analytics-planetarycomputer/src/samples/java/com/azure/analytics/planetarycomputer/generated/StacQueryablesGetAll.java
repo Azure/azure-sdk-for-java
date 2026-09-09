@@ -16,8 +16,8 @@ public class StacQueryablesGetAll {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-queryables.stac-queryables-get-all
-        QueryableDefinitionsResponse response = stacClient.listQueryables();
-        // END:com.azure.analytics.planetarycomputer.generated.stac-list-queryables.stac-queryables-get-all
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-queryables.stac-queryables-get-all
+        QueryableDefinitionsResponse response = stacClient.getQueryables();
+        // END:com.azure.analytics.planetarycomputer.generated.stac-get-queryables.stac-queryables-get-all
     }
 }

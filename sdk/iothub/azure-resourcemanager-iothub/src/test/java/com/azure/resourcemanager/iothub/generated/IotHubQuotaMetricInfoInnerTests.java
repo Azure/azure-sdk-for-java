@@ -12,7 +12,7 @@ public final class IotHubQuotaMetricInfoInnerTests {
     public void testDeserialize() throws Exception {
         IotHubQuotaMetricInfoInner model = BinaryData
             .fromString(
-                "{\"name\":\"shsfwxosowzxcu\",\"currentValue\":8073809250590062964,\"maxValue\":1300140705032284604}")
+                "{\"name\":\"kpycgklwndnhjd\",\"currentValue\":6262896986376184012,\"maxValue\":4384812183587717732}")
             .toObject(IotHubQuotaMetricInfoInner.class);
     }
 }

@@ -13,12 +13,13 @@ public final class GatewaysListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewaysListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"gatewayId\":\"ircgpikpz\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"zanl\",\"allowedFeatures\":[\"iavrm\"]},\"location\":\"onok\",\"tags\":{\"irgzp\":\"jq\"},\"id\":\"rlazszrnw\",\"name\":\"iin\",\"type\":\"fpwpjylwbt\"}],\"nextLink\":\"flsjc\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"qzudphq\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"kfwynw\",\"allowedFeatures\":[\"bvkayh\",\"tnvyqiatkzwp\",\"npwzcjaes\",\"vvsccyajguq\"],\"gatewayBypass\":[\"ygz\",\"vdnkfxusem\",\"wzrmuh\",\"pfcqdp\"]},\"location\":\"xqv\",\"tags\":{\"qlmfeoker\":\"uoymgccelvezry\"},\"id\":\"wkyhkobopgxe\",\"name\":\"k\",\"type\":\"wep\"},{\"properties\":{\"provisioningState\":\"Creating\",\"gatewayId\":\"fkbw\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"jvcdwxlpqekf\",\"allowedFeatures\":[\"htjsying\"],\"gatewayBypass\":[\"atmtdhtmdvy\",\"gikdgsz\",\"w\"]},\"location\":\"irryuzhlh\",\"tags\":{\"atjinrvgoupmfiib\":\"qrvqq\",\"x\":\"ggjioolvr\",\"kkgll\":\"v\"},\"id\":\"wjygvjayvblmhvk\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"}],\"nextLink\":\"zfbn\"}")
             .toObject(GatewaysListResult.class);
-        Assertions.assertEquals("onok", model.value().get(0).location());
-        Assertions.assertEquals("jq", model.value().get(0).tags().get("irgzp"));
+        Assertions.assertEquals("xqv", model.value().get(0).location());
+        Assertions.assertEquals("uoymgccelvezry", model.value().get(0).tags().get("qlmfeoker"));
         Assertions.assertEquals(GatewayType.PUBLIC, model.value().get(0).gatewayType());
-        Assertions.assertEquals("iavrm", model.value().get(0).allowedFeatures().get(0));
-        Assertions.assertEquals("flsjc", model.nextLink());
+        Assertions.assertEquals("bvkayh", model.value().get(0).allowedFeatures().get(0));
+        Assertions.assertEquals("ygz", model.value().get(0).gatewayBypass().get(0));
+        Assertions.assertEquals("zfbn", model.nextLink());
     }
 }

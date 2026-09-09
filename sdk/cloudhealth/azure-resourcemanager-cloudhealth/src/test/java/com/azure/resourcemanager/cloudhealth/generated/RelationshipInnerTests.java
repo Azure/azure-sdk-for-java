@@ -15,26 +15,26 @@ public final class RelationshipInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationshipInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"ycavodggxdbees\",\"parentEntityName\":\"ieknl\",\"childEntityName\":\"ariaawi\",\"tags\":{\"iagtc\":\"ydwqfbylyrf\"},\"discoveredBy\":\"ocqwogfnzjvus\"},\"id\":\"ld\",\"name\":\"ozuxylfsbtkadpys\",\"type\":\"wn\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"chpxlktwku\",\"parentEntityName\":\"iycslevuf\",\"childEntityName\":\"ztcktyh\",\"tags\":{\"ulwm\":\"edcg\",\"rjvpglydzgkrvqee\":\"rqzz\",\"nwy\":\"toepryu\"},\"discoveredBy\":\"zdmovzv\"},\"id\":\"aawzqadfl\",\"name\":\"z\",\"type\":\"riglaec\"}")
             .toObject(RelationshipInner.class);
-        Assertions.assertEquals("ycavodggxdbees", model.properties().displayName());
-        Assertions.assertEquals("ieknl", model.properties().parentEntityName());
-        Assertions.assertEquals("ariaawi", model.properties().childEntityName());
-        Assertions.assertEquals("ydwqfbylyrf", model.properties().tags().get("iagtc"));
+        Assertions.assertEquals("chpxlktwku", model.properties().displayName());
+        Assertions.assertEquals("iycslevuf", model.properties().parentEntityName());
+        Assertions.assertEquals("ztcktyh", model.properties().childEntityName());
+        Assertions.assertEquals("edcg", model.properties().tags().get("ulwm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelationshipInner model
-            = new RelationshipInner().withProperties(new RelationshipProperties().withDisplayName("ycavodggxdbees")
-                .withParentEntityName("ieknl")
-                .withChildEntityName("ariaawi")
-                .withTags(mapOf("iagtc", "ydwqfbylyrf")));
+            = new RelationshipInner().withProperties(new RelationshipProperties().withDisplayName("chpxlktwku")
+                .withParentEntityName("iycslevuf")
+                .withChildEntityName("ztcktyh")
+                .withTags(mapOf("ulwm", "edcg", "rjvpglydzgkrvqee", "rqzz", "nwy", "toepryu")));
         model = BinaryData.fromObject(model).toObject(RelationshipInner.class);
-        Assertions.assertEquals("ycavodggxdbees", model.properties().displayName());
-        Assertions.assertEquals("ieknl", model.properties().parentEntityName());
-        Assertions.assertEquals("ariaawi", model.properties().childEntityName());
-        Assertions.assertEquals("ydwqfbylyrf", model.properties().tags().get("iagtc"));
+        Assertions.assertEquals("chpxlktwku", model.properties().displayName());
+        Assertions.assertEquals("iycslevuf", model.properties().parentEntityName());
+        Assertions.assertEquals("ztcktyh", model.properties().childEntityName());
+        Assertions.assertEquals("edcg", model.properties().tags().get("ulwm"));
     }
 
     // Use "Map.of" if available

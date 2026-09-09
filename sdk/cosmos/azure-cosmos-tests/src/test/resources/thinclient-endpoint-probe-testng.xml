@@ -24,6 +24,7 @@
 <suite name="thinclient-endpoint-probe">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
   </listeners>
   <test name="thinclient-endpoint-probe" group-by-instances="true">
     <groups>

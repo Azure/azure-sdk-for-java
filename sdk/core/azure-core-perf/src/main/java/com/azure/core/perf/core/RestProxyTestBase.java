@@ -30,9 +30,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,10 +41,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.any;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
-
 public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> extends PerfStressTest<TOptions> {
     private static final AtomicInteger ID_SOURCE = new AtomicInteger();
 
@@ -56,8 +49,6 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     protected final String endpoint;
     protected final MyRestProxyService service;
     protected final HttpPipeline httpPipeline;
-
-    private final WireMockServer wireMockServer;
 
     public RestProxyTestBase(TOptions options) {
         this(options, null, null);
@@ -70,18 +61,13 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier,
         Tracer tracer) {
         super(options);
-        if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
-            wireMockServer = createWireMockServer(mockResponseSupplier);
-            endpoint = wireMockServer.baseUrl();
-        } else if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
+        if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
             String containerSASUrl = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONTAINER_SAS_URL");
             if (CoreUtils.isNullOrEmpty(containerSASUrl)) {
                 throw new IllegalStateException("Environment variable AZURE_STORAGE_CONTAINER_SAS_URL must be set");
             }
-            wireMockServer = null;
             endpoint = containerSASUrl;
         } else {
-            wireMockServer = null;
             endpoint = "http://unused";
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
@@ -91,15 +77,6 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             .build();
 
         service = RestProxy.create(MyRestProxyService.class, httpPipeline);
-    }
-
-    @Override
-    public Mono<Void> cleanupAsync() {
-        return super.cleanupAsync().then(Mono.fromRunnable(() -> {
-            if (wireMockServer != null) {
-                wireMockServer.shutdown();
-            }
-        }));
     }
 
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
@@ -129,24 +106,6 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         } else {
             return super.httpClient;
         }
-    }
-
-    private static WireMockServer createWireMockServer(Function<HttpRequest, HttpResponse> mockResponseSupplier) {
-        WireMockServer server = new WireMockServer(
-            WireMockConfiguration.options().dynamicPort().disableRequestJournal().gzipDisabled(true));
-
-        if (mockResponseSupplier == null) {
-            server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*")));
-        } else {
-            HttpResponse response = mockResponseSupplier.apply(null);
-            server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*"))
-                .willReturn(aResponse().withBody(response.getBodyAsByteArray().block())
-                    .withStatus(response.getStatusCode())
-                    .withHeader("Content-Type", response.getHeaderValue(HttpHeaderName.CONTENT_TYPE))));
-        }
-
-        server.start();
-        return server;
     }
 
     public static HttpResponse createMockResponse(HttpRequest httpRequest, String contentType, byte[] bodyBytes) {

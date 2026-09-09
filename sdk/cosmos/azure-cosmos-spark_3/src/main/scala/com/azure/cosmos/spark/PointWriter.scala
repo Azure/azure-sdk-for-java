@@ -18,7 +18,7 @@ import org.apache.spark.TaskContext
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.util.UUID
-import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
+import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong, AtomicReference}
 import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit}
 import scala.collection.concurrent.TrieMap
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -58,6 +58,11 @@ private class PointWriter(container: CosmosAsyncContainer,
   )
 
   private val capturedFailure = new AtomicReference[Throwable]()
+  private val totalSkippedOperations = new AtomicLong(0)
+
+  // Constant for the lifetime of the writer - cosmosWriteConfig is immutable.
+  private val hasPatchFilterPredicate =
+    cosmosWriteConfig.patchConfigs.exists(patchConfigs => patchConfigs.filter.exists(_.nonEmpty))
   private val pendingPointWrites = new TrieMap[Future[Unit], Boolean]()
   private val closed = new AtomicBoolean(false)
 
@@ -122,7 +127,29 @@ private class PointWriter(container: CosmosAsyncContainer,
       } finally {
         executorService.shutdown()
       }
+
+      val totalSkipped = totalSkippedOperations.get()
+      if (totalSkipped > 0) {
+        // Logged unconditionally at info level: a fully skipped write is otherwise indistinguishable
+        // from a fully successful one (for example when a patch filter predicate never matches).
+        log.logInfo(s"$totalSkipped operations were skipped as an intentional no-op by the " +
+          s"'${cosmosWriteConfig.itemWriteStrategy}' write strategy, $getThreadInfo")
+      }
     }
+  }
+
+  /**
+   * Records an operation the write strategy intentionally treated as a no-op. Unlike the bulk path, point
+   * writes have no shared diagnostics tracker, so the RU/bytes of the skipped request are accounted for here.
+   */
+  private[this] def trackSkippedOperation(e: CosmosException): Unit = {
+    totalSkippedOperations.incrementAndGet()
+    outputMetricsPublisher.trackSkippedOperation(
+      1,
+      Option.apply(e.getDiagnostics) match {
+        case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+        case None => None
+      })
   }
 
   private[this] def throwIfCapturedExceptionExists(): Unit = {
@@ -274,12 +301,7 @@ private class PointWriter(container: CosmosAsyncContainer,
       } catch {
         case e: CosmosException if Exceptions.isResourceExistsException(e.getStatusCode) =>
           log.logItemWriteDetails(createOperation, "item already exists")
-          outputMetricsPublisher.trackWriteOperation(
-            0,
-            Option.apply(e.getDiagnostics) match {
-              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-              case None => None
-            })
+          trackSkippedOperation(e)
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
@@ -368,12 +390,14 @@ private class PointWriter(container: CosmosAsyncContainer,
       } catch {
         case e: CosmosException if ignoreNotFound && Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
           log.logItemWriteSkipped(patchOperation, "notFound")
-          outputMetricsPublisher.trackWriteOperation(
-            0,
-            Option.apply(e.getDiagnostics) match {
-              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-              case None => None
-            })
+          trackSkippedOperation(e)
+          return
+        // A 412 here can only come from the configured patch filter predicate, whose contract is
+        // "only modify the document when the condition holds" - so it is an expected no-op skip.
+        case e: CosmosException if hasPatchFilterPredicate &&
+          Exceptions.isPreconditionFailedException(e.getStatusCode) =>
+          log.logItemWriteSkipped(patchOperation, "preConditionNotMet")
+          trackSkippedOperation(e)
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
@@ -536,21 +560,11 @@ private class PointWriter(container: CosmosAsyncContainer,
       } catch {
         case e: CosmosException if Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
           log.logItemWriteSkipped(deleteOperation, "notFound")
-          outputMetricsPublisher.trackWriteOperation(
-            0,
-            Option.apply(e.getDiagnostics) match {
-              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-              case None => None
-            })
+          trackSkippedOperation(e)
           return
         case e: CosmosException if Exceptions.isPreconditionFailedException(e.getStatusCode) && onlyIfNotModified =>
           log.logItemWriteSkipped(deleteOperation, "preConditionNotMet")
-          outputMetricsPublisher.trackWriteOperation(
-            0,
-            Option.apply(e.getDiagnostics) match {
-              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-              case None => None
-            })
+          trackSkippedOperation(e)
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
@@ -607,21 +621,11 @@ private class PointWriter(container: CosmosAsyncContainer,
       } catch {
         case e: CosmosException if Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
           log.logItemWriteSkipped(replaceOperation, "notFound")
-          outputMetricsPublisher.trackWriteOperation(
-            0,
-            Option.apply(e.getDiagnostics) match {
-              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-              case None => None
-            })
+          trackSkippedOperation(e)
           return
         case e: CosmosException if Exceptions.isPreconditionFailedException(e.getStatusCode) =>
           log.logItemWriteSkipped(replaceOperation, "preConditionNotMet")
-          outputMetricsPublisher.trackWriteOperation(
-            0,
-            Option.apply(e.getDiagnostics) match {
-              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-              case None => None
-            })
+          trackSkippedOperation(e)
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainerOperationResultsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Inquire_Result.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_Inquire_Result.json
      */
     /**
      * Sample code: Get Azure Storage Protection Container Operation Result.

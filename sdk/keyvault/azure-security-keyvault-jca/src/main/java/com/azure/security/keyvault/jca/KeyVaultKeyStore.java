@@ -27,10 +27,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
@@ -64,12 +61,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Store well Know certificates loaded from specific path.
      */
-    private final SpecificPathCertificates wellKnowCertificates;
+    private SpecificPathCertificates wellKnowCertificates;
 
     /**
      * Store custom certificates loaded from specific path.
      */
-    private final SpecificPathCertificates customCertificates;
+    private SpecificPathCertificates customCertificates;
 
     /**
      * Store certificates loaded from KeyVault.
@@ -84,94 +81,67 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores all the certificates.
      */
-    private final List<AzureCertificates> allCertificates;
+    private List<AzureCertificates> allCertificates;
 
     /**
      * Stores the creation date.
      */
     private final Date creationDate;
 
-    private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
+    boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
     /**
      * Store the path where the well-known certificate is placed
      */
-    final String wellKnowPath
-        = Optional.ofNullable(System.getProperty("azure.cert-path.well-known")).orElse("/etc/certs/well-known/");
+    String certPathWellKnown;
 
     /**
      * Store the path where the custom certificate is placed
      */
-    final String customPath
-        = Optional.ofNullable(System.getProperty("azure.cert-path.custom")).orElse("/etc/certs/custom/");
+    String certPathCustom;
 
     /**
      * Constructor.
      *
-     * <p>
-     * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>,
-     * <code>azure.keyvault.tenantId</code>,
-     * <code>azure.keyvault.clientId</code>,
-     * <code>azure.keyvault.clientSecret</code> and
-     * <code>azure.keyvault.managedIdentity</code> to initialize the
-     * Key Vault client.
-     * </p>
+        * <p>The constructor uses {@link KeyVaultLoadStoreParameter#fromSystemProperties()} to capture the supported
+        * system properties and initialize all certificate sources from one configuration snapshot.</p>
      */
     public KeyVaultKeyStore() {
         LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
 
         creationDate = new Date();
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        String accessToken = System.getProperty("azure.keyvault.access-token");
-        boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
-        long refreshInterval = getRefreshInterval();
-        refreshCertificatesWhenHaveUnTrustCertificate
-            = Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
-                .map(System::getProperty)
-                .map(Boolean::parseBoolean)
-                .orElse(false);
-
+        KeyVaultLoadStoreParameter parameter = KeyVaultLoadStoreParameter.fromSystemProperties();
         jreCertificates = JreCertificates.getInstance();
         LOGGER.log(FINE, String.format("Loaded jre certificates: %s.", jreCertificates.getAliases()));
 
-        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
-        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
-
-        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
-        LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
-
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
-            managedIdentity, accessToken, disableChallengeResourceVerification);
-        LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
+        keyVaultCertificates = new KeyVaultCertificates(parameter);
+        LOGGER.log(FINE, "Configured Key Vault certificate source.");
 
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
+
+        updateKeyStoreConfiguration(parameter);
+    }
+
+    private void updateKeyStoreConfiguration(KeyVaultLoadStoreParameter parameter) {
+        refreshCertificatesWhenHaveUnTrustCertificate = parameter.isRefreshCertificatesWhenHaveUnTrustCertificate();
+        certPathWellKnown = parameter.getCertPathWellKnown();
+        certPathCustom = parameter.getCertPathCustom();
+
+        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(certPathWellKnown);
+        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
+
+        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(certPathCustom);
+        LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates,
             classpathCertificates);
     }
 
-    Long getRefreshInterval() {
-        return Stream
-            .of("azure.keyvault.jca.certificates-refresh-interval-in-ms",
-                "azure.keyvault.jca.certificates-refresh-interval")
-            .map(System::getProperty)
-            .filter(Objects::nonNull)
-            .map(Long::valueOf)
-            .findFirst()
-            .orElse(0L);
-    }
-
     /**
-     * get key vault key store by system property
+     * Gets a Key Vault key store configured from a snapshot of the supported system properties.
      *
-     * @return KeyVault key store
+     * @return The Key Vault key store.
      * @throws CertificateException if any of the certificates in the
      *          keystore could not be loaded
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
@@ -181,17 +151,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public static KeyStore getKeyVaultKeyStoreBySystemProperty()
         throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
+        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter = KeyVaultLoadStoreParameter.fromSystemProperties();
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
-        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter
-            = new KeyVaultLoadStoreParameter(System.getProperty("azure.keyvault.uri"),
-                System.getProperty("azure.keyvault.tenant-id"), System.getProperty("azure.keyvault.client-id"),
-                System.getProperty("azure.keyvault.client-secret"),
-                System.getProperty("azure.keyvault.managed-identity"))
-                    .setAccessToken(System.getProperty("azure.keyvault.access-token"));
-
-        if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
-            keyVaultLoadStoreParameter.disableChallengeResourceVerification();
-        }
 
         keyStore.load(keyVaultLoadStoreParameter);
 
@@ -254,16 +215,22 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate = allCertificates.stream()
-            .map(AzureCertificates::getCertificates)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificates -> certificates.get(alias))
-            .orElse(null);
+        Certificate certificate = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                certificate = ((KeyVaultCertificates) certificatesSource).getCertificate(alias);
+            } else {
+                certificate = certificatesSource.getCertificates().get(alias);
+            }
+
+            if (certificate != null) {
+                break;
+            }
+        }
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
             keyVaultCertificates.refreshCertificates();
-            certificate = keyVaultCertificates.getCertificates().get(alias);
+            certificate = keyVaultCertificates.getCertificate(alias);
         }
 
         return certificate;
@@ -283,7 +250,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             List<String> aliasList = getAllAliases();
             for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
-                if (certificate.equals(cert)) {
+                if (certificate != null && certificate.equals(cert)) {
                     alias = candidateAlias;
                     break;
                 }
@@ -307,16 +274,23 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        Certificate[] certificates = allCertificates.stream()
-            .map(AzureCertificates::getCertificateChains)
-            .filter(Objects::nonNull)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(m -> m.get(alias))
-            .orElse(null);
+        Certificate[] certificates = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                certificates = ((KeyVaultCertificates) certificatesSource).getCertificateChain(alias);
+            } else {
+                Certificate[] certificateChain = certificatesSource.getCertificateChains().get(alias);
+                certificates = certificateChain == null ? null : certificateChain.clone();
+            }
+
+            if (certificates != null) {
+                break;
+            }
+        }
+
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
             keyVaultCertificates.refreshCertificates();
-            return keyVaultCertificates.getCertificateChains().get(alias);
+            return keyVaultCertificates.getCertificateChain(alias);
         }
         return certificates;
     }
@@ -358,12 +332,20 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Key engineGetKey(String alias, char[] password) {
-        return allCertificates.stream()
-            .map(AzureCertificates::getCertificateKeys)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificateKeys -> certificateKeys.get(alias))
-            .orElse(null);
+        Key key = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                key = ((KeyVaultCertificates) certificatesSource).getCertificateKey(alias);
+            } else {
+                key = certificatesSource.getCertificateKeys().get(alias);
+            }
+
+            if (key != null) {
+                break;
+            }
+        }
+
+        return key;
     }
 
     /**
@@ -390,6 +372,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Loads the keystore using the given {@code KeyStore.LoadStoreParameter}.
+        * A {@link KeyVaultLoadStoreParameter} replaces the complete configuration captured by the constructor.
      *
      * @param param the {@code KeyStore.LoadStoreParameter}
      *          that specifies how to load the keystore,
@@ -400,9 +383,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
 
-            keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
-                parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity(),
-                parameter.getAccessToken(), parameter.isChallengeResourceVerificationDisabled());
+            keyVaultCertificates.updateKeyVaultClient(parameter);
+            updateKeyStoreConfiguration(parameter);
         }
 
         classpathCertificates.loadCertificatesFromClasspath();

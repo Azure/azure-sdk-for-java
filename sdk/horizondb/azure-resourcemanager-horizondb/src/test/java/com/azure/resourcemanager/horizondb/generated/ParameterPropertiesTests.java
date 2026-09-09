@@ -12,17 +12,17 @@ public final class ParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterProperties model = BinaryData.fromString(
-            "{\"name\":\"flz\",\"description\":\"bxzpuzycisp\",\"value\":\"zahmgkbrpyydhibn\",\"dataType\":\"qkpikadrgvtqagnb\",\"allowedValues\":\"nhijggmebfsi\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"cvpnazzmhjrunmpx\",\"unit\":\"dbhrbnlankxm\"}")
+            "{\"name\":\"fyhxde\",\"description\":\"jzicwifsjt\",\"value\":\"zfbishcbkhaj\",\"dataType\":\"yeamdphagalpb\",\"allowedValues\":\"wgipwhono\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"ankixzbinjeput\",\"unit\":\"rywn\"}")
             .toObject(ParameterProperties.class);
-        Assertions.assertEquals("flz", model.name());
-        Assertions.assertEquals("zahmgkbrpyydhibn", model.value());
+        Assertions.assertEquals("fyhxde", model.name());
+        Assertions.assertEquals("zfbishcbkhaj", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterProperties model = new ParameterProperties().withName("flz").withValue("zahmgkbrpyydhibn");
+        ParameterProperties model = new ParameterProperties().withName("fyhxde").withValue("zfbishcbkhaj");
         model = BinaryData.fromObject(model).toObject(ParameterProperties.class);
-        Assertions.assertEquals("flz", model.name());
-        Assertions.assertEquals("zahmgkbrpyydhibn", model.value());
+        Assertions.assertEquals("fyhxde", model.name());
+        Assertions.assertEquals("zfbishcbkhaj", model.value());
     }
 }

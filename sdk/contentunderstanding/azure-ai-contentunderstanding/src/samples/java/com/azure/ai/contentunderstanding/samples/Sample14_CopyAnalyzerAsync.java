@@ -8,28 +8,36 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
- * Sample demonstrates how to copy an analyzer within the same resource using the async client.
- * For cross-resource copying, see Sample15_GrantCopyAuthAsync.
+ * Sample demonstrates how to copy an analyzer within the same resource asynchronously, update the copied analyzer for
+ * production, and verify that its configuration is preserved.
+ *
+ * <p>Use same-resource copies for testing, staging, or production deployment. For cross-resource copying, see
+ * {@link Sample15_GrantCopyAuthAsync}.</p>
+ *
+ * <p>Before running this sample, configure the model deployment defaults as shown in
+ * {@link Sample00_UpdateDefaultsAsync}.</p>
  */
 public class Sample14_CopyAnalyzerAsync {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample14Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -47,239 +55,239 @@ public class Sample14_CopyAnalyzerAsync {
         }
         // END: com.azure.ai.contentunderstanding.sample14Async.buildClient
 
-        System.out.println("✓ Client initialized successfully with endpoint: " + endpoint);
+        System.out.println("Client initialized successfully with endpoint: " + endpoint);
 
-        // Generate unique analyzer IDs for this test
         String sourceAnalyzerId = "test_analyzer_source_" + UUID.randomUUID().toString().replace("-", "");
         String targetAnalyzerId = "test_analyzer_target_" + UUID.randomUUID().toString().replace("-", "");
 
-        String finalSourceAnalyzerId = sourceAnalyzerId; // For use in lambda
-        String finalTargetAnalyzerId = targetAnalyzerId; // For use in lambda
-
-        CountDownLatch latch = new CountDownLatch(1);
-
         // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzerAsync
-        // Step 1: Create the source analyzer
-            ContentAnalyzerConfig sourceConfig = new ContentAnalyzerConfig();
-            sourceConfig.setFormulaEnabled(false);
-            sourceConfig.setLayoutEnabled(true);
-            sourceConfig.setOcrEnabled(true);
-            sourceConfig.setEstimateFieldSourceAndConfidence(true);
-            sourceConfig.setReturnDetails(true);
+        ContentAnalyzerConfig sourceConfig = new ContentAnalyzerConfig().setFormulaEnabled(false)
+            .setLayoutEnabled(true)
+            .setOcrEnabled(true)
+            .setEstimateFieldSourceAndConfidence(true)
+            .setReturnDetails(true);
 
-            Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        fields.put("company_name",
+            new ContentFieldDefinition().setType(ContentFieldType.STRING)
+                .setMethod(GenerationMethod.EXTRACT)
+                .setDescription("Name of the company"));
+        fields.put("total_amount",
+            new ContentFieldDefinition().setType(ContentFieldType.NUMBER)
+                .setMethod(GenerationMethod.EXTRACT)
+                .setDescription("Total amount on the document"));
 
-            ContentFieldDefinition companyNameField = new ContentFieldDefinition();
-            companyNameField.setType(ContentFieldType.STRING);
-            companyNameField.setMethod(GenerationMethod.EXTRACT);
-            companyNameField.setDescription("Name of the company");
-            fields.put("company_name", companyNameField);
+        ContentFieldSchema sourceFieldSchema = new ContentFieldSchema().setName("company_schema")
+            .setDescription("Schema for extracting company information")
+            .setFields(fields);
 
-            ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
-            totalAmountField.setType(ContentFieldType.NUMBER);
-            totalAmountField.setMethod(GenerationMethod.EXTRACT);
-            totalAmountField.setDescription("Total amount on the document");
-            fields.put("total_amount", totalAmountField);
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+        Map<String, String> tags = new HashMap<>();
+        tags.put("modelType", "in_development");
 
-            ContentFieldSchema sourceFieldSchema = new ContentFieldSchema();
-            sourceFieldSchema.setName("company_schema");
-            sourceFieldSchema.setDescription("Schema for extracting company information");
-            sourceFieldSchema.setFields(fields);
+        ContentAnalyzer sourceAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Source analyzer for copying")
+            .setConfig(sourceConfig)
+            .setFieldSchema(sourceFieldSchema)
+            .setModels(models)
+            .setTags(tags);
 
-            ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
-            sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
-            sourceAnalyzer.setDescription("Source analyzer for copying");
-            sourceAnalyzer.setConfig(sourceConfig);
-            sourceAnalyzer.setFieldSchema(sourceFieldSchema);
+        PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+            = client.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer, true);
 
-            Map<String, String> models = new HashMap<>();
-            models.put("completion", "gpt-4.1");
-            sourceAnalyzer.setModels(models);
-
-            Map<String, String> tags = new HashMap<>();
-            tags.put("modelType", "in_development");
-            sourceAnalyzer.setTags(tags);
-
-            // Create source analyzer using reactive pattern
-            PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = client.beginCreateAnalyzer(finalSourceAnalyzerId, sourceAnalyzer, true);
-            
-            createPoller.last()
-                .flatMap(pollResponse -> {
-                    if (pollResponse.getStatus().isComplete()) {
-                        System.out.println("Polling completed successfully");
-                        return pollResponse.getFinalResult();
-                    } else {
-                        return Mono.error(new RuntimeException(
-                            "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                    }
-                })
-                .doOnNext(sourceResult -> {
-                    System.out.println("Source analyzer '" + finalSourceAnalyzerId + "' created successfully!");
-                })
-                .flatMap(sourceResult -> {
-                    // Step 2: Copy the source analyzer to target
-                    // Note: This copies within the same resource
-                    PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                        = client.beginCopyAnalyzer(finalTargetAnalyzerId, finalSourceAnalyzerId);
-                    
-                    return copyPoller.last()
-                        .flatMap(pollResponse -> {
-                            if (pollResponse.getStatus().isComplete()) {
-                                System.out.println("Copy polling completed successfully");
-                                return pollResponse.getFinalResult();
-                            } else {
-                                return Mono.error(new RuntimeException(
-                                    "Copy polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                            }
-                        })
-                        .map(copiedAnalyzer -> {
-                            System.out.println("Analyzer copied to '" + finalTargetAnalyzerId + "' successfully!");
-                            // Store both results for use in doOnNext
-                            return new java.util.AbstractMap.SimpleEntry<>(sourceResult, copiedAnalyzer);
-                        });
-                })
-                .doOnNext(entry -> {
-                    ContentAnalyzer sourceResult = entry.getKey();
-                    ContentAnalyzer copiedAnalyzer = entry.getValue();
-                    
-                    // ========== VERIFICATION: Source Analyzer Creation ==========
-                    System.out.println("\n📋 Source Analyzer Creation Verification:");
-                    System.out.println("  ✓ Analyzer IDs validated");
-                    System.out.println("    Source: " + finalSourceAnalyzerId);
-                    System.out.println("    Target: " + finalTargetAnalyzerId);
-                    System.out.println("  ✓ Source config verified");
-                    System.out.println("  ✓ Source field schema verified: " + sourceFieldSchema.getName());
-                    System.out.println("    ✓ company_name field verified");
-                    System.out.println("    ✓ total_amount field verified");
-                    System.out.println("  ✓ Source analyzer object verified");
-                    System.out.println("  ✓ Source analyzer created: " + finalSourceAnalyzerId);
-                    System.out.println("  ✓ Config preserved in result");
-                    System.out.println("  ✓ Field schema preserved: " + sourceResult.getFieldSchema().getFields().size() + " fields");
-                    System.out.println("  ✓ Tags preserved: " + sourceResult.getTags().size() + " tag(s)");
-                    System.out.println("  ✓ Models preserved: " + sourceResult.getModels().size() + " model(s)");
-
-                    System.out.println("\n✅ Source analyzer creation completed:");
-                    System.out.println("    ID: " + finalSourceAnalyzerId);
-                    System.out.println("    Base: " + sourceResult.getBaseAnalyzerId());
-                    System.out.println("    Fields: " + sourceResult.getFieldSchema().getFields().size());
-                    System.out.println("    Tags: " + sourceResult.getTags().size());
-                    System.out.println("    Models: " + sourceResult.getModels().size());
-
-                    // ========== VERIFICATION: Analyzer Copy Operation ==========
-                    System.out.println("\n📋 Analyzer Copy Verification:");
-                    System.out.println("  ✓ Copy operation completed");
-                    System.out.println("  ✓ Base properties preserved");
-                    System.out.println("    Base analyzer ID: " + copiedAnalyzer.getBaseAnalyzerId());
-                    System.out.println("    Description: '" + copiedAnalyzer.getDescription() + "'");
-                    System.out.println("  ✓ Field schema structure preserved");
-                    System.out.println("    Schema: " + copiedAnalyzer.getFieldSchema().getName());
-                    System.out.println("    Fields: " + copiedAnalyzer.getFieldSchema().getFields().size());
-
-                    ContentFieldDefinition copiedCompanyField = copiedAnalyzer.getFieldSchema().getFields().get("company_name");
-                    System.out.println("    ✓ company_name field: " + copiedCompanyField.getType() + " / "
-                        + copiedCompanyField.getMethod());
-
-                    ContentFieldDefinition copiedAmountField = copiedAnalyzer.getFieldSchema().getFields().get("total_amount");
-                    System.out.println("    ✓ total_amount field: " + copiedAmountField.getType() + " / "
-                        + copiedAmountField.getMethod());
-
-                    System.out.println("  ✓ Tags preserved: " + copiedAnalyzer.getTags().size() + " tag(s)");
-                    System.out.println("    modelType=" + copiedAnalyzer.getTags().get("modelType"));
-
-                    System.out.println("  ✓ Config preserved");
-                    System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isLayoutEnabled());
-                    System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isOcrEnabled());
-
-                    if (copiedAnalyzer.getModels().containsKey("completion")) {
-                        System.out.println("  ✓ Models preserved: " + copiedAnalyzer.getModels().size() + " model(s)");
-                        System.out.println("    completion=" + copiedAnalyzer.getModels().get("completion"));
-                    }
-
-                    // Summary
-                    String separator = new String(new char[60]).replace("\0", "═");
-                    System.out.println("\n" + separator);
-                    System.out.println("✅ ANALYZER COPY VERIFICATION COMPLETED SUCCESSFULLY");
-                    System.out.println(separator);
-                    System.out.println("Source Analyzer:");
-                    System.out.println("  ID:          " + finalSourceAnalyzerId);
-                    System.out.println("  Base:        " + sourceResult.getBaseAnalyzerId());
-                    System.out.println("  Description: " + sourceResult.getDescription());
-                    System.out.println("  Fields:      " + sourceResult.getFieldSchema().getFields().size());
-                    System.out.println("  Tags:        " + sourceResult.getTags().size());
-                    System.out.println("  Models:      " + sourceResult.getModels().size());
-                    System.out.println("\nTarget Analyzer (Copied):");
-                    System.out.println("  ID:          " + finalTargetAnalyzerId);
-                    System.out.println("  Base:        " + copiedAnalyzer.getBaseAnalyzerId());
-                    System.out.println("  Description: " + copiedAnalyzer.getDescription());
-                    System.out.println("  Fields:      " + copiedAnalyzer.getFieldSchema().getFields().size());
-                    System.out.println("  Tags:        " + copiedAnalyzer.getTags().size());
-                    System.out.println("  Models:      " + copiedAnalyzer.getModels().size());
-                    System.out.println("\n✅ All properties successfully copied and verified!");
-                    System.out.println(separator);
-                })
-                .then(client.getAnalyzer(finalSourceAnalyzerId))
-                .doOnNext(sourceAnalyzerInfo -> {
-                    System.out.println("\n📋 Source Analyzer Retrieval Verification:");
-                    System.out.println("  ✓ Source analyzer retrieved successfully");
-                    System.out.println("    Description: " + sourceAnalyzerInfo.getDescription());
-                    System.out.println("    Tags: " + String.join(", ",
-                        sourceAnalyzerInfo.getTags()
-                            .entrySet()
-                            .stream()
-                            .map(e -> e.getKey() + "=" + e.getValue())
-                            .toArray(String[]::new)));
-                })
-                .then(client.getAnalyzer(finalTargetAnalyzerId))
-                .doOnNext(verifiedCopy -> {
-                    System.out.println("\n📋 Copied Analyzer Retrieval Verification:");
-                    System.out.println("  ✓ Copied analyzer verified via retrieval");
-                })
-                .then(Mono.fromRunnable(() -> {
-                    // Cleanup: Delete the analyzers
-                    System.out.println("\nCleaning up analyzers...");
+        Mono<CopyAnalyzerState> workflow = createPoller.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Source analyzer creation"))
+            .map(sourceResult -> {
+                verifyAnalyzerProperties(sourceAnalyzer, sourceResult);
+                verifyMatchingTags(sourceAnalyzer, sourceResult);
+                System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
+                return sourceResult;
+            })
+            .flatMap(sourceResult -> client.getAnalyzer(sourceAnalyzerId)
+                .switchIfEmpty(Mono.error(new IllegalStateException("Source analyzer retrieval returned no result.")))
+                .map(sourceAnalyzerInfo -> {
+                    verifyAnalyzerProperties(sourceResult, sourceAnalyzerInfo);
+                    verifyMatchingTags(sourceResult, sourceAnalyzerInfo);
+                    System.out.println("Source analyzer retrieved and verified.");
+                    return new CopyAnalyzerState(sourceAnalyzerInfo);
                 }))
-                .then(client.deleteAnalyzer(finalSourceAnalyzerId)
-                    .onErrorResume(e -> {
-                        System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
-                        return Mono.empty();
-                    })
-                    .doOnSuccess(v -> System.out.println("Source analyzer deleted: " + finalSourceAnalyzerId))
-                )
-                .then(client.deleteAnalyzer(finalTargetAnalyzerId)
-                    .onErrorResume(e -> {
-                        System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
-                        return Mono.empty();
-                    })
-                    .doOnSuccess(v -> System.out.println("Target analyzer deleted: " + finalTargetAnalyzerId))
-                )
-                .doOnError(error -> {
-                    System.err.println("Error: " + error.getMessage());
-                    error.printStackTrace();
-                })
-                .subscribe(
-                    result -> {
-                        // Success - operations completed
-                        latch.countDown();
-                    },
-                    error -> {
-                        // Error already handled in doOnError
-                        // Still try to cleanup
-                        client.deleteAnalyzer(finalSourceAnalyzerId)
-                            .onErrorResume(e -> Mono.empty())
-                            .subscribe();
-                        client.deleteAnalyzer(finalTargetAnalyzerId)
-                            .onErrorResume(e -> Mono.empty())
-                            .subscribe();
-                        latch.countDown();
-                    }
-                );
+            .flatMap(state -> {
+                PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                    = client.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
+                return copyPoller.last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Analyzer copy"))
+                    .map(copiedAnalyzer -> {
+                        verifyAnalyzerProperties(state.sourceAnalyzerInfo, copiedAnalyzer);
+                        verifyMatchingTags(state.sourceAnalyzerInfo, copiedAnalyzer);
+                        state.copiedAnalyzer = copiedAnalyzer;
+                        System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
+                        return state;
+                    });
+            })
+            .flatMap(state -> client.getAnalyzer(targetAnalyzerId)
+                .switchIfEmpty(Mono.error(new IllegalStateException("Copied analyzer retrieval returned no result.")))
+                .map(verifiedCopy -> {
+                    verifyAnalyzerProperties(state.copiedAnalyzer, verifiedCopy);
+                    verifyMatchingTags(state.copiedAnalyzer, verifiedCopy);
+                    state.verifiedCopy = verifiedCopy;
+                    System.out.println("Copied analyzer retrieved and verified.");
+                    return state;
+                }))
+            .flatMap(state -> {
+                // BEGIN: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzerAsync
+                Map<String, String> updatedTags = new HashMap<>();
+                updatedTags.put("modelType", "model_in_production");
+                ContentAnalyzer analyzerUpdate
+                    = new ContentAnalyzer().setBaseAnalyzerId(state.verifiedCopy.getBaseAnalyzerId())
+                        .setTags(updatedTags);
+
+                Mono<CopyAnalyzerState> updatedState = client.updateAnalyzer(targetAnalyzerId, analyzerUpdate)
+                    .switchIfEmpty(Mono.error(new IllegalStateException("Analyzer update returned no result.")))
+                    .then(client.getAnalyzer(targetAnalyzerId))
+                    .switchIfEmpty(
+                        Mono.error(new IllegalStateException("Updated analyzer retrieval returned no result.")))
+                    .map(updatedTargetAnalyzer -> {
+                        verifyAnalyzerProperties(state.sourceAnalyzerInfo, updatedTargetAnalyzer);
+                        Map<String, String> actualUpdatedTags
+                            = requireNotNull(updatedTargetAnalyzer.getTags(), "updated analyzer tags");
+                        requireEqual("model_in_production", actualUpdatedTags.get("modelType"),
+                            "updated modelType tag");
+                        state.updatedTargetAnalyzer = updatedTargetAnalyzer;
+                        System.out.println("Copied analyzer updated and preserved properties verified.");
+                        return state;
+                    });
+                // END: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzerAsync
+                return updatedState;
+            })
+            .doOnNext(state -> printSummary(sourceAnalyzerId, targetAnalyzerId, state))
+            .switchIfEmpty(Mono.error(new IllegalStateException("Analyzer copy workflow completed without a result.")));
+
+        CopyAnalyzerState result = runWithCleanup(workflow,
+            () -> cleanupAnalyzers(client, sourceAnalyzerId, targetAnalyzerId)).block();
+        if (result == null) {
+            throw new IllegalStateException("Analyzer copy workflow completed without a result.");
+        }
         // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(3, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+        System.out.println("Sample completed successfully!");
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<T> runWithCleanup(Mono<T> workflow, Supplier<Mono<Void>> cleanup) {
+        return workflow
+            .switchIfEmpty(Mono.error(new IllegalStateException("Workflow completed without a result.")))
+            .flatMap(result -> cleanup.get().thenReturn(result))
+            .onErrorResume(error -> cleanup.get().then(Mono.error(error)));
+    }
+
+    private static Mono<Void> cleanupAnalyzers(ContentUnderstandingAsyncClient client, String sourceAnalyzerId,
+        String targetAnalyzerId) {
+        return deleteAnalyzer(client, sourceAnalyzerId, "Source")
+            .then(deleteAnalyzer(client, targetAnalyzerId, "Target"));
+    }
+
+    private static Mono<Void> deleteAnalyzer(ContentUnderstandingAsyncClient client, String analyzerId, String label) {
+        return client.deleteAnalyzer(analyzerId)
+            .doOnSuccess(ignored -> System.out.println(label + " analyzer deleted: " + analyzerId))
+            .onErrorResume(error -> {
+                System.out.println(
+                    "Note: Failed to delete " + label.toLowerCase() + " analyzer (may not exist): "
+                        + error.getMessage());
+                return Mono.empty();
+            });
+    }
+
+    private static void verifyAnalyzerProperties(ContentAnalyzer expected, ContentAnalyzer actual) {
+        requireNotNull(expected, "expected analyzer");
+        requireNotNull(actual, "actual analyzer");
+        requireEqual(expected.getBaseAnalyzerId(), actual.getBaseAnalyzerId(), "base analyzer ID");
+        requireEqual(expected.getDescription(), actual.getDescription(), "description");
+
+        ContentFieldSchema expectedSchema = requireNotNull(expected.getFieldSchema(), "expected field schema");
+        ContentFieldSchema actualSchema = requireNotNull(actual.getFieldSchema(), "actual field schema");
+        requireEqual(expectedSchema.getName(), actualSchema.getName(), "field schema name");
+        requireEqual(expectedSchema.getDescription(), actualSchema.getDescription(), "field schema description");
+        Map<String, ContentFieldDefinition> expectedFields
+            = requireNotNull(expectedSchema.getFields(), "expected fields");
+        Map<String, ContentFieldDefinition> actualFields = requireNotNull(actualSchema.getFields(), "actual fields");
+        requireEqual(expectedFields.size(), actualFields.size(), "field count");
+        for (Map.Entry<String, ContentFieldDefinition> expectedField : expectedFields.entrySet()) {
+            ContentFieldDefinition actualField
+                = requireNotNull(actualFields.get(expectedField.getKey()), expectedField.getKey());
+            requireEqual(expectedField.getValue().getType(), actualField.getType(),
+                expectedField.getKey() + " field type");
+            requireEqual(expectedField.getValue().getMethod(), actualField.getMethod(),
+                expectedField.getKey() + " generation method");
+            requireEqual(expectedField.getValue().getDescription(), actualField.getDescription(),
+                expectedField.getKey() + " description");
+        }
+
+        ContentAnalyzerConfig expectedConfig = requireNotNull(expected.getConfig(), "expected analyzer config");
+        ContentAnalyzerConfig actualConfig = requireNotNull(actual.getConfig(), "actual analyzer config");
+        requireEqual(expectedConfig.isFormulaEnabled(), actualConfig.isFormulaEnabled(), "formula setting");
+        requireEqual(expectedConfig.isLayoutEnabled(), actualConfig.isLayoutEnabled(), "layout setting");
+        requireEqual(expectedConfig.isOcrEnabled(), actualConfig.isOcrEnabled(), "OCR setting");
+        requireEqual(expectedConfig.isEstimateFieldSourceAndConfidence(),
+            actualConfig.isEstimateFieldSourceAndConfidence(), "field source and confidence setting");
+        requireEqual(expectedConfig.isReturnDetails(), actualConfig.isReturnDetails(), "return details setting");
+
+        Map<String, String> expectedModels = requireNotNull(expected.getModels(), "expected models");
+        Map<String, String> actualModels = requireNotNull(actual.getModels(), "actual models");
+        for (Map.Entry<String, String> expectedModel : expectedModels.entrySet()) {
+            requireEqual(expectedModel.getValue(), actualModels.get(expectedModel.getKey()),
+                expectedModel.getKey() + " model");
+        }
+    }
+
+    private static void verifyMatchingTags(ContentAnalyzer expected, ContentAnalyzer actual) {
+        requireEqual(expected.getTags(), actual.getTags(), "tags");
+    }
+
+    private static <T> T requireNotNull(T value, String property) {
+        if (value == null) {
+            throw new IllegalStateException(property + " was not returned.");
+        }
+        return value;
+    }
+
+    private static void requireEqual(Object expected, Object actual, String property) {
+        if (!Objects.equals(expected, actual)) {
+            throw new IllegalStateException(property + " did not match. Expected '" + expected + "' but got '"
+                + actual + "'.");
+        }
+    }
+
+    private static void printSummary(String sourceAnalyzerId, String targetAnalyzerId, CopyAnalyzerState state) {
+        System.out.println("\nAnalyzer copy verification completed successfully:");
+        System.out.println("  Source: " + sourceAnalyzerId);
+        System.out.println("  Target: " + targetAnalyzerId);
+        System.out.println("  Base analyzer: " + state.updatedTargetAnalyzer.getBaseAnalyzerId());
+        System.out.println("  Description: " + state.updatedTargetAnalyzer.getDescription());
+        System.out.println("  Fields: " + state.updatedTargetAnalyzer.getFieldSchema().getFields().size());
+        System.out.println("  Models: " + state.updatedTargetAnalyzer.getModels().size());
+        System.out.println("  modelType: " + state.updatedTargetAnalyzer.getTags().get("modelType"));
+    }
+
+    private static final class CopyAnalyzerState {
+        private final ContentAnalyzer sourceAnalyzerInfo;
+        private ContentAnalyzer copiedAnalyzer;
+        private ContentAnalyzer verifiedCopy;
+        private ContentAnalyzer updatedTargetAnalyzer;
+
+        private CopyAnalyzerState(ContentAnalyzer sourceAnalyzerInfo) {
+            this.sourceAnalyzerInfo = sourceAnalyzerInfo;
         }
     }
 }

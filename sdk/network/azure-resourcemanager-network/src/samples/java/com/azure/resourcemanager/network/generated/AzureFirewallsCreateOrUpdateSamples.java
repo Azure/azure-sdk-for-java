@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public final class AzureFirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithAfcConfiguration.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPutWithAfcConfiguration.json
      */
     /**
      * Sample code: Create Azure Firewall With AFC Control Plane.
@@ -62,7 +62,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithIpGroups.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPutWithIpGroups.json
      */
     /**
      * Sample code: Create Azure Firewall With IpGroups.
@@ -143,7 +143,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithZones.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPutWithZones.json
      */
     /**
      * Sample code: Create Azure Firewall With Zones.
@@ -224,7 +224,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPut.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPut.json
      */
     /**
      * Sample code: Create Azure Firewall.
@@ -305,7 +305,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithAdditionalProperties.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPutWithAdditionalProperties.json
      */
     /**
      * Sample code: Create Azure Firewall With Additional Properties.
@@ -388,7 +388,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutInHub.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPutInHub.json
      */
     /**
      * Sample code: Create Azure Firewall in virtual Hub.
@@ -414,7 +414,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithMgmtSubnet.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallPutWithMgmtSubnet.json
      */
     /**
      * Sample code: Create Azure Firewall With management subnet.

@@ -22,7 +22,7 @@ public final class VmFamiliesListBySubscriptionLocationResourceMockTests {
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"category\":\"xgodebfqkkrbmp\",\"provisioningState\":\"Canceled\"},\"id\":\"iw\",\"name\":\"lzlfbxzpuz\",\"type\":\"cispnqzahmgkbr\"}]}";
+            = "{\"value\":[{\"properties\":{\"category\":\"s\",\"provisioningState\":\"Canceled\"},\"id\":\"nxytxh\",\"name\":\"zxbzpfzabglc\",\"type\":\"hxw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class VmFamiliesListBySubscriptionLocationResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VmFamily> response = manager.vmFamilies()
-            .listBySubscriptionLocationResource("szzhbijhtxfvgxbf", "mxnehmp", com.azure.core.util.Context.NONE);
+            .listBySubscriptionLocationResource("ux", "hdwbavxbniwdjs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xgodebfqkkrbmp", response.iterator().next().properties().category());
+        Assertions.assertEquals("s", response.iterator().next().properties().category());
     }
 }

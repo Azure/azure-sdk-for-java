@@ -16,7 +16,7 @@ import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
  */
 public final class MachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-15/machine/Machines_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine.
@@ -37,9 +37,9 @@ public final class MachinesCreateOrUpdateSamples {
             .withIdentityKeyStore(IdentityKeyStore.TPM)
             .withTpmEkCertificate("string")
             .withPrivateLinkScopeResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
             .withParentClusterResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
             .create();
     }
 }

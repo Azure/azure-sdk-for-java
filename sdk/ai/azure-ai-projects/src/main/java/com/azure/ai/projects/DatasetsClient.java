@@ -59,7 +59,7 @@ public final class DatasetsClient {
     /**
      * Get dataset credentials
      *
-     * Gets the SAS credential to access the storage account associated with a Dataset version.
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -86,7 +86,7 @@ public final class DatasetsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return dataset credentials
      *
-     * Gets the SAS credential to access the storage account associated with a Dataset version along with
+     * Retrieves the SAS credential to access the storage account associated with a dataset version along with
      * {@link Response}.
      */
     @Generated
@@ -98,7 +98,7 @@ public final class DatasetsClient {
     /**
      * Get dataset credentials
      *
-     * Gets the SAS credential to access the storage account associated with a Dataset version.
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
@@ -110,7 +110,7 @@ public final class DatasetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dataset credentials
      *
-     * Gets the SAS credential to access the storage account associated with a Dataset version.
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

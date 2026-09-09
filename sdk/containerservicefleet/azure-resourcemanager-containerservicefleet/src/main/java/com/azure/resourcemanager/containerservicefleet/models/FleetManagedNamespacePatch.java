@@ -22,6 +22,11 @@ public final class FleetManagedNamespacePatch implements JsonSerializable<FleetM
      */
     private Map<String, String> tags;
 
+    /*
+     * The updatable properties of the fleet managed namespace.
+     */
+    private FleetManagedNamespacePropertiesPatch properties;
+
     /**
      * Creates an instance of FleetManagedNamespacePatch class.
      */
@@ -49,12 +54,33 @@ public final class FleetManagedNamespacePatch implements JsonSerializable<FleetM
     }
 
     /**
+     * Get the properties property: The updatable properties of the fleet managed namespace.
+     * 
+     * @return the properties value.
+     */
+    public FleetManagedNamespacePropertiesPatch properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The updatable properties of the fleet managed namespace.
+     * 
+     * @param properties the properties value to set.
+     * @return the FleetManagedNamespacePatch object itself.
+     */
+    public FleetManagedNamespacePatch withProperties(FleetManagedNamespacePropertiesPatch properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,6 +102,9 @@ public final class FleetManagedNamespacePatch implements JsonSerializable<FleetM
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedFleetManagedNamespacePatch.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFleetManagedNamespacePatch.properties
+                        = FleetManagedNamespacePropertiesPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

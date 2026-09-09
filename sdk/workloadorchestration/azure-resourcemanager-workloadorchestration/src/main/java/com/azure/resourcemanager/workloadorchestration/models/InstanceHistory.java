@@ -40,7 +40,7 @@ public interface InstanceHistory {
     InstanceHistoryProperties properties();
 
     /**
-     * Gets the extendedLocation property: The extendedLocation property.
+     * Gets the extendedLocation property: The extended location of the resource.
      * 
      * @return the extendedLocation value.
      */

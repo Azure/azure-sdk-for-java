@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class CloudHsmClusterRestoreStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Restore_Pending_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Restore_Pending_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Get_Restore_Status_MaximumSet_Gen.

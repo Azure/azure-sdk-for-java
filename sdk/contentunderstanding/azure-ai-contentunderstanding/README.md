@@ -21,6 +21,7 @@ If you have encountered issues or want to suggest features, please [file an issu
   - [Prerequisites](#prerequisites)
   - [Configuring Microsoft Foundry resource](#configuring-microsoft-foundry-resource)
   - [Adding the package to your product](#adding-the-package-to-your-product)
+  - [Service API versions](#service-api-versions)
   - [Authenticate the client](#authenticate-the-client)
 - [Key concepts](#key-concepts)
   - [Prebuilt analyzers](#prebuilt-analyzers)
@@ -51,7 +52,11 @@ If you have encountered issues or want to suggest features, please [file an issu
 
 ### Configuring Microsoft Foundry resource
 
-Before using the Content Understanding SDK, you need to set up a Microsoft Foundry resource and deploy the required large language models. Content Understanding currently uses OpenAI GPT models (such as gpt-4.1, gpt-4.1-mini, and text-embedding-3-large).
+Before using the Content Understanding SDK, set up a Microsoft Foundry resource and deploy supported generative models. The supported set changes over time; the examples in this README use `gpt-5.2` and `text-embedding-3-large`.
+
+- Current supported and deprecated models: [Supported generative models][supported_generative_models]
+- Models being retired: [Foundry model retirement schedule][model_retirement_schedule]
+- Deployment guidance: [Content Understanding model deployments][cu_models_deployments]
 
 #### Step 1: Create Microsoft Foundry resource
 
@@ -77,30 +82,32 @@ After creating your Microsoft Foundry resource, you must grant yourself the **Co
 
 > **Note:** This role assignment is required even if you are the owner of the resource. Without this role, you will not be able to call the Content Understanding API to configure model deployments for prebuilt analyzers and custom analyzers.
 
-#### Step 2: Deploy required models
+#### Step 2: Deploy supported models
 
-**Important:** Many prebuilt and custom analyzers require large language model (LLM) and embedding deployments. You must deploy at least these models before using those analyzers:
-- `prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, `prebuilt-videoSearch` require **gpt-4.1-mini** and **text-embedding-3-large**
-- Other prebuilt analyzers like `prebuilt-invoice`, `prebuilt-receipt` require **gpt-4.1** and **text-embedding-3-large**
+**Important:** Many prebuilt and custom analyzers require completion and embedding deployments. Deploy models that Content Understanding currently supports. This README uses:
+- **gpt-5.2**
+- **text-embedding-3-large**
 
 **No LLM or embeddings required:** The analyzers **prebuilt-read** and **prebuilt-layout** do not use LLMs or embedding models. You can use them without deploying or configuring any models.
 
 To deploy a model:
 
 1. In Microsoft Foundry, go to **Deployments** > **Deploy model** > **Deploy base model**
-2. Search for and select the model you want to deploy. Currently, prebuilt analyzers require models such as `gpt-4.1`, `gpt-4.1-mini`, and `text-embedding-3-large`
+2. Search for and select a [supported generative model][supported_generative_models] (this guide uses `gpt-5.2` and `text-embedding-3-large`)
 3. Complete the deployment with your preferred settings
-4. Note the deployment name you chose (by convention, use the model name as the deployment name, e.g., `gpt-4.1` for the `gpt-4.1` model). You can use any deployment name you prefer, but you'll need to note it for use in Step 3 when configuring model deployments.
+4. Note the deployment name you chose (by convention, use the model name as the deployment name). You can use any deployment name, but you'll need it in Step 3.
 
 Repeat this process for each model required by your prebuilt analyzers.
 
 For more information on deploying models, see [Create model deployments in Microsoft Foundry portal][deploy_models_docs].
 
+> **Note on model retirement:** Foundry models follow a [model retirement schedule][model_retirement_schedule]. Before a configured model retires, deploy a supported replacement and update your Content Understanding defaults.
+
 #### Step 3: Configure model deployments (required for prebuilt analyzers)
 
 > **IMPORTANT:** This is a **one-time setup per Microsoft Foundry resource** that maps your deployed models to those required by the prebuilt analyzers and custom models. If you have multiple Microsoft Foundry resources, you need to configure each one separately.
 
-You need to configure the default model mappings in your Microsoft Foundry resource. This can be done programmatically using the SDK. The configuration maps your deployed models (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) to the large language models required by prebuilt analyzers.
+You need to configure the default model mappings in your Microsoft Foundry resource. Prebuilt analyzers use the aliases `prebuilt-analyzer-completion`, `prebuilt-analyzer-completion-mini`, and `prebuilt-analyzer-embedding`. [Sample00_UpdateDefaults][sample00_update_defaults] maps these aliases and their logical model names to your configured deployments.
 
 To configure model deployments using code, see [Sample00_UpdateDefaults][sample00_update_defaults] for a complete example. The sample shows how to:
 - Map your deployed models to the models required by prebuilt analyzers
@@ -112,38 +119,48 @@ The following shows how to set up the environment to run this sample successfull
 
 **3-1. Set environment variables**
 
-The environment variables define your Microsoft Foundry resource endpoint and the deployment names for the models you deployed in Step 2. **Important:** The deployment name values (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) must exactly match the deployment names you chose when deploying models in Step 2.
+The environment variables define your Microsoft Foundry resource endpoint and the deployment names from Step 2. Deployment names must exactly match those configured in Foundry.
 
 **On Linux/macOS (bash):**
 ```bash
 export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
 export CONTENTUNDERSTANDING_KEY="<your-api-key>"  # Optional if using DefaultAzureCredential
-export GPT_4_1_DEPLOYMENT="gpt-4.1"
-export GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
-export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
+export CU_COMPLETION_MODEL="gpt-5.2"
+export CU_COMPLETION_MODEL_MINI="gpt-5.2"
+export CU_EMBEDDING_MODEL="text-embedding-3-large"
+export CU_COMPLETION_MODEL_DEPLOYMENT="gpt-5.2"
+export CU_COMPLETION_MINI_DEPLOYMENT="gpt-5.2"
+export CU_EMBEDDING_DEPLOYMENT="text-embedding-3-large"
 ```
 
 **On Windows (PowerShell):**
 ```powershell
 $env:CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
 $env:CONTENTUNDERSTANDING_KEY="<your-api-key>"  # Optional if using DefaultAzureCredential
-$env:GPT_4_1_DEPLOYMENT="gpt-4.1"
-$env:GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
-$env:TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
+$env:CU_COMPLETION_MODEL="gpt-5.2"
+$env:CU_COMPLETION_MODEL_MINI="gpt-5.2"
+$env:CU_EMBEDDING_MODEL="text-embedding-3-large"
+$env:CU_COMPLETION_MODEL_DEPLOYMENT="gpt-5.2"
+$env:CU_COMPLETION_MINI_DEPLOYMENT="gpt-5.2"
+$env:CU_EMBEDDING_DEPLOYMENT="text-embedding-3-large"
 ```
 
 **On Windows (Command Prompt):**
 ```bat
 set CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource-name>.services.ai.azure.com/
 set CONTENTUNDERSTANDING_KEY=<your-api-key>  # Optional if using DefaultAzureCredential
-set GPT_4_1_DEPLOYMENT=gpt-4.1
-set GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-set TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+set CU_COMPLETION_MODEL=gpt-5.2
+set CU_COMPLETION_MODEL_MINI=gpt-5.2
+set CU_EMBEDDING_MODEL=text-embedding-3-large
+set CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+set CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+set CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 ```
 
 **Notes:**
 - If `CONTENTUNDERSTANDING_KEY` is not set, the SDK will fall back to `DefaultAzureCredential`. Ensure you have authenticated (e.g., `az login`).
 - The deployment names must exactly match what you created in Microsoft Foundry in Step 2.
+- `CU_COMPLETION_MODEL_MINI` defaults to `CU_COMPLETION_MODEL`, and `CU_COMPLETION_MINI_DEPLOYMENT` defaults to `CU_COMPLETION_MODEL_DEPLOYMENT` when omitted.
 
 **3-2. Run the configuration sample**
 
@@ -155,12 +172,12 @@ To run the configuration sample, you'll need to add the SDK to your project and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.1.0-beta.2</version>
+    <version>1.1.0-beta.3</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.2</version>
+  <version>1.18.4</version>
 </dependency>
 ```
 
@@ -186,15 +203,55 @@ If you encounter errors:
 
 ### Adding the package to your product
 
+This README documents the current beta package, which includes support for service API version
+`2026-06-01-preview` and the preview-only capabilities described below. Maven resolves the exact
+version declared in your project, so use `1.1.0-beta.3` or later when following the preview samples.
+
 [//]: # ({x-version-update-start;com.azure:azure-ai-contentunderstanding;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.1.0-beta.2</version>
+    <version>1.1.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+To use only the generally available `2025-11-01` service API surface, use the stable `1.0.0`
+package.
+
+### Service API versions
+
+This package supports both the latest generally available (GA) service API and the latest preview API.
+
+| SDK version | Supported service API versions | Default service API version |
+|-------------|--------------------------------|-----------------------------|
+| `1.0.0` (stable) | `2025-11-01` | `2025-11-01` |
+| `1.1.0-beta.3` (beta) | `2025-11-01`, `2026-06-01-preview` | `2026-06-01-preview` |
+
+If you don't call `serviceVersion`, the beta package uses `ContentUnderstandingServiceVersion.getLatest()`, currently `2026-06-01-preview`.
+
+Use the GA service API for stable, generally available behavior:
+
+```java
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+  .endpoint(endpoint)
+  .credential(credential)
+  .serviceVersion(ContentUnderstandingServiceVersion.V2025_11_01)
+  .buildClient();
+```
+
+Use the preview service API for capabilities such as inline analysis, analyzer workflows, and semantic chunking:
+
+```java
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+  .endpoint(endpoint)
+  .credential(credential)
+  .serviceVersion(ContentUnderstandingServiceVersion.V2026_06_01_PREVIEW)
+  .buildClient();
+```
+
+Preview-only capabilities include inline analysis, semantic chunking, analyzer workflows, signature detection, in-page segmentation, embedded document metadata, and analysis-result metadata in `LlmInputHelper` output. See Sample04, samples 17-20, and the advanced samples for complete examples.
 
 ### Authenticate the client
 
@@ -268,13 +325,25 @@ The API returns different content types based on the input:
 
 ### Asynchronous operations
 
-Content Understanding operations are asynchronous long-running operations. The workflow is:
+By default, Content Understanding analysis uses an asynchronous **long-running operation (LRO)**. The client starts
+the request, and the SDK polls until the result is ready:
 
 1. **Begin Analysis** - Start the analysis operation (returns immediately with an operation location)
 2. **Poll for Results** - Poll the operation location until the analysis completes
 3. **Process Results** - Extract and display the structured results
 
 The SDK provides `SyncPoller<T, U>` and `PollerFlux<T, U>` types that handle polling automatically. For analysis operations, the SDK returns pollers that provide access to the final `AnalysisResult`.
+
+Use the LRO APIs (`beginAnalyze` / `beginAnalyzeBinary`) for larger files or page counts, broader analyzer coverage, and results retained for up to 24 hours unless deleted earlier. The SDK pollers handle the operation lifecycle.
+
+Use `AnalyzeOptions` with `beginAnalyze` or `analyzeInline` when JSON analysis needs model deployment overrides or processing location. Use `AnalyzeBinaryOptions` for the corresponding binary settings together with content range and content type.
+
+The `2026-06-01-preview` service version also provides minimal and options-based `analyzeInline` and `analyzeBinaryInline` methods. These methods return `ContentAnalyzerInlineResponse` without polling, preserving the `AnalysisResult`, operation status, and `UsageDetails`; the service does not persist the result. If the HTTP response contains an inline operation state other than `Succeeded`, the methods throw `HttpResponseException`. With no polling and no wait tied to a polling interval, the inline path is faster for supported smaller inputs. This preview supports document analyzers without field schemas or figure analysis: `prebuilt-digitalParse`, `prebuilt-read`, `prebuilt-layout`, or a custom document analyzer without fields. See the [service limits][cu_service_limits] for current details.
+
+Usage meters depend on the API shape and the processing performed for the input. After `getFinalResult()` completes successfully, the terminal analyze LRO status exposes usage through `poller.waitForCompletion().getValue().getUsage()`. Inline responses expose usage directly through `inlineResponse.getUsage()`. LRO usage includes `getDocumentPagesMinimal()`, `getDocumentPagesBasic()`, or `getDocumentPagesStandard()`; inline usage includes the corresponding `getDocumentPagesMinimalInline()`, `getDocumentPagesBasicInline()`, and `getDocumentPagesStandardInline()` meters. See the [Content Understanding pricing explainer][cu_pricing_explainer] for which meter applies.
+
+To choose between LRO and inline analysis, review the [service limits][cu_service_limits],
+[pricing explainer][cu_pricing_explainer], [Sample 19][sample19_inline], and [Sample 20][sample20_inline].
 
 ### Main classes
 
@@ -307,6 +376,9 @@ The samples demonstrate:
 * **Multi-Modal Content Analysis** - Analyze content from URLs across all modalities: extract markdown and summaries from documents, images, audio, and video using `prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, and `prebuilt-videoSearch`
 * **Domain-Specific Analysis** - Extract structured fields from invoices using `prebuilt-invoice`
 * **Advanced Document Features** - Extract charts, hyperlinks, formulas, and annotations from documents
+* **Preview Analysis** - Analyze URL or binary input inline without polling
+* **Agentic Workflows and Chunking** - Use agentic analysis for complex documents and semantic chunks for RAG pipelines
+* **Document Details** - Detect signatures, extract embedded metadata, and classify multiple documents that share a page
 * **Custom Analyzers** - Create custom analyzers with field schemas for specialized extraction needs
 * **Document Classification** - Create and use classifiers to categorize documents
 * **Analyzer Management** - Get, list, update, copy, and delete analyzers
@@ -318,7 +390,10 @@ See the [samples directory][samples_directory] for complete examples.
 
 All samples can be run using Maven's `exec:java` plugin. Before running samples, ensure you have set the required environment variables (see [Step 3: Configure model deployments](#step-3-configure-model-deployments-required-for-prebuilt-analyzers)).
 
-**Important:** The samples support both API key and `DefaultAzureCredential` authentication. If you set `CONTENTUNDERSTANDING_KEY`, the sample will use API key authentication. If `CONTENTUNDERSTANDING_KEY` is not set, the sample will fall back to `DefaultAzureCredential` (which requires `azure-identity` dependency).
+**Important:** All samples support both API key and `DefaultAzureCredential` authentication. If you set `CONTENTUNDERSTANDING_KEY`, the samples use API key authentication; otherwise, they fall back to `DefaultAzureCredential`.
+
+Sample04, samples 17-20, and the preview advanced samples require service API version `2026-06-01-preview`.
+Their service tests include playback recordings and can also run in LIVE mode against a configured preview resource.
 
 ### Option 1: Run samples in your own project (Recommended)
 
@@ -330,7 +405,7 @@ The simplest way to run samples is to copy them into your own Maven project:
    <dependency>
        <groupId>com.azure</groupId>
        <artifactId>azure-identity</artifactId>
-       <version>1.18.2</version>
+       <version>1.18.4</version>
    </dependency>
    ```
 3. Copy any sample file from the [samples directory][samples_directory] to your project
@@ -347,12 +422,8 @@ If you want to run samples directly from the SDK source code:
 git clone https://github.com/Azure/azure-sdk-for-java.git
 cd azure-sdk-for-java/sdk/contentunderstanding/azure-ai-contentunderstanding
 
-# Compile the library
-mvn compile -DskipTests
-
-# Compile sample files (samples in src/samples/java are not compiled by default)
-mvn dependency:build-classpath -Dmdep.outputFile=target/classpath.txt -q
-javac -cp "$(cat target/classpath.txt):target/classes" --release 8 -d target/classes src/samples/java/com/azure/ai/contentunderstanding/samples/*.java
+# Compile the library and samples. The repository registers src/samples/java as test sources.
+mvn test-compile
 ```
 
 **Step 2: Run samples**
@@ -361,16 +432,17 @@ Choose one of the following authentication methods:
 
 **Option A: API key authentication**
 
-If you have set `CONTENTUNDERSTANDING_KEY`, you can run samples without the test classpath scope:
+If you have set `CONTENTUNDERSTANDING_KEY`, the sample uses API key authentication. Samples and their dependencies are compiled in the repository's test scope, so use the test classpath even for API key authentication:
 
 ```bash
 # Set environment variables
 export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
 export CONTENTUNDERSTANDING_KEY="<your-api-key>"
 
-# Run a sample (API key authentication - no test scope needed)
+# Run a sample with API key authentication
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 ```
 
@@ -385,6 +457,7 @@ export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.a
 # Run a sample (DefaultAzureCredential)
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 ```
 
@@ -394,21 +467,25 @@ mvn exec:java \
 # Analyze document from URL
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 
 # Analyze document from binary file
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample01_AnalyzeBinary" \
+  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 
 # Analyze invoice
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" \
+  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 
 # Create a custom analyzer
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample04_CreateAnalyzer" \
+  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 ```
 
@@ -443,7 +520,7 @@ ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
     .buildClient();
 
 // Analyze a document using prebuilt-documentSearch (CU's primary RAG analyzer)
-byte[] pdfBytes = Files.readAllBytes(Paths.get("sample_files/sample_document_features.pdf"));
+byte[] pdfBytes = Files.readAllBytes(Paths.get("src/samples/resources/sample_document_features.pdf"));
 AnalysisResult result = client.beginAnalyzeBinary(
     "prebuilt-documentSearch", BinaryData.fromBytes(pdfBytes), "application/pdf")
     .getFinalResult();
@@ -457,7 +534,7 @@ Expected output:
 
 ```
 ---
-contentType: document
+mimeType: application/pdf
 pages: 1
 fields:
   Summary: The document provides an overview of Latin, includes a sample
@@ -529,7 +606,7 @@ markdown-only, custom metadata), multi-page content ranges, and multi-segment vi
 - Make sure you have the **Cognitive Services User** role assigned to your account
 
 **Error: "Model deployment not found" or "Default model deployment not configured"**
-- Ensure you have deployed the required models (gpt-4.1, gpt-4.1-mini, text-embedding-3-large) in Microsoft Foundry
+- Ensure you have deployed the required models (`gpt-5.2` and `text-embedding-3-large`) in Microsoft Foundry
 - Verify you have configured the default model deployments (see [Configure Model Deployments](#step-3-configure-model-deployments-required-for-prebuilt-analyzers))
 - Check that your deployment names match what you configured in the defaults
 
@@ -615,11 +692,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_portal]: https://portal.azure.com/
 [cu_quickstart]: https://learn.microsoft.com/azure/ai-services/content-understanding/quickstart/use-rest-api?tabs=portal%2Cdocument
 [cu_region_support]: https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support
+[cu_models_deployments]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/models-deployments
+[cu_service_limits]: https://learn.microsoft.com/azure/ai-services/content-understanding/service-limits
+[cu_pricing_explainer]: https://learn.microsoft.com/azure/ai-services/content-understanding/pricing-explainer
+[supported_generative_models]: https://learn.microsoft.com/azure/ai-services/content-understanding/service-limits#supported-generative-models
+[model_retirement_schedule]: https://learn.microsoft.com/azure/foundry/openai/concepts/model-retirement-schedule
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
 [sample00]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
 [sample01]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample01_AnalyzeBinary.java
+[sample19_inline]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample19_AnalyzeInline.java
+[sample20_inline]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample20_AnalyzeBinaryInline.java
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java

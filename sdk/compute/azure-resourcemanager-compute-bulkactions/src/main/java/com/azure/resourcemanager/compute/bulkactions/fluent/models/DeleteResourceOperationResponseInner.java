@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public final class DeleteResourceOperationResponseInner
     /*
      * The results from the delete request if no errors exist
      */
-    private List<ResourceOperation> results;
+    private List<ResourceOperationInner> results;
 
     /**
      * Creates an instance of DeleteResourceOperationResponseInner class.
@@ -77,7 +76,7 @@ public final class DeleteResourceOperationResponseInner
      * 
      * @return the results value.
      */
-    public List<ResourceOperation> results() {
+    public List<ResourceOperationInner> results() {
         return this.results;
     }
 
@@ -118,7 +117,8 @@ public final class DeleteResourceOperationResponseInner
                 } else if ("location".equals(fieldName)) {
                     deserializedDeleteResourceOperationResponseInner.location = reader.getString();
                 } else if ("results".equals(fieldName)) {
-                    List<ResourceOperation> results = reader.readArray(reader1 -> ResourceOperation.fromJson(reader1));
+                    List<ResourceOperationInner> results
+                        = reader.readArray(reader1 -> ResourceOperationInner.fromJson(reader1));
                     deserializedDeleteResourceOperationResponseInner.results = results;
                 } else {
                     reader.skipChildren();

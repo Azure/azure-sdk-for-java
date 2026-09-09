@@ -22,7 +22,7 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"xklurcclfgxannno\",\"tenantId\":\"zposewxigpxvkqm\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"hgygvfltgvd\":{\"principalId\":\"pifdfaifyzyzeyu\",\"clientId\":\"eidszlfytoi\"},\"moenodnaien\":{\"principalId\":\"oynkrxwetwkdrcyr\",\"clientId\":\"pcunnuzdq\"}}},\"properties\":{\"provisioningState\":\"Creating\",\"communicationEndpoint\":\"knd\",\"scopes\":[\"lqkaadlknwf\",\"anniyopetxivcnr\",\"yxnu\"]},\"location\":\"ephblkwqpatvbqs\",\"tags\":{\"vivuzqymtuowo\":\"jbc\",\"banf\":\"tgitsqhzvbrzc\"},\"id\":\"ndscxmxeatk\",\"name\":\"bmwnrdjyibqb\",\"type\":\"aomhjrmkuhmaxl\"}";
+            = "{\"identity\":{\"principalId\":\"gvpyigdaqqilzdc\",\"tenantId\":\"wjoe\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"jqqacdmkx\":{\"principalId\":\"caifpaurww\",\"clientId\":\"l\"},\"xrtuicds\":{\"principalId\":\"dcvjwc\",\"clientId\":\"iakeciqc\"}}},\"properties\":{\"provisioningState\":\"Canceled\",\"communicationEndpoint\":\"m\",\"scopes\":[\"zhzzwvywrg\"]},\"location\":\"gydgrpxncakiq\",\"tags\":{\"lmf\":\"djrkclamggl\",\"ykglt\":\"jdoq\",\"tlgflwfgz\":\"gxhqfgqkayejs\"},\"id\":\"iucijjcea\",\"name\":\"lijjjrtvam\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workspace response = manager.workspaces()
-            .getByResourceGroupWithResponse("aekqsykvwj", "qpkevmyltjc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rpdltbq", "tqjfgxxsaet", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ephblkwqpatvbqs", response.location());
-        Assertions.assertEquals("jbc", response.tags().get("vivuzqymtuowo"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("lqkaadlknwf", response.properties().scopes().get(0));
+        Assertions.assertEquals("gydgrpxncakiq", response.location());
+        Assertions.assertEquals("djrkclamggl", response.tags().get("lmf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("zhzzwvywrg", response.properties().scopes().get(0));
     }
 }

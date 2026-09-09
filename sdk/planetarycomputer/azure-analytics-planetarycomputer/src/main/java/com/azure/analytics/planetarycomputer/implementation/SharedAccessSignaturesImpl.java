@@ -76,7 +76,7 @@ public final class SharedAccessSignaturesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getUrl(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam(value = "href", encoded = true) String href,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -86,7 +86,7 @@ public final class SharedAccessSignaturesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getUrlSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam(value = "href", encoded = true) String href,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -166,9 +166,9 @@ public final class SharedAccessSignaturesImpl {
      * @return unsignedLink along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSignWithResponseAsync(String href, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getUrlWithResponseAsync(String href, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSign(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getUrl(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), href, accept, requestOptions, context));
     }
 
@@ -209,10 +209,10 @@ public final class SharedAccessSignaturesImpl {
      * @return unsignedLink along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSignWithResponse(String href, RequestOptions requestOptions) {
+    public Response<BinaryData> getUrlWithResponse(String href, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSignSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), href,
-            accept, requestOptions, Context.NONE);
+        return service.getUrlSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), href, accept,
+            requestOptions, Context.NONE);
     }
 
     /**

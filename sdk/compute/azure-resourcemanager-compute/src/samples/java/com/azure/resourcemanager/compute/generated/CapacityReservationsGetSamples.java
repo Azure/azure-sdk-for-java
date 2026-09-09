@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.CapacityReservationInstanceViewT
  */
 public final class CapacityReservationsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_Get.json
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/BlockCapacityReservation_Get.json
      */
     /**
      * Sample code: Get a block capacity reservation.
@@ -26,7 +26,22 @@ public final class CapacityReservationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_Get.json
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/FutureCapacityReservation_Get.json
+     */
+    /**
+     * Sample code: Get a Future capacity reservation.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void getAFutureCapacityReservation(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getCapacityReservations()
+            .getWithResponse("myResourceGroup", "futureCapacityReservationGroup", "futureCapacityReservation",
+                CapacityReservationInstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/TargetedCapacityReservation_Get.json
      */
     /**
      * Sample code: Get a targeted capacity reservation.
@@ -41,7 +56,7 @@ public final class CapacityReservationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/capacityReservationExamples/CapacityReservation_Get.json
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/CapacityReservation_Get.json
      */
     /**
      * Sample code: Get a capacity reservation.
@@ -52,6 +67,22 @@ public final class CapacityReservationsGetSamples {
         manager.serviceClient()
             .getCapacityReservations()
             .getWithResponse("myResourceGroup", "myCapacityReservationGroup", "myCapacityReservation",
+                CapacityReservationInstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/OpenCapacityReservation_Get.json
+     */
+    /**
+     * Sample code: Get an open capacity reservation with instance view.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        getAnOpenCapacityReservationWithInstanceView(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getCapacityReservations()
+            .getWithResponse("myResourceGroup", "openCapacityReservationGroup", "openCapacityReservation",
                 CapacityReservationInstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
     }
 }

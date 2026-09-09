@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for ConnectedCache.
- * Microsoft Connected Cache Rest Api version 2023-05-01-preview.
+ * Microsoft Connected Cache Rest APIs.
  */
 package com.azure.resourcemanager.connectedcache.models;

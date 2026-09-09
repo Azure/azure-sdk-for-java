@@ -70,6 +70,7 @@ public final class AgentIdentity implements JsonSerializable<AgentIdentity> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("principal_id", this.principalId);
         jsonWriter.writeStringField("client_id", this.clientId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +88,7 @@ public final class AgentIdentity implements JsonSerializable<AgentIdentity> {
         return jsonReader.readObject(reader -> {
             String principalId = null;
             String clientId = null;
+            AgentIdentityStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -94,11 +96,32 @@ public final class AgentIdentity implements JsonSerializable<AgentIdentity> {
                     principalId = reader.getString();
                 } else if ("client_id".equals(fieldName)) {
                     clientId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = AgentIdentityStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AgentIdentity(principalId, clientId);
+            AgentIdentity deserializedAgentIdentity = new AgentIdentity(principalId, clientId);
+            deserializedAgentIdentity.status = status;
+            return deserializedAgentIdentity;
         });
+    }
+
+    /*
+     * The status of the agent identity. Present for both the agent instance identity and the agent blueprint.
+     */
+    @Generated
+    private AgentIdentityStatus status;
+
+    /**
+     * Get the status property: The status of the agent identity. Present for both the agent instance identity and the
+     * agent blueprint.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public AgentIdentityStatus getStatus() {
+        return this.status;
     }
 }

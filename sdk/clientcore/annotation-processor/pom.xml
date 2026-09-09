@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.github.javaparser</groupId>
       <artifactId>javaparser-core</artifactId>
-      <version>3.27.0</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
+      <version>3.28.2</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -106,12 +106,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.github.javaparser:javaparser-core:[3.27.0]</include> <!-- {x-include-update;com.github.javaparser:javaparser-core;external_dependency} -->
+                <include>com.github.javaparser:javaparser-core:[3.28.2]</include> <!-- {x-include-update;com.github.javaparser:javaparser-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

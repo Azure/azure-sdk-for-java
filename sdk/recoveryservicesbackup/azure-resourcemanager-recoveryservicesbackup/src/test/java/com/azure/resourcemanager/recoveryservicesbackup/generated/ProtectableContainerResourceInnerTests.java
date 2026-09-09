@@ -13,14 +13,14 @@ public final class ProtectableContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectableContainerResourceInner model = BinaryData.fromString(
-            "{\"location\":\"nzcpdltkr\",\"tags\":{\"fzhompheq\":\"mtbdrvcqgu\",\"kyeclcdigpta\":\"urelyujlfyoump\"},\"eTag\":\"rzmq\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"ycijoclxiutgj\",\"backupManagementType\":\"AzureBackupServer\",\"healthStatus\":\"zjd\",\"containerId\":\"qjbtxjeaoqaqbzgy\"},\"id\":\"w\",\"name\":\"v\",\"type\":\"atbwbqam\"}")
+            "{\"location\":\"wxigpxv\",\"tags\":{\"dfaifyzyzeyuube\":\"aupxvpi\",\"l\":\"ds\"},\"eTag\":\"toi\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"ygvfltgvdihoyn\",\"backupManagementType\":\"AzureWorkload\",\"healthStatus\":\"etwkdrcyrucpc\",\"containerId\":\"nuzdqumo\"},\"id\":\"odnaienhqhskndn\",\"name\":\"lqkaadlknwf\",\"type\":\"anniyopetxivcnr\"}")
             .toObject(ProtectableContainerResourceInner.class);
-        Assertions.assertEquals("nzcpdltkr", model.location());
-        Assertions.assertEquals("mtbdrvcqgu", model.tags().get("fzhompheq"));
-        Assertions.assertEquals("rzmq", model.eTag());
-        Assertions.assertEquals("ycijoclxiutgj", model.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.properties().backupManagementType());
-        Assertions.assertEquals("zjd", model.properties().healthStatus());
-        Assertions.assertEquals("qjbtxjeaoqaqbzgy", model.properties().containerId());
+        Assertions.assertEquals("wxigpxv", model.location());
+        Assertions.assertEquals("aupxvpi", model.tags().get("dfaifyzyzeyuube"));
+        Assertions.assertEquals("toi", model.eTag());
+        Assertions.assertEquals("ygvfltgvdihoyn", model.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.properties().backupManagementType());
+        Assertions.assertEquals("etwkdrcyrucpc", model.properties().healthStatus());
+        Assertions.assertEquals("nuzdqumo", model.properties().containerId());
     }
 }

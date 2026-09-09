@@ -11,7 +11,7 @@ public final class IotHubCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubCapacity model = BinaryData.fromString(
-            "{\"minimum\":1377433518907384393,\"maximum\":3534987396424038530,\"default\":8043422391436901501,\"scaleType\":\"None\"}")
+            "{\"minimum\":8501549257695924564,\"maximum\":3984526442528196616,\"default\":4658346071912083190,\"scaleType\":\"Manual\"}")
             .toObject(IotHubCapacity.class);
     }
 }
