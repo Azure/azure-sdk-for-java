@@ -426,8 +426,8 @@ public final class DataLakePathClientBuilder
     /**
      * Sets the name of the file/directory.
      *
-     * @param pathName Name of the path. If the path name contains special characters, pass in the url encoded version
-     * of the path name.
+     * @param pathName Name of the path.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pathName} is {@code null}
      */

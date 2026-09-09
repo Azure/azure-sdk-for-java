@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class ElasticSnapshotPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_CreateOrUpdate.

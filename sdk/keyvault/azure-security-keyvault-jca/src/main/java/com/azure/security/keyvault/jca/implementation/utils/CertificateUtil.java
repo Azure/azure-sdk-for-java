@@ -41,8 +41,22 @@ public final class CertificateUtil {
     static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
 
-    public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
-        IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+    /**
+     * Loads certificates from a Key Vault secret bundle value.
+     *
+     * @param string The secret bundle value.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     * @return The loaded certificate chain.
+     * @throws CertificateException If a certificate cannot be parsed.
+     * @throws IOException If the secret bundle cannot be read.
+     * @throws KeyStoreException If the PKCS12 key store cannot be loaded.
+     * @throws NoSuchAlgorithmException If a required algorithm is unavailable.
+     * @throws NoSuchProviderException If a required provider is unavailable.
+     * @throws PKCSException If the PKCS data cannot be parsed.
+     */
+    public static Certificate[] loadCertificatesFromSecretBundleValue(String string, boolean disableAiaDownload)
+        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException,
+        PKCSException {
         Certificate[] certificates;
         if (string.contains(BEGIN_CERTIFICATE)) {
             certificates = loadCertificatesFromSecretBundleValuePem(string);
@@ -59,7 +73,7 @@ public final class CertificateUtil {
         if (AiaCertificateChainUtil.shouldCompleteChainViaAia(certificates)) {
             LOGGER.log(FINE, "Certificate chain requires AIA completion; ordered chain contains {0} certificate(s).",
                 certificates.length);
-            certificates = AiaCertificateChainUtil.completeChainViaAia(certificates);
+            certificates = AiaCertificateChainUtil.completeChainViaAia(certificates, disableAiaDownload);
         } else {
             LOGGER.log(FINE,
                 "Certificate chain does not require AIA completion; ordered chain contains {0} " + "certificate(s).",
@@ -75,17 +89,32 @@ public final class CertificateUtil {
         StringBuilder builder = new StringBuilder();
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        while (reader.ready()) {
-            String line = reader.readLine();
+        boolean certificateBlockOpen = false;
+        String line;
+        while ((line = reader.readLine()) != null) {
             if (line.contains(BEGIN_CERTIFICATE)) {
+                if (certificateBlockOpen) {
+                    throw new CertificateException("Certificate PEM block contains a nested BEGIN CERTIFICATE marker.");
+                }
+                certificateBlockOpen = true;
                 builder = new StringBuilder();
             }
-            builder.append(line).append('\n');
             if (line.contains(END_CERTIFICATE)) {
-                InputStream stream = new ByteArrayInputStream(builder.toString().getBytes());
+                if (!certificateBlockOpen) {
+                    throw new CertificateException(
+                        "Certificate PEM block has an END CERTIFICATE marker without a matching BEGIN CERTIFICATE marker.");
+                }
+                builder.append(line).append('\n');
+                InputStream stream = new ByteArrayInputStream(builder.toString().getBytes(StandardCharsets.UTF_8));
                 Certificate certificate = factory.generateCertificate(stream);
                 certificates.add(certificate);
+                certificateBlockOpen = false;
+            } else if (certificateBlockOpen) {
+                builder.append(line).append('\n');
             }
+        }
+        if (certificateBlockOpen) {
+            throw new CertificateException("Certificate PEM block is not terminated.");
         }
         return certificates.toArray(new Certificate[0]);
     }

@@ -103,6 +103,22 @@ shape may indicate incorrect LRO modeling upstream.
 Do not report ordinary response wrappers or headers models without those
 headers.
 
+### `MGMT-LIST-RETURN`: non-pageable list operation
+
+- **Severity:** Warning
+
+Review newly added user-facing public operations whose name starts with
+`list`. When the return type is neither `PagedIterable<T>` nor `PagedFlux<T>`,
+inspect the returned model. Report only when that model exposes a
+collection-valued `value` property. Identify the method, return type, and
+`value` element type, then ask whether the operation should expose the standard
+pageable shape.
+
+Do not report `listWithResponse` methods, low-level protocol client methods,
+private single-page helpers, or pre-existing operations. A `PagedIterable<T>`
+or `PagedFlux<T>` return is valid. Treat a response model without a `value`
+property as a genuine non-pageable action response.
+
 ### `MGMT-MANAGER-NAME`: suspicious management entry-point name
 
 - **Severity:** Warning
@@ -191,8 +207,8 @@ Use only these severity levels:
 | Informational | Useful context with no requested corrective action. |
 
 `MGMT-FOLDER`, `MGMT-VERSION`, and `MGMT-API-VERSION-OVERLAP` are Blocking.
-`MGMT-RELEASE-PLAN`, `MGMT-LRO`, `MGMT-MANAGER-NAME`, and `MGMT-BREAKING` are
-Warning.
+`MGMT-RELEASE-PLAN`, `MGMT-LRO`, `MGMT-LIST-RETURN`, `MGMT-MANAGER-NAME`, and
+`MGMT-BREAKING` are Warning.
 `MGMT-API-VERSION` and `MGMT-NEW-MODULE` are Informational.
 
 Every item must cite a repository-relative file and affected symbol or release
@@ -205,8 +221,9 @@ When a new head SHA passes the Java gate, include each still-applicable prior
 item as `Carried forward` in the replacement current-state comment; do not
 restate its question as `New`.
 
-Code-format only the concern ID. Do not wrap the complete finding in backticks,
-because evidence may contain its own inline code spans.
+Code-format the complete bracketed concern ID, including the square brackets,
+for example `[MGMT-LIST-RETURN]`. Do not wrap the complete finding in
+backticks, because evidence may contain its own inline code spans.
 
 Output:
 

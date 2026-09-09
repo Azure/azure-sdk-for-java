@@ -26,66 +26,70 @@ public final class ResourceProvisionVdiPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProvisionVdiPayload model = BinaryData.fromString(
-            "{\"baseProfile\":{\"xsqwpgrjbznorc\":\"\\\"datayip\\\"\"},\"resourceOverrides\":[{\"xqabnmocpcysh\":\"\\\"datanb\\\"\"}],\"resourceCount\":2078472464,\"resourcePrefix\":\"afbljjgpbtoqcjmk\",\"flexProperties\":{\"vmSizeProfiles\":[{\"name\":\"a\",\"rank\":1963237214},{\"name\":\"qidtqajzyu\",\"rank\":743908174},{\"name\":\"kudjkrlkhb\",\"rank\":375716095}],\"osType\":\"Windows\",\"priorityProfile\":{\"type\":\"Regular\",\"maxPricePerVM\":32.1944960794073,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"Prioritized\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"c\",\"rank\":1841580602},{\"zone\":\"ierhhbcsglummaj\",\"rank\":177005491}]},\"minCapacity\":1703884652}}")
+            "{\"baseProfile\":{\"sllr\":\"\\\"datanbpoczvyifqrvkdv\\\"\"},\"resourceOverrides\":[{\"atkpnp\":\"\\\"dataf\\\"\"},{\"wiqzbqjvsovmyo\":\"\\\"dataexxbczwtr\\\"\",\"zdobpxjmflbvvnch\":\"\\\"dataacspkwl\\\"\",\"ajiwkuo\":\"\\\"datakcciwwzjuqkhr\\\"\"},{\"vxieduugidyj\":\"\\\"dataskghsauuimj\\\"\"}],\"resourceCount\":1166674819,\"resourcePrefix\":\"byao\",\"flexProperties\":{\"vmSizeProfiles\":[{\"name\":\"e\",\"rank\":766224962}],\"osType\":\"Linux\",\"priorityProfile\":{\"type\":\"Regular\",\"maxPricePerVM\":51.558371876097176,\"evictionPolicy\":\"Deallocate\",\"allocationStrategy\":\"CapacityOptimized\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"Prioritized\",\"zonePreferences\":[{\"zone\":\"vleggzfbuhfmvfax\",\"rank\":1235353776}]},\"minCapacity\":441262471}}")
             .toObject(ResourceProvisionVdiPayload.class);
-        Assertions.assertEquals(2078472464, model.resourceCount());
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.resourcePrefix());
-        Assertions.assertEquals("a", model.flexProperties().vmSizeProfiles().get(0).name());
-        Assertions.assertEquals(1963237214, model.flexProperties().vmSizeProfiles().get(0).rank());
-        Assertions.assertEquals(OsType.WINDOWS, model.flexProperties().osType());
+        Assertions.assertEquals(1166674819, model.resourceCount());
+        Assertions.assertEquals("byao", model.resourcePrefix());
+        Assertions.assertEquals("e", model.flexProperties().vmSizeProfiles().get(0).name());
+        Assertions.assertEquals(766224962, model.flexProperties().vmSizeProfiles().get(0).rank());
+        Assertions.assertEquals(OsType.LINUX, model.flexProperties().osType());
         Assertions.assertEquals(PriorityType.REGULAR, model.flexProperties().priorityProfile().type());
-        Assertions.assertEquals(32.1944960794073D, model.flexProperties().priorityProfile().maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DELETE, model.flexProperties().priorityProfile().evictionPolicy());
-        Assertions.assertEquals(AllocationStrategy.PRIORITIZED,
+        Assertions.assertEquals(51.558371876097176D, model.flexProperties().priorityProfile().maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.flexProperties().priorityProfile().evictionPolicy());
+        Assertions.assertEquals(AllocationStrategy.CAPACITY_OPTIMIZED,
             model.flexProperties().priorityProfile().allocationStrategy());
-        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
+        Assertions.assertEquals(DistributionStrategy.PRIORITIZED,
             model.flexProperties().zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("c", model.flexProperties().zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(1841580602,
+        Assertions.assertEquals("vleggzfbuhfmvfax",
+            model.flexProperties().zoneAllocationPolicy().zonePreferences().get(0).zone());
+        Assertions.assertEquals(1235353776,
             model.flexProperties().zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(1703884652, model.flexProperties().minCapacity());
+        Assertions.assertEquals(441262471, model.flexProperties().minCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProvisionVdiPayload model = new ResourceProvisionVdiPayload()
             .withBaseProfile(
-                mapOf("xsqwpgrjbznorc", BinaryData.fromBytes("\"datayip\"".getBytes(StandardCharsets.UTF_8))))
-            .withResourceOverrides(Arrays
-                .asList(mapOf("xqabnmocpcysh", BinaryData.fromBytes("\"datanb\"".getBytes(StandardCharsets.UTF_8)))))
-            .withResourceCount(2078472464)
-            .withResourcePrefix("afbljjgpbtoqcjmk")
+                mapOf("sllr", BinaryData.fromBytes("\"datanbpoczvyifqrvkdv\"".getBytes(StandardCharsets.UTF_8))))
+            .withResourceOverrides(Arrays.asList(
+                mapOf("atkpnp", BinaryData.fromBytes("\"dataf\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("wiqzbqjvsovmyo", BinaryData.fromBytes("\"dataexxbczwtr\"".getBytes(StandardCharsets.UTF_8)),
+                    "zdobpxjmflbvvnch", BinaryData.fromBytes("\"dataacspkwl\"".getBytes(StandardCharsets.UTF_8)),
+                    "ajiwkuo", BinaryData.fromBytes("\"datakcciwwzjuqkhr\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("vxieduugidyj", BinaryData.fromBytes("\"dataskghsauuimj\"".getBytes(StandardCharsets.UTF_8)))))
+            .withResourceCount(1166674819)
+            .withResourcePrefix("byao")
             .withFlexProperties(new FlexProperties()
-                .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("a").withRank(1963237214),
-                    new VmSizeProfile().withName("qidtqajzyu").withRank(743908174),
-                    new VmSizeProfile().withName("kudjkrlkhb").withRank(375716095)))
-                .withOsType(OsType.WINDOWS)
+                .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("e").withRank(766224962)))
+                .withOsType(OsType.LINUX)
                 .withPriorityProfile(new PriorityProfile().withType(PriorityType.REGULAR)
-                    .withMaxPricePerVM(32.1944960794073D)
-                    .withEvictionPolicy(EvictionPolicy.DELETE)
-                    .withAllocationStrategy(AllocationStrategy.PRIORITIZED))
+                    .withMaxPricePerVM(51.558371876097176D)
+                    .withEvictionPolicy(EvictionPolicy.DEALLOCATE)
+                    .withAllocationStrategy(AllocationStrategy.CAPACITY_OPTIMIZED))
                 .withZoneAllocationPolicy(
-                    new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-                        .withZonePreferences(Arrays.asList(new ZonePreference().withZone("c").withRank(1841580602),
-                            new ZonePreference().withZone("ierhhbcsglummaj").withRank(177005491))))
-                .withMinCapacity(1703884652));
+                    new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.PRIORITIZED)
+                        .withZonePreferences(
+                            Arrays.asList(new ZonePreference().withZone("vleggzfbuhfmvfax").withRank(1235353776))))
+                .withMinCapacity(441262471));
         model = BinaryData.fromObject(model).toObject(ResourceProvisionVdiPayload.class);
-        Assertions.assertEquals(2078472464, model.resourceCount());
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.resourcePrefix());
-        Assertions.assertEquals("a", model.flexProperties().vmSizeProfiles().get(0).name());
-        Assertions.assertEquals(1963237214, model.flexProperties().vmSizeProfiles().get(0).rank());
-        Assertions.assertEquals(OsType.WINDOWS, model.flexProperties().osType());
+        Assertions.assertEquals(1166674819, model.resourceCount());
+        Assertions.assertEquals("byao", model.resourcePrefix());
+        Assertions.assertEquals("e", model.flexProperties().vmSizeProfiles().get(0).name());
+        Assertions.assertEquals(766224962, model.flexProperties().vmSizeProfiles().get(0).rank());
+        Assertions.assertEquals(OsType.LINUX, model.flexProperties().osType());
         Assertions.assertEquals(PriorityType.REGULAR, model.flexProperties().priorityProfile().type());
-        Assertions.assertEquals(32.1944960794073D, model.flexProperties().priorityProfile().maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DELETE, model.flexProperties().priorityProfile().evictionPolicy());
-        Assertions.assertEquals(AllocationStrategy.PRIORITIZED,
+        Assertions.assertEquals(51.558371876097176D, model.flexProperties().priorityProfile().maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.flexProperties().priorityProfile().evictionPolicy());
+        Assertions.assertEquals(AllocationStrategy.CAPACITY_OPTIMIZED,
             model.flexProperties().priorityProfile().allocationStrategy());
-        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
+        Assertions.assertEquals(DistributionStrategy.PRIORITIZED,
             model.flexProperties().zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("c", model.flexProperties().zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(1841580602,
+        Assertions.assertEquals("vleggzfbuhfmvfax",
+            model.flexProperties().zoneAllocationPolicy().zonePreferences().get(0).zone());
+        Assertions.assertEquals(1235353776,
             model.flexProperties().zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(1703884652, model.flexProperties().minCapacity());
+        Assertions.assertEquals(441262471, model.flexProperties().minCapacity());
     }
 
     // Use "Map.of" if available

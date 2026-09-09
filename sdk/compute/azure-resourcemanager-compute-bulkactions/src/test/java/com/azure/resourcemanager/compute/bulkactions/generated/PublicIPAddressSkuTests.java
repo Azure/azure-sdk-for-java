@@ -14,17 +14,17 @@ public final class PublicIPAddressSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicIPAddressSku model
-            = BinaryData.fromString("{\"name\":\"Basic\",\"tier\":\"Global\"}").toObject(PublicIPAddressSku.class);
+            = BinaryData.fromString("{\"name\":\"Basic\",\"tier\":\"Regional\"}").toObject(PublicIPAddressSku.class);
         Assertions.assertEquals(PublicIPAddressSkuName.BASIC, model.name());
-        Assertions.assertEquals(PublicIPAddressSkuTier.GLOBAL, model.tier());
+        Assertions.assertEquals(PublicIPAddressSkuTier.REGIONAL, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicIPAddressSku model
-            = new PublicIPAddressSku().withName(PublicIPAddressSkuName.BASIC).withTier(PublicIPAddressSkuTier.GLOBAL);
+            = new PublicIPAddressSku().withName(PublicIPAddressSkuName.BASIC).withTier(PublicIPAddressSkuTier.REGIONAL);
         model = BinaryData.fromObject(model).toObject(PublicIPAddressSku.class);
         Assertions.assertEquals(PublicIPAddressSkuName.BASIC, model.name());
-        Assertions.assertEquals(PublicIPAddressSkuTier.GLOBAL, model.tier());
+        Assertions.assertEquals(PublicIPAddressSkuTier.REGIONAL, model.tier());
     }
 }

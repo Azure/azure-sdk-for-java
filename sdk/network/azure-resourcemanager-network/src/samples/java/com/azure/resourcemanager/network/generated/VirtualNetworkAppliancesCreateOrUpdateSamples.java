@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkApplianceIn
  */
 public final class VirtualNetworkAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VirtualNetworkAppliances_CreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/VirtualNetworkAppliances_CreateOrUpdate.json
      */
     /**
      * Sample code: Create virtual network appliance.

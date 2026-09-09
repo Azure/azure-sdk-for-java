@@ -5,17 +5,22 @@ package com.azure.ai.contentunderstanding;
 
 import com.azure.ai.contentunderstanding.implementation.ContentUnderstandingClientImpl;
 import com.azure.ai.contentunderstanding.implementation.JsonMergePatchHelper;
+import com.azure.ai.contentunderstanding.implementation.models.AnalyzeInlineRequest;
 import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest;
 import com.azure.ai.contentunderstanding.implementation.models.CopyAnalyzerRequest;
 import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AnalyzeBinaryOptions;
+import com.azure.ai.contentunderstanding.models.AnalyzeOptions;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerInlineResponse;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
 import com.azure.ai.contentunderstanding.models.CopyAuthorization;
+import com.azure.ai.contentunderstanding.models.OperationState;
 import com.azure.ai.contentunderstanding.models.ProcessingLocation;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -25,6 +30,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -32,10 +39,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,6 +81,8 @@ public final class ContentUnderstandingAsyncClient {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -119,6 +132,9 @@ public final class ContentUnderstandingAsyncClient {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -141,6 +157,9 @@ public final class ContentUnderstandingAsyncClient {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -148,9 +167,13 @@ public final class ContentUnderstandingAsyncClient {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -186,6 +209,8 @@ public final class ContentUnderstandingAsyncClient {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -224,6 +249,9 @@ public final class ContentUnderstandingAsyncClient {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -246,6 +274,9 @@ public final class ContentUnderstandingAsyncClient {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -253,9 +284,13 @@ public final class ContentUnderstandingAsyncClient {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -279,6 +314,273 @@ public final class ContentUnderstandingAsyncClient {
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeBinary(String analyzerId, String contentType,
         BinaryData binaryInput, RequestOptions requestOptions) {
         return this.serviceClient.beginAnalyzeBinaryAsync(analyzerId, contentType, binaryInput, requestOptions);
+    }
+
+    /**
+     * Extract content and fields from input. The analysis result is embedded inline in the JSON response body (HTTP
+     * 200) without creating a long-running operation — no polling or separate result retrieval is needed. Intended for
+     * lightweight analysis scenarios (e.g., document analyzers without field extraction, small page counts). The result
+     * is not persisted on the server. See service documentation for current constraints.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringEncoding</td><td>String</td><td>No</td><td> The string encoding format for content spans in the
+     * response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
+     * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
+     * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     inputs (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             data: byte[] (Optional)
+     *             name: String (Optional)
+     *             mimeType: String (Optional)
+     *             range: String (Optional)
+     *         }
+     *     ]
+     *     modelDeployments (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Required): {
+     *         analyzerId: String (Optional)
+     *         apiVersion: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         stringEncoding: String (Optional)
+     *         contents (Required): [
+     *              (Required){
+     *                 kind: String(document/audioVisual) (Required)
+     *                 mimeType: String (Required)
+     *                 analyzerId: String (Optional)
+     *                 category: String (Optional)
+     *                 path: String (Optional)
+     *                 markdown: String (Optional)
+     *                 fields (Optional): {
+     *                     String (Required): {
+     *                         type: String(string/date/time/number/integer/boolean/array/object/json) (Required)
+     *                         spans (Optional): [
+     *                              (Optional){
+     *                                 offset: int (Required)
+     *                                 length: int (Required)
+     *                             }
+     *                         ]
+     *                         confidence: Double (Optional)
+     *                         source: String (Optional)
+     *                     }
+     *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param analyzeInlineRequest The analyzeInlineRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return provides inline response details for analyze operations along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> analyzeInlineWithResponse(String analyzerId, BinaryData analyzeInlineRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.analyzeInlineWithResponseAsync(analyzerId, analyzeInlineRequest, requestOptions);
+    }
+
+    /**
+     * Extract content and fields from binary input. The analysis result is embedded inline in the JSON response body
+     * (HTTP 200) without creating a long-running operation — no polling or separate result retrieval is needed.
+     * Intended for lightweight analysis scenarios (e.g., document analyzers without field extraction, small page
+     * counts). The result is not persisted on the server. See service documentation for current constraints.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringEncoding</td><td>String</td><td>No</td><td> The string encoding format for content spans in the
+     * response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
+     * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
+     * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
+     * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
+     * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Required): {
+     *         analyzerId: String (Optional)
+     *         apiVersion: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         stringEncoding: String (Optional)
+     *         contents (Required): [
+     *              (Required){
+     *                 kind: String(document/audioVisual) (Required)
+     *                 mimeType: String (Required)
+     *                 analyzerId: String (Optional)
+     *                 category: String (Optional)
+     *                 path: String (Optional)
+     *                 markdown: String (Optional)
+     *                 fields (Optional): {
+     *                     String (Required): {
+     *                         type: String(string/date/time/number/integer/boolean/array/object/json) (Required)
+     *                         spans (Optional): [
+     *                              (Optional){
+     *                                 offset: int (Required)
+     *                                 length: int (Required)
+     *                             }
+     *                         ]
+     *                         confidence: Double (Optional)
+     *                         source: String (Optional)
+     *                     }
+     *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param contentType Request content type.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return provides inline response details for analyze operations along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> analyzeBinaryInlineWithResponse(String analyzerId, String contentType,
+        BinaryData binaryInput, RequestOptions requestOptions) {
+        return this.serviceClient.analyzeBinaryInlineWithResponseAsync(analyzerId, contentType, binaryInput,
+            requestOptions);
     }
 
     /**
@@ -356,6 +658,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -488,6 +796,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -593,6 +907,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -700,6 +1020,10 @@ public final class ContentUnderstandingAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResultWithResponse(String operationId, RequestOptions requestOptions) {
+        Objects.requireNonNull(operationId, "'operationId' cannot be null.");
+        if (operationId.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'operationId' cannot be empty."));
+        }
         return this.serviceClient.deleteResultWithResponseAsync(operationId, requestOptions);
     }
 
@@ -758,6 +1082,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -919,6 +1249,12 @@ public final class ContentUnderstandingAsyncClient {
      *             enableSegment: Boolean (Optional)
      *             segmentPerPage: Boolean (Optional)
      *             omitContent: Boolean (Optional)
+     *             workflow: String(default/agentic) (Optional)
+     *             allowInputTruncation: Boolean (Optional)
+     *             allowInPageSegments: Boolean (Optional)
+     *             chunkingStrategy (Optional): {
+     *                 kind: String(semantic) (Required)
+     *             }
      *         }
      *         fieldSchema (Optional): {
      *             name: String (Optional)
@@ -972,9 +1308,13 @@ public final class ContentUnderstandingAsyncClient {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1028,6 +1368,9 @@ public final class ContentUnderstandingAsyncClient {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1050,6 +1393,9 @@ public final class ContentUnderstandingAsyncClient {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1057,9 +1403,13 @@ public final class ContentUnderstandingAsyncClient {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1222,6 +1572,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -1342,6 +1698,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -1447,6 +1809,12 @@ public final class ContentUnderstandingAsyncClient {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -1579,6 +1947,8 @@ public final class ContentUnderstandingAsyncClient {
      * @param modelDeployments Specify the default mapping of model names to LLM/embedding deployments in Microsoft
      * Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      * @param processingLocation The location where the data may be processed. Defaults to global.
+     * @param allowInputTruncation Overrides the analyzer's allowInputTruncation setting for this request. When omitted,
+     * the analyzer's configured value applies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1591,7 +1961,7 @@ public final class ContentUnderstandingAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
         List<AnalysisInput> inputs, String stringEncoding, Map<String, String> modelDeployments,
-        ProcessingLocation processingLocation) {
+        ProcessingLocation processingLocation, Boolean allowInputTruncation) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
         AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);
@@ -1599,6 +1969,9 @@ public final class ContentUnderstandingAsyncClient {
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
+        }
+        if (allowInputTruncation != null) {
+            requestOptions.addQueryParam("allowInputTruncation", String.valueOf(allowInputTruncation), false);
         }
         return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions);
     }
@@ -1643,6 +2016,8 @@ public final class ContentUnderstandingAsyncClient {
      * @param contentRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
      * while audio visual content uses integer milliseconds.
      * @param processingLocation The location where the data may be processed. Defaults to global.
+     * @param allowInputTruncation Overrides the analyzer's allowInputTruncation setting for this request. When omitted,
+     * the analyzer's configured value applies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1655,7 +2030,7 @@ public final class ContentUnderstandingAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput, String stringEncoding, String contentType, String contentRange,
-        ProcessingLocation processingLocation) {
+        ProcessingLocation processingLocation, Boolean allowInputTruncation) {
         // Generated convenience method for beginAnalyzeBinaryWithModel
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
@@ -1664,6 +2039,9 @@ public final class ContentUnderstandingAsyncClient {
         }
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
+        }
+        if (allowInputTruncation != null) {
+            requestOptions.addQueryParam("allowInputTruncation", String.valueOf(allowInputTruncation), false);
         }
         return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions);
     }
@@ -1693,6 +2071,162 @@ public final class ContentUnderstandingAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions);
+    }
+
+    /**
+     * Extract content and fields from input. The analysis result is embedded inline in the JSON response body (HTTP
+     * 200) without creating a long-running operation — no polling or separate result retrieval is needed. Intended for
+     * lightweight analysis scenarios (e.g., document analyzers without field extraction, small page counts). The result
+     * is not persisted on the server. See service documentation for current constraints.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @param modelDeployments Specify the default mapping of model names to LLM/embedding deployments in Microsoft
+     * Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
+     * @param processingLocation The location where the data may be processed. Defaults to global.
+     * @param allowInputTruncation Overrides the analyzer's allowInputTruncation setting for this request. When omitted,
+     * the analyzer's configured value applies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides inline response details for analyze operations on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContentAnalyzerInlineResponse> analyzeInline(String analyzerId, List<AnalysisInput> inputs,
+        String stringEncoding, Map<String, String> modelDeployments, ProcessingLocation processingLocation,
+        Boolean allowInputTruncation) {
+        // Generated convenience method for analyzeInlineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        AnalyzeInlineRequest analyzeInlineRequestObj
+            = new AnalyzeInlineRequest(inputs).setModelDeployments(modelDeployments);
+        BinaryData analyzeInlineRequest = BinaryData.fromObject(analyzeInlineRequestObj);
+        requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
+        if (processingLocation != null) {
+            requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
+        }
+        if (allowInputTruncation != null) {
+            requestOptions.addQueryParam("allowInputTruncation", String.valueOf(allowInputTruncation), false);
+        }
+        return analyzeInlineWithResponse(analyzerId, analyzeInlineRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ContentAnalyzerInlineResponse.class));
+    }
+
+    /**
+     * Extract content and fields from input. The analysis result is embedded inline in the JSON response body (HTTP
+     * 200) without creating a long-running operation — no polling or separate result retrieval is needed. Intended for
+     * lightweight analysis scenarios (e.g., document analyzers without field extraction, small page counts). The result
+     * is not persisted on the server. See service documentation for current constraints.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides inline response details for analyze operations on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContentAnalyzerInlineResponse> analyzeInline(String analyzerId, List<AnalysisInput> inputs,
+        String stringEncoding) {
+        // Generated convenience method for analyzeInlineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        AnalyzeInlineRequest analyzeInlineRequestObj = new AnalyzeInlineRequest(inputs);
+        BinaryData analyzeInlineRequest = BinaryData.fromObject(analyzeInlineRequestObj);
+        requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
+        return analyzeInlineWithResponse(analyzerId, analyzeInlineRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ContentAnalyzerInlineResponse.class));
+    }
+
+    /**
+     * Extract content and fields from binary input. The analysis result is embedded inline in the JSON response body
+     * (HTTP 200) without creating a long-running operation — no polling or separate result retrieval is needed.
+     * Intended for lightweight analysis scenarios (e.g., document analyzers without field extraction, small page
+     * counts). The result is not persisted on the server. See service documentation for current constraints.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @param contentType Request content type.
+     * @param contentRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
+     * while audio visual content uses integer milliseconds.
+     * @param processingLocation The location where the data may be processed. Defaults to global.
+     * @param allowInputTruncation Overrides the analyzer's allowInputTruncation setting for this request. When omitted,
+     * the analyzer's configured value applies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides inline response details for analyze operations on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContentAnalyzerInlineResponse> analyzeBinaryInline(String analyzerId, BinaryData binaryInput,
+        String stringEncoding, String contentType, String contentRange, ProcessingLocation processingLocation,
+        Boolean allowInputTruncation) {
+        // Generated convenience method for analyzeBinaryInlineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
+        if (contentRange != null) {
+            requestOptions.addQueryParam("range", contentRange, false);
+        }
+        if (processingLocation != null) {
+            requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
+        }
+        if (allowInputTruncation != null) {
+            requestOptions.addQueryParam("allowInputTruncation", String.valueOf(allowInputTruncation), false);
+        }
+        return analyzeBinaryInlineWithResponse(analyzerId, contentType, binaryInput, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ContentAnalyzerInlineResponse.class));
+    }
+
+    /**
+     * Extract content and fields from binary input. The analysis result is embedded inline in the JSON response body
+     * (HTTP 200) without creating a long-running operation — no polling or separate result retrieval is needed.
+     * Intended for lightweight analysis scenarios (e.g., document analyzers without field extraction, small page
+     * counts). The result is not persisted on the server. See service documentation for current constraints.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @param contentType Request content type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides inline response details for analyze operations on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContentAnalyzerInlineResponse> analyzeBinaryInline(String analyzerId, BinaryData binaryInput,
+        String stringEncoding, String contentType) {
+        // Generated convenience method for analyzeBinaryInlineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
+        return analyzeBinaryInlineWithResponse(analyzerId, contentType, binaryInput, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ContentAnalyzerInlineResponse.class));
     }
 
     /**
@@ -2062,6 +2596,44 @@ public final class ContentUnderstandingAsyncClient {
     }
 
     /**
+     * Extract content and fields from input.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze.
+     * @param stringEncoding The string encoding format for content spans.
+     * @param modelDeployments Custom model deployment mappings.
+     * @param processingLocation The location where data may be processed.
+     * @return the poller for the analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, String stringEncoding, Map<String, String> modelDeployments,
+        ProcessingLocation processingLocation) {
+        return beginAnalyze(analyzerId, inputs, stringEncoding, modelDeployments, processingLocation, null);
+    }
+
+    /**
+     * Extract content and fields from binary input.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content to analyze.
+     * @param stringEncoding The string encoding format for content spans.
+     * @param contentType The request content type.
+     * @param contentRange The range of the input to analyze.
+     * @param processingLocation The location where data may be processed.
+     * @return the poller for the analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, String stringEncoding, String contentType, String contentRange,
+        ProcessingLocation processingLocation) {
+        return beginAnalyzeBinary(analyzerId, binaryInput, stringEncoding, contentType, contentRange,
+            processingLocation, null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentUnderstandingAsyncClient.class);
+
+    /**
      * Update default model deployment settings.
      *
      * This is the recommended public API for updating default model deployment settings. This method provides a simpler
@@ -2070,11 +2642,13 @@ public final class ContentUnderstandingAsyncClient {
      * @param modelDeployments Mapping of model names to deployment names. For example: { "gpt-4.1":
      * "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
      * @return the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.
+     * @throws NullPointerException if modelDeployments is null.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContentUnderstandingDefaults> updateDefaults(Map<String, String> modelDeployments) {
+        Objects.requireNonNull(modelDeployments, "'modelDeployments' cannot be null.");
         ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
         return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)
             .map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class));
@@ -2087,11 +2661,13 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param defaults The ContentUnderstandingDefaults instance with settings to update.
      * @return the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.
+     * @throws NullPointerException if defaults is null.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContentUnderstandingDefaults> updateDefaults(ContentUnderstandingDefaults defaults) {
+        Objects.requireNonNull(defaults, "'defaults' cannot be null.");
         return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)
             .map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class));
     }
@@ -2125,12 +2701,18 @@ public final class ContentUnderstandingAsyncClient {
      * @param contentType Request content type.
      * @param processingLocation The location where the data may be processed. Set to null for service default.
      * @return the {@link PollerFlux} for polling of the analyze operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws NullPointerException if analyzerId or binaryInput is null.
+     * @throws IllegalArgumentException if analyzerId is empty, or other parameters fail validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput, ContentRange contentRange, String contentType, ProcessingLocation processingLocation) {
+        Objects.requireNonNull(analyzerId, "'analyzerId' cannot be null.");
+        if (analyzerId.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'analyzerId' cannot be empty."));
+        }
+        Objects.requireNonNull(binaryInput, "'binaryInput' cannot be null.");
         RequestOptions requestOptions = new RequestOptions();
         if (contentRange != null) {
             requestOptions.addQueryParam("range", contentRange.toString(), false);
@@ -2150,13 +2732,14 @@ public final class ContentUnderstandingAsyncClient {
      * @param analyzerId The unique identifier of the analyzer.
      * @param inputs The inputs to analyze.
      * @return the {@link PollerFlux} for polling of the analyze operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws NullPointerException if analyzerId or inputs is null.
+     * @throws IllegalArgumentException if analyzerId is empty, or other parameters fail validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
         List<AnalysisInput> inputs) {
-        return beginAnalyze(analyzerId, inputs, null, null);
+        return beginAnalyze(analyzerId, inputs, (AnalyzeOptions) null);
     }
 
     /**
@@ -2167,20 +2750,265 @@ public final class ContentUnderstandingAsyncClient {
      * @param modelDeployments Custom model deployment mappings. Set to null to use service defaults.
      * @param processingLocation The processing location for the analysis. Set to null to use the service default.
      * @return the {@link PollerFlux} for polling of the analyze operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws NullPointerException if analyzerId or inputs is null.
+     * @throws IllegalArgumentException if analyzerId is empty, or other parameters fail validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
         List<AnalysisInput> inputs, Map<String, String> modelDeployments, ProcessingLocation processingLocation) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (processingLocation != null) {
-            requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
+        AnalyzeOptions options
+            = new AnalyzeOptions().setModelDeployments(modelDeployments).setProcessingLocation(processingLocation);
+        return beginAnalyze(analyzerId, inputs, options);
+    }
+
+    /**
+     * Extract content and fields from inputs. Uses default string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs The inputs to analyze.
+     * @param options Additional analysis options, or null to use defaults.
+     * @return the {@link PollerFlux} for polling of the analyze operation.
+     * @throws NullPointerException if analyzerId or inputs is null.
+     * @throws IllegalArgumentException if analyzerId is empty.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, AnalyzeOptions options) {
+        Objects.requireNonNull(analyzerId, "'analyzerId' cannot be null.");
+        if (analyzerId.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'analyzerId' cannot be empty."));
         }
-        requestOptions.addQueryParam("stringEncoding", "utf16", false);
+        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
+        RequestOptions requestOptions = createAnalyzeRequestOptions(options);
+        Map<String, String> modelDeployments = options == null ? null : options.getModelDeployments();
         AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);
         BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);
         return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions)
             .setPollInterval(Duration.ofSeconds(3));
+    }
+
+    private static RequestOptions createAnalyzeRequestOptions(AnalyzeOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("stringEncoding", "utf16", false);
+        if (options == null) {
+            return requestOptions;
+        }
+        if (options.isInputTruncationAllowed() != null) {
+            requestOptions.addQueryParam("allowInputTruncation", options.isInputTruncationAllowed().toString(), false);
+        }
+        if (options.getProcessingLocation() != null) {
+            requestOptions.addQueryParam("processingLocation", options.getProcessingLocation().toString(), false);
+        }
+        return requestOptions;
+    }
+
+    private static RequestOptions createBinaryAnalyzeRequestOptions(AnalyzeBinaryOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("stringEncoding", "utf16", false);
+        if (options == null) {
+            return requestOptions;
+        }
+        if (options.getContentRange() != null) {
+            requestOptions.addQueryParam("range", options.getContentRange().toString(), false);
+        }
+        if (options.isInputTruncationAllowed() != null) {
+            requestOptions.addQueryParam("allowInputTruncation", options.isInputTruncationAllowed().toString(), false);
+        }
+        if (options.getProcessingLocation() != null) {
+            requestOptions.addQueryParam("processingLocation", options.getProcessingLocation().toString(), false);
+        }
+        return requestOptions;
+    }
+
+    private static ContentAnalyzerInlineResponse deserializeInlineResponse(Response<BinaryData> response) {
+        BinaryData responseBody = response.getValue();
+        if (responseBody == null) {
+            throw new HttpResponseException("Inline analysis returned an empty response body.",
+                toHttpResponse(response), null);
+        }
+        ContentAnalyzerInlineResponse inlineResponse;
+        try {
+            inlineResponse = responseBody.toObject(ContentAnalyzerInlineResponse.class);
+        } catch (RuntimeException exception) {
+            throw new HttpResponseException("Inline analysis returned a malformed response body.",
+                toHttpResponse(response), exception);
+        }
+        if (inlineResponse == null) {
+            throw new HttpResponseException("Inline analysis returned an empty response body.",
+                toHttpResponse(response), null);
+        }
+        return inlineResponse;
+    }
+
+    private static AnalysisResult getSucceededInlineResult(ContentAnalyzerInlineResponse inlineResponse,
+        Response<BinaryData> response) {
+        if (inlineResponse != null && OperationState.SUCCEEDED.equals(inlineResponse.getStatus())) {
+            if (inlineResponse.getResult() != null) {
+                return inlineResponse.getResult();
+            }
+            throw new HttpResponseException("Inline analysis succeeded without a result.", toHttpResponse(response),
+                inlineResponse);
+        }
+        throw new HttpResponseException(
+            "Inline analysis failed with operation status '"
+                + (inlineResponse == null ? null : inlineResponse.getStatus()) + "'.",
+            toHttpResponse(response), inlineResponse);
+    }
+
+    private static HttpResponse toHttpResponse(Response<BinaryData> response) {
+        BinaryData body = response.getValue();
+        return new HttpResponse(response.getRequest()) {
+
+            @Override
+            public int getStatusCode() {
+                return response.getStatusCode();
+            }
+
+            @Override
+            @Deprecated
+            public String getHeaderValue(String name) {
+                return response.getHeaders().getValue(name);
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return response.getHeaders();
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return body == null ? Flux.empty() : body.toFluxByteBuffer();
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return body == null ? Mono.empty() : Mono.fromCallable(body::toBytes);
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return body == null ? Mono.empty() : Mono.fromCallable(body::toString);
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return body == null ? Mono.empty() : Mono.fromCallable(() -> new String(body.toBytes(), charset));
+            }
+
+            @Override
+            public BinaryData getBodyAsBinaryData() {
+                return body;
+            }
+        };
+    }
+
+    /**
+     * Extract content and fields from binary input. Uses default string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content to analyze.
+     * @param options Additional binary analysis options, or null to use defaults.
+     * @return the {@link PollerFlux} for polling of the analyze operation.
+     * @throws NullPointerException if analyzerId or binaryInput is null.
+     * @throws IllegalArgumentException if analyzerId is empty.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, AnalyzeBinaryOptions options) {
+        Objects.requireNonNull(analyzerId, "'analyzerId' cannot be null.");
+        if (analyzerId.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'analyzerId' cannot be empty."));
+        }
+        Objects.requireNonNull(binaryInput, "'binaryInput' cannot be null.");
+        RequestOptions requestOptions = createBinaryAnalyzeRequestOptions(options);
+        String contentType = options != null && options.getContentType() != null
+            ? options.getContentType()
+            : "application/octet-stream";
+        return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions)
+            .setPollInterval(Duration.ofSeconds(3));
+    }
+
+    /**
+     * Analyzes content inline using default options and string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs The inputs to analyze.
+     * @return the complete inline response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContentAnalyzerInlineResponse> analyzeInline(String analyzerId, List<AnalysisInput> inputs) {
+        return analyzeInline(analyzerId, inputs, (AnalyzeOptions) null);
+    }
+
+    /**
+     * Analyzes content inline using default string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs The inputs to analyze.
+     * @param options Additional analysis options, or null to use defaults.
+     * @return the complete inline response on successful completion of {@link Mono}.
+     * @throws NullPointerException if analyzerId or inputs is null.
+     * @throws IllegalArgumentException if analyzerId is empty.
+     * @throws HttpResponseException if the service rejects the request or the inline operation state is not Succeeded.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContentAnalyzerInlineResponse> analyzeInline(String analyzerId, List<AnalysisInput> inputs,
+        AnalyzeOptions options) {
+        Objects.requireNonNull(analyzerId, "'analyzerId' cannot be null.");
+        if (analyzerId.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'analyzerId' cannot be empty."));
+        }
+        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
+        RequestOptions requestOptions = createAnalyzeRequestOptions(options);
+        Map<String, String> modelDeployments = options == null ? null : options.getModelDeployments();
+        AnalyzeInlineRequest request = new AnalyzeInlineRequest(inputs).setModelDeployments(modelDeployments);
+        return analyzeInlineWithResponse(analyzerId, BinaryData.fromObject(request), requestOptions).map(response -> {
+            ContentAnalyzerInlineResponse inlineResponse = deserializeInlineResponse(response);
+            getSucceededInlineResult(inlineResponse, response);
+            return inlineResponse;
+        });
+    }
+
+    /**
+     * Analyzes binary content inline using default options and string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content to analyze.
+     * @return the complete inline response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContentAnalyzerInlineResponse> analyzeBinaryInline(String analyzerId, BinaryData binaryInput) {
+        return analyzeBinaryInline(analyzerId, binaryInput, (AnalyzeBinaryOptions) null);
+    }
+
+    /**
+     * Analyzes binary content inline using default string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content to analyze.
+     * @param options Additional binary analysis options, or null to use defaults.
+     * @return the complete inline response on successful completion of {@link Mono}.
+     * @throws NullPointerException if analyzerId or binaryInput is null.
+     * @throws IllegalArgumentException if analyzerId is empty.
+     * @throws HttpResponseException if the service rejects the request or the inline operation state is not Succeeded.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContentAnalyzerInlineResponse> analyzeBinaryInline(String analyzerId, BinaryData binaryInput,
+        AnalyzeBinaryOptions options) {
+        Objects.requireNonNull(analyzerId, "'analyzerId' cannot be null.");
+        if (analyzerId.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'analyzerId' cannot be empty."));
+        }
+        Objects.requireNonNull(binaryInput, "'binaryInput' cannot be null.");
+        RequestOptions requestOptions = createBinaryAnalyzeRequestOptions(options);
+        String contentType = options != null && options.getContentType() != null
+            ? options.getContentType()
+            : "application/octet-stream";
+        return analyzeBinaryInlineWithResponse(analyzerId, contentType, binaryInput, requestOptions).map(response -> {
+            ContentAnalyzerInlineResponse inlineResponse = deserializeInlineResponse(response);
+            getSucceededInlineResult(inlineResponse, response);
+            return inlineResponse;
+        });
     }
 }

@@ -5,10 +5,10 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaAgentsImpl;
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.ai.agents.models.AgentOptimizationJob;
+import com.azure.ai.agents.models.AgentOptimizationJobListItem;
+import com.azure.ai.agents.models.AgentOptimizationJobResult;
 import com.azure.ai.agents.models.JobStatus;
-import com.azure.ai.agents.models.OptimizationJob;
-import com.azure.ai.agents.models.OptimizationJobListItem;
-import com.azure.ai.agents.models.OptimizationJobResult;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -132,6 +132,13 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -366,10 +373,10 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OptimizationJob getOptimizationJob(String jobId) {
+    public AgentOptimizationJob getOptimizationJob(String jobId) {
         // Generated convenience method for getOptimizationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(OptimizationJob.class);
+        return getOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(AgentOptimizationJob.class);
     }
 
     /**
@@ -399,8 +406,8 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OptimizationJobListItem> listOptimizationJobs(Integer limit, PageOrder order, String after,
-        String before, JobStatus status, String agentName) {
+    public PagedIterable<AgentOptimizationJobListItem> listOptimizationJobs(Integer limit, PageOrder order,
+        String after, String before, JobStatus status, String agentName) {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -422,7 +429,7 @@ public final class BetaAgentsClient {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
         return serviceClient.listOptimizationJobs(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(OptimizationJobListItem.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJobListItem.class));
     }
 
     /**
@@ -439,11 +446,11 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OptimizationJobListItem> listOptimizationJobs() {
+    public PagedIterable<AgentOptimizationJobListItem> listOptimizationJobs() {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listOptimizationJobs(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(OptimizationJobListItem.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJobListItem.class));
     }
 
     /**
@@ -463,10 +470,10 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OptimizationJob cancelOptimizationJob(String jobId) {
+    public AgentOptimizationJob cancelOptimizationJob(String jobId) {
         // Generated convenience method for cancelOptimizationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(OptimizationJob.class);
+        return cancelOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(AgentOptimizationJob.class);
     }
 
     /**
@@ -705,8 +712,8 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OptimizationJob, OptimizationJobResult> beginCreateOptimizationJob(OptimizationJob job,
-        String operationId) {
+    public SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult>
+        beginCreateOptimizationJob(AgentOptimizationJob job, String operationId) {
         // Generated convenience method for beginCreateOptimizationJobWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (operationId != null) {
@@ -732,7 +739,8 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OptimizationJob, OptimizationJobResult> beginCreateOptimizationJob(OptimizationJob job) {
+    public SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult>
+        beginCreateOptimizationJob(AgentOptimizationJob job) {
         // Generated convenience method for beginCreateOptimizationJobWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateOptimizationJobWithModel(BinaryData.fromObject(job), requestOptions);

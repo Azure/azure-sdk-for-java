@@ -11,6 +11,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubAuthent
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubDefinitionDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceprovisioningservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.deviceprovisioningservices.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +22,48 @@ import java.util.Map;
  */
 public final class IotDpsResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSUpdate.json
+     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthTrue.json
+     */
+    /**
+     * Sample code: DPSCreate_DisableLocalAuthTrue.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSCreateDisableLocalAuthTrue(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(true))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSUpdate_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSUpdate_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSUpdateDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription().withDisableLocalAuth(true))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf())
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSUpdate.json
      */
     /**
      * Sample code: DPSUpdate.
@@ -45,7 +87,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSCreate.json
+     * x-ms-original-file: 2026-08-31/DPSCreate.json
      */
     /**
      * Sample code: DPSCreate.
@@ -64,7 +106,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSCreateWithIotHub.json
+     * x-ms-original-file: 2026-08-31/DPSCreateWithIotHub.json
      */
     /**
      * Sample code: DPSCreateWithIotHub.
@@ -96,7 +138,28 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSCreateWithNamespace.json
+     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthFalse.json
+     */
+    /**
+     * Sample code: DPSCreate_DisableLocalAuthFalse.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSCreateDisableLocalAuthFalse(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(false))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSCreateWithNamespace.json
      */
     /**
      * Sample code: DPSCreateWithNamespace.

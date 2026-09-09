@@ -183,6 +183,8 @@ public class ToolboxTool implements JsonSerializable<ToolboxTool> {
                     return AzureAISearchToolboxTool.fromJson(readerToUse.reset());
                 } else if ("openapi".equals(discriminatorValue)) {
                     return OpenApiToolboxTool.fromJson(readerToUse.reset());
+                } else if ("a2a".equals(discriminatorValue)) {
+                    return A2AToolboxTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
                     return A2APreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("browser_automation_preview".equals(discriminatorValue)) {

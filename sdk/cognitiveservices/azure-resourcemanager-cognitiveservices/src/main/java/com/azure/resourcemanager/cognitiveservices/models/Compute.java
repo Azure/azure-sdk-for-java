@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
@@ -51,13 +50,6 @@ public interface Compute {
     String etag();
 
     /**
-     * Gets the location property: The location of the compute resource.
-     * 
-     * @return the location value.
-     */
-    String location();
-
-    /**
      * Gets the tags property: Resource tags.
      * 
      * @return the tags value.
@@ -84,20 +76,6 @@ public interface Compute {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the region of the resource.
-     * 
-     * @return the region of the resource.
-     */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     * 
-     * @return the name of the resource region.
-     */
-    String regionName();
 
     /**
      * Gets the name of the resource group.
@@ -163,8 +141,8 @@ public interface Compute {
          * The stage of the Compute definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
-            DefinitionStages.WithKind, DefinitionStages.WithIdentity {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -179,27 +157,6 @@ public interface Compute {
              * @return the created resource.
              */
             Compute create(Context context);
-        }
-
-        /**
-         * The stage of the Compute definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The location of the compute resource.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The location of the compute resource.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String location);
         }
 
         /**

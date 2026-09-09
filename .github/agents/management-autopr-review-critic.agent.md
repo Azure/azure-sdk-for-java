@@ -22,14 +22,19 @@ For every candidate, verify in order:
    - Reject any evidence from a path containing a `generated` segment.
    - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
      entry. Do not require the current Java diff to contain the break.
+   - For `MGMT-LIST-RETURN`, require a newly added user-facing public `list*`
+     operation whose return type is neither `PagedIterable<T>` nor
+     `PagedFlux<T>` and whose return model exposes a collection-valued `value`.
+     Reject return models without `value`, response variants, protocol methods,
+     private helpers, and pre-existing operations.
    - For `MGMT-MANAGER-NAME`, require the exact newly added or renamed public
      root-package class and independently verify at least one of the three
      naming signals. Reject unchanged legacy names and uncertain branding,
      abbreviation, or token-order preferences.
 5. The severity matches the rule: `MGMT-FOLDER`, `MGMT-VERSION`, and
    `MGMT-API-VERSION-OVERLAP` are Blocking; `MGMT-RELEASE-PLAN`, `MGMT-LRO`,
-   `MGMT-MANAGER-NAME`, and `MGMT-BREAKING` are Warning; `MGMT-API-VERSION`
-   and `MGMT-NEW-MODULE` are Informational.
+   `MGMT-LIST-RETURN`, `MGMT-MANAGER-NAME`, and `MGMT-BREAKING` are Warning;
+   `MGMT-API-VERSION` and `MGMT-NEW-MODULE` are Informational.
 6. The prior workflow comment does not already contain the same concern under
    another ID or as an unchanged question.
 7. A Blocking or Warning requested action is concrete and does not require this

@@ -1,0 +1,10 @@
+diff --git a/sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/Applications.java b/sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/Applications.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/Applications.java
+@@ -0,0 +1,5 @@
++package com.azure.resourcemanager.security;
++
++public interface Applications {
++    Application get(String resourceGroupName, String applicationName);
++}

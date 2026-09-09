@@ -62,7 +62,7 @@ public final class CosmosClient implements Closeable {
      * </pre>
      * <!-- end com.azure.cosmos.CosmosClient.createDatabaseIfNotExistsThroughput -->
      * The throughputProperties will only be used if the specified database
-     * does not exist and therefor a new database will be created with throughputProperties.
+     * does not exist and therefore a new database will be created with throughputProperties.
      *
      * @param id the id of the database.
      * @param throughputProperties the throughputProperties.
