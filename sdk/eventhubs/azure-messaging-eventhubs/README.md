@@ -34,6 +34,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples] | [Troubles
 - [Examples](#examples)
   - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
     - [Create an Event Hub producer and publish events](#create-an-event-hub-producer-and-publish-events)
+    - [Publish a single event](#publish-a-single-event)
     - [Publish events using partition identifier](#publish-events-using-partition-identifier)
     - [Publish events using partition key](#publish-events-using-partition-key)
   - [Consume events from an Event Hub partition](#consume-events-from-an-event-hub-partition)
@@ -243,6 +244,21 @@ producer.close();
 ```
 Note that `EventDataBatch.tryAdd(EventData)` is not thread-safe. Please make sure to synchronize the method access
 when using multiple threads to add events.
+
+#### Publish a single event
+
+A batch is not necessary to publish one event. The producer clients have a `send(EventData)` overload that publishes a
+single event. There is also a `send(EventData, SendOptions)` overload that accepts a partition id or a partition key.
+The synchronous overload is shown below. `EventHubProducerAsyncClient` has the same overloads and returns a
+`Mono<Void>`.
+
+```java com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData
+EventData event = new EventData("maple");
+producer.send(event);
+```
+
+Use these overloads for low volume publishing. For high throughput, use `EventDataBatch` or `send(Iterable)`, because
+each `send(EventData)` call makes its own network round trip.
 
 #### Publish events using partition identifier
 

@@ -488,6 +488,42 @@ public class EventHubsJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet to demonstrate how to send a single event using
+     * {@link EventHubProducerAsyncClient#send(EventData)}.
+     */
+    public void sendSingleEventSampleAsync() {
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData
+        EventData event = new EventData("maple");
+
+        producer.send(event)
+            .subscribe(unused -> {
+            },
+                error -> System.err.println("Error occurred while sending event:" + error),
+                () -> System.out.println("Send complete."));
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData
+    }
+
+    /**
+     * Code snippet to demonstrate how to send a single event using
+     * {@link EventHubProducerAsyncClient#send(EventData, SendOptions)}.
+     */
+    public void sendSingleEventWithPartitionKeySampleAsync() {
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData-SendOptions
+        EventData event = new EventData("Melbourne");
+
+        SendOptions sendOptions = new SendOptions().setPartitionKey("cities");
+        producer.send(event, sendOptions)
+            .subscribe(unused -> {
+            },
+                error -> System.err.println("Error occurred while sending event:" + error),
+                () -> System.out.println("Send complete."));
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData-SendOptions
+    }
+
+    /**
      * Code snippet to demonstrate how to send a list of events using
      * {@link EventHubProducerAsyncClient#send(Iterable)}.
      */
@@ -648,6 +684,31 @@ public class EventHubsJavaDocCodeSamples {
             }
         }
         // END: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int
+    }
+
+    /**
+     * Code snippet to demonstrate how to send a single event using {@link EventHubProducerClient#send(EventData)}.
+     */
+    public void sendSingleEventSample() {
+        final EventHubProducerClient producer = builder.buildProducerClient();
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData
+        EventData event = new EventData("maple");
+        producer.send(event);
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData
+    }
+
+    /**
+     * Code snippet to demonstrate how to send a single event using
+     * {@link EventHubProducerClient#send(EventData, SendOptions)}.
+     */
+    public void sendSingleEventWithPartitionKeySample() {
+        final EventHubProducerClient producer = builder.buildProducerClient();
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData-SendOptions
+        EventData event = new EventData("Melbourne");
+
+        SendOptions sendOptions = new SendOptions().setPartitionKey("cities");
+        producer.send(event, sendOptions);
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData-SendOptions
     }
 
     /**

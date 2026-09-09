@@ -274,8 +274,16 @@ public class EventHubProducerClient implements Closeable {
     }
 
     /**
-     * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
-     * allowed, an exception will be triggered and the send will fail.
+     * <p>Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
+     * allowed, an exception will be triggered and the send will fail. For high throughput publishing, use
+     * {@link EventDataBatch} or the {@link #send(Iterable)} overload to publish more than one event in one call.</p>
+     *
+     * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData -->
+     * <pre>
+     * EventData event = new EventData&#40;&quot;maple&quot;&#41;;
+     * producer.send&#40;event&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData -->
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
@@ -284,15 +292,28 @@ public class EventHubProducerClient implements Closeable {
      * </p>
      *
      * @param event Event to send to the service.
+     * @throws NullPointerException if {@code event} is {@code null}.
+     * @throws AmqpException if the size of {@code event} exceeds the maximum size of a single batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void send(EventData event) {
+    public void send(EventData event) {
         producer.send(event).block();
     }
 
     /**
-     * Sends a single event to the associated Event Hub with the send options. If the size of the single event exceeds
-     * the maximum size allowed, an exception will be triggered and the send will fail.
+     * <p>Sends a single event to the associated Event Hub with the send options. If the size of the single event
+     * exceeds the maximum size allowed, an exception will be triggered and the send will fail. For high throughput
+     * publishing, use {@link EventDataBatch} or the {@link #send(Iterable, SendOptions)} overload to publish more
+     * than one event in one call.</p>
+     *
+     * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData-SendOptions -->
+     * <pre>
+     * EventData event = new EventData&#40;&quot;Melbourne&quot;&#41;;
+     *
+     * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
+     * producer.send&#40;event, sendOptions&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.send#EventData-SendOptions -->
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
@@ -302,9 +323,11 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
+     * @throws NullPointerException if {@code event} or {@code options} is {@code null}.
+     * @throws AmqpException if the size of {@code event} exceeds the maximum size of a single batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void send(EventData event, SendOptions options) {
+    public void send(EventData event, SendOptions options) {
         producer.send(event, options).block();
     }
 

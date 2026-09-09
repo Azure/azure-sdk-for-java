@@ -398,10 +398,25 @@ public class EventHubProducerAsyncClient implements Closeable {
      * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
      * </p>
      *
+     * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData -->
+     * <pre>
+     * EventData event = new EventData&#40;&quot;maple&quot;&#41;;
+     *
+     * producer.send&#40;event&#41;
+     *     .subscribe&#40;unused -&gt; &#123;
+     *     &#125;,
+     *         error -&gt; System.err.println&#40;&quot;Error occurred while sending event:&quot; + error&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData -->
+     *
      * @param event Event to send to the service.
      * @return A {@link Mono} that completes when the event is pushed to the service.
+     * @throws NullPointerException if {@code event} is {@code null}.
+     * @throws AmqpException if the size of {@code event} exceeds the maximum size of a single batch.
      */
-    Mono<Void> send(EventData event) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> send(EventData event) {
         if (event == null) {
             return monoError(LOGGER, new NullPointerException("'event' cannot be null."));
         }
@@ -410,8 +425,23 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Sends a single event to the associated Event Hub with the send options. If the size of the single event exceeds
-     * the maximum size allowed, an exception will be triggered and the send will fail.
+     * <p>Sends a single event to the associated Event Hub with the send options. If the size of the single event
+     * exceeds the maximum size allowed, an exception will be triggered and the send will fail. For high throughput
+     * publishing scenarios, using {@link EventDataBatch} to publish events is recommended. Batches are created using
+     * {@link #createBatch()} and {@link #createBatch(CreateBatchOptions)}.</p>
+     *
+     * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData-SendOptions -->
+     * <pre>
+     * EventData event = new EventData&#40;&quot;Melbourne&quot;&#41;;
+     *
+     * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
+     * producer.send&#40;event, sendOptions&#41;
+     *     .subscribe&#40;unused -&gt; &#123;
+     *     &#125;,
+     *         error -&gt; System.err.println&#40;&quot;Error occurred while sending event:&quot; + error&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#EventData-SendOptions -->
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
@@ -422,8 +452,11 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
      * @return A {@link Mono} that completes when the event is pushed to the service.
+     * @throws NullPointerException if {@code event} or {@code options} is {@code null}.
+     * @throws AmqpException if the size of {@code event} exceeds the maximum size of a single batch.
      */
-    Mono<Void> send(EventData event, SendOptions options) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> send(EventData event, SendOptions options) {
         if (event == null) {
             return monoError(LOGGER, new NullPointerException("'event' cannot be null."));
         } else if (options == null) {
