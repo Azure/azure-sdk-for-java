@@ -5,3 +5,9 @@ http://localhost:9021/
 http://localhost:9000/
 http://localhost:9001/
 http://localhost:9004/
+
+# Web PubSub Chat links will become available after the package is merged and released.
+https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/webpubsub/azure-messaging-webpubsub-chat/src
+https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/webpubsub/azure-messaging-webpubsub-chat/src/samples
+https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub-chat/CHANGELOG.md
+https://central.sonatype.com/artifact/com.azure/azure-messaging-webpubsub-chat

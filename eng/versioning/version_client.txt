@@ -167,6 +167,7 @@ com.azure:azure-messaging-servicebus;7.17.20;7.18.0-beta.4
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.5.7;1.6.0-beta.1
+com.azure:azure-messaging-webpubsub-chat;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub-client;1.1.10;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.32;1.0.0-beta.33
 com.azure:azure-monitor-opentelemetry-autoconfigure;1.6.0;1.7.0-beta.1

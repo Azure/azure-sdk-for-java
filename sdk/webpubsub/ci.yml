@@ -40,6 +40,10 @@ parameters:
   displayName: 'azure-messaging-webpubsub-client'
   type: boolean
   default: false
+- name: release_azuremessagingwebpubsubchat
+  displayName: 'azure-messaging-webpubsub-chat'
+  type: boolean
+  default: false
 - name: release_azureresourcemanagerwebpubsub
   displayName: 'azure-resourcemanager-webpubsub'
   type: boolean
@@ -58,6 +62,10 @@ extends:
         groupId: com.azure
         safeName: azuremessagingwebpubsubclient
         releaseInBatch: ${{ parameters.release_azuremessagingwebpubsubclient }}
+      - name: azure-messaging-webpubsub-chat
+        groupId: com.azure
+        safeName: azuremessagingwebpubsubchat
+        releaseInBatch: ${{ parameters.release_azuremessagingwebpubsubchat }}
       - name: azure-resourcemanager-webpubsub
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerwebpubsub
