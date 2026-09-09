@@ -123,6 +123,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("code_configuration", this.codeConfiguration);
         jsonWriter.writeJsonField("telemetry_config", this.telemetryConfig);
+        jsonWriter.writeJsonField("session_configuration", this.sessionConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +148,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             List<ProtocolVersionRecord> protocolVersions = null;
             CodeConfiguration codeConfiguration = null;
             TelemetryConfig telemetryConfig = null;
+            SessionConfiguration sessionConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -168,6 +170,8 @@ public final class HostedAgentDefinition extends AgentDefinition {
                     codeConfiguration = CodeConfiguration.fromJson(reader);
                 } else if ("telemetry_config".equals(fieldName)) {
                     telemetryConfig = TelemetryConfig.fromJson(reader);
+                } else if ("session_configuration".equals(fieldName)) {
+                    sessionConfiguration = SessionConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -180,6 +184,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             deserializedHostedAgentDefinition.protocolVersions = protocolVersions;
             deserializedHostedAgentDefinition.codeConfiguration = codeConfiguration;
             deserializedHostedAgentDefinition.telemetryConfig = telemetryConfig;
+            deserializedHostedAgentDefinition.sessionConfiguration = sessionConfiguration;
             return deserializedHostedAgentDefinition;
         });
     }
@@ -313,6 +318,36 @@ public final class HostedAgentDefinition extends AgentDefinition {
     @Generated
     public HostedAgentDefinition setTelemetryConfig(TelemetryConfig telemetryConfig) {
         this.telemetryConfig = telemetryConfig;
+        return this;
+    }
+
+    /*
+     * Optional session defaults (for example, the idle timeout) applied to sessions created for this agent version.
+     */
+    @Generated
+    private SessionConfiguration sessionConfiguration;
+
+    /**
+     * Get the sessionConfiguration property: Optional session defaults (for example, the idle timeout) applied to
+     * sessions created for this agent version.
+     *
+     * @return the sessionConfiguration value.
+     */
+    @Generated
+    public SessionConfiguration getSessionConfiguration() {
+        return this.sessionConfiguration;
+    }
+
+    /**
+     * Set the sessionConfiguration property: Optional session defaults (for example, the idle timeout) applied to
+     * sessions created for this agent version.
+     *
+     * @param sessionConfiguration the sessionConfiguration value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setSessionConfiguration(SessionConfiguration sessionConfiguration) {
+        this.sessionConfiguration = sessionConfiguration;
         return this;
     }
 }
