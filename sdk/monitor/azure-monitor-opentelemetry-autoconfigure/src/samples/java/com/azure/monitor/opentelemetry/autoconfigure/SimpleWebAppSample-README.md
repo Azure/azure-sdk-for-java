@@ -147,4 +147,4 @@ Press `Ctrl+C` in the terminal running the sample.
 
 - In **drop/retry** modes, both application telemetry and SDKStats metrics go through the same mock pipeline. SDKStats metrics are visible only in the console output, not in Azure Monitor.
 - The mock server automatically gunzips incoming payloads and prints each telemetry item on its own line.
-- SDKStats dimensions include: `computeType`, `language`, `version`, `telemetry_type`, `telemetry_success`, and mode-specific fields (`drop.code`/`drop.reason` or `retry.code`/`retry.reason`).
+- SDKStats dimensions include: `computeType`, `language`, `version`, `telemetryType`, `telemetrySuccess`, and mode-specific fields (`dropCode`/`dropReason` or `retryCode`/`retryReason`).

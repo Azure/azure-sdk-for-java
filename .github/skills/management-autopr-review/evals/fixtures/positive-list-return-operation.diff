@@ -1,0 +1,18 @@
+diff --git a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/DpsCertificates.java b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/DpsCertificates.java
+index 87bf293..c8ea104 100644
+--- a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/DpsCertificates.java
++++ b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/DpsCertificates.java
+@@ -42,6 +42,14 @@ public interface DpsCertificates {
+     CertificateResponse get(String resourceGroupName, String provisioningServiceName, String certificateName);
+ 
++    /**
++     * Lists certificates for the provisioning service.
++     *
++     * @return the certificate list response.
++     */
++    CertificateListDescription listCertificates(
++        String resourceGroupName, String provisioningServiceName);
++
+     CertificateResponse createOrUpdate(String resourceGroupName, String provisioningServiceName,
+         String certificateName, CertificateResponse certificate);
+ }

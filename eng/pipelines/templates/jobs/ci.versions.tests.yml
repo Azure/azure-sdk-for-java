@@ -1,7 +1,4 @@
 parameters:
-  - name: SDKType
-    type: string
-    default: client
   - name: Artifacts
     type: object
     default: []
@@ -111,24 +108,13 @@ jobs:
 
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
 
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
+      - task: PowerShell@2
+        inputs:
+          pwsh: true
+          filePath: eng/pipelines/scripts/Write-TestProxyLogs.ps1
+          arguments: >
+            -LogFileDirectory $(Build.SourcesDirectory)
         displayName: Dump Test-Proxy Logs
-        condition: succeededOrFailed()
-
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
-        displayName: Dump Test-Proxy Error Logs
         condition: succeededOrFailed()
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml

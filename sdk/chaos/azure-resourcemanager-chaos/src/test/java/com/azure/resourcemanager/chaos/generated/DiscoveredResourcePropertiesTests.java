@@ -11,7 +11,7 @@ public final class DiscoveredResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredResourceProperties model = BinaryData.fromString(
-            "{\"namespace\":\"fjltfvnzcyjtotp\",\"resourceName\":\"opv\",\"resourceType\":\"bdb\",\"fullyQualifiedIdentifier\":\"qgqqihedsvqwthmk\",\"discoveredAt\":\"2021-06-02T15:24:18Z\",\"scope\":\"bcysih\"}")
+            "{\"namespace\":\"cysihs\",\"resourceName\":\"qcwdhoh\",\"resourceType\":\"dtmcd\",\"fullyQualifiedIdentifier\":\"sufco\",\"discoveredAt\":\"2021-08-20T05:33:05Z\",\"scope\":\"xbzlmc\"}")
             .toObject(DiscoveredResourceProperties.class);
     }
 }

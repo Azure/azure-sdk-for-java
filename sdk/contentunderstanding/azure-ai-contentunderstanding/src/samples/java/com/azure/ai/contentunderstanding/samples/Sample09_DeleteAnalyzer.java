@@ -8,12 +8,8 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
-import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
-import com.azure.ai.contentunderstanding.models.ContentFieldType;
-import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
@@ -26,6 +22,8 @@ import java.util.Map;
  * 2. Verifying the analyzer exists
  * 3. Deleting the analyzer
  * 4. Verifying the analyzer no longer exists
+ *
+ * <p>Deleting an analyzer is permanent and only custom analyzers can be deleted.</p>
  */
 public class Sample09_DeleteAnalyzer {
 
@@ -52,29 +50,12 @@ public class Sample09_DeleteAnalyzer {
         String analyzerId = "analyzer_to_delete_" + System.currentTimeMillis();
         System.out.println("Creating temporary analyzer '" + analyzerId + "'...");
 
-        Map<String, ContentFieldDefinition> fields = new HashMap<>();
-        ContentFieldDefinition titleDef = new ContentFieldDefinition();
-        titleDef.setType(ContentFieldType.STRING);
-        titleDef.setMethod(GenerationMethod.EXTRACT);
-        titleDef.setDescription("Document title");
-        fields.put("title", titleDef);
-
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("temp_schema");
-        fieldSchema.setDescription("Temporary schema for deletion demo");
-        fieldSchema.setFields(fields);
-
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
 
-        ContentAnalyzer analyzer = new ContentAnalyzer()
-            .setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Temporary analyzer for deletion demo")
-            .setConfig(new ContentAnalyzerConfig()
-                .setOcrEnabled(true)
-                .setLayoutEnabled(true))
-            .setFieldSchema(fieldSchema)
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
             .setModels(models);
 
         client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
@@ -89,13 +70,23 @@ public class Sample09_DeleteAnalyzer {
         System.out.println("Analyzer deleted successfully: " + analyzerId);
 
         // Verify the analyzer no longer exists
-        boolean analyzerDeleted = false;
         try {
             client.getAnalyzer(analyzerId);
-        } catch (ResourceNotFoundException e) {
-            analyzerDeleted = true;
-            System.out.println("Confirmed: Analyzer no longer exists");
+            throw new IllegalStateException("Deleted analyzer '" + analyzerId + "' is still retrievable.");
+        } catch (HttpResponseException exception) {
+            int statusCode = exception.getResponse().getStatusCode();
+            if (statusCode != 404 && statusCode != 400) {
+                throw exception;
+            }
+            System.out.println("Confirmed: Analyzer no longer exists (status " + statusCode + ")");
         }
+
+        for (ContentAnalyzer listedAnalyzer : client.listAnalyzers()) {
+            if (analyzerId.equals(listedAnalyzer.getAnalyzerId())) {
+                throw new IllegalStateException("Deleted analyzer '" + analyzerId + "' still appears in the list.");
+            }
+        }
+        System.out.println("Confirmed: Analyzer no longer appears in the analyzer list");
         // END:ContentUnderstandingDeleteAnalyzer
     }
 }

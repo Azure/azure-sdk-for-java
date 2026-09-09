@@ -247,6 +247,46 @@ public final class BetaRoutinesImpl {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions,
             Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listRoutinesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRoutinesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listRoutineRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRoutineRunsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -642,12 +682,11 @@ public final class BetaRoutinesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -677,8 +716,8 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listRoutinesSinglePageAsync(RequestOptions requestOptions) {
@@ -687,7 +726,7 @@ public final class BetaRoutinesImpl {
             .withContext(context -> service.listRoutines(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null));
     }
 
     /**
@@ -699,12 +738,11 @@ public final class BetaRoutinesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -734,11 +772,15 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listRoutinesAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listRoutinesSinglePageAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listRoutinesSinglePageAsync(requestOptions),
+            nextLink -> listRoutinesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -750,12 +792,11 @@ public final class BetaRoutinesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -785,7 +826,7 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listRoutinesSinglePage(RequestOptions requestOptions) {
@@ -793,7 +834,7 @@ public final class BetaRoutinesImpl {
         Response<BinaryData> res = service.listRoutinesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null);
     }
 
     /**
@@ -805,12 +846,11 @@ public final class BetaRoutinesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -840,11 +880,15 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listRoutines(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listRoutinesSinglePage(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listRoutinesSinglePage(requestOptions),
+            nextLink -> listRoutinesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -896,12 +940,11 @@ public final class BetaRoutinesImpl {
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -944,8 +987,8 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listRoutineRunsSinglePageAsync(String routineName,
@@ -955,7 +998,7 @@ public final class BetaRoutinesImpl {
             .withContext(context -> service.listRoutineRuns(this.client.getEndpoint(), routineName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null));
     }
 
     /**
@@ -969,12 +1012,11 @@ public final class BetaRoutinesImpl {
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1017,11 +1059,15 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listRoutineRunsAsync(String routineName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listRoutineRunsSinglePageAsync(routineName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listRoutineRunsSinglePageAsync(routineName, requestOptions),
+            nextLink -> listRoutineRunsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1035,12 +1081,11 @@ public final class BetaRoutinesImpl {
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1083,7 +1128,7 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listRoutineRunsSinglePage(String routineName, RequestOptions requestOptions) {
@@ -1091,7 +1136,7 @@ public final class BetaRoutinesImpl {
         Response<BinaryData> res = service.listRoutineRunsSync(this.client.getEndpoint(), routineName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null);
     }
 
     /**
@@ -1105,12 +1150,11 @@ public final class BetaRoutinesImpl {
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
-     * response.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
-     * support.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
-     * desc.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque continuation token identifying where to resume the
+     * list. Prefer following the `next_link` returned by the previous response, which embeds this value.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1153,11 +1197,15 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     * @return a page of items with a URL cursor to the next page as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listRoutineRuns(String routineName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listRoutineRunsSinglePage(routineName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listRoutineRunsSinglePage(routineName, requestOptions),
+            nextLink -> listRoutineRunsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1255,20 +1303,227 @@ public final class BetaRoutinesImpl {
             requestOptions, Context.NONE);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    /**
+     * List routines
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     enabled: boolean (Required)
+     *     triggers (Optional): {
+     *         String (Required): {
+     *             type: String(custom/github_issue/schedule/timer) (Required)
+     *         }
+     *     }
+     *     action (Optional): {
+     *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
+     *     }
+     *     created_at: Long (Optional)
+     *     updated_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listRoutinesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listRoutinesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null));
+    }
+
+    /**
+     * List routines
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     enabled: boolean (Required)
+     *     triggers (Optional): {
+     *         String (Required): {
+     *             type: String(custom/github_issue/schedule/timer) (Required)
+     *         }
+     *     }
+     *     action (Optional): {
+     *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
+     *     }
+     *     created_at: Long (Optional)
+     *     updated_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listRoutinesNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res
+            = service.listRoutinesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null);
+    }
+
+    /**
+     * List prior runs for a routine
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String (Optional)
+     *     phase: String(queued/dispatching/completed/failed) (Optional)
+     *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
+     *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
+     *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
+     *     agent_id: String (Optional)
+     *     agent_endpoint_id: String (Optional)
+     *     conversation_id: String (Optional)
+     *     session_id: String (Optional)
+     *     triggered_at: Long (Optional)
+     *     scheduled_fire_at: Long (Optional)
+     *     started_at: Long (Optional)
+     *     ended_at: Long (Optional)
+     *     dispatch_id: String (Optional)
+     *     action_correlation_id: String (Optional)
+     *     response_id: String (Optional)
+     *     task_id: String (Optional)
+     *     error_status_code: Integer (Optional)
+     *     error_type: String (Optional)
+     *     error_message: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listRoutineRunsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listRoutineRunsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null));
+    }
+
+    /**
+     * List prior runs for a routine
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String (Optional)
+     *     phase: String(queued/dispatching/completed/failed) (Optional)
+     *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
+     *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
+     *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
+     *     agent_id: String (Optional)
+     *     agent_endpoint_id: String (Optional)
+     *     conversation_id: String (Optional)
+     *     session_id: String (Optional)
+     *     triggered_at: Long (Optional)
+     *     scheduled_fire_at: Long (Optional)
+     *     started_at: Long (Optional)
+     *     ended_at: Long (Optional)
+     *     dispatch_id: String (Optional)
+     *     action_correlation_id: String (Optional)
+     *     response_id: String (Optional)
+     *     task_id: String (Optional)
+     *     error_status_code: Integer (Optional)
+     *     error_type: String (Optional)
+     *     error_message: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of items with a URL cursor to the next page along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listRoutineRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listRoutineRunsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "next_link"), null);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

@@ -18,6 +18,7 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusT
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
@@ -35,8 +36,12 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
  * <p>
  * The {@code timeoutRetryDisabled} is true when the session acquirer is used for synchronous {@link ServiceBusSessionReceiverClient}.
  * This allows the synchronous 'acceptNextSession()' API to propagate the broker timeout error if no session is available.
- * The 'acceptNextSession()' has a client-side timeout that is set slightly longer than the broker's timeout, ensuring
- * the broker's timeout usually triggers first (the client-side timeout still helps in case of unexpected hanging).
+ * On this non-retry path the acquirer bounds a single acquire attempt with a client-side guard set to twice the
+ * broker try-timeout, so the broker's own timeout usually triggers first (and its error propagates), while a hung
+ * acquire where the broker never responds still fails in bounded time instead of blocking the caller for the full
+ * operation timeout. If this client-side guard expires, the acquirer disposes the half-open receive link so the
+ * broker-side session lock (if any) is released rather than left orphaned. See
+ * <a href="https://github.com/Azure/azure-sdk-for-java/issues/49093">issue 49093</a>.
  * For ServiceBusSessionReceiverClient, if the library retries session-acquire on broker timeout, the client-side sync
  * timeout might expire while waiting. When client-side timeout expires like this, library cannot cancel the outstanding
  * acquire request to the broker, which means, the broker may still lock a session for an acquire request that nobody
@@ -45,7 +50,8 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
  * </p>
  * <p>
  * For session enabled {@link ServiceBusProcessorClient} and {@link ServiceBusSessionReceiverAsyncClient},
- * the {@code timeoutRetryDisabled} is false, hence session acquirer retries on broker timeout.
+ * the {@code timeoutRetryDisabled} is false, hence session acquirer retries on broker timeout. Retries are spaced by a
+ * bounded backoff to avoid a tight CPU-burning loop when acquire attempts fail fast.
  * </p>
  */
 final class ServiceBusSessionAcquirer {
@@ -56,6 +62,10 @@ final class ServiceBusSessionAcquirer {
     private final MessagingEntityType entityType;
     private final Duration tryTimeout;
     private final boolean timeoutRetryDisabled;
+    // Client-side guard for the non-retry (sync ServiceBusSessionReceiverClient) path.
+    private final Duration clientSideTimeout;
+    // Backoff between session-acquire retries on the retry-enabled (async receiver / processor) path.
+    private final Duration retryBackoff;
     private final ServiceBusReceiveMode receiveMode;
     private final ConnectionCacheWrapper connectionCacheWrapper;
     private final Mono<ServiceBusManagementNode> sessionManagement;
@@ -82,6 +92,22 @@ final class ServiceBusSessionAcquirer {
         this.entityType = entityType;
         this.tryTimeout = tryTimeout;
         this.timeoutRetryDisabled = timeoutRetryDisabled;
+        // Bound a single acquire attempt on the sync (non-retry) path so that a hung broker/link that
+        // never sends its detach surfaces a timeout in ~2x the tryTimeout, instead of blocking the
+        // caller for the full operation timeout (the sum of all retry try-timeouts, ~245s with default
+        // AmqpRetryOptions). The 2x margin keeps the broker's own timeout detach the usual trigger, so
+        // the broker-timeout error still propagates in the healthy "no session available" case.
+        // https://github.com/Azure/azure-sdk-for-java/issues/49093
+        this.clientSideTimeout = tryTimeout.multipliedBy(2);
+        // Backoff between session-acquire retries to avoid a tight, CPU-burning retry loop when acquire
+        // attempts fail fast (e.g., the broker repeatedly detaches the accept link quickly). The previous
+        // Mono.delay(Duration.ZERO) ignored the configured retry delay and always spun; this honors the
+        // customer's configured AmqpRetryOptions delay, falling back to 100ms only when no usable delay
+        // (null/zero/negative) is configured. https://github.com/Azure/azure-sdk-for-java/issues/49093
+        final Duration configuredDelay = connectionCacheWrapper.getRetryOptions().getDelay();
+        this.retryBackoff = (configuredDelay == null || configuredDelay.isZero() || configuredDelay.isNegative())
+            ? Duration.ofMillis(100)
+            : configuredDelay;
         this.receiveMode = receiveMode;
         this.connectionCacheWrapper = connectionCacheWrapper;
         this.sessionManagement = connectionCacheWrapper.getConnection()
@@ -125,14 +151,22 @@ final class ServiceBusSessionAcquirer {
      */
     private Mono<Session> acquireIntern(String sessionId) {
         if (timeoutRetryDisabled) {
-            return acquireSession(sessionId).onErrorResume(t -> {
-                if (isBrokerTimeoutError(t)) {
-                    // map the broker timeout to application-friendly TimeoutException.
-                    final Throwable e = new TimeoutException("com.microsoft:timeout").initCause(t);
-                    return publishError(sessionId, e, false);
-                }
-                return publishError(sessionId, t, true);
-            });
+            return acquireSession(sessionId).timeout(clientSideTimeout,
+                Mono.error(() -> new TimeoutException("Timed out waiting to acquire a session; the broker did not "
+                    + "respond within " + clientSideTimeout + " (client-side guard).")))
+                .onErrorResume(t -> {
+                    if (isBrokerTimeoutError(t)) {
+                        // map the broker timeout to application-friendly TimeoutException.
+                        final Throwable e = new TimeoutException("com.microsoft:timeout").initCause(t);
+                        return publishError(sessionId, e, false);
+                    }
+                    if (t instanceof TimeoutException) {
+                        // Client-side guard fired because the broker never responded (a hung acquire).
+                        // Treat it like the broker timeout: a retriable "no session acquired in time".
+                        return publishError(sessionId, t, false);
+                    }
+                    return publishError(sessionId, t, true);
+                });
         } else {
             return acquireSession(sessionId).timeout(tryTimeout)
                 .retryWhen(Retry.from(signals -> signals.flatMap(signal -> {
@@ -142,8 +176,10 @@ final class ServiceBusSessionAcquirer {
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue("attempt", signal.totalRetriesInARow())
                             .log("Timeout while acquiring session '{}'.", sessionName(sessionId), t);
-                        // retry session acquire using Schedulers.parallel() and free the QPid thread.
-                        return Mono.delay(Duration.ZERO);
+                        // Retry session acquire after a bounded backoff. Mono.delay hops to
+                        // Schedulers.parallel(), freeing the QPid thread; the non-zero backoff prevents a
+                        // tight CPU-burning loop when acquire attempts fail fast.
+                        return Mono.delay(retryBackoff);
                     }
                     return publishError(sessionId, t, true);
                 })));
@@ -165,7 +201,18 @@ final class ServiceBusSessionAcquirer {
             return createLink.flatMap(link -> {
                 // ServiceBusReceiveLink::getSessionProperties() await for link to "ACTIVE" then reads its properties.
                 return link.getSessionProperties()
-                    .flatMap(sessionProperties -> Mono.just(new Session(link, sessionProperties, sessionManagement)));
+                    .flatMap(sessionProperties -> Mono.just(new Session(link, sessionProperties, sessionManagement)))
+                    // If the caller abandons the acquire before a session is established (e.g., the
+                    // client-side timeout guard on the sync path, or a try-timeout on the retry path,
+                    // cancels the subscription), dispose the half-open receive link so it isn't leaked
+                    // and any broker-side session lock is released. On success the link ownership
+                    // transfers to the Session, so dispose only on cancellation.
+                    // https://github.com/Azure/azure-sdk-for-java/issues/49093
+                    .doFinally(signalType -> {
+                        if (signalType == SignalType.CANCEL) {
+                            link.dispose();
+                        }
+                    });
             });
         });
     }

@@ -16,7 +16,7 @@ import java.io.IOException;
  * Identifiers returned after a routine dispatch is queued.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class DispatchRoutineResult implements JsonSerializable<DispatchRoutineResult> {
 
     /*

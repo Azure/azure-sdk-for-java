@@ -37,6 +37,12 @@ public final class BlockBlobsUploadHeaders {
     private byte[] contentMD5;
 
     /*
+     * The x-ms-content-crc64 property.
+     */
+    @Generated
+    private byte[] xMsContentCrc64;
+
+    /*
      * The x-ms-client-request-id property.
      */
     @Generated
@@ -90,6 +96,8 @@ public final class BlockBlobsUploadHeaders {
     @Generated
     private String xMsStructuredBody;
 
+    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
@@ -123,6 +131,12 @@ public final class BlockBlobsUploadHeaders {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         } else {
             this.contentMD5 = null;
+        }
+        String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
+        if (xMsContentCrc64 != null) {
+            this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
+        } else {
+            this.xMsContentCrc64 = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
@@ -215,6 +229,28 @@ public final class BlockBlobsUploadHeaders {
     @Generated
     public BlockBlobsUploadHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
+     * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
+     * 
+     * @return the xMsContentCrc64 value.
+     */
+    @Generated
+    public byte[] getXMsContentCrc64() {
+        return CoreUtils.clone(this.xMsContentCrc64);
+    }
+
+    /**
+     * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
+     * 
+     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
+     * @return the BlockBlobsUploadHeaders object itself.
+     */
+    @Generated
+    public BlockBlobsUploadHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
+        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
     }
 

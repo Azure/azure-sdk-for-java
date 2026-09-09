@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class GatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_Get.json
+     * x-ms-original-file: 2026-07-15/gateway/Gateway_Get.json
      */
     /**
      * Sample code: Get Gateway.

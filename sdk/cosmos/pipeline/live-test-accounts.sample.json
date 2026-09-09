@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "accounts": {
+    "single-session": {
+      "endpoint": "https://REPLACE-single-session.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Session",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "single-session-pmerge": {
+      "endpoint": "https://REPLACE-single-session-pmerge.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Session",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "single-strong": {
+      "endpoint": "https://REPLACE-single-strong.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Strong",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "single-session-split": {
+      "endpoint": "https://REPLACE-single-session-split.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Session",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "single-session-cfp-split": {
+      "endpoint": "https://REPLACE-single-session-cfp-split.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Session",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "single-strong-split": {
+      "endpoint": "https://REPLACE-single-strong-split.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Strong",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "single-strong-cfp-split": {
+      "endpoint": "https://REPLACE-single-strong-cfp-split.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Strong",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multiregion-strong": {
+      "endpoint": "https://REPLACE-multiregion-strong.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "consistency": "Strong",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-multiregion-session": {
+      "endpoint": "https://REPLACE-multimaster-multiregion-session.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-session-control": {
+      "endpoint": "https://REPLACE-multimaster-session-control.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-session-http2": {
+      "endpoint": "https://REPLACE-multimaster-session-http2.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-session-circuit": {
+      "endpoint": "https://REPLACE-multimaster-session-circuit.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-multiregion-session-fi": {
+      "endpoint": "https://REPLACE-multimaster-multiregion-session-fi.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-multiregion-session-split": {
+      "endpoint": "https://REPLACE-multimaster-multiregion-session-split.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multimaster-session-cfp-split": {
+      "endpoint": "https://REPLACE-multimaster-session-cfp-split.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "multiregion-tc-session": {
+      "endpoint": "https://REPLACE-multiregion-tc-session.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US",
+        "East US 2"
+      ],
+      "consistency": "Session",
+      "multiWrite": false,
+      "thinClient": true,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "gsi-single-session": {
+      "endpoint": "https://REPLACE-gsi-single-session.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Session",
+      "multiWrite": false,
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    },
+    "kafka-session": {
+      "endpoint": "https://REPLACE-kafka-session.documents.azure.com:443/",
+      "key": "REPLACE_KEY",
+      "secondaryKey": "REPLACE_SECONDARY_KEY",
+      "regions": [
+        "Central US"
+      ],
+      "consistency": "Session",
+      "multiWrite": false
+    }
+  }
+}

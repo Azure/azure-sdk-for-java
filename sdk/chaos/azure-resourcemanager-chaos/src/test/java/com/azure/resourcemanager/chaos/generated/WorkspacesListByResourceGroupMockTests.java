@@ -23,7 +23,7 @@ public final class WorkspacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"knokzw\",\"tenantId\":\"zrltixldzyyf\",\"type\":\"None\",\"userAssignedIdentities\":{\"zoyovwzdbpq\":{\"principalId\":\"ixymmpujivyql\",\"clientId\":\"uvsmbms\"}}},\"properties\":{\"provisioningState\":\"Updating\",\"communicationEndpoint\":\"fgvmx\",\"scopes\":[\"kcvtl\",\"bse\",\"kvcuartrhunl\"]},\"location\":\"rykycndzfqivjr\",\"tags\":{\"wagltbxoeeonqlnf\":\"kbbm\",\"zcrcssbzhddubbnq\":\"myymvqdbpbhfckdv\",\"h\":\"b\",\"wugiqjti\":\"alehpav\"},\"id\":\"gqgdminictteajoh\",\"name\":\"ygspnbonhpczykm\",\"type\":\"tp\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"gqogjwpindedva\",\"tenantId\":\"xbhmed\",\"type\":\"None\",\"userAssignedIdentities\":{\"vwypusuvjsl\":{\"principalId\":\"ywfcfxzi\",\"clientId\":\"zi\"},\"vxadqacfrgnawbab\":{\"principalId\":\"wci\",\"clientId\":\"jsllfryvd\"},\"je\":{\"principalId\":\"bktyjmfc\",\"clientId\":\"fsyqkfrbzgowoxq\"}}},\"properties\":{\"provisioningState\":\"Failed\",\"communicationEndpoint\":\"nyq\",\"scopes\":[\"hlusrvxisi\",\"jceagb\",\"qvlsumywzas\"]},\"location\":\"gon\",\"tags\":{\"puby\":\"fq\",\"vop\":\"nclkfkeeb\",\"uoqujlyeg\":\"m\",\"gflqqbtnyjp\":\"avn\"},\"id\":\"lxdbfvabmvms\",\"name\":\"baevwjcnkottl\",\"type\":\"uhvajmailfemjjza\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class WorkspacesListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Workspace> response = manager.workspaces()
-            .listByResourceGroup("alfihcjmobcancd", "xxqcwgaxf", com.azure.core.util.Context.NONE);
+        PagedIterable<Workspace> response
+            = manager.workspaces().listByResourceGroup("zknxkv", "cxetyvkunmignoh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rykycndzfqivjr", response.iterator().next().location());
-        Assertions.assertEquals("kbbm", response.iterator().next().tags().get("wagltbxoeeonqlnf"));
+        Assertions.assertEquals("gon", response.iterator().next().location());
+        Assertions.assertEquals("fq", response.iterator().next().tags().get("puby"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("kcvtl", response.iterator().next().properties().scopes().get(0));
+        Assertions.assertEquals("hlusrvxisi", response.iterator().next().properties().scopes().get(0));
     }
 }

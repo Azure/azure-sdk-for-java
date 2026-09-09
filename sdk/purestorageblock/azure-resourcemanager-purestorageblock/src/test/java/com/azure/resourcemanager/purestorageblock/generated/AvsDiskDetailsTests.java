@@ -12,14 +12,14 @@ public final class AvsDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsDiskDetails model = BinaryData.fromString(
-            "{\"diskId\":\"shfwpracstwity\",\"diskName\":\"hevxcced\",\"folder\":\"pnmdyodnwzxltjcv\",\"avsVmInternalId\":\"hlt\",\"avsVmResourceId\":\"ugcxnavvwxq\",\"avsVmName\":\"byqunyow\",\"avsStorageContainerResourceId\":\"wlmdjrkv\"}")
+            "{\"diskId\":\"fgytguslfeadcyg\",\"diskName\":\"ukyhejhzis\",\"folder\":\"gfpelolppvksrpqv\",\"avsVmInternalId\":\"jzraehtwdwrf\",\"avsVmResourceId\":\"swibyr\",\"avsVmName\":\"dl\",\"avsStorageContainerResourceId\":\"h\"}")
             .toObject(AvsDiskDetails.class);
-        Assertions.assertEquals("shfwpracstwity", model.diskId());
-        Assertions.assertEquals("hevxcced", model.diskName());
-        Assertions.assertEquals("pnmdyodnwzxltjcv", model.folder());
-        Assertions.assertEquals("hlt", model.avsVmInternalId());
-        Assertions.assertEquals("ugcxnavvwxq", model.avsVmResourceId());
-        Assertions.assertEquals("byqunyow", model.avsVmName());
-        Assertions.assertEquals("wlmdjrkv", model.avsStorageContainerResourceId());
+        Assertions.assertEquals("fgytguslfeadcyg", model.diskId());
+        Assertions.assertEquals("ukyhejhzis", model.diskName());
+        Assertions.assertEquals("gfpelolppvksrpqv", model.folder());
+        Assertions.assertEquals("jzraehtwdwrf", model.avsVmInternalId());
+        Assertions.assertEquals("swibyr", model.avsVmResourceId());
+        Assertions.assertEquals("dl", model.avsVmName());
+        Assertions.assertEquals("h", model.avsStorageContainerResourceId());
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class WorkloadUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Workload_Update.json
+     * x-ms-original-file: 2026-04-01/Workload_Update.json
      */
     /**
      * Sample code: Workload_Update.

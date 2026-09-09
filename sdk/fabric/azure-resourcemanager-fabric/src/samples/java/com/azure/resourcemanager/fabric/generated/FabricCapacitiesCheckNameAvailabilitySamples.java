@@ -11,7 +11,7 @@ import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityRequest;
  */
 public final class FabricCapacitiesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_CheckNameAvailability.json
+     * x-ms-original-file: 2026-08-01-preview/FabricCapacities_CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability of a capacity.

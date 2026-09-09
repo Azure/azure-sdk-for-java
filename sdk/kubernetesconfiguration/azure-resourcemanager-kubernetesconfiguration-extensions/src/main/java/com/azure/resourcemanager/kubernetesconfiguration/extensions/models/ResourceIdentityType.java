@@ -9,7 +9,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.extensions.models;
  */
 public enum ResourceIdentityType {
     /**
-     * Enum value SystemAssigned.
+     * The identity is assigned by the system.
      */
     SYSTEM_ASSIGNED("SystemAssigned");
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class HealthModelsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/HealthModels_Delete.json
+     * x-ms-original-file: 2026-09-01-preview/HealthModels_Delete.json
      */
     /**
      * Sample code: HealthModels_Delete.

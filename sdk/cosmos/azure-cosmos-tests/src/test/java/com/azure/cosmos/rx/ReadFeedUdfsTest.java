@@ -4,10 +4,11 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 
 public class ReadFeedUdfsTest extends TestSuiteBase {
 
-    private Database createdDatabase;
     private CosmosAsyncContainer createdCollection;
     private List<CosmosUserDefinedFunctionProperties> createdUserDefinedFunctions = new ArrayList<>();
 
@@ -57,8 +57,12 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedUdfsTest() {
         client = getClientBuilder().buildAsyncClient();
-        createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        cleanUpContainer(createdCollection);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
+        createdCollection = createCollection(
+            database,
+            getCollectionDefinitionWithRangeRangeIndex(),
+            new CosmosContainerRequestOptions(),
+            400);
 
         for (int i = 0; i < 5; i++) {
             createdUserDefinedFunctions.add(createUserDefinedFunctions(createdCollection));
@@ -69,6 +73,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        safeDeleteCollection(createdCollection);
         safeClose(client);
     }
 
@@ -82,15 +87,4 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
                 .getProperties();
     }
 
-    private String getCollectionLink() {
-        return "dbs/" + getDatabaseId() + "/colls/" + getCollectionId();
-    }
-
-    private String getCollectionId() {
-        return createdCollection.getId();
-    }
-
-    private String getDatabaseId() {
-        return createdDatabase.getId();
-    }
 }

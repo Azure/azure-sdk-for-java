@@ -12,6 +12,7 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.PointF;
 import com.azure.ai.contentunderstanding.models.RectangleF;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,7 @@ public class Sample_Advanced_ContentSourceTest extends ContentUnderstandingClien
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, operation.waitForCompletion().getStatus());
         AnalysisResult result = operation.getFinalResult();
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result should contain contents");
@@ -100,27 +102,6 @@ public class Sample_Advanced_ContentSourceTest extends ContentUnderstandingClien
         }
         assertTrue(hasDocumentSource, "At least one field should have DocumentSource grounding");
         assertTrue(hasPolygonSource, "At least one DocumentSource should have polygon coordinates");
-    }
-
-    @Test
-    public void testContentSourceParseRoundTrip() {
-        // Analyze an invoice to get a field with grounding sources.
-        String invoiceUrl
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf";
-
-        AnalysisInput input = new AnalysisInput();
-        input.setUrl(invoiceUrl);
-
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
-
-        AnalysisResult result = operation.getFinalResult();
-        assertNotNull(result, "Analysis result should not be null");
-        assertNotNull(result.getContents(), "Result should contain contents");
-        assertFalse(result.getContents().isEmpty(), "Result contents should not be empty");
-        assertInstanceOf(DocumentContent.class, result.getContents().get(0), "Content should be DocumentContent");
-        DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
-        assertNotNull(documentContent.getFields(), "Document should have fields");
 
         // --- DocumentSource.parse() — typed method for multi-segment ---
         // Prefer a real multi-source field returned by the service; if the document doesn't
@@ -200,5 +181,16 @@ public class Sample_Advanced_ContentSourceTest extends ContentUnderstandingClien
                 System.out.println("  parseAll -> page " + ds.getPageNumber() + " (page-only)");
             }
         }
+
+        ContentSource originalSource = fieldWithSource.getSources().get(0);
+        assertInstanceOf(DocumentSource.class, originalSource);
+        int pageNumber = ((DocumentSource) originalSource).getPageNumber();
+        List<ContentSource> pageOnlySources = ContentSource.parseAll("D(" + pageNumber + ")");
+        assertEquals(1, pageOnlySources.size());
+        assertInstanceOf(DocumentSource.class, pageOnlySources.get(0));
+        DocumentSource pageOnly = (DocumentSource) pageOnlySources.get(0);
+        assertEquals(pageNumber, pageOnly.getPageNumber());
+        assertNull(pageOnly.getPolygon(), "Page-only source should have null polygon");
+        assertNull(pageOnly.getBoundingBox(), "Page-only source should have null BoundingBox");
     }
 }

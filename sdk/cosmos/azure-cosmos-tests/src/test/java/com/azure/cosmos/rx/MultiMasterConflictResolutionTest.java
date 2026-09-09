@@ -50,7 +50,9 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
         // default last writer wins, path _ts
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        database.createContainer(containerSettings, new CosmosContainerRequestOptions()).block();
+        final CosmosContainerProperties initialContainerSettings = containerSettings;
+        executeControlPlaneWithRetry(() ->
+            database.createContainer(initialContainerSettings, new CosmosContainerRequestOptions()).block());
         CosmosAsyncContainer container = database.getContainer(containerSettings.getId());
 
         containerSettings = container.read().block().getProperties();
@@ -124,7 +126,9 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             } else {
                 collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy(paths[i]));
             }
-            collectionSettings = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getProperties();
+            final CosmosContainerProperties containerToCreate = collectionSettings;
+            collectionSettings = executeControlPlaneWithRetry(() ->
+                database.createContainer(containerToCreate, new CosmosContainerRequestOptions()).block().getProperties());
             assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(conflictResolutionMode);
 
             if (conflictResolutionMode == ConflictResolutionMode.LAST_WRITER_WINS) {

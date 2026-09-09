@@ -73,16 +73,21 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -529,7 +534,7 @@ public class BlobAsyncClientBase {
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
                 } else {
-                    return Mono.error(e);
+                    return monoError(LOGGER, e);
                 }
             });
     }
@@ -722,8 +727,8 @@ public class BlobAsyncClientBase {
             }
         }, (pollingContext, firstResponse) -> {
             if (firstResponse == null || firstResponse.getValue() == null) {
-                return Mono.error(LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                return monoError(LOGGER,
+                    new IllegalArgumentException("Cannot cancel a poll response that never started."));
             }
             final String copyIdentifier = firstResponse.getValue().getCopyId();
 
@@ -1166,9 +1171,25 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        return downloadStreamWithResponse(new BlobDownloadStreamOptions().setRange(range)
+            .setDownloadRetryOptions(options)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(getRangeContentMd5));
+    }
+
+    /**
+     * Reads a range of bytes from a blob with options.
+     *
+     * @param options {@link BlobDownloadStreamOptions}
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobDownloadStreamOptions options) {
         try {
-            return withContext(
-                context -> downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context));
+            BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
+            return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
+                finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1205,11 +1226,26 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
+        return downloadContentWithResponse(
+            new BlobDownloadContentOptions().setDownloadRetryOptions(options).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Reads blob content (full blob or range) with options.
+     *
+     * @param options {@link BlobDownloadContentOptions}
+     * @return A reactive response containing the blob content.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(BlobDownloadContentOptions options) {
         try {
-            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, false, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders()))));
+            BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
+            return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
+                finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context)
+                    .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                        .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
+                            r.getHeaders(), data, r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1217,17 +1253,27 @@ public class BlobAsyncClientBase {
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        // Prevents revapi visibility increased error
+        return downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context);
+    }
+
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
+        context
+            = ContentValidationModeResolver.addStructuredMessageDecodingToContext(context, contentValidationAlgorithm);
+
         // The first range should eagerly convert headers as they'll be used to create response types.
         Context firstRangeContext = context == null
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
-
+        Context nextRangeContext = context;
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
             firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
@@ -1272,7 +1318,7 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, getMD5, context);
+                            eTag, getMD5, nextRangeContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
@@ -1504,7 +1550,8 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
+                options.getContentValidationAlgorithm(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1519,7 +1566,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1529,8 +1576,8 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
-            = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, context);
+            = (range, conditions) -> this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
+                rangeGetContentMd5, contentValidationAlgorithm, context);
 
         return ChunkedDownloadUtils
             .downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions, downloadFunc, true,

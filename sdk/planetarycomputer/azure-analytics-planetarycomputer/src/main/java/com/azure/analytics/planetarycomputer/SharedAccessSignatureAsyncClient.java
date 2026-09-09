@@ -77,8 +77,8 @@ public final class SharedAccessSignatureAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSignWithResponse(String href, RequestOptions requestOptions) {
-        return this.serviceClient.getSignWithResponseAsync(href, requestOptions);
+    public Mono<Response<BinaryData>> getUrlWithResponse(String href, RequestOptions requestOptions) {
+        return this.serviceClient.getUrlWithResponseAsync(href, requestOptions);
     }
 
     /**
@@ -177,13 +177,13 @@ public final class SharedAccessSignatureAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessSignatureSignedLink> getSign(String href, Integer durationInMinutes) {
-        // Generated convenience method for getSignWithResponse
+    public Mono<SharedAccessSignatureSignedLink> getUrl(String href, Integer durationInMinutes) {
+        // Generated convenience method for getUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (durationInMinutes != null) {
             requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
         }
-        return getSignWithResponse(href, requestOptions).flatMap(FluxUtil::toMono)
+        return getUrlWithResponse(href, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SharedAccessSignatureSignedLink.class));
     }
 
@@ -207,10 +207,10 @@ public final class SharedAccessSignatureAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharedAccessSignatureSignedLink> getSign(String href) {
-        // Generated convenience method for getSignWithResponse
+    public Mono<SharedAccessSignatureSignedLink> getUrl(String href) {
+        // Generated convenience method for getUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSignWithResponse(href, requestOptions).flatMap(FluxUtil::toMono)
+        return getUrlWithResponse(href, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SharedAccessSignatureSignedLink.class));
     }
 

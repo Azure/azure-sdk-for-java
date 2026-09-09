@@ -10,8 +10,8 @@ import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeter;
 public final class NetworkSecurityPerimeterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityPerimeter model
-            = BinaryData.fromString("{\"id\":\"msksbp\",\"perimeterGuid\":\"lqol\",\"location\":\"kcgxxlxsffgcvi\"}")
-                .toObject(NetworkSecurityPerimeter.class);
+        NetworkSecurityPerimeter model = BinaryData
+            .fromString("{\"id\":\"oorb\",\"perimeterGuid\":\"oybfhjxakvvj\",\"location\":\"lordilmywwtkgkxn\"}")
+            .toObject(NetworkSecurityPerimeter.class);
     }
 }

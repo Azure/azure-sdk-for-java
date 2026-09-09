@@ -97,7 +97,7 @@ public class Sample05_CreateClassifierTest extends ContentUnderstandingClientTes
         // Create the classifier analyzer
         // Note: models are specified using model names, not deployment names
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
+        models.put("completion", getModelProfile().getCompletionModel());
 
         ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Custom classifier for financial document categorization")
@@ -159,6 +159,8 @@ public class Sample05_CreateClassifierTest extends ContentUnderstandingClientTes
         ContentCategoryDefinition invoiceCategory = result.getConfig().getContentCategories().get("Invoice");
         assertNotNull(invoiceCategory.getDescription(), "Invoice description should not be null");
         assertTrue(invoiceCategory.getDescription().contains("payment"), "Invoice description should mention payment");
+        assertEquals("prebuilt-invoice", invoiceCategory.getAnalyzerId(),
+            "Invoice category should route matching segments to prebuilt-invoice");
         System.out.println("  ✓ Invoice category verified");
 
         // Verify Bank_Statement category
@@ -263,7 +265,8 @@ public class Sample05_CreateClassifierTest extends ContentUnderstandingClientTes
         // BEGIN:Assertion_ContentUnderstandingClassifierToLlmInput
         assertNotNull(llmText, "toLlmInput output should not be null");
         assertTrue(llmText.startsWith("---"), "toLlmInput output should start with YAML front matter");
-        assertTrue(llmText.contains("contentType: document"), "toLlmInput output should declare contentType: document");
+        assertTrue(llmText.contains("mimeType: application/pdf"),
+            "toLlmInput output should declare the detected MIME type");
         assertTrue(llmText.contains("category:"),
             "Classifier output should include a 'category:' key for each segment block");
         int segmentCount = documentContent.getSegments().size();
@@ -274,6 +277,57 @@ public class Sample05_CreateClassifierTest extends ContentUnderstandingClientTes
         System.out.println(
             "✓ toLlmInput output validated (" + llmText.length() + " chars, " + segmentCount + " segment block(s))");
         // END:Assertion_ContentUnderstandingClassifierToLlmInput
+    }
+
+    @Test
+    public void testAnalyzeCategory() throws IOException {
+        String analyzerId = testResourceNamer.randomName("document_classifier_no_segment_", 50);
+
+        Map<String, ContentCategoryDefinition> categories = new HashMap<>();
+        categories.put("Invoice", new ContentCategoryDefinition().setDescription(
+            "Billing documents issued by sellers or service providers to request payment for goods " + "or services."));
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", getModelProfile().getCompletionModel());
+
+        ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Custom classifier for financial document categorization without segmentation")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true)
+                .setSegmentEnabled(false)
+                .setContentCategories(categories))
+            .setModels(models);
+
+        ContentAnalyzer created
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifier, true).getFinalResult();
+        createdAnalyzerId = analyzerId;
+
+        assertNotNull(created.getConfig());
+        assertEquals(Boolean.FALSE, created.getConfig().isSegmentEnabled());
+
+        // BEGIN:ContentUnderstandingAnalyzeCategory
+        byte[] fileBytes = Files.readAllBytes(Paths.get("src/samples/resources/mixed_financial_docs.pdf"));
+        AnalysisResult result
+            = contentUnderstandingClient.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes))
+                .getFinalResult();
+        DocumentContent content = (DocumentContent) result.getContents().get(0);
+        // END:ContentUnderstandingAnalyzeCategory
+
+        assertEquals(1, result.getContents().size(), "No-segment classification should return one content element");
+        assertEquals(1, content.getStartPageNumber());
+        assertEquals(4, content.getEndPageNumber());
+        assertNotNull(content.getSegments());
+        assertEquals(1, content.getSegments().size(), "EnableSegment=false should classify the file as one segment");
+
+        DocumentContentSegment segment = content.getSegments().get(0);
+        assertEquals("Invoice", segment.getCategory());
+        assertEquals(1, segment.getStartPageNumber());
+        assertEquals(4, segment.getEndPageNumber());
+
+        String llmText = LlmInputHelper.toLlmInput(result);
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("mimeType: application/pdf"));
+        assertTrue(llmText.contains("category: Invoice"));
+        assertFalse(llmText.contains("*****"), "A single segment should not produce a segment divider");
     }
 
     private static int countOccurrences(String text, String sub) {

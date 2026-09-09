@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class ComputesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutContainerInstanceCompute.json
+     * x-ms-original-file: 2026-07-15-preview/PutContainerInstanceCompute.json
      */
     /**
      * Sample code: PutContainerInstanceCompute.
@@ -33,12 +33,12 @@ public final class ComputesCreateOrUpdateSamples {
         manager.computes()
             .define("myContainerInstance")
             .withExistingAccount("rgcognitiveservices", "myAccount")
-            .withProperties(new ContainerInstanceComputeProperties().withTargetClusterId(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
+            .withProperties(new ContainerInstanceComputeProperties().withLocation("eastus")
+                .withTargetClusterId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
                 .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest")
                 .withIdleTimeBeforeShutdown("PT30M")
                 .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
-            .withRegion("eastus")
             .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
@@ -47,7 +47,7 @@ public final class ComputesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutCompute.json
+     * x-ms-original-file: 2026-07-15-preview/PutCompute.json
      */
     /**
      * Sample code: PutCompute.
@@ -58,14 +58,11 @@ public final class ComputesCreateOrUpdateSamples {
         manager.computes()
             .define("myCompute")
             .withExistingAccount("rgcognitiveservices", "myAccount")
-            .withProperties(new ClusterComputeProperties()
+            .withProperties(new ClusterComputeProperties().withLocation("eastus")
                 .withPools(Arrays.asList(new Pool().withName("default")
                     .withVmPriority(VmPriority.REGULAR)
                     .withInstanceType("Standard_DS3_v2")
-                    .withNodeCount(2)))
-                .withSubnetArmId(
-                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/default"))
-            .withRegion("eastus")
+                    .withNodeCount(2))))
             .withIdentity(new Identity().withType(ResourceIdentityType.NONE))
             .create();
     }

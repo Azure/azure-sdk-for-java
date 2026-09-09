@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class OperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Operations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/Operations_CreateOrUpdate.json
      */
     /**
      * Sample code: Operations_CreateOrUpdate.

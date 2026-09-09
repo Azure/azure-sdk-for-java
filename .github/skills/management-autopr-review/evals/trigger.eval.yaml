@@ -1,0 +1,41 @@
+name: management-autopr-review-trigger-eval
+description: Anti-trigger tests for the workflow-only management AutoPR review skill
+type: capability
+
+defaults:
+  runs: 1
+  timeout: "90s"
+  model: gpt-5.6-terra
+  executor: copilot-sdk
+
+scoring:
+  threshold: 1
+
+stimuli:
+  - name: anti-trigger-review-pr-number
+    prompt: "Review pull request #50000 in this repository."
+    graders:
+      - type: skill-invocation
+        config:
+          disallowed: ["management-autopr-review"]
+
+  - name: anti-trigger-review-pr-url
+    prompt: "Can you review https://github.com/Azure/azure-sdk-for-java/pull/50000?"
+    graders:
+      - type: skill-invocation
+        config:
+          disallowed: ["management-autopr-review"]
+
+  - name: anti-trigger-review-current-branch
+    prompt: "Review the changes on my current branch before I open a pull request."
+    graders:
+      - type: skill-invocation
+        config:
+          disallowed: ["management-autopr-review"]
+
+  - name: anti-trigger-general-java-sdk-review
+    prompt: "Perform a code review of this Azure SDK for Java pull request."
+    graders:
+      - type: skill-invocation
+        config:
+          disallowed: ["management-autopr-review"]

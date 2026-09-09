@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IotHubLocationDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubLocationDescription model = BinaryData.fromString("{\"location\":\"nhijggmebfsi\",\"role\":\"primary\"}")
+        IotHubLocationDescription model = BinaryData.fromString("{\"location\":\"haaxdbabphl\",\"role\":\"secondary\"}")
             .toObject(IotHubLocationDescription.class);
-        Assertions.assertEquals("nhijggmebfsi", model.location());
-        Assertions.assertEquals(IotHubReplicaRoleType.PRIMARY, model.role());
+        Assertions.assertEquals("haaxdbabphl", model.location());
+        Assertions.assertEquals(IotHubReplicaRoleType.SECONDARY, model.role());
     }
 }

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.RoutingRuleRouteDestination;
  */
 public final class RoutingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingRulePutEcmp.json
+     * x-ms-original-file: 2025-09-01/NetworkManagerRoutingRulePutEcmp.json
      */
     /**
      * Sample code: Create an ECMP routing rule.
@@ -38,7 +38,7 @@ public final class RoutingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingRulePut.json
+     * x-ms-original-file: 2025-09-01/NetworkManagerRoutingRulePut.json
      */
     /**
      * Sample code: Create an routing rule.

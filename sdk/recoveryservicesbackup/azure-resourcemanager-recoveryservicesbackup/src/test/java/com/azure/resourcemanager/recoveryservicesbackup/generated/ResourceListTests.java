@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceList model = BinaryData.fromString("{\"nextLink\":\"nxknalaulp\"}").toObject(ResourceList.class);
-        Assertions.assertEquals("nxknalaulp", model.nextLink());
+        ResourceList model = BinaryData.fromString("{\"nextLink\":\"zuaejxd\"}").toObject(ResourceList.class);
+        Assertions.assertEquals("zuaejxd", model.nextLink());
     }
 }

@@ -32,7 +32,7 @@ public final class StacLinkTests {
         Assertions.assertNotNull(model.getHeaders());
         Assertions.assertEquals("application/json", model.getHeaders().get("Accept"));
         Assertions.assertNotNull(model.getBody());
-        Assertions.assertEquals("value", model.getBody().get("key"));
+        Assertions.assertEquals("value", model.getBody().get("key").toObject(String.class));
         Assertions.assertTrue(model.isMerge());
     }
 
@@ -46,7 +46,7 @@ public final class StacLinkTests {
             .setLength(1024)
             .setMethod(StacLinkMethod.GET)
             .setHeaders(mapOf("Accept", "application/json"))
-            .setBody(mapOf("key", "value"))
+            .setBody(mapOf("key", BinaryData.fromString("\"value\"")))
             .setMerge(true);
         model = BinaryData.fromObject(model).toObject(StacLink.class);
         Assertions.assertEquals("self", model.getRel());

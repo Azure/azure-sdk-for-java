@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2026-07-28)
+
+- Azure Resource Manager IoT Operations client library for Java. This package contains Microsoft Azure SDK for IoT Operations Management SDK. Microsoft.IoTOperations Resource Provider management API. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.HighPriorityMessagesBackpressureHandling` was added
+
+* `models.AkriConnectorTemplateExecAction` was added
+
+* `models.AkriConnectorTemplateReadinessProbe` was added
+
+#### `models.BrokerProperties` was modified
+
+* `withHighPriorityMessagesBackpressureHandling(models.HighPriorityMessagesBackpressureHandling)` was added
+* `highPriorityMessagesBackpressureHandling()` was added
+
+#### `models.AkriConnectorTemplateRuntimeImageConfigurationSettings` was modified
+
+* `readinessProbe()` was added
+* `withReadinessProbe(models.AkriConnectorTemplateReadinessProbe)` was added
 
 ## 1.1.0 (2026-04-09)
 

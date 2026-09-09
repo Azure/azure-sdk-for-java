@@ -31,6 +31,13 @@ public final class CredentialsAkvDetails implements JsonSerializable<Credentials
      */
     private String secretName;
 
+    /*
+     * Optional resource ID of the managed identity that has access to the Azure Key Vault (AKV) secret. If a value is
+     * provided, it is used to find a matching entry in the account's collection of user-assigned managed identities. If
+     * no match is found, an exception is thrown. If no value is provided, the system-assigned managed identity is used.
+     */
+    private String userAssignedIdentity;
+
     /**
      * Creates an instance of CredentialsAkvDetails class.
      */
@@ -92,6 +99,32 @@ public final class CredentialsAkvDetails implements JsonSerializable<Credentials
     }
 
     /**
+     * Get the userAssignedIdentity property: Optional resource ID of the managed identity that has access to the Azure
+     * Key Vault (AKV) secret. If a value is provided, it is used to find a matching entry in the account's collection
+     * of user-assigned managed identities. If no match is found, an exception is thrown. If no value is provided, the
+     * system-assigned managed identity is used.
+     * 
+     * @return the userAssignedIdentity value.
+     */
+    public String userAssignedIdentity() {
+        return this.userAssignedIdentity;
+    }
+
+    /**
+     * Set the userAssignedIdentity property: Optional resource ID of the managed identity that has access to the Azure
+     * Key Vault (AKV) secret. If a value is provided, it is used to find a matching entry in the account's collection
+     * of user-assigned managed identities. If no match is found, an exception is thrown. If no value is provided, the
+     * system-assigned managed identity is used.
+     * 
+     * @param userAssignedIdentity the userAssignedIdentity value to set.
+     * @return the CredentialsAkvDetails object itself.
+     */
+    public CredentialsAkvDetails withUserAssignedIdentity(String userAssignedIdentity) {
+        this.userAssignedIdentity = userAssignedIdentity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -107,6 +140,7 @@ public final class CredentialsAkvDetails implements JsonSerializable<Credentials
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("credentialsKeyVaultUri", this.credentialsKeyVaultUri);
         jsonWriter.writeStringField("secretName", this.secretName);
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +163,8 @@ public final class CredentialsAkvDetails implements JsonSerializable<Credentials
                     deserializedCredentialsAkvDetails.credentialsKeyVaultUri = reader.getString();
                 } else if ("secretName".equals(fieldName)) {
                     deserializedCredentialsAkvDetails.secretName = reader.getString();
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedCredentialsAkvDetails.userAssignedIdentity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

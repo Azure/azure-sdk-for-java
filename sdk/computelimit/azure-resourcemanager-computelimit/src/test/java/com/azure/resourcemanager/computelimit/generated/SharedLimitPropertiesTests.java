@@ -11,7 +11,7 @@ public final class SharedLimitPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedLimitProperties model = BinaryData.fromString(
-            "{\"resourceName\":{\"value\":\"t\",\"localizedValue\":\"mdvpjhulsu\"},\"limit\":90442475,\"unit\":\"jozkrwfndiod\",\"provisioningState\":\"Canceled\"}")
+            "{\"resourceName\":{\"value\":\"fziton\",\"localizedValue\":\"qfpjk\"},\"limit\":1383266559,\"unit\":\"fpdvhpfxxypi\",\"provisioningState\":\"Canceled\"}")
             .toObject(SharedLimitProperties.class);
     }
 

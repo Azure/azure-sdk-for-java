@@ -32,6 +32,12 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
     @Generated
     private List<ClearRange> clearRanges = new ArrayList<>();
 
+    /*
+     * The NextMarker property.
+     */
+    @Generated
+    private String nextMarker;
+
     /**
      * Creates an instance of ShareFileRangeList class.
      */
@@ -83,6 +89,28 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
         return this;
     }
 
+    /**
+     * Get the nextMarker property: The NextMarker property.
+     * 
+     * @return the nextMarker value.
+     */
+    @Generated
+    public String getNextMarker() {
+        return this.nextMarker;
+    }
+
+    /**
+     * Set the nextMarker property: The NextMarker property.
+     * 
+     * @param nextMarker the nextMarker value to set.
+     * @return the ShareFileRangeList object itself.
+     */
+    @Generated
+    public ShareFileRangeList setNextMarker(String nextMarker) {
+        this.nextMarker = nextMarker;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -104,6 +132,7 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
                 xmlWriter.writeXml(element, "ClearRange");
             }
         }
+        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
         return xmlWriter.writeEndElement();
     }
 
@@ -142,6 +171,8 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
                     deserializedShareFileRangeList.ranges.add(FileRange.fromXml(reader, "Range"));
                 } else if ("ClearRange".equals(elementName.getLocalPart())) {
                     deserializedShareFileRangeList.clearRanges.add(ClearRange.fromXml(reader, "ClearRange"));
+                } else if ("NextMarker".equals(elementName.getLocalPart())) {
+                    deserializedShareFileRangeList.nextMarker = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }

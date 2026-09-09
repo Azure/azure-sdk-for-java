@@ -43,7 +43,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePr
  */
 public final class DpsCertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSCertificateCreateOrUpdate.json
+     * x-ms-original-file: 2026-08-31/DPSCertificateCreateOrUpdate.json
      */
     /**
      * Sample code: DPSCreateOrUpdateCertificate.
@@ -70,7 +70,7 @@ public final class DpsCertificateCreateOrUpdateSamples {
  */
 public final class DpsCertificateDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSDeleteCertificate.json
+     * x-ms-original-file: 2026-08-31/DPSDeleteCertificate.json
      */
     /**
      * Sample code: DPSDeleteCertificate.
@@ -95,7 +95,7 @@ public final class DpsCertificateDeleteSamples {
  */
 public final class DpsCertificateGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGenerateVerificationCode.json
+     * x-ms-original-file: 2026-08-31/DPSGenerateVerificationCode.json
      */
     /**
      * Sample code: DPSGenerateVerificationCode.
@@ -120,7 +120,7 @@ public final class DpsCertificateGenerateVerificationCodeSamples {
  */
 public final class DpsCertificateGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetCertificate.json
+     * x-ms-original-file: 2026-08-31/DPSGetCertificate.json
      */
     /**
      * Sample code: DPSGetCertificate.
@@ -143,7 +143,7 @@ public final class DpsCertificateGetSamples {
  */
 public final class DpsCertificateListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetCertificates.json
+     * x-ms-original-file: 2026-08-31/DPSGetCertificates.json
      */
     /**
      * Sample code: DPSGetCertificates.
@@ -167,7 +167,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationC
  */
 public final class DpsCertificateVerifyCertificateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSVerifyCertificate.json
+     * x-ms-original-file: 2026-08-31/DPSVerifyCertificate.json
      */
     /**
      * Sample code: DPSVerifyCertificate.
@@ -194,7 +194,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInpu
  */
 public final class IotDpsResourceCheckProvisioningServiceNameAvailabiSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSCheckNameAvailability.json
+     * x-ms-original-file: 2026-08-31/DPSCheckNameAvailability.json
      */
     /**
      * Sample code: DPSCheckName.
@@ -215,9 +215,13 @@ public final class IotDpsResourceCheckProvisioningServiceNameAvailabiSamples {
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSku;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuInfo;
+import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubAuthenticationType;
+import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubDefinitionDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceprovisioningservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.deviceprovisioningservices.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -226,7 +230,48 @@ import java.util.Map;
  */
 public final class IotDpsResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSUpdate.json
+     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthTrue.json
+     */
+    /**
+     * Sample code: DPSCreate_DisableLocalAuthTrue.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSCreateDisableLocalAuthTrue(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(true))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSUpdate_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSUpdate_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSUpdateDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription().withDisableLocalAuth(true))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf())
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSUpdate.json
      */
     /**
      * Sample code: DPSUpdate.
@@ -250,7 +295,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSCreate.json
+     * x-ms-original-file: 2026-08-31/DPSCreate.json
      */
     /**
      * Sample code: DPSCreate.
@@ -269,7 +314,60 @@ public final class IotDpsResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSCreateWithNamespace.json
+     * x-ms-original-file: 2026-08-31/DPSCreateWithIotHub.json
+     */
+    /**
+     * Sample code: DPSCreateWithIotHub.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void dPSCreateWithIotHub(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription()
+                .withIotHubs(Arrays.asList(new IotHubDefinitionDescription().withApplyAllocationPolicy(true)
+                    .withAllocationWeight(1)
+                    .withHostName("myFirstIoTHub.azure-devices.net")
+                    .withAuthenticationType(IotHubAuthenticationType.USER_ASSIGNED)
+                    .withSelectedUserAssignedIdentityResourceId(
+                        "/subscriptions/abcf2d55-764f-419f-974d-f77a55c2ce55/resourcegroups/my-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-mi-1")
+                    .withLocation("eastus")))
+                .withEnableDataResidency(false))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf())
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/abcf2d55-764f-419f-974d-f77a55c2ce55/resourcegroups/my-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-mi-1",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSCreate_DisableLocalAuthFalse.json
+     */
+    /**
+     * Sample code: DPSCreate_DisableLocalAuthFalse.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSCreateDisableLocalAuthFalse(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .define("myFirstProvisioningService")
+            .withRegion("East US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new IotDpsPropertiesDescription().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(false))
+            .withSku(new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(1L))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSCreateWithNamespace.json
      */
     /**
      * Sample code: DPSCreateWithNamespace.
@@ -314,7 +412,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkSe
  */
 public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSCreateOrUpdatePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-31/DPSCreateOrUpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_CreateOrUpdate.
@@ -342,7 +440,7 @@ public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectSamples {
  */
 public final class IotDpsResourceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSDelete.json
+     * x-ms-original-file: 2026-08-31/DPSDelete.json
      */
     /**
      * Sample code: DPSDelete.
@@ -351,7 +449,7 @@ public final class IotDpsResourceDeleteSamples {
      */
     public static void dPSDelete(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
-            .delete("myFirstProvisioningService", "myResourceGroup", com.azure.core.util.Context.NONE);
+            .delete("myResourceGroup", "myFirstProvisioningService", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -364,7 +462,7 @@ public final class IotDpsResourceDeleteSamples {
  */
 public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSDeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-31/DPSDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.
@@ -388,7 +486,22 @@ public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
  */
 public final class IotDpsResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGet.json
+     * x-ms-original-file: 2026-08-31/DPSGet_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSGet_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSGetDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSGet.json
      */
     /**
      * Sample code: DPSGet.
@@ -397,7 +510,7 @@ public final class IotDpsResourceGetByResourceGroupSamples {
      */
     public static void dPSGet(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
-            .getByResourceGroupWithResponse("myFirstProvisioningService", "myResourceGroup",
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -411,7 +524,7 @@ public final class IotDpsResourceGetByResourceGroupSamples {
  */
 public final class IotDpsResourceGetOperationResultSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetOperationResult.json
+     * x-ms-original-file: 2026-08-31/DPSGetOperationResult.json
      */
     /**
      * Sample code: DPSGetOperationResult.
@@ -435,7 +548,7 @@ public final class IotDpsResourceGetOperationResultSamples {
  */
 public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-31/DPSGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Get.
@@ -459,7 +572,7 @@ public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
  */
 public final class IotDpsResourceGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetPrivateLinkResources.json
+     * x-ms-original-file: 2026-08-31/DPSGetPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -483,7 +596,7 @@ public final class IotDpsResourceGetPrivateLinkResourcesSamples {
  */
 public final class IotDpsResourceListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListBySubscription.json
+     * x-ms-original-file: 2026-08-31/DPSListBySubscription.json
      */
     /**
      * Sample code: DPSListBySubscription.
@@ -505,7 +618,7 @@ public final class IotDpsResourceListSamples {
  */
 public final class IotDpsResourceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListByResourceGroup.json
+     * x-ms-original-file: 2026-08-31/DPSListByResourceGroup.json
      */
     /**
      * Sample code: DPSListByResourceGroup.
@@ -527,7 +640,7 @@ public final class IotDpsResourceListByResourceGroupSamples {
  */
 public final class IotDpsResourceListKeysSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListKeys.json
+     * x-ms-original-file: 2026-08-31/DPSListKeys.json
      */
     /**
      * Sample code: DPSListKeys.
@@ -549,7 +662,7 @@ public final class IotDpsResourceListKeysSamples {
  */
 public final class IotDpsResourceListKeysForKeyNameSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetKey.json
+     * x-ms-original-file: 2026-08-31/DPSGetKey.json
      */
     /**
      * Sample code: DPSGetKey.
@@ -572,7 +685,7 @@ public final class IotDpsResourceListKeysForKeyNameSamples {
  */
 public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-08-31/DPSListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.
@@ -596,7 +709,7 @@ public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
  */
 public final class IotDpsResourceListPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListPrivateLinkResources.json
+     * x-ms-original-file: 2026-08-31/DPSListPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -620,7 +733,7 @@ public final class IotDpsResourceListPrivateLinkResourcesSamples {
  */
 public final class IotDpsResourceListValidSkusSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSGetValidSku.json
+     * x-ms-original-file: 2026-08-31/DPSGetValidSku.json
      */
     /**
      * Sample code: DPSGetValidSku.
@@ -646,7 +759,24 @@ import java.util.Map;
  */
 public final class IotDpsResourceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSPatch.json
+     * x-ms-original-file: 2026-08-31/DPSPatch_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSPatch_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSPatchDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        ProvisioningServiceDescription resource = manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("foo", "bar")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSPatch.json
      */
     /**
      * Sample code: DPSPatch.
@@ -655,7 +785,7 @@ public final class IotDpsResourceUpdateSamples {
      */
     public static void dPSPatch(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         ProvisioningServiceDescription resource = manager.iotDpsResources()
-            .getByResourceGroupWithResponse("myFirstProvisioningService", "myResourceGroup",
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withTags(mapOf("foo", "bar")).apply();
@@ -683,7 +813,7 @@ public final class IotDpsResourceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSOperations.json
+     * x-ms-original-file: 2026-08-31/DPSOperations.json
      */
     /**
      * Sample code: DPSOperations.

@@ -26,6 +26,7 @@ import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.MachineUpdate;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
@@ -134,6 +135,10 @@ public final class MachineImpl implements Machine, Machine.Definition, Machine.U
         } else {
             return null;
         }
+    }
+
+    public MachineStatusReason statusReason() {
+        return this.innerModel().statusReason();
     }
 
     public String provisioningState() {

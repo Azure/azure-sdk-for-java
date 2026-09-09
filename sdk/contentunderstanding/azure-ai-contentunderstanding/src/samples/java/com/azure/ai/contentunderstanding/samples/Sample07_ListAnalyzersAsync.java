@@ -6,11 +6,13 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
 /**
  * Sample demonstrating how to list all analyzers asynchronously.
@@ -44,75 +46,52 @@ public class Sample07_ListAnalyzersAsync {
         System.out.println("Listing all analyzers:");
         System.out.println("======================");
 
-        AtomicInteger count = new AtomicInteger(0);
-        AtomicInteger prebuiltCount = new AtomicInteger(0);
-        AtomicInteger customCount = new AtomicInteger(0);
+        List<ContentAnalyzer> analyzers = collectAnalyzers(client.listAnalyzers()).block();
+        int prebuiltCount = 0;
+        int customCount = 0;
 
-        // Use CountDownLatch to wait for async operation to complete
-        CountDownLatch latch = new CountDownLatch(1);
+        for (int index = 0; index < analyzers.size(); index++) {
+            ContentAnalyzer analyzer = analyzers.get(index);
+            boolean isPrebuilt = analyzer.getAnalyzerId().startsWith("prebuilt-");
+            if (isPrebuilt) {
+                prebuiltCount++;
+            } else {
+                customCount++;
+            }
 
-        client.listAnalyzers()
-            .doOnNext(analyzer -> {
-                int current = count.incrementAndGet();
+            System.out.println("\nAnalyzer #" + (index + 1) + ":");
+            System.out.println("  ID: " + analyzer.getAnalyzerId());
+            System.out.println("  Type: " + (isPrebuilt ? "Prebuilt" : "Custom"));
 
-                // Determine if this is a prebuilt or custom analyzer
-                boolean isPrebuilt = analyzer.getAnalyzerId().startsWith("prebuilt-");
-                if (isPrebuilt) {
-                    prebuiltCount.incrementAndGet();
-                } else {
-                    customCount.incrementAndGet();
-                }
-
-                System.out.println("\nAnalyzer #" + current + ":");
-                System.out.println("  ID: " + analyzer.getAnalyzerId());
-                System.out.println("  Type: " + (isPrebuilt ? "Prebuilt" : "Custom"));
-
-                if (analyzer.getDescription() != null && !analyzer.getDescription().trim().isEmpty()) {
-                    System.out.println("  Description: " + analyzer.getDescription());
-                }
-
-                if (analyzer.getBaseAnalyzerId() != null) {
-                    System.out.println("  Base Analyzer: " + analyzer.getBaseAnalyzerId());
-                }
-
-                if (analyzer.getStatus() != null) {
-                    System.out.println("  Status: " + analyzer.getStatus());
-                }
-
-                if (analyzer.getCreatedAt() != null) {
-                    System.out.println("  Created: " + analyzer.getCreatedAt());
-                }
-
-                if (analyzer.getLastModifiedAt() != null) {
-                    System.out.println("  Last Modified: " + analyzer.getLastModifiedAt());
-                }
-
-                // Display field schema summary if available
-                if (analyzer.getFieldSchema() != null && analyzer.getFieldSchema().getFields() != null) {
-                    System.out.println(
-                        "  Fields: " + analyzer.getFieldSchema().getFields().size() + " field(s) defined");
-                }
-            })
-            .doOnComplete(() -> {
-                System.out.println("\n======================");
-                System.out.println("Total analyzers: " + count.get());
-                System.out.println("  Prebuilt: " + prebuiltCount.get());
-                System.out.println("  Custom: " + customCount.get());
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .doFinally(signalType -> latch.countDown())
-            .subscribe();
-        // END:ContentUnderstandingListAnalyzersAsync
-
-        // Wait for the async operation to complete
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+            if (analyzer.getDescription() != null && !analyzer.getDescription().trim().isEmpty()) {
+                System.out.println("  Description: " + analyzer.getDescription());
+            }
+            if (analyzer.getBaseAnalyzerId() != null) {
+                System.out.println("  Base Analyzer: " + analyzer.getBaseAnalyzerId());
+            }
+            if (analyzer.getStatus() != null) {
+                System.out.println("  Status: " + analyzer.getStatus());
+            }
+            if (analyzer.getCreatedAt() != null) {
+                System.out.println("  Created: " + analyzer.getCreatedAt());
+            }
+            if (analyzer.getLastModifiedAt() != null) {
+                System.out.println("  Last Modified: " + analyzer.getLastModifiedAt());
+            }
+            if (analyzer.getFieldSchema() != null && analyzer.getFieldSchema().getFields() != null) {
+                System.out.println(
+                    "  Fields: " + analyzer.getFieldSchema().getFields().size() + " field(s) defined");
+            }
         }
+
+        System.out.println("\n======================");
+        System.out.println("Total analyzers: " + analyzers.size());
+        System.out.println("  Prebuilt: " + prebuiltCount);
+        System.out.println("  Custom: " + customCount);
+        // END:ContentUnderstandingListAnalyzersAsync
+    }
+
+    static Mono<List<ContentAnalyzer>> collectAnalyzers(Flux<ContentAnalyzer> analyzers) {
+        return analyzers.collectList();
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,194 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2026-08-04)
+
+- Azure Resource Manager Hardware Security Modules client library for Java. This package contains Microsoft Azure SDK for Hardware Security Modules Management SDK. The Azure management API provides a RESTful set of web services that interact with Hardware Security Modules. Package api-version 2025-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DedicatedHsm$DefinitionStages` was modified
+
+* `withSku(models.Sku)` was removed in stage 3
+* `withProperties(models.DedicatedHsmProperties)` was removed in stage 4
+
+#### `models.CloudHsmClusterPatchParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Error` was modified
+
+* `validate()` was removed
+
+#### `models.BackupRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BackupResultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointDetail` was modified
+
+* `validate()` was removed
+
+#### `models.DedicatedHsmPatchParameters` was modified
+
+* `validate()` was removed
+
+#### `models.CloudHsmClusterSkuName` was modified
+
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.CloudHsmClusterSkuName[] values()` -> `java.util.Collection values()`
+
+#### `models.DedicatedHsmProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.CloudHsmClusterProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BackupRestoreRequestBaseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CloudHsmClusterBackupStatusGetHeaders` was modified
+
+* `validate()` was removed
+* `xMsRequestId()` was removed
+
+#### `models.CloudHsmClusterRestoreStatusGetHeaders` was modified
+
+* `xMsRequestId()` was removed
+* `validate()` was removed
+
+#### `models.NetworkInterface` was modified
+
+* `validate()` was removed
+
+#### `models.ApiEntityReference` was modified
+
+* `validate()` was removed
+
+#### `models.BackupRestoreBaseResultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointDependency` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.CloudHsmClusterSku` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RestoreRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CloudHsmProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkProfile` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.HsmState` was added
+
+* `models.PaymentHsmClusterPrivateEndpointConnection$Definition` was added
+
+* `models.PaymentHsmClusterSku` was added
+
+* `models.PaymentHsmProperties` was added
+
+* `models.PaymentHsmCluster$Update` was added
+
+* `models.PaymentHsmCluster$UpdateStages` was added
+
+* `models.PaymentHsmClusterProperties` was added
+
+* `models.PaymentHsmCluster$Definition` was added
+
+* `models.PaymentHsmClusterPrivateLinkResources` was added
+
+* `models.PaymentHsmClusterPatchParameters` was added
+
+* `models.PaymentHsmCluster` was added
+
+* `models.PaymentHsmClusterPrivateEndpointConnections` was added
+
+* `models.PaymentHsmCluster$DefinitionStages` was added
+
+* `models.PaymentHsmClusterPrivateEndpointConnection` was added
+
+* `models.PaymentHsmClusterSkuFamily` was added
+
+* `models.PaymentHsmClusterPrivateEndpointConnection$DefinitionStages` was added
+
+* `models.PaymentHsmClusterSkuName` was added
+
+* `models.PaymentHsmClusters` was added
+
+#### `models.CloudHsmClusterSkuName` was modified
+
+* `CloudHsmClusterSkuName()` was added
+* `STANDARD_B5V2` was added
+* `STANDARD_B10V2` was added
+* `STANDARD_B20V2` was added
+* `STANDARD_B1V2` was added
+* `STANDARD_B15V2` was added
+
+#### `HardwareSecurityModulesManager` was modified
+
+* `paymentHsmClusters()` was added
+* `paymentHsmClusterPrivateLinkResources()` was added
+* `paymentHsmClusterPrivateEndpointConnections()` was added
+
+#### `models.CloudHsmClusterBackupStatusGetHeaders` was modified
+
+* `requestId()` was added
+
+#### `models.CloudHsmClusterRestoreStatusGetHeaders` was modified
+
+* `requestId()` was added
 
 ## 1.1.0 (2025-07-08)
 

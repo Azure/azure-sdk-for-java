@@ -12,10 +12,10 @@ public final class SharedLimitCapListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedLimitCapListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"defaultMemberCap\":134248992,\"isBoundedCap\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"ymwisdkft\",\"name\":\"wxmnteiwao\",\"type\":\"vkmijcmmxdcuf\"},{\"properties\":{\"defaultMemberCap\":723507577,\"isBoundedCap\":true,\"provisioningState\":\"Canceled\"},\"id\":\"idnsezcxtb\",\"name\":\"sgfyccsnew\",\"type\":\"dwzjeiach\"},{\"properties\":{\"defaultMemberCap\":317245764,\"isBoundedCap\":true,\"provisioningState\":\"Canceled\"},\"id\":\"osfqpteehzzv\",\"name\":\"pyqr\",\"type\":\"mzinpvswjdk\"},{\"properties\":{\"defaultMemberCap\":158859960,\"isBoundedCap\":false,\"provisioningState\":\"Canceled\"},\"id\":\"hc\",\"name\":\"mnoh\",\"type\":\"t\"}],\"nextLink\":\"whdsoifiyip\"}")
+            "{\"value\":[{\"properties\":{\"defaultMemberCap\":69430164,\"isBoundedCap\":true,\"provisioningState\":\"Failed\"},\"id\":\"swjdkirso\",\"name\":\"dqxhcrmnohjtckwh\",\"type\":\"soifiyipjxsqw\"}],\"nextLink\":\"rjb\"}")
             .toObject(SharedLimitCapListResult.class);
-        Assertions.assertEquals(134248992, model.value().get(0).properties().defaultMemberCap());
+        Assertions.assertEquals(69430164, model.value().get(0).properties().defaultMemberCap());
         Assertions.assertTrue(model.value().get(0).properties().isBoundedCap());
-        Assertions.assertEquals("whdsoifiyip", model.nextLink());
+        Assertions.assertEquals("rjb", model.nextLink());
     }
 }

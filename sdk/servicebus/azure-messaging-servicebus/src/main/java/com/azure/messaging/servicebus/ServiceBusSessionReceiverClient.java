@@ -152,14 +152,18 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
 
     /**
      * Acquires a session lock for the next available session and creates a {@link ServiceBusReceiverClient}
-     * to receive messages from the session. It will wait until a session is available if no one is available
-     * immediately.
+     * to receive messages from the session. If no session is available immediately, it waits for one; if none
+     * becomes available within the operation timeout it throws a retriable timeout error rather than blocking
+     * indefinitely, so callers typically invoke this in a loop.
      *
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      *
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
-     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws IllegalStateException if no session becomes available within the operation timeout (the total
+     *      of all retry attempts derived from {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)});
+     *      this is retriable, so callers typically retry.
+     * @throws AmqpException if acquiring the session fails at the AMQP level (for example an authorization or
+     *      connection error surfaced by the underlying asynchronous accept).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
@@ -187,8 +191,12 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws ServiceBusException if the lock cannot be acquired.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
-     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws IllegalStateException if the session is not acquired within the operation timeout (the total
+     *      of all retry attempts derived from {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)});
+     *      this is retriable, so callers typically retry.
+     * @throws AmqpException if acquiring the session fails at the AMQP level (for example the session is already
+     *      locked by another client, or an authorization or connection error surfaced by the underlying
+     *      asynchronous accept).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {
@@ -204,7 +212,9 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Lists the IDs of sessions that have active messages in this entity.
+     * Lists the IDs of sessions that have active messages or stored session state in this entity.
+     *
+     * <p>Sessions with neither active messages nor stored session state are excluded.</p>
      *
      * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
@@ -220,21 +230,14 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Lists the IDs of sessions whose state was updated after the specified time.
+     * Lists the IDs of sessions whose state was set or updated after the specified time.
      *
      * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
      * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
      * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
      * equivalent on the underlying {@code PagedFlux}).</p>
-     *
-     * <p>Values at or beyond the active-messages sentinel value
-     * ({@code new Date(253402300800000L)}, rendered by {@code OffsetDateTime.toString()} as
-     * {@code +10000-01-01T00:00Z}, matching Track 1's {@code SessionBrowser.MAXDATE}) are clamped
-     * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
-     * have active messages.</p>
-     *
-     * @param sessionStateUpdatedAfter Only sessions whose session state was updated after this time are returned.
+     * @param sessionStateUpdatedAfter Only sessions whose session state was set or updated after this time are returned.
      * @return A {@link PagedIterable} of session ID strings.
      * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
      */

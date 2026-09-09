@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.31.0-beta.1 (Unreleased)
+### 2.32.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,11 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.31.0 (2026-08-26)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.82.0`.
 
 ### 2.30.0 (2026-06-08)
 
@@ -170,7 +175,7 @@
 * Added support for allowing partition key path and id to be part of client encryption policy - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
 
 #### Breaking Changes
-* Adds support for ParititonKey and Id encryption, when the PolicyFormatVersion is set to 2 - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
+* Adds support for PartitionKey and Id encryption, when the PolicyFormatVersion is set to 2 - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
 
 ### 1.12.0 (2023-03-17)
 
@@ -306,4 +311,3 @@
 ### 1.0.0-beta.1 (2021-04-06)
 #### New Features
 * Added Azure Cosmos encryption used for encrypting data with user provided key before saving into Cosmos DB and decrypting it when reading back from the database.
-

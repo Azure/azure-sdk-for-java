@@ -3,15 +3,9 @@
 
 package com.azure.ai.agents.implementation;
 
-import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollingStrategyOptions;
 
 /**
  * Shared polling helpers for the Agents SDK.
@@ -24,31 +18,7 @@ import com.azure.core.util.polling.PollingStrategyOptions;
  */
 final class AgentsServicePollUtils {
 
-    /** Required preview-feature header for Memory Stores operations. */
-    private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
-    private static final String FOUNDRY_FEATURES_VALUE = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
-
     private AgentsServicePollUtils() {
-    }
-
-    /**
-     * Adds the {@code Foundry-Features} header to the given {@link PollingStrategyOptions}'s
-     * {@link Context}.  If the context already carries {@link HttpHeaders} under the
-     * {@link AddHeadersFromContextPolicy} key they are preserved; the {@code Foundry-Features}
-     * entry is merged in.  Because the pipeline already contains
-     * {@link AddHeadersFromContextPolicy}, the header is automatically added to every HTTP
-     * request the parent strategy makes (initial, poll, and final-result GETs).
-     *
-     * <p><strong>Note:</strong> this method mutates and returns the same
-     * {@code PollingStrategyOptions} instance.</p>
-     */
-    static PollingStrategyOptions withFoundryFeatures(PollingStrategyOptions options) {
-        Context context = options.getContext() != null ? options.getContext() : Context.NONE;
-        Object existing = context.getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY).orElse(null);
-        HttpHeaders headers
-            = (existing instanceof HttpHeaders) ? new HttpHeaders((HttpHeaders) existing) : new HttpHeaders();
-        headers.set(FOUNDRY_FEATURES, FOUNDRY_FEATURES_VALUE);
-        return options.setContext(context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
     }
 
     /**
@@ -56,10 +26,10 @@ final class AgentsServicePollUtils {
      * ({@code "completed"}, {@code "superseded"}) that the base {@code OperationResourcePollingStrategy}
      * cannot recognize.  If no remapping is needed the original response is returned as-is.
      *
-     * <p>The Memory Stores Azure core defines:</p>
+     * <p>The Memory Stores service defines:</p>
      * <ul>
-     *   <li>{@code "completed"} {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
-     *   <li>{@code "superseded"}  {@link LongRunningOperationStatus#USER_CANCELLED}</li>
+     *   <li>{@code "completed"}  {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
+     *   <li>{@code "superseded"} {@link LongRunningOperationStatus#USER_CANCELLED}</li>
      * </ul>
      */
     static <T> PollResponse<T> remapStatus(PollResponse<T> response) {

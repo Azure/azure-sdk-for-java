@@ -21,7 +21,7 @@ public final class EnterpriseMccCacheNodesOperationsGetCacheNodeMccIssueDetailsH
     @Test
     public void testGetCacheNodeMccIssueDetailsHistoryWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"customerId\":\"lpagzrcx\",\"cacheNodeId\":\"ilcfxwmdboxd\",\"mccIssueHistory\":[{\"mccIssueType\":\"tufqobrjlnacgc\",\"toastString\":\"knh\",\"detailString\":\"izvy\",\"helpLink\":\"rzvul\",\"issueStartDate\":\"2021-02-20T05:38:09Z\",\"issueEndDate\":\"2021-10-17T17:53:02Z\"},{\"mccIssueType\":\"anokqgu\",\"toastString\":\"jqnv\",\"detailString\":\"oylaxxul\",\"helpLink\":\"isdos\",\"issueStartDate\":\"2021-04-13T22:50:17Z\",\"issueEndDate\":\"2021-11-02T19:20:35Z\"},{\"mccIssueType\":\"g\",\"toastString\":\"whryvycytdcl\",\"detailString\":\"ccknfnwmbtmvp\",\"helpLink\":\"jdhttzaefedxi\",\"issueStartDate\":\"2021-09-29T04:01:44Z\",\"issueEndDate\":\"2021-05-03T20:49:03Z\"},{\"mccIssueType\":\"k\",\"toastString\":\"rjdqnsdfzp\",\"detailString\":\"tg\",\"helpLink\":\"lkdghr\",\"issueStartDate\":\"2021-06-21T21:21:50Z\",\"issueEndDate\":\"2021-08-06T06:49:46Z\"}]},\"location\":\"wxezwzhok\",\"tags\":{\"ehgpp\":\"nhhtql\",\"csheafidltugsr\":\"pifhpfeoajvgcxtx\",\"h\":\"smkss\",\"egprhptil\":\"iftxfkf\"},\"id\":\"ucb\",\"name\":\"qtgdqohmcwsl\",\"type\":\"riz\"}";
+            = "{\"properties\":{\"customerId\":\"nzlrpiqywncvjt\",\"cacheNodeId\":\"cof\",\"mccIssueHistory\":[{\"mccIssueType\":\"tdhgbjkvrelj\",\"toastString\":\"murvzm\",\"detailString\":\"vuanashcxlp\",\"helpLink\":\"erbdk\",\"issueStartDate\":\"2021-04-11T08:59:31Z\",\"issueEndDate\":\"2021-06-28T18:00:54Z\"}]},\"location\":\"zozsdbccxjmonfdg\",\"tags\":{\"uqj\":\"cypuuwwlt\"},\"id\":\"tzenk\",\"name\":\"if\",\"type\":\"zhmkdasvflyh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class EnterpriseMccCacheNodesOperationsGetCacheNodeMccIssueDetailsH
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MccCacheNodeIssueHistory response = manager.enterpriseMccCacheNodesOperations()
-            .getCacheNodeMccIssueDetailsHistoryWithResponse("ud", "z", "mes", com.azure.core.util.Context.NONE)
+            .getCacheNodeMccIssueDetailsHistoryWithResponse("ujrtrhqvwr", "vk", "gnl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wxezwzhok", response.location());
-        Assertions.assertEquals("nhhtql", response.tags().get("ehgpp"));
+        Assertions.assertEquals("zozsdbccxjmonfdg", response.location());
+        Assertions.assertEquals("cypuuwwlt", response.tags().get("uqj"));
     }
 }
