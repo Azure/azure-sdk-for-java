@@ -263,10 +263,17 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
             EAST_US_2_URI_CNST,
             OperationType.Read)).thenReturn(EAST_US_2_CNST);
 
+        Mockito.clearInvocations(this.singleWriteAccountGlobalEndpointManagerMock);
         Instant beforeDesignation = Instant.now();
         Assertions.assertThat(manager.tryMarkEndpointAsUnavailableForPartitionKeyRange(failoverRequest, false))
             .isTrue();
         Instant afterDesignation = Instant.now();
+
+        java.lang.reflect.Method getDiagnosticsSnapshot
+            = PerPartitionAutomaticFailoverInfoHolder.class.getDeclaredMethod("getDiagnosticsSnapshot");
+        getDiagnosticsSnapshot.setAccessible(true);
+        Object firstDiagnosticsSnapshot = getDiagnosticsSnapshot.invoke(
+            failoverRequest.requestContext.getPerPartitionFailoverContextHolder());
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode firstSnapshot = objectMapper.readTree(objectMapper.writeValueAsString(
@@ -287,10 +294,14 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
             EAST_US_URI_CNST);
         Assertions.assertThat(manager.tryAddPartitionLevelLocationOverride(reuseRequest)).isTrue();
 
+        Assertions.assertThat(getDiagnosticsSnapshot.invoke(reuseRequest.requestContext.getPerPartitionFailoverContextHolder()))
+            .isSameAs(firstDiagnosticsSnapshot);
         JsonNode reusedSnapshot = objectMapper.readTree(objectMapper.writeValueAsString(
             reuseRequest.requestContext.getPerPartitionFailoverContextHolder()));
         Assertions.assertThat(reusedSnapshot.get("currWriteRegion").asText()).isEqualTo(EAST_US_2_CNST);
         Assertions.assertThat(reusedSnapshot.get("since").asText()).isEqualTo(firstSnapshot.get("since").asText());
+        Mockito.verify(this.singleWriteAccountGlobalEndpointManagerMock, Mockito.times(1))
+            .getRegionName(EAST_US_2_URI_CNST, OperationType.Read);
     }
 
     @Test(groups = {"unit"})

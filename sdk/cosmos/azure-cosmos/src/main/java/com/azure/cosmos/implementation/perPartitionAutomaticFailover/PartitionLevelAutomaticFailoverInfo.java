@@ -3,23 +3,16 @@
 
 package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
-import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URI;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-@JsonSerialize(using = PartitionLevelAutomaticFailoverInfo.PartitionLevelFailoverInfoSerializer.class)
 public class PartitionLevelAutomaticFailoverInfo implements Serializable {
 
     // Set of URIs which have seen 503s (specific to document writes) or 403/3s
@@ -27,7 +20,8 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
 
     // The current URI corresponds to the regional endpoint to use as an override
     private RegionalRoutingContext current;
-    private Instant currentWriteRegionSince;
+    private volatile PerPartitionAutomaticFailoverDiagnostics diagnosticsSnapshot
+        = PerPartitionAutomaticFailoverDiagnostics.EMPTY;
     private final GlobalEndpointManager globalEndpointManager;
 
     PartitionLevelAutomaticFailoverInfo(RegionalRoutingContext current, GlobalEndpointManager globalEndpointManager) {
@@ -55,7 +49,13 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
 
             this.failedRegionalRoutingContexts.add(failedRegionalRoutingContext);
             this.current = regionalRoutingContext;
-            this.currentWriteRegionSince = Instant.now();
+            Instant currentWriteRegionSince = Instant.now();
+            String currentWriteRegion = this.globalEndpointManager.getRegionName(
+                regionalRoutingContext.getGatewayRegionalEndpoint(),
+                OperationType.Read);
+            this.diagnosticsSnapshot = new PerPartitionAutomaticFailoverDiagnostics(
+                currentWriteRegion,
+                currentWriteRegionSince);
 
             return true;
         }
@@ -67,32 +67,7 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
         return this.current;
     }
 
-    synchronized PerPartitionAutomaticFailoverDiagnostics snapshot() {
-        if (this.current == null || this.currentWriteRegionSince == null) {
-            return PerPartitionAutomaticFailoverDiagnostics.EMPTY;
-        }
-
-        URI gatewayRegionalEndpoint = this.current.getGatewayRegionalEndpoint();
-        String currentWriteRegion = this.globalEndpointManager.getRegionName(
-            gatewayRegionalEndpoint,
-            OperationType.Read);
-
-        return new PerPartitionAutomaticFailoverDiagnostics(
-            currentWriteRegion,
-            this.currentWriteRegionSince);
-    }
-
-    static class PartitionLevelFailoverInfoSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PartitionLevelAutomaticFailoverInfo> {
-
-        @Override
-        public void serialize(PartitionLevelAutomaticFailoverInfo value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            PerPartitionAutomaticFailoverDiagnostics snapshot = value.snapshot();
-            gen.writeStartObject();
-            if (snapshot != PerPartitionAutomaticFailoverDiagnostics.EMPTY) {
-                gen.writeStringField("currWriteRegion", snapshot.getCurrentWriteRegion());
-                gen.writeStringField("since", DiagnosticsInstantSerializer.fromInstant(snapshot.getSince()));
-            }
-            gen.writeEndObject();
-        }
+    PerPartitionAutomaticFailoverDiagnostics snapshot() {
+        return this.diagnosticsSnapshot;
     }
 }
