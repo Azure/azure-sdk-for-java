@@ -8,11 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The notification languages currently supported.
+ * The language used for scheduled action notifications.
  */
 public final class Language extends ExpandableStringEnum<Language> {
     /**
-     * American english language.
+     * English (United States).
      */
     public static final Language EN_US = fromString("en-us");
 

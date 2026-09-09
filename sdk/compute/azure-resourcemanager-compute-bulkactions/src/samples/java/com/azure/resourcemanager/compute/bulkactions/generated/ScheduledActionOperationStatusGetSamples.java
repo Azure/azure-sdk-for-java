@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionOperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActionOperationStatus_Get_MaximumSet.
+     * Sample code: Get scheduled action operation status.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionOperationStatusGetMaximumSet(
+    public static void getScheduledActionOperationStatus(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActionOperationStatus()
             .getWithResponse("eastus", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);

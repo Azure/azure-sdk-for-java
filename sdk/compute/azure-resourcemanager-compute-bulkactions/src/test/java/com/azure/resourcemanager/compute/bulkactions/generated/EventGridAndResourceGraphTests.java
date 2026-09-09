@@ -12,18 +12,18 @@ public final class EventGridAndResourceGraphTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventGridAndResourceGraph model
-            = BinaryData.fromString("{\"enable\":false,\"scheduledEventsApiVersion\":\"bhsqfsubcgjbirxb\"}")
+            = BinaryData.fromString("{\"enable\":true,\"scheduledEventsApiVersion\":\"qupedeojnab\"}")
                 .toObject(EventGridAndResourceGraph.class);
-        Assertions.assertFalse(model.enable());
-        Assertions.assertEquals("bhsqfsubcgjbirxb", model.scheduledEventsApiVersion());
+        Assertions.assertTrue(model.enable());
+        Assertions.assertEquals("qupedeojnab", model.scheduledEventsApiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventGridAndResourceGraph model
-            = new EventGridAndResourceGraph().withEnable(false).withScheduledEventsApiVersion("bhsqfsubcgjbirxb");
+            = new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("qupedeojnab");
         model = BinaryData.fromObject(model).toObject(EventGridAndResourceGraph.class);
-        Assertions.assertFalse(model.enable());
-        Assertions.assertEquals("bhsqfsubcgjbirxb", model.scheduledEventsApiVersion());
+        Assertions.assertTrue(model.enable());
+        Assertions.assertEquals("qupedeojnab", model.scheduledEventsApiVersion());
     }
 }

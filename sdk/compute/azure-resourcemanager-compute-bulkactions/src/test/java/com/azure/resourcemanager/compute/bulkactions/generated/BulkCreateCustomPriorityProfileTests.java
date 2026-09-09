@@ -15,24 +15,24 @@ public final class BulkCreateCustomPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomPriorityProfile model = BinaryData.fromString(
-            "{\"type\":\"Regular\",\"maxPricePerVM\":42.61463265976999,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"Prioritized\"}")
+            "{\"type\":\"Regular\",\"maxPricePerVM\":74.54088175117568,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"LowestPrice\"}")
             .toObject(BulkCreateCustomPriorityProfile.class);
         Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(42.61463265976999D, model.maxPricePerVM());
+        Assertions.assertEquals(74.54088175117568D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.PRIORITIZED, model.allocationStrategy());
+        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.REGULAR)
-            .withMaxPricePerVM(42.61463265976999D)
+            .withMaxPricePerVM(74.54088175117568D)
             .withEvictionPolicy(EvictionPolicy.DELETE)
-            .withAllocationStrategy(BulkCreateCustomAllocationStrategy.PRIORITIZED);
+            .withAllocationStrategy(BulkCreateCustomAllocationStrategy.LOWEST_PRICE);
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomPriorityProfile.class);
         Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(42.61463265976999D, model.maxPricePerVM());
+        Assertions.assertEquals(74.54088175117568D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.PRIORITIZED, model.allocationStrategy());
+        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
     }
 }

@@ -15,38 +15,37 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * The properties of the occurrence extension.
+ * An occurrence associated with a specific compute resource.
  */
 @Immutable
 public final class OccurrenceExtensionProperties implements JsonSerializable<OccurrenceExtensionProperties> {
     /*
-     * The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+     * The Azure resource ID of the targeted virtual machine.
      */
     private String resourceId;
 
     /*
-     * The desired notification settings for the specified resource.
+     * Notification settings that apply only to this resource.
      */
     private List<NotificationProperties> notificationSettings;
 
     /*
-     * The time the occurrence is scheduled for the resource. Specified in UTC.
+     * Read-only. The UTC date and time when the operation is scheduled for this resource.
      */
     private OffsetDateTime scheduledTime;
 
     /*
-     * The current state of the resource
+     * Read-only. The current state of the operation for this resource.
      */
     private OccurrenceResourceProvisioningState provisioningState;
 
     /*
-     * Error details for the resource. Only populated if resource is in failed state.
+     * Read-only. Error details when the operation fails for this resource.
      */
     private Error errorDetails;
 
     /*
-     * The arm identifier of the scheduled action the occurrence belongs to
+     * The Azure resource ID of the scheduled action that owns the occurrence.
      */
     private String scheduledActionId;
 
@@ -57,8 +56,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the resourceId property: The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * Get the resourceId property: The Azure resource ID of the targeted virtual machine.
      * 
      * @return the resourceId value.
      */
@@ -67,7 +65,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the notificationSettings property: The desired notification settings for the specified resource.
+     * Get the notificationSettings property: Notification settings that apply only to this resource.
      * 
      * @return the notificationSettings value.
      */
@@ -76,7 +74,8 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the scheduledTime property: The time the occurrence is scheduled for the resource. Specified in UTC.
+     * Get the scheduledTime property: Read-only. The UTC date and time when the operation is scheduled for this
+     * resource.
      * 
      * @return the scheduledTime value.
      */
@@ -85,7 +84,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the provisioningState property: The current state of the resource.
+     * Get the provisioningState property: Read-only. The current state of the operation for this resource.
      * 
      * @return the provisioningState value.
      */
@@ -94,7 +93,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the errorDetails property: Error details for the resource. Only populated if resource is in failed state.
+     * Get the errorDetails property: Read-only. Error details when the operation fails for this resource.
      * 
      * @return the errorDetails value.
      */
@@ -103,7 +102,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     }
 
     /**
-     * Get the scheduledActionId property: The arm identifier of the scheduled action the occurrence belongs to.
+     * Get the scheduledActionId property: The Azure resource ID of the scheduled action that owns the occurrence.
      * 
      * @return the scheduledActionId value.
      */

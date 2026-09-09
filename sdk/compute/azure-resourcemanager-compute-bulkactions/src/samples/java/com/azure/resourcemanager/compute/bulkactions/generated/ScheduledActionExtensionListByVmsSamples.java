@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionExtensionListByVmsSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActionExtension_ListByVms_MaximumSet.
+     * Sample code: List scheduled actions for a compute resource.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionExtensionListByVmsMaximumSet(
+    public static void listScheduledActionsForAComputeResource(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActionExtensions()
             .listByVms(

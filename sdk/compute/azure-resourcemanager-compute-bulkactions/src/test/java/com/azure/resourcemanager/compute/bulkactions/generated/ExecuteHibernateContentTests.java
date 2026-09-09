@@ -8,7 +8,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendationParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
@@ -21,59 +20,53 @@ public final class ExecuteHibernateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteHibernateContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1323604242,\"retryWindowInMinutes\":1012878386,\"onFailureAction\":\"Create\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"wisdkft\",\"wxmnteiwao\",\"vkmijcmmxdcuf\",\"fsrpymzidnse\"],\"desiredSizes\":[\"tbzsgfyccs\",\"ewmdw\",\"jeiachboosfl\",\"ro\"],\"availabilityZones\":false}},\"resources\":{\"ids\":[\"eeh\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"ypyqrimzinp\",\"resourceContext\":\"swjdkirso\"},{\"resourceId\":\"dqxhcrmnohjtckwh\",\"resourceContext\":\"soifiyipjxsqw\"},{\"resourceId\":\"gr\",\"resourceContext\":\"bznorcjxvsnby\"},{\"resourceId\":\"qabnmoc\",\"resourceContext\":\"cyshurzafbljjgp\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":564973983,\"retryWindowInMinutes\":391919190,\"onFailureAction\":\"Delete\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"ewmdw\",\"jeiachboosfl\",\"ro\",\"fqpte\"],\"desiredSizes\":[\"zvypyqrimzinp\",\"swjdkirso\",\"dqxhcrmnohjtckwh\",\"soifiyipjxsqw\"],\"availabilityZones\":false}},\"resources\":{\"ids\":[\"znorcj\",\"vsnb\",\"xqabnmocpcysh\",\"rzafbljjgpbtoqcj\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"javbqidtqajz\",\"resourceContext\":\"ulpkudjkrl\"},{\"resourceId\":\"hbzhfepg\",\"resourceContext\":\"gqexzlocxs\"}]}}")
             .toObject(ExecuteHibernateContent.class);
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1323604242, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1012878386, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE,
+        Assertions.assertEquals(564973983, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(391919190, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("wisdkft",
+        Assertions.assertEquals("ewmdw",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("tbzsgfyccs",
+        Assertions.assertEquals("zvypyqrimzinp",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("eeh", model.resources().ids().get(0));
-        Assertions.assertEquals("ypyqrimzinp", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("swjdkirso", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("znorcj", model.resources().ids().get(0));
+        Assertions.assertEquals("javbqidtqajz", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("ulpkudjkrl", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteHibernateContent model = new ExecuteHibernateContent()
-            .withExecutionParameters(
-                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(1323604242)
-                        .withRetryWindowInMinutes(1012878386)
-                        .withOnFailureAction(ResourceOperationType.CREATE))
-                    .withVerifyVmAgentHealth(false)
-                    .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
-                        .withDesiredLocations(Arrays.asList("wisdkft", "wxmnteiwao", "vkmijcmmxdcuf", "fsrpymzidnse"))
-                        .withDesiredSizes(Arrays.asList("tbzsgfyccs", "ewmdw", "jeiachboosfl", "ro"))
-                        .withAvailabilityZones(false)))
-            .withResources(new Resources().withIds(Arrays.asList("eeh")))
-            .withResourcesWithContext(new ResourcesWithContext().withResources(
-                Arrays.asList(new ResourceWithContext().withResourceId("ypyqrimzinp").withResourceContext("swjdkirso"),
-                    new ResourceWithContext().withResourceId("dqxhcrmnohjtckwh").withResourceContext("soifiyipjxsqw"),
-                    new ResourceWithContext().withResourceId("gr").withResourceContext("bznorcjxvsnby"),
-                    new ResourceWithContext().withResourceId("qabnmoc").withResourceContext("cyshurzafbljjgp"))));
+            .withExecutionParameters(new ExecutionParameters()
+                .withRetryPolicy(new RetryPolicy().withRetryCount(564973983)
+                    .withRetryWindowInMinutes(391919190)
+                    .withOnFailureAction(ResourceOperationType.DELETE))
+                .withVerifyVmAgentHealth(false)
+                .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                    .withDesiredLocations(Arrays.asList("ewmdw", "jeiachboosfl", "ro", "fqpte"))
+                    .withDesiredSizes(Arrays.asList("zvypyqrimzinp", "swjdkirso", "dqxhcrmnohjtckwh", "soifiyipjxsqw"))
+                    .withAvailabilityZones(false)))
+            .withResources(
+                new Resources().withIds(Arrays.asList("znorcj", "vsnb", "xqabnmocpcysh", "rzafbljjgpbtoqcj")))
+            .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays.asList(
+                new ResourceWithContext().withResourceId("javbqidtqajz").withResourceContext("ulpkudjkrl"),
+                new ResourceWithContext().withResourceId("hbzhfepg").withResourceContext("gqexzlocxs"))));
         model = BinaryData.fromObject(model).toObject(ExecuteHibernateContent.class);
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1323604242, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1012878386, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE,
+        Assertions.assertEquals(564973983, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(391919190, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("wisdkft",
+        Assertions.assertEquals("ewmdw",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("tbzsgfyccs",
+        Assertions.assertEquals("zvypyqrimzinp",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("eeh", model.resources().ids().get(0));
-        Assertions.assertEquals("ypyqrimzinp", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("swjdkirso", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("znorcj", model.resources().ids().get(0));
+        Assertions.assertEquals("javbqidtqajz", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("ulpkudjkrl", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 }
