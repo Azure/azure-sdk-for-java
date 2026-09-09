@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of a HorizonDb pool.
+ * Properties of a HorizonDB pool.
  */
 @Immutable
 public final class HorizonDbPoolProperties implements JsonSerializable<HorizonDbPoolProperties> {
     /*
-     * The location of the HorizonDb pool.
+     * The location of the HorizonDB pool.
      */
     private String location;
 
@@ -32,7 +32,7 @@ public final class HorizonDbPoolProperties implements JsonSerializable<HorizonDb
     private Integer replicaCount;
 
     /*
-     * The version of the HorizonDb pool.
+     * The version of the HorizonDB pool.
      */
     private String version;
 
@@ -53,7 +53,7 @@ public final class HorizonDbPoolProperties implements JsonSerializable<HorizonDb
     }
 
     /**
-     * Get the location property: The location of the HorizonDb pool.
+     * Get the location property: The location of the HorizonDB pool.
      * 
      * @return the location value.
      */
@@ -80,7 +80,7 @@ public final class HorizonDbPoolProperties implements JsonSerializable<HorizonDb
     }
 
     /**
-     * Get the version property: The version of the HorizonDb pool.
+     * Get the version property: The version of the HorizonDB pool.
      * 
      * @return the version value.
      */

@@ -81,7 +81,7 @@ jobs:
   # refs/pull/<id>/merge; any other non-'none' value is treated as a branch name (or full ref) and
   # fetched as-is. When PRIdOrBranch is 'none', the emitter is built from the default branch (main).
   # Submodules are then initialized because typespec-azure vendors the TypeSpec compiler and the
-  # http-client-java generator via the 'core' submodule, which build:generator (Build-Generator.ps1)
+  # http-client-java generator via the 'core' submodule, which build:generator (build-generator.ts)
   # and tspd both require.
   - task: PowerShell@2
     displayName: 'Clone typespec-azure'
@@ -107,11 +107,9 @@ jobs:
         git -C "$(TypeSpecAzureDirectory)" submodule update --init --recursive
 
   # Build the emitter dev package (.tgz) from the typespec-azure PR.
-  # typespec-java depends on other workspace packages (workspace:^). First build only those
-  # upstream dependencies with turbo (the `^...` filter selects dependencies but excludes
-  # typespec-java itself). Then Build-TypeSpec.ps1 builds and packs typespec-java (its
-  # build:generator step runs Build-Generator.ps1, which needs JDK 11+ and Maven), producing
-  # the .tgz next to the package.json for sync_emitter.py to pick up.
+  # The run-all filter builds typespec-java and its workspace dependencies. The typespec-java
+  # package build invokes its TypeScript build scripts, including build-generator.ts, which needs
+  # JDK 11+ and Maven. Pack separately so the .tgz is next to package.json for sync_emitter.py.
   - task: PowerShell@2
     retryCountOnTaskFailure: 1
     condition: and(succeeded(), eq('${{ parameters.EmitterVersion }}', 'none'))
@@ -122,8 +120,8 @@ jobs:
       script: |
         corepack enable
         pnpm install
-        pnpm turbo run build --filter "@azure-tools/typespec-java^..."
-        ./packages/typespec-java/Build-TypeSpec.ps1
+        pnpm run-all --filter "@azure-tools/typespec-java..." build
+        pnpm --dir ./packages/typespec-java pack --pack-destination .
       workingDirectory: $(TypeSpecAzureDirectory)
 
   - script: |
@@ -159,5 +157,4 @@ jobs:
       PRBranchName: typespec-java-generation-$(Build.BuildId)
       CommitMsg: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
       PRTitle: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
-      PRLabels: 'DPG'
       OpenAsDraft: 'true'

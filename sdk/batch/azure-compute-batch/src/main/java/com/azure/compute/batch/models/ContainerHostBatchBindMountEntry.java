@@ -23,15 +23,6 @@ public final class ContainerHostBatchBindMountEntry implements JsonSerializable<
     @Generated
     private ContainerHostDataPath source;
 
-    /*
-     * Mount this source path as read-only mode or not. Default value is false (read/write mode). For Linux, if you
-     * mount this path as a read/write mode, this does not mean that all users in container have the read/write access
-     * for the path, it depends on the access in host VM. If this path is mounted read-only, all users within the
-     * container will not be able to modify the path.
-     */
-    @Generated
-    private Boolean isReadOnly;
-
     /**
      * Creates an instance of ContainerHostBatchBindMountEntry class.
      */
@@ -62,31 +53,16 @@ public final class ContainerHostBatchBindMountEntry implements JsonSerializable<
     }
 
     /**
-     * Get the isReadOnly property: Mount this source path as read-only mode or not. Default value is false (read/write
+     * Get the readOnly property: Mount this source path as read-only mode or not. Default value is false (read/write
      * mode). For Linux, if you mount this path as a read/write mode, this does not mean that all users in container
      * have the read/write access for the path, it depends on the access in host VM. If this path is mounted read-only,
      * all users within the container will not be able to modify the path.
      *
-     * @return the isReadOnly value.
+     * @return the readOnly value.
      */
     @Generated
     public Boolean isReadOnly() {
-        return this.isReadOnly;
-    }
-
-    /**
-     * Set the isReadOnly property: Mount this source path as read-only mode or not. Default value is false (read/write
-     * mode). For Linux, if you mount this path as a read/write mode, this does not mean that all users in container
-     * have the read/write access for the path, it depends on the access in host VM. If this path is mounted read-only,
-     * all users within the container will not be able to modify the path.
-     *
-     * @param isReadOnly the isReadOnly value to set.
-     * @return the ContainerHostBatchBindMountEntry object itself.
-     */
-    @Generated
-    public ContainerHostBatchBindMountEntry setIsReadOnly(Boolean isReadOnly) {
-        this.isReadOnly = isReadOnly;
-        return this;
+        return this.readOnly;
     }
 
     /**
@@ -97,7 +73,7 @@ public final class ContainerHostBatchBindMountEntry implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
-        jsonWriter.writeBooleanField("isReadOnly", this.isReadOnly);
+        jsonWriter.writeBooleanField("isReadOnly", this.readOnly);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,13 +97,36 @@ public final class ContainerHostBatchBindMountEntry implements JsonSerializable<
                     deserializedContainerHostBatchBindMountEntry.source
                         = ContainerHostDataPath.fromString(reader.getString());
                 } else if ("isReadOnly".equals(fieldName)) {
-                    deserializedContainerHostBatchBindMountEntry.isReadOnly
-                        = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContainerHostBatchBindMountEntry.readOnly = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedContainerHostBatchBindMountEntry;
         });
+    }
+
+    /*
+     * Mount this source path as read-only mode or not. Default value is false (read/write mode). For Linux, if you
+     * mount this path as a read/write mode, this does not mean that all users in container have the read/write access
+     * for the path, it depends on the access in host VM. If this path is mounted read-only, all users within the
+     * container will not be able to modify the path.
+     */
+    @Generated
+    private Boolean readOnly;
+
+    /**
+     * Set the readOnly property: Mount this source path as read-only mode or not. Default value is false (read/write
+     * mode). For Linux, if you mount this path as a read/write mode, this does not mean that all users in container
+     * have the read/write access for the path, it depends on the access in host VM. If this path is mounted read-only,
+     * all users within the container will not be able to modify the path.
+     *
+     * @param readOnly the readOnly value to set.
+     * @return the ContainerHostBatchBindMountEntry object itself.
+     */
+    @Generated
+    public ContainerHostBatchBindMountEntry setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+        return this;
     }
 }

@@ -6,18 +6,30 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
-import java.util.concurrent.CountDownLatch;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Sample demonstrating how to get analyzer information asynchronously.
- * This sample shows:
- * 1. Retrieving analyzer details by ID
- * 2. Accessing analyzer configuration
- * 3. Inspecting field schema definitions
- * 4. Getting prebuilt analyzer information
+ * Sample demonstrating how to retrieve information about prebuilt and custom analyzers asynchronously.
+ *
+ * <p>This sample retrieves {@code prebuilt-documentSearch} and {@code prebuilt-invoice}, creates and retrieves a
+ * custom analyzer, and prints each raw JSON response for inspecting the complete configuration.</p>
  */
 public class Sample06_GetAnalyzerAsync {
 
@@ -39,95 +51,149 @@ public class Sample06_GetAnalyzerAsync {
         }
         // END: com.azure.ai.contentunderstanding.sample06Async.buildClient
 
-        // BEGIN:ContentUnderstandingGetAnalyzerAsync
-        // Get a prebuilt analyzer (these are always available)
-        String analyzerId = "prebuilt-invoice";
+        runOperations(getPrebuiltAnalyzerAsync(client), getPrebuiltInvoiceAsync(client), getCustomAnalyzerAsync(client))
+            .block();
+    }
 
-        System.out.println("Retrieving analyzer '" + analyzerId + "'...");
+    static Mono<Void> runOperations(Mono<Void> prebuiltAnalyzer, Mono<Void> prebuiltInvoice,
+        Mono<Void> customAnalyzer) {
+        return prebuiltAnalyzer.then(prebuiltInvoice).then(customAnalyzer);
+    }
 
-        // Use CountDownLatch to wait for async operation to complete
-        CountDownLatch latch = new CountDownLatch(1);
+    private static Mono<Void> getPrebuiltAnalyzerAsync(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingGetPrebuiltAnalyzerAsync
+        return client.getAnalyzerWithResponse("prebuilt-documentSearch", new RequestOptions()).doOnNext(response -> {
+            ContentAnalyzer analyzer = response.getValue().toObject(ContentAnalyzer.class);
 
-        client.getAnalyzer(analyzerId)
-            .doOnNext(analyzer -> {
-                System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
-                System.out.println("Base Analyzer ID: "
-                    + (analyzer.getBaseAnalyzerId() != null ? analyzer.getBaseAnalyzerId() : "N/A"));
-                System.out.println("Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
+            System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
+            System.out.println("Base Analyzer ID: "
+                + (analyzer.getBaseAnalyzerId() != null ? analyzer.getBaseAnalyzerId() : "N/A"));
+            System.out.println(
+                "Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
+            System.out.println("Enable OCR: " + analyzer.getConfig().isOcrEnabled());
+            System.out.println("Enable Layout: " + analyzer.getConfig().isLayoutEnabled());
+            System.out.println("Models: " + analyzer.getModels());
+            printAnalyzerDetails(analyzer);
 
-                // Display configuration
-                if (analyzer.getConfig() != null) {
-                    System.out.println("\nAnalyzer Configuration:");
-                    System.out.println("  Enable OCR: " + analyzer.getConfig().isOcrEnabled());
-                    System.out.println("  Enable Layout: " + analyzer.getConfig().isLayoutEnabled());
-                    System.out.println("  Enable Formula: " + analyzer.getConfig().isFormulaEnabled());
-                    System.out.println("  Estimate Field Source and Confidence: "
-                        + analyzer.getConfig().isEstimateFieldSourceAndConfidence());
-                    System.out.println("  Return Details: " + analyzer.getConfig().isReturnDetails());
-                }
+            System.out.println("\nPrebuilt-documentSearch Analyzer (Raw JSON):");
+            System.out.println(formatJson(response.getValue()));
+        }).then();
+        // END:ContentUnderstandingGetPrebuiltAnalyzerAsync
+    }
 
-                // Display field schema if available
-                if (analyzer.getFieldSchema() != null) {
-                    System.out.println("\nField Schema:");
-                    System.out.println("  Name: " + analyzer.getFieldSchema().getName());
-                    System.out.println("  Description: " + (analyzer.getFieldSchema().getDescription() != null
-                        ? analyzer.getFieldSchema().getDescription()
-                        : "N/A"));
-                    if (analyzer.getFieldSchema().getFields() != null) {
-                        System.out.println("  Number of fields: " + analyzer.getFieldSchema().getFields().size());
-                        System.out.println("  Fields:");
-                        analyzer.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
-                            System.out.println("    - " + fieldName + " (" + fieldDef.getType() + ", Method: "
-                                + (fieldDef.getMethod() != null ? fieldDef.getMethod() : "N/A") + ")");
-                            if (fieldDef.getDescription() != null && !fieldDef.getDescription().trim().isEmpty()) {
-                                System.out.println("      Description: " + fieldDef.getDescription());
-                            }
-                        });
-                    }
-                }
+    private static Mono<Void> getPrebuiltInvoiceAsync(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingGetPrebuiltInvoiceAsync
+        return client.getAnalyzerWithResponse("prebuilt-invoice", new RequestOptions()).doOnNext(response -> {
+            ContentAnalyzer analyzer = response.getValue().toObject(ContentAnalyzer.class);
 
-                // Display models if available
-                if (analyzer.getModels() != null && !analyzer.getModels().isEmpty()) {
-                    System.out.println("\nModel Mappings:");
-                    analyzer.getModels().forEach((modelKey, modelValue) -> {
-                        System.out.println("  " + modelKey + ": " + modelValue);
-                    });
-                }
+            System.out.println("\nPrebuilt-invoice Analyzer (Raw JSON):");
+            System.out.println(formatJson(response.getValue()));
+            printAnalyzerDetails(analyzer);
+        }).then();
+        // END:ContentUnderstandingGetPrebuiltInvoiceAsync
+    }
 
-                // Display status if available
-                if (analyzer.getStatus() != null) {
-                    System.out.println("\nAnalyzer Status: " + analyzer.getStatus());
-                }
+    private static Mono<Void> getCustomAnalyzerAsync(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingGetCustomAnalyzerAsync
+        String analyzerId = "my_custom_analyzer_" + System.currentTimeMillis();
 
-                // Display created/updated timestamps if available
-                if (analyzer.getCreatedAt() != null) {
-                    System.out.println("Created: " + analyzer.getCreatedAt());
-                }
-                if (analyzer.getLastModifiedAt() != null) {
-                    System.out.println("Updated: " + analyzer.getLastModifiedAt());
-                }
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .doFinally(signalType -> latch.countDown())
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                },
-                error -> {
-                    // Error already handled in doOnError
-                }
-            );
-        // END:ContentUnderstandingGetAnalyzerAsync
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        fields.put("company_name",
+            new ContentFieldDefinition().setType(ContentFieldType.STRING)
+                .setMethod(GenerationMethod.EXTRACT)
+                .setDescription("Name of the company"));
 
-        // Wait for the async operation to complete
+        ContentFieldSchema fieldSchema = new ContentFieldSchema().setName("test_schema")
+            .setDescription("Test schema for GetAnalyzer sample")
+            .setFields(fields);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Test analyzer for GetAnalyzer sample")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
+
+        Mono<ContentAnalyzer> createdAnalyzer = client.beginCreateAnalyzer(analyzerId, analyzer).last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Custom analyzer creation"));
+
+        return Mono.usingWhen(createdAnalyzer,
+            ignored -> client.getAnalyzerWithResponse(analyzerId, new RequestOptions()).doOnNext(response -> {
+                ContentAnalyzer retrievedAnalyzer = response.getValue().toObject(ContentAnalyzer.class);
+                System.out.println("\nCustom Analyzer (Raw JSON):");
+                System.out.println(formatJson(response.getValue()));
+                System.out.println("Retrieved analyzer: " + retrievedAnalyzer.getAnalyzerId());
+            }).then(), ignored -> client.deleteAnalyzer(analyzerId),
+            (ignored, error) -> client.deleteAnalyzer(analyzerId), ignored -> client.deleteAnalyzer(analyzerId));
+        // END:ContentUnderstandingGetCustomAnalyzerAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    private static String formatJson(BinaryData json) {
         try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(json.toBytes());
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+        } catch (IOException exception) {
+            throw new IllegalStateException("Analyzer response was not valid JSON.", exception);
+        }
+    }
+
+    private static void printAnalyzerDetails(ContentAnalyzer analyzer) {
+        if (analyzer.getConfig() != null) {
+            System.out.println("\nAnalyzer Configuration:");
+            System.out.println("  Enable OCR: " + analyzer.getConfig().isOcrEnabled());
+            System.out.println("  Enable Layout: " + analyzer.getConfig().isLayoutEnabled());
+            System.out.println("  Enable Formula: " + analyzer.getConfig().isFormulaEnabled());
+            System.out.println(
+                "  Estimate Field Source and Confidence: " + analyzer.getConfig().isEstimateFieldSourceAndConfidence());
+            System.out.println("  Return Details: " + analyzer.getConfig().isReturnDetails());
+        }
+
+        if (analyzer.getFieldSchema() != null) {
+            System.out.println("\nField Schema:");
+            System.out.println("  Name: " + analyzer.getFieldSchema().getName());
+            System.out.println("  Description: " + (analyzer.getFieldSchema().getDescription() != null
+                ? analyzer.getFieldSchema().getDescription()
+                : "N/A"));
+            if (analyzer.getFieldSchema().getFields() != null) {
+                System.out.println("  Number of fields: " + analyzer.getFieldSchema().getFields().size());
+                analyzer.getFieldSchema().getFields().forEach((fieldName, fieldDefinition) -> {
+                    System.out.println("    - " + fieldName + " (" + fieldDefinition.getType() + ", Method: "
+                        + (fieldDefinition.getMethod() != null ? fieldDefinition.getMethod() : "N/A") + ")");
+                    if (fieldDefinition.getDescription() != null
+                        && !fieldDefinition.getDescription().trim().isEmpty()) {
+                        System.out.println("      Description: " + fieldDefinition.getDescription());
+                    }
+                });
+            }
+        }
+
+        if (analyzer.getModels() != null && !analyzer.getModels().isEmpty()) {
+            System.out.println("\nModel Mappings:");
+            analyzer.getModels().forEach(
+                (modelKey, modelValue) -> System.out.println("  " + modelKey + ": " + modelValue));
+        }
+        if (analyzer.getStatus() != null) {
+            System.out.println("\nAnalyzer Status: " + analyzer.getStatus());
+        }
+        if (analyzer.getCreatedAt() != null) {
+            System.out.println("Created: " + analyzer.getCreatedAt());
+        }
+        if (analyzer.getLastModifiedAt() != null) {
+            System.out.println("Updated: " + analyzer.getLastModifiedAt());
         }
     }
 }

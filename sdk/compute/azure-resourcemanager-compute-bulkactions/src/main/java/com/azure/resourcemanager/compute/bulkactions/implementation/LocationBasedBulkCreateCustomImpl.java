@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
@@ -11,6 +12,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProp
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.compute.bulkactions.models.Plan;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +163,15 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
 
     public void cancel(Context context) {
         serviceManager.bulkCreateCustoms().cancel(resourceGroupName, location, name, context);
+    }
+
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus() {
+        return serviceManager.bulkCreateCustoms().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
+    }
+
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(Context context) {
+        return serviceManager.bulkCreateCustoms()
+            .virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
     }
 
     public LocationBasedBulkCreateCustomImpl withTags(Map<String, String> tags) {

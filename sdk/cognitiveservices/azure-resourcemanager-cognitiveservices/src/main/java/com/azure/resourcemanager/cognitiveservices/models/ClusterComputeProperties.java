@@ -93,8 +93,18 @@ public final class ClusterComputeProperties extends ComputeProperties {
      * {@inheritDoc}
      */
     @Override
+    public ClusterComputeProperties withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
         jsonWriter.writeArrayField("pools", this.pools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
         jsonWriter.writeStringField("subnetArmId", this.subnetArmId);
@@ -117,7 +127,9 @@ public final class ClusterComputeProperties extends ComputeProperties {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("provisioningState".equals(fieldName)) {
+                if ("location".equals(fieldName)) {
+                    deserializedClusterComputeProperties.withLocation(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
                     deserializedClusterComputeProperties
                         .withProvisioningState(ComputeProvisioningState.fromString(reader.getString()));
                 } else if ("errors".equals(fieldName)) {

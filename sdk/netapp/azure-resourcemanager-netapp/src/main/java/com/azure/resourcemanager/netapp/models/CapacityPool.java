@@ -74,8 +74,8 @@ public interface CapacityPool {
     String poolId();
 
     /**
-     * Gets the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-     * multiple of 1099511627776).
+     * Gets the size property: Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes)
+     * or in 1TiB chunks (value must be multiple of 1099511627776).
      * 
      * @return the size value.
      */
@@ -225,11 +225,11 @@ public interface CapacityPool {
          */
         interface WithSize {
             /**
-             * Specifies the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks
-             * (value must be multiple of 1099511627776)..
+             * Specifies the size property: Provisioned size of the pool (in bytes). Allowed values are 512GiB
+             * (549755813888 bytes) or in 1TiB chunks (value must be multiple of 1099511627776)..
              * 
-             * @param size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-             * multiple of 1099511627776).
+             * @param size Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or in
+             * 1TiB chunks (value must be multiple of 1099511627776).
              * @return the next definition stage.
              */
             WithServiceLevel withSize(long size);
@@ -390,11 +390,11 @@ public interface CapacityPool {
          */
         interface WithSize {
             /**
-             * Specifies the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks
-             * (value must be multiple of 1099511627776)..
+             * Specifies the size property: Provisioned size of the pool (in bytes). Allowed values are 512GiB
+             * (549755813888 bytes) or in 1TiB chunks (value must be multiple of 1099511627776)..
              * 
-             * @param size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-             * multiple of 1099511627776).
+             * @param size Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or in
+             * 1TiB chunks (value must be multiple of 1099511627776).
              * @return the next definition stage.
              */
             Update withSize(Long size);

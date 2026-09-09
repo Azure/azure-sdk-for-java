@@ -13,37 +13,37 @@ import java.util.Collection;
 public final class NetworkSecurityPerimeterConfigurationProvisioningState
     extends ExpandableStringEnum<NetworkSecurityPerimeterConfigurationProvisioningState> {
     /**
-     * Static value Succeeded for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration was provisioned successfully.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Creating for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration is being created.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState CREATING = fromString("Creating");
 
     /**
-     * Static value Updating for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration is being updated.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState UPDATING = fromString("Updating");
 
     /**
-     * Static value Deleting for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration is being deleted.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * Static value Accepted for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration request was accepted and provisioning has not started yet.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState ACCEPTED = fromString("Accepted");
 
     /**
-     * Static value Failed for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration failed to provision.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Static value Canceled for NetworkSecurityPerimeterConfigurationProvisioningState.
+     * The configuration provisioning was canceled.
      */
     public static final NetworkSecurityPerimeterConfigurationProvisioningState CANCELED = fromString("Canceled");
 

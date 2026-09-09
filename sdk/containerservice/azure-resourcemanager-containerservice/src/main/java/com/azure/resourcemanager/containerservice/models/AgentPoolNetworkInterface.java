@@ -35,6 +35,14 @@ public final class AgentPoolNetworkInterface implements JsonSerializable<AgentPo
      */
     private Boolean enableAcceleratedNetworking;
 
+    /*
+     * Public IP configuration for this secondary NIC. Only valid when `type` is `Standard`. Set
+     * `publicIPAddressVersion` to provision a per-VM instance-level public IP for the NIC, then optionally shape it
+     * with `ipTags` or `publicIPPrefixID`. If omitted, no public IP is provisioned. Idle timeout is not configurable.
+     * For more information, see https://aka.ms/aks/multi-nic
+     */
+    private AgentPoolNICPublicIPAddressConfiguration publicIPAddressConfiguration;
+
     /**
      * Creates an instance of AgentPoolNetworkInterface class.
      */
@@ -110,11 +118,41 @@ public final class AgentPoolNetworkInterface implements JsonSerializable<AgentPo
     }
 
     /**
+     * Get the publicIPAddressConfiguration property: Public IP configuration for this secondary NIC. Only valid when
+     * `type` is `Standard`. Set `publicIPAddressVersion` to provision a per-VM instance-level public IP for the NIC,
+     * then optionally shape it with `ipTags` or `publicIPPrefixID`. If omitted, no public IP is provisioned. Idle
+     * timeout is not configurable. For more information, see https://aka.ms/aks/multi-nic.
+     * 
+     * @return the publicIPAddressConfiguration value.
+     */
+    public AgentPoolNICPublicIPAddressConfiguration publicIPAddressConfiguration() {
+        return this.publicIPAddressConfiguration;
+    }
+
+    /**
+     * Set the publicIPAddressConfiguration property: Public IP configuration for this secondary NIC. Only valid when
+     * `type` is `Standard`. Set `publicIPAddressVersion` to provision a per-VM instance-level public IP for the NIC,
+     * then optionally shape it with `ipTags` or `publicIPPrefixID`. If omitted, no public IP is provisioned. Idle
+     * timeout is not configurable. For more information, see https://aka.ms/aks/multi-nic.
+     * 
+     * @param publicIPAddressConfiguration the publicIPAddressConfiguration value to set.
+     * @return the AgentPoolNetworkInterface object itself.
+     */
+    public AgentPoolNetworkInterface
+        withPublicIPAddressConfiguration(AgentPoolNICPublicIPAddressConfiguration publicIPAddressConfiguration) {
+        this.publicIPAddressConfiguration = publicIPAddressConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (publicIPAddressConfiguration() != null) {
+            publicIPAddressConfiguration().validate();
+        }
     }
 
     /**
@@ -126,6 +164,7 @@ public final class AgentPoolNetworkInterface implements JsonSerializable<AgentPo
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("vnetSubnetId", this.vnetSubnetId);
         jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
+        jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIPAddressConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +191,9 @@ public final class AgentPoolNetworkInterface implements JsonSerializable<AgentPo
                 } else if ("enableAcceleratedNetworking".equals(fieldName)) {
                     deserializedAgentPoolNetworkInterface.enableAcceleratedNetworking
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicIPAddressConfiguration".equals(fieldName)) {
+                    deserializedAgentPoolNetworkInterface.publicIPAddressConfiguration
+                        = AgentPoolNICPublicIPAddressConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

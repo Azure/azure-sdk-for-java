@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.1 (2026-08-05)
+## 2.55.0-beta.1 (2026-09-09)
 
 - Package api-version 2025-08-01-preview.
 
@@ -69,6 +69,15 @@
 * `CREATED` was added
 * `SUCCEEDED` was added
 * `CANCELED` was added
+
+## 2.54.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
 
 ## 2.54.0 (2026-07-16)
 

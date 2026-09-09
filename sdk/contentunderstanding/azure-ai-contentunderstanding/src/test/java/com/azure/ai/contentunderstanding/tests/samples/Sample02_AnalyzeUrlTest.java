@@ -15,12 +15,13 @@ import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -55,12 +56,14 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         AnalysisResult result = operation.getFinalResult();
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
         // END:ContentUnderstandingAnalyzeUrl
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeUrl
         assertNotNull(uriSource, "URI source should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
         assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(usage, "Terminal operation status should retain usage details");
         System.out.println("Analysis operation properties verified");
 
         assertNotNull(result, "Analysis result should not be null");
@@ -87,12 +90,11 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
         assertNotNull(content, "Content should not be null");
         assertTrue(content instanceof AnalysisContent, "Content should be of type AnalysisContent");
-
-        if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-            assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be just whitespace");
-            System.out
-                .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
-        }
+        assertInstanceOf(DocumentContent.class, content, "PDF analysis should return DocumentContent");
+        assertNotNull(content.getMarkdown(), "Markdown content should not be null");
+        assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be blank");
+        System.out
+            .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
 
         // Check if this is document content to access document-specific properties
         if (content instanceof DocumentContent) {
@@ -425,7 +427,8 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> fullOperation
             = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(fullInput));
         AnalysisResult fullResult = fullOperation.getFinalResult();
-        DocumentContent fullDoc = (DocumentContent) fullResult.getContents().get(0);
+        DocumentContent fullDoc = assertInstanceOf(DocumentContent.class, fullResult.getContents().get(0),
+            "Full analysis should return DocumentContent");
 
         // Extract only page 1 via AnalysisInput.setContentRange()
         AnalysisInput rangeInput = new AnalysisInput();
@@ -443,7 +446,8 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(rangeOperation.waitForCompletion().getStatus().isComplete());
         assertNotNull(rangeResult);
         assertNotNull(rangeResult.getContents());
-        DocumentContent rangeDocContent = (DocumentContent) rangeResult.getContents().get(0);
+        DocumentContent rangeDocContent = assertInstanceOf(DocumentContent.class, rangeResult.getContents().get(0),
+            "Page range analysis should return DocumentContent");
         assertEquals(1, rangeDocContent.getPages().size(), "With ContentRange.page(1), should return only 1 page");
         assertEquals(1, rangeDocContent.getStartPageNumber());
         assertEquals(1, rangeDocContent.getEndPageNumber());
@@ -464,7 +468,8 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
 
         assertNotNull(combineResult);
         assertNotNull(combineResult.getContents());
-        DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
+        DocumentContent combineDoc = assertInstanceOf(DocumentContent.class, combineResult.getContents().get(0),
+            "Combined page range analysis should return DocumentContent");
         assertEquals(6, combineDoc.getPages().size(),
             "Combine(1-3, 5, 9-) should return 6 pages (1-3, 5, 9-10), got " + combineDoc.getPages().size());
         assertEquals(1, combineDoc.getStartPageNumber());
@@ -478,7 +483,6 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             "Combine(1-3, 5, 9-) page numbers should be [1, 2, 3, 5, 9, 10]");
     }
 
-    @LiveOnly
     @Test
     public void testAnalyzeVideoUrlWithTimeContentRanges() {
         // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithTimeContentRanges
@@ -507,20 +511,45 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertNotNull(fullResult);
         assertNotNull(fullResult.getContents());
         assertTrue(fullResult.getContents().size() > 0);
+        AudioVisualContent fullFirstContent = (AudioVisualContent) fullResult.getContents().get(0);
 
         assertNotNull(rangeResult);
         assertNotNull(rangeResult.getContents());
         assertTrue(rangeResult.getContents().size() > 0);
+        AudioVisualContent rangeFirstContent = (AudioVisualContent) rangeResult.getContents().get(0);
+        assertEquals(fullFirstContent.getStartTime(), rangeFirstContent.getStartTime(),
+            "Ranged video segments should retain source-relative start times");
         for (AnalysisContent content : rangeResult.getContents()) {
             assertTrue(content instanceof AudioVisualContent, "Video analysis should return AudioVisualContent");
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
-            assertTrue(avContent.getStartTime().toMillis() >= 0,
-                "Range(0-5s) segment StartTime (" + avContent.getStartTime().toMillis() + " ms) should be >= 0 ms");
-            assertTrue(avContent.getEndTime().toMillis() <= 5000,
-                "Range(0-5s) segment EndTime (" + avContent.getEndTime().toMillis() + " ms) should be <= 5000 ms");
+            assertNotNull(avContent.getMarkdown());
+            assertFalse(avContent.getMarkdown().isEmpty());
         }
         // END:Assertion_ContentUnderstandingAnalyzeVideoUrlWithTimeContentRanges
+
+        // ---- Raw range string (0-5000) — equivalent to TimeRange(0, 5s) ----
+        AnalysisInput rawRangeInput = new AnalysisInput();
+        rawRangeInput.setUrl(uriSource);
+        rawRangeInput.setContentRange(new ContentRange("0-5000"));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rawRangeInput));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+
+        assertNotNull(rawRangeResult);
+        assertNotNull(rawRangeResult.getContents());
+        assertFalse(rawRangeResult.getContents().isEmpty());
+        AudioVisualContent rawRangeFirstContent
+            = assertInstanceOf(AudioVisualContent.class, rawRangeResult.getContents().get(0));
+        assertEquals(rangeFirstContent.getStartTime(), rawRangeFirstContent.getStartTime(),
+            "Raw and typed video ranges should retain the same source-relative start time");
+        for (AnalysisContent content : rawRangeResult.getContents()) {
+            AudioVisualContent avContent = assertInstanceOf(AudioVisualContent.class, content);
+            assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertNotNull(avContent.getMarkdown());
+            assertFalse(avContent.getMarkdown().isEmpty());
+        }
 
         // ---- TimeRangeFrom(10s) — from 10 seconds to end ----
         AnalysisInput rangeFromInput = new AnalysisInput();
@@ -534,12 +563,13 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertNotNull(rangeFromResult);
         assertNotNull(rangeFromResult.getContents());
         assertTrue(rangeFromResult.getContents().size() > 0);
+        AudioVisualContent rangeFromFirstContent = (AudioVisualContent) rangeFromResult.getContents().get(0);
+        assertEquals(fullFirstContent.getStartTime(), rangeFromFirstContent.getStartTime(),
+            "Ranged video segments should retain source-relative start times");
         for (AnalysisContent content : rangeFromResult.getContents()) {
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
-            assertTrue(avContent.getStartTime().toMillis() >= 10000, "TimeRangeFrom(10s) segment StartTime ("
-                + avContent.getStartTime().toMillis() + " ms) should be >= 10000 ms");
             assertNotNull(avContent.getMarkdown());
             assertFalse(avContent.getMarkdown().isEmpty());
         }
@@ -556,14 +586,15 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertNotNull(subSecondResult);
         assertNotNull(subSecondResult.getContents());
         assertTrue(subSecondResult.getContents().size() > 0);
+        AudioVisualContent subSecondFirstContent = (AudioVisualContent) subSecondResult.getContents().get(0);
+        assertEquals(fullFirstContent.getStartTime(), subSecondFirstContent.getStartTime(),
+            "Ranged video segments should retain source-relative start times");
         for (AnalysisContent content : subSecondResult.getContents()) {
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
-            assertTrue(avContent.getStartTime().toMillis() >= 1200, "Range(1200ms-3651ms) segment StartTime ("
-                + avContent.getStartTime().toMillis() + " ms) should be >= 1200 ms");
-            assertTrue(avContent.getEndTime().toMillis() <= 3651, "Range(1200ms-3651ms) segment EndTime ("
-                + avContent.getEndTime().toMillis() + " ms) should be <= 3651 ms");
+            assertNotNull(avContent.getMarkdown());
+            assertFalse(avContent.getMarkdown().isEmpty());
         }
 
         // ---- Combine multiple time ranges (0-3s, 30s-) ----
@@ -579,20 +610,19 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertNotNull(combineResult);
         assertNotNull(combineResult.getContents());
         assertTrue(combineResult.getContents().size() > 0);
+        AudioVisualContent combineFirstContent = (AudioVisualContent) combineResult.getContents().get(0);
+        assertEquals(fullFirstContent.getStartTime(), combineFirstContent.getStartTime(),
+            "Ranged video segments should retain source-relative start times");
         for (AnalysisContent content : combineResult.getContents()) {
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
-            assertTrue(avContent.getEndTime().toMillis() <= 3000 || avContent.getStartTime().toMillis() >= 30000,
-                "Combine(0-3s, 30s-) segment should be in [0,3s] or [30s,∞), but was "
-                    + avContent.getStartTime().toMillis() + "-" + avContent.getEndTime().toMillis() + " ms");
             assertNotNull(avContent.getMarkdown());
             assertFalse(avContent.getMarkdown().isEmpty());
         }
 
     }
 
-    @LiveOnly
     @Test
     public void testAnalyzeAudioUrlWithTimeContentRanges() {
         // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithTimeContentRanges
@@ -625,17 +655,41 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(rangeResult.getContents().size() > 0);
         AudioVisualContent rangeAudioContent = (AudioVisualContent) rangeResult.getContents().get(0);
         assertTrue(rangeAudioContent instanceof AudioVisualContent);
-        assertTrue(fullAudioContent.getMarkdown().length() >= rangeAudioContent.getMarkdown().length());
+        assertTrue(fullAudioContent.getMarkdown().length() >= rangeAudioContent.getMarkdown().length(),
+            "Full audio markdown (" + fullAudioContent.getMarkdown().length() + " chars) should be >= range-limited ("
+                + rangeAudioContent.getMarkdown().length() + " chars)");
         int fullPhraseCount
             = fullAudioContent.getTranscriptPhrases() != null ? fullAudioContent.getTranscriptPhrases().size() : 0;
         int rangePhraseCount
             = rangeAudioContent.getTranscriptPhrases() != null ? rangeAudioContent.getTranscriptPhrases().size() : 0;
         assertTrue(fullPhraseCount >= rangePhraseCount);
-        long rangeDurationMs = rangeAudioContent.getEndTime().toMillis() - rangeAudioContent.getStartTime().toMillis();
-        assertTrue(fullDurationMs >= rangeDurationMs);
-        assertTrue(rangeAudioContent.getStartTime().toMillis() >= 5000, "TimeRangeFrom(5s) audio StartTime ("
-            + rangeAudioContent.getStartTime().toMillis() + " ms) should be >= 5000 ms");
+        assertEquals(fullAudioContent.getStartTime(), rangeAudioContent.getStartTime(),
+            "Ranged audio should retain the full source start time");
+        assertEquals(fullAudioContent.getEndTime(), rangeAudioContent.getEndTime(),
+            "Ranged audio should retain the full source end time");
+        assertFalse(rangeAudioContent.getMarkdown().isEmpty());
         // END:Assertion_ContentUnderstandingAnalyzeAudioUrlWithTimeContentRanges
+
+        // ---- Raw range string (5000-) — equivalent to TimeRangeFrom(5s) ----
+        AnalysisInput rawRangeInput = new AnalysisInput();
+        rawRangeInput.setUrl(uriSource);
+        rawRangeInput.setContentRange(new ContentRange("5000-"));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawRangeInput));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+
+        assertNotNull(rawRangeResult);
+        assertNotNull(rawRangeResult.getContents());
+        assertEquals(1, rawRangeResult.getContents().size());
+        AudioVisualContent rawAudioContent
+            = assertInstanceOf(AudioVisualContent.class, rawRangeResult.getContents().get(0));
+        assertEquals(rangeAudioContent.getStartTime(), rawAudioContent.getStartTime(),
+            "Raw and typed audio ranges should retain the same source-relative start time");
+        assertEquals(rangeAudioContent.getEndTime(), rawAudioContent.getEndTime(),
+            "Raw and typed audio ranges should retain the same source-relative end time");
+        assertNotNull(rawAudioContent.getMarkdown());
+        assertFalse(rawAudioContent.getMarkdown().isEmpty());
 
         // ---- TimeRange(2s, 8s) — specific time window ----
         AnalysisInput windowInput = new AnalysisInput();
@@ -649,13 +703,11 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
 
         assertTrue(audioWindowContent.getEndTime().toMillis() > audioWindowContent.getStartTime().toMillis());
         assertTrue(audioWindowContent.getMarkdown().length() > 0);
-        assertTrue(audioWindowContent.getStartTime().toMillis() >= 2000, "Range(2s-8s) audio StartTime ("
-            + audioWindowContent.getStartTime().toMillis() + " ms) should be >= 2000 ms");
-        assertTrue(audioWindowContent.getEndTime().toMillis() <= 8000,
-            "Range(2s-8s) audio EndTime (" + audioWindowContent.getEndTime().toMillis() + " ms) should be <= 8000 ms");
-        long windowDurationMs
-            = audioWindowContent.getEndTime().toMillis() - audioWindowContent.getStartTime().toMillis();
-        assertTrue(fullDurationMs >= windowDurationMs);
+        assertTrue(fullAudioContent.getMarkdown().length() >= audioWindowContent.getMarkdown().length());
+        assertEquals(fullAudioContent.getStartTime(), audioWindowContent.getStartTime(),
+            "Ranged audio should retain the full source start time");
+        assertEquals(fullAudioContent.getEndTime(), audioWindowContent.getEndTime(),
+            "Ranged audio should retain the full source end time");
 
         // ---- TimeRange sub-second precision (1200ms-3651ms) ----
         AnalysisInput subSecondInput = new AnalysisInput();
@@ -669,13 +721,11 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
 
         assertTrue(audioSubSecondContent.getEndTime().toMillis() > audioSubSecondContent.getStartTime().toMillis());
         assertTrue(audioSubSecondContent.getMarkdown().length() > 0);
-        assertTrue(audioSubSecondContent.getStartTime().toMillis() >= 1200, "Range(1200ms-3651ms) audio StartTime ("
-            + audioSubSecondContent.getStartTime().toMillis() + " ms) should be >= 1200 ms");
-        assertTrue(audioSubSecondContent.getEndTime().toMillis() <= 3651, "Range(1200ms-3651ms) audio EndTime ("
-            + audioSubSecondContent.getEndTime().toMillis() + " ms) should be <= 3651 ms");
-        long subSecondDurationMs
-            = audioSubSecondContent.getEndTime().toMillis() - audioSubSecondContent.getStartTime().toMillis();
-        assertTrue(fullDurationMs >= subSecondDurationMs);
+        assertTrue(fullAudioContent.getMarkdown().length() >= audioSubSecondContent.getMarkdown().length());
+        assertEquals(fullAudioContent.getStartTime(), audioSubSecondContent.getStartTime(),
+            "Ranged audio should retain the full source start time");
+        assertEquals(fullAudioContent.getEndTime(), audioSubSecondContent.getEndTime(),
+            "Ranged audio should retain the full source end time");
 
         // ---- Combine multiple time ranges (0-3s, 30s-) ----
         AnalysisInput combineInput = new AnalysisInput();
@@ -694,5 +744,10 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(combineContent.getEndTime().toMillis() > combineContent.getStartTime().toMillis());
         assertNotNull(combineContent.getMarkdown());
         assertFalse(combineContent.getMarkdown().isEmpty());
+        assertTrue(fullAudioContent.getMarkdown().length() >= combineContent.getMarkdown().length());
+        assertEquals(fullAudioContent.getStartTime(), combineContent.getStartTime(),
+            "Ranged audio should retain the full source start time");
+        assertEquals(fullAudioContent.getEndTime(), combineContent.getEndTime(),
+            "Ranged audio should retain the full source end time");
     }
 }

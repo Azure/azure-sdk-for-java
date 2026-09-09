@@ -21,85 +21,82 @@ public final class GenericProtectedItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericProtectedItem model = BinaryData.fromString(
-            "{\"protectedItemType\":\"GenericProtectedItem\",\"friendlyName\":\"rsyn\",\"policyState\":\"idybyxczf\",\"protectionState\":\"ProtectionError\",\"protectedItemId\":8740719776623853829,\"sourceAssociations\":{\"qlfktsths\":\"abphlw\",\"twwrqp\":\"cocmnyyaztt\",\"eaxib\":\"edckzywbiexzfey\"},\"fabricName\":\"jwbhqwalmuz\",\"backupManagementType\":\"AzureBackupServer\",\"workloadType\":\"Sharepoint\",\"containerName\":\"dkzjancuxrh\",\"sourceResourceId\":\"bavxbniwdjswzt\",\"policyId\":\"bpg\",\"lastRecoveryPoint\":\"2021-04-13T23:02:25Z\",\"backupSetName\":\"x\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-04-28T02:43:47Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"zabglcuhxwt\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"bbovplwzbhvgyugu\",\"svmkfssxquk\"],\"isArchiveEnabled\":true,\"policyName\":\"gmgsxnkjzkde\",\"softDeleteRetentionPeriodInDays\":1710407502,\"vaultId\":\"lopwiyig\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"NotConfigured\",\"sourceSideScanSummary\":\"NotApplicable\"}}")
+            "{\"protectedItemType\":\"GenericProtectedItem\",\"friendlyName\":\"tsdbpgn\",\"policyState\":\"txhp\",\"protectionState\":\"IRPending\",\"protectedItemId\":4021445942662392747,\"sourceAssociations\":{\"lcuhxwtctyqiklb\":\"b\"},\"fabricName\":\"vplwzbhv\",\"backupManagementType\":\"AzureIaasVM\",\"workloadType\":\"SAPHanaDatabase\",\"containerName\":\"svmkfssxquk\",\"sourceResourceId\":\"plgmgsxnk\",\"policyId\":\"kde\",\"lastRecoveryPoint\":\"2021-08-30T18:12:55Z\",\"backupSetName\":\"lopwiyig\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-07-31T13:07:30Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"aiuebbaumnyqu\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"a\",\"ckhsmtxpsieb\",\"fhvpesaps\"],\"isArchiveEnabled\":false,\"policyName\":\"mhjjdhtldwkyzx\",\"softDeleteRetentionPeriodInDays\":1677238877,\"sourceLocation\":\"ncwscwsvlxoto\",\"vaultId\":\"wrupqsxvnmicykvc\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"Configured\",\"sourceSideScanSummary\":\"Suspicious\"}}")
             .toObject(GenericProtectedItem.class);
-        Assertions.assertEquals("dkzjancuxrh", model.containerName());
-        Assertions.assertEquals("bavxbniwdjswzt", model.sourceResourceId());
-        Assertions.assertEquals("bpg", model.policyId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-13T23:02:25Z"), model.lastRecoveryPoint());
-        Assertions.assertEquals("x", model.backupSetName());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T02:43:47Z"), model.deferredDeleteTimeInUtc());
+        Assertions.assertEquals("svmkfssxquk", model.containerName());
+        Assertions.assertEquals("plgmgsxnk", model.sourceResourceId());
+        Assertions.assertEquals("kde", model.policyId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T18:12:55Z"), model.lastRecoveryPoint());
+        Assertions.assertEquals("lopwiyig", model.backupSetName());
+        Assertions.assertEquals(CreateMode.RECOVER, model.createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T13:07:30Z"), model.deferredDeleteTimeInUtc());
         Assertions.assertFalse(model.isScheduledForDeferredDelete());
-        Assertions.assertEquals("zabglcuhxwt", model.deferredDeleteTimeRemaining());
-        Assertions.assertTrue(model.isDeferredDeleteScheduleUpcoming());
+        Assertions.assertEquals("aiuebbaumnyqu", model.deferredDeleteTimeRemaining());
+        Assertions.assertFalse(model.isDeferredDeleteScheduleUpcoming());
         Assertions.assertTrue(model.isRehydrate());
-        Assertions.assertEquals("bbovplwzbhvgyugu", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertTrue(model.isArchiveEnabled());
-        Assertions.assertEquals("gmgsxnkjzkde", model.policyName());
-        Assertions.assertEquals(1710407502, model.softDeleteRetentionPeriodInDays());
-        Assertions.assertEquals(SourceSideScanStatus.NOT_CONFIGURED, model.sourceSideScanInfo().sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.NOT_APPLICABLE,
-            model.sourceSideScanInfo().sourceSideScanSummary());
-        Assertions.assertEquals("rsyn", model.friendlyName());
-        Assertions.assertEquals("idybyxczf", model.policyState());
-        Assertions.assertEquals(ProtectionState.PROTECTION_ERROR, model.protectionState());
-        Assertions.assertEquals(8740719776623853829L, model.protectedItemId());
-        Assertions.assertEquals("abphlw", model.sourceAssociations().get("qlfktsths"));
-        Assertions.assertEquals("jwbhqwalmuz", model.fabricName());
+        Assertions.assertEquals("a", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertFalse(model.isArchiveEnabled());
+        Assertions.assertEquals("mhjjdhtldwkyzx", model.policyName());
+        Assertions.assertEquals(1677238877, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SourceSideScanStatus.CONFIGURED, model.sourceSideScanInfo().sourceSideScanStatus());
+        Assertions.assertEquals(SourceSideScanSummary.SUSPICIOUS, model.sourceSideScanInfo().sourceSideScanSummary());
+        Assertions.assertEquals("tsdbpgn", model.friendlyName());
+        Assertions.assertEquals("txhp", model.policyState());
+        Assertions.assertEquals(ProtectionState.IRPENDING, model.protectionState());
+        Assertions.assertEquals(4021445942662392747L, model.protectedItemId());
+        Assertions.assertEquals("b", model.sourceAssociations().get("lcuhxwtctyqiklb"));
+        Assertions.assertEquals("vplwzbhv", model.fabricName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericProtectedItem model = new GenericProtectedItem().withContainerName("dkzjancuxrh")
-            .withSourceResourceId("bavxbniwdjswzt")
-            .withPolicyId("bpg")
-            .withLastRecoveryPoint(OffsetDateTime.parse("2021-04-13T23:02:25Z"))
-            .withBackupSetName("x")
-            .withCreateMode(CreateMode.DEFAULT)
-            .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-04-28T02:43:47Z"))
+        GenericProtectedItem model = new GenericProtectedItem().withContainerName("svmkfssxquk")
+            .withSourceResourceId("plgmgsxnk")
+            .withPolicyId("kde")
+            .withLastRecoveryPoint(OffsetDateTime.parse("2021-08-30T18:12:55Z"))
+            .withBackupSetName("lopwiyig")
+            .withCreateMode(CreateMode.RECOVER)
+            .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-07-31T13:07:30Z"))
             .withIsScheduledForDeferredDelete(false)
-            .withDeferredDeleteTimeRemaining("zabglcuhxwt")
-            .withIsDeferredDeleteScheduleUpcoming(true)
+            .withDeferredDeleteTimeRemaining("aiuebbaumnyqu")
+            .withIsDeferredDeleteScheduleUpcoming(false)
             .withIsRehydrate(true)
-            .withResourceGuardOperationRequests(Arrays.asList("bbovplwzbhvgyugu", "svmkfssxquk"))
-            .withIsArchiveEnabled(true)
-            .withPolicyName("gmgsxnkjzkde")
-            .withSoftDeleteRetentionPeriodInDays(1710407502)
-            .withSourceSideScanInfo(
-                new SourceSideScanInfo().withSourceSideScanStatus(SourceSideScanStatus.NOT_CONFIGURED)
-                    .withSourceSideScanSummary(SourceSideScanSummary.NOT_APPLICABLE))
-            .withFriendlyName("rsyn")
-            .withPolicyState("idybyxczf")
-            .withProtectionState(ProtectionState.PROTECTION_ERROR)
-            .withProtectedItemId(8740719776623853829L)
-            .withSourceAssociations(mapOf("qlfktsths", "abphlw", "twwrqp", "cocmnyyaztt", "eaxib", "edckzywbiexzfey"))
-            .withFabricName("jwbhqwalmuz");
+            .withResourceGuardOperationRequests(Arrays.asList("a", "ckhsmtxpsieb", "fhvpesaps"))
+            .withIsArchiveEnabled(false)
+            .withPolicyName("mhjjdhtldwkyzx")
+            .withSoftDeleteRetentionPeriodInDays(1677238877)
+            .withSourceSideScanInfo(new SourceSideScanInfo().withSourceSideScanStatus(SourceSideScanStatus.CONFIGURED)
+                .withSourceSideScanSummary(SourceSideScanSummary.SUSPICIOUS))
+            .withFriendlyName("tsdbpgn")
+            .withPolicyState("txhp")
+            .withProtectionState(ProtectionState.IRPENDING)
+            .withProtectedItemId(4021445942662392747L)
+            .withSourceAssociations(mapOf("lcuhxwtctyqiklb", "b"))
+            .withFabricName("vplwzbhv");
         model = BinaryData.fromObject(model).toObject(GenericProtectedItem.class);
-        Assertions.assertEquals("dkzjancuxrh", model.containerName());
-        Assertions.assertEquals("bavxbniwdjswzt", model.sourceResourceId());
-        Assertions.assertEquals("bpg", model.policyId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-13T23:02:25Z"), model.lastRecoveryPoint());
-        Assertions.assertEquals("x", model.backupSetName());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T02:43:47Z"), model.deferredDeleteTimeInUtc());
+        Assertions.assertEquals("svmkfssxquk", model.containerName());
+        Assertions.assertEquals("plgmgsxnk", model.sourceResourceId());
+        Assertions.assertEquals("kde", model.policyId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T18:12:55Z"), model.lastRecoveryPoint());
+        Assertions.assertEquals("lopwiyig", model.backupSetName());
+        Assertions.assertEquals(CreateMode.RECOVER, model.createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T13:07:30Z"), model.deferredDeleteTimeInUtc());
         Assertions.assertFalse(model.isScheduledForDeferredDelete());
-        Assertions.assertEquals("zabglcuhxwt", model.deferredDeleteTimeRemaining());
-        Assertions.assertTrue(model.isDeferredDeleteScheduleUpcoming());
+        Assertions.assertEquals("aiuebbaumnyqu", model.deferredDeleteTimeRemaining());
+        Assertions.assertFalse(model.isDeferredDeleteScheduleUpcoming());
         Assertions.assertTrue(model.isRehydrate());
-        Assertions.assertEquals("bbovplwzbhvgyugu", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertTrue(model.isArchiveEnabled());
-        Assertions.assertEquals("gmgsxnkjzkde", model.policyName());
-        Assertions.assertEquals(1710407502, model.softDeleteRetentionPeriodInDays());
-        Assertions.assertEquals(SourceSideScanStatus.NOT_CONFIGURED, model.sourceSideScanInfo().sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.NOT_APPLICABLE,
-            model.sourceSideScanInfo().sourceSideScanSummary());
-        Assertions.assertEquals("rsyn", model.friendlyName());
-        Assertions.assertEquals("idybyxczf", model.policyState());
-        Assertions.assertEquals(ProtectionState.PROTECTION_ERROR, model.protectionState());
-        Assertions.assertEquals(8740719776623853829L, model.protectedItemId());
-        Assertions.assertEquals("abphlw", model.sourceAssociations().get("qlfktsths"));
-        Assertions.assertEquals("jwbhqwalmuz", model.fabricName());
+        Assertions.assertEquals("a", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertFalse(model.isArchiveEnabled());
+        Assertions.assertEquals("mhjjdhtldwkyzx", model.policyName());
+        Assertions.assertEquals(1677238877, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SourceSideScanStatus.CONFIGURED, model.sourceSideScanInfo().sourceSideScanStatus());
+        Assertions.assertEquals(SourceSideScanSummary.SUSPICIOUS, model.sourceSideScanInfo().sourceSideScanSummary());
+        Assertions.assertEquals("tsdbpgn", model.friendlyName());
+        Assertions.assertEquals("txhp", model.policyState());
+        Assertions.assertEquals(ProtectionState.IRPENDING, model.protectionState());
+        Assertions.assertEquals(4021445942662392747L, model.protectedItemId());
+        Assertions.assertEquals("b", model.sourceAssociations().get("lcuhxwtctyqiklb"));
+        Assertions.assertEquals("vplwzbhv", model.fabricName());
     }
 
     // Use "Map.of" if available

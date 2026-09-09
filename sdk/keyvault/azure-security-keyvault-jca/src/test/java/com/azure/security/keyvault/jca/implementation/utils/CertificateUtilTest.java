@@ -23,6 +23,7 @@ import static com.azure.security.keyvault.jca.implementation.utils.CertificateUt
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CertificateUtilTest {
 
@@ -45,7 +46,44 @@ public class CertificateUtilTest {
     private void assertCertNumberInCertChain(String pemFile, int expectedNumber) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         String pemString = new String(Files.readAllBytes(Paths.get(pemFile)), StandardCharsets.UTF_8);
-        assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString).length);
+        assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString, false).length);
+    }
+
+    @Test
+    public void loadUnterminatedCertificatePemFails() throws IOException {
+        String pemString = readCertificatePem();
+        String unterminatedPem = pemString.substring(0, pemString.indexOf("-----END CERTIFICATE-----"));
+
+        CertificateException exception = assertThrows(CertificateException.class,
+            () -> CertificateUtil.loadCertificatesFromSecretBundleValue(unterminatedPem, false));
+
+        assertEquals("Certificate PEM block is not terminated.", exception.getMessage());
+    }
+
+    @Test
+    public void loadNestedCertificatePemFails() throws IOException {
+        String nestedPem = "-----BEGIN CERTIFICATE-----\n" + readCertificatePem();
+
+        CertificateException exception = assertThrows(CertificateException.class,
+            () -> CertificateUtil.loadCertificatesFromSecretBundleValue(nestedPem, false));
+
+        assertEquals("Certificate PEM block contains a nested BEGIN CERTIFICATE marker.", exception.getMessage());
+    }
+
+    @Test
+    public void loadCertificatePemWithUnmatchedEndFails() {
+        CertificateException exception = assertThrows(CertificateException.class,
+            () -> CertificateUtil.loadCertificatesFromSecretBundleValuePem("-----END CERTIFICATE-----"));
+
+        assertEquals("Certificate PEM block has an END CERTIFICATE marker without a matching BEGIN CERTIFICATE marker.",
+            exception.getMessage());
+    }
+
+    private String readCertificatePem() throws IOException {
+        return new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem")),
+            StandardCharsets.UTF_8);
     }
 
     @Test

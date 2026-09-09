@@ -14,31 +14,31 @@ public final class FetchTieringCostInfoForRehydrationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FetchTieringCostInfoForRehydrationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FetchTieringCostInfoForRehydrationRequest\",\"containerName\":\"jfgxxsaetg\",\"protectedItemName\":\"dgvpyig\",\"recoveryPointId\":\"aqqilzdcduwjoed\",\"rehydrationPriority\":\"High\",\"sourceTierType\":\"InstantRP\",\"targetTierType\":\"ArchivedRP\"}")
+            "{\"objectType\":\"FetchTieringCostInfoForRehydrationRequest\",\"containerName\":\"uhvajmailfemjjza\",\"protectedItemName\":\"zwjiqullq\",\"recoveryPointId\":\"bdmvrscmqerndbr\",\"rehydrationPriority\":\"High\",\"sourceTierType\":\"Invalid\",\"targetTierType\":\"ArchivedRP\"}")
             .toObject(FetchTieringCostInfoForRehydrationRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
-        Assertions.assertEquals("jfgxxsaetg", model.containerName());
-        Assertions.assertEquals("dgvpyig", model.protectedItemName());
-        Assertions.assertEquals("aqqilzdcduwjoed", model.recoveryPointId());
+        Assertions.assertEquals("uhvajmailfemjjza", model.containerName());
+        Assertions.assertEquals("zwjiqullq", model.protectedItemName());
+        Assertions.assertEquals("bdmvrscmqerndbr", model.recoveryPointId());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchTieringCostInfoForRehydrationRequest model
-            = new FetchTieringCostInfoForRehydrationRequest().withSourceTierType(RecoveryPointTierType.INSTANT_RP)
+            = new FetchTieringCostInfoForRehydrationRequest().withSourceTierType(RecoveryPointTierType.INVALID)
                 .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
-                .withContainerName("jfgxxsaetg")
-                .withProtectedItemName("dgvpyig")
-                .withRecoveryPointId("aqqilzdcduwjoed")
+                .withContainerName("uhvajmailfemjjza")
+                .withProtectedItemName("zwjiqullq")
+                .withRecoveryPointId("bdmvrscmqerndbr")
                 .withRehydrationPriority(RehydrationPriority.HIGH);
         model = BinaryData.fromObject(model).toObject(FetchTieringCostInfoForRehydrationRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
-        Assertions.assertEquals("jfgxxsaetg", model.containerName());
-        Assertions.assertEquals("dgvpyig", model.protectedItemName());
-        Assertions.assertEquals("aqqilzdcduwjoed", model.recoveryPointId());
+        Assertions.assertEquals("uhvajmailfemjjza", model.containerName());
+        Assertions.assertEquals("zwjiqullq", model.protectedItemName());
+        Assertions.assertEquals("bdmvrscmqerndbr", model.recoveryPointId());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
     }
 }

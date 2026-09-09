@@ -16,7 +16,7 @@ import java.io.IOException;
  * Dispatches a routine through the responses API. Exactly one of agent_name or agent_endpoint_id must be provided.
  */
 @Fluent
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
 
     /*

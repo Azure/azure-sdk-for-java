@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class ProviderMonitorSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_Update.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Update.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Update.

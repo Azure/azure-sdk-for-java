@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.4 (Unreleased)
+## 1.5.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,165 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.4 (2026-08-27)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-07-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ConnectionPropertiesV2BasicResource$DefinitionStages` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.VmPriority` was modified
+
+* `LOW_PRIORITY` was removed
+
+#### `models.AccountConnections` was modified
+
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `create(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Compute$Definition` was modified
+
+* `withRegion(com.azure.core.management.Region)` was removed
+* `withRegion(java.lang.String)` was removed
+
+#### `models.ProjectConnections` was modified
+
+* `getById(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Compute` was modified
+
+* `regionName()` was removed
+* `location()` was removed
+* `region()` was removed
+
+### Features Added
+
+* `models.ArcDeployment$UpdateStages` was added
+
+* `models.ArcDeploymentRuntime` was added
+
+* `models.ArcDeployment$Definition` was added
+
+* `models.ArcDeployment$DefinitionStages` was added
+
+* `models.ArcDeployment` was added
+
+* `models.ArcDeploymentUpdate` was added
+
+* `models.AgentHostingType` was added
+
+* `models.ArcDeploymentPatchKubernetesResources` was added
+
+* `models.ArcDeploymentVllmParameters` was added
+
+* `models.ArcDeploymentSkuName` was added
+
+* `models.ArcDeploymentProvisioningDetails` was added
+
+* `models.ArcDeploymentKubernetesResources` was added
+
+* `models.ArcDeploymentUpdateProperties` was added
+
+* `models.CapabilitySettings` was added
+
+* `models.ArcDeploymentCpuMemoryResourceRequirements` was added
+
+* `models.ArcDeployment$Update` was added
+
+* `models.ArcDeployments` was added
+
+* `models.ArcDeploymentComputeType` was added
+
+* `models.ArcDeploymentModel` was added
+
+* `models.AgentHostingConfiguration` was added
+
+* `models.ArcDeploymentProperties` was added
+
+* `models.ArcDeploymentPatchCpuMemoryResourceRequirements` was added
+
+* `models.ManagedClusterAgentHostingConfiguration` was added
+
+* `models.ArcDeploymentSku` was added
+
+* `models.ArcDeploymentResourceRequirements` was added
+
+#### `models.VmPriority` was modified
+
+* `SPOT` was added
+
+#### `models.AccountConnections` was modified
+
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+
+#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `arcDeployments()` was added
+
+#### `models.ComputeProperties` was modified
+
+* `location()` was added
+* `withLocation(java.lang.String)` was added
+
+#### `models.ProjectProperties` was modified
+
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `capabilitySettings()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `withContextCacheContainerId(java.lang.String)` was added
+* `contextCacheContainerId()` was added
+
+#### `models.ProvisioningState` was modified
+
+* `EXTENSION_UNREACHABLE` was added
+
+#### `models.ProjectConnections` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `create(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was added
+
+#### `models.ContainerInstanceComputeProperties` was modified
+
+* `withLocation(java.lang.String)` was added
+
+#### `models.AccountProperties` was modified
+
+* `withA365LoggingEnabled(java.lang.Boolean)` was added
+* `a365LoggingEnabled()` was added
+* `withCapabilitySettings(models.CapabilitySettings)` was added
+* `withAgentHostingConfigurations(java.util.List)` was added
+* `agentHostingConfigurations()` was added
+* `capabilitySettings()` was added
+
+#### `models.ClusterComputeProperties` was modified
+
+* `withLocation(java.lang.String)` was added
 
 ## 1.5.0-beta.3 (2026-06-26)
 

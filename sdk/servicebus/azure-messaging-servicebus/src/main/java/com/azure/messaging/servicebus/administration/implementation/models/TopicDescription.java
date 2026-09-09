@@ -130,6 +130,18 @@ public final class TopicDescription implements XmlSerializable<TopicDescription>
     private Integer subscriptionCount;
 
     /*
+     * The total number of SQL filters across all subscriptions of the topic.
+     */
+    @Generated
+    private Integer sqlFilterCount;
+
+    /*
+     * The total number of correlation filters across all subscriptions of the topic.
+     */
+    @Generated
+    private Integer correlationFilterCount;
+
+    /*
      * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5
      * minutes.
      */
@@ -552,6 +564,52 @@ public final class TopicDescription implements XmlSerializable<TopicDescription>
     }
 
     /**
+     * Get the sqlFilterCount property: The total number of SQL filters across all subscriptions of the topic.
+     * 
+     * @return the sqlFilterCount value.
+     */
+    @Generated
+    public Integer getSqlFilterCount() {
+        return this.sqlFilterCount;
+    }
+
+    /**
+     * Set the sqlFilterCount property: The total number of SQL filters across all subscriptions of the topic.
+     * 
+     * @param sqlFilterCount the sqlFilterCount value to set.
+     * @return the TopicDescription object itself.
+     */
+    @Generated
+    public TopicDescription setSqlFilterCount(Integer sqlFilterCount) {
+        this.sqlFilterCount = sqlFilterCount;
+        return this;
+    }
+
+    /**
+     * Get the correlationFilterCount property: The total number of correlation filters across all subscriptions of the
+     * topic.
+     * 
+     * @return the correlationFilterCount value.
+     */
+    @Generated
+    public Integer getCorrelationFilterCount() {
+        return this.correlationFilterCount;
+    }
+
+    /**
+     * Set the correlationFilterCount property: The total number of correlation filters across all subscriptions of the
+     * topic.
+     * 
+     * @param correlationFilterCount the correlationFilterCount value to set.
+     * @return the TopicDescription object itself.
+     */
+    @Generated
+    public TopicDescription setCorrelationFilterCount(Integer correlationFilterCount) {
+        this.correlationFilterCount = correlationFilterCount;
+        return this;
+    }
+
+    /**
      * Get the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
      * 
@@ -762,6 +820,9 @@ public final class TopicDescription implements XmlSerializable<TopicDescription>
         xmlWriter.writeXml(this.messageCountDetails, "CountDetails");
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SubscriptionCount",
             this.subscriptionCount);
+        xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SqlFilterCount", this.sqlFilterCount);
+        xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "CorrelationFilterCount",
+            this.correlationFilterCount);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "AutoDeleteOnIdle",
             CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EnablePartitioning",
@@ -878,6 +939,12 @@ public final class TopicDescription implements XmlSerializable<TopicDescription>
                 } else if ("SubscriptionCount".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedTopicDescription.subscriptionCount = reader.getNullableElement(Integer::parseInt);
+                } else if ("SqlFilterCount".equals(elementName.getLocalPart())
+                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
+                    deserializedTopicDescription.sqlFilterCount = reader.getNullableElement(Integer::parseInt);
+                } else if ("CorrelationFilterCount".equals(elementName.getLocalPart())
+                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
+                    deserializedTopicDescription.correlationFilterCount = reader.getNullableElement(Integer::parseInt);
                 } else if ("AutoDeleteOnIdle".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedTopicDescription.autoDeleteOnIdle = reader.getNullableElement(Duration::parse);

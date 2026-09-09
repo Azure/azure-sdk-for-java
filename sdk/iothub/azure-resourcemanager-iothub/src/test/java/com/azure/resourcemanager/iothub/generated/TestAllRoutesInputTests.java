@@ -18,32 +18,28 @@ public final class TestAllRoutesInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesInput model = BinaryData.fromString(
-            "{\"routingSource\":\"MqttBrokerMessages\",\"message\":{\"body\":\"io\",\"appProperties\":{\"xosow\":\"hakauhashsf\",\"cjooxdjebwpucwwf\":\"xcug\",\"hzceuojgjrwjue\":\"ovbvmeueciv\"},\"systemProperties\":{\"xnrj\":\"wmcdytdxwi\"}},\"twin\":{\"tags\":{\"skxfbk\":\"\\\"datawgxhn\\\"\",\"gklwn\":\"\\\"datay\\\"\",\"vylwzbtdhxuj\":\"\\\"datanhjdauw\\\"\"},\"properties\":{\"desired\":{\"wpr\":\"\\\"datapow\\\"\",\"xobbcswsrt\":\"\\\"dataqlveualupjmkh\\\"\"},\"reported\":{\"blcg\":\"\\\"dataplrbpbewtghf\\\"\",\"nmxiebwwaloayqc\":\"\\\"dataxzvlvqhjkbegib\\\"\",\"uzgwyzmhtx\":\"\\\"datawrtz\\\"\",\"wxqpsrknftguvri\":\"\\\"datangmtsavjcb\\\"\"}}}}")
+            "{\"routingSource\":\"TwinChangeEvents\",\"message\":{\"body\":\"qcgw\",\"appProperties\":{\"zg\":\"j\",\"txon\":\"yzm\"},\"systemProperties\":{\"knftguvriuh\":\"savjcbpwxqps\"}},\"twin\":{\"tags\":\"\\\"datamdyvxqtayriw\\\"\",\"properties\":{\"desired\":\"\\\"datayqbexrmcqibycno\\\"\",\"reported\":\"\\\"dataknme\\\"\"}}}")
             .toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.routingSource());
-        Assertions.assertEquals("io", model.message().body());
-        Assertions.assertEquals("hakauhashsf", model.message().appProperties().get("xosow"));
-        Assertions.assertEquals("wmcdytdxwi", model.message().systemProperties().get("xnrj"));
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
+        Assertions.assertEquals("qcgw", model.message().body());
+        Assertions.assertEquals("j", model.message().appProperties().get("zg"));
+        Assertions.assertEquals("savjcbpwxqps", model.message().systemProperties().get("knftguvriuh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.MQTT_BROKER_MESSAGES)
-            .withMessage(new RoutingMessage().withBody("io")
-                .withAppProperties(
-                    mapOf("xosow", "hakauhashsf", "cjooxdjebwpucwwf", "xcug", "hzceuojgjrwjue", "ovbvmeueciv"))
-                .withSystemProperties(mapOf("xnrj", "wmcdytdxwi")))
-            .withTwin(new RoutingTwin()
-                .withTags(mapOf("skxfbk", "\"datawgxhn\"", "gklwn", "\"datay\"", "vylwzbtdhxuj", "\"datanhjdauw\""))
-                .withProperties(new RoutingTwinProperties()
-                    .withDesired(mapOf("wpr", "\"datapow\"", "xobbcswsrt", "\"dataqlveualupjmkh\""))
-                    .withReported(mapOf("blcg", "\"dataplrbpbewtghf\"", "nmxiebwwaloayqc", "\"dataxzvlvqhjkbegib\"",
-                        "uzgwyzmhtx", "\"datawrtz\"", "wxqpsrknftguvri", "\"datangmtsavjcb\""))));
+        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
+            .withMessage(new RoutingMessage().withBody("qcgw")
+                .withAppProperties(mapOf("zg", "j", "txon", "yzm"))
+                .withSystemProperties(mapOf("knftguvriuh", "savjcbpwxqps")))
+            .withTwin(new RoutingTwin().withTags("\"datamdyvxqtayriw\"")
+                .withProperties(
+                    new RoutingTwinProperties().withDesired("\"datayqbexrmcqibycno\"").withReported("\"dataknme\"")));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.routingSource());
-        Assertions.assertEquals("io", model.message().body());
-        Assertions.assertEquals("hakauhashsf", model.message().appProperties().get("xosow"));
-        Assertions.assertEquals("wmcdytdxwi", model.message().systemProperties().get("xnrj"));
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
+        Assertions.assertEquals("qcgw", model.message().body());
+        Assertions.assertEquals("j", model.message().appProperties().get("zg"));
+        Assertions.assertEquals("savjcbpwxqps", model.message().systemProperties().get("knftguvriuh"));
     }
 
     // Use "Map.of" if available

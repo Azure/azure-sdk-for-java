@@ -1206,6 +1206,13 @@ public final class BetaModelsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Location</td><td>String</td><td>URL to poll for operation status.</td></tr>
+     * </table>
+     * 
      * @param name Name of the model.
      * @param version Version of the model.
      * @param modelVersion Model version to create.
@@ -1284,6 +1291,13 @@ public final class BetaModelsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Location</td><td>String</td><td>URL to poll for operation status.</td></tr>
+     * </table>
      * 
      * @param name Name of the model.
      * @param version Version of the model.

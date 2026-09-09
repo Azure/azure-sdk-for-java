@@ -1,0 +1,12 @@
+diff --git a/sdk/compute/azure-resourcemanager-compute-bulkactions/src/main/java/com/azure/resourcemanager/compute/bulkactions/BulkActionsManager.java b/sdk/compute/azure-resourcemanager-compute-bulkactions/src/main/java/com/azure/resourcemanager/compute/bulkactions/BulkActionsManager.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/compute/azure-resourcemanager-compute-bulkactions/src/main/java/com/azure/resourcemanager/compute/bulkactions/BulkActionsManager.java
+@@ -0,0 +1,7 @@
++package com.azure.resourcemanager.compute.bulkactions;
++
++public final class BulkActionsManager {
++    public BulkOperations bulkOperations() {
++        return bulkOperations;
++    }
++}

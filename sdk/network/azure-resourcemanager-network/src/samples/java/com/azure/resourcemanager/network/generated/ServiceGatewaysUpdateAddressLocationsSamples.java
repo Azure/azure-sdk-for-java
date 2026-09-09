@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ServiceGatewaysUpdateAddressLocationsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
+     * x-ms-original-file: 2025-09-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
      */
     /**
      * Sample code: Full Update: Create, update, or delete address locations in the service gateway.
@@ -27,7 +27,7 @@ public final class ServiceGatewaysUpdateAddressLocationsSamples {
         com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getServiceGateways()
-            .updateAddressLocations("rg1", "sg", new ServiceGatewayUpdateAddressLocationsRequest()
+            .updateAddressLocationsWithResponse("rg1", "sg", new ServiceGatewayUpdateAddressLocationsRequest()
                 .withAction(UpdateAction.FULL_UPDATE)
                 .withAddressLocations(Arrays.asList(
                     new ServiceGatewayAddressLocation().withAddressLocation("192.0.0.1")
@@ -43,7 +43,7 @@ public final class ServiceGatewaysUpdateAddressLocationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
+     * x-ms-original-file: 2025-09-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
      */
     /**
      * Sample code: Partial Update: Create, update, or delete address locations in the service gateway.
@@ -54,7 +54,7 @@ public final class ServiceGatewaysUpdateAddressLocationsSamples {
         com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getServiceGateways()
-            .updateAddressLocations("rg1", "sg", new ServiceGatewayUpdateAddressLocationsRequest()
+            .updateAddressLocationsWithResponse("rg1", "sg", new ServiceGatewayUpdateAddressLocationsRequest()
                 .withAction(UpdateAction.PARTIAL_UPDATE)
                 .withAddressLocations(Arrays.asList(
                     new ServiceGatewayAddressLocation().withAddressLocation("192.0.0.1")

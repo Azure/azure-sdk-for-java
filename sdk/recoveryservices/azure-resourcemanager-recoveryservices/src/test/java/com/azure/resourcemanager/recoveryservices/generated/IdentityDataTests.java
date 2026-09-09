@@ -16,18 +16,18 @@ public final class IdentityDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityData model = BinaryData.fromString(
-            "{\"principalId\":\"douskcqvkocrcjdk\",\"tenantId\":\"nh\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"fmppe\":{\"principalId\":\"iksqr\",\"clientId\":\"ssainqpjwnzll\"},\"vndhkrwpdapp\":{\"principalId\":\"vmgxsab\",\"clientId\":\"qduujitcjczdz\"},\"je\":{\"principalId\":\"bdkvwrwjf\",\"clientId\":\"snhu\"},\"tqxhocdgeab\":{\"principalId\":\"mrldhu\",\"clientId\":\"zzd\"}}}")
+            "{\"principalId\":\"uskcqvkocrcj\",\"tenantId\":\"wtnhxbnjbiksqr\",\"type\":\"None\",\"userAssignedIdentities\":{\"bkyqduu\":{\"principalId\":\"inqpjwnzll\",\"clientId\":\"mppeebvmgxs\"},\"d\":{\"principalId\":\"tcj\",\"clientId\":\"dzevndhkrw\"},\"usnhutje\":{\"principalId\":\"p\",\"clientId\":\"bdkvwrwjf\"}}}")
             .toObject(IdentityData.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityData model = new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("fmppe", new UserIdentity(), "vndhkrwpdapp", new UserIdentity(), "je",
-                new UserIdentity(), "tqxhocdgeab", new UserIdentity()));
+        IdentityData model = new IdentityData().withType(ResourceIdentityType.NONE)
+            .withUserAssignedIdentities(
+                mapOf("bkyqduu", new UserIdentity(), "d", new UserIdentity(), "usnhutje", new UserIdentity()));
         model = BinaryData.fromObject(model).toObject(IdentityData.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AlertConfigurationsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AlertConfigurations_ListByManagedCluster.json
+     * x-ms-original-file: 2026-06-02-preview/AlertConfigurations_ListByManagedCluster.json
      */
     /**
      * Sample code: List Alert Configurations by Managed Cluster.

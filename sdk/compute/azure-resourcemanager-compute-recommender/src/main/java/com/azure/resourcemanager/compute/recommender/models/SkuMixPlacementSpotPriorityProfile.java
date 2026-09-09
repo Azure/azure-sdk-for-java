@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Spot priority configuration. Required when priority is Spot.
+ * Spot priority configuration.
  */
 @Fluent
 public final class SkuMixPlacementSpotPriorityProfile implements JsonSerializable<SkuMixPlacementSpotPriorityProfile> {

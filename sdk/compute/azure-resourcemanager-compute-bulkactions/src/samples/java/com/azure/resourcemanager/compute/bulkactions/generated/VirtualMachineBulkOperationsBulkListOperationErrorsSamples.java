@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class VirtualMachineBulkOperationsBulkListOperationErrorsSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.
@@ -23,7 +23,7 @@ public final class VirtualMachineBulkOperationsBulkListOperationErrorsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkListOperationErrors_Example.

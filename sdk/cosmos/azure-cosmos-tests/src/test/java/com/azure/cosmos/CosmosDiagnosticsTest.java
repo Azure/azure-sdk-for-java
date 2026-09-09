@@ -7,7 +7,6 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -1510,7 +1509,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void addressResolutionStatistics() {
         CosmosClient client1 = null;
         CosmosClient client2 = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
         String containerId = UUID.randomUUID().toString();
         CosmosDatabase cosmosDatabase = null;
         CosmosContainer cosmosContainer = null;
@@ -1592,7 +1591,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void responseStatisticRequestStartTimeUTCForDirectCall() {
         CosmosAsyncClient client = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
         FaultInjectionRule faultInjectionRule = null;
 
         try {
@@ -1656,6 +1655,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
             }
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1663,7 +1663,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void negativeE2ETimeoutWithPointOperation() {
         CosmosAsyncClient client = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
 
         try {
             client = new CosmosClientBuilder()
@@ -1690,6 +1690,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1697,7 +1698,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void negativeE2ETimeoutWithQueryOperation() {
         CosmosAsyncClient client = null;
-        String databaseId = DatabaseForTest.generateId();
+        String databaseId = CosmosDatabaseForTest.generateId();
 
         try {
             client = new CosmosClientBuilder()
@@ -1729,6 +1730,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }

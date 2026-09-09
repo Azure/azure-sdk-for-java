@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class MonitorsListHostsSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_ListHosts_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_ListHosts_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MinimumSet_Gen.
@@ -29,7 +29,7 @@ public final class MonitorsListHostsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_ListHosts_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_ListHosts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MaximumSet_Gen.
