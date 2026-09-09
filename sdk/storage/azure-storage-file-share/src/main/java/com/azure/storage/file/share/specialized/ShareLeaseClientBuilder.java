@@ -109,7 +109,7 @@ public final class ShareLeaseClientBuilder {
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
         return new ShareLeaseAsyncClient(pipeline, url, shareName, shareSnapshot, resourcePath, getLeaseId(),
-            isShareFile, accountName, version.getVersion(), allowTrailingDot, allowSourceTrailingDot, shareTokenIntent);
+            isShareFile, accountName, version, allowTrailingDot, allowSourceTrailingDot, shareTokenIntent);
     }
 
     /**
