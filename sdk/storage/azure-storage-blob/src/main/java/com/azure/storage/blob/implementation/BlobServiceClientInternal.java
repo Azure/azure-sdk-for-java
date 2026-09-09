@@ -53,7 +53,7 @@ public final class BlobServiceClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    BlobServiceClientInternal(ServicesImpl serviceClient) {
+    public BlobServiceClientInternal(ServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

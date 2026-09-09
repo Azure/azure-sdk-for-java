@@ -55,7 +55,7 @@ public final class BlobServiceAsyncClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    BlobServiceAsyncClientInternal(ServicesImpl serviceClient) {
+    public BlobServiceAsyncClientInternal(ServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

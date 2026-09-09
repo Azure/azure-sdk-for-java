@@ -54,7 +54,7 @@ public final class BlockBlobClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    BlockBlobClientInternal(BlockBlobsImpl serviceClient) {
+    public BlockBlobClientInternal(BlockBlobsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

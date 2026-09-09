@@ -55,7 +55,7 @@ public final class PageBlobAsyncClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    PageBlobAsyncClientInternal(PageBlobsImpl serviceClient) {
+    public PageBlobAsyncClientInternal(PageBlobsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

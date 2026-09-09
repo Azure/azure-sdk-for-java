@@ -41,7 +41,7 @@ public final class AppendBlobClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    AppendBlobClientInternal(AppendBlobsImpl serviceClient) {
+    public AppendBlobClientInternal(AppendBlobsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

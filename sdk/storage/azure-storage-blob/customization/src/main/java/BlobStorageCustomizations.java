@@ -462,9 +462,10 @@ public class BlobStorageCustomizations extends Customization {
             // simple and fully-qualified forms.
             content = removeServiceClientAnnotation(content);
             content = content.replace("import com.azure.core.annotation.ServiceClient;" + System.lineSeparator(), "");
-            // The generated constructor is package-private; callers now live in a different package.
-            content = content.replace(System.lineSeparator() + "    " + className + "(",
-                System.lineSeparator() + "    public " + className + "(");
+            // The generated constructor is package-private; callers now live in a different package. Anchored on the
+            // line start rather than a platform line separator: the emitter output uses "\n" regardless of platform,
+            // so matching System.lineSeparator() silently fails on Windows.
+            content = content.replaceFirst("(?m)^(\\s*)" + className + "\\(", "$1public " + className + "(");
             // Rename the class declaration, constructor and self-references. Longer names that merely contain this
             // one (e.g. PageBlobClientBuilder) are protected by requiring a non-identifier character on each side.
             content = renameIdentifier(content, className, newName);

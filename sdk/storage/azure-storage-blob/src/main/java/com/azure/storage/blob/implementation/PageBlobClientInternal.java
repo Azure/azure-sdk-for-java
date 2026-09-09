@@ -53,7 +53,7 @@ public final class PageBlobClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    PageBlobClientInternal(PageBlobsImpl serviceClient) {
+    public PageBlobClientInternal(PageBlobsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

@@ -43,7 +43,7 @@ public final class AppendBlobAsyncClientInternal {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    AppendBlobAsyncClientInternal(AppendBlobsImpl serviceClient) {
+    public AppendBlobAsyncClientInternal(AppendBlobsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
