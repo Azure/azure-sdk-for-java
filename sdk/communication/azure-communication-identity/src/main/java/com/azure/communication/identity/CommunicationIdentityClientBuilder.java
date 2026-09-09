@@ -18,6 +18,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -416,19 +420,54 @@ public final class CommunicationIdentityClientBuilder implements
      * @return a policy that overwrites the api-version query parameter on every request.
      */
     private HttpPipelinePolicy createApiVersionPolicy(String apiVersion) {
-        return (context, next) -> {
+        return new ApiVersionPolicy(apiVersion, logger);
+    }
+
+    /**
+     * Overwrites the {@code api-version} query parameter with the version selected on the builder.
+     *
+     * <p>Implemented as a named class rather than a lambda so that the synchronous path can be
+     * overridden. {@link HttpPipelinePolicy} supplies a default {@code processSync} that calls
+     * {@code process(...).block()}, which would make every synchronous request block a thread in
+     * order to perform a string substitution on the URL.</p>
+     */
+    private static final class ApiVersionPolicy implements HttpPipelinePolicy {
+        private final String apiVersion;
+        private final ClientLogger logger;
+
+        ApiVersionPolicy(String apiVersion, ClientLogger logger) {
+            this.apiVersion = apiVersion;
+            this.logger = logger;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            try {
+                setApiVersion(context);
+            } catch (MalformedURLException ex) {
+                return Mono
+                    .error(logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex)));
+            }
+            return next.process();
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            try {
+                setApiVersion(context);
+            } catch (MalformedURLException ex) {
+                throw logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex));
+            }
+            return next.processSync();
+        }
+
+        private void setApiVersion(HttpPipelineCallContext context) throws MalformedURLException {
             UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (urlBuilder.getQuery().containsKey(API_VERSION_QUERY_PARAM)) {
                 urlBuilder.setQueryParameter(API_VERSION_QUERY_PARAM, apiVersion);
-                try {
-                    context.getHttpRequest().setUrl(urlBuilder.toUrl());
-                } catch (MalformedURLException ex) {
-                    return Mono
-                        .error(logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex)));
-                }
+                context.getHttpRequest().setUrl(urlBuilder.toUrl());
             }
-            return next.process();
-        };
+        }
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
