@@ -96,6 +96,17 @@
           "code": "java.class.removed",
           "old": "class com.azure.ai.projects.models.Target",
           "justification": "Breaking change in beta operation: Target was renamed to FoundryEvaluationTarget to align with the current Evaluations preview contract."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.time.Duration com.azure.ai.projects.models.AgentInsightHighlightedTrace::getDuration()",
+          "justification": "Breaking change in preview operation: getDuration was replaced by getDurationMs to align the highlighted trace model with the current AgentInsights V1 preview contract."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Long com.azure.ai.projects.models.AgentInsightHighlightedTrace::getTotalTokens()",
+          "new": "method java.lang.Integer com.azure.ai.projects.models.AgentInsightHighlightedTrace::getTotalTokens()",
+          "justification": "Breaking change in preview operation: totalTokens changed from Long to Integer to align with the current AgentInsights V1 preview contract."
         }
       ]
     }
