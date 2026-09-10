@@ -19,15 +19,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -39,9 +37,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-
-import reactor.core.publisher.Mono;
-
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -426,15 +421,14 @@ public final class CommunicationIdentityClientBuilder implements
     /**
      * Overwrites the {@code api-version} query parameter with the version selected on the builder.
      *
-     * <p><strong>Do not replace this class with a lambda.</strong> {@link HttpPipelinePolicy} is a
-     * functional interface, so a lambda compiles and behaves correctly - the api-version still
-     * reaches the wire on both paths, and every test still passes. What is lost is
-     * {@code processSync}: a lambda inherits the interface default, which wraps the call in a
-     * {@code Mono} and blocks on it, adding an allocation and a subscription to every synchronous
-     * request in order to substitute a string in the request URL. Built-in azure-core policies
-     * override {@code processSync} for this same reason.</p>
+     * <p>Extends {@link HttpPipelineSyncPolicy} rather than implementing {@link HttpPipelinePolicy}
+     * directly. That base class implements both the synchronous and the asynchronous entry points
+     * in terms of a single hook, so the rewrite happens on whichever path the caller used. A policy
+     * that supplies only {@code process} inherits the interface default for {@code processSync},
+     * which wraps the call in a {@code Mono} and blocks on it - an allocation and a subscription on
+     * every synchronous request, to substitute a string in a URL.</p>
      *
-     * <p>No thread pool is exhausted by this: {@code HttpPipelineNextPolicy.process} recognises
+     * <p>No thread pool is exhausted by that: {@code HttpPipelineNextPolicy.process} recognises
      * that it was entered from the synchronous default and returns to the synchronous chain, on
      * the caller's own thread. The exception is a caller that invokes the synchronous client from
      * a non-blocking thread, where that check inverts - azure-core then logs "The pipeline
@@ -443,7 +437,7 @@ public final class CommunicationIdentityClientBuilder implements
      * <p>The difference is invisible to the test suite. It is a cost rather than a behaviour, so
      * no assertion here distinguishes the two forms.</p>
      */
-    private static final class ApiVersionPolicy implements HttpPipelinePolicy {
+    private static final class ApiVersionPolicy extends HttpPipelineSyncPolicy {
         private final String apiVersion;
         private final ClientLogger logger;
 
@@ -453,31 +447,15 @@ public final class CommunicationIdentityClientBuilder implements
         }
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            try {
-                setApiVersion(context);
-            } catch (MalformedURLException ex) {
-                return Mono
-                    .error(logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex)));
-            }
-            return next.process();
-        }
-
-        @Override
-        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-            try {
-                setApiVersion(context);
-            } catch (MalformedURLException ex) {
-                throw logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex));
-            }
-            return next.processSync();
-        }
-
-        private void setApiVersion(HttpPipelineCallContext context) throws MalformedURLException {
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
             UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (urlBuilder.getQuery().containsKey(API_VERSION_QUERY_PARAM)) {
                 urlBuilder.setQueryParameter(API_VERSION_QUERY_PARAM, apiVersion);
-                context.getHttpRequest().setUrl(urlBuilder.toUrl());
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.toUrl());
+                } catch (MalformedURLException ex) {
+                    throw logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex));
+                }
             }
         }
     }
