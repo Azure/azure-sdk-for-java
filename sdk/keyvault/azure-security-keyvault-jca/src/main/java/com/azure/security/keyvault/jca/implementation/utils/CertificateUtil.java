@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
 
@@ -155,11 +154,7 @@ public final class CertificateUtil {
 
     public static Certificate[] loadX509CertificatesFromFile(InputStream inputStream) throws CertificateException {
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
-        return factory.generateCertificates(inputStream)
-            .stream()
-            .map(o -> (Certificate) o)
-            .collect(Collectors.toList())
-            .toArray(new Certificate[0]);
+        return factory.generateCertificates(inputStream).toArray(new Certificate[0]);
     }
 
     public static String getCertificateNameFromCertificateItemId(String id) {

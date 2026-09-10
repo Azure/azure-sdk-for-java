@@ -119,7 +119,7 @@ public final class ClasspathCertificates implements AzureCertificates {
      */
     public void loadCertificatesFromClasspath() {
         try {
-            String[] filenames = getFilenames("/keyvault");
+            String[] filenames = getFilenames();
             for (String filename : filenames) {
                 try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
                     String alias = filename;
@@ -147,13 +147,12 @@ public final class ClasspathCertificates implements AzureCertificates {
     /**
      * Get the filenames.
      *
-     * @param path the path.
      * @return the filenames.
      * @throws IOException when an I/O error occurs.
      */
-    private String[] getFilenames(String path) throws IOException {
+    private String[] getFilenames() throws IOException {
         List<String> filenames = new ArrayList<>();
-        try (InputStream in = getClass().getResourceAsStream(path)) {
+        try (InputStream in = getClass().getResourceAsStream("/keyvault")) {
             if (!Objects.isNull(in)) {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
                     String resource;

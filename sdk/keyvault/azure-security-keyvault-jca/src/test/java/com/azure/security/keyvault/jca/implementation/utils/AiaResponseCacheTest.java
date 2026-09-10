@@ -6,6 +6,10 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,9 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class AiaResponseCacheTest {
+    private static final X509Certificate TEST_CERTIFICATE = loadTestCertificate();
     private final AtomicLong clock = new AtomicLong(1_000L);
     private final ExecutorService executor = Executors.newFixedThreadPool(16);
 
@@ -40,7 +44,7 @@ public class AiaResponseCacheTest {
     void reusesSuccessfulResolutionBeforeExpiry() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         assertSame(certificates, cache.getOrLoad("url", () -> entry(certificates, loads)));
         assertSame(certificates, cache.getOrLoad("url", () -> entry(certificates, loads)));
@@ -63,7 +67,7 @@ public class AiaResponseCacheTest {
     void reloadsResolutionAfterExpiry() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         cache.getOrLoad("url", () -> entry(certificates, loads));
         clock.set(2_001L);
@@ -75,7 +79,7 @@ public class AiaResponseCacheTest {
     @Test
     void lookupResultReportsSourceAndGeneration() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         AiaResponseCache.LookupResult loaded
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(certificates, 2_000L), () -> {
@@ -95,8 +99,8 @@ public class AiaResponseCacheTest {
     void refreshIfUnchangedSkipsLoaderWhenEntryChanged() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         AtomicInteger refreshLoads = new AtomicInteger();
-        List<X509Certificate> firstCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> secondCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> firstCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> secondCertificates = Collections.singletonList(TEST_CERTIFICATE);
 
         AiaResponseCache.LookupResult first
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(firstCertificates, 2_000L), () -> {
@@ -119,8 +123,8 @@ public class AiaResponseCacheTest {
     @Test
     void coalescesConcurrentForcedRefreshes() throws Exception {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
-        List<X509Certificate> oldCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> newCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> oldCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> newCertificates = Collections.singletonList(TEST_CERTIFICATE);
         AiaResponseCache.LookupResult initial
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(oldCertificates, 2_000L), () -> {
             });
@@ -151,9 +155,9 @@ public class AiaResponseCacheTest {
     void lateRefreshDoesNotOverwriteNewerNormalLoad() throws Exception {
         List<String> messages = Collections.synchronizedList(new ArrayList<>());
         AiaResponseCache cache = new AiaResponseCache(128, clock::get, (message, parameters) -> messages.add(message));
-        List<X509Certificate> initialCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> refreshedCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> loadedCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> initialCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> refreshedCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> loadedCertificates = Collections.singletonList(TEST_CERTIFICATE);
         AiaResponseCache.LookupResult initial
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(initialCertificates, 1_500L), () -> {
             });
@@ -189,10 +193,10 @@ public class AiaResponseCacheTest {
     @Test
     void differentGenerationsDoNotShareForcedRefresh() throws Exception {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
-        List<X509Certificate> initialCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> firstRefreshCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> loadedCertificates = Collections.singletonList(mock(X509Certificate.class));
-        List<X509Certificate> secondRefreshCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> initialCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> firstRefreshCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> loadedCertificates = Collections.singletonList(TEST_CERTIFICATE);
+        List<X509Certificate> secondRefreshCertificates = Collections.singletonList(TEST_CERTIFICATE);
         AiaResponseCache.LookupResult initial
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(initialCertificates, 1_500L), () -> {
             });
@@ -243,7 +247,7 @@ public class AiaResponseCacheTest {
     @Test
     void negativeForcedRefreshKeepsPositiveEntry() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
-        List<X509Certificate> positiveCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> positiveCertificates = Collections.singletonList(TEST_CERTIFICATE);
         AiaResponseCache.LookupResult initial
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(positiveCertificates, 2_000L), () -> {
             });
@@ -293,7 +297,7 @@ public class AiaResponseCacheTest {
     void reportsCacheAndSuppressionLifecycle() {
         List<String> messages = new ArrayList<>();
         AiaResponseCache cache = new AiaResponseCache(1, clock::get, (message, parameters) -> messages.add(message));
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         AiaResponseCache.LookupResult first
             = cache.getOrLoadResult("url-1", () -> new AiaResponseCache.Entry(certificates, 2_000L), () -> {
@@ -327,7 +331,7 @@ public class AiaResponseCacheTest {
         AtomicInteger loads = new AtomicInteger();
         CountDownLatch loaderStarted = new CountDownLatch(1);
         CountDownLatch releaseLoader = new CountDownLatch(1);
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
         List<Future<List<X509Certificate>>> futures = new ArrayList<>();
 
         for (int i = 0; i < 16; i++) {
@@ -352,7 +356,7 @@ public class AiaResponseCacheTest {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         CountDownLatch bothLoadersStarted = new CountDownLatch(2);
         CountDownLatch releaseLoaders = new CountDownLatch(1);
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         Future<List<X509Certificate>> first = executor.submit(() -> cache.getOrLoad("url-1", () -> {
             bothLoadersStarted.countDown();
@@ -375,7 +379,7 @@ public class AiaResponseCacheTest {
     void loaderFailureDoesNotLeaveInFlightEntry() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         CompletionException exception = assertThrows(CompletionException.class, () -> cache.getOrLoad("url", () -> {
             loads.incrementAndGet();
@@ -391,7 +395,7 @@ public class AiaResponseCacheTest {
     void loaderErrorPropagatesWithoutLeavingInFlightEntry() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         AssertionError error = assertThrows(AssertionError.class, () -> cache.getOrLoad("url", () -> {
             loads.incrementAndGet();
@@ -407,7 +411,7 @@ public class AiaResponseCacheTest {
     void evictsOnlyLeastRecentlyUsedEntry() {
         AiaResponseCache cache = new AiaResponseCache(2, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         cache.getOrLoad("url-1", () -> entry(certificates, loads));
         cache.getOrLoad("url-2", () -> entry(certificates, loads));
@@ -424,7 +428,7 @@ public class AiaResponseCacheTest {
     void removesExpiredEntriesBeforeLruEviction() {
         AiaResponseCache cache = new AiaResponseCache(2, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         cache.getOrLoad("expired", () -> {
             loads.incrementAndGet();
@@ -453,7 +457,7 @@ public class AiaResponseCacheTest {
     void clearRemovesCachedEntries() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         AtomicInteger loads = new AtomicInteger();
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         cache.getOrLoad("url", () -> entry(certificates, loads));
         cache.clear();
@@ -468,7 +472,7 @@ public class AiaResponseCacheTest {
         AtomicInteger loads = new AtomicInteger();
         CountDownLatch loadStarted = new CountDownLatch(1);
         CountDownLatch releaseLoad = new CountDownLatch(1);
-        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> certificates = Collections.singletonList(TEST_CERTIFICATE);
 
         Future<List<X509Certificate>> first = executor.submit(() -> cache.getOrLoad("url", () -> {
             loads.incrementAndGet();
@@ -489,6 +493,17 @@ public class AiaResponseCacheTest {
     private AiaResponseCache.Entry entry(List<X509Certificate> certificates, AtomicInteger loads) {
         loads.incrementAndGet();
         return new AiaResponseCache.Entry(certificates, 2_000L);
+    }
+
+    private static X509Certificate loadTestCertificate() {
+        try (InputStream inputStream = AiaResponseCacheTest.class.getResourceAsStream("/well-known/sideload.pem")) {
+            if (inputStream == null) {
+                throw new IllegalStateException("Test certificate resource was not found.");
+            }
+            return (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
+        } catch (IOException | CertificateException e) {
+            throw new IllegalStateException("Failed to load the test certificate.", e);
+        }
     }
 
     private static void await(CountDownLatch latch) {

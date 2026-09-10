@@ -4,23 +4,25 @@ package com.azure.security.keyvault.jca.mtls;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultKeyStore;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.ssl.SSLContexts;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The ClientMTLS sample.
@@ -30,52 +32,114 @@ public class ClientMTLSSample {
     public static void main(String[] args) throws Exception {
         // BEGIN: readme-sample-clientMTLS
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        // Register the provider before requesting its KeyStore implementation.
         Security.addProvider(provider);
 
         System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
         System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
         System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
         System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+        // Load the certificate and private key that identify this client to the server.
         KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
         System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
         System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
         System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
         System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+        // Load the server certificates that this client trusts.
         KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-        SSLContext sslContext = SSLContexts
-            .custom()
-            .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(keyStore, "".toCharArray())
-            .build();
+        // Create trust managers from the server trust material.
+        TrustManagerFactory trustManagerFactory
+            = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(trustStore);
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (hostname, session) -> true);
+        // The local server may use a self-signed certificate. Accept a one-certificate server chain while delegating
+        // validation of all other chains to the platform trust manager. Do not use this behavior in production.
+        for (int i = 0; i < trustManagers.length; i++) {
+            if (trustManagers[i] instanceof X509TrustManager) {
+                X509TrustManager delegate = (X509TrustManager) trustManagers[i];
+                trustManagers[i] = new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType)
+                        throws CertificateException {
+                        delegate.checkClientTrusted(chain, authType);
+                    }
 
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("https", sslConnectionSocketFactory)
-                .build());
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType)
+                        throws CertificateException {
+                        if (chain.length != 1) {
+                            delegate.checkServerTrusted(chain, authType);
+                        }
+                    }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return delegate.getAcceptedIssuers();
+                    }
+                };
+            }
+        }
+
+        // Create key managers that select the client certificate and private key during the mTLS handshake.
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, "".toCharArray());
+
+        // Combine the client identity with the server trust configuration.
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(keyManagerFactory.getKeyManagers(), trustManagers, null);
 
         String result = null;
+        HttpsURLConnection connection = null;
 
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8765");
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = "Not success";
-                if (status == 200) {
-                    result1 = EntityUtils.toString(response.getEntity());
+        try {
+            // openConnection will return HttpsURLConnection when the protocol is 'https'.
+            connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
+
+            // Apply the custom identity and trust configuration to this HTTPS connection.
+            connection.setSSLSocketFactory(sslContext.getSocketFactory());
+            // Allow the sample certificate to use a hostname other than localhost. Do not do this in production.
+            connection.setHostnameVerifier((hostname, session) -> true);
+
+            connection.setRequestMethod("GET");
+            int status = connection.getResponseCode();
+
+            if (status == 200) {
+                // Decode the response using its declared charset, or UTF-8 when no charset is present.
+                Charset responseCharset = StandardCharsets.UTF_8;
+                String contentType = connection.getContentType();
+                if (contentType != null) {
+                    Matcher matcher = Pattern.compile("(?i)\\bcharset\\s*=\\s*\"?([^;\\s\"]+)")
+                        .matcher(contentType);
+                    if (matcher.find()) {
+                        responseCharset = Charset.forName(matcher.group(1));
+                    }
                 }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
+
+                // Read the complete body without changing its line endings.
+                try (Reader reader = new InputStreamReader(connection.getInputStream(), responseCharset)) {
+                    StringBuilder responseBody = new StringBuilder();
+                    char[] buffer = new char[1024];
+                    int read;
+                    while ((read = reader.read(buffer)) != -1) {
+                        responseBody.append(buffer, 0, read);
+                    }
+                    result = responseBody.toString();
+                }
+            } else {
+                result = "Not success";
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
+
         System.out.println(result);
         // END: readme-sample-clientMTLS
     }
-
 }

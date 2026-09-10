@@ -12,6 +12,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.Security;
 
@@ -28,13 +29,17 @@ public class ServerSSLSample {
         System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
 
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        // Register the provider before requesting its KeyStore implementation.
         Security.addProvider(provider);
 
+        // Load the certificate and private key that identify this server to connecting clients.
         KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
+        // Key managers select the server certificate and private key during each TLS handshake.
         KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         managerFactory.init(keyStore, "".toCharArray());
 
+        // Configure one-way TLS: clients aren't required to present a certificate.
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(managerFactory.getKeyManagers(), null, null);
 
@@ -42,13 +47,15 @@ public class ServerSSLSample {
         SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
 
         while (true) {
+            // Accept a TLS connection and write a minimal HTTP response over it.
             SSLSocket socket = (SSLSocket) serverSocket.accept();
             System.out.println("Client connected: " + socket.getInetAddress());
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
             String body = "Hello, this is server.";
-            String response =
-                "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+            // Build a minimal HTTP response and calculate Content-Length from the UTF-8 body bytes.
+            String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+                + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
             out.write(response);
             out.flush();
