@@ -116,6 +116,8 @@ jobs:
           fetchFilter: tree:0
           fetchDepth: 0
           fetchTags: ${{ parameters.TestPipeline }}
+          env:
+            AGENT_SOURCE_CHECKOUT_QUIET: 'true'
           sparseCheckoutPatterns: >-
             /*
             !/*/
@@ -332,6 +334,8 @@ jobs:
           fetchFilter: tree:0
           fetchDepth: 0
           fetchTags: ${{ parameters.TestPipeline }}
+          env:
+            AGENT_SOURCE_CHECKOUT_QUIET: 'true'
           sparseCheckoutPatterns: >-
             /*
             !/*/

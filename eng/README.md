@@ -22,6 +22,7 @@ for both their initial sparse checkout and dependency-driven expansion. This req
 - Write literal patterns one per line in a folded YAML scalar (`>-`); YAML joins them with spaces for the checkout task.
 - Use `fetchFilter: tree:0` and `fetchDepth: 0` to retain treeless fetches and full commit history.
 - Set `fetchTags: false` explicitly to avoid unnecessary tag synchronization and pipeline-dependent defaults.
+- Set `AGENT_SOURCE_CHECKOUT_QUIET: 'true'` in each checkout step's `env` to suppress verbose checkout progress output.
 - Set `path` explicitly when checking out Java alongside build-tools; it is relative to `$(Pipeline.Workspace)`.
 
 Initial checkouts that can run test-pipeline versioning use `fetchTags: ${{ parameters.TestPipeline }}` instead.

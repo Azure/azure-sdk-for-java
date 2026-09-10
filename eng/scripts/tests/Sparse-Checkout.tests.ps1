@@ -266,7 +266,7 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
     }
 }
 
-Describe 'Native sparse checkout tag policy' -Tag 'UnitTest' {
+Describe 'Native sparse checkout settings' -Tag 'UnitTest' {
     BeforeAll {
         $script:EngineeringRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
         . "$script:EngineeringRoot/common/scripts/Helpers/PSModule-Helpers.ps1"
@@ -294,7 +294,7 @@ Describe 'Native sparse checkout tag policy' -Tag 'UnitTest' {
         }
     }
 
-    It 'only fetches tags for test-versioning in <File>' -TestCases @(
+    It 'uses quiet checkout and only fetches tags for test-versioning in <File>' -TestCases @(
         @{ File = 'pipelines/templates/jobs/ci.yml'; Count = 2; TagJobs = @('Build', 'Analyze') }
         @{ File = 'pipelines/templates/jobs/build-validate-pom.yml'; Count = 1; TagJobs = @() }
         @{ File = 'pipelines/templates/stages/archetype-sdk-client-patch.yml'; Count = 2; TagJobs = @('Build', 'AnalyzeAndVerify') }
@@ -315,6 +315,7 @@ Describe 'Native sparse checkout tag policy' -Tag 'UnitTest' {
         foreach ($checkout in $checkouts) {
             $expectedTags = if ($TagJobs -contains $checkout.JobName) { '${{ parameters.TestPipeline }}' } else { $false }
             $checkout.Step.fetchTags | Should -BeExactly $expectedTags
+            $checkout.Step.env.AGENT_SOURCE_CHECKOUT_QUIET | Should -BeExactly 'true'
         }
     }
 }

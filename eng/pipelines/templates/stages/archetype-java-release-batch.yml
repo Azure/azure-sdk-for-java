@@ -119,6 +119,8 @@ stages:
               fetchFilter: tree:0
               fetchDepth: 0
               fetchTags: ${{ parameters.TestPipeline }}
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
               sparseCheckoutPatterns: >-
                 /*
                 !/*/
@@ -207,6 +209,8 @@ stages:
               fetchFilter: tree:0
               fetchDepth: 0
               fetchTags: false
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
               sparseCheckoutPatterns: >-
                 /*
                 !/*/
@@ -276,6 +280,8 @@ stages:
               fetchFilter: tree:0
               fetchDepth: 0
               fetchTags: false
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
               sparseCheckoutPatterns: >-
                 /*
                 !/*/
@@ -334,6 +340,8 @@ stages:
               fetchFilter: tree:0
               fetchDepth: 0
               fetchTags: false
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
               sparseCheckoutPatterns: >-
                 /*
                 !/*/
@@ -391,6 +399,8 @@ stages:
                 fetchFilter: tree:0
                 fetchDepth: 0
                 fetchTags: false
+                env:
+                  AGENT_SOURCE_CHECKOUT_QUIET: 'true'
                 sparseCheckoutPatterns: >-
                   /*
                   !/*/
@@ -442,6 +452,8 @@ stages:
                 fetchFilter: tree:0
                 fetchDepth: 0
                 fetchTags: false
+                env:
+                  AGENT_SOURCE_CHECKOUT_QUIET: 'true'
                 sparseCheckoutPatterns: >-
                   /*
                   !/*/
@@ -535,6 +547,8 @@ stages:
             fetchFilter: tree:0
             fetchDepth: 0
             fetchTags: false
+            env:
+              AGENT_SOURCE_CHECKOUT_QUIET: 'true'
             sparseCheckoutPatterns: >-
               /*
               !/*/

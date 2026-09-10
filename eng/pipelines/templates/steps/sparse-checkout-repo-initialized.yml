@@ -24,6 +24,8 @@ steps:
       fetchFilter: tree:0
       fetchDepth: 0
       fetchTags: false
+      env:
+        AGENT_SOURCE_CHECKOUT_QUIET: 'true'
       sparseCheckoutPatterns: $(SparseCheckoutPatterns)
       condition: and(succeeded(), eq(variables['SparseCheckoutRequired'], 'true'))
 
