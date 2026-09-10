@@ -56,3 +56,6 @@ extends:
         groupId: com.azure
         safeName: azureiotdeviceregistrysoftwareupdate
         releaseInBatch: ${{ parameters.release_azureiotdeviceregistrysoftwareupdate }}
+    AdditionalModules:
+      - name: azure-iot-deviceregistry-softwareupdate-customization
+        groupId: com.azure.tools

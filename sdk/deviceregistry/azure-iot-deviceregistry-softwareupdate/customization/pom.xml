@@ -1,0 +1,40 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-code-customization-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-code-customization-parent;current} -->
+    <relativePath>../../../parents/azure-code-customization-parent</relativePath>
+  </parent>
+
+  <groupId>com.azure.tools</groupId>
+  <artifactId>azure-iot-deviceregistry-softwareupdate-customization</artifactId>
+  <version>1.0.0-beta.1</version>
+  <packaging>jar</packaging>
+
+  <name>Microsoft Azure Device Registry Software Update client customizations</name>
+  <description>Customizations for the Microsoft Azure Device Registry Software Update client library.</description>
+
+  <properties>
+    <relative.path.to.eng.folder>../../../..</relative.path.to.eng.folder>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

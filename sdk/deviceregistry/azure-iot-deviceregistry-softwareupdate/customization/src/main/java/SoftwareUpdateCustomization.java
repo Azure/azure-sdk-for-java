@@ -48,9 +48,10 @@ public class SoftwareUpdateCustomization extends Customization {
                 method.setType(StaticJavaParser.parseType(method.getTypeAsString().replace("Void", "BinaryData")));
 
                 if (rewriteFinalResultTypeReference) {
-                    method.getBody().ifPresent(body -> method.setBody(StaticJavaParser.parseBlock(
-                        body.toString().replace("TypeReference.createInstance(Void.class)",
-                            "TypeReference.createInstance(BinaryData.class)"))));
+                    method.getBody()
+                        .ifPresent(body -> method.setBody(StaticJavaParser.parseBlock(body.toString()
+                            .replace("TypeReference.createInstance(Void.class)",
+                                "TypeReference.createInstance(BinaryData.class)"))));
                 }
             })));
     }
