@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -63,6 +64,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -85,6 +87,7 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -264,6 +267,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         assertThat(cosmosDiagnosticsValueHolder.v).isNotNull();
         CosmosDiagnostics cosmosDiagnostics = cosmosDiagnosticsValueHolder.v;
+        getPpafBookmarks(responseWrapper);
 
         assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
         assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotNull();
@@ -1388,6 +1392,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+                JsonNode bookmarkAfterFailover = assertPpafOverride(responseAfterFailover, preferredRegions.get(1));
+                ResponseWrapper<?> responseWithReusedOverride = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithReusedOverride, expectedResponseCharacteristicsAfterFailover);
+                assertThat(assertPpafOverride(responseWithReusedOverride, preferredRegions.get(1)))
+                    .isEqualTo(bookmarkAfterFailover);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1502,6 +1511,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+                JsonNode bookmarkAfterFailover = assertPpafOverride(responseAfterFailover, preferredRegions.get(1));
+                ResponseWrapper<?> responseWithReusedOverride = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithReusedOverride, expectedResponseCharacteristicsAfterFailover);
+                assertThat(assertPpafOverride(responseWithReusedOverride, preferredRegions.get(1)))
+                    .isEqualTo(bookmarkAfterFailover);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1648,18 +1662,22 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
 
                 // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
                 ppafEnabledRef.set(Boolean.TRUE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+                JsonNode enabledBookmark = assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1));
 
                 // Phase 3: PPAF disabled again -> confirm behavior reverts
                 ppafEnabledRef.set(Boolean.FALSE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
+                assertThat(assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1))).isEqualTo(enabledBookmark);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1757,18 +1775,22 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
 
                 // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
                 ppafEnabledRef.set(Boolean.TRUE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+                JsonNode enabledBookmark = assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1));
 
                 // Phase 3: PPAF disabled again -> confirm behavior reverts
                 ppafEnabledRef.set(Boolean.FALSE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
+                assertThat(assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1))).isEqualTo(enabledBookmark);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -2134,6 +2156,46 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         // Stabilized post-window request
         ResponseWrapper<?> postWindow = dataPlaneOperation.apply(params);
         this.validateExpectedResponseCharacteristics.accept(postWindow, expectedAfterWindow);
+    }
+
+    private static List<JsonNode> getPpafBookmarks(ResponseWrapper<?> response) {
+        CosmosDiagnostics diagnostics = extractDiagnostics(response);
+        assertThat(diagnostics).isNotNull();
+        List<JsonNode> bookmarks = new ArrayList<>();
+        for (ClientSideRequestStatistics statistics : diagnostics.getClientSideRequestStatistics()) {
+            JsonNode statisticsJson = OBJECT_MAPPER.valueToTree(statistics);
+            for (String statisticsList : Arrays.asList("responseStatisticsList", "gatewayStatisticsList")) {
+                for (JsonNode attempt : statisticsJson.path(statisticsList)) {
+                    assertThat(attempt.has("perPartitionAutomaticFailoverInfoHolder")).isFalse();
+                    JsonNode bookmark = attempt.path("ppaf");
+                    assertThat(bookmark.isObject()).as("ppaf must be an object in %s", attempt).isTrue();
+                    if (!bookmark.isEmpty()) {
+                        assertThat(bookmark.size()).isEqualTo(2);
+                        assertThat(bookmark.path("currWriteRegion").isTextual()).isTrue();
+                        assertThat(bookmark.path("currWriteRegion").asText()).isNotBlank();
+                        assertThat(bookmark.path("since").isTextual()).isTrue();
+                        assertThat(Instant.parse(bookmark.path("since").asText())).isBeforeOrEqualTo(Instant.now());
+                    }
+                    bookmarks.add(bookmark);
+                }
+            }
+        }
+        assertThat(bookmarks).as("PPAF attempt diagnostics must be present").isNotEmpty();
+        return bookmarks;
+    }
+
+    private static JsonNode assertPpafOverride(ResponseWrapper<?> response, String expectedRegion) {
+        List<JsonNode> populatedBookmarks = new ArrayList<>();
+        for (JsonNode bookmark : getPpafBookmarks(response)) {
+            if (!bookmark.isEmpty()) {
+                assertThat(bookmark.path("currWriteRegion").asText()).isEqualToIgnoringCase(expectedRegion);
+                populatedBookmarks.add(bookmark);
+            }
+        }
+        assertThat(populatedBookmarks).as("A designated PPAF override must be recorded").isNotEmpty();
+        JsonNode firstBookmark = populatedBookmarks.get(0);
+        assertThat(populatedBookmarks).allMatch(firstBookmark::equals);
+        return firstBookmark;
     }
 
     private static CosmosDiagnostics extractDiagnostics(ResponseWrapper<?> response) {
