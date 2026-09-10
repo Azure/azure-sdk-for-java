@@ -429,15 +429,19 @@ public final class CommunicationIdentityClientBuilder implements
      * <p><strong>Do not replace this class with a lambda.</strong> {@link HttpPipelinePolicy} is a
      * functional interface, so a lambda compiles and behaves correctly - the api-version still
      * reaches the wire on both paths, and every test still passes. What is lost is
-     * {@code processSync}: a lambda inherits the interface default, which calls
-     * {@code process(...).block()}, so each synchronous request blocks a thread in Reactor solely
-     * to substitute a string in the request URL. Built-in azure-core policies override
-     * {@code processSync} for this same reason.</p>
+     * {@code processSync}: a lambda inherits the interface default, which wraps the call in a
+     * {@code Mono} and blocks on it, adding an allocation and a subscription to every synchronous
+     * request in order to substitute a string in the request URL. Built-in azure-core policies
+     * override {@code processSync} for this same reason.</p>
      *
-     * <p>The regression is invisible to the test suite. It is a performance characteristic rather
-     * than a behavioural one, so no assertion here distinguishes the two forms, and a fault
-     * introduced this way would be hard to attribute later - thread starvation under load is not
-     * an obvious symptom of an api-version rewrite.</p>
+     * <p>No thread pool is exhausted by this: {@code HttpPipelineNextPolicy.process} recognises
+     * that it was entered from the synchronous default and returns to the synchronous chain, on
+     * the caller's own thread. The exception is a caller that invokes the synchronous client from
+     * a non-blocking thread, where that check inverts - azure-core then logs "The pipeline
+     * switched from synchronous to asynchronous" and the request completes asynchronously.</p>
+     *
+     * <p>The difference is invisible to the test suite. It is a cost rather than a behaviour, so
+     * no assertion here distinguishes the two forms.</p>
      */
     private static final class ApiVersionPolicy implements HttpPipelinePolicy {
         private final String apiVersion;
