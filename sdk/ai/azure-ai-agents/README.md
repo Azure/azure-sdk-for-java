@@ -475,7 +475,7 @@ MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName()
     .setUpdateDelaySeconds(1);
 ```
 
-See the full samples in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemorySearchSync.java) and [MemorySearchAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemorySearchAsync.java), which show how to create an agent with a memory store and use it across multiple conversations.
+See the full samples in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) and [MemorySearchAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchAsync.java), which show how to create an agent with a memory store and use it across multiple conversations.
 
 ---
 
@@ -1014,10 +1014,9 @@ The live audio example requires a Java Sound-compatible microphone and speaker. 
 
 All agent samples use `FOUNDRY_PROJECT_ENDPOINT`. Prompt-agent samples also use `FOUNDRY_MODEL_NAME`.
 
-- **Agent lifecycle and structured output:** [AgentBasicAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/AgentBasicAsyncSample.java), [AgentRetrieveBasicAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/AgentRetrieveBasicAsyncSample.java), and the `AgentStructuredOutput*` samples.
+- **Agent lifecycle and structured output:** [CreateAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/CreateAgent.java), [GetAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/GetAgent.java), and the `AgentStructuredOutput*` samples.
 - **Workflow agents:** `WorkflowMultiAgentSample`, `WorkflowMultiAgentAsyncSample`, and `WorkflowMultiAgentMcpApprovalSample` demonstrate CSDL workflows and MCP approval handling.
 - **Optimization jobs:** the [optimization samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization) cover SDK polling, application-managed polling, cancellation, listing, retrieval, and deletion.
-- **Telemetry:** the [telemetry samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/telemetry) demonstrate console tracing, custom span attributes, and Azure Monitor export.
 - **Advanced tools:** additional samples cover structured inputs, generated-file download, File Search streaming, non-preview Web Search, custom search, and end-to-end toolbox search.
 
 ---
