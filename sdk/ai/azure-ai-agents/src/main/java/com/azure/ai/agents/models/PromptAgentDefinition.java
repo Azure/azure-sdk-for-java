@@ -463,4 +463,63 @@ public final class PromptAgentDefinition extends AgentDefinition {
         this.reasoning = reasoning;
         return this;
     }
+
+    /*
+     * The managed runtime and agent loop used to execute this prompt agent.
+     */
+    @Generated
+    private AgentHarness harness;
+
+    /*
+     * The Foundry skills available to this prompt agent. An omitted skill version is resolved and pinned when the agent
+     * version is created.
+     */
+    @Generated
+    private List<SkillReference> skills;
+
+    /**
+     * Get the harness property: The managed runtime and agent loop used to execute this prompt agent.
+     *
+     * @return the harness value.
+     */
+    @Generated
+    public AgentHarness getHarness() {
+        return this.harness;
+    }
+
+    /**
+     * Set the harness property: The managed runtime and agent loop used to execute this prompt agent.
+     *
+     * @param harness the harness value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    public PromptAgentDefinition setHarness(AgentHarness harness) {
+        this.harness = harness;
+        return this;
+    }
+
+    /**
+     * Get the skills property: The Foundry skills available to this prompt agent. An omitted skill version is resolved
+     * and pinned when the agent version is created.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    public List<SkillReference> getSkills() {
+        return this.skills;
+    }
+
+    /**
+     * Set the skills property: The Foundry skills available to this prompt agent. An omitted skill version is resolved
+     * and pinned when the agent version is created.
+     *
+     * @param skills the skills value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    public PromptAgentDefinition setSkills(List<SkillReference> skills) {
+        this.skills = skills;
+        return this;
+    }
 }

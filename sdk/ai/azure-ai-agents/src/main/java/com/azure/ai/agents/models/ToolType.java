@@ -234,4 +234,16 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType WEB_IQ_PREVIEW = fromString("web_iq_preview");
+
+    /**
+     * Static value github_copilot_toolset_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType GITHUB_COPILOT_TOOLSET_PREVIEW = fromString("github_copilot_toolset_preview");
+
+    /**
+     * Static value browser_automation for ToolType.
+     */
+    @Generated
+    public static final ToolType BROWSER_AUTOMATION = fromString("browser_automation");
 }

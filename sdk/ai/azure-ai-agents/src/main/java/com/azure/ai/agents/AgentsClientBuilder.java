@@ -64,17 +64,17 @@ import java.util.stream.Stream;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        BetaAgentEndpointConversationsClient.class,
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
+        BetaAgentTelephonyClient.class,
+        BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
-        AgentTelephonyClient.class,
         ToolboxesClient.class,
-        BetaAgentEndpointConversationsAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
+        BetaAgentTelephonyAsyncClient.class,
+        BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
-        AgentTelephonyAsyncClient.class,
         ToolboxesAsyncClient.class,
         BetaVoiceAgentWebSocketClient.class,
         BetaVoiceAgentWebSocketAsyncClient.class })
@@ -780,22 +780,22 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of AgentTelephonyAsyncClient class.
+     * Builds an instance of BetaAgentTelephonyAsyncClient class.
      *
-     * @return an instance of AgentTelephonyAsyncClient.
+     * @return an instance of BetaAgentTelephonyAsyncClient.
      */
     @Generated
-    public AgentTelephonyAsyncClient buildAgentTelephonyAsyncClient() {
-        return new AgentTelephonyAsyncClient(buildInnerClient().getAgentTelephonies());
+    public BetaAgentTelephonyAsyncClient buildBetaAgentTelephonyAsyncClient() {
+        return new BetaAgentTelephonyAsyncClient(buildInnerClient().getBetaAgentTelephonies());
     }
 
     /**
-     * Builds an instance of AgentTelephonyClient class.
+     * Builds an instance of BetaAgentTelephonyClient class.
      *
-     * @return an instance of AgentTelephonyClient.
+     * @return an instance of BetaAgentTelephonyClient.
      */
     @Generated
-    public AgentTelephonyClient buildAgentTelephonyClient() {
-        return new AgentTelephonyClient(buildInnerClient().getAgentTelephonies());
+    public BetaAgentTelephonyClient buildBetaAgentTelephonyClient() {
+        return new BetaAgentTelephonyClient(buildInnerClient().getBetaAgentTelephonies());
     }
 }

@@ -20,12 +20,6 @@ import java.util.List;
 public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
 
     /*
-     * The unique ID of the response, will look like `resp_1234`.
-     */
-    @Generated
-    private String id;
-
-    /*
      * The object type, must be `realtime.response`.
      */
     @Generated
@@ -54,17 +48,6 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     private RealtimeResponseUsage usage;
 
     /*
-     * Which conversation the response is added to, determined by the `conversation`
-     * field in the `response.create` event. If `auto`, the response will be added to
-     * the default conversation and the value of `conversation_id` will be an id like
-     * `conv_1234`. If `none`, the response will not be added to any conversation and
-     * the value of `conversation_id` will be `null`. If responses are being triggered
-     * automatically by VAD the response will be added to the default conversation
-     */
-    @Generated
-    private String conversationId;
-
-    /*
      * The set of modalities the model used to respond, currently the only possible values are
      * `[\"audio\"]`, `[\"text\"]`. Audio output always include a text transcript. Setting the
      * output to mode `text` will disable audio output from the model.
@@ -84,28 +67,6 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      */
     @Generated
     protected VoiceResponseBase() {
-    }
-
-    /**
-     * Get the id property: The unique ID of the response, will look like `resp_1234`.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: The unique ID of the response, will look like `resp_1234`.
-     *
-     * @param id the id value to set.
-     * @return the VoiceResponseBase object itself.
-     */
-    @Generated
-    VoiceResponseBase setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -205,38 +166,6 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     }
 
     /**
-     * Get the conversationId property: Which conversation the response is added to, determined by the `conversation`
-     * field in the `response.create` event. If `auto`, the response will be added to
-     * the default conversation and the value of `conversation_id` will be an id like
-     * `conv_1234`. If `none`, the response will not be added to any conversation and
-     * the value of `conversation_id` will be `null`. If responses are being triggered
-     * automatically by VAD the response will be added to the default conversation.
-     *
-     * @return the conversationId value.
-     */
-    @Generated
-    public String getConversationId() {
-        return this.conversationId;
-    }
-
-    /**
-     * Set the conversationId property: Which conversation the response is added to, determined by the `conversation`
-     * field in the `response.create` event. If `auto`, the response will be added to
-     * the default conversation and the value of `conversation_id` will be an id like
-     * `conv_1234`. If `none`, the response will not be added to any conversation and
-     * the value of `conversation_id` will be `null`. If responses are being triggered
-     * automatically by VAD the response will be added to the default conversation.
-     *
-     * @param conversationId the conversationId value to set.
-     * @return the VoiceResponseBase object itself.
-     */
-    @Generated
-    VoiceResponseBase setConversationId(String conversationId) {
-        this.conversationId = conversationId;
-        return this;
-    }
-
-    /**
      * Get the outputModalities property: The set of modalities the model used to respond, currently the only possible
      * values are
      * `[\"audio\"]`, `[\"text\"]`. Audio output always include a text transcript. Setting the
@@ -295,12 +224,10 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("status_details", this.statusDetails);
         jsonWriter.writeJsonField("usage", this.usage);
-        jsonWriter.writeStringField("conversation_id", this.conversationId);
         jsonWriter.writeArrayField("output_modalities", this.outputModalities,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         if (this.maxOutputTokens != null) {
@@ -325,9 +252,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    deserializedVoiceResponseBase.id = reader.getString();
-                } else if ("object".equals(fieldName)) {
+                if ("object".equals(fieldName)) {
                     deserializedVoiceResponseBase.object = VoiceResponseBaseObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedVoiceResponseBase.status = VoiceResponseBaseStatus.fromString(reader.getString());
@@ -335,8 +260,6 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
                     deserializedVoiceResponseBase.statusDetails = RealtimeResponseStatusDetails.fromJson(reader);
                 } else if ("usage".equals(fieldName)) {
                     deserializedVoiceResponseBase.usage = RealtimeResponseUsage.fromJson(reader);
-                } else if ("conversation_id".equals(fieldName)) {
-                    deserializedVoiceResponseBase.conversationId = reader.getString();
                 } else if ("output_modalities".equals(fieldName)) {
                     List<VoiceResponseBaseOutputModality> outputModalities
                         = reader.readArray(reader1 -> VoiceResponseBaseOutputModality.fromString(reader1.getString()));

@@ -4,12 +4,27 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaAgentsImpl;
+import com.azure.ai.agents.implementation.JsonMergePatchHelper;
+import com.azure.ai.agents.implementation.models.ReplaceTelephonyTransferTargetsRequest;
+import com.azure.ai.agents.implementation.models.TransferTelephonyCallRequest;
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentOptimizationJob;
 import com.azure.ai.agents.models.AgentOptimizationJobListItem;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
+import com.azure.ai.agents.models.CreateTelephonyBindingRequest;
 import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.TelephonyBinding;
+import com.azure.ai.agents.models.TelephonyBindingListItem;
+import com.azure.ai.agents.models.TelephonyBindingStatus;
+import com.azure.ai.agents.models.TelephonyCallRecord;
+import com.azure.ai.agents.models.TelephonyCallStatus;
+import com.azure.ai.agents.models.TelephonyCallSummary;
+import com.azure.ai.agents.models.TelephonyProvider;
+import com.azure.ai.agents.models.TelephonyTransferTarget;
+import com.azure.ai.agents.models.TelephonyTransferTargets;
+import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -27,6 +42,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -777,5 +794,1348 @@ public final class BetaAgentsAsyncClient {
         // Generated convenience method for beginCreateOptimizationJobWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateOptimizationJobWithModelAsync(BinaryData.fromObject(job), requestOptions);
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateAgentWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.generateAgentWithResponseAsync(body, requestOptions);
+    }
+
+    /**
+     * Create an agent telephony binding
+     *
+     * Creates a telephony binding for the voice agent named in the path.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     connection: String (Required)
+     *     label: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     id: String (Required)
+     *     connection: String (Required)
+     *     label: String (Optional)
+     *     status: String(active/suspended) (Required)
+     *     incoming_call_url: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
+     * binding.</td></tr>
+     * </table>
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param body The provider-specific binding to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a telephony binding owned by a voice agent along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createTelephonyBindingWithResponse(String agentName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createTelephonyBindingWithResponseAsync(agentName, body, requestOptions);
+    }
+
+    /**
+     * List agent telephony bindings
+     *
+     * Returns the telephony bindings owned by the voice agent named in the path.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
+     * "teams_phone_extension", "twilio".</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
+     * "suspended".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     id: String (Required)
+     *     connection: String (Required)
+     *     label: String (Optional)
+     *     status: String(active/suspended) (Required)
+     *     incoming_call_url: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the voice agent whose bindings are listed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTelephonyBindings(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listTelephonyBindingsAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Get an agent telephony binding
+     *
+     * Retrieves a telephony binding owned by the voice agent named in the path.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     id: String (Required)
+     *     connection: String (Required)
+     *     label: String (Optional)
+     *     status: String(active/suspended) (Required)
+     *     incoming_call_url: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
+     * binding.</td></tr>
+     * </table>
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an agent telephony binding
+     *
+     * Retrieves a telephony binding owned by the voice agent named in the path along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTelephonyBindingWithResponse(String agentName, String bindingId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyBindingWithResponseAsync(agentName, bindingId, requestOptions);
+    }
+
+    /**
+     * Update an agent telephony binding
+     *
+     * Updates a telephony binding owned by the voice agent named in the path.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(active/suspended) (Optional)
+     *     label: String (Optional)
+     *     connection: String (Optional)
+     *     phone_number: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     id: String (Required)
+     *     connection: String (Required)
+     *     label: String (Optional)
+     *     status: String(active/suspended) (Required)
+     *     incoming_call_url: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
+     * binding.</td></tr>
+     * </table>
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param body The binding properties to update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a telephony binding owned by a voice agent along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateTelephonyBindingWithResponse(String agentName, String bindingId,
+        String ifMatch, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.updateTelephonyBindingWithResponseAsync(agentName, bindingId, ifMatch, body,
+            requestOptions);
+    }
+
+    /**
+     * Delete an agent telephony binding
+     *
+     * Deletes a telephony binding owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteTelephonyBindingWithResponse(String agentName, String bindingId, String ifMatch,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteTelephonyBindingWithResponseAsync(agentName, bindingId, ifMatch,
+            requestOptions);
+    }
+
+    /**
+     * List agent telephony calls
+     *
+     * Returns the durable inbound call history for the voice agent named in the path.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
+     * "teams_phone_extension", "twilio".</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
+     * "in_progress", "success", "failed".</td></tr>
+     * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
+     * timestamp in seconds.</td></tr>
+     * <tr><td>started_before</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or before this
+     * Unix timestamp in seconds.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider_call_id: String (Optional)
+     *     caller_number: String (Optional)
+     *     provider_number: String (Optional)
+     *     status: String(in_progress/success/failed) (Required)
+     *     phase: String(received/validated/admitted/answering/answered/media_connected/agent_session_ready/bridging/managing/completed/rejected/failed) (Required)
+     *     started_at: long (Required)
+     *     answered_at: Long (Optional)
+     *     media_connected_at: Long (Optional)
+     *     agent_session_ready_at: Long (Optional)
+     *     ended_at: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     end_reason: String (Optional)
+     *     provider_status_code: Integer (Optional)
+     *     provider_sub_code: Integer (Optional)
+     *     provider_message: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the voice agent whose calls are listed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTelephonyCalls(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listTelephonyCallsAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Get an agent telephony call
+     *
+     * Retrieves a durable inbound call record owned by the voice agent named in the path.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider_call_id: String (Optional)
+     *     caller_number: String (Optional)
+     *     provider_number: String (Optional)
+     *     status: String(in_progress/success/failed) (Required)
+     *     phase: String(received/validated/admitted/answering/answered/media_connected/agent_session_ready/bridging/managing/completed/rejected/failed) (Required)
+     *     started_at: long (Required)
+     *     answered_at: Long (Optional)
+     *     media_connected_at: Long (Optional)
+     *     agent_session_ready_at: Long (Optional)
+     *     ended_at: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     end_reason: String (Optional)
+     *     provider_status_code: Integer (Optional)
+     *     provider_sub_code: Integer (Optional)
+     *     provider_message: String (Optional)
+     *     timing (Required): {
+     *         received_at: Long (Optional)
+     *         validated_at: Long (Optional)
+     *         admitted_at: Long (Optional)
+     *         answer_requested_at: Long (Optional)
+     *         answered_at: Long (Optional)
+     *         media_connected_at: Long (Optional)
+     *         agent_session_ready_at: Long (Optional)
+     *         first_caller_audio_at: Long (Optional)
+     *         first_agent_audio_at: Long (Optional)
+     *         ended_at: Long (Optional)
+     *         duration_basis: String(answered/received) (Optional)
+     *         timestamp_source: String(provider/gateway/derived) (Required)
+     *     }
+     *     trace (Optional): {
+     *         status: String(pending/emitting/available/not_recorded/not_applicable/failed) (Required)
+     *         trace_id: String (Optional)
+     *         root_span_id: String (Optional)
+     *         conversation_id: String (Optional)
+     *         mode: String(live/post_call) (Optional)
+     *     }
+     *     events (Required): [
+     *          (Required){
+     *             sequence: long (Required)
+     *             name: String(telephony.webhook.received/telephony.webhook.validation/telephony.binding.resolve/telephony.provider.answer/telephony.media.connect/telephony.agent_session.connect/telephony.media.first_caller_audio/telephony.media.first_agent_audio/telephony.call.transfer/telephony.call.hangup/telephony.call.disconnect) (Required)
+     *             source: String(gateway/teams_phone_extension/twilio/voice_agent) (Required)
+     *             outcome: String(observed/started/succeeded/failed/rejected/cancelled) (Required)
+     *             observed_at: long (Required)
+     *             occurred_at: Long (Optional)
+     *             timestamp_source: String(provider/gateway/derived) (Required)
+     *             reason: String (Optional)
+     *             provider_event_id: String (Optional)
+     *             provider_sequence: Long (Optional)
+     *             provider_status_code: Integer (Optional)
+     *             provider_sub_code: Integer (Optional)
+     *         }
+     *     ]
+     *     events_truncated: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the voice agent that owns the call record.
+     * @param callId The service-generated call identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an agent telephony call
+     *
+     * Retrieves a durable inbound call record owned by the voice agent named in the path along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTelephonyCallWithResponse(String agentName, String callId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyCallWithResponseAsync(agentName, callId, requestOptions);
+    }
+
+    /**
+     * Transfer an active agent telephony call
+     *
+     * Transfers an active inbound call to a configured target for the voice agent named in the path.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     target: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider_call_id: String (Optional)
+     *     caller_number: String (Optional)
+     *     provider_number: String (Optional)
+     *     status: String(in_progress/success/failed) (Required)
+     *     phase: String(received/validated/admitted/answering/answered/media_connected/agent_session_ready/bridging/managing/completed/rejected/failed) (Required)
+     *     started_at: long (Required)
+     *     answered_at: Long (Optional)
+     *     media_connected_at: Long (Optional)
+     *     agent_session_ready_at: Long (Optional)
+     *     ended_at: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     end_reason: String (Optional)
+     *     provider_status_code: Integer (Optional)
+     *     provider_sub_code: Integer (Optional)
+     *     provider_message: String (Optional)
+     *     timing (Required): {
+     *         received_at: Long (Optional)
+     *         validated_at: Long (Optional)
+     *         admitted_at: Long (Optional)
+     *         answer_requested_at: Long (Optional)
+     *         answered_at: Long (Optional)
+     *         media_connected_at: Long (Optional)
+     *         agent_session_ready_at: Long (Optional)
+     *         first_caller_audio_at: Long (Optional)
+     *         first_agent_audio_at: Long (Optional)
+     *         ended_at: Long (Optional)
+     *         duration_basis: String(answered/received) (Optional)
+     *         timestamp_source: String(provider/gateway/derived) (Required)
+     *     }
+     *     trace (Optional): {
+     *         status: String(pending/emitting/available/not_recorded/not_applicable/failed) (Required)
+     *         trace_id: String (Optional)
+     *         root_span_id: String (Optional)
+     *         conversation_id: String (Optional)
+     *         mode: String(live/post_call) (Optional)
+     *     }
+     *     events (Required): [
+     *          (Required){
+     *             sequence: long (Required)
+     *             name: String(telephony.webhook.received/telephony.webhook.validation/telephony.binding.resolve/telephony.provider.answer/telephony.media.connect/telephony.agent_session.connect/telephony.media.first_caller_audio/telephony.media.first_agent_audio/telephony.call.transfer/telephony.call.hangup/telephony.call.disconnect) (Required)
+     *             source: String(gateway/teams_phone_extension/twilio/voice_agent) (Required)
+     *             outcome: String(observed/started/succeeded/failed/rejected/cancelled) (Required)
+     *             observed_at: long (Required)
+     *             occurred_at: Long (Optional)
+     *             timestamp_source: String(provider/gateway/derived) (Required)
+     *             reason: String (Optional)
+     *             provider_event_id: String (Optional)
+     *             provider_sequence: Long (Optional)
+     *             provider_status_code: Integer (Optional)
+     *             provider_sub_code: Integer (Optional)
+     *         }
+     *     ]
+     *     events_truncated: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the voice agent that owns the active call.
+     * @param callId The service-generated call identifier.
+     * @param transferTelephonyCallRequest The transferTelephonyCallRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed diagnostics for a durable inbound call to a voice agent along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> transferTelephonyCallWithResponse(String agentName, String callId,
+        BinaryData transferTelephonyCallRequest, RequestOptions requestOptions) {
+        return this.serviceClient.transferTelephonyCallWithResponseAsync(agentName, callId,
+            transferTelephonyCallRequest, requestOptions);
+    }
+
+    /**
+     * End an active agent telephony call
+     *
+     * Ends an active inbound call owned by the voice agent named in the path.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider_call_id: String (Optional)
+     *     caller_number: String (Optional)
+     *     provider_number: String (Optional)
+     *     status: String(in_progress/success/failed) (Required)
+     *     phase: String(received/validated/admitted/answering/answered/media_connected/agent_session_ready/bridging/managing/completed/rejected/failed) (Required)
+     *     started_at: long (Required)
+     *     answered_at: Long (Optional)
+     *     media_connected_at: Long (Optional)
+     *     agent_session_ready_at: Long (Optional)
+     *     ended_at: Long (Optional)
+     *     duration_ms: Long (Optional)
+     *     end_reason: String (Optional)
+     *     provider_status_code: Integer (Optional)
+     *     provider_sub_code: Integer (Optional)
+     *     provider_message: String (Optional)
+     *     timing (Required): {
+     *         received_at: Long (Optional)
+     *         validated_at: Long (Optional)
+     *         admitted_at: Long (Optional)
+     *         answer_requested_at: Long (Optional)
+     *         answered_at: Long (Optional)
+     *         media_connected_at: Long (Optional)
+     *         agent_session_ready_at: Long (Optional)
+     *         first_caller_audio_at: Long (Optional)
+     *         first_agent_audio_at: Long (Optional)
+     *         ended_at: Long (Optional)
+     *         duration_basis: String(answered/received) (Optional)
+     *         timestamp_source: String(provider/gateway/derived) (Required)
+     *     }
+     *     trace (Optional): {
+     *         status: String(pending/emitting/available/not_recorded/not_applicable/failed) (Required)
+     *         trace_id: String (Optional)
+     *         root_span_id: String (Optional)
+     *         conversation_id: String (Optional)
+     *         mode: String(live/post_call) (Optional)
+     *     }
+     *     events (Required): [
+     *          (Required){
+     *             sequence: long (Required)
+     *             name: String(telephony.webhook.received/telephony.webhook.validation/telephony.binding.resolve/telephony.provider.answer/telephony.media.connect/telephony.agent_session.connect/telephony.media.first_caller_audio/telephony.media.first_agent_audio/telephony.call.transfer/telephony.call.hangup/telephony.call.disconnect) (Required)
+     *             source: String(gateway/teams_phone_extension/twilio/voice_agent) (Required)
+     *             outcome: String(observed/started/succeeded/failed/rejected/cancelled) (Required)
+     *             observed_at: long (Required)
+     *             occurred_at: Long (Optional)
+     *             timestamp_source: String(provider/gateway/derived) (Required)
+     *             reason: String (Optional)
+     *             provider_event_id: String (Optional)
+     *             provider_sequence: Long (Optional)
+     *             provider_status_code: Integer (Optional)
+     *             provider_sub_code: Integer (Optional)
+     *         }
+     *     ]
+     *     events_truncated: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the voice agent that owns the active call.
+     * @param callId The service-generated call identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed diagnostics for a durable inbound call to a voice agent along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> endTelephonyCallWithResponse(String agentName, String callId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.endTelephonyCallWithResponseAsync(agentName, callId, requestOptions);
+    }
+
+    /**
+     * Get agent telephony transfer targets
+     *
+     * Returns all transfer targets configured for the voice agent named in the path.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     transfer_targets (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             description: String (Required)
+     *             destination (Required): {
+     *                 kind: String(pstn/teams/sip) (Required)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when replacing the transfer
+     * targets.</td></tr>
+     * </table>
+     *
+     * @param agentName The name of the voice agent whose transfer targets are retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent telephony transfer targets
+     *
+     * Returns all transfer targets configured for the voice agent named in the path along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTelephonyTransferTargetsWithResponse(String agentName,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyTransferTargetsWithResponseAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Replace agent telephony transfer targets
+     *
+     * Replaces all transfer targets configured for the voice agent named in the path.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     transfer_targets (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             description: String (Required)
+     *             destination (Required): {
+     *                 kind: String(pstn/teams/sip) (Required)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     transfer_targets (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             description: String (Required)
+     *             destination (Required): {
+     *                 kind: String(pstn/teams/sip) (Required)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when replacing the transfer
+     * targets.</td></tr>
+     * </table>
+     *
+     * @param agentName The name of the voice agent whose transfer targets are replaced.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param replaceTelephonyTransferTargetsRequest The replaceTelephonyTransferTargetsRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the telephony transfer targets configured for one voice agent along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> replaceTelephonyTransferTargetsWithResponse(String agentName, String ifMatch,
+        BinaryData replaceTelephonyTransferTargetsRequest, RequestOptions requestOptions) {
+        return this.serviceClient.replaceTelephonyTransferTargetsWithResponseAsync(agentName, ifMatch,
+            replaceTelephonyTransferTargetsRequest, requestOptions);
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> generateAgent(BinaryData body) {
+        // Generated convenience method for generateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return generateAgentWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * Create an agent telephony binding
+     *
+     * Creates a telephony binding for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param body The provider-specific binding to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a telephony binding owned by a voice agent on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyBinding> createTelephonyBinding(String agentName, CreateTelephonyBindingRequest body) {
+        // Generated convenience method for createTelephonyBindingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBinding.class));
+    }
+
+    /**
+     * List agent telephony bindings
+     *
+     * Returns the telephony bindings owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose bindings are listed.
+     * @param provider Filters bindings by provider.
+     * @param status Filters bindings by lifecycle status.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
+        TelephonyBindingStatus status, Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listTelephonyBindings
+        RequestOptions requestOptions = new RequestOptions();
+        if (provider != null) {
+            requestOptions.addQueryParam("provider", provider.toString(), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyBindings(agentName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, TelephonyBindingListItem>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBindingListItem.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List agent telephony bindings
+     *
+     * Returns the telephony bindings owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose bindings are listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TelephonyBindingListItem> listTelephonyBindings(String agentName) {
+        // Generated convenience method for listTelephonyBindings
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyBindings(agentName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, TelephonyBindingListItem>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBindingListItem.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Get an agent telephony binding
+     *
+     * Retrieves a telephony binding owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an agent telephony binding
+     *
+     * Retrieves a telephony binding owned by the voice agent named in the path on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyBinding> getTelephonyBinding(String agentName, String bindingId) {
+        // Generated convenience method for getTelephonyBindingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTelephonyBindingWithResponse(agentName, bindingId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBinding.class));
+    }
+
+    /**
+     * Update an agent telephony binding
+     *
+     * Updates a telephony binding owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param body The binding properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a telephony binding owned by a voice agent on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyBinding> updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
+        UpdateTelephonyBindingRequest body) {
+        // Generated convenience method for updateTelephonyBindingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, false);
+        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBinding.class));
+    }
+
+    /**
+     * Delete an agent telephony binding
+     *
+     * Deletes a telephony binding owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTelephonyBinding(String agentName, String bindingId, String ifMatch) {
+        // Generated convenience method for deleteTelephonyBindingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteTelephonyBindingWithResponse(agentName, bindingId, ifMatch, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * List agent telephony calls
+     *
+     * Returns the durable inbound call history for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose calls are listed.
+     * @param provider Filters calls by provider.
+     * @param status Filters calls by lifecycle status.
+     * @param startedAfter Includes calls that started at or after this Unix timestamp in seconds.
+     * @param startedBefore Includes calls that started at or before this Unix timestamp in seconds.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
+        TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
+        PageOrder order, String after, String before) {
+        // Generated convenience method for listTelephonyCalls
+        RequestOptions requestOptions = new RequestOptions();
+        if (provider != null) {
+            requestOptions.addQueryParam("provider", provider.toString(), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (startedAfter != null) {
+            requestOptions.addQueryParam("started_after", String.valueOf(startedAfter.toEpochSecond()), false);
+        }
+        if (startedBefore != null) {
+            requestOptions.addQueryParam("started_before", String.valueOf(startedBefore.toEpochSecond()), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyCalls(agentName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, TelephonyCallSummary>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallSummary.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List agent telephony calls
+     *
+     * Returns the durable inbound call history for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose calls are listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TelephonyCallSummary> listTelephonyCalls(String agentName) {
+        // Generated convenience method for listTelephonyCalls
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyCalls(agentName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, TelephonyCallSummary>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallSummary.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Get an agent telephony call
+     *
+     * Retrieves a durable inbound call record owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the call record.
+     * @param callId The service-generated call identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an agent telephony call
+     *
+     * Retrieves a durable inbound call record owned by the voice agent named in the path on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyCallRecord> getTelephonyCall(String agentName, String callId) {
+        // Generated convenience method for getTelephonyCallWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTelephonyCallWithResponse(agentName, callId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallRecord.class));
+    }
+
+    /**
+     * Transfer an active agent telephony call
+     *
+     * Transfers an active inbound call to a configured target for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the active call.
+     * @param callId The service-generated call identifier.
+     * @param target The name of a transfer target configured for the voice agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed diagnostics for a durable inbound call to a voice agent on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyCallRecord> transferTelephonyCall(String agentName, String callId, String target) {
+        // Generated convenience method for transferTelephonyCallWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        TransferTelephonyCallRequest transferTelephonyCallRequestObj = new TransferTelephonyCallRequest(target);
+        BinaryData transferTelephonyCallRequest = BinaryData.fromObject(transferTelephonyCallRequestObj);
+        return transferTelephonyCallWithResponse(agentName, callId, transferTelephonyCallRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallRecord.class));
+    }
+
+    /**
+     * End an active agent telephony call
+     *
+     * Ends an active inbound call owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the active call.
+     * @param callId The service-generated call identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed diagnostics for a durable inbound call to a voice agent on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyCallRecord> endTelephonyCall(String agentName, String callId) {
+        // Generated convenience method for endTelephonyCallWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return endTelephonyCallWithResponse(agentName, callId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallRecord.class));
+    }
+
+    /**
+     * Get agent telephony transfer targets
+     *
+     * Returns all transfer targets configured for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose transfer targets are retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent telephony transfer targets
+     *
+     * Returns all transfer targets configured for the voice agent named in the path on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyTransferTargets> getTelephonyTransferTargets(String agentName) {
+        // Generated convenience method for getTelephonyTransferTargetsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTelephonyTransferTargetsWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyTransferTargets.class));
+    }
+
+    /**
+     * Replace agent telephony transfer targets
+     *
+     * Replaces all transfer targets configured for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose transfer targets are replaced.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param transferTargets The complete set of destinations to which the voice agent may transfer calls. An empty
+     * array clears all targets when replacing the configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the telephony transfer targets configured for one voice agent on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TelephonyTransferTargets> replaceTelephonyTransferTargets(String agentName, String ifMatch,
+        List<TelephonyTransferTarget> transferTargets) {
+        // Generated convenience method for replaceTelephonyTransferTargetsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        ReplaceTelephonyTransferTargetsRequest replaceTelephonyTransferTargetsRequestObj
+            = new ReplaceTelephonyTransferTargetsRequest(transferTargets);
+        BinaryData replaceTelephonyTransferTargetsRequest
+            = BinaryData.fromObject(replaceTelephonyTransferTargetsRequestObj);
+        return replaceTelephonyTransferTargetsWithResponse(agentName, ifMatch, replaceTelephonyTransferTargetsRequest,
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TelephonyTransferTargets.class));
     }
 }

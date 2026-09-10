@@ -38,13 +38,13 @@ import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AgentTelephonies.
+ * An instance of this class provides access to all the operations defined in BetaAgentTelephonies.
  */
-public final class AgentTelephoniesImpl {
+public final class BetaAgentTelephoniesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AgentTelephoniesService service;
+    private final BetaAgentTelephoniesService service;
 
     /**
      * The service client containing this operation class.
@@ -52,13 +52,13 @@ public final class AgentTelephoniesImpl {
     private final AgentsClientImpl client;
 
     /**
-     * Initializes an instance of AgentTelephoniesImpl.
+     * Initializes an instance of BetaAgentTelephoniesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AgentTelephoniesImpl(AgentsClientImpl client) {
-        this.service
-            = RestProxy.create(AgentTelephoniesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BetaAgentTelephoniesImpl(AgentsClientImpl client) {
+        this.service = RestProxy.create(BetaAgentTelephoniesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,12 +72,12 @@ public final class AgentTelephoniesImpl {
     }
 
     /**
-     * The interface defining all the services for AgentsClientAgentTelephonies to be used by the proxy service to
+     * The interface defining all the services for AgentsClientBetaAgentTelephonies to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AgentsClientAgentTelephonies")
-    public interface AgentTelephoniesService {
+    @ServiceInterface(name = "AgentsClientBetaAgentTelephonies")
+    public interface BetaAgentTelephoniesService {
         @Post("/agents/{agent_name}/telephony/call_jobs")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

@@ -989,7 +989,6 @@ public final class BetaAgentEndpointConversationsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     object: String(realtime.response) (Optional)
      *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
      *     status_details (Optional): {
@@ -1020,16 +1019,17 @@ public final class BetaAgentEndpointConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
-     *     conversation_id: String (Required)
      *     output_modalities (Optional): [
      *         String(text/audio) (Optional)
      *     ]
      *     max_output_tokens: BinaryData (Optional)
+     *     id: String (Required)
      *     output (Optional): [
      *          (Optional){
      *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
+     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1102,7 +1102,6 @@ public final class BetaAgentEndpointConversationsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     object: String(realtime.response) (Optional)
      *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
      *     status_details (Optional): {
@@ -1133,16 +1132,17 @@ public final class BetaAgentEndpointConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
-     *     conversation_id: String (Required)
      *     output_modalities (Optional): [
      *         String(text/audio) (Optional)
      *     ]
      *     max_output_tokens: BinaryData (Optional)
+     *     id: String (Required)
      *     output (Optional): [
      *          (Optional){
      *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
+     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1210,7 +1210,6 @@ public final class BetaAgentEndpointConversationsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     object: String(realtime.response) (Optional)
      *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
      *     status_details (Optional): {
@@ -1241,16 +1240,17 @@ public final class BetaAgentEndpointConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
-     *     conversation_id: String (Required)
      *     output_modalities (Optional): [
      *         String(text/audio) (Optional)
      *     ]
      *     max_output_tokens: BinaryData (Optional)
+     *     id: String (Required)
      *     output (Optional): [
      *          (Optional){
      *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
+     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1321,7 +1321,6 @@ public final class BetaAgentEndpointConversationsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     object: String(realtime.response) (Optional)
      *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
      *     status_details (Optional): {
@@ -1352,16 +1351,17 @@ public final class BetaAgentEndpointConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
-     *     conversation_id: String (Required)
      *     output_modalities (Optional): [
      *         String(text/audio) (Optional)
      *     ]
      *     max_output_tokens: BinaryData (Optional)
+     *     id: String (Required)
      *     output (Optional): [
      *          (Optional){
      *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
+     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1408,7 +1408,6 @@ public final class BetaAgentEndpointConversationsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     object: String(realtime.response) (Optional)
      *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
      *     status_details (Optional): {
@@ -1439,16 +1438,17 @@ public final class BetaAgentEndpointConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
-     *     conversation_id: String (Required)
      *     output_modalities (Optional): [
      *         String(text/audio) (Optional)
      *     ]
      *     max_output_tokens: BinaryData (Optional)
+     *     id: String (Required)
      *     output (Optional): [
      *          (Optional){
      *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
+     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -1501,7 +1501,6 @@ public final class BetaAgentEndpointConversationsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     object: String(realtime.response) (Optional)
      *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
      *     status_details (Optional): {
@@ -1532,16 +1531,17 @@ public final class BetaAgentEndpointConversationsImpl {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
-     *     conversation_id: String (Required)
      *     output_modalities (Optional): [
      *         String(text/audio) (Optional)
      *     ]
      *     max_output_tokens: BinaryData (Optional)
+     *     id: String (Required)
      *     output (Optional): [
      *          (Optional){
      *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
+     *     conversation_id: String (Required)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)

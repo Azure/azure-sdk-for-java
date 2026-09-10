@@ -245,23 +245,6 @@ public class JsonMergePatchHelper {
         return agentCardSkillAccessor;
     }
 
-    private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;
-
-    public interface UpdateAgentDetailsOptionsAccessor {
-        UpdateAgentDetailsOptions prepareModelForJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions,
-            boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions);
-    }
-
-    public static void setUpdateAgentDetailsOptionsAccessor(UpdateAgentDetailsOptionsAccessor accessor) {
-        updateAgentDetailsOptionsAccessor = accessor;
-    }
-
-    public static UpdateAgentDetailsOptionsAccessor getUpdateAgentDetailsOptionsAccessor() {
-        return updateAgentDetailsOptionsAccessor;
-    }
-
     private static UpdateTelephonyBindingRequestAccessor updateTelephonyBindingRequestAccessor;
 
     public interface UpdateTelephonyBindingRequestAccessor {
@@ -277,5 +260,22 @@ public class JsonMergePatchHelper {
 
     public static UpdateTelephonyBindingRequestAccessor getUpdateTelephonyBindingRequestAccessor() {
         return updateTelephonyBindingRequestAccessor;
+    }
+
+    private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;
+
+    public interface UpdateAgentDetailsOptionsAccessor {
+        UpdateAgentDetailsOptions prepareModelForJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions);
+    }
+
+    public static void setUpdateAgentDetailsOptionsAccessor(UpdateAgentDetailsOptionsAccessor accessor) {
+        updateAgentDetailsOptionsAccessor = accessor;
+    }
+
+    public static UpdateAgentDetailsOptionsAccessor getUpdateAgentDetailsOptionsAccessor() {
+        return updateAgentDetailsOptionsAccessor;
     }
 }

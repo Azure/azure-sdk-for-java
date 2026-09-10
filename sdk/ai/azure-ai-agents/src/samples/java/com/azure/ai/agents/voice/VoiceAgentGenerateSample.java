@@ -5,6 +5,7 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.ai.agents.models.AgentDetails;
@@ -30,16 +31,17 @@ public class VoiceAgentGenerateSample {
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = configuration.get("FOUNDRY_VOICE_AGENT_NAME", "generated-voice-agent-java");
 
-        AgentsClient client = new AgentsClientBuilder()
+        AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .allowPreview(true)
-            .buildAgentsClient();
+            .allowPreview(true);
+        AgentsClient client = builder.buildAgentsClient();
+        BetaAgentsClient betaClient = builder.beta().buildBetaAgentsClient();
 
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");
         request.put("name", agentName);
-        AgentDetails generated = client.generateAgent(BinaryData.fromObject(request));
+        AgentDetails generated = betaClient.generateAgent(BinaryData.fromObject(request));
         try {
             System.out.println("Generated voice agent: " + generated.getName());
             AgentVersionDetails latest = generated.getVersions().getLatest();

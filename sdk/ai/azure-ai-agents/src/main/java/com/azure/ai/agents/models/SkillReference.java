@@ -12,35 +12,36 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Reference to a named evaluator, optionally pinned to a version.
+ * A reference to a versioned Foundry skill.
  */
 @Fluent
-public final class AgentOptimizationEvaluatorRef implements JsonSerializable<AgentOptimizationEvaluatorRef> {
+public final class SkillReference implements JsonSerializable<SkillReference> {
 
     /*
-     * Evaluator name.
+     * The name of the skill.
      */
     @Generated
     private final String name;
 
     /*
-     * Evaluator version. If not specified, the latest version is used.
+     * The skill version. If omitted, the current default version is resolved and pinned when the agent version is
+     * created.
      */
     @Generated
     private String version;
 
     /**
-     * Creates an instance of AgentOptimizationEvaluatorRef class.
+     * Creates an instance of SkillReference class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public AgentOptimizationEvaluatorRef(String name) {
+    public SkillReference(String name) {
         this.name = name;
     }
 
     /**
-     * Get the name property: Evaluator name.
+     * Get the name property: The name of the skill.
      *
      * @return the name value.
      */
@@ -50,7 +51,8 @@ public final class AgentOptimizationEvaluatorRef implements JsonSerializable<Age
     }
 
     /**
-     * Get the version property: Evaluator version. If not specified, the latest version is used.
+     * Get the version property: The skill version. If omitted, the current default version is resolved and pinned when
+     * the agent version is created.
      *
      * @return the version value.
      */
@@ -60,13 +62,14 @@ public final class AgentOptimizationEvaluatorRef implements JsonSerializable<Age
     }
 
     /**
-     * Set the version property: Evaluator version. If not specified, the latest version is used.
+     * Set the version property: The skill version. If omitted, the current default version is resolved and pinned when
+     * the agent version is created.
      *
      * @param version the version value to set.
-     * @return the AgentOptimizationEvaluatorRef object itself.
+     * @return the SkillReference object itself.
      */
     @Generated
-    public AgentOptimizationEvaluatorRef setVersion(String version) {
+    public SkillReference setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -84,16 +87,16 @@ public final class AgentOptimizationEvaluatorRef implements JsonSerializable<Age
     }
 
     /**
-     * Reads an instance of AgentOptimizationEvaluatorRef from the JsonReader.
+     * Reads an instance of SkillReference from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentOptimizationEvaluatorRef if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of SkillReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AgentOptimizationEvaluatorRef.
+     * @throws IOException If an error occurs while reading the SkillReference.
      */
     @Generated
-    public static AgentOptimizationEvaluatorRef fromJson(JsonReader jsonReader) throws IOException {
+    public static SkillReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String version = null;
@@ -108,10 +111,9 @@ public final class AgentOptimizationEvaluatorRef implements JsonSerializable<Age
                     reader.skipChildren();
                 }
             }
-            AgentOptimizationEvaluatorRef deserializedAgentOptimizationEvaluatorRef
-                = new AgentOptimizationEvaluatorRef(name);
-            deserializedAgentOptimizationEvaluatorRef.version = version;
-            return deserializedAgentOptimizationEvaluatorRef;
+            SkillReference deserializedSkillReference = new SkillReference(name);
+            deserializedSkillReference.version = version;
+            return deserializedSkillReference;
         });
     }
 }
