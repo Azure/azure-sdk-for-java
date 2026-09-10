@@ -75,6 +75,26 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void customizeRealtimeMessageDiscriminators(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents.models", "AgentDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("AgentDefinition")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentDefinition was not found."))
+                .getMethodsByName("fromJson")
+                .get(0);
+            String body = fromJson.getBody()
+                .orElseThrow(() -> new IllegalStateException("Generated AgentDefinition.fromJson body was not found."))
+                .toString();
+            String updatedBody = body.replace(
+                "} else {\n                    return fromJsonKnownDiscriminator(readerToUse.reset());",
+                "} else if (\"voice\".equals(discriminatorValue)) {\n"
+                    + "                    return VoiceAgentDefinition.fromJson(readerToUse.reset());\n"
+                    + "                } else {\n"
+                    + "                    return fromJsonKnownDiscriminator(readerToUse.reset());");
+            if (body.equals(updatedBody)) {
+                throw new IllegalStateException("Generated AgentDefinition.fromJson discriminator chain was not found.");
+            }
+            fromJson.setBody(StaticJavaParser.parseBlock(updatedBody));
+        });
+
         for (String className : new String[] { "RealtimeConversationItemMessage",
             "RealtimeConversationItemMessageAssistant", "RealtimeConversationItemMessageSystem",
             "RealtimeConversationItemMessageUser", "VoiceAgentSystemTool", "VoiceAgentEndConversationSystemTool" }) {
