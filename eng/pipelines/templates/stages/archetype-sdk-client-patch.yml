@@ -17,6 +17,12 @@ parameters:
 - name: TestPipeline
   type: boolean
   default: false
+- name: PatchMergeBack
+  type: boolean
+  default: false
+- name: PatchChangelogPath
+  type: string
+  default: patch-changelog.md
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -55,9 +61,32 @@ extends:
                     - '!sdk/**/test-recordings/*'
                     - '!sdk/**/session-records/*'
 
-            - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-              parameters:
-                JobType: 'Build'
+              - ${{ if eq(parameters.PatchMergeBack, true) }}:
+                - pwsh: |
+                    $validationRoot = Join-Path "$(Agent.TempDirectory)" "patch-mergeback-validation-$(System.JobAttempt)"
+                    try {
+                      git worktree add --detach $validationRoot "$(Build.SourceVersion)"
+                      if ($LASTEXITCODE -ne 0) {
+                        throw "Could not create patch merge-back validation worktree."
+                      }
+
+                      $expectedArtifacts = $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
+                      $(Build.SourcesDirectory)/eng/scripts/Create-Patch-Mergeback.ps1 `
+                        -RepoRoot $validationRoot `
+                        -ReleaseBranch "$(Build.SourceVersion)" `
+                        -BaseBranch main `
+                        -PatchChangelogPath "${{ parameters.PatchChangelogPath }}" `
+                        -ExpectedArtifacts $expectedArtifacts
+                    } finally {
+                      if (Test-Path -LiteralPath $validationRoot) {
+                        git worktree remove --force $validationRoot
+                      }
+                    }
+                  displayName: 'Dry run patch merge-back against main'
+
+              - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+                parameters:
+                  JobType: 'Build'
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
@@ -317,3 +346,5 @@ extends:
               - Build
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
+            PatchMergeBack: ${{ parameters.PatchMergeBack }}
+            PatchChangelogPath: ${{ parameters.PatchChangelogPath }}

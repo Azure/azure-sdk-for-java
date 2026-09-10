@@ -7,6 +7,12 @@ parameters:
   - name: TestPipeline
     type: boolean
     default: false
+  - name: PatchMergeBack
+    type: boolean
+    default: false
+  - name: PatchChangelogPath
+    type: string
+    default: patch-changelog.md
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
@@ -187,7 +193,10 @@ stages:
                 SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - job: UpdatePackageVersion
-          displayName: "Update Package Version"
+          ${{ if eq(parameters.PatchMergeBack, true) }}:
+            displayName: "Create Patch Merge-back"
+          ${{ else }}:
+            displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
           dependsOn: PublishESRPPackage
           variables:
@@ -214,29 +223,50 @@ stages:
               inputs:
                 versionSpec: $(PythonVersion)
 
-            # Apply the version increment to each library, which only updates the version_client.txt file,
-            # and then call to update_versions will then apply all the updates.
-            - pwsh: |
-                $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
-                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
-                foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
-                }
-              displayName: Increment package versions
+            - ${{ if eq(parameters.PatchMergeBack, true) }}:
+              - pwsh: |
+                  $expectedArtifacts = $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
+                  $(Build.SourcesDirectory)/eng/scripts/Create-Patch-Mergeback.ps1 `
+                    -ReleaseBranch "$(Build.SourceVersion)" `
+                    -BaseBranch main `
+                    -PatchChangelogPath "${{ parameters.PatchChangelogPath }}" `
+                    -ExpectedArtifacts $expectedArtifacts
+                displayName: 'Prepare patch merge-back against main'
 
-            - script: |
-                python --version
-                python eng/versioning/update_versions.py --auto-version-increment --skip-readme
-              displayName: Update pom files for incremented versions
+              - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                parameters:
+                  BaseBranchName: refs/heads/main
+                  PRBranchName: merge-back-patch-release-$(Build.SourceBranchName)-$(Build.BuildId)
+                  CommitMsg: "Merge back patch release $(Build.SourceBranchName)"
+                  PRTitle: "Merge back patch release $(Build.SourceBranchName)"
+                  PRBody: "Promotes released patch dependency versions, inserts the prepared patch changelog entries, and regenerates pom.xml files. Source resets and README changes are intentionally excluded."
+                  CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                  AuthToken: ''
 
-            - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-              parameters:
-                PRBranchName: increment-package-version-patch-release-$(Build.BuildId)
-                CommitMsg: "Increment package versions for patch releases"
-                PRTitle: "Increment versions for patch releases"
-                CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
-                AuthToken: ''
+            - ${{ else }}:
+              # Apply the version increment to each library, which only updates the version_client.txt file,
+              # and then call to update_versions will then apply all the updates.
+              - pwsh: |
+                  $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
+                  $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                  python --version
+                  foreach($artifact in $ArtifactsList) {
+                    python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
+                  }
+                displayName: Increment package versions
+
+              - script: |
+                  python --version
+                  python eng/versioning/update_versions.py --auto-version-increment --skip-readme
+                displayName: Update pom files for incremented versions
+
+              - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                parameters:
+                  PRBranchName: increment-package-version-patch-release-$(Build.BuildId)
+                  CommitMsg: "Increment package versions for patch releases"
+                  PRTitle: "Increment versions for patch releases"
+                  CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                  AuthToken: ''
 
         - job: PublishDocsMs
           displayName: Docs.MS Release

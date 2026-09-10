@@ -6,44 +6,15 @@
 
 <#
 .SYNOPSIS
-[Experimental] Automates creation of a patch-release mergeback against the current branch.
+Creates the version, changelog, and generated POM changes for a patch merge-back.
 
 .DESCRIPTION
-[Experimental] Given a release branch (e.g. release/patch/20260505) that contains a patch
-release, this script ports the patch's published-version bumps and changelog
-entries back into the current working branch. It performs three steps:
+Reads patch-changelog.md and version_client.txt from a patch release branch,
+checks out the requested base branch, promotes released patch versions into the
+base branch dependency-version column without changing current-version, inserts
+the exact patch changelog entries, and regenerates POM files.
 
-  1. version_client.txt: For every line whose dependency-version (middle
-     column) was bumped on the release branch, copy that bumped value into
-     the current branch's version_client.txt. The current-version (right
-     column) on the current branch is preserved as-is, because it usually
-     reflects in-development beta versions that should not be reverted.
-
-  2. CHANGELOG.md: For each library whose dependency-version changed, take
-     the topmost (newest) entry from the release branch's CHANGELOG and
-     insert it into the current branch's CHANGELOG. When an existing
-     "## ... (Unreleased)" section is present, the new entry is inserted
-     after that entire section (before the next "##" heading). Otherwise,
-     it is inserted before the first dated entry (immediately after the
-     "# Release History" heading).
-
-  3. Runs `python eng/versioning/update_versions.py --skip-readme` to
-     propagate the new dependency-versions into all pom.xml files.
-
-This script does NOT commit, push, or open a pull request. Review the
-working tree afterwards, then commit and push manually.
-
-.PARAMETER ReleaseBranch
-The name of the patch release branch to port edits from
-(for example release/patch/20260505). The branch can be local or remote;
-the script will use `git fetch` and resolve origin/<branch> if needed.
-
-.PARAMETER RepoRoot
-Optional. Path to the azure-sdk-for-java clone. Defaults to the repo root
-inferred from the script's location.
-
-.EXAMPLE
-.\eng\scripts\Create-Patch-Mergeback.ps1 -ReleaseBranch release/patch/20260505
+The script does not commit, push, or create a pull request.
 #>
 
 [CmdletBinding()]
@@ -51,289 +22,165 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ReleaseBranch,
 
+    [string]$BaseBranch = 'main',
+
+    [string]$PatchChangelogPath = 'patch-changelog.md',
+
+    [string[]]$ExpectedArtifacts = @(),
+
     [string]$RepoRoot
 )
 
 $ErrorActionPreference = 'Stop'
 
-# Resolve repo root.
 if (-not $RepoRoot) {
     $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot '..\..')
 }
 $RepoRoot = (Resolve-Path $RepoRoot).Path
+
+. (Join-Path $PSScriptRoot 'patch-mergeback-helpers.ps1')
+
+function Invoke-Git {
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments)
+
+    & git @Arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "git $($Arguments -join ' ') failed with exit code $LASTEXITCODE."
+    }
+}
+
 Push-Location $RepoRoot
 try {
-    Write-Host "Repo root: $RepoRoot"
+    if (git status --porcelain) {
+        throw 'Working tree is not clean. Commit, stash, or discard local changes before creating a merge-back.'
+    }
 
-    $workingTreeStatus = git status --porcelain
+    $baseBranchName = $BaseBranch -replace '^refs/heads/', '' -replace '^origin/', ''
+
+    Invoke-Git fetch --quiet origin $baseBranchName
+
+    if ($ReleaseBranch -match '^[0-9a-fA-F]{40}$') {
+        $releaseRef = $ReleaseBranch
+    } else {
+        $releaseBranchName = $ReleaseBranch -replace '^refs/heads/', '' -replace '^origin/', ''
+        Invoke-Git fetch --quiet origin $releaseBranchName
+        $releaseRef = "origin/$releaseBranchName"
+    }
+    $baseRef = "origin/$baseBranchName"
+
+    Invoke-Git rev-parse --verify $releaseRef
+    Invoke-Git rev-parse --verify $baseRef
+
+    $manifestContent = git show "${releaseRef}:${PatchChangelogPath}"
     if ($LASTEXITCODE -ne 0) {
-        throw "Failed to check working tree status."
+        throw "Could not read '$PatchChangelogPath' from '$releaseRef'."
     }
-    if ($workingTreeStatus) {
-        throw "Working tree is not clean. Commit, stash, or discard local changes before running this script."
+    $entries = ConvertFrom-PatchChangelog -Content ($manifestContent -join "`n")
+
+    $releaseVersionContent = git show "${releaseRef}:eng/versioning/version_client.txt"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not read eng/versioning/version_client.txt from '$releaseRef'."
     }
-
-    # ---------------------------------------------------------------------
-    # Resolve the release branch ref.
-    # ---------------------------------------------------------------------
-    Write-Host "Fetching latest refs..."
-    git fetch --quiet origin 2>$null | Out-Null
-
-    $branchRef = $null
-    foreach ($candidate in @($ReleaseBranch, "origin/$ReleaseBranch")) {
-        $null = git rev-parse --verify --quiet "$candidate" 2>$null
-        if ($LASTEXITCODE -eq 0) { $branchRef = $candidate; break }
-    }
-    if (-not $branchRef) {
-        throw "Could not resolve '$ReleaseBranch' (tried local and origin/)."
-    }
-    Write-Host "Using release branch ref: $branchRef"
-
-    # ---------------------------------------------------------------------
-    # 1. version_client.txt: port dependency-version bumps.
-    # ---------------------------------------------------------------------
-    $vcRelPath = 'eng/versioning/version_client.txt'
-    $vcPath    = Join-Path $RepoRoot $vcRelPath
-
-    Write-Host "`n[1/3] Porting dependency-version bumps from $vcRelPath ..."
-
-    $releaseVcRaw = git show "${branchRef}:${vcRelPath}"
-    if ($LASTEXITCODE -ne 0) { throw "Failed to read $vcRelPath from $branchRef." }
-    $releaseLines = $releaseVcRaw -split "`r?`n"
-    $localLines   = Get-Content -LiteralPath $vcPath
-
-    function Parse-VcLine([string]$line) {
-        # Returns @{ Key=...; Dep=...; Cur=...; Comment=... } or $null
-        if ([string]::IsNullOrWhiteSpace($line)) { return $null }
-        $trim = $line.TrimStart()
-        if ($trim.StartsWith('#')) { return $null }
-        # Strip optional inline comment.
-        $body  = $line
-        $note  = ''
-        $hash  = $line.IndexOf(' #')
-        if ($hash -ge 0) {
-            $body = $line.Substring(0, $hash)
-            $note = $line.Substring($hash)
+    $releaseVersions = @{}
+    foreach ($line in $releaseVersionContent) {
+        $parsed = ConvertFrom-VersionClientLine -Line $line
+        if ($parsed) {
+            $releaseVersions[$parsed.Artifact] = $parsed
         }
-        $parts = $body.Split(';')
-        if ($parts.Count -lt 3) { return $null }
-        return [pscustomobject]@{
-            Key     = $parts[0].Trim()
-            Dep     = $parts[1].Trim()
-            Cur     = $parts[2].Trim()
-            Comment = $note
+    }
+    foreach ($entry in $entries) {
+        if (-not $releaseVersions.ContainsKey($entry.Artifact)) {
+            throw "Manifest artifact '$($entry.Artifact)' was not found on '$releaseRef'."
+        }
+        if ($releaseVersions[$entry.Artifact].CurrentVersion -ne $entry.Version) {
+            throw "Manifest version '$($entry.Version)' for '$($entry.Artifact)' does not match release current-version '$($releaseVersions[$entry.Artifact].CurrentVersion)'."
         }
     }
 
-    $releaseMap = @{}
-    foreach ($l in $releaseLines) {
-        $p = Parse-VcLine $l
-        if ($p) { $releaseMap[$p.Key] = $p }
-    }
-
-    $changedArtifacts = New-Object System.Collections.Generic.List[string]
-    $newLocal = New-Object System.Collections.Generic.List[string]
-
-    foreach ($line in $localLines) {
-        $p = Parse-VcLine $line
-        if (-not $p -or -not $releaseMap.ContainsKey($p.Key)) {
-            $newLocal.Add($line); continue
-        }
-        $r = $releaseMap[$p.Key]
-        if ($r.Dep -eq $p.Dep) {
-            $newLocal.Add($line); continue
-        }
-        # Bump dep-version, keep local current-version.
-        $newBody = "$($p.Key);$($r.Dep);$($p.Cur)"
-        $newLocal.Add("$newBody$($p.Comment)")
-        $changedArtifacts.Add($p.Key) | Out-Null
-    }
-
-    if ($changedArtifacts.Count -eq 0) {
-        Write-Host "  No dependency-version changes found. Nothing to port."
-        return
-    }
-
-    # Preserve original line endings of the file.
-    $origBytes = [System.IO.File]::ReadAllBytes($vcPath)
-    $useCrlf = $false
-    for ($i = 0; $i -lt [Math]::Min($origBytes.Length, 4096); $i++) {
-        if ($origBytes[$i] -eq 13) { $useCrlf = $true; break }
-    }
-    $eol = if ($useCrlf) { "`r`n" } else { "`n" }
-    [System.IO.File]::WriteAllText($vcPath, ($newLocal -join $eol) + $eol)
-
-    Write-Host "  Bumped $($changedArtifacts.Count) artifact(s) in version_client.txt."
-
-    # ---------------------------------------------------------------------
-    # 2. CHANGELOG.md: port the latest entry from the release branch for
-    #    each artifact whose dependency-version changed.
-    # ---------------------------------------------------------------------
-    Write-Host "`n[2/3] Porting CHANGELOG.md entries..."
-
-    # Build artifactId -> list of CHANGELOG.md paths once.
-    $changelogIndex = @{}
-    Get-ChildItem -Path (Join-Path $RepoRoot 'sdk') -Recurse -Filter 'CHANGELOG.md' -File `
-        | ForEach-Object {
-            $artifactId = $_.Directory.Name
-            if (-not $changelogIndex.ContainsKey($artifactId)) {
-                $changelogIndex[$artifactId] = New-Object System.Collections.Generic.List[string]
+    if ($ExpectedArtifacts.Count -gt 0) {
+        $expectedSet = @{}
+        foreach ($artifact in $ExpectedArtifacts) {
+            if ($expectedSet.ContainsKey($artifact)) {
+                throw "Expected artifact list contains duplicate '$artifact'."
             }
-            $changelogIndex[$artifactId].Add($_.FullName) | Out-Null
+            $expectedSet[$artifact] = $true
         }
 
-    function Resolve-ChangelogPath([string]$artifactId) {
-        if (-not $changelogIndex.ContainsKey($artifactId)) { return $null }
-        $paths = $changelogIndex[$artifactId]
-        if ($paths.Count -eq 1) { return $paths[0] }
-        # Prefer the v1 (non *-v2) directory, then shortest path as a tiebreaker.
-        $nonV2 = $paths | Where-Object { $_ -notmatch '[\\/][^\\/]*-v2[\\/]' }
-        if ($nonV2.Count -eq 1) { return $nonV2[0] }
-        return ($paths | Sort-Object Length | Select-Object -First 1)
-    }
+        $manifestSet = @{}
+        foreach ($entry in $entries) {
+            $manifestSet[$entry.Artifact] = $true
+        }
 
-    function Get-LatestChangelogEntry([string]$relPath) {
-        # Returns @{ Header=...; Body=... } for the topmost ## entry, or $null.
-        $raw = git show "${branchRef}:${relPath}" 2>$null
-        if ($LASTEXITCODE -ne 0 -or -not $raw) { return $null }
-        $lines = $raw -split "`r?`n"
-        $startIdx = -1
-        for ($i = 0; $i -lt $lines.Count; $i++) {
-            if ($lines[$i] -match '^##\s+\S') { $startIdx = $i; break }
-        }
-        if ($startIdx -lt 0) { return $null }
-        $endIdx = $lines.Count
-        for ($i = $startIdx + 1; $i -lt $lines.Count; $i++) {
-            if ($lines[$i] -match '^##\s+\S') { $endIdx = $i; break }
-        }
-        # Trim trailing blank lines.
-        $block = $lines[$startIdx..($endIdx - 1)]
-        while ($block.Count -gt 0 -and [string]::IsNullOrWhiteSpace($block[-1])) {
-            $block = $block[0..($block.Count - 2)]
-        }
-        return [pscustomobject]@{
-            Header = $lines[$startIdx]
-            Body   = ($block -join "`n")
+        $missing = @($expectedSet.Keys | Where-Object { -not $manifestSet.ContainsKey($_) })
+        $unexpectedEntries = @($manifestSet.Keys | Where-Object { -not $expectedSet.ContainsKey($_) })
+        if ($missing.Count -gt 0 -or $unexpectedEntries.Count -gt 0) {
+            throw "Patch changelog artifact set does not match the release artifacts. Missing: $($missing -join ', '). Unexpected: $($unexpectedEntries -join ', ')."
         }
     }
 
-    $portedCount   = 0
-    $skippedNoFile = New-Object System.Collections.Generic.List[string]
-    $skippedNoEntry = New-Object System.Collections.Generic.List[string]
-    $alreadyPresent = New-Object System.Collections.Generic.List[string]
+    Invoke-Git checkout --detach $baseRef
 
-    foreach ($key in $changedArtifacts) {
-        $artifactId = $key.Split(':')[1]
-        $localPath  = Resolve-ChangelogPath $artifactId
-        if (-not $localPath) { $skippedNoFile.Add($artifactId) | Out-Null; continue }
+    $versionClientPath = Join-Path $RepoRoot 'eng/versioning/version_client.txt'
+    $versionLines = Get-Content -LiteralPath $versionClientPath
+    $updatedVersionLines = Update-VersionClientForPatch -Lines $versionLines -Entries $entries
+    $versionEol = if ((Get-Content -LiteralPath $versionClientPath -Raw).Contains("`r`n")) { "`r`n" } else { "`n" }
+    [System.IO.File]::WriteAllText($versionClientPath, ($updatedVersionLines -join $versionEol) + $versionEol)
 
-        $relLocalPath = (Resolve-Path -LiteralPath $localPath -Relative).TrimStart('.', '\', '/').Replace('\', '/')
-
-        $entry = Get-LatestChangelogEntry $relLocalPath
-        if (-not $entry) { $skippedNoEntry.Add($artifactId) | Out-Null; continue }
-
-        $existing = Get-Content -LiteralPath $localPath -Raw
-        # Skip if the same released-version header is already present.
-        $headerEscaped = [regex]::Escape($entry.Header)
-        if ($existing -match "(?m)^$headerEscaped\s*$") {
-            $alreadyPresent.Add($artifactId) | Out-Null; continue
+    foreach ($entry in $entries) {
+        $changelogPath = Join-Path $RepoRoot $entry.Path
+        if (-not (Test-Path -LiteralPath $changelogPath)) {
+            throw "Target changelog '$($entry.Path)' does not exist on '$baseRef'."
         }
-
-        $existingLines = $existing -split "`r?`n"
-
-        # Find an Unreleased heading; if none, find the first dated heading.
-        $unreleasedIdx = -1
-        $firstDatedIdx = -1
-        for ($i = 0; $i -lt $existingLines.Count; $i++) {
-            if ($unreleasedIdx -lt 0 -and $existingLines[$i] -match '^##\s+.*\(Unreleased\)\s*$') {
-                $unreleasedIdx = $i
-            } elseif ($firstDatedIdx -lt 0 -and $existingLines[$i] -match '^##\s+\S') {
-                $firstDatedIdx = $i
-            }
+        $content = Get-Content -LiteralPath $changelogPath -Raw
+        $updatedContent = Add-PatchChangelogEntry -Content $content -Entry $entry
+        if ($updatedContent -ne $content) {
+            [System.IO.File]::WriteAllText($changelogPath, $updatedContent)
         }
-
-        $insertText = $entry.Body.TrimEnd() + "`n"
-
-        if ($unreleasedIdx -ge 0) {
-            # Find end of the Unreleased block (next ## heading or EOF).
-            $blockEnd = $existingLines.Count
-            for ($i = $unreleasedIdx + 1; $i -lt $existingLines.Count; $i++) {
-                if ($existingLines[$i] -match '^##\s+\S') { $blockEnd = $i; break }
-            }
-            # Strip trailing blanks inside the unreleased block before inserting.
-            $tail = $blockEnd
-            while ($tail -gt $unreleasedIdx + 1 -and [string]::IsNullOrWhiteSpace($existingLines[$tail - 1])) {
-                $tail--
-            }
-            $before = if ($tail -gt 0) { $existingLines[0..($tail - 1)] } else { @() }
-            $after  = if ($blockEnd -lt $existingLines.Count) { $existingLines[$blockEnd..($existingLines.Count - 1)] } else { @() }
-            $merged = @()
-            $merged += $before
-            $merged += ''
-            $merged += ($insertText -split "`n")
-            if ($after.Count -gt 0) { $merged += $after }
-        } elseif ($firstDatedIdx -ge 0) {
-            $before = $existingLines[0..($firstDatedIdx - 1)]
-            $after  = $existingLines[$firstDatedIdx..($existingLines.Count - 1)]
-            # Ensure exactly one blank between.
-            while ($before.Count -gt 0 -and [string]::IsNullOrWhiteSpace($before[-1])) {
-                $before = $before[0..($before.Count - 2)]
-            }
-            $merged = @()
-            $merged += $before
-            $merged += ''
-            $merged += ($insertText -split "`n")
-            $merged += ''
-            $merged += $after
-        } else {
-            # No headings at all; append.
-            $merged = $existingLines + @('') + ($insertText -split "`n")
-        }
-
-        # Determine line ending of the existing file.
-        $crlf = $existing.Contains("`r`n")
-        $eol2 = if ($crlf) { "`r`n" } else { "`n" }
-        $finalText = ($merged -join $eol2)
-        if (-not $finalText.EndsWith($eol2)) { $finalText += $eol2 }
-        [System.IO.File]::WriteAllText($localPath, $finalText)
-        $portedCount++
     }
 
-    Write-Host "  Ported $portedCount changelog entr$(if ($portedCount -eq 1){'y'}else{'ies'})."
-    if ($alreadyPresent.Count -gt 0) {
-        Write-Host "  Already present (skipped): $($alreadyPresent -join ', ')"
+    $python = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue)
+    if (-not $python) {
+        throw 'python is not on PATH; cannot run update_versions.py.'
     }
-    if ($skippedNoFile.Count -gt 0) {
-        Write-Warning "  No CHANGELOG.md found for: $($skippedNoFile -join ', ')"
-    }
-    if ($skippedNoEntry.Count -gt 0) {
-        Write-Warning "  No release entry found on $branchRef for: $($skippedNoEntry -join ', ')"
-    }
-
-    # ---------------------------------------------------------------------
-    # 3. Propagate dependency-versions into pom.xml files.
-    # ---------------------------------------------------------------------
-    Write-Host "`n[3/3] Running update_versions.py --skip-readme ..."
-    $py = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue)
-    if (-not $py) { throw "python is not on PATH; cannot run update_versions.py." }
-    & $py.Source 'eng/versioning/update_versions.py' '--skip-readme'
+    & $python.Source 'eng/versioning/update_versions.py' '--skip-readme'
     if ($LASTEXITCODE -ne 0) {
         throw "update_versions.py failed with exit code $LASTEXITCODE."
     }
 
-    # ---------------------------------------------------------------------
-    # Summary.
-    # ---------------------------------------------------------------------
-    $status   = git status --porcelain
-    $clCount  = ($status | Where-Object { $_ -match 'CHANGELOG\.md' }).Count
-    $pomCount = ($status | Where-Object { $_ -match 'pom\.xml' }).Count
+    $allowedChangelogs = @{}
+    foreach ($entry in $entries) {
+        $allowedChangelogs[$entry.Path] = $true
+    }
 
-    Write-Host "`nDone."
-    Write-Host "  version_client.txt artifacts bumped : $($changedArtifacts.Count)"
-    Write-Host "  CHANGELOG.md files modified         : $clCount"
-    Write-Host "  pom.xml files modified              : $pomCount"
-    Write-Host "`nReview with 'git diff', then commit and push when ready."
-}
-finally {
+    $unexpected = [System.Collections.Generic.List[string]]::new()
+    $statusLines = @(git status --porcelain)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Failed to inspect the merge-back working tree.'
+    }
+    foreach ($statusLine in $statusLines) {
+        $path = $statusLine.Substring(3).Replace('\', '/')
+        if (
+            $path -eq 'eng/versioning/version_client.txt' -or
+            $path -match '(^|/)pom\.xml$' -or
+            $allowedChangelogs.ContainsKey($path)
+        ) {
+            continue
+        }
+        $unexpected.Add($path)
+    }
+
+    if ($unexpected.Count -gt 0) {
+        throw "Merge-back produced unsupported file changes: $($unexpected -join ', ')."
+    }
+    if ($statusLines | Where-Object { $_ -match 'README\.md$' }) {
+        throw 'Merge-back must not modify README.md files.'
+    }
+
+    $changelogCount = @($statusLines | Where-Object { $_ -match 'CHANGELOG\.md$' }).Count
+    $pomCount = @($statusLines | Where-Object { $_ -match 'pom\.xml$' }).Count
+    Write-Host "Prepared merge-back for $($entries.Count) patch artifact(s)."
+    Write-Host "Modified changelogs: $changelogCount"
+    Write-Host "Generated POM changes: $pomCount"
+} finally {
     Pop-Location
 }
