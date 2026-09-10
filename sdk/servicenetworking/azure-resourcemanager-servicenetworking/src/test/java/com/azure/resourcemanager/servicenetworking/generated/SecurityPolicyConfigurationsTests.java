@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityPolicyConfigurationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityPolicyConfigurations model = BinaryData
-            .fromString(
-                "{\"wafSecurityPolicy\":{\"id\":\"jye\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"kvnipjoxz\"}}")
+        SecurityPolicyConfigurations model = BinaryData.fromString(
+            "{\"wafSecurityPolicy\":{\"id\":\"oxzjnchgejspod\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"ilzyd\"}}")
             .toObject(SecurityPolicyConfigurations.class);
-        Assertions.assertEquals("jye", model.wafSecurityPolicy().id());
-        Assertions.assertEquals("kvnipjoxz", model.ipAccessRulesSecurityPolicy().id());
+        Assertions.assertEquals("oxzjnchgejspod", model.wafSecurityPolicy().id());
+        Assertions.assertEquals("ilzyd", model.ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityPolicyConfigurations model
-            = new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("jye"))
-                .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("kvnipjoxz"));
+            = new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("oxzjnchgejspod"))
+                .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("ilzyd"));
         model = BinaryData.fromObject(model).toObject(SecurityPolicyConfigurations.class);
-        Assertions.assertEquals("jye", model.wafSecurityPolicy().id());
-        Assertions.assertEquals("kvnipjoxz", model.ipAccessRulesSecurityPolicy().id());
+        Assertions.assertEquals("oxzjnchgejspod", model.wafSecurityPolicy().id());
+        Assertions.assertEquals("ilzyd", model.ipAccessRulesSecurityPolicy().id());
     }
 }
