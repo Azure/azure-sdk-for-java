@@ -115,13 +115,14 @@ stages:
             os: linux
 
           steps:
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - 'sdk/${{ parameters.ServiceDirectory }}'
-                  - '**/*.xml'
-                  - '!sdk/**/test-recordings'
-                  - '!sdk/**/session-records'
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: true
+              sparseCheckoutPatterns: >-
+                /* !/*/ /eng /.config
+                sdk/${{ parameters.ServiceDirectory }} **/*.xml
+                !sdk/**/test-recordings !sdk/**/session-records
 
             - download: current
               displayName: 'Download Artifact: packages'
@@ -197,7 +198,11 @@ stages:
             image: $(WINDOWSVMIMAGE)
             os: windows
           steps:
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: true
+              sparseCheckoutPatterns: '/* !/*/ /eng /.config'
             - template: /eng/common/pipelines/templates/steps/retain-run.yml
             # No pattern, just download everything that's been signed
             - download: current
@@ -257,13 +262,12 @@ stages:
           steps:
             - checkout: azure-sdk-build-tools
               path: azure-sdk-build-tools
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                SkipCheckoutNone: true
-                Repositories:
-                  - Name: Azure/azure-sdk-for-java
-                    Commitish: $(Build.SourceVersion)
-                    WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+            - checkout: self
+              path: azure-sdk-for-java
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: true
+              sparseCheckoutPatterns: '/* !/*/ /eng /.config'
             - download: current
               displayName: 'Download Artifacts'
               artifact: packages-signed
@@ -313,14 +317,14 @@ stages:
           steps:
             - download: none
 
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - '${{ parameters.ServiceDirectory }}'
-                  - '**/*.xml'
-                  - '**/*.md'
-                  - '!sdk/**/test-recordings'
-                  - '!sdk/**/session-records'
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: true
+              sparseCheckoutPatterns: >-
+                /* !/*/ /eng /.config
+                ${{ parameters.ServiceDirectory }} **/*.xml **/*.md
+                !sdk/**/test-recordings !sdk/**/session-records
 
             - task: UsePythonVersion@0
               displayName: 'Use Python $(PythonVersion)'
@@ -364,11 +368,13 @@ stages:
               os: linux
 
             steps:
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                parameters:
-                  Paths:
-                    - sdk/${{ parameters.ServiceDirectory }}/**/*.md
-                    - '!**/pom*.xml'
+              - checkout: self
+                fetchFilter: tree:0
+                fetchDepth: 0
+                fetchTags: true
+                sparseCheckoutPatterns: >-
+                  /* !/*/ /eng /.config
+                  sdk/${{ parameters.ServiceDirectory }}/**/*.md !**/pom*.xml
               - download: current
                 displayName: 'Download Artifact: packages'
                 artifact: packages
@@ -409,7 +415,11 @@ stages:
               image: $(WINDOWSVMIMAGE)
               os: windows
             steps:
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - checkout: self
+                fetchFilter: tree:0
+                fetchDepth: 0
+                fetchTags: true
+                sparseCheckoutPatterns: '/* !/*/ /eng /.config'
               - download: current
                 displayName: 'Download Artifact: packages-signed'
                 artifact: packages-signed
@@ -494,11 +504,13 @@ stages:
           image: $(LINUXVMIMAGE)
           os: linux
         steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              Paths:
-                - sdk/${{ parameters.ServiceDirectory }}/**/*.md
-                - '!**/pom*.xml'
+          - checkout: self
+            fetchFilter: tree:0
+            fetchDepth: 0
+            fetchTags: true
+            sparseCheckoutPatterns: >-
+              /* !/*/ /eng /.config
+              sdk/${{ parameters.ServiceDirectory }}/**/*.md !**/pom*.xml
           - download: current
             displayName: 'Download Artifacts'
             artifact: packages

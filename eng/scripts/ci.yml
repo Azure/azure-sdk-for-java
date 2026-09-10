@@ -10,6 +10,8 @@ trigger:
   paths:
     include:
       - eng/scripts/*
+      - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+      - eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
     exclude:
       - eng/scripts/typespec
 
@@ -23,6 +25,8 @@ pr:
   paths:
     include:
       - eng/scripts/*
+      - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+      - eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
 
 extends:
   template: /eng/common/pipelines/templates/stages/archetype-sdk-tool-pwsh.yml

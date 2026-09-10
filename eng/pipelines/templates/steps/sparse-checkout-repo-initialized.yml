@@ -2,29 +2,39 @@ parameters:
   - name: Paths
     type: object
     default: []
-  - name: Repositories
-    type: object
-    default:
-      - Name: $(Build.Repository.Name)
-        Commitish: $(Build.SourceVersion)
-        WorkingDirectory: $(System.DefaultWorkingDirectory)
-  - name: SkipCheckoutNone
-    type: boolean
-    default: false
 
 steps:
-  - ${{ if not(parameters.SkipCheckoutNone) }}:
-      - checkout: none
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - task: PowerShell@2
+      displayName: 'Prepare computed sparse checkout paths'
+      inputs:
+        pwsh: true
+        filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+        arguments: >-
+          -PathsJson $env:SPARSE_CHECKOUT_PATHS
+          -ChangesPath "$(Agent.TempDirectory)/sparse-checkout-changes.patch"
+        workingDirectory: $(Build.SourcesDirectory)
+      env:
+        SPARSE_CHECKOUT_PATHS: ${{ convertToJson(parameters.Paths) }}
 
-  - task: PowerShell@2
-    ${{ if eq(length(parameters.Repositories), 1) }}:
-      displayName: 'Sparse checkout ${{ parameters.Repositories[0].Name }}'
-    ${{ else }}:
-      displayName: 'Sparse checkout repositories'
-    inputs:
-      pwsh: true
-      filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
-      arguments: >
-        -PathsJson '${{ convertToJson(parameters.Paths) }}'
-        -RepositoriesJson '${{ convertToJson(parameters.Repositories) }}'
-      workingDirectory: $(System.DefaultWorkingDirectory)
+    - checkout: self
+      displayName: 'Checkout computed source paths'
+      path: s
+      clean: false
+      fetchFilter: tree:0
+      fetchDepth: 0
+      fetchTags: true
+      sparseCheckoutPatterns: $(SparseCheckoutPatterns)
+      condition: and(succeeded(), eq(variables['SparseCheckoutRequired'], 'true'))
+
+    - task: PowerShell@2
+      displayName: 'Restore generated source-build changes'
+      condition: and(succeeded(), eq(variables['SparseCheckoutRequired'], 'true'))
+      inputs:
+        pwsh: true
+        filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+        arguments: >-
+          -Restore
+          -ChangesPath "$(Agent.TempDirectory)/sparse-checkout-changes.patch"
+          -SourceVersion "$(SparseCheckoutSourceVersion)"
+        workingDirectory: $(Build.SourcesDirectory)
