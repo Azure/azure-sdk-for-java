@@ -14,6 +14,24 @@
           "old": "method java.lang.Long com.azure.ai.projects.models.AgentInsightHighlightedTrace::getTotalTokens()",
           "new": "method java.lang.Integer com.azure.ai.projects.models.AgentInsightHighlightedTrace::getTotalTokens()",
           "justification": "Breaking change in preview operation: totalTokens changed from Long to Integer to align with the current AgentInsights V1 preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.numberOfParametersChanged",
+          "old": "method void com\\.azure\\.ai\\.projects\\.models\\.(DataGenerationJobOptions|SimulationSeedDataGenerationJobOptions|TracesDataGenerationJobOptions)::<init>\\(int\\)",
+          "new": "method void com\\.azure\\.ai\\.projects\\.models\\.(DataGenerationJobOptions|SimulationSeedDataGenerationJobOptions|TracesDataGenerationJobOptions)::<init>\\(\\)",
+          "justification": "Breaking change in preview models: maxSamples moved from the shared data-generation options constructor to scenario-specific models; simulation seed no longer supports it and traces now configures it as an optional property."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method int com.azure.ai.projects.models.DataGenerationJobOptions::getMaxSamples()",
+          "justification": "Breaking change in preview models: maxSamples moved from DataGenerationJobOptions to the data-generation scenarios that support sampling."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.projects.models.DataGenerationJobOptions::getMaxSamples() @ com.azure.ai.projects.models.TracesDataGenerationJobOptions",
+          "new": "method java.lang.Integer com.azure.ai.projects.models.TracesDataGenerationJobOptions::getMaxSamples()",
+          "justification": "Breaking change in preview models: traces maxSamples is now optional, so getMaxSamples returns Integer and setMaxSamples configures the value."
         }
       ]
     }
