@@ -61,7 +61,7 @@ public class RoutinesManualDispatchSample {
             triggers.put("once", trigger);
 
             created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Timer routine dispatched before its scheduled fire time.", true, triggers, action);
+                "Timer routine dispatched before its scheduled fire time.", true, triggers, action, null);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
 
             // BEGIN:com.azure.ai.projects.RoutinesManualDispatchSample.dispatch

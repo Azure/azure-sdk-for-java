@@ -14,15 +14,15 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"xv\",\"startTime\":\"2021-03-17T06:48:24Z\",\"endTime\":\"2021-01-20T08:10:48Z\",\"instanceId\":\"rymo\",\"duration\":\"PT123H18M20S\",\"status\":\"xkl\",\"progressPercentage\":6.0931556754500455,\"taskExecutionDetails\":\"azpmkmlmv\"}")
+            "{\"taskId\":\"y\",\"startTime\":\"2021-08-09T07:54:10Z\",\"endTime\":\"2021-02-03T10:01:03Z\",\"instanceId\":\"nqcymczngnbdxxew\",\"duration\":\"PT121H51M33S\",\"status\":\"vudb\",\"progressPercentage\":98.9480135905309,\"taskExecutionDetails\":\"tvq\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("xv", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T06:48:24Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T08:10:48Z"), model.endTime());
-        Assertions.assertEquals("rymo", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT123H18M20S"), model.duration());
-        Assertions.assertEquals("xkl", model.status());
-        Assertions.assertEquals(6.0931556754500455D, model.progressPercentage());
-        Assertions.assertEquals("azpmkmlmv", model.taskExecutionDetails());
+        Assertions.assertEquals("y", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T07:54:10Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T10:01:03Z"), model.endTime());
+        Assertions.assertEquals("nqcymczngnbdxxew", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT121H51M33S"), model.duration());
+        Assertions.assertEquals("vudb", model.status());
+        Assertions.assertEquals(98.9480135905309D, model.progressPercentage());
+        Assertions.assertEquals("tvq", model.taskExecutionDetails());
     }
 }

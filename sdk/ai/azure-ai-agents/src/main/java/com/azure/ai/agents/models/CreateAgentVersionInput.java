@@ -37,10 +37,11 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
-    @Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
+    @Beta(
+        warningText = "Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
     private final AgentDefinition definition;
 
     /*
@@ -114,13 +115,14 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */
     @Generated
-    @Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
+    @Beta(
+        warningText = "Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
     public AgentDefinition getDefinition() {
         return this.definition;
     }
@@ -158,6 +160,8 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("blueprint_reference", this.blueprintReference);
+        jsonWriter.writeStringField("digital_worker_type",
+            this.digitalWorkerType == null ? null : this.digitalWorkerType.toString());
         jsonWriter.writeBooleanField("draft", this.draft);
         return jsonWriter.writeEndObject();
     }
@@ -178,6 +182,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
             Map<String, String> metadata = null;
             String description = null;
             AgentBlueprintReference blueprintReference = null;
+            DigitalWorkerType digitalWorkerType = null;
             Boolean draft = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -190,6 +195,8 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
                     description = reader.getString();
                 } else if ("blueprint_reference".equals(fieldName)) {
                     blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("digital_worker_type".equals(fieldName)) {
+                    digitalWorkerType = DigitalWorkerType.fromString(reader.getString());
                 } else if ("draft".equals(fieldName)) {
                     draft = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -200,6 +207,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
             deserializedCreateAgentVersionInput.metadata = metadata;
             deserializedCreateAgentVersionInput.description = description;
             deserializedCreateAgentVersionInput.blueprintReference = blueprintReference;
+            deserializedCreateAgentVersionInput.digitalWorkerType = digitalWorkerType;
             deserializedCreateAgentVersionInput.draft = draft;
             return deserializedCreateAgentVersionInput;
         });
@@ -239,6 +247,39 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
     @Beta(warningText = "Preview API. DraftAgents=V1Preview")
     public CreateAgentVersionInput setDraft(Boolean draft) {
         this.draft = draft;
+        return this;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DigitalWorker=V1Preview")
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DigitalWorker=V1Preview")
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
+    }
+
+    /**
+     * Set the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @param digitalWorkerType the digitalWorkerType value to set.
+     * @return the CreateAgentVersionInput object itself.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DigitalWorker=V1Preview")
+    public CreateAgentVersionInput setDigitalWorkerType(DigitalWorkerType digitalWorkerType) {
+        this.digitalWorkerType = digitalWorkerType;
         return this;
     }
 }
