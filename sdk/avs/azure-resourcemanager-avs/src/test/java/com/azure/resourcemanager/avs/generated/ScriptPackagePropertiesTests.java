@@ -11,7 +11,7 @@ public final class ScriptPackagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackageProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"description\":\"ebqaaysjkixqtnq\",\"version\":\"ezl\",\"company\":\"ffiakp\",\"uri\":\"qqmtedltmmji\"}")
+            "{\"provisioningState\":\"Succeeded\",\"description\":\"jioolvrwxk\",\"version\":\"kkgll\",\"company\":\"jygvjayvbl\",\"uri\":\"vkzuhbxvvyhgso\"}")
             .toObject(ScriptPackageProperties.class);
     }
 }

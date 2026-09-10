@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.LicenseName;
  */
 public final class LicensesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Licenses_Delete.json
+     * x-ms-original-file: 2026-03-01/Licenses_Delete.json
      */
     /**
      * Sample code: Licenses_Delete.

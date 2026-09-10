@@ -79,7 +79,11 @@ public class RescheduleOperationConstraint implements JsonSerializable<Reschedul
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("AvailableWindowForMaintenance".equals(discriminatorValue)) {
+                if ("ReschedulingWindow".equals(discriminatorValue)) {
+                    return ReschedulingWindowConstraint.fromJson(readerToUse.reset());
+                } else if ("WeekendRescheduling".equals(discriminatorValue)) {
+                    return WeekendReschedulingConstraint.fromJson(readerToUse.reset());
+                } else if ("AvailableWindowForMaintenance".equals(discriminatorValue)) {
                     return AvailableWindowForMaintenanceWhileRescheduleOperation.fromJson(readerToUse.reset());
                 } else if ("Blocked".equals(discriminatorValue)) {
                     return BlockedWhileRescheduleOperation.fromJson(readerToUse.reset());

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSDelete.json
+     * x-ms-original-file: 2026-08-31/DPSDelete.json
      */
     /**
      * Sample code: DPSDelete.

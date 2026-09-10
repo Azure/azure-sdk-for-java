@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * In-flight progress; only populated while status is queued or in_progress.
@@ -30,26 +31,6 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
      */
     @Generated
     private final double bestScore;
-
-    /*
-     * Wall-clock time elapsed in seconds since the job began executing.
-     */
-    @Generated
-    private final double elapsedSeconds;
-
-    /**
-     * Creates an instance of AgentOptimizationJobProgress class.
-     *
-     * @param candidatesCompleted the candidatesCompleted value to set.
-     * @param bestScore the bestScore value to set.
-     * @param elapsedSeconds the elapsedSeconds value to set.
-     */
-    @Generated
-    private AgentOptimizationJobProgress(int candidatesCompleted, double bestScore, double elapsedSeconds) {
-        this.candidatesCompleted = candidatesCompleted;
-        this.bestScore = bestScore;
-        this.elapsedSeconds = elapsedSeconds;
-    }
 
     /**
      * Get the candidatesCompleted property: Number of candidates whose evaluation has completed so far.
@@ -72,16 +53,6 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
     }
 
     /**
-     * Get the elapsedSeconds property: Wall-clock time elapsed in seconds since the job began executing.
-     *
-     * @return the elapsedSeconds value.
-     */
-    @Generated
-    public double getElapsedSeconds() {
-        return this.elapsedSeconds;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -90,7 +61,7 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("candidates_completed", this.candidatesCompleted);
         jsonWriter.writeDoubleField("best_score", this.bestScore);
-        jsonWriter.writeDoubleField("elapsed_seconds", this.elapsedSeconds);
+        jsonWriter.writeDoubleField("elapsed_seconds", this.elapsed);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,7 +79,7 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
         return jsonReader.readObject(reader -> {
             int candidatesCompleted = 0;
             double bestScore = 0.0;
-            double elapsedSeconds = 0.0;
+            Duration elapsed = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -117,12 +88,46 @@ public final class AgentOptimizationJobProgress implements JsonSerializable<Agen
                 } else if ("best_score".equals(fieldName)) {
                     bestScore = reader.getDouble();
                 } else if ("elapsed_seconds".equals(fieldName)) {
-                    elapsedSeconds = reader.getDouble();
+                    elapsed = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AgentOptimizationJobProgress(candidatesCompleted, bestScore, elapsedSeconds);
+            return new AgentOptimizationJobProgress(candidatesCompleted, bestScore, elapsed);
         });
+    }
+
+    /*
+     * Wall-clock time elapsed in seconds since the job began executing.
+     */
+    @Generated
+    private final double elapsed;
+
+    /**
+     * Get the elapsed property: Wall-clock time elapsed in seconds since the job began executing.
+     *
+     * @return the elapsed value.
+     */
+    @Generated
+    public Duration getElapsed() {
+        return Duration.ofNanos((long) (this.elapsed * 1000_000_000L));
+    }
+
+    /**
+     * Creates an instance of AgentOptimizationJobProgress class.
+     *
+     * @param candidatesCompleted the candidatesCompleted value to set.
+     * @param bestScore the bestScore value to set.
+     * @param elapsed the elapsed value to set.
+     */
+    @Generated
+    private AgentOptimizationJobProgress(int candidatesCompleted, double bestScore, Duration elapsed) {
+        this.candidatesCompleted = candidatesCompleted;
+        this.bestScore = bestScore;
+        if (elapsed == null) {
+            this.elapsed = 0.0;
+        } else {
+            this.elapsed = (double) elapsed.toNanos() / 1000_000_000L;
+        }
     }
 }

@@ -89,17 +89,17 @@
 /sdk/agrifood/                                                     @Azure/azure-java-sdk
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jpalvarezl @trrwilson @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents/                                           @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson @Azure/azure-java-sdk
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents/                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @dargilco @glecaros @jpalvarezl @kaylieee @Azure/azure-java-sdk
 
 # PRLabel: %AI Projects
-/sdk/ai/azure-ai-projects/                                         @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson @Azure/azure-java-sdk
+/sdk/ai/azure-ai-projects/                                         @dargilco @glharper @glecaros @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @glharper @trrwilson @Azure/azure-java-sdk
+/sdk/ai/azure-ai-inference/                                        @dargilco @glharper @Azure/azure-java-sdk
 
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @rossgrambo @nroutray @Azure/azure-java-sdk

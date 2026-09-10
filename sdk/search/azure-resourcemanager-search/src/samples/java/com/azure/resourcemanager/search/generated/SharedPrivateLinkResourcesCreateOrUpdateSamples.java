@@ -12,7 +12,7 @@ import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperti
  */
 public final class SharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
+     * x-ms-original-file: 2026-09-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceCreateOrUpdate.

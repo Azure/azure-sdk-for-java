@@ -27,6 +27,11 @@ public final class BlockedDatesConstraintCategory extends ExpandableStringEnum<B
     public static final BlockedDatesConstraintCategory HOLIDAY = fromString("Holiday");
 
     /**
+     * Constraint due to overlapping maintenance.
+     */
+    public static final BlockedDatesConstraintCategory OVERLAPPING_MAINTENANCE = fromString("OverlappingMaintenance");
+
+    /**
      * Creates a new instance of BlockedDatesConstraintCategory value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

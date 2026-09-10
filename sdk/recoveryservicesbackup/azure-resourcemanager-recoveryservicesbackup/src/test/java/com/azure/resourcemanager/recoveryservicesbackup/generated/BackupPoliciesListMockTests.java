@@ -22,7 +22,7 @@ public final class BackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1452071074,\"resourceGuardOperationRequests\":[\"ezsvkolrupjov\",\"ozsaye\",\"razwzlpzbt\",\"uykykipfsd\"]},\"tags\":{\"acfpztgazwyqej\":\"fnocmbe\",\"zmffngdyfcixrh\":\"aaokctgkppgkqzkc\"},\"location\":\"qvhoej\",\"eTag\":\"iutg\",\"id\":\"mkahpqha\",\"name\":\"yntacihnco\",\"type\":\"mip\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1930297273,\"resourceGuardOperationRequests\":[\"s\",\"mo\"]},\"tags\":{\"ijmri\":\"zhwilzzh\",\"kd\":\"r\",\"bkut\":\"eyttlrcxiv\"},\"location\":\"mltwjfluxynbpvzl\",\"eTag\":\"wa\",\"id\":\"qnjckhmocg\",\"name\":\"shgouarhwvix\",\"type\":\"qggljkybs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,12 @@ public final class BackupPoliciesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionPolicyResource> response
-            = manager.backupPolicies().list("vfqbqna", "dsyenzsieuscpl", "yvdgxlyzk", com.azure.core.util.Context.NONE);
+            = manager.backupPolicies().list("qsratjhd", "zybspijhfrzgdkk", "gv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1452071074, response.iterator().next().properties().protectedItemsCount());
-        Assertions.assertEquals("ezsvkolrupjov",
-            response.iterator().next().properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("fnocmbe", response.iterator().next().tags().get("acfpztgazwyqej"));
-        Assertions.assertEquals("qvhoej", response.iterator().next().location());
-        Assertions.assertEquals("iutg", response.iterator().next().etag());
+        Assertions.assertEquals(1930297273, response.iterator().next().properties().protectedItemsCount());
+        Assertions.assertEquals("s", response.iterator().next().properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("zhwilzzh", response.iterator().next().tags().get("ijmri"));
+        Assertions.assertEquals("mltwjfluxynbpvzl", response.iterator().next().location());
+        Assertions.assertEquals("wa", response.iterator().next().etag());
     }
 }

@@ -324,7 +324,7 @@ public interface FleetManagedNamespace {
     /**
      * The template for FleetManagedNamespace update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -356,6 +356,19 @@ public interface FleetManagedNamespace {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the FleetManagedNamespace update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The updatable properties of the fleet managed namespace..
+             * 
+             * @param properties The updatable properties of the fleet managed namespace.
+             * @return the next definition stage.
+             */
+            Update withProperties(FleetManagedNamespacePropertiesPatch properties);
         }
 
         /**
