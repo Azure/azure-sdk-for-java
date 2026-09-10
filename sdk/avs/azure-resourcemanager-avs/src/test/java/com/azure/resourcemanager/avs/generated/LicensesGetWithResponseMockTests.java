@@ -21,7 +21,7 @@ public final class LicensesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"lmbkzu\",\"name\":\"nigrfihotjewl\",\"type\":\"xuzzjgnrefq\"}";
+            = "{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Failed\"},\"id\":\"sidfv\",\"name\":\"lglxnfui\",\"type\":\"tkbu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class LicensesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         License response = manager.licenses()
-            .getWithResponse("memczjkmmyk", "ujxsglhsr", LicenseName.VMWARE_FIREWALL, com.azure.core.util.Context.NONE)
+            .getWithResponse("jurbuhhlkyqltqsr", "gtuwkff", LicenseName.VMWARE_FIREWALL,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

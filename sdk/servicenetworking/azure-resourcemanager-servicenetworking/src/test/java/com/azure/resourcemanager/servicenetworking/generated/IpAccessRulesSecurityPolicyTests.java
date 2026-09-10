@@ -12,14 +12,14 @@ public final class IpAccessRulesSecurityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpAccessRulesSecurityPolicy model
-            = BinaryData.fromString("{\"id\":\"podmailzydehojwy\"}").toObject(IpAccessRulesSecurityPolicy.class);
-        Assertions.assertEquals("podmailzydehojwy", model.id());
+            = BinaryData.fromString("{\"id\":\"jwyahuxinpmqnja\"}").toObject(IpAccessRulesSecurityPolicy.class);
+        Assertions.assertEquals("jwyahuxinpmqnja", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAccessRulesSecurityPolicy model = new IpAccessRulesSecurityPolicy().withId("podmailzydehojwy");
+        IpAccessRulesSecurityPolicy model = new IpAccessRulesSecurityPolicy().withId("jwyahuxinpmqnja");
         model = BinaryData.fromObject(model).toObject(IpAccessRulesSecurityPolicy.class);
-        Assertions.assertEquals("podmailzydehojwy", model.id());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.id());
     }
 }

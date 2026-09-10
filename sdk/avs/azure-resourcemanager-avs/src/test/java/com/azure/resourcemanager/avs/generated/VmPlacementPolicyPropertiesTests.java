@@ -15,24 +15,24 @@ public final class VmPlacementPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmPlacementPolicyProperties model = BinaryData.fromString(
-            "{\"type\":\"VmVm\",\"vmMembers\":[\"xmedjvcsly\",\"qwwncw\"],\"affinityType\":\"AntiAffinity\",\"state\":\"Enabled\",\"displayName\":\"ktrmgucnapkt\",\"provisioningState\":\"Deleting\"}")
+            "{\"type\":\"VmVm\",\"vmMembers\":[\"bzmnvdfznud\"],\"affinityType\":\"Affinity\",\"state\":\"Enabled\",\"displayName\":\"zbn\",\"provisioningState\":\"Updating\"}")
             .toObject(VmPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.ENABLED, model.state());
-        Assertions.assertEquals("ktrmgucnapkt", model.displayName());
-        Assertions.assertEquals("xmedjvcsly", model.vmMembers().get(0));
-        Assertions.assertEquals(AffinityType.ANTI_AFFINITY, model.affinityType());
+        Assertions.assertEquals("zbn", model.displayName());
+        Assertions.assertEquals("bzmnvdfznud", model.vmMembers().get(0));
+        Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmPlacementPolicyProperties model = new VmPlacementPolicyProperties().withState(PlacementPolicyState.ENABLED)
-            .withDisplayName("ktrmgucnapkt")
-            .withVmMembers(Arrays.asList("xmedjvcsly", "qwwncw"))
-            .withAffinityType(AffinityType.ANTI_AFFINITY);
+            .withDisplayName("zbn")
+            .withVmMembers(Arrays.asList("bzmnvdfznud"))
+            .withAffinityType(AffinityType.AFFINITY);
         model = BinaryData.fromObject(model).toObject(VmPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.ENABLED, model.state());
-        Assertions.assertEquals("ktrmgucnapkt", model.displayName());
-        Assertions.assertEquals("xmedjvcsly", model.vmMembers().get(0));
-        Assertions.assertEquals(AffinityType.ANTI_AFFINITY, model.affinityType());
+        Assertions.assertEquals("zbn", model.displayName());
+        Assertions.assertEquals("bzmnvdfznud", model.vmMembers().get(0));
+        Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
     }
 }

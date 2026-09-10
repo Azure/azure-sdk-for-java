@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/ProtectionPolicies_Get.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
      * Sample code: Get Azure IaasVm Protection Policy Details.
@@ -23,7 +23,7 @@ public final class ProtectionPoliciesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/V2Policy/v2-Get-Policy.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/V2Policy/v2-Get-Policy.json
      */
     /**
      * Sample code: Get Azure IaasVm Enhanced Protection Policy Details.
