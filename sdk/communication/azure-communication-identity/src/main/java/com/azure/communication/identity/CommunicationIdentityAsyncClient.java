@@ -18,6 +18,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -64,6 +65,19 @@ public final class CommunicationIdentityAsyncClient {
     CommunicationIdentityAsyncClient(IdentityClientImpl identityClient) {
         client = new IdentityOperationsAsyncClient(identityClient.getIdentityOperations());
         teamsUserClient = new TeamsUserOperationsAsyncClient(identityClient.getTeamsUserOperations());
+    }
+
+    /**
+     * Builds {@link RequestOptions} for the operations that return no content.
+     *
+     * <p>The generated protocol methods for {@code delete} and {@code revokeAccessTokens} declare no
+     * Accept header, because those operations respond 204 with no body, so azure-core falls back to
+     * the wildcard. The AutoRest-generated client this replaces sent {@code application/json} on
+     * every operation regardless of response shape. Setting it here keeps the bytes on the wire
+     * unchanged for existing callers.</p>
+     */
+    private static RequestOptions noContentRequestOptions() {
+        return new RequestOptions().setHeader(HttpHeaderName.ACCEPT, "application/json");
     }
 
     /**
@@ -214,7 +228,8 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Void> deleteUser(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.delete(communicationUser.getId())
+            return client.deleteWithResponse(communicationUser.getId(), noContentRequestOptions())
+                .then()
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -232,7 +247,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<Void>> deleteUserWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.deleteWithResponse(communicationUser.getId(), new RequestOptions())
+            return client.deleteWithResponse(communicationUser.getId(), noContentRequestOptions())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -249,7 +264,8 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Void> revokeTokens(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.revokeAccessTokens(communicationUser.getId())
+            return client.revokeAccessTokensWithResponse(communicationUser.getId(), noContentRequestOptions())
+                .then()
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -266,7 +282,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<Void>> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.revokeAccessTokensWithResponse(communicationUser.getId(), new RequestOptions())
+            return client.revokeAccessTokensWithResponse(communicationUser.getId(), noContentRequestOptions())
                 .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

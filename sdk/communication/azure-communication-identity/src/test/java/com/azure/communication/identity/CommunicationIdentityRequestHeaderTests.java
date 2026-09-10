@@ -23,15 +23,18 @@ import java.nio.charset.Charset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Asserts that a caller can still choose the request headers this client sends.
+ * Asserts the {@code Accept} header this client sends, and that a caller can still choose their own.
  *
- * <p>The client sets an {@code Accept} header on the operations that return no content, because the
- * generated protocol methods for those two declare none. That default must not cap a caller who
- * wants something else: a policy added with
+ * <p>The generated protocol methods for the two operations that return no content declare no
+ * {@code Accept} header, so azure-core would fall back to the wildcard. The AutoRest-generated
+ * client this replaces sent {@code application/json} on every operation regardless of response
+ * shape, so the client sets it for those two to keep the bytes on the wire unchanged.</p>
+ *
+ * <p>That default must not cap a caller who wants something else: a policy added with
  * {@link CommunicationIdentityClientBuilder#addPolicy(HttpPipelinePolicy)} is the supported way to
  * customise a request, and its value has to reach the wire.</p>
  *
- * <p>What makes this hold is ordering rather than a conditional. The client sets the header while
+ * <p>What makes that hold is ordering rather than a conditional. The client sets the header while
  * constructing the request; pipeline policies run afterwards, so a caller's policy overwrites it.
  * Setting the same header from inside the pipeline instead - with {@code AddHeadersPolicy}, whose
  * {@code setAllHttpHeaders} overwrites - would clobber the caller's choice depending on where it
@@ -127,6 +130,50 @@ public class CommunicationIdentityRequestHeaderTests {
             .httpClient(transport)
             .addPolicy(acceptOverridePolicy())
             .buildClient();
+    }
+
+    private static CommunicationIdentityClient client(CapturingHttpClient transport) {
+        return new CommunicationIdentityClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+            .httpClient(transport)
+            .buildClient();
+    }
+
+    private static CommunicationIdentityAsyncClient asyncClient(CapturingHttpClient transport) {
+        return new CommunicationIdentityClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+            .httpClient(transport)
+            .buildAsyncClient();
+    }
+
+    @Test
+    public void deleteUserSendsJsonAcceptByDefault() {
+        CapturingHttpClient transport = new CapturingHttpClient();
+        client(transport).deleteUserWithResponse(USER, Context.NONE);
+
+        assertEquals("application/json", transport.accept);
+    }
+
+    @Test
+    public void revokeTokensSendsJsonAcceptByDefault() {
+        CapturingHttpClient transport = new CapturingHttpClient();
+        client(transport).revokeTokensWithResponse(USER, Context.NONE);
+
+        assertEquals("application/json", transport.accept);
+    }
+
+    @Test
+    public void deleteUserSendsJsonAcceptByDefaultAsync() {
+        CapturingHttpClient transport = new CapturingHttpClient();
+        asyncClient(transport).deleteUser(USER).block();
+
+        assertEquals("application/json", transport.accept);
+    }
+
+    @Test
+    public void revokeTokensSendsJsonAcceptByDefaultAsync() {
+        CapturingHttpClient transport = new CapturingHttpClient();
+        asyncClient(transport).revokeTokens(USER).block();
+
+        assertEquals("application/json", transport.accept);
     }
 
     @Test

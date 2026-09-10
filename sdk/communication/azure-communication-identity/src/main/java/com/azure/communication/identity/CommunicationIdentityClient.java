@@ -16,6 +16,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -70,6 +71,19 @@ public final class CommunicationIdentityClient {
             requestOptions.setContext(context);
         }
         return requestOptions;
+    }
+
+    /**
+     * Builds {@link RequestOptions} for the operations that return no content.
+     *
+     * <p>The generated protocol methods for {@code delete} and {@code revokeAccessTokens} declare no
+     * Accept header, because those operations respond 204 with no body, so azure-core falls back to
+     * the wildcard. The AutoRest-generated client this replaces sent {@code application/json} on
+     * every operation regardless of response shape. Setting it here keeps the bytes on the wire
+     * unchanged for existing callers.</p>
+     */
+    private static RequestOptions noContentRequestOptions(Context context) {
+        return toRequestOptions(context).setHeader(HttpHeaderName.ACCEPT, "application/json");
     }
 
     /**
@@ -209,7 +223,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteUser(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        client.delete(communicationUser.getId());
+        client.deleteWithResponse(communicationUser.getId(), noContentRequestOptions(null));
     }
 
     /**
@@ -224,7 +238,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.deleteWithResponse(communicationUser.getId(), toRequestOptions(context));
+        return client.deleteWithResponse(communicationUser.getId(), noContentRequestOptions(context));
     }
 
     /**
@@ -235,7 +249,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeTokens(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        client.revokeAccessTokens(communicationUser.getId());
+        client.revokeAccessTokensWithResponse(communicationUser.getId(), noContentRequestOptions(null));
     }
 
     /**
@@ -250,7 +264,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.revokeAccessTokensWithResponse(communicationUser.getId(), toRequestOptions(context));
+        return client.revokeAccessTokensWithResponse(communicationUser.getId(), noContentRequestOptions(context));
     }
 
     /**
