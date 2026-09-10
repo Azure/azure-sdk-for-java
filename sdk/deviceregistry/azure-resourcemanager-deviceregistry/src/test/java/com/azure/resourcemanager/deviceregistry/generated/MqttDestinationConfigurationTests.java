@@ -14,24 +14,24 @@ public final class MqttDestinationConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MqttDestinationConfiguration model = BinaryData
-            .fromString("{\"topic\":\"jznb\",\"retain\":\"Keep\",\"qos\":\"Qos0\",\"ttl\":8891221399810858011}")
+            .fromString("{\"topic\":\"lxotogtwrupq\",\"retain\":\"Keep\",\"qos\":\"Qos1\",\"ttl\":8043422391436901501}")
             .toObject(MqttDestinationConfiguration.class);
-        Assertions.assertEquals("jznb", model.topic());
+        Assertions.assertEquals("lxotogtwrupq", model.topic());
         Assertions.assertEquals(TopicRetainType.KEEP, model.retain());
-        Assertions.assertEquals(MqttDestinationQos.QOS0, model.qos());
-        Assertions.assertEquals(8891221399810858011L, model.ttl());
+        Assertions.assertEquals(MqttDestinationQos.QOS1, model.qos());
+        Assertions.assertEquals(8043422391436901501L, model.ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MqttDestinationConfiguration model = new MqttDestinationConfiguration().withTopic("jznb")
+        MqttDestinationConfiguration model = new MqttDestinationConfiguration().withTopic("lxotogtwrupq")
             .withRetain(TopicRetainType.KEEP)
-            .withQos(MqttDestinationQos.QOS0)
-            .withTtl(8891221399810858011L);
+            .withQos(MqttDestinationQos.QOS1)
+            .withTtl(8043422391436901501L);
         model = BinaryData.fromObject(model).toObject(MqttDestinationConfiguration.class);
-        Assertions.assertEquals("jznb", model.topic());
+        Assertions.assertEquals("lxotogtwrupq", model.topic());
         Assertions.assertEquals(TopicRetainType.KEEP, model.retain());
-        Assertions.assertEquals(MqttDestinationQos.QOS0, model.qos());
-        Assertions.assertEquals(8891221399810858011L, model.ttl());
+        Assertions.assertEquals(MqttDestinationQos.QOS1, model.qos());
+        Assertions.assertEquals(8043422391436901501L, model.ttl());
     }
 }

@@ -9,16 +9,29 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_Namespace.json
+     * x-ms-original-file: 2026-11-01/Get_Namespace_With_FailedLinkingEndpoint.json
      */
     /**
-     * Sample code: Get_Namespace.
+     * Sample code: Get a Namespace with a Failed Linking Endpoint.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void getNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void getANamespaceWithAFailedLinkingEndpoint(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces()
-            .getByResourceGroupWithResponse("myResourceGroup", "adr-namespace-gbk0925-n01",
-                com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "my-namespace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Get_Namespace.json
+     */
+    /**
+     * Sample code: Get a Namespace.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getANamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaces()
+            .getByResourceGroupWithResponse("myResourceGroup", "mynamespace", com.azure.core.util.Context.NONE);
     }
 }

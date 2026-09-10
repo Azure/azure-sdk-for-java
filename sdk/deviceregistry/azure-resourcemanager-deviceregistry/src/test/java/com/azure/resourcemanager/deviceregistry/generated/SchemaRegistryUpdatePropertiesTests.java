@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentity;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class SchemaRegistryUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaRegistryUpdateProperties model
-            = BinaryData.fromString("{\"displayName\":\"jhf\",\"description\":\"vecactx\"}")
-                .toObject(SchemaRegistryUpdateProperties.class);
-        Assertions.assertEquals("jhf", model.displayName());
-        Assertions.assertEquals("vecactx", model.description());
+        SchemaRegistryUpdateProperties model = BinaryData.fromString(
+            "{\"displayName\":\"togebjoxsl\",\"description\":\"nhl\",\"outboundIdentity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"nk\"}}")
+            .toObject(SchemaRegistryUpdateProperties.class);
+        Assertions.assertEquals("togebjoxsl", model.displayName());
+        Assertions.assertEquals("nhl", model.description());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED, model.outboundIdentity().type());
+        Assertions.assertEquals("nk", model.outboundIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryUpdateProperties model
-            = new SchemaRegistryUpdateProperties().withDisplayName("jhf").withDescription("vecactx");
+        SchemaRegistryUpdateProperties model = new SchemaRegistryUpdateProperties().withDisplayName("togebjoxsl")
+            .withDescription("nhl")
+            .withOutboundIdentity(
+                new OutboundIdentity().withType(OutboundIdentityType.USER_ASSIGNED).withUserAssignedIdentity("nk"));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryUpdateProperties.class);
-        Assertions.assertEquals("jhf", model.displayName());
-        Assertions.assertEquals("vecactx", model.description());
+        Assertions.assertEquals("togebjoxsl", model.displayName());
+        Assertions.assertEquals("nhl", model.description());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED, model.outboundIdentity().type());
+        Assertions.assertEquals("nk", model.outboundIdentity().userAssignedIdentity());
     }
 }

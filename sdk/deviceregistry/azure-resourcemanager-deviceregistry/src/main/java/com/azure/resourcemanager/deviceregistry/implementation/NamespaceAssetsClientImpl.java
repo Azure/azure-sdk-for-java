@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceAssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceAssetInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.NamespaceAssetListResult;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetExecuteActionRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -153,7 +155,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceAssetListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<NamespaceAssetListResult>> listByNamespace(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -162,16 +164,36 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<NamespaceAssetListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<NamespaceAssetListResult> listByNamespaceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}/executeAction")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> executeAction(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("assetName") String assetName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NamespaceAssetExecuteActionRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}/executeAction")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> executeActionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("assetName") String assetName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NamespaceAssetExecuteActionRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceAssetListResult>> listByResourceGroupNext(
+        Mono<Response<NamespaceAssetListResult>> listByNamespaceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -179,7 +201,7 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<NamespaceAssetListResult> listByResourceGroupNextSync(
+        Response<NamespaceAssetListResult> listByNamespaceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -808,11 +830,11 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceAssetInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<NamespaceAssetInner>> listByNamespaceSinglePageAsync(String resourceGroupName,
         String namespaceName) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listByNamespace(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context))
             .<PagedResponse<NamespaceAssetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -830,9 +852,9 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NamespaceAssetInner> listByResourceGroupAsync(String resourceGroupName, String namespaceName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    private PagedFlux<NamespaceAssetInner> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
+        return new PagedFlux<>(() -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
+            nextLink -> listByNamespaceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -846,11 +868,11 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceAssetInner> listByResourceGroupSinglePage(String resourceGroupName,
+    private PagedResponse<NamespaceAssetInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName) {
         final String accept = "application/json";
         Response<NamespaceAssetListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -868,11 +890,11 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceAssetInner> listByResourceGroupSinglePage(String resourceGroupName,
-        String namespaceName, Context context) {
+    private PagedResponse<NamespaceAssetInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName,
+        Context context) {
         final String accept = "application/json";
         Response<NamespaceAssetListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -889,9 +911,9 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceAssetInner> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+    public PagedIterable<NamespaceAssetInner> listByNamespace(String resourceGroupName, String namespaceName) {
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName),
+            nextLink -> listByNamespaceNextSinglePage(nextLink));
     }
 
     /**
@@ -906,10 +928,199 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceAssetInner> listByResourceGroup(String resourceGroupName, String namespaceName,
+    public PagedIterable<NamespaceAssetInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName, context),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, context),
+            nextLink -> listByNamespaceNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for the executeAction operation on NamespaceAsset along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> executeActionWithResponseAsync(String resourceGroupName,
+        String namespaceName, String assetName, NamespaceAssetExecuteActionRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.executeAction(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, assetName, contentType, accept, body,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for the executeAction operation on NamespaceAsset along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> executeActionWithResponse(String resourceGroupName, String namespaceName,
+        String assetName, NamespaceAssetExecuteActionRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.executeActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, assetName, contentType, accept, body,
+            Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for the executeAction operation on NamespaceAsset along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> executeActionWithResponse(String resourceGroupName, String namespaceName,
+        String assetName, NamespaceAssetExecuteActionRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.executeActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, assetName, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the response body for the executeAction operation on
+     * NamespaceAsset.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginExecuteActionAsync(String resourceGroupName, String namespaceName,
+        String assetName, NamespaceAssetExecuteActionRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeActionWithResponseAsync(resourceGroupName, namespaceName, assetName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response body for the executeAction operation on
+     * NamespaceAsset.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginExecuteAction(String resourceGroupName, String namespaceName,
+        String assetName, NamespaceAssetExecuteActionRequest body) {
+        Response<BinaryData> response = executeActionWithResponse(resourceGroupName, namespaceName, assetName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response body for the executeAction operation on
+     * NamespaceAsset.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginExecuteAction(String resourceGroupName, String namespaceName,
+        String assetName, NamespaceAssetExecuteActionRequest body, Context context) {
+        Response<BinaryData> response
+            = executeActionWithResponse(resourceGroupName, namespaceName, assetName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for the executeAction operation on NamespaceAsset on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> executeActionAsync(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body) {
+        return beginExecuteActionAsync(resourceGroupName, namespaceName, assetName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeAction(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body) {
+        beginExecuteAction(resourceGroupName, namespaceName, assetName, body).getFinalResult();
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeAction(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body, Context context) {
+        beginExecuteAction(resourceGroupName, namespaceName, assetName, body, context).getFinalResult();
     }
 
     /**
@@ -923,11 +1134,10 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceAssetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<NamespaceAssetInner>> listByNamespaceNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NamespaceAssetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -943,10 +1153,10 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceAssetInner> listByResourceGroupNextSinglePage(String nextLink) {
+    private PagedResponse<NamespaceAssetInner> listByNamespaceNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<NamespaceAssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -962,10 +1172,10 @@ public final class NamespaceAssetsClientImpl implements NamespaceAssetsClient {
      * @return the response of a NamespaceAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceAssetInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<NamespaceAssetInner> listByNamespaceNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<NamespaceAssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

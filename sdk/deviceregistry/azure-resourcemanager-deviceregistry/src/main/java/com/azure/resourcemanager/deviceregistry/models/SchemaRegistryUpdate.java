@@ -20,7 +20,7 @@ public final class SchemaRegistryUpdate implements JsonSerializable<SchemaRegist
     /*
      * The managed service identities assigned to this resource.
      */
-    private SystemAssignedServiceIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
@@ -43,7 +43,7 @@ public final class SchemaRegistryUpdate implements JsonSerializable<SchemaRegist
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -53,7 +53,7 @@ public final class SchemaRegistryUpdate implements JsonSerializable<SchemaRegist
      * @param identity the identity value to set.
      * @return the SchemaRegistryUpdate object itself.
      */
-    public SchemaRegistryUpdate withIdentity(SystemAssignedServiceIdentity identity) {
+    public SchemaRegistryUpdate withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -126,7 +126,7 @@ public final class SchemaRegistryUpdate implements JsonSerializable<SchemaRegist
                 reader.nextToken();
 
                 if ("identity".equals(fieldName)) {
-                    deserializedSchemaRegistryUpdate.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                    deserializedSchemaRegistryUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSchemaRegistryUpdate.tags = tags;

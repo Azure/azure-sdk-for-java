@@ -20,7 +20,7 @@ public final class NamespaceUpdate implements JsonSerializable<NamespaceUpdate> 
     /*
      * The managed service identities assigned to this resource.
      */
-    private SystemAssignedServiceIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
@@ -43,7 +43,7 @@ public final class NamespaceUpdate implements JsonSerializable<NamespaceUpdate> 
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -53,7 +53,7 @@ public final class NamespaceUpdate implements JsonSerializable<NamespaceUpdate> 
      * @param identity the identity value to set.
      * @return the NamespaceUpdate object itself.
      */
-    public NamespaceUpdate withIdentity(SystemAssignedServiceIdentity identity) {
+    public NamespaceUpdate withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -126,7 +126,7 @@ public final class NamespaceUpdate implements JsonSerializable<NamespaceUpdate> 
                 reader.nextToken();
 
                 if ("identity".equals(fieldName)) {
-                    deserializedNamespaceUpdate.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                    deserializedNamespaceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNamespaceUpdate.tags = tags;

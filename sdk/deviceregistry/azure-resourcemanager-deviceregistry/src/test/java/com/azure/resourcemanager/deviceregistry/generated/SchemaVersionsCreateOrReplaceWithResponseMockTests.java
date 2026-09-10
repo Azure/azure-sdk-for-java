@@ -22,7 +22,7 @@ public final class SchemaVersionsCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"udawlpjfelqe\",\"description\":\"ptcbgqnzmnh\",\"schemaContent\":\"ilialwcjgc\",\"hash\":\"bcccgzpra\",\"provisioningState\":\"Accepted\"},\"id\":\"uffatsgftipwc\",\"name\":\"byubhiqdxyurnpn\",\"type\":\"hza\"}";
+            = "{\"properties\":{\"uuid\":\"aapezkiswqjmdghs\",\"description\":\"arybjufptbjc\",\"schemaContent\":\"jnciui\",\"hash\":\"vldaswv\",\"provisioningState\":\"Deleting\"},\"id\":\"qqzlgcndhz\",\"name\":\"rr\",\"type\":\"cfsrhkhgsn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,12 @@ public final class SchemaVersionsCreateOrReplaceWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemaVersions()
-            .define("gyxpqit")
-            .withExistingSchema("rgjfoknubnoi", "pkpztrg", "gxvcoqrasw")
-            .withProperties(
-                new SchemaVersionProperties().withDescription("acaqtyltcoqcu").withSchemaContent("pdsxzakuejkm"))
+            .define("fynn")
+            .withExistingSchema("zwjiqullq", "bdmvrscmqerndbr", "yeofltfnnxrkad")
+            .withProperties(new SchemaVersionProperties().withDescription("pfoh").withSchemaContent("kfkxbbcbrwjiut"))
             .create();
 
-        Assertions.assertEquals("ptcbgqnzmnh", response.properties().description());
-        Assertions.assertEquals("ilialwcjgc", response.properties().schemaContent());
+        Assertions.assertEquals("arybjufptbjc", response.properties().description());
+        Assertions.assertEquals("jnciui", response.properties().schemaContent());
     }
 }

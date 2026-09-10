@@ -4,10 +4,19 @@
 
 package com.azure.resourcemanager.deviceregistry.generated;
 
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentity;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.Management;
+import com.azure.resourcemanager.deviceregistry.models.ManagementEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.MessagingEndpointAvailability;
+import com.azure.resourcemanager.deviceregistry.models.MessagingEndpointProvisioning;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceProvisioning;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdateProperties;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,24 +25,86 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Update_Namespace_Endpoints.json
+     * x-ms-original-file: 2026-11-01/Update_Namespace_ManagementEndpoints.json
      */
     /**
-     * Sample code: Update_Namespace_Endpoints.
+     * Sample code: Link a Namespace to a Management Endpoint.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        updateNamespaceEndpoints(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        linkANamespaceToAManagementEndpoint(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         Namespace resource = manager.namespaces()
             .getByResourceGroupWithResponse("myResourceGroup", "adr-namespace-gbk0925-n01",
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(
-                new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf("iothubEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                        .withAddress("https://iothub-for-dps.azure-devices.net")))))
+            .withProperties(new NamespaceUpdateProperties().withManagement(new Management().withEndpoints(mapOf(
+                "customLocation1",
+                new ManagementEndpoint().withEndpointType("Microsoft.EventGrid/Namespaces")
+                    .withAddress("eg-for-adr.eastus2-1.ts.eventgrid.azure.net")
+                    .withScopeId("scope-id-for-management-endpoint-1")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.EventGrid/Namespaces/eg-for-adr")))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Update_Namespace_ProvisioningEndpoints.json
+     */
+    /**
+     * Sample code: Link a Namespace to a Provisioning Endpoint.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        linkANamespaceToAProvisioningEndpoint(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        Namespace resource = manager.namespaces()
+            .getByResourceGroupWithResponse("myResourceGroup", "mynamespace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new NamespaceUpdateProperties().withProvisioning(new NamespaceProvisioning().withEndpoints(
+                mapOf("myDpsEndpoint", new ProvisioningEndpoint().withEndpointType(ProvisioningEndpointType.DPS)
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/provisioningServices/myDps")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Update_Namespace_MessagingEndpoints.json
+     */
+    /**
+     * Sample code: Link a Namespace to a Messaging Endpoint.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        linkANamespaceToAMessagingEndpoint(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        Namespace resource = manager.namespaces()
+            .getByResourceGroupWithResponse("myResourceGroup", "mynamespace", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf(
+                "myPrimaryIotHubEndpoint",
+                new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub1")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))
+                    .withProvisioning(
+                        new MessagingEndpointProvisioning().withAvailability(MessagingEndpointAvailability.AVAILABLE)
+                            .withAllocationWeight(1)),
+                "mySecondaryIotHubEndpoint",
+                new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub2")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))
+                    .withProvisioning(
+                        new MessagingEndpointProvisioning().withAvailability(MessagingEndpointAvailability.AVAILABLE)
+                            .withAllocationWeight(1))))))
             .apply();
     }
 
