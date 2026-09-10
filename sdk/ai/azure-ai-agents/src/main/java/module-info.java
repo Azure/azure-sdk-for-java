@@ -12,6 +12,8 @@ module com.azure.ai.agents {
     requires io.netty.transport;
     requires io.netty.common;
     requires io.netty.codec;
+    requires okhttp3;
+    requires okio;
 
     exports com.azure.ai.agents;
     exports com.azure.ai.agents.models;

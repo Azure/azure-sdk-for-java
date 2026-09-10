@@ -151,12 +151,11 @@ final class AgentsServicePollUtils {
         }
 
         String status = statusValue.toString().trim();
-        if (JobStatus.QUEUED.toString().equalsIgnoreCase(status)) {
-            return LongRunningOperationStatus.IN_PROGRESS;
-        } else if (LongRunningOperationStatus.NOT_STARTED.toString().equalsIgnoreCase(status)
+        if (LongRunningOperationStatus.NOT_STARTED.toString().equalsIgnoreCase(status)
             || "NotStarted".equalsIgnoreCase(status)) {
             return LongRunningOperationStatus.NOT_STARTED;
-        } else if (JobStatus.IN_PROGRESS.toString().equalsIgnoreCase(status)
+        } else if (JobStatus.QUEUED.toString().equalsIgnoreCase(status)
+            || JobStatus.IN_PROGRESS.toString().equalsIgnoreCase(status)
             || LongRunningOperationStatus.IN_PROGRESS.toString().equalsIgnoreCase(status)
             || "InProgress".equalsIgnoreCase(status)
             || "Running".equalsIgnoreCase(status)) {

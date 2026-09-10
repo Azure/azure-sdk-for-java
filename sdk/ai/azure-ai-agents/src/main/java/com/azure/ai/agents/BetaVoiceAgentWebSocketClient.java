@@ -16,11 +16,10 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class)
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentWebSocketClient {
-    private final BetaVoiceAgentWebSocketAsyncClient asyncClient;
+    private final VoiceAgentWebSocketClientConfiguration configuration;
 
     BetaVoiceAgentWebSocketClient(VoiceAgentWebSocketClientConfiguration configuration) {
-        this.asyncClient = new BetaVoiceAgentWebSocketAsyncClient(
-            Objects.requireNonNull(configuration, "'configuration' cannot be null."));
+        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
     }
 
     /**
@@ -41,9 +40,8 @@ public final class BetaVoiceAgentWebSocketClient {
      * @return a connected session.
      */
     public VoiceAgentWebSocketSessionClient connect(String agentName, VoiceAgentWebSocketConnectionOptions options) {
+        Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
-        VoiceAgentWebSocketSessionAsyncClient session
-            = asyncClient.connect(agentName, options).block(options.getHandshakeTimeout().plusSeconds(1));
-        return new VoiceAgentWebSocketSessionClient(session);
+        return VoiceAgentWebSocketSessionClient.connect(configuration, agentName, options);
     }
 }

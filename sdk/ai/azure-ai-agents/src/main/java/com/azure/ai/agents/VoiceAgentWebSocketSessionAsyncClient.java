@@ -36,8 +36,8 @@ import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
-import com.azure.json.JsonWriter;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakeException;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -54,11 +54,11 @@ import reactor.netty.http.websocket.WebsocketOutbound;
 import reactor.netty.transport.ProxyProvider;
 import reactor.util.concurrent.Queues;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
@@ -385,7 +385,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
 
     private Mono<Void> openWebSocket(String token) {
         HttpClient client = configureProxy(httpClient).followRedirect(false)
-            .responseTimeout(options.getHandshakeTimeout())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, toConnectTimeoutMillis(options.getHandshakeTimeout()))
             .doOnConnected(connection -> connection.addHandlerLast("voiceAgentHandshakeResponseObserver",
                 new VoiceAgentWebSocketHandshakeHandler(this::terminateWithError)))
             .headers(headers -> {
@@ -410,6 +410,13 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             }
             return handleConnection((WebsocketInbound) connection, (WebsocketOutbound) connection);
         });
+    }
+
+    private static int toConnectTimeoutMillis(Duration timeout) {
+        if (timeout.compareTo(Duration.ofMillis(Integer.MAX_VALUE)) >= 0) {
+            return Integer.MAX_VALUE;
+        }
+        return Math.toIntExact(Math.max(1L, timeout.toMillis()));
     }
 
     private Mono<Void> handleConnection(WebsocketInbound inbound, WebsocketOutbound outbound) {
@@ -437,7 +444,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
                     = RealtimeServerEvent.fromJson(JsonProviders.createReader(((TextWebSocketFrame) frame).text()));
                 Sinks.EmitResult result = events.tryEmitNext(event);
                 if (result.isFailure()) {
-                    terminateWithError(new IllegalStateException("Voice-agent receive buffer overflow: " + result));
+                    terminateWithError(new IllegalStateException("Voice-agent event emission failed: " + result));
                 }
             } catch (IOException | RuntimeException error) {
                 closeWithProtocolError(1007, "Invalid JSON event", error);
@@ -566,16 +573,11 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             || "upgrade".equals(lower)
             || "connection".equals(lower)
             || "foundry-features".equals(lower)
-            || "sec-websocket-protocol".equals(lower)
             || lower.startsWith("sec-websocket-");
     }
 
     private static String serialize(RealtimeClientEvent event) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try (JsonWriter writer = JsonProviders.createWriter(output)) {
-            event.toJson(writer);
-        }
-        return output.toString(StandardCharsets.UTF_8.name());
+        return event.toJsonString();
     }
 
     private static URI buildWebSocketUri(VoiceAgentWebSocketClientConfiguration configuration, String agentName,

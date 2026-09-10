@@ -38,6 +38,23 @@ public final class VoiceAgentWebSocketHttpResponse extends HttpResponse {
         }
     }
 
+    /**
+     * Creates a response adapter.
+     *
+     * @param endpoint the WebSocket endpoint.
+     * @param response the rejected OkHttp handshake response.
+     */
+    public VoiceAgentWebSocketHttpResponse(URI endpoint, okhttp3.Response response) {
+        super(new HttpRequest(HttpMethod.GET, toHttpUrl(endpoint)));
+        this.statusCode = response.code();
+        this.headers = new HttpHeaders();
+        for (String name : response.headers().names()) {
+            for (String value : response.headers(name)) {
+                this.headers.add(HttpHeaderName.fromString(name), value);
+            }
+        }
+    }
+
     private static String toHttpUrl(URI endpoint) {
         String endpointUrl = endpoint.toString();
         if ("wss".equalsIgnoreCase(endpoint.getScheme())) {

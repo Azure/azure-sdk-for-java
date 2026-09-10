@@ -131,7 +131,7 @@ public class VoiceAgentWebSocketSessionTests {
     }
 
     @Test
-    public void syncConnectRejectsNullOptions() {
+    public void syncConnectRejectsNullArguments() {
         TokenCredential credential
             = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
         BetaVoiceAgentWebSocketClient client
@@ -140,8 +140,13 @@ public class VoiceAgentWebSocketSessionTests {
                 .configuration(Configuration.NONE)
                 .buildBetaVoiceAgentWebSocketClient();
 
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> client.connect("agent", null));
-        assertEquals("'options' cannot be null.", exception.getMessage());
+        NullPointerException agentNameException = assertThrows(NullPointerException.class,
+            () -> client.connect(null, new VoiceAgentWebSocketConnectionOptions()));
+        assertEquals("'agentName' cannot be null.", agentNameException.getMessage());
+
+        NullPointerException optionsException
+            = assertThrows(NullPointerException.class, () -> client.connect("agent", null));
+        assertEquals("'options' cannot be null.", optionsException.getMessage());
     }
 
     @Test
@@ -166,6 +171,25 @@ public class VoiceAgentWebSocketSessionTests {
     }
 
     @Test
+    public void syncTokenFailureOccursBeforeNetworkAccess() {
+        AtomicBoolean connected = new AtomicBoolean();
+        server = HttpServer.create().host("127.0.0.1").port(0).handle((request, response) -> {
+            connected.set(true);
+            return response.send();
+        }).bindNow();
+        TokenCredential credential = request -> Mono.error(new IllegalStateException("token unavailable"));
+        BetaVoiceAgentWebSocketClient client
+            = new AgentsClientBuilder().endpoint("http://127.0.0.1:" + server.port() + "/api/projects/project")
+                .credential(credential)
+                .configuration(Configuration.NONE)
+                .buildBetaVoiceAgentWebSocketClient();
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> client.connect("agent"));
+        assertTrue(exception.getMessage().contains("token unavailable"));
+        assertFalse(connected.get());
+    }
+
+    @Test
     public void rejectedHandshakeMapsConflictToAzureException() {
         server = HttpServer.create()
             .host("127.0.0.1")
@@ -185,6 +209,27 @@ public class VoiceAgentWebSocketSessionTests {
             ResourceModifiedException exception = assertInstanceOf(ResourceModifiedException.class, error);
             assertEquals(409, exception.getResponse().getStatusCode());
         }).verify();
+    }
+
+    @Test
+    public void syncRejectedHandshakeMapsConflictToAzureException() {
+        server = HttpServer.create()
+            .host("127.0.0.1")
+            .port(0)
+            .handle(
+                (request, response) -> response.status(HttpResponseStatus.CONFLICT).sendString(Mono.just("conflict")))
+            .bindNow();
+        TokenCredential credential
+            = request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
+        BetaVoiceAgentWebSocketClient client
+            = new AgentsClientBuilder().endpoint("http://127.0.0.1:" + server.port() + "/api/projects/project")
+                .credential(credential)
+                .configuration(Configuration.NONE)
+                .buildBetaVoiceAgentWebSocketClient();
+
+        ResourceModifiedException exception
+            = assertThrows(ResourceModifiedException.class, () -> client.connect("disabled-agent"));
+        assertEquals(409, exception.getResponse().getStatusCode());
     }
 
     @Test
