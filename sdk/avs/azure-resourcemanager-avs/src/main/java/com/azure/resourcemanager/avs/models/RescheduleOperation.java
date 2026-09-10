@@ -36,6 +36,11 @@ public final class RescheduleOperation extends MaintenanceManagementOperation {
      */
     private List<RescheduleOperationConstraint> constraints;
 
+    /*
+     * Recommendations for rescheduling maintenance
+     */
+    private MaintenanceRecommendation recommendation;
+
     /**
      * Creates an instance of RescheduleOperation class.
      */
@@ -80,6 +85,15 @@ public final class RescheduleOperation extends MaintenanceManagementOperation {
     }
 
     /**
+     * Get the recommendation property: Recommendations for rescheduling maintenance.
+     * 
+     * @return the recommendation value.
+     */
+    public MaintenanceRecommendation recommendation() {
+        return this.recommendation;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +102,9 @@ public final class RescheduleOperation extends MaintenanceManagementOperation {
     public void validate() {
         if (constraints() != null) {
             constraints().forEach(e -> e.validate());
+        }
+        if (recommendation() != null) {
+            recommendation().validate();
         }
     }
 
@@ -127,6 +144,8 @@ public final class RescheduleOperation extends MaintenanceManagementOperation {
                     List<RescheduleOperationConstraint> constraints
                         = reader.readArray(reader1 -> RescheduleOperationConstraint.fromJson(reader1));
                     deserializedRescheduleOperation.constraints = constraints;
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedRescheduleOperation.recommendation = MaintenanceRecommendation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
