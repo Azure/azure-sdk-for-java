@@ -13,9 +13,33 @@
         },
         {
           "regex": true,
-          "code": "java\\.method\\.(numberOfParametersChanged|parameterTypeParameterChanged|removed|returnTypeChanged|returnTypeTypeParametersChanged|visibilityIncreased)",
-          "old": "(method|parameter) .* com\\.azure\\.ai\\.agents\\.models\\.(Agent)?Optimization(Candidate|DatasetItem|Job|JobInputs|JobProgress|JobResult|Options)::.*",
-          "justification": "Breaking change in beta operation: optimization models were restructured to align with the current AgentsOptimization preview contract."
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.AgentsClientBuilder::buildAgentTelephony(Async)?Client\\(\\)",
+          "justification": "Breaking change in preview operation: telephony clients and their builder methods were renamed with the Beta prefix to make their preview status explicit."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.removed",
+          "old": "class com\\.azure\\.ai\\.agents\\.AgentTelephony(Async)?Client",
+          "justification": "Breaking change in preview operation: telephony clients were renamed with the Beta prefix to make their preview status explicit."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::[A-Za-z0-9]*Telephony[A-Za-z0-9]*\\(.*\\)",
+          "justification": "Breaking change in preview operation: telephony operations moved from AgentsClient and AgentsAsyncClient to their Beta counterparts."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::generateAgent(WithResponse)?\\(.*\\)",
+          "justification": "Breaking change in preview operation: voice-agent generation moved from AgentsClient and AgentsAsyncClient to their Beta counterparts."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method java\\.lang\\.String com\\.azure\\.ai\\.agents\\.models\\.VoiceResponseBase::get(ConversationId|Id)\\(\\)",
+          "justification": "Breaking change in preview models: response and conversation identifiers moved from VoiceResponseBase to VoiceResponse."
         }
       ]
     }
