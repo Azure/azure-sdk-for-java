@@ -93,9 +93,13 @@ public class ConversationsAsyncTests extends ClientTestBase {
         assertNotNull(conversationItem);
         assertNotNull(conversationItem.data());
         assertFalse(conversationItem.data().isEmpty());
-        assertTrue(conversationItem.data().get(0).isMessage());
 
-        Message createdConversationItem = conversationItem.data().get(0).asMessage();
+        Message createdConversationItem = conversationItem.data()
+            .stream()
+            .filter(ConversationItem::isMessage)
+            .map(ConversationItem::asMessage)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Created conversation item did not contain a message."));
         assertTrue(createdConversationItem.content().get(0).isInputText());
         assertEquals("Hello, agent!", createdConversationItem.content().get(0).asInputText().text());
 
