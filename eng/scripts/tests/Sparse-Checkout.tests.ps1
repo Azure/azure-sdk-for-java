@@ -52,7 +52,7 @@ BeforeAll {
 
         Invoke-TestGit $RepositoryPath @('sparse-checkout', 'init', '--no-cone') | Out-Null
         $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
-        $startInfo.FileName = (Get-Command git -CommandType Application).Source
+        $startInfo.FileName = (Get-Command git -CommandType Application | Select-Object -First 1).Source
         $startInfo.WorkingDirectory = $RepositoryPath
         $startInfo.UseShellExecute = $false
         $startInfo.RedirectStandardOutput = $true
@@ -155,6 +155,26 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         Test-Path (Join-Path $repositoryPath 'sdk/percent%service/src/Percent.java') | Should -BeTrue
         Test-Path (Join-Path $repositoryPath 'sdk/unselected/src/Other.java') | Should -BeFalse
         Test-Path $script:ChangesPath | Should -BeFalse
+    }
+
+    It 'uses the first Git executable when command discovery returns multiple matches' {
+        Enable-TestSparseCheckout $repositoryPath
+        $preparation = @(Invoke-CheckoutPreparation $repositoryPath '["/sdk/selected"]')
+        $script:GitExecutablePath = (Get-Command git -CommandType Application | Select-Object -First 1).Source
+
+        Mock Get-Command {
+            [pscustomobject]@{ Source = $script:GitExecutablePath }
+            [pscustomobject]@{ Source = 'nonexistent-secondary-git' }
+        } -ParameterFilter { $Name -eq 'git' -and $CommandType -eq 'Application' }
+
+        Invoke-TestNativeCheckout $repositoryPath $preparation
+        Restore-CheckoutState $repositoryPath
+
+        Test-Path (Join-Path $repositoryPath 'sdk/selected/src/Main.java') | Should -BeTrue
+        Test-Path (Join-Path $repositoryPath 'sdk/unselected/src/Other.java') | Should -BeFalse
+        Should -Invoke Get-Command -Times 1 -Exactly -ParameterFilter {
+            $Name -eq 'git' -and $CommandType -eq 'Application'
+        }
     }
 
     It 'keeps existing patterns before additional paths and their exclusions' {
