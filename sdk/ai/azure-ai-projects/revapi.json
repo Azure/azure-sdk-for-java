@@ -32,6 +32,35 @@
           "old": "method int com.azure.ai.projects.models.DataGenerationJobOptions::getMaxSamples() @ com.azure.ai.projects.models.TracesDataGenerationJobOptions",
           "new": "method java.lang.Integer com.azure.ai.projects.models.TracesDataGenerationJobOptions::getMaxSamples()",
           "justification": "Breaking change in preview models: traces maxSamples is now optional, so getMaxSamples returns Integer and setMaxSamples configures the value."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.ai.projects.models.AgentTaxonomyInput::<init>(===com.azure.ai.projects.models.Target===, java.util.List<com.azure.ai.projects.models.RiskCategory>)",
+          "new": "parameter void com.azure.ai.projects.models.AgentTaxonomyInput::<init>(===com.azure.ai.projects.models.FoundryEvaluationTarget===, java.util.List<com.azure.ai.projects.models.RiskCategory>)",
+          "justification": "Breaking change in preview models: Target was renamed to FoundryEvaluationTarget to clarify that the model represents an evaluation target."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.ai.projects.models.Target com.azure.ai.projects.models.AgentTaxonomyInput::getTarget()",
+          "new": "method com.azure.ai.projects.models.FoundryEvaluationTarget com.azure.ai.projects.models.AgentTaxonomyInput::getTarget()",
+          "justification": "Breaking change in preview models: Target was renamed to FoundryEvaluationTarget to clarify that the model represents an evaluation target."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": "class com.azure.ai.projects.models.AzureAIAgentTarget",
+          "new": "class com.azure.ai.projects.models.AzureAIAgentTarget",
+          "justification": "Breaking change in preview models: AzureAIAgentTarget now inherits from the renamed FoundryEvaluationTarget base class."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": "class com.azure.ai.projects.models.AzureAIModelTarget",
+          "new": "class com.azure.ai.projects.models.AzureAIModelTarget",
+          "justification": "Breaking change in preview models: AzureAIModelTarget now inherits from the renamed FoundryEvaluationTarget base class."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.Target",
+          "justification": "Breaking change in preview models: Target was renamed to FoundryEvaluationTarget to clarify that the model represents an evaluation target."
         }
       ]
     }
