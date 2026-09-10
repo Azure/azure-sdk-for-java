@@ -265,3 +265,56 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         (Get-Location).Path | Should -BeExactly $originalLocation
     }
 }
+
+Describe 'Native sparse checkout tag policy' -Tag 'UnitTest' {
+    BeforeAll {
+        $script:EngineeringRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+        . "$script:EngineeringRoot/common/scripts/Helpers/PSModule-Helpers.ps1"
+        Install-ModuleIfNotInstalled 'powershell-yaml' '0.4.7' | Import-Module
+
+        function Get-SparseCheckout {
+            param($Node, [string]$JobName)
+
+            if ($Node -is [System.Collections.IDictionary]) {
+                if ($Node.job) {
+                    $JobName = $Node.job
+                }
+                if ($Node.checkout -eq 'self' -and $Node.fetchFilter -eq 'tree:0') {
+                    return @{ JobName = $JobName; Step = $Node }
+                }
+                foreach ($value in $Node.Values) {
+                    Get-SparseCheckout -Node $value -JobName $JobName
+                }
+            }
+            elseif ($Node -is [System.Collections.IList]) {
+                foreach ($item in $Node) {
+                    Get-SparseCheckout -Node $item -JobName $JobName
+                }
+            }
+        }
+    }
+
+    It 'only fetches tags for test-versioning in <File>' -TestCases @(
+        @{ File = 'pipelines/templates/jobs/ci.yml'; Count = 2; TagJobs = @('Build', 'Analyze') }
+        @{ File = 'pipelines/templates/jobs/build-validate-pom.yml'; Count = 1; TagJobs = @() }
+        @{ File = 'pipelines/templates/stages/archetype-sdk-client-patch.yml'; Count = 2; TagJobs = @('Build', 'AnalyzeAndVerify') }
+        @{ File = 'pipelines/templates/stages/archetype-java-release-batch.yml'; Count = 7; TagJobs = @('VerifyReleaseVersion') }
+        @{ File = 'pipelines/templates/stages/archetype-java-auto-release-batch.yml'; Count = 6; TagJobs = @('VerifyReleaseVersion') }
+        @{ File = 'pipelines/templates/stages/archetype-java-release-patch.yml'; Count = 5; TagJobs = @() }
+        @{ File = 'pipelines/templates/stages/archetype-java-release-pom-only.yml'; Count = 2; TagJobs = @() }
+        @{ File = 'pipelines/templates/steps/initialize-test-environment.yml'; Count = 1; TagJobs = @() }
+        @{ File = 'pipelines/templates/steps/sparse-checkout-repo-initialized.yml'; Count = 1; TagJobs = @() }
+        @{ File = 'pipelines/code-quality-reports.yml'; Count = 1; TagJobs = @() }
+        @{ File = 'containers/ci.yml'; Count = 1; TagJobs = @() }
+    ) {
+        param($File, $Count, $TagJobs)
+
+        $yaml = Get-Content (Join-Path $script:EngineeringRoot $File) -Raw | ConvertFrom-Yaml -Ordered
+        $checkouts = @(Get-SparseCheckout -Node $yaml)
+        $checkouts.Count | Should -Be $Count
+        foreach ($checkout in $checkouts) {
+            $expectedTags = if ($TagJobs -contains $checkout.JobName) { '${{ parameters.TestPipeline }}' } else { $false }
+            $checkout.Step.fetchTags | Should -BeExactly $expectedTags
+        }
+    }
+}

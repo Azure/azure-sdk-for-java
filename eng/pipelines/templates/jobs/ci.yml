@@ -115,11 +115,17 @@ jobs:
           path: s
           fetchFilter: tree:0
           fetchDepth: 0
-          fetchTags: true
+          fetchTags: ${{ parameters.TestPipeline }}
           sparseCheckoutPatterns: >-
-            /* !/*/ /eng /.config
-            **/*.xml **/*.md **/ci*.yml
-            !sdk/**/test-recordings !sdk/**/session-records
+            /*
+            !/*/
+            /eng
+            /.config
+            **/*.xml
+            **/*.md
+            **/ci*.yml
+            !sdk/**/test-recordings
+            !sdk/**/session-records
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -325,11 +331,18 @@ jobs:
           path: s
           fetchFilter: tree:0
           fetchDepth: 0
-          fetchTags: true
+          fetchTags: ${{ parameters.TestPipeline }}
           sparseCheckoutPatterns: >-
-            /* !/*/ /eng /.config
-            **/*.xml **/*.md **/*.yml .vscode/cspell.json
-            !sdk/**/test-recordings !sdk/**/session-records
+            /*
+            !/*/
+            /eng
+            /.config
+            **/*.xml
+            **/*.md
+            **/*.yml
+            .vscode/cspell.json
+            !sdk/**/test-recordings
+            !sdk/**/session-records
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'

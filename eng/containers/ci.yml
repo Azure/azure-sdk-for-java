@@ -48,8 +48,12 @@ extends:
         - checkout: self
           fetchFilter: tree:0
           fetchDepth: 0
-          fetchTags: true
-          sparseCheckoutPatterns: '/* !/*/ /eng /.config'
+          fetchTags: false
+          sparseCheckoutPatterns: >-
+            /*
+            !/*/
+            /eng
+            /.config
 
         - task: AzureCLI@2
           displayName: Login to $(containerRegistry)

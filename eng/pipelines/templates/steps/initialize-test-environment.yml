@@ -20,14 +20,25 @@ steps:
       path: s
       fetchFilter: tree:0
       fetchDepth: 0
-      fetchTags: true
+      fetchTags: false
       ${{ if parameters.CheckoutRecordings }}:
         sparseCheckoutPatterns: >-
-          /* !/*/ /eng /.config **/*.xml **/ci*.yml
+          /*
+          !/*/
+          /eng
+          /.config
+          **/*.xml
+          **/ci*.yml
       ${{ else }}:
         sparseCheckoutPatterns: >-
-          /* !/*/ /eng /.config **/*.xml **/ci*.yml
-          !sdk/**/test-recordings !sdk/**/session-records
+          /*
+          !/*/
+          /eng
+          /.config
+          **/*.xml
+          **/ci*.yml
+          !sdk/**/test-recordings
+          !sdk/**/session-records
 
   - task: UsePythonVersion@0
     displayName: 'Use Python $(PythonVersion)'

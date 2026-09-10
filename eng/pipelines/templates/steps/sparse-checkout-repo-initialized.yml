@@ -23,7 +23,7 @@ steps:
       clean: false
       fetchFilter: tree:0
       fetchDepth: 0
-      fetchTags: true
+      fetchTags: false
       sparseCheckoutPatterns: $(SparseCheckoutPatterns)
       condition: and(succeeded(), eq(variables['SparseCheckoutRequired'], 'true'))
 

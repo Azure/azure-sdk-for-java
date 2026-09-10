@@ -27,12 +27,17 @@ jobs:
       - checkout: self
         fetchFilter: tree:0
         fetchDepth: 0
-        fetchTags: true
+        fetchTags: false
         sparseCheckoutPatterns: >-
-          /* !/*/ /eng /.config
+          /*
+          !/*/
+          /eng
+          /.config
           sdk/${{ parameters.ServiceDirectory }}
-          **/*.xml **/*.md
-          !sdk/**/test-recordings !sdk/**/session-records
+          **/*.xml
+          **/*.md
+          !sdk/**/test-recordings
+          !sdk/**/session-records
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"

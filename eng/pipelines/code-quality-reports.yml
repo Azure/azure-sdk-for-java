@@ -38,10 +38,15 @@ extends:
                     path: s
                     fetchFilter: tree:0
                     fetchDepth: 0
-                    fetchTags: true
+                    fetchTags: false
                     sparseCheckoutPatterns: >-
-                      /* !/*/ /eng /.config **/*.xml
-                      !sdk/**/test-recordings !sdk/**/session-records
+                      /*
+                      !/*/
+                      /eng
+                      /.config
+                      **/*.xml
+                      !sdk/**/test-recordings
+                      !sdk/**/session-records
                       sdk/tools/linting-extensions
 
               - task: UsePythonVersion@0

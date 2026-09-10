@@ -98,8 +98,12 @@ stages:
               - checkout: self
                 fetchFilter: tree:0
                 fetchDepth: 0
-                fetchTags: true
-                sparseCheckoutPatterns: '/* !/*/ /eng /.config'
+                fetchTags: false
+                sparseCheckoutPatterns: >-
+                  /*
+                  !/*/
+                  /eng
+                  /.config
               - template: /eng/common/pipelines/templates/steps/retain-run.yml
               - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                 parameters:
@@ -153,8 +157,12 @@ stages:
                 path: azure-sdk-for-java
                 fetchFilter: tree:0
                 fetchDepth: 0
-                fetchTags: true
-                sparseCheckoutPatterns: '/* !/*/ /eng /.config'
+                fetchTags: false
+                sparseCheckoutPatterns: >-
+                  /*
+                  !/*/
+                  /eng
+                  /.config
               # Setup Maven mirror settings and authenticate with Azure Artifacts
               - template: /eng/pipelines/templates/steps/maven-authenticate.yml
                 parameters:

@@ -19,8 +19,15 @@ for both their initial sparse checkout and dependency-driven expansion. This req
 
 - Use `sparseCheckoutPatterns` for non-cone patterns, including file globs and exclusions.
 - Preserve the base patterns `/* !/*/ /eng /.config` and the order of job-specific patterns.
-- Use `fetchFilter: tree:0`, `fetchDepth: 0`, and `fetchTags: true` to retain the existing treeless fetch, full history, and tags.
+- Write literal patterns one per line in a folded YAML scalar (`>-`); YAML joins them with spaces for the checkout task.
+- Use `fetchFilter: tree:0` and `fetchDepth: 0` to retain treeless fetches and full commit history.
+- Set `fetchTags: false` explicitly to avoid unnecessary tag synchronization and pipeline-dependent defaults.
 - Set `path` explicitly when checking out Java alongside build-tools; it is relative to `$(Pipeline.Workspace)`.
+
+Initial checkouts that can run test-pipeline versioning use `fetchTags: ${{ parameters.TestPipeline }}` instead.
+[SetTestPipelineVersion.ps1](common/scripts/SetTestPipelineVersion.ps1) reads local tags to choose the version, so those
+jobs still need tags when `TestPipeline` is enabled. Release creation checks and creates tags through the GitHub API
+and does not require local tags. Expansion checkouts do not fetch tags again.
 
 Java builds compute additional paths after generating project lists and updating POM files. Use
 [pipelines/templates/steps/sparse-checkout-repo-initialized.yml](pipelines/templates/steps/sparse-checkout-repo-initialized.yml)
