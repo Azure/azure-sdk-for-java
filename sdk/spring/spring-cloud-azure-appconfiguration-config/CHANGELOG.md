@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for Snapshot References in App Configuration stores. Snapshot reference settings are now automatically resolved, loading the referenced snapshot's configuration settings as properties.
+
 ### Breaking Changes
 
 ### Bugs Fixed

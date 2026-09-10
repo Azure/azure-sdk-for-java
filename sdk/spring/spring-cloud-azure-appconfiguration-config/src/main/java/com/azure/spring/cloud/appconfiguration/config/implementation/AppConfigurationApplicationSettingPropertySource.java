@@ -23,6 +23,7 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -44,9 +45,15 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     private final List<String> tagsFilter;
 
+    protected List<ConfigurationSetting> featureFlagsList = new ArrayList<>();
+
+    private static final String SNAPSHOT_REF_CONTENT_TYPE = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
+
+    protected final FeatureFlagClient featureFlagClient;
+
     AppConfigurationApplicationSettingPropertySource(String name, AppConfigurationReplicaClient replicaClient,
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilters,
-        List<String> tagsFilter) {
+        List<String> tagsFilter, FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(name + getLabelName(labelFilters), replicaClient);
@@ -54,6 +61,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         this.keyFilter = keyFilter;
         this.labelFilters = labelFilters;
         this.tagsFilter = tagsFilter;
+        this.featureFlagClient = featureFlagClient;
     }
 
     /**
@@ -65,7 +73,8 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
     @Override
-    public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
+    public void initProperties(List<String> keyPrefixTrimValues, Context context)
+        throws InvalidConfigurationPropertyValueException {
 
         replicaClient.getTracingInfo().resetAiConfigurationTracing();
 
@@ -82,14 +91,21 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             }
 
             // * for wildcard match
-            processConfigurationSettings(replicaClient.listSettings(settingSelector, context), settingSelector.getKeyFilter(),
-                keyPrefixTrimValues);
+            processConfigurationSettings(replicaClient.listSettings(settingSelector, context),
+                settingSelector.getKeyFilter(),
+                keyPrefixTrimValues, context);
         }
     }
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
-        List<String> keyPrefixTrimValues)
+        List<String> keyPrefixTrimValues, Context context)
         throws InvalidConfigurationPropertyValueException {
+        // Reset per-label state so flags from a previous label aren't re-processed.
+        featureFlagsList.clear();
+
+        // First resolve snapshot references
+        settings = resolveSnapshotReferences(settings, context);
+
         for (ConfigurationSetting setting : settings) {
             replicaClient.getTracingInfo().updateAiConfigurationTracing(setting.getContentType());
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
@@ -110,6 +126,30 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                 properties.put(key, setting.getValue());
             }
         }
+
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
+        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
+    }
+
+    private List<ConfigurationSetting> resolveSnapshotReferences(List<ConfigurationSetting> settings, Context context) {
+        List<ConfigurationSetting> resolvedSettings = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            if (SNAPSHOT_REF_CONTENT_TYPE.equals(setting.getContentType())) {
+                // Handle snapshot reference
+                replicaClient.getTracingInfo().setUsesSnapshotReference();
+                List<ConfigurationSetting> snapshotSettings = replicaClient.listSettingSnapshot(setting.getValue(),
+                    context);
+                resolvedSettings.addAll(snapshotSettings);
+            } else if (setting instanceof FeatureFlagConfigurationSetting) {
+                // We need to strip feature flags as we only support feature flags from snapshots, and if they are in a
+                // snapshot reference we won't be able to resolve them.
+                LOGGER.warn("Feature Flag {} with key {} is being ignored as it is not from a snapshot reference.",
+                    setting.getLabel(), setting.getKey());
+            } else {
+                resolvedSettings.add(setting);
+            }
+        }
+        return resolvedSettings;
     }
 
     /**
@@ -119,7 +159,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @throws InvalidConfigurationPropertyValueException
      */
-    private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
+    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
         throws InvalidConfigurationPropertyValueException {
         // Parsing Key Vault Reference for URI
         try {
@@ -138,10 +178,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
-        // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
+        // Feature Flags are only part of this if they come from a snapshot
+        featureFlagsList.add(setting);
     }
 
-    private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
+    protected void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
@@ -150,7 +191,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         }
     }
 
-    private String trimKey(String key, List<String> trimStrings) {
+    protected String trimKey(String key, List<String> trimStrings) {
         key = key.trim();
         if (trimStrings != null) {
             for (String trim : trimStrings) {
