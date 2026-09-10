@@ -11,6 +11,8 @@
 
 ### Breaking Changes
 
+- Renamed `AgentOptimizationEvaluatorReference` to `AgentOptimizationEvaluatorRef`; the `AgentOptimizationJobInputs` constructor and `getEvaluators()` now use the renamed type.
+
 ### Bugs Fixed
 
 ### Other Changes

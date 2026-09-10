@@ -6,8 +6,8 @@
 
 ### Breaking Changes
 
-- Replaced `Target` with `FoundryEvaluationTarget`. `AzureAIAgentTarget` and `AzureAIModelTarget` now inherit from `FoundryEvaluationTarget`; update imports and declarations that use `Target`.
-- `AgentTaxonomyInput` now accepts `FoundryEvaluationTarget` instead of `Target` in its constructor, and `getTarget()` returns `FoundryEvaluationTarget`.
+- Renamed `AgentInsightHighlightedTrace.getDuration()` to `getDurationMs()` to clarify that the duration is measured in milliseconds.
+- Changed the return type of `AgentInsightHighlightedTrace.getTotalTokens()` from `Long` to `Integer`.
 
 ### Bugs Fixed
 
