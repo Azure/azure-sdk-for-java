@@ -83,7 +83,7 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testCertificatesRefreshInterval() throws Exception {
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS, "1000");
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keyStore.getCertificate(certificateName));
         keyStore.deleteEntry(certificateName);

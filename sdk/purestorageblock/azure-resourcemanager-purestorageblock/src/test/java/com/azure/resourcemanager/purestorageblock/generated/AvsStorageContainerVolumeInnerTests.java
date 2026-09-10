@@ -12,8 +12,8 @@ public final class AvsStorageContainerVolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsStorageContainerVolumeInner model = BinaryData.fromString(
-            "{\"properties\":{\"storagePoolInternalId\":\"lmnguxaw\",\"storagePoolResourceId\":\"ldsyuuximerqfob\",\"volumeInternalId\":\"znkbykutwpfhpagm\",\"displayName\":\"skdsnfdsdoakg\",\"space\":{\"totalUsed\":4201139945493891870,\"unique\":3650059027972430244,\"snapshots\":2370373214827423487,\"shared\":7189695523322242946},\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"ewpusdsttwvogvb\"},\"createdTimestamp\":\"jdcngqqm\",\"provisionedSize\":6280653773540023560,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"jzrwrdgrtw\",\"diskName\":\"enuuzkopbm\",\"folder\":\"nrfdw\",\"avsVmInternalId\":\"yuhhziu\",\"avsVmResourceId\":\"efozbhdms\",\"avsVmName\":\"l\",\"avsStorageContainerResourceId\":\"zqhof\"},\"provisioningState\":\"Succeeded\"},\"id\":\"equi\",\"name\":\"hxicslfaoqz\",\"type\":\"iyylhalnswhccsp\"}")
+            "{\"properties\":{\"storagePoolInternalId\":\"bwh\",\"storagePoolResourceId\":\"z\",\"volumeInternalId\":\"mrv\",\"displayName\":\"ztvbtqgsfr\",\"space\":{\"totalUsed\":3999543626969444509,\"unique\":6759250092072398108,\"snapshots\":6934781293491405600,\"shared\":5941634021066560611},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"guxawqaldsyuuxi\"},\"createdTimestamp\":\"rqf\",\"provisionedSize\":267070525369036093,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"bykutw\",\"diskName\":\"fhpagmhrskdsnf\",\"folder\":\"sd\",\"avsVmInternalId\":\"akgtdlmkkzevdlh\",\"avsVmResourceId\":\"wpusdsttwvogv\",\"avsVmName\":\"bejdcn\",\"avsStorageContainerResourceId\":\"qqmoaku\"},\"provisioningState\":\"Failed\"},\"id\":\"zr\",\"name\":\"rdgrtw\",\"type\":\"enuuzkopbm\"}")
             .toObject(AvsStorageContainerVolumeInner.class);
-        Assertions.assertFalse(model.properties().softDeletion().destroyed());
+        Assertions.assertTrue(model.properties().softDeletion().destroyed());
     }
 }

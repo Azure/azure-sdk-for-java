@@ -148,12 +148,12 @@ class MultiTenantTest {
             + "Successfully retrieved a user from another tenant.", errorMessage);
     }
 
-    private void assertExpectedValue(String expected, String actual, String success, String faiure) {
+    private void assertExpectedValue(String expected, String actual, String success, String failure) {
         if (expected.equals(actual)) {
             System.out.println(success);
             return;
         }
-        System.out.println(faiure);
+        System.out.println(failure);
     }
 
     private void assertConfigPresence(String identitfer, String errorMessage) {

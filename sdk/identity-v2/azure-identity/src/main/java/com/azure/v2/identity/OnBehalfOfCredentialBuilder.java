@@ -166,7 +166,7 @@ public class OnBehalfOfCredentialBuilder extends EntraIdCredentialBuilderBase<On
      * Creates a new {@link OnBehalfOfCredential} with the current configurations.
      *
      * @return a {@link OnBehalfOfCredential} with the current configurations.
-     * @throws IllegalArgumentException if eiter both the client secret and certificate are configured or none of them
+     * @throws IllegalArgumentException if either both the client secret and certificate are configured or none of them
      * are configured.
      */
     public OnBehalfOfCredential build() {

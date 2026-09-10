@@ -14,30 +14,30 @@ public final class AssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssignedIdentity model = BinaryData.fromString(
-            "{\"kind\":\"AgentInstance\",\"type\":\"System\",\"clientId\":\"es\",\"principalId\":\"ydjfb\",\"tenantId\":\"c\",\"subject\":\"hhulrtywikdm\",\"provisioningState\":\"Failed\"}")
+            "{\"kind\":\"AgentInstance\",\"type\":\"System\",\"clientId\":\"xe\",\"principalId\":\"myw\",\"tenantId\":\"ormcqmic\",\"subject\":\"jqpkzfbo\",\"provisioningState\":\"Deleting\"}")
             .toObject(AssignedIdentity.class);
         Assertions.assertEquals(IdentityKind.AGENT_INSTANCE, model.kind());
         Assertions.assertEquals(IdentityManagementType.SYSTEM, model.type());
-        Assertions.assertEquals("es", model.clientId());
-        Assertions.assertEquals("ydjfb", model.principalId());
-        Assertions.assertEquals("c", model.tenantId());
-        Assertions.assertEquals("hhulrtywikdm", model.subject());
+        Assertions.assertEquals("xe", model.clientId());
+        Assertions.assertEquals("myw", model.principalId());
+        Assertions.assertEquals("ormcqmic", model.tenantId());
+        Assertions.assertEquals("jqpkzfbo", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssignedIdentity model = new AssignedIdentity().withKind(IdentityKind.AGENT_INSTANCE)
             .withType(IdentityManagementType.SYSTEM)
-            .withClientId("es")
-            .withPrincipalId("ydjfb")
-            .withTenantId("c")
-            .withSubject("hhulrtywikdm");
+            .withClientId("xe")
+            .withPrincipalId("myw")
+            .withTenantId("ormcqmic")
+            .withSubject("jqpkzfbo");
         model = BinaryData.fromObject(model).toObject(AssignedIdentity.class);
         Assertions.assertEquals(IdentityKind.AGENT_INSTANCE, model.kind());
         Assertions.assertEquals(IdentityManagementType.SYSTEM, model.type());
-        Assertions.assertEquals("es", model.clientId());
-        Assertions.assertEquals("ydjfb", model.principalId());
-        Assertions.assertEquals("c", model.tenantId());
-        Assertions.assertEquals("hhulrtywikdm", model.subject());
+        Assertions.assertEquals("xe", model.clientId());
+        Assertions.assertEquals("myw", model.principalId());
+        Assertions.assertEquals("ormcqmic", model.tenantId());
+        Assertions.assertEquals("jqpkzfbo", model.subject());
     }
 }

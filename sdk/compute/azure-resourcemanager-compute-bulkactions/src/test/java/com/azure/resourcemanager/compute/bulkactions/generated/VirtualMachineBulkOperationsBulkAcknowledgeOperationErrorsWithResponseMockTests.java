@@ -23,7 +23,7 @@ public final class VirtualMachineBulkOperationsBulkAcknowledgeOperationErrorsWit
     @Test
     public void testBulkAcknowledgeOperationErrorsWithResponse() throws Exception {
         String responseStr
-            = "{\"acknowledged\":[\"wztcmwqkchc\",\"waxfewzjkj\",\"xfdeqvhpsyl\"],\"notFound\":[\"shk\"],\"skipped\":[\"f\",\"bmxzjrgywwpg\",\"xs\"]}";
+            = "{\"acknowledged\":[\"uaucmf\",\"jwnlax\",\"un\",\"qikczvvita\"],\"notFound\":[\"xmfcsserxhtv\"],\"skipped\":[\"xhlw\",\"tsjgqrsx\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class VirtualMachineBulkOperationsBulkAcknowledgeOperationErrorsWit
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AcknowledgeBulkOperationErrorsResponse response = manager.virtualMachineBulkOperations()
-            .bulkAcknowledgeOperationErrorsWithResponse("uqn", "ophzfylsgcrp",
-                new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
-                    Arrays.asList("cunezzcezelfw", "fwlwxjwetnps", "hclafzvaylptrs")),
+            .bulkAcknowledgeOperationErrorsWithResponse("zyjq", "tvwkpqhjpenu",
+                new AcknowledgeBulkOperationErrorsRequest().withOperationIds(Arrays.asList("bqeqqekewvnqvcd")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wztcmwqkchc", response.acknowledged().get(0));
-        Assertions.assertEquals("shk", response.notFound().get(0));
-        Assertions.assertEquals("f", response.skipped().get(0));
+        Assertions.assertEquals("uaucmf", response.acknowledged().get(0));
+        Assertions.assertEquals("xmfcsserxhtv", response.notFound().get(0));
+        Assertions.assertEquals("xhlw", response.skipped().get(0));
     }
 }

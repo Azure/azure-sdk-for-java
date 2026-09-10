@@ -86,8 +86,8 @@ public interface HorizonDbReplica {
              * Specifies resourceGroupName, clusterName, poolName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param clusterName The name of the HorizonDb cluster.
-             * @param poolName The name of the HorizonDb pool.
+             * @param clusterName The name of the HorizonDB cluster.
+             * @param poolName The name of the HorizonDB pool.
              * @return the next definition stage.
              */
             WithCreate withExistingPool(String resourceGroupName, String clusterName, String poolName);
@@ -164,9 +164,9 @@ public interface HorizonDbReplica {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of a HorizonDb replica for update operations..
+             * Specifies the properties property: Properties of a HorizonDB replica for update operations..
              * 
-             * @param properties Properties of a HorizonDb replica for update operations.
+             * @param properties Properties of a HorizonDB replica for update operations.
              * @return the next definition stage.
              */
             Update withProperties(HorizonDbReplicaPropertiesForPatchUpdate properties);

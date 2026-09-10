@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerservice.models.ListBootstrapDataReques
  */
 public final class AgentPoolsListBootstrapDataSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AgentPoolsListBootstrapData.json
+     * x-ms-original-file: 2026-06-02-preview/AgentPoolsListBootstrapData.json
      */
     /**
      * Sample code: List Bootstrap Data for FlexNode Agent Pool.

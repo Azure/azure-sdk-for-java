@@ -14,25 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class TemplateDeploymentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TemplateDeploymentPolicy model = BinaryData.fromString(
-            "{\"capabilities\":\"Preflight\",\"preflightOptions\":\"RegisteredOnly\",\"preflightNotifications\":\"UnregisteredSubscriptions\"}")
+        TemplateDeploymentPolicy model = BinaryData
+            .fromString(
+                "{\"capabilities\":\"Default\",\"preflightOptions\":\"None\",\"preflightNotifications\":\"None\"}")
             .toObject(TemplateDeploymentPolicy.class);
-        Assertions.assertEquals(TemplateDeploymentCapabilities.PREFLIGHT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.REGISTERED_ONLY, model.preflightOptions());
-        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
-            model.preflightNotifications());
+        Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.NONE, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.NONE, model.preflightNotifications());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TemplateDeploymentPolicy model
-            = new TemplateDeploymentPolicy().withCapabilities(TemplateDeploymentCapabilities.PREFLIGHT)
-                .withPreflightOptions(TemplateDeploymentPreflightOptions.REGISTERED_ONLY)
-                .withPreflightNotifications(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS);
+            = new TemplateDeploymentPolicy().withCapabilities(TemplateDeploymentCapabilities.DEFAULT)
+                .withPreflightOptions(TemplateDeploymentPreflightOptions.NONE)
+                .withPreflightNotifications(TemplateDeploymentPreflightNotifications.NONE);
         model = BinaryData.fromObject(model).toObject(TemplateDeploymentPolicy.class);
-        Assertions.assertEquals(TemplateDeploymentCapabilities.PREFLIGHT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.REGISTERED_ONLY, model.preflightOptions());
-        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
-            model.preflightNotifications());
+        Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.NONE, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.NONE, model.preflightNotifications());
     }
 }

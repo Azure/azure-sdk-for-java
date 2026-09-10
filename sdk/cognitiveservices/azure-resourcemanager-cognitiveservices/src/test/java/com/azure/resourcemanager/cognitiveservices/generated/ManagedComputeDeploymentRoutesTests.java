@@ -11,11 +11,12 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedComputeDeploymentRoutesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedComputeDeploymentRoutes model = BinaryData.fromString(
-            "{\"chatCompletionsScoringPath\":\"bajbuscgduusi\",\"swagger\":\"cblevpmc\",\"messagesApiScoringPath\":\"jy\"}")
+        ManagedComputeDeploymentRoutes model = BinaryData
+            .fromString(
+                "{\"chatCompletionsScoringPath\":\"wjjufwbe\",\"swagger\":\"k\",\"messagesApiScoringPath\":\"rhtssr\"}")
             .toObject(ManagedComputeDeploymentRoutes.class);
-        Assertions.assertEquals("bajbuscgduusi", model.chatCompletionsScoringPath());
-        Assertions.assertEquals("cblevpmc", model.swagger());
-        Assertions.assertEquals("jy", model.messagesApiScoringPath());
+        Assertions.assertEquals("wjjufwbe", model.chatCompletionsScoringPath());
+        Assertions.assertEquals("k", model.swagger());
+        Assertions.assertEquals("rhtssr", model.messagesApiScoringPath());
     }
 }

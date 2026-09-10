@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficRegionRolloutConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficRegionRolloutConfiguration model = BinaryData
-            .fromString("{\"waitDuration\":\"PT7H52M46S\",\"regions\":[\"gjsaasiixtm\",\"zjvkviirhgfgrws\"]}")
-            .toObject(TrafficRegionRolloutConfiguration.class);
-        Assertions.assertEquals("gjsaasiixtm", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT7H52M46S"), model.waitDuration());
+        TrafficRegionRolloutConfiguration model
+            = BinaryData.fromString("{\"waitDuration\":\"PT136H12M29S\",\"regions\":[\"v\"]}")
+                .toObject(TrafficRegionRolloutConfiguration.class);
+        Assertions.assertEquals("v", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT136H12M29S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrafficRegionRolloutConfiguration model
-            = new TrafficRegionRolloutConfiguration().withRegions(Arrays.asList("gjsaasiixtm", "zjvkviirhgfgrws"))
-                .withWaitDuration(Duration.parse("PT7H52M46S"));
+            = new TrafficRegionRolloutConfiguration().withRegions(Arrays.asList("v"))
+                .withWaitDuration(Duration.parse("PT136H12M29S"));
         model = BinaryData.fromObject(model).toObject(TrafficRegionRolloutConfiguration.class);
-        Assertions.assertEquals("gjsaasiixtm", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT7H52M46S"), model.waitDuration());
+        Assertions.assertEquals("v", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT136H12M29S"), model.waitDuration());
     }
 }

@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_PatchResources_MaximumSet.

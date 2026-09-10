@@ -30,6 +30,7 @@ import com.azure.resourcemanager.cognitiveservices.implementation.AccountConnect
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentApplicationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentDeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ArcDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CognitiveServicesManagementClientBuilder;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlansImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
@@ -76,6 +77,7 @@ import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.AgentApplications;
 import com.azure.resourcemanager.cognitiveservices.models.AgentDeployments;
+import com.azure.resourcemanager.cognitiveservices.models.ArcDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeOperations;
@@ -170,6 +172,8 @@ public final class CognitiveServicesManager {
     private ProjectCapabilityHosts projectCapabilityHosts;
 
     private QuotaTiers quotaTiers;
+
+    private ArcDeployments arcDeployments;
 
     private AgentApplications agentApplications;
 
@@ -654,7 +658,7 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of ProjectConnections. It manages ConnectionPropertiesV2BasicResource.
+     * Gets the resource collection API of ProjectConnections.
      * 
      * @return Resource collection API of ProjectConnections.
      */
@@ -688,6 +692,18 @@ public final class CognitiveServicesManager {
             this.quotaTiers = new QuotaTiersImpl(clientObject.getQuotaTiers(), this);
         }
         return quotaTiers;
+    }
+
+    /**
+     * Gets the resource collection API of ArcDeployments. It manages ArcDeployment.
+     * 
+     * @return Resource collection API of ArcDeployments.
+     */
+    public ArcDeployments arcDeployments() {
+        if (this.arcDeployments == null) {
+            this.arcDeployments = new ArcDeploymentsImpl(clientObject.getArcDeployments(), this);
+        }
+        return arcDeployments;
     }
 
     /**
@@ -829,7 +845,7 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of AccountConnections.
+     * Gets the resource collection API of AccountConnections. It manages ConnectionPropertiesV2BasicResource.
      * 
      * @return Resource collection API of AccountConnections.
      */

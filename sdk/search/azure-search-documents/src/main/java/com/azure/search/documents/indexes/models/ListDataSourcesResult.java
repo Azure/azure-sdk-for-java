@@ -71,11 +71,29 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
                     List<SearchIndexerDataSourceConnection> dataSources
                         = reader.readArray(reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
                     deserializedListDataSourcesResult.dataSources = dataSources;
+                } else if ("@odata.nextLink".equals(fieldName)) {
+                    deserializedListDataSourcesResult.odataNextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedListDataSourcesResult;
         });
+    }
+
+    /*
+     * The URL that can be used to fetch the next set of results.
+     */
+    @Generated
+    private String odataNextLink;
+
+    /**
+     * Get the odataNextLink property: The URL that can be used to fetch the next set of results.
+     *
+     * @return the odataNextLink value.
+     */
+    @Generated
+    public String getOdataNextLink() {
+        return this.odataNextLink;
     }
 }
