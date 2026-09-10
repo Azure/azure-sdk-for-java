@@ -4,11 +4,18 @@
 
 ### Features Added
 
+- Added `AgentTelephonyClient` and `AgentTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
+- Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
+- Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
+- Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.5.0 (2026-09-09)
 
@@ -40,10 +47,6 @@
   whether web search can fetch live external content.
 - Added hosted-agent session defaults through `SessionConfiguration` and
   `HostedAgentDefinition.setSessionConfiguration(...)`, including configuration of the session idle timeout.
-- Added `AgentTelephonyClient` and `AgentTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
-- Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
-- Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
-- Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
 
 ### Breaking Changes
 
@@ -58,7 +61,6 @@
 ### Other Changes
 
 - Updated the OpenAI TypeSpec model dependency to 1.26.0.
-- Regenerated client from the updated TypeSpec specification.
 - Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
 - Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
   advanced memory-store workflows, and agent optimization.
