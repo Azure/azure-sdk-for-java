@@ -120,7 +120,7 @@ public final class AgentOptimizationDatasetItem implements JsonSerializable<Agen
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("query", this.query);
         jsonWriter.writeStringField("ground_truth", this.groundTruth);
-        jsonWriter.writeNumberField("desired_num_turns", this.desiredNumberTurns);
+        jsonWriter.writeNumberField("desired_num_turns", this.desiredNumTurns);
         jsonWriter.writeArrayField("criteria", this.criteria, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -145,8 +145,7 @@ public final class AgentOptimizationDatasetItem implements JsonSerializable<Agen
                 } else if ("ground_truth".equals(fieldName)) {
                     deserializedAgentOptimizationDatasetItem.groundTruth = reader.getString();
                 } else if ("desired_num_turns".equals(fieldName)) {
-                    deserializedAgentOptimizationDatasetItem.desiredNumberTurns
-                        = reader.getNullable(JsonReader::getInt);
+                    deserializedAgentOptimizationDatasetItem.desiredNumTurns = reader.getNullable(JsonReader::getInt);
                 } else if ("criteria".equals(fieldName)) {
                     List<AgentOptimizationDatasetCriterion> criteria
                         = reader.readArray(reader1 -> AgentOptimizationDatasetCriterion.fromJson(reader1));
@@ -163,27 +162,27 @@ public final class AgentOptimizationDatasetItem implements JsonSerializable<Agen
      * Desired number of conversation turns for simulation mode (1-20).
      */
     @Generated
-    private Integer desiredNumberTurns;
+    private Integer desiredNumTurns;
 
     /**
-     * Get the desiredNumberTurns property: Desired number of conversation turns for simulation mode (1-20).
+     * Get the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
      *
-     * @return the desiredNumberTurns value.
+     * @return the desiredNumTurns value.
      */
     @Generated
-    public Integer getDesiredNumberTurns() {
-        return this.desiredNumberTurns;
+    public Integer getDesiredNumTurns() {
+        return this.desiredNumTurns;
     }
 
     /**
-     * Set the desiredNumberTurns property: Desired number of conversation turns for simulation mode (1-20).
+     * Set the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
      *
-     * @param desiredNumberTurns the desiredNumberTurns value to set.
+     * @param desiredNumTurns the desiredNumTurns value to set.
      * @return the AgentOptimizationDatasetItem object itself.
      */
     @Generated
-    public AgentOptimizationDatasetItem setDesiredNumberTurns(Integer desiredNumberTurns) {
-        this.desiredNumberTurns = desiredNumberTurns;
+    public AgentOptimizationDatasetItem setDesiredNumTurns(Integer desiredNumTurns) {
+        this.desiredNumTurns = desiredNumTurns;
         return this;
     }
 }

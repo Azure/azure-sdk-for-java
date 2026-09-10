@@ -13,7 +13,6 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.modules.ModuleDeclaration;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +31,6 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        customizeModuleInfo(libraryCustomization);
         customizeVoiceAgentWebSocketBuilder(libraryCustomization);
         customizeRealtimeMessageDiscriminators(libraryCustomization);
         removeGeneratedTrailingWhitespace(libraryCustomization);
@@ -41,30 +39,6 @@ public class AgentsCustomizations extends Customization {
         customizeTimeZoneModels(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
-    }
-
-    private void customizeModuleInfo(LibraryCustomization customization) {
-        String fileName = "src/main/java/module-info.java";
-        CompilationUnit moduleInfo = StaticJavaParser.parse(customization.getRawEditor().getFileContent(fileName));
-        ModuleDeclaration module = moduleInfo.getModule()
-            .orElseThrow(() -> new IllegalStateException("Generated module-info.java has no module"));
-        for (String requiredModule : new String[] { "openai.java.core", "openai.java.client.okhttp" }) {
-            String directive = "requires transitive " + requiredModule + ";";
-            if (module.getDirectives().stream().noneMatch(existing -> directive.equals(existing.toString().trim()))) {
-                String nonTransitiveDirective = "requires " + requiredModule + ";";
-                module.getDirectives()
-                    .removeIf(existing -> nonTransitiveDirective.equals(existing.toString().trim()));
-                module.addDirective(directive);
-            }
-        }
-        for (String requiredModule : new String[] { "reactor.netty.http", "reactor.netty.core",
-            "io.netty.codec.http", "io.netty.transport", "io.netty.common", "io.netty.codec" }) {
-            String directive = "requires " + requiredModule + ";";
-            if (module.getDirectives().stream().noneMatch(existing -> directive.equals(existing.toString().trim()))) {
-                module.addDirective(directive);
-            }
-        }
-        customization.getRawEditor().replaceFile(fileName, moduleInfo.toString());
     }
 
     private void removeGeneratedTrailingWhitespace(LibraryCustomization customization) {
@@ -83,6 +57,9 @@ public class AgentsCustomizations extends Customization {
             String body = fromJson.getBody()
                 .orElseThrow(() -> new IllegalStateException("Generated AgentDefinition.fromJson body was not found."))
                 .toString();
+            if (body.contains("\"voice\".equals(discriminatorValue)")) {
+                return;
+            }
             String updatedBody = body.replace(
                 "} else {\n                    return fromJsonKnownDiscriminator(readerToUse.reset());",
                 "} else if (\"voice\".equals(discriminatorValue)) {\n"
