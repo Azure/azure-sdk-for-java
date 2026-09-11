@@ -14,7 +14,7 @@ import java.io.IOException;
  * Represents a target specifying an Azure AI model for operations requiring model selection.
  */
 @Fluent
-public final class AzureAIModelTarget extends FoundryEvaluationTarget {
+public final class AzureAIModelTarget extends Target {
 
     /*
      * The type of target.
