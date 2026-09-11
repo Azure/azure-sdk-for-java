@@ -370,7 +370,7 @@ public class BlobTestBase extends TestProxyTestBase {
      * @param bc The blob on which to acquire a lease.
      * @param leaseID The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID},
      * or {@code null}.
-     * @return The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * @return The actual lease Id of the blob if receivedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     protected String setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {

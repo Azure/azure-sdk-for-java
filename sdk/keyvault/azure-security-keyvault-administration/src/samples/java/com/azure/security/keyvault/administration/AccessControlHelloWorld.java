@@ -53,7 +53,7 @@ public class AccessControlHelloWorld {
         returned from listRoleAssignments().
 
         See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md#authenticate-the-client)
-        for links and instructions on how to generate a new service principal and obtain it's object ID. You can also
+        for links and instructions on how to generate a new service principal and obtain its object ID. You can also
         get the object ID for your currently signed in account by running the following Azure CLI command:
         az ad signed-in-user show --query objectId */
         String servicePrincipalId = "<service-principal-id>";

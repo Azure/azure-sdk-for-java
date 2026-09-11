@@ -1342,7 +1342,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         try {
             ReferenceCountUtil.release(msg);
         } catch (Throwable t) {
-            // ReferenceCountUtil.safeRelease(msg); would always log teh warning below - which is unnecessary
+            // ReferenceCountUtil.safeRelease(msg); would always log the warning below - which is unnecessary
             // in this class - we only needs this for a race condition rarely double-releasing
             // logger.warn("Failed to release a message: {}", msg, t);
         }

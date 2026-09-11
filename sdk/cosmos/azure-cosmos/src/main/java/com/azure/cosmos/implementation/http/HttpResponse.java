@@ -93,7 +93,7 @@ public abstract class HttpResponse implements AutoCloseable {
     }
 
     /**
-     * Get a new Response object wrapping this response with it's content
+     * Get a new Response object wrapping this response with its content
      * buffered into memory.
      *
      * @return the new Response object

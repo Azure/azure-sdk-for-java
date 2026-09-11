@@ -18,7 +18,7 @@ public class LocationHelper {
      */
     public static URI getLocationEndpoint(URI serviceEndpoint, String location) {
 
-        // Split the host into 2 parts seperated by '.'
+        // Split the host into 2 parts separated by '.'
         // For example, "contoso.documents.azure.com" is separated into "contoso" and "documents.azure.com"
         // If the host doesn't contains '.', this will return the host as is, as the only element
         String[] hostParts = StringUtils.split(serviceEndpoint.getHost(), ".", 2);
