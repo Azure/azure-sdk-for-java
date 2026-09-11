@@ -1590,6 +1590,31 @@
     </profile>
 
     <profile>
+      <id>local-revapi-suppressions</id>
+      <activation>
+        <file>
+          <exists>revapi-suppressions.json</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <configuration>
+              <analysisConfigurationFiles combine.children="append">
+                <configurationFile>
+                  <path>${project.basedir}/revapi-suppressions.json</path>
+                </configurationFile>
+              </analysisConfigurationFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>add-changelog-and-readme</id>
       <activation>
         <file>
