@@ -428,7 +428,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         return serviceClientInternal.getPropertiesWithResponse(null, RequestOptionsHelper.requestOptions(context))
-            .map(response -> response);
+            .map(response -> (Response<QueueServiceProperties>) response);
     }
 
     /**
@@ -552,7 +552,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         return serviceClientInternal
             .setPropertiesWithResponse(properties, null, RequestOptionsHelper.requestOptions(context))
-            .map(response -> response);
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -616,7 +616,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         return serviceClientInternal.getStatisticsWithResponse(null, RequestOptionsHelper.requestOptions(context))
-            .map(response -> response);
+            .map(response -> (Response<QueueServiceStatistics>) response);
     }
 
     /**
@@ -795,6 +795,6 @@ public final class QueueServiceAsyncClient {
         KeyInfo keyInfo = new KeyInfo(expiry).setStart(start).setDelegatedUserTenantId(delegatedUserTenantId);
         return serviceClientInternal
             .getUserDelegationKeyWithResponse(keyInfo, null, RequestOptionsHelper.requestOptions(context))
-            .map(rb -> rb);
+            .map(response -> (Response<UserDelegationKey>) response);
     }
 }

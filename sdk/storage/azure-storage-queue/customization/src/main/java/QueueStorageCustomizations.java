@@ -79,10 +79,6 @@ public class QueueStorageCustomizations extends Customization {
     private static final List<String> IMPL_PACKAGE_TYPES = Arrays.asList(
         "ServicesImpl", "QueuesImpl", "MessagesImpl", "MessageIdsImpl", "XmlSerializerProviders");
 
-    // The hand-written clients consume the generated XML list-wrapper models (SignedIdentifiers, ReceivedMessages,
-    // PeekedMessages, ListOfSentMessage) directly, so none are removed.
-    private static final List<String> GENERATED_MODELS_TO_REMOVE = Arrays.asList();
-
     // module-info.java is hand-authored: the module descriptor carries the full requires/exports/opens (incl. the
     // transitive com.azure.storage.common visibility). typespec-java regenerates a minimal version that overwrites
     // it, so drop the generated copy and keep the hand-written descriptor.
@@ -373,9 +369,6 @@ public class QueueStorageCustomizations extends Customization {
     private static void removeGeneratedFiles(Editor editor, Logger logger) {
         for (String className : GENERATED_CLIENTS_TO_REMOVE) {
             removeFileIfPresent(editor, PKG_ROOT + className + ".java", logger);
-        }
-        for (String modelName : GENERATED_MODELS_TO_REMOVE) {
-            removeFileIfPresent(editor, PKG_ROOT + "implementation/models/" + modelName + ".java", logger);
         }
         for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
             removeFileIfPresent(editor, path, logger);

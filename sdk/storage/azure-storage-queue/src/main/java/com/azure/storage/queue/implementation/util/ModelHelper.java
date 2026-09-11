@@ -5,7 +5,6 @@ package com.azure.storage.queue.implementation.util;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
@@ -127,23 +126,6 @@ public class ModelHelper {
      * Wire prefix for user-defined queue metadata headers. The generated protocol methods document a single
      * {@code x-ms-meta} header collection; on the wire each entry is emitted as {@code x-ms-meta-<key>}.
      */
-    private static final String METADATA_HEADER_PREFIX = "x-ms-meta-";
-
-    /**
-     * Translates a queue metadata map into {@code x-ms-meta-<key>} request headers on the supplied
-     * {@link RequestOptions}. Replaces the {@code @HeaderCollection("x-ms-meta-")} binding the previous typed
-     * implementation methods carried; {@code create} and {@code setMetadata} both delegate here.
-     *
-     * @param requestOptions The request options to mutate.
-     * @param metadata The metadata to serialize, may be {@code null} or empty.
-     */
-    public static void addMetadataHeaders(RequestOptions requestOptions, java.util.Map<String, String> metadata) {
-        if (metadata != null) {
-            for (java.util.Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.addHeader(METADATA_HEADER_PREFIX + entry.getKey(), entry.getValue());
-            }
-        }
-    }
 
     /**
      * Converts a {@code List Queues} response into a {@link PagedResponse} of {@link QueueItem}, preserving

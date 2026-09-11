@@ -12,6 +12,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -30,6 +31,9 @@ import com.azure.storage.queue.implementation.models.ReceivedMessages;
 import com.azure.storage.queue.implementation.models.SignedIdentifiers;
 import com.azure.storage.queue.implementation.models.ListOfSentMessage;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
+import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.implementation.util.ModelHelper;
@@ -223,8 +227,7 @@ public final class QueueClient {
             Supplier<Response<Void>> operation = () -> {
                 RequestOptions requestOptions
                     = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
-                ModelHelper.addMetadataHeaders(requestOptions, metadata);
-                return this.queueClientInternal.createWithResponse(null, null, requestOptions);
+                return this.queueClientInternal.createWithResponse(null, metadata, requestOptions);
             };
 
             return submitThreadPool(operation, LOGGER, timeout);
@@ -295,8 +298,7 @@ public final class QueueClient {
             Supplier<Response<Void>> operation = () -> {
                 RequestOptions requestOptions
                     = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
-                ModelHelper.addMetadataHeaders(requestOptions, metadata);
-                return this.queueClientInternal.createWithResponse(null, null, requestOptions);
+                return this.queueClientInternal.createWithResponse(null, metadata, requestOptions);
             };
             Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
             return new SimpleResponse<>(response, true);
@@ -581,8 +583,7 @@ public final class QueueClient {
         Supplier<Response<Void>> operation = () -> {
             RequestOptions requestOptions
                 = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
-            ModelHelper.addMetadataHeaders(requestOptions, metadata);
-            return this.queueClientInternal.setMetadataWithResponse(null, null, requestOptions);
+            return this.queueClientInternal.setMetadataWithResponse(null, metadata, requestOptions);
         };
 
         return submitThreadPool(operation, LOGGER, timeout);
@@ -612,12 +613,14 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
-        Response<SignedIdentifiers> responseBase = queueClientInternal.getAccessPolicyWithResponse(null,
-            RequestOptionsHelper.queueRequestOptions(Context.NONE, azureQueueStorage.getUrl(), queueName));
+        ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers> responseBase
+            = queueClientInternal.getAccessPolicyWithResponse(null,
+                RequestOptionsHelper.queueRequestOptions(Context.NONE, azureQueueStorage.getUrl(), queueName));
 
         Supplier<PagedResponse<QueueSignedIdentifier>> response
-            = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
-                responseBase.getHeaders(), responseBase.getValue().getItems(), null, null);
+            = () -> new PagedResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifier>(
+                responseBase.getRequest(), responseBase.getStatusCode(), responseBase.getHeaders(),
+                responseBase.getValue().getItems(), null, responseBase.getDeserializedHeaders());
 
         return new PagedIterable<>(response);
     }
@@ -1040,13 +1043,14 @@ public final class QueueClient {
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
-        Supplier<Response<ReceivedMessages>> operation
+        Supplier<ResponseBase<MessagesDequeueHeaders, ReceivedMessages>> operation
             = () -> this.messagesClientInternal.dequeueWithResponse(maxMessages, visibilityTimeoutInSeconds, null,
                 RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
-        Response<ReceivedMessages> response = submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesDequeueHeaders, ReceivedMessages> response = submitThreadPool(operation, LOGGER, timeout);
 
-        PagedResponseBase<Void, QueueMessageItem> transformedMessages = transformMessagesDequeueResponse(response);
+        PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformedMessages
+            = transformMessagesDequeueResponse(response);
 
         Supplier<PagedResponse<QueueMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
             response.getStatusCode(), response.getHeaders(), transformedMessages, null);
@@ -1054,8 +1058,8 @@ public final class QueueClient {
         return new PagedIterable<>(res);
     }
 
-    private PagedResponseBase<Void, QueueMessageItem>
-        transformMessagesDequeueResponse(Response<ReceivedMessages> response) {
+    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>
+        transformMessagesDequeueResponse(ResponseBase<MessagesDequeueHeaders, ReceivedMessages> response) {
         ReceivedMessages wrapper = response.getValue();
         List<QueueMessageItemInternal> queueMessageInternalItems
             = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
@@ -1161,19 +1165,21 @@ public final class QueueClient {
     PagedIterable<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<PeekedMessages>> operation = () -> this.messagesClientInternal.peekWithResponse(maxMessages,
-            null, RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
+        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessages>> operation
+            = () -> this.messagesClientInternal.peekWithResponse(maxMessages, null,
+                RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
-        Response<PeekedMessages> response = submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesPeekHeaders, PeekedMessages> response = submitThreadPool(operation, LOGGER, timeout);
 
-        PagedResponseBase<Void, PeekedMessageItem> transformedMessages = transformMessagesPeekResponse(response);
+        PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformedMessages
+            = transformMessagesPeekResponse(response);
         Supplier<PagedResponse<PeekedMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
             response.getStatusCode(), response.getHeaders(), transformedMessages, null);
         return new PagedIterable<>(res);
     }
 
-    private PagedResponseBase<Void, PeekedMessageItem>
-        transformMessagesPeekResponse(Response<PeekedMessages> response) {
+    private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>
+        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessages> response) {
         PeekedMessages wrapper = response.getValue();
         List<PeekedMessageItemInternal> peekedMessageInternalItems
             = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();

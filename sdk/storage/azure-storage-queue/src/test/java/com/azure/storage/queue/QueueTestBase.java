@@ -20,6 +20,7 @@ import com.azure.storage.queue.models.QueuesSegmentOptions;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Base class for Azure Storage Queue tests.
@@ -41,7 +42,7 @@ public class QueueTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(
-                Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
