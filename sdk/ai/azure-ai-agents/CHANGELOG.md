@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Added `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`, built through
+  `AgentsClientBuilder.beta()`, for managing voice-agent outbound call jobs and telephony campaigns.
+- Added `BetaAgentEndpointConversationsClient` and `BetaAgentEndpointConversationsAsyncClient`, built through
+  `AgentsClientBuilder.beta()`, for managing persisted voice-agent conversations and their responses, items, and
+  audio content.
+
 ### Breaking Changes
 
 ### Bugs Fixed
