@@ -101,6 +101,7 @@ public final class AzureCreateResponseOptions implements JsonSerializable<AzureC
             }
         });
         jsonWriter.writeJsonField("user_security_context", this.userSecurityContext);
+        jsonWriter.writeJsonField("routing_config", this.routingConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,6 +129,8 @@ public final class AzureCreateResponseOptions implements JsonSerializable<AzureC
                 } else if ("user_security_context".equals(fieldName)) {
                     deserializedAzureCreateResponseOptions.userSecurityContext
                         = AzureUserSecurityContext.fromJson(reader);
+                } else if ("routing_config".equals(fieldName)) {
+                    deserializedAzureCreateResponseOptions.routingConfig = RoutingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -173,6 +176,40 @@ public final class AzureCreateResponseOptions implements JsonSerializable<AzureC
     @Generated
     public AzureCreateResponseOptions setUserSecurityContext(AzureUserSecurityContext userSecurityContext) {
         this.userSecurityContext = userSecurityContext;
+        return this;
+    }
+
+    /*
+     * Per-request configuration for Model Router inference calls.
+     * Supported on Model Router endpoints (deployed or instant if supported).
+     * Returns a 400 (Bad Request) error when the target is not a Model Router endpoint.
+     */
+    @Generated
+    private RoutingConfiguration routingConfig;
+
+    /**
+     * Get the routingConfig property: Per-request configuration for Model Router inference calls.
+     * Supported on Model Router endpoints (deployed or instant if supported).
+     * Returns a 400 (Bad Request) error when the target is not a Model Router endpoint.
+     *
+     * @return the routingConfig value.
+     */
+    @Generated
+    public RoutingConfiguration getRoutingConfig() {
+        return this.routingConfig;
+    }
+
+    /**
+     * Set the routingConfig property: Per-request configuration for Model Router inference calls.
+     * Supported on Model Router endpoints (deployed or instant if supported).
+     * Returns a 400 (Bad Request) error when the target is not a Model Router endpoint.
+     *
+     * @param routingConfig the routingConfig value to set.
+     * @return the AzureCreateResponseOptions object itself.
+     */
+    @Generated
+    public AzureCreateResponseOptions setRoutingConfig(RoutingConfiguration routingConfig) {
+        this.routingConfig = routingConfig;
         return this;
     }
 }
