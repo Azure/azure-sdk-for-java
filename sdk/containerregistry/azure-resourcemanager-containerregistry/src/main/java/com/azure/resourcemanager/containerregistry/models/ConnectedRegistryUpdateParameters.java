@@ -23,6 +23,12 @@ public final class ConnectedRegistryUpdateParameters implements JsonSerializable
      */
     private ConnectedRegistryUpdateProperties innerProperties;
 
+    /*
+     * The user-assigned managed identity used to authenticate the connected registry with its parent during
+     * synchronization. Requires authType to be ManagedIdentity.
+     */
+    private ManagedServiceIdentity identity;
+
     /**
      * Creates an instance of ConnectedRegistryUpdateParameters class.
      */
@@ -36,6 +42,28 @@ public final class ConnectedRegistryUpdateParameters implements JsonSerializable
      */
     private ConnectedRegistryUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The user-assigned managed identity used to authenticate the connected registry with
+     * its parent during synchronization. Requires authType to be ManagedIdentity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The user-assigned managed identity used to authenticate the connected registry with
+     * its parent during synchronization. Requires authType to be ManagedIdentity.
+     * 
+     * @param identity the identity value to set.
+     * @return the ConnectedRegistryUpdateParameters object itself.
+     */
+    public ConnectedRegistryUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -166,6 +194,9 @@ public final class ConnectedRegistryUpdateParameters implements JsonSerializable
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -175,6 +206,7 @@ public final class ConnectedRegistryUpdateParameters implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -197,6 +229,8 @@ public final class ConnectedRegistryUpdateParameters implements JsonSerializable
                 if ("properties".equals(fieldName)) {
                     deserializedConnectedRegistryUpdateParameters.innerProperties
                         = ConnectedRegistryUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedConnectedRegistryUpdateParameters.identity = ManagedServiceIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

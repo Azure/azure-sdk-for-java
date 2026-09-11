@@ -13,9 +13,9 @@ public final class HostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HostProperties model = BinaryData.fromString(
-            "{\"kind\":\"HostProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"vxieduugidyj\",\"moRefId\":\"f\",\"fqdn\":\"aos\",\"maintenance\":\"Replacement\",\"faultDomain\":\"sonpclhocohs\"}")
+            "{\"kind\":\"HostProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"wkuofoskghsauu\",\"moRefId\":\"jmvxie\",\"fqdn\":\"ugidyjrr\",\"maintenance\":\"Replacement\",\"faultDomain\":\"osvexcsonpclhoc\",\"licenses\":[{\"kind\":\"HostLicense\"},{\"kind\":\"HostLicense\"}]}")
             .toObject(HostProperties.class);
-        Assertions.assertEquals("vxieduugidyj", model.displayName());
+        Assertions.assertEquals("wkuofoskghsauu", model.displayName());
         Assertions.assertEquals(HostMaintenance.REPLACEMENT, model.maintenance());
     }
 }

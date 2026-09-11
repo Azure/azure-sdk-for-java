@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class DppResourceGuardProxyGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+     * x-ms-original-file: 2026-06-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
      */
     /**
      * Sample code: Get ResourceGuardProxy.

@@ -5,19 +5,54 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.fluent.models.ConnectedRegistryInner;
+import com.azure.resourcemanager.containerregistry.models.AuthType;
 import com.azure.resourcemanager.containerregistry.models.ConnectedRegistryMode;
 import com.azure.resourcemanager.containerregistry.models.GarbageCollectionProperties;
+import com.azure.resourcemanager.containerregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerregistry.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.containerregistry.models.ParentProperties;
 import com.azure.resourcemanager.containerregistry.models.SyncProperties;
+import com.azure.resourcemanager.containerregistry.models.UserAssignedIdentity;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for ConnectedRegistries Create.
  */
 public final class ConnectedRegistriesCreateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ConnectedRegistryCreate.json
+     * x-ms-original-file: 2026-09-01-preview/ConnectedRegistryCreateManagedIdentity.json
+     */
+    /**
+     * Sample code: ConnectedRegistryCreateManagedIdentity.
+     * 
+     * @param manager Entry point to ContainerRegistryManager.
+     */
+    public static void connectedRegistryCreateManagedIdentity(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
+            .getConnectedRegistries()
+            .create("myResourceGroup", "myRegistry", "myConnectedRegistry", new ConnectedRegistryInner()
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                        new UserAssignedIdentity())))
+                .withMode(ConnectedRegistryMode.READ_WRITE)
+                .withParent(new ParentProperties().withSyncProperties(new SyncProperties().withSchedule("0 9 * * *")
+                    .withSyncWindow(Duration.parse("PT3H"))
+                    .withMessageTtl(Duration.parse("P2D"))
+                    .withAuthType(AuthType.MANAGED_IDENTITY)))
+                .withClientTokenIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token"))
+                .withNotificationsList(Arrays.asList("hello-world:*:*", "sample/repo/*:1.0:*"))
+                .withGarbageCollection(new GarbageCollectionProperties().withEnabled(true).withSchedule("0 5 * * *")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01-preview/ConnectedRegistryCreate.json
      */
     /**
      * Sample code: ConnectedRegistryCreate.
@@ -40,5 +75,17 @@ public final class ConnectedRegistriesCreateSamples {
                 .withNotificationsList(Arrays.asList("hello-world:*:*", "sample/repo/*:1.0:*"))
                 .withGarbageCollection(new GarbageCollectionProperties().withEnabled(true).withSchedule("0 5 * * *")),
                 com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardsGetDeleteProtectedItemRequestsObjectsMockTests {
     @Test
     public void testGetDeleteProtectedItemRequestsObjects() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"nqzi\",\"name\":\"kfkbgbzbowxeqocl\",\"type\":\"mygvkzqkj\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"hdxbzlm\",\"name\":\"muapcvhdbevw\",\"type\":\"qxeysko\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class ResourceGuardsGetDeleteProtectedItemRequestsObjectsMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DppBaseResource> response = manager.resourceGuards()
-            .getDeleteProtectedItemRequestsObjects("fcohdxbzlmcmu", "pcvhdbevwqqxeys",
-                com.azure.core.util.Context.NONE);
+            .getDeleteProtectedItemRequestsObjects("ibcysihsgqc", "dhohsdtmcdzsuf", com.azure.core.util.Context.NONE);
 
     }
 }

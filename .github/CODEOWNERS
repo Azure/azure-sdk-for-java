@@ -89,17 +89,17 @@
 /sdk/agrifood/                                                     @Azure/azure-java-sdk
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jpalvarezl @trrwilson @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents/                                           @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson @Azure/azure-java-sdk
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents/                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @dargilco @glecaros @jpalvarezl @kaylieee @Azure/azure-java-sdk
 
 # PRLabel: %AI Projects
-/sdk/ai/azure-ai-projects/                                         @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson @Azure/azure-java-sdk
+/sdk/ai/azure-ai-projects/                                         @dargilco @glharper @glecaros @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @glharper @trrwilson @Azure/azure-java-sdk
+/sdk/ai/azure-ai-inference/                                        @dargilco @glharper @Azure/azure-java-sdk
 
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @rossgrambo @nroutray @Azure/azure-java-sdk
@@ -109,13 +109,13 @@
 # ServiceOwners:                                                   @avanigupta @mrm9084 @rossgrambo @shenmuxiaosen
 
 # PRLabel: %Attestation
-/sdk/attestation/                                                  @anilba06 @Azure/azure-sdk-write-attestation @gkostal @larryosterman @Azure/azure-java-sdk
+/sdk/attestation/                                                  @anilba06 @Azure/azure-sdk-write-attestation @gkostal @Azure/azure-java-sdk
 
 # PRLabel: %Attestation
 /sdk/attestation/azure-resourcemanager-attestation/                @anilba06 @Azure/azure-sdk-write-attestation @gkostal @Azure/azure-java-sdk
 
 # PRLabel: %Attestation
-/sdk/attestation/azure-security-attestation/                       @anilba06 @Azure/azure-sdk-write-attestation @gkostal @larryosterman @Azure/azure-java-sdk
+/sdk/attestation/azure-security-attestation/                       @anilba06 @Azure/azure-sdk-write-attestation @gkostal @Azure/azure-java-sdk
 
 # ServiceLabel: %Attestation
 # ServiceOwners:                                                   @anilba06 @gkostal
@@ -166,12 +166,12 @@
 # ServiceLabel: %azure-spring
 
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                                          @g2vinay @joshfree @Azure/azure-java-sdk
+/sdk/e2e/                                                          @g2vinay @vcolin7 @Azure/azure-java-sdk
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                                     @Azure/azure-sdk-write-identity @g2vinay @joshfree @Azure/azure-java-sdk
+/sdk/identity/                                                     @Azure/azure-sdk-write-identity @g2vinay @vcolin7 @Azure/azure-java-sdk
 
-# AzureSdkOwners:                                                  @g2vinay @joshfree
+# AzureSdkOwners:                                                  @g2vinay @vcolin7
 # ServiceLabel: %Azure.Identity
 
 # PRLabel: %Batch
@@ -967,16 +967,16 @@
 /.github/                                                          @Azure/azure-java-sdk
 /.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                                @Azure/azure-sdk-eng
-/.github/copilot-instructions.md                                   @praveenkuttappan @maririos
+/.github/copilot-instructions.md                                   @praveenkuttappan
 /.github/skills/                                                   @Azure/azsdk-cli
 /.config/1espt/                                                    @benbp @mikeharder
-/eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @praveenkuttappan @maririos @Azure/azure-sdk-eng
+/eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @praveenkuttappan @Azure/azure-sdk-eng
 
 # Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                               @joshfree @jonathangiles @Azure/azure-java-sdk
+/eng/pipelines/aggregate-reports.yml                               @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                        @alzimmermsft @Azure/azure-java-sdk
 /eng/pipelines/docindex.yml                                        @danieljurek @raych1 @benbp
 

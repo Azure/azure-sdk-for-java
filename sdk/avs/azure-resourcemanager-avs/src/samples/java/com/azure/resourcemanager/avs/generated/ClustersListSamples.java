@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Clusters_List.json
+     * x-ms-original-file: 2026-03-01/Clusters_List.json
      */
     /**
      * Sample code: Clusters_List.
