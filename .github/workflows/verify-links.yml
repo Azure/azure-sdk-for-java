@@ -8,7 +8,6 @@ on:
       - feature/*
       - hotfix/*
       - release/*
-      - pipelinev3*
 
 permissions:
   contents: read

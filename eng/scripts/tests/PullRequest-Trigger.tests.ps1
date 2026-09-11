@@ -70,8 +70,7 @@ BeforeAll {
         'main',
         'feature/*',
         'hotfix/*',
-        'release/*',
-        'pipelinev3*'
+        'release/*'
     )
     $script:ExpectedStaticTriggerExclusions = @(
         '.github/skills/azsdk-common-*/**',
