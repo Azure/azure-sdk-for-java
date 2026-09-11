@@ -83,12 +83,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-docker-compose</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
+      <version>3.1.5</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -121,13 +121,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.8</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.9</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -191,8 +191,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>tools.jackson.core:jackson-databind:[3.1.4]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-docker-compose:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+                <include>tools.jackson.core:jackson-databind:[3.1.5]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-docker-compose:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -210,7 +210,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

@@ -485,7 +485,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         client.clearCapturedRequests();
         RequestOptions requestOptions = getItemOptionsAccessor().toRequestOptions(cosmosOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(getDocumentLink(), requestOptions).block();
+        client.readDocument(getDocumentLink(), null, requestOptions).block();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         assertThat(requests).isNotEmpty();
@@ -498,7 +498,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
     private HttpRequest executeReadAndCapture(String mode, SpyClientUnderTestFactory.ClientUnderTest client, RequestOptions requestOptions) {
         client.clearCapturedRequests();
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(getDocumentLink(), requestOptions).block();
+        client.readDocument(getDocumentLink(), null, requestOptions).block();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         assertThat(requests).isNotEmpty();

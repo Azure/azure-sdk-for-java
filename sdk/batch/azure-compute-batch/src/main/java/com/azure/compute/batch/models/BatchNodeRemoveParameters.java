@@ -30,7 +30,7 @@ public final class BatchNodeRemoveParameters implements JsonSerializable<BatchNo
     /*
      * The timeout for removal of Compute Nodes to the Pool. The default value is 15 minutes. The minimum value is 5
      * minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request).
+     * REST API directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration resizeTimeout;
@@ -66,7 +66,8 @@ public final class BatchNodeRemoveParameters implements JsonSerializable<BatchNo
     /**
      * Get the resizeTimeout property: The timeout for removal of Compute Nodes to the Pool. The default value is 15
      * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an
-     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is
+     * specified in ISO 8601 format.
      *
      * @return the resizeTimeout value.
      */
@@ -78,7 +79,8 @@ public final class BatchNodeRemoveParameters implements JsonSerializable<BatchNo
     /**
      * Set the resizeTimeout property: The timeout for removal of Compute Nodes to the Pool. The default value is 15
      * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an
-     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is
+     * specified in ISO 8601 format.
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchNodeRemoveParameters object itself.

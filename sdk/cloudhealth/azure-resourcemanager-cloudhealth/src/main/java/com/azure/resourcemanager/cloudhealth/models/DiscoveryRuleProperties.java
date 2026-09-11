@@ -278,8 +278,6 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
                         = DiscoveryRuleRecommendedSignalsBehavior.fromString(reader.getString());
                 } else if ("specification".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.specification = DiscoveryRuleSpecification.fromJson(reader);
-                } else if ("entityName".equals(fieldName)) {
-                    deserializedDiscoveryRuleProperties.entityName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.provisioningState
                         = HealthModelProvisioningState.fromString(reader.getString());
@@ -290,6 +288,8 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
                         = ResourceHealthAvailabilityStateSignalBehavior.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.error = DiscoveryError.fromJson(reader);
+                } else if ("entityName".equals(fieldName)) {
+                    deserializedDiscoveryRuleProperties.entityName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

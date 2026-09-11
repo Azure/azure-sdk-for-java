@@ -12,12 +12,12 @@ public final class RelationshipListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationshipListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ekqvgqouwif\",\"parentEntityName\":\"mpjw\",\"childEntityName\":\"ivqikfxcvhr\",\"tags\":{\"kvyklxubyjaffmm\":\"huagrttikteusqc\",\"qcuubgqibrta\":\"bl\",\"lqxihhrmooiz\":\"metttwgd\",\"y\":\"seypxiutcxapz\"},\"discoveredBy\":\"etoge\"},\"id\":\"oxslh\",\"name\":\"nhl\",\"type\":\"brqnkkzjcjb\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"hvv\",\"parentEntityName\":\"brxjjsto\",\"childEntityName\":\"beitpkx\",\"tags\":{\"pimaqxzhemjyh\":\"oobklftidgfcwq\"},\"discoveredBy\":\"uj\"},\"id\":\"t\",\"name\":\"kozzwculkb\",\"type\":\"wpfaj\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"lwtjjguktalh\",\"parentEntityName\":\"nvkcdmxzrpoa\",\"childEntityName\":\"mlnwiaaomylweazu\",\"tags\":{\"wpchwahf\":\"ethwwnpjhlfz\",\"wlyxgncxyk\":\"ousnfepgfewe\"},\"discoveredBy\":\"djhlimm\"},\"id\":\"x\",\"name\":\"h\",\"type\":\"cporxvxcjz\"}],\"nextLink\":\"izxfpxt\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ysdzhez\",\"parentEntityName\":\"wva\",\"childEntityName\":\"qyuvvfonkp\",\"tags\":{\"y\":\"yik\",\"vluwmncsttij\":\"auy\"},\"discoveredBy\":\"bvpoekrsgsgbdhu\"},\"id\":\"gnjdgkynscliqhz\",\"name\":\"h\",\"type\":\"nk\"}],\"nextLink\":\"tkubotppn\"}")
             .toObject(RelationshipListResult.class);
-        Assertions.assertEquals("ekqvgqouwif", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("mpjw", model.value().get(0).properties().parentEntityName());
-        Assertions.assertEquals("ivqikfxcvhr", model.value().get(0).properties().childEntityName());
-        Assertions.assertEquals("huagrttikteusqc", model.value().get(0).properties().tags().get("kvyklxubyjaffmm"));
-        Assertions.assertEquals("izxfpxt", model.nextLink());
+        Assertions.assertEquals("ysdzhez", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("wva", model.value().get(0).properties().parentEntityName());
+        Assertions.assertEquals("qyuvvfonkp", model.value().get(0).properties().childEntityName());
+        Assertions.assertEquals("yik", model.value().get(0).properties().tags().get("y"));
+        Assertions.assertEquals("tkubotppn", model.nextLink());
     }
 }

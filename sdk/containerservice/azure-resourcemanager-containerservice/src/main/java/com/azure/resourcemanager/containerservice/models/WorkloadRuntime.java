@@ -22,6 +22,14 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
     public static final WorkloadRuntime WASM_WASI = fromString("WasmWasi");
 
     /**
+     * Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods (Preview). Due to the use
+     * Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series that
+     * support Nested Virtualization such as Dv3 series. This naming convention will be deprecated in future releases in
+     * favor of KataVmIsolation.
+     */
+    public static final WorkloadRuntime KATA_MSHV_VM_ISOLATION = fromString("KataMshvVmIsolation");
+
+    /**
      * Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods. Due to the use Hyper-V, AKS
      * node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series that support
      * Nested Virtualization such as Dv3 series.

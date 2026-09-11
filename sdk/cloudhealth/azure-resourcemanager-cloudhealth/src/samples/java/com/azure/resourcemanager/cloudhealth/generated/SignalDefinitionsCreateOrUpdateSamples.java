@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceMetricSignalDefinitionProperties;
@@ -20,7 +19,7 @@ import java.util.Map;
  */
 public final class SignalDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/SignalDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalDefinitions_CreateOrUpdate.
@@ -40,8 +39,7 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
                     .withDegradedRule(
                         new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0D))
                     .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.DYNAMIC)
-                        .withSensitivity(DynamicThresholdSensitivity.MEDIUM)
-                        .withLookBackWindow(LookBackWindow.PT1H)))
+                        .withSensitivity(DynamicThresholdSensitivity.MEDIUM)))
                 .withMetricNamespace("Microsoft.Sql/servers/databases")
                 .withMetricName("cpu_percent")
                 .withTimeGrain("PT5M")

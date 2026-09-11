@@ -15,19 +15,19 @@ public final class TargetCopySettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetCopySetting model = BinaryData.fromString(
-            "{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"jdcngqqm\"}}")
+            "{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"egokdwbwhkszzcmr\"}}")
             .toObject(TargetCopySetting.class);
         Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStore().dataStoreType());
-        Assertions.assertEquals("jdcngqqm", model.dataStore().objectType());
+        Assertions.assertEquals("egokdwbwhkszzcmr", model.dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetCopySetting model = new TargetCopySetting().withCopyAfter(new CopyOption())
-            .withDataStore(
-                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE).withObjectType("jdcngqqm"));
+            .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                .withObjectType("egokdwbwhkszzcmr"));
         model = BinaryData.fromObject(model).toObject(TargetCopySetting.class);
         Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStore().dataStoreType());
-        Assertions.assertEquals("jdcngqqm", model.dataStore().objectType());
+        Assertions.assertEquals("egokdwbwhkszzcmr", model.dataStore().objectType());
     }
 }

@@ -38,6 +38,11 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
      */
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
+    /*
+     * List of components grouped by kubernetes major.minor version.
+     */
+    private List<ComponentsByRelease> componentsByReleases;
+
     /**
      * Creates an instance of ManagedClusterPoolUpgradeProfile class.
      */
@@ -81,6 +86,15 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
     }
 
     /**
+     * Get the componentsByReleases property: List of components grouped by kubernetes major.minor version.
+     * 
+     * @return the componentsByReleases value.
+     */
+    public List<ComponentsByRelease> componentsByReleases() {
+        return this.componentsByReleases;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -99,6 +113,9 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
         }
+        if (componentsByReleases() != null) {
+            componentsByReleases().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
@@ -113,6 +130,8 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
         jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("componentsByReleases", this.componentsByReleases,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -143,6 +162,10 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
                     List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades
                         = reader.readArray(reader1 -> ManagedClusterPoolUpgradeProfileUpgradesItem.fromJson(reader1));
                     deserializedManagedClusterPoolUpgradeProfile.upgrades = upgrades;
+                } else if ("componentsByReleases".equals(fieldName)) {
+                    List<ComponentsByRelease> componentsByReleases
+                        = reader.readArray(reader1 -> ComponentsByRelease.fromJson(reader1));
+                    deserializedManagedClusterPoolUpgradeProfile.componentsByReleases = componentsByReleases;
                 } else {
                     reader.skipChildren();
                 }

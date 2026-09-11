@@ -11,8 +11,7 @@ public final class BlockedDatesConstraintTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlockedDatesConstraintTimeRange model = BinaryData
-            .fromString(
-                "{\"startsAt\":\"2021-01-22T10:45:05Z\",\"endsAt\":\"2021-02-14T21:50:58Z\",\"reason\":\"hvylwzbt\"}")
+            .fromString("{\"startsAt\":\"2021-03-22T16:15:27Z\",\"endsAt\":\"2021-06-14T02:46Z\",\"reason\":\"nr\"}")
             .toObject(BlockedDatesConstraintTimeRange.class);
     }
 }

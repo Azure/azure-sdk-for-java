@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class PrivateCloudsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/PrivateClouds_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate.
@@ -48,7 +48,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate_StretchedZones.json
+     * x-ms-original-file: 2026-03-01/PrivateClouds_CreateOrUpdate_StretchedZones.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_StretchedZones.
@@ -74,7 +74,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate_FleetNative.json
+     * x-ms-original-file: 2026-03-01/PrivateClouds_CreateOrUpdate_FleetNative.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_FleetNative.
@@ -102,7 +102,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate_Stretched.json
+     * x-ms-original-file: 2026-03-01/PrivateClouds_CreateOrUpdate_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_Stretched.

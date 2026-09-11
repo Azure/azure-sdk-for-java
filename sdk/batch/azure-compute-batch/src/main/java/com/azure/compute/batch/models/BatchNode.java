@@ -124,7 +124,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * this Compute Node since it was assigned to the Pool.
      */
     @Generated
-    private List<BatchTaskInfo> recentTasks;
+    private List<BatchTaskDetails> recentTasks;
 
     /*
      * The Task specified to run on the Compute Node as it joins the Pool.
@@ -136,7 +136,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * Runtime information about the execution of the StartTask on the Compute Node.
      */
     @Generated
-    private BatchStartTaskInfo startTaskInfo;
+    private BatchStartTaskDetails startTaskInfo;
 
     /*
      * The list of errors that are currently being encountered by the Compute Node.
@@ -161,13 +161,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * Information about the Compute Node agent version and the time the Compute Node upgraded to a new version.
      */
     @Generated
-    private BatchNodeAgentInfo nodeAgentInfo;
-
-    /*
-     * Info about the current state of the virtual machine.
-     */
-    @Generated
-    private VirtualMachineInfo virtualMachineInfo;
+    private BatchNodeAgentDetails nodeAgentInfo;
 
     /**
      * Creates an instance of BatchNode class.
@@ -341,7 +335,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the recentTasks value.
      */
     @Generated
-    public List<BatchTaskInfo> getRecentTasks() {
+    public List<BatchTaskDetails> getRecentTasks() {
         return this.recentTasks;
     }
 
@@ -361,7 +355,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the startTaskInfo value.
      */
     @Generated
-    public BatchStartTaskInfo getStartTaskInfo() {
+    public BatchStartTaskDetails getStartTaskInfo() {
         return this.startTaskInfo;
     }
 
@@ -403,18 +397,8 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the nodeAgentInfo value.
      */
     @Generated
-    public BatchNodeAgentInfo getNodeAgentInfo() {
+    public BatchNodeAgentDetails getNodeAgentInfo() {
         return this.nodeAgentInfo;
-    }
-
-    /**
-     * Get the virtualMachineInfo property: Info about the current state of the virtual machine.
-     *
-     * @return the virtualMachineInfo value.
-     */
-    @Generated
-    public VirtualMachineInfo getVirtualMachineInfo() {
-        return this.virtualMachineInfo;
     }
 
     /**
@@ -469,7 +453,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                 } else if ("totalTasksRun".equals(fieldName)) {
                     deserializedBatchNode.totalTasksRun = reader.getInt();
                 } else if ("virtualMachineInfo".equals(fieldName)) {
-                    deserializedBatchNode.virtualMachineInfo = VirtualMachineInfo.fromJson(reader);
+                    deserializedBatchNode.virtualMachineDetails = VirtualMachineDetails.fromJson(reader);
                 } else if ("schedulingState".equals(fieldName)) {
                     deserializedBatchNode.schedulingState = SchedulingState.fromString(reader.getString());
                 } else if ("runningTasksCount".equals(fieldName)) {
@@ -479,12 +463,13 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                 } else if ("totalTasksSucceeded".equals(fieldName)) {
                     deserializedBatchNode.totalTasksSucceeded = reader.getNullable(JsonReader::getInt);
                 } else if ("recentTasks".equals(fieldName)) {
-                    List<BatchTaskInfo> recentTasks = reader.readArray(reader1 -> BatchTaskInfo.fromJson(reader1));
+                    List<BatchTaskDetails> recentTasks
+                        = reader.readArray(reader1 -> BatchTaskDetails.fromJson(reader1));
                     deserializedBatchNode.recentTasks = recentTasks;
                 } else if ("startTask".equals(fieldName)) {
                     deserializedBatchNode.startTask = BatchStartTask.fromJson(reader);
                 } else if ("startTaskInfo".equals(fieldName)) {
-                    deserializedBatchNode.startTaskInfo = BatchStartTaskInfo.fromJson(reader);
+                    deserializedBatchNode.startTaskInfo = BatchStartTaskDetails.fromJson(reader);
                 } else if ("errors".equals(fieldName)) {
                     List<BatchNodeError> errors = reader.readArray(reader1 -> BatchNodeError.fromJson(reader1));
                     deserializedBatchNode.errors = errors;
@@ -493,7 +478,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                 } else if ("endpointConfiguration".equals(fieldName)) {
                     deserializedBatchNode.endpointConfiguration = BatchNodeEndpointConfiguration.fromJson(reader);
                 } else if ("nodeAgentInfo".equals(fieldName)) {
-                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentInfo.fromJson(reader);
+                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -522,5 +507,21 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     @Generated
     public String getIpv6Address() {
         return this.ipv6Address;
+    }
+
+    /*
+     * Info about the current state of the virtual machine.
+     */
+    @Generated
+    private VirtualMachineDetails virtualMachineDetails;
+
+    /**
+     * Get the virtualMachineDetails property: Info about the current state of the virtual machine.
+     *
+     * @return the virtualMachineDetails value.
+     */
+    @Generated
+    public VirtualMachineDetails getVirtualMachineDetails() {
+        return this.virtualMachineDetails;
     }
 }

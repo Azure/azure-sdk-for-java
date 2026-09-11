@@ -58,7 +58,7 @@
 * Fixed warning logs for `java.lang.NoClassDefFoundError: io/micrometer/observation/ObservationHandler` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 #### Other Changes
-* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregrated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 ### 2.5.0 (2025-07-31)
 

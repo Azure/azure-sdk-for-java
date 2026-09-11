@@ -14,21 +14,21 @@ public final class FqdnOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"FQDN\",\"destination\":\"d\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"yfqiuasig\",\"parentRuleNames\":[\"socnequygdjboq\",\"rmtqjkqevadr\",\"mwiuawvcm\",\"z\"]}")
+            "{\"type\":\"FQDN\",\"destination\":\"qnt\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"hvmaxgnuyeamcmhu\",\"parentRuleNames\":[\"ecehokw\",\"pqtwloesqrggvrb\",\"yrukoi\"]}")
             .toObject(FqdnOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
-        Assertions.assertEquals("d", model.destination());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
+        Assertions.assertEquals("qnt", model.destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnOutboundRule model = new FqdnOutboundRule().withCategory(RuleCategory.DEPENDENCY)
-            .withStatus(RuleStatus.DELETING)
-            .withDestination("d");
+        FqdnOutboundRule model = new FqdnOutboundRule().withCategory(RuleCategory.RECOMMENDED)
+            .withStatus(RuleStatus.PROVISIONING)
+            .withDestination("qnt");
         model = BinaryData.fromObject(model).toObject(FqdnOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
-        Assertions.assertEquals("d", model.destination());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
+        Assertions.assertEquals("qnt", model.destination());
     }
 }

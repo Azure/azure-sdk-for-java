@@ -11,7 +11,7 @@ public final class AvailableWindowForMaintenanceWhileRescheduleOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableWindowForMaintenanceWhileRescheduleOperation model = BinaryData.fromString(
-            "{\"kind\":\"AvailableWindowForMaintenance\",\"startsAt\":\"2021-05-16T02:29:50Z\",\"endsAt\":\"2021-05-19T00:36:02Z\"}")
+            "{\"kind\":\"AvailableWindowForMaintenance\",\"startsAt\":\"2021-06-29T01:50:53Z\",\"endsAt\":\"2021-03-20T16:48:49Z\"}")
             .toObject(AvailableWindowForMaintenanceWhileRescheduleOperation.class);
     }
 }

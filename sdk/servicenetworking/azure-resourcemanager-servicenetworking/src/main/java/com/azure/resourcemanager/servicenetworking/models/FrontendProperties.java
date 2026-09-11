@@ -22,6 +22,17 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
     private String fqdn;
 
     /*
+     * Whether public network access is allowed for the frontend. Enabled indicates a public frontend; Disabled
+     * indicates a private frontend.
+     */
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Reference to an Association resource that contains the subnet where the private frontend should be deployed.
+     */
+    private FrontendAssociation association;
+
+    /*
      * Frontend Security Policy Configuration
      */
     private SecurityPolicyConfigurations securityPolicyConfigurations;
@@ -45,6 +56,50 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
      */
     public String fqdn() {
         return this.fqdn;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether public network access is allowed for the frontend. Enabled
+     * indicates a public frontend; Disabled indicates a private frontend.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether public network access is allowed for the frontend. Enabled
+     * indicates a public frontend; Disabled indicates a private frontend.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the FrontendProperties object itself.
+     */
+    public FrontendProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the association property: Reference to an Association resource that contains the subnet where the private
+     * frontend should be deployed.
+     * 
+     * @return the association value.
+     */
+    public FrontendAssociation association() {
+        return this.association;
+    }
+
+    /**
+     * Set the association property: Reference to an Association resource that contains the subnet where the private
+     * frontend should be deployed.
+     * 
+     * @param association the association value to set.
+     * @return the FrontendProperties object itself.
+     */
+    public FrontendProperties withAssociation(FrontendAssociation association) {
+        this.association = association;
+        return this;
     }
 
     /**
@@ -83,6 +138,9 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("association", this.association);
         jsonWriter.writeJsonField("securityPolicyConfigurations", this.securityPolicyConfigurations);
         return jsonWriter.writeEndObject();
     }
@@ -104,6 +162,11 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
 
                 if ("fqdn".equals(fieldName)) {
                     deserializedFrontendProperties.fqdn = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedFrontendProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("association".equals(fieldName)) {
+                    deserializedFrontendProperties.association = FrontendAssociation.fromJson(reader);
                 } else if ("securityPolicyConfigurations".equals(fieldName)) {
                     deserializedFrontendProperties.securityPolicyConfigurations
                         = SecurityPolicyConfigurations.fromJson(reader);

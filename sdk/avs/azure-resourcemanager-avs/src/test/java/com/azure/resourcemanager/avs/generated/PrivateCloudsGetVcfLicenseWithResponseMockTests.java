@@ -29,7 +29,7 @@ public final class PrivateCloudsGetVcfLicenseWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VcfLicense response = manager.privateClouds()
-            .getVcfLicenseWithResponse("vvpa", "eksgbuxantuygd", com.azure.core.util.Context.NONE)
+            .getVcfLicenseWithResponse("frgqhaohcm", "uocnjrohmbpyr", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

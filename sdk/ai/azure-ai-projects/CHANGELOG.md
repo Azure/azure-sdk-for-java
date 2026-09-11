@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.5.0 (2026-09-09)
+
+### Features Added
+
+- Added preview `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient`, available through `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and `buildBetaAgentInsightMonitorsAsyncClient()`. These clients automatically opt in to `Foundry-Features: AgentInsights=V1Preview` using the new `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW` value and support:
+  - Managing monitors with `createAgentInsightMonitor`, `getAgentInsightMonitor`, `listAgentInsightMonitors`, `updateAgentInsightMonitor`, `deleteAgentInsightMonitor`, and `resetAgentInsightMonitor`.
+  - Starting and tracking runs with `beginCreateAgentInsightRun`, `listAgentInsightRuns`, `getAgentInsightRun`, and `cancelAgentInsightRun`.
+  - Reading and updating insights with `listAgentInsights`, `getAgentInsight`, and `updateAgentInsight`, including optional expanded details through `getAgentInsight(monitorId, insightId, includeDetails)`.
+  - New models for monitors, runs, and insights, including `AgentInsightMonitor`, `AgentInsightMonitorCreate`, `AgentInsightMonitorUpdate`, `AgentInsightRun`, `AgentInsightRunCreate`, `AgentInsightRunResult`, `AgentInsight`, `AgentInsightDetails`, `AgentInsightUpdate`, `AgentInsightsOverview`, `AgentInsightProposedFix`, and related types.
+- Added optional routine dispatch authorization through `RoutineAuthorization.setIdentity(RoutineDispatchIdentity)`. Dispatch defaults to `RoutineDispatchIdentity.AGENT`; use `RoutineDispatchIdentity.CREATOR` to explicitly dispatch as the principal that created a new routine. Authorization is ignored when updating an existing routine.
+
+### Breaking Changes
+
+- `BetaRoutinesClient.createOrUpdateRoutine(String, String, Boolean, Map<String, RoutineTrigger>, RoutineAction)` and its `BetaRoutinesAsyncClient` counterpart now require an additional trailing `RoutineAuthorization authorization` parameter. Pass `null` to retain the previous agent-identity dispatch behavior.
+
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.4.0 (2026-08-19)
 
