@@ -4,8 +4,7 @@
 
 ### Features Added
 
-- Added generic `ServerSentEvent<T>` and `CloseableIterableStream<T>` APIs for service-specific server-sent event
-  implementations.
+- Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
 
 ### Breaking Changes
 

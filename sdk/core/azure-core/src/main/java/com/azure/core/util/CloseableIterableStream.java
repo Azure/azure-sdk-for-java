@@ -23,12 +23,12 @@ import java.util.stream.Stream;
  *
  * <!-- src_embed com.azure.core.util.closeableIterableStream.iterate -->
  * <pre>
- * BufferedReader responseBody = getResponseBody&#40;&#41;;
- * Iterable&lt;String&gt; eventData = parseEventData&#40;responseBody&#41;;
+ * BufferedReader reader = getReader&#40;&#41;;
+ * Iterable&lt;String&gt; lines = &#40;&#41; -&gt; reader.lines&#40;&#41;.iterator&#40;&#41;;
  *
- * try &#40;CloseableIterableStream&lt;String&gt; events = new CloseableIterableStream&lt;&gt;&#40;eventData, responseBody&#41;&#41; &#123;
- *     for &#40;String event : events&#41; &#123;
- *         System.out.printf&#40;&quot;Event data: %s%n&quot;, event&#41;;
+ * try &#40;CloseableIterableStream&lt;String&gt; stream = new CloseableIterableStream&lt;&gt;&#40;lines, reader&#41;&#41; &#123;
+ *     for &#40;String line : stream&#41; &#123;
+ *         System.out.println&#40;line&#41;;
  *     &#125;
  * &#125;
  * </pre>

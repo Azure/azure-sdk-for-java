@@ -64,6 +64,36 @@ public class CloseableIterableStreamTests {
     }
 
     @Test
+    public void tryWithResourcesClosesAfterEarlyExit() {
+        AtomicInteger closeCount = new AtomicInteger();
+
+        try (CloseableIterableStream<String> stream
+            = new CloseableIterableStream<>(Arrays.asList("one", "two"), closeCount::incrementAndGet)) {
+            for (String ignored : stream) {
+                break;
+            }
+        }
+
+        assertEquals(1, closeCount.get());
+    }
+
+    @Test
+    public void tryWithResourcesClosesAfterProcessingFailure() {
+        AtomicInteger closeCount = new AtomicInteger();
+
+        assertThrows(IllegalStateException.class, () -> {
+            try (CloseableIterableStream<String> stream
+                = new CloseableIterableStream<>(Arrays.asList("one"), closeCount::incrementAndGet)) {
+                for (String ignored : stream) {
+                    throw new IllegalStateException("processing failed");
+                }
+            }
+        });
+
+        assertEquals(1, closeCount.get());
+    }
+
+    @Test
     public void closingJavaStreamClosesResource() {
         AtomicInteger closeCount = new AtomicInteger();
         CloseableIterableStream<String> iterableStream

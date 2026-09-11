@@ -11,29 +11,22 @@ import java.io.StringReader;
  */
 public class CloseableIterableStreamJavaDocCodeSnippets {
     /**
-     * Iterates over a server-sent event response and closes its associated resource.
+     * Iterates over values backed by a closeable resource and transfers ownership to the stream.
      */
-    public void iterateServerSentEventResponse() {
+    public void iterateValues() {
         // BEGIN: com.azure.core.util.closeableIterableStream.iterate
-        BufferedReader responseBody = getResponseBody();
-        Iterable<String> eventData = parseEventData(responseBody);
+        BufferedReader reader = getReader();
+        Iterable<String> lines = () -> reader.lines().iterator();
 
-        try (CloseableIterableStream<String> events = new CloseableIterableStream<>(eventData, responseBody)) {
-            for (String event : events) {
-                System.out.printf("Event data: %s%n", event);
+        try (CloseableIterableStream<String> stream = new CloseableIterableStream<>(lines, reader)) {
+            for (String line : stream) {
+                System.out.println(line);
             }
         }
         // END: com.azure.core.util.closeableIterableStream.iterate
     }
 
-    private BufferedReader getResponseBody() {
-        return new BufferedReader(new StringReader("data: event data\n\n"));
-    }
-
-    private Iterable<String> parseEventData(BufferedReader responseBody) {
-        return () -> responseBody.lines()
-            .filter(line -> line.startsWith("data:"))
-            .map(line -> line.substring("data:".length()).trim())
-            .iterator();
+    private BufferedReader getReader() {
+        return new BufferedReader(new StringReader("one\ntwo"));
     }
 }
