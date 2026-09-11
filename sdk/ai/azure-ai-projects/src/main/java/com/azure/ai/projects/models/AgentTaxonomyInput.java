@@ -29,7 +29,7 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
      * Target configuration for the agent.
      */
     @Generated
-    private final FoundryEvaluationTarget target;
+    private final Target target;
 
     /*
      * List of risk categories to evaluate against.
@@ -54,7 +54,7 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
      * @return the target value.
      */
     @Generated
-    public FoundryEvaluationTarget getTarget() {
+    public Target getTarget() {
         return this.target;
     }
 
@@ -94,14 +94,14 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
     @Generated
     public static AgentTaxonomyInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FoundryEvaluationTarget target = null;
+            Target target = null;
             List<RiskCategory> riskCategories = null;
             EvaluationTaxonomyInputType type = EvaluationTaxonomyInputType.AGENT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("target".equals(fieldName)) {
-                    target = FoundryEvaluationTarget.fromJson(reader);
+                    target = Target.fromJson(reader);
                 } else if ("riskCategories".equals(fieldName)) {
                     riskCategories = reader.readArray(reader1 -> RiskCategory.fromString(reader1.getString()));
                 } else if ("type".equals(fieldName)) {
@@ -123,7 +123,7 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
      * @param riskCategories the riskCategories value to set.
      */
     @Generated
-    public AgentTaxonomyInput(FoundryEvaluationTarget target, List<RiskCategory> riskCategories) {
+    public AgentTaxonomyInput(Target target, List<RiskCategory> riskCategories) {
         this.target = target;
         this.riskCategories = riskCategories;
     }
