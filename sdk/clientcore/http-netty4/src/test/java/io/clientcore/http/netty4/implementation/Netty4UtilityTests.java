@@ -2,15 +2,22 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.utils.CoreUtils;
+import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
+import javax.net.ssl.SSLException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -22,11 +29,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class Netty4UtilityTests {
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void sslContextEnablesHostnameVerification(HttpProtocolVersion protocolVersion) throws SSLException {
+        SslContext context
+            = Netty4Utility.buildSslContext(protocolVersion, builder -> builder.sslProvider(SslProvider.JDK));
+        assertEquals("HTTPS",
+            context.newEngine(UnpooledByteBufAllocator.DEFAULT, "localhost", 443)
+                .getSSLParameters()
+                .getEndpointIdentificationAlgorithm());
+    }
+
+    @Test
+    public void sslContextHonorsHostnameVerificationModifier() throws SSLException {
+        SslContext context = Netty4Utility.buildSslContext(HttpProtocolVersion.HTTP_1_1,
+            builder -> builder.sslProvider(SslProvider.JDK).endpointIdentificationAlgorithm(null));
+        assertNull(context.newEngine(UnpooledByteBufAllocator.DEFAULT, "localhost", 443)
+            .getSSLParameters()
+            .getEndpointIdentificationAlgorithm());
+    }
+
     @Test
     public void validateNettyVersionsWithWhatThePomSpecifies() {
         Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);

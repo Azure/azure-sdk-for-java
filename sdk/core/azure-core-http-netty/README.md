@@ -55,6 +55,17 @@ add the direct dependency to your project as follows.
 
 ## Key concepts
 
+### Netty 4.2 compatibility
+
+Starting with `1.17.0-beta.1`, this library uses Netty `4.2.17.Final`, Reactor Netty `1.3.7`, and Reactor `3.8.7`.
+Netty 4.1 and 4.2 must not be mixed on the classpath. If your application or framework manages these dependencies,
+align the entire Netty and Reactor stack when upgrading. Java 8 remains supported.
+
+Netty 4.2 enables TLS hostname verification by default and changes its default buffer allocator to the adaptive allocator.
+This library retains pooled allocation unless the application explicitly configures an allocator.
+See the [Netty 4.2 migration guide](https://netty.io/wiki/netty-4.2-migration-guide.html#recommended-upgrade-process)
+for application-level migration guidance.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common client configuration scenarios.
@@ -220,5 +231,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
-

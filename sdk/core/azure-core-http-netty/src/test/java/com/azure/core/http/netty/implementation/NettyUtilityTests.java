@@ -23,6 +23,10 @@ public class NettyUtilityTests {
         // Should never have version mismatches when running tests, that would mean either the version properties are
         // wrong or there is a dependency diamond within azure-core-http-netty. Either way, it should be fixed.
         assertFalse(logInformation.shouldLog());
+        assertTrue(logInformation.classpathNettyVersions.containsKey("io.netty:netty-codec-base"));
+        assertTrue(logInformation.classpathNettyVersions.containsKey("io.netty:netty-codec-compression"));
+        assertTrue(logInformation.classpathNettyVersions.containsKey("io.netty:netty-codec-socks"));
+        assertFalse(logInformation.classpathNettyVersions.containsKey("io.netty:netty-codec"));
         for (String artifactFullName : logInformation.classpathNettyVersions.keySet()) {
             assertTrue(artifactFullName.startsWith("io.netty:netty-"),
                 "All artifact information should start with 'io.netty:netty-'");

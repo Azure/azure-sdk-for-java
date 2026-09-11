@@ -80,9 +80,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         Long length = getContentLength();
-        return Mono.using(() -> this,
-            response -> Mono.create(sink -> response.bodyIntern()
-                .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, length))),
+        // Asynchronous file channels cannot accept scoped direct buffers allocated by Netty on newer JDKs.
+        return Mono.using(() -> this, response -> Mono.create(sink -> response.bodyIntern()
+            .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, length, true))),
             NettyAsyncHttpResponse::close);
     }
 
