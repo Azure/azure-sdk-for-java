@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -64,6 +65,10 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
                 generator.writeStringField("isPpafEnabled", clientConfig.isPerPartitionAutomaticFailoverEnabledAsString);
+                generator.writeBooleanField("isCrossRegionalHedgingDisabledByAccount",
+                    "true".equals(clientConfig.isPerPartitionAutomaticFailoverEnabledAsString)
+                        && clientConfig.crossRegionalHedgingDisabledByAccount != null
+                        && clientConfig.crossRegionalHedgingDisabledByAccount.get());
                 generator.writeStringField("isFalseProgSessionTokenMergeEnabled", Configs.isSessionTokenFalseProgressMergeEnabled() ? "true" : "false");
                 generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
@@ -131,7 +136,8 @@ public interface DiagnosticsClientContext {
         private String sessionRetryOptionsAsString;
         private String regionScopedSessionContainerOptionsAsString;
         private String partitionLevelCircuitBreakerConfigAsString;
-        private String isPerPartitionAutomaticFailoverEnabledAsString = "false";
+        private volatile String isPerPartitionAutomaticFailoverEnabledAsString = "false";
+        private AtomicBoolean crossRegionalHedgingDisabledByAccount;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -256,6 +262,11 @@ public interface DiagnosticsClientContext {
 
         public DiagnosticsClientConfig withIsPerPartitionAutomaticFailoverEnabled(Boolean isPpafEnabled) {
             this.isPerPartitionAutomaticFailoverEnabledAsString = (isPpafEnabled != null && isPpafEnabled) ? "true" : "false";
+            return this;
+        }
+
+        DiagnosticsClientConfig withCrossRegionalHedgingDisabledByAccount(AtomicBoolean disabledByAccount) {
+            this.crossRegionalHedgingDisabledByAccount = disabledByAccount;
             return this;
         }
 

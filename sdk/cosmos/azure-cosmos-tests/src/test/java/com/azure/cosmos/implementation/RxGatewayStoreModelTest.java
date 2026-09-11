@@ -12,11 +12,14 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.ArgumentCaptor;
@@ -32,6 +35,7 @@ import java.net.SocketException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,6 +47,51 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
+
+    @DataProvider(name = "cancelledAvailabilityContexts")
+    public Object[][] cancelledAvailabilityContexts() {
+        return new Object[][] {
+            {true, false, false, true},
+            {true, true, false, true},
+            {true, true, true, false},
+            {false, false, false, false},
+            {false, true, false, true},
+            {false, true, true, false}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "cancelledAvailabilityContexts")
+    public void cancellationRecordsNonHedgedFeedDiagnostics(boolean feed, boolean availabilityEnabled,
+                                                           boolean hedged, boolean expectRecorded) throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        GlobalEndpointManager endpoints = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.when(endpoints.getRegionName(Mockito.any(URI.class), Mockito.any(OperationType.class), Mockito.anyBoolean()))
+            .thenReturn("east us");
+        RxGatewayStoreModel store = new RxGatewayStoreModel(clientContext, Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION, QueryCompatibilityMode.Default, new UserAgentContainer(), endpoints,
+            Mockito.mock(HttpClient.class), null, null);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(clientContext,
+            feed ? OperationType.Query : OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
+        request.requestContext.cosmosDiagnostics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+            .create(clientContext, 1.0);
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(URI.create("https://account-eastus.documents.azure.com"));
+        request.requestContext.setCrossRegionAvailabilityContext(new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+            feed ? new FeedOperationContextForCircuitBreaker(Collections.emptyMap(), availabilityEnabled, "collection") : null,
+            feed ? null : new PointOperationContextForCircuitBreaker(new AtomicBoolean(), availabilityEnabled, "collection",
+                new SerializationDiagnosticsContext()),
+            new AvailabilityStrategyContext(availabilityEnabled, hedged), new AtomicBoolean(),
+            new PerPartitionCircuitBreakerInfoHolder(), new PerPartitionAutomaticFailoverInfoHolder()));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "https://account-eastus.documents.azure.com/dbs/db/colls/coll/docs/item", 443);
+        Method converter = RxGatewayStoreModel.class.getDeclaredMethod("toDocumentServiceResponse", Mono.class,
+            RxDocumentServiceRequest.class, HttpRequest.class);
+        converter.setAccessible(true);
+        Mono<?> response = (Mono<?>) converter.invoke(store, Mono.never(), request, httpRequest);
+        StepVerifier.create(response).thenCancel().verify(Duration.ofSeconds(5));
+        ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
+        assertThat(statistics.getGatewayStatisticsList()).hasSize(expectRecorded ? 1 : 0);
+        assertThat(statistics.getContactedRegionNames()).hasSize(expectRecorded ? 1 : 0);
+    }
 
     @DataProvider(name = "sessionTokenConfigProvider")
     public Object[][] sessionTokenConfigProvider() {

@@ -771,6 +771,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, configs);
+            this.diagnosticsClientConfig.withCrossRegionalHedgingDisabledByAccount(
+                this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount());
             this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
@@ -8787,6 +8789,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (!(endToEndPolicyConfig.getAvailabilityStrategy() instanceof ThresholdBasedAvailabilityStrategy)) {
+            return EMPTY_REGION_LIST;
+        }
+
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
+            && this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount().get()) {
             return EMPTY_REGION_LIST;
         }
 
