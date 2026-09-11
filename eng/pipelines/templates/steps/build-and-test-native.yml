@@ -64,7 +64,7 @@ steps:
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
     displayName: 'Generate pom for aggregate code coverage report'
-    condition: eq(variables['RunAggregateReports'], 'true')
+    condition: and(succeeded(), eq(variables['RunAggregateReports'], 'true'))
     inputs:
       scriptPath: 'eng/scripts/generate_aggregate_pom.py'
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
@@ -72,7 +72,7 @@ steps:
 
   - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
-    condition: eq(variables['RunAggregateReports'], 'true')
+    condition: and(succeeded(), eq(variables['RunAggregateReports'], 'true'))
     inputs:
       mavenPomFile: aggregate-pom.xml
       options: '$(DefaultOptions)'
@@ -126,7 +126,7 @@ steps:
   - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
-    condition: always()
+    condition: succeededOrFailed()
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/TEST-*.xml'
@@ -139,7 +139,7 @@ steps:
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@2
-    condition: eq(variables['RunAggregateReports'], 'true')
+    condition: and(succeeded(), eq(variables['RunAggregateReports'], 'true'))
     inputs:
       summaryFileLocation: target/site/test-coverage/jacoco.xml
       reportDirectory: target/site/test-coverage/

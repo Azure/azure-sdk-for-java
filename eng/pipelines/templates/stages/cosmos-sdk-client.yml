@@ -156,7 +156,7 @@ extends:
                     }
                   displayName: "Print ScalaTest report files"
                   errorActionPreference: continue
-                  condition: always()
+                  condition: succeededOrFailed()
       - ${{ each mode in parameters.VnextEmulatorModes }}:
         - stage:
           displayName: Test VNext Emulator with ${{ mode }}

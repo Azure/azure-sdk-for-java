@@ -32,7 +32,7 @@ stages:
   - stage: AutoReleasePrepare
     displayName: Auto-release prepare
     dependsOn: ${{ parameters.DependsOn }}
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
       - template: /eng/pipelines/templates/variables/image.yml

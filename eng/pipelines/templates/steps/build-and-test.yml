@@ -146,7 +146,7 @@ steps:
       scriptPath: 'eng/scripts/generate_aggregate_pom.py'
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
-    condition: eq(variables['RunAggregateReports'], 'true')
+    condition: and(succeeded(), eq(variables['RunAggregateReports'], 'true'))
 
   - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
@@ -158,7 +158,7 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
-    condition: eq(variables['RunAggregateReports'], 'true')
+    condition: and(succeeded(), eq(variables['RunAggregateReports'], 'true'))
 
   - task: Maven@4
     displayName: 'Build for From Source run'
@@ -257,10 +257,10 @@ steps:
       pwsh: true
       filePath: eng/pipelines/scripts/Update-TestNamesForReporting.ps1
       workingDirectory: $(System.DefaultWorkingDirectory)/sdk
-    condition: always()
+    condition: succeededOrFailed()
 
   - task: PublishTestResults@2
-    condition: always()
+    condition: succeededOrFailed()
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/TEST-*.xml'
@@ -285,4 +285,4 @@ steps:
       summaryFileLocation: target/site/test-coverage/jacoco.xml
       reportDirectory: target/site/test-coverage/
       failIfCoverageEmpty: false
-    condition: eq(variables['RunAggregateReports'], 'true')
+    condition: and(succeeded(), eq(variables['RunAggregateReports'], 'true'))

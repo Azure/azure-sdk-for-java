@@ -36,7 +36,7 @@ steps:
 
       exit 0
     displayName: ${{ parameters.DisplayName }}
-    condition: always()
+    condition: succeededOrFailed()
     env:
       # Passed as environment variables rather than on the command line so the key is not echoed.
       CLEANUP_ACCOUNT_HOST: ${{ parameters.AccountHost }}

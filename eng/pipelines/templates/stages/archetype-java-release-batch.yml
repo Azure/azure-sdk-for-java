@@ -108,7 +108,7 @@ stages:
       jobs:
         - job: VerifyReleaseVersion
           displayName: "Verify release versions"
-          condition: ne(variables['Skip.VersionVerification'], 'true')
+          condition: and(succeeded(), ne(variables['Skip.VersionVerification'], 'true'))
           pool:
             name: $(LINUXPOOL)
             image: $(LINUXVMIMAGE)
@@ -433,7 +433,7 @@ stages:
         - template: /eng/pipelines/templates/variables/image.yml
       jobs:
       - job: PublishPackages
-        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        condition: and(succeeded(), or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal'))))
         displayName: Publish package to daily feed
 
         templateContext:

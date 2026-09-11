@@ -64,4 +64,4 @@ extends:
           PostSteps:
             - script: docker logout "$(kafka-acr-login-server)"
               displayName: 'Logout from ACR'
-              condition: always()
+              condition: succeededOrFailed()
