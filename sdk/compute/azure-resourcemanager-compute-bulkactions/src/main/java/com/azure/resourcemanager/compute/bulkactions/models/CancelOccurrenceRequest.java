@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The request to cancel an occurrence.
+ * Request body for canceling a scheduled action occurrence.
  */
 @Fluent
 public final class CancelOccurrenceRequest implements JsonSerializable<CancelOccurrenceRequest> {
     /*
-     * The resources the cancellation should act on. If no resource is passed in the list, Scheduled Action will cancel
-     * the occurrence for all resources.
+     * The resources for which operations should be canceled. An empty array cancels all operations for all resources
+     * for the occurrence.
      */
     private List<String> resourceIds;
 
@@ -30,8 +30,8 @@ public final class CancelOccurrenceRequest implements JsonSerializable<CancelOcc
     }
 
     /**
-     * Get the resourceIds property: The resources the cancellation should act on. If no resource is passed in the list,
-     * Scheduled Action will cancel the occurrence for all resources.
+     * Get the resourceIds property: The resources for which operations should be canceled. An empty array cancels all
+     * operations for all resources for the occurrence.
      * 
      * @return the resourceIds value.
      */
@@ -40,8 +40,8 @@ public final class CancelOccurrenceRequest implements JsonSerializable<CancelOcc
     }
 
     /**
-     * Set the resourceIds property: The resources the cancellation should act on. If no resource is passed in the list,
-     * Scheduled Action will cancel the occurrence for all resources.
+     * Set the resourceIds property: The resources for which operations should be canceled. An empty array cancels all
+     * operations for all resources for the occurrence.
      * 
      * @param resourceIds the resourceIds value to set.
      * @return the CancelOccurrenceRequest object itself.

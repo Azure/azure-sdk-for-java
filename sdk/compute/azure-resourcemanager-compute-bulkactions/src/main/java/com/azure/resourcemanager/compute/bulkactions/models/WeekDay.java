@@ -8,46 +8,46 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Representation of the possible selection of days in a week in a gregorian calendar.
+ * A day of the week on which the scheduled action can run.
  */
 public final class WeekDay extends ExpandableStringEnum<WeekDay> {
     /**
-     * Monday weekday.
+     * The scheduled action can run on Monday.
      */
     public static final WeekDay MONDAY = fromString("Monday");
 
     /**
-     * Tuesday weekday.
+     * The scheduled action can run on Tuesday.
      */
     public static final WeekDay TUESDAY = fromString("Tuesday");
 
     /**
-     * Wednesday weekday.
+     * The scheduled action can run on Wednesday.
      */
     public static final WeekDay WEDNESDAY = fromString("Wednesday");
 
     /**
-     * Thursday weekday.
+     * The scheduled action can run on Thursday.
      */
     public static final WeekDay THURSDAY = fromString("Thursday");
 
     /**
-     * Friday weekday.
+     * The scheduled action can run on Friday.
      */
     public static final WeekDay FRIDAY = fromString("Friday");
 
     /**
-     * Saturday weekday.
+     * The scheduled action can run on Saturday.
      */
     public static final WeekDay SATURDAY = fromString("Saturday");
 
     /**
-     * Sunday weekday.
+     * The scheduled action can run on Sunday.
      */
     public static final WeekDay SUNDAY = fromString("Sunday");
 
     /**
-     * All week days.
+     * Every day of the week.
      */
     public static final WeekDay ALL = fromString("All");
 

@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Retry policy the scheduled action can pass.
+ * Retry settings for a scheduled action operation.
  */
 @Fluent
 public final class ScheduledActionsRetryPolicy implements JsonSerializable<ScheduledActionsRetryPolicy> {
     /*
-     * Retry count for the request
+     * The maximum number of retry attempts.
      */
     private Integer retryCount;
 
     /*
-     * Retry window in minutes for the request
+     * The time window, in minutes, during which retries can occur.
      */
     private Integer retryWindowInMinutes;
 
     /*
-     * Action to take on failure
+     * The resource operation to retry after a failure.
      */
     private ScheduledActionsResourceOperationType onFailureAction;
 
@@ -38,7 +38,7 @@ public final class ScheduledActionsRetryPolicy implements JsonSerializable<Sched
     }
 
     /**
-     * Get the retryCount property: Retry count for the request.
+     * Get the retryCount property: The maximum number of retry attempts.
      * 
      * @return the retryCount value.
      */
@@ -47,7 +47,7 @@ public final class ScheduledActionsRetryPolicy implements JsonSerializable<Sched
     }
 
     /**
-     * Set the retryCount property: Retry count for the request.
+     * Set the retryCount property: The maximum number of retry attempts.
      * 
      * @param retryCount the retryCount value to set.
      * @return the ScheduledActionsRetryPolicy object itself.
@@ -58,7 +58,7 @@ public final class ScheduledActionsRetryPolicy implements JsonSerializable<Sched
     }
 
     /**
-     * Get the retryWindowInMinutes property: Retry window in minutes for the request.
+     * Get the retryWindowInMinutes property: The time window, in minutes, during which retries can occur.
      * 
      * @return the retryWindowInMinutes value.
      */
@@ -67,7 +67,7 @@ public final class ScheduledActionsRetryPolicy implements JsonSerializable<Sched
     }
 
     /**
-     * Set the retryWindowInMinutes property: Retry window in minutes for the request.
+     * Set the retryWindowInMinutes property: The time window, in minutes, during which retries can occur.
      * 
      * @param retryWindowInMinutes the retryWindowInMinutes value to set.
      * @return the ScheduledActionsRetryPolicy object itself.
@@ -78,7 +78,7 @@ public final class ScheduledActionsRetryPolicy implements JsonSerializable<Sched
     }
 
     /**
-     * Get the onFailureAction property: Action to take on failure.
+     * Get the onFailureAction property: The resource operation to retry after a failure.
      * 
      * @return the onFailureAction value.
      */
@@ -87,7 +87,7 @@ public final class ScheduledActionsRetryPolicy implements JsonSerializable<Sched
     }
 
     /**
-     * Set the onFailureAction property: Action to take on failure.
+     * Set the onFailureAction property: The resource operation to retry after a failure.
      * 
      * @param onFailureAction the onFailureAction value to set.
      * @return the ScheduledActionsRetryPolicy object itself.

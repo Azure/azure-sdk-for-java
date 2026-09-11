@@ -12,36 +12,35 @@ import java.util.List;
  */
 public interface ScheduledActionResource {
     /**
-     * Gets the name property: The name of the resource.
+     * Gets the name property: Read-only. The name of the association resource.
      * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the id property: The compute RP resource id of the resource in the scheduled actions scope.
+     * Gets the id property: Read-only. The Azure resource ID of the association resource.
      * 
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the type property: The type of resource.
+     * Gets the type property: Read-only. The Azure resource type of the associated resource.
      * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the resourceId property: The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * Gets the resourceId property: The Azure resource ID of the targeted virtual machine.
      * 
      * @return the resourceId value.
      */
     String resourceId();
 
     /**
-     * Gets the notificationSettings property: The desired notification settings for the specified resource.
+     * Gets the notificationSettings property: Notification settings that apply only to this resource.
      * 
      * @return the notificationSettings value.
      */

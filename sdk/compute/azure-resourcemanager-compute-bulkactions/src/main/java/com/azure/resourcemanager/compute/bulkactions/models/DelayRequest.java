@@ -16,18 +16,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Request to ask for a delay in an occurrence, delay should be set to client local time eg (PST)
- * 2025-05-30T06:35:00-07:00.
+ * Request body for delaying a scheduled action occurrence.
  */
 @Fluent
 public final class DelayRequest implements JsonSerializable<DelayRequest> {
     /*
-     * The exact time to delay the operations to
+     * The new date and time for the occurrence, including the UTC offset.
      */
     private OffsetDateTime delay;
 
     /*
-     * The resources that should be delayed. If empty, the delay will apply to the all resources in the occurrence.
+     * The resources to delay. An empty array delays all resources in the occurrence.
      */
     private List<String> resourceIds;
 
@@ -38,7 +37,7 @@ public final class DelayRequest implements JsonSerializable<DelayRequest> {
     }
 
     /**
-     * Get the delay property: The exact time to delay the operations to.
+     * Get the delay property: The new date and time for the occurrence, including the UTC offset.
      * 
      * @return the delay value.
      */
@@ -47,7 +46,7 @@ public final class DelayRequest implements JsonSerializable<DelayRequest> {
     }
 
     /**
-     * Set the delay property: The exact time to delay the operations to.
+     * Set the delay property: The new date and time for the occurrence, including the UTC offset.
      * 
      * @param delay the delay value to set.
      * @return the DelayRequest object itself.
@@ -58,8 +57,7 @@ public final class DelayRequest implements JsonSerializable<DelayRequest> {
     }
 
     /**
-     * Get the resourceIds property: The resources that should be delayed. If empty, the delay will apply to the all
-     * resources in the occurrence.
+     * Get the resourceIds property: The resources to delay. An empty array delays all resources in the occurrence.
      * 
      * @return the resourceIds value.
      */
@@ -68,8 +66,7 @@ public final class DelayRequest implements JsonSerializable<DelayRequest> {
     }
 
     /**
-     * Set the resourceIds property: The resources that should be delayed. If empty, the delay will apply to the all
-     * resources in the occurrence.
+     * Set the resourceIds property: The resources to delay. An empty array delays all resources in the occurrence.
      * 
      * @param resourceIds the resourceIds value to set.
      * @return the DelayRequest object itself.
