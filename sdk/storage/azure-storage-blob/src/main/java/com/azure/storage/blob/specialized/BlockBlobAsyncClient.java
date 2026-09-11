@@ -630,9 +630,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(),
             options.getContentMd5(), ModelHelper.tagsToString(options.getTags()), options.isCopySourceBlobProperties(),
             sourceAuth, ModelHelper.toCopySourceTags(options.getCopySourceTagsMode()),
-            options.getSourceShareTokenIntent(), sourceCpkKey,
-            sourceCpkKeySha256, sourceCpkAlgorithm, destinationRequestConditions, blockBlobRequestOptions(context))
-            .map(rb -> {
+            options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
+            destinationRequestConditions, blockBlobRequestOptions(context)).map(rb -> {
                 BlockBlobsUploadBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
                     hd.getContentMd5(), hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),

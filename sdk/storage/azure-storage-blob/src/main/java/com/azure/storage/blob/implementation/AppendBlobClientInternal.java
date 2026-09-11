@@ -476,82 +476,87 @@ public final class AppendBlobClientInternal {
         RequestOptions requestOptions) {
         // Generated convenience method for createWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (blobContentType != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-type"), blobContentType);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-type"), blobContentType);
         }
         if (blobContentEncoding != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-encoding"), blobContentEncoding);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-encoding"), blobContentEncoding);
         }
         if (blobContentLanguage != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-language"), blobContentLanguage);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-language"), blobContentLanguage);
         }
         if (blobContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-md5"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-md5"),
                 String.valueOf(blobContentMd5));
         }
         if (blobCacheControl != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-cache-control"), blobCacheControl);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-cache-control"), blobCacheControl);
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (blobContentDisposition != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-disposition"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-disposition"),
                 blobContentDisposition);
         }
         if (encryptionKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
         }
         if (encryptionKeySha256 != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
         }
         if (encryptionAlgorithm != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
                 encryptionAlgorithm.toString());
         }
         if (encryptionScope != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
         }
         if (ifTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
         if (blobTagsString != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-tags"), blobTagsString);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-tags"), blobTagsString);
         }
         if (immutabilityPolicyExpiry != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-until-date"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-until-date"),
                 String.valueOf(new DateTimeRfc1123(immutabilityPolicyExpiry)));
         }
         if (immutabilityPolicyMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-mode"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-mode"),
                 immutabilityPolicyMode.toString());
         }
         if (legalHold != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-legal-hold"), String.valueOf(legalHold));
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-legal-hold"), String.valueOf(legalHold));
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
         Response<Void> protocolMethodResponse = createWithResponseInternal(requestOptions);
         return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
@@ -614,7 +619,11 @@ public final class AppendBlobClientInternal {
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);

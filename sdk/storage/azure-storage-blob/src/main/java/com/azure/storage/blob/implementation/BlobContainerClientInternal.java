@@ -1433,21 +1433,26 @@ public final class BlobContainerClientInternal {
         RequestOptions requestOptions) {
         // Generated convenience method for createWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (access != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-public-access"), access.toString());
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-public-access"), access.toString());
         }
         if (defaultEncryptionScope != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-default-encryption-scope"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-default-encryption-scope"),
                 defaultEncryptionScope);
         }
         if (preventEncryptionScopeOverride != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deny-encryption-scope-override"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-deny-encryption-scope-override"),
                 String.valueOf(preventEncryptionScopeOverride));
         }
         Response<Void> protocolMethodResponse = createWithResponseInternal(requestOptions);
@@ -1485,7 +1490,11 @@ public final class BlobContainerClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (access != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-public-access"), access.toString());
@@ -1730,17 +1739,22 @@ public final class BlobContainerClientInternal {
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, RequestOptions requestOptions) {
         // Generated convenience method for setMetadataWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         Response<Void> protocolMethodResponse = setMetadataWithResponseInternal(requestOptions);
@@ -1779,7 +1793,11 @@ public final class BlobContainerClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,

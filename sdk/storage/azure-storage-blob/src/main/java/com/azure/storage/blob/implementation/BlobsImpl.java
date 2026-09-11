@@ -12,6 +12,7 @@ import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -509,6 +510,26 @@ public final class BlobsImpl {
         Response<Void> setTagsSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/xml") BinaryData tags,
             RequestOptions requestOptions, Context context);
+
+        @Post("?comp=query")
+        @ExpectedResponses({ 200, 206 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> query(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/xml") BinaryData queryRequest, RequestOptions requestOptions, Context context);
+
+        @Post("?comp=query")
+        @ExpectedResponses({ 200, 206 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> querySync(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/xml") BinaryData queryRequest, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -3691,5 +3712,318 @@ public final class BlobsImpl {
         final String contentType = "application/xml";
         return service.setTagsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
             tags, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Queries the data of the specified blob with the provided query expressions.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
+     * information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
+     * resource's lease is active and matches this ID.</td></tr>
+     * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
+     * data provided in the request.</td></tr>
+     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>No</td><td>The SHA-256 hash of the provided encryption
+     * key. Must be provided if the encryption key is provided.</td></tr>
+     * <tr><td>x-ms-encryption-algorithm</td><td>String</td><td>No</td><td>The algorithm used to produce the encryption
+     * key hash. Must be provided if the encryption key is provided. Allowed values: "AES256".</td></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
+     * if it has been modified since the specified date-time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
+     * blob if it has not been modified since the specified date-time.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Specify this value to operate only on a blob with a
+     * non-matching Etag value.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Specify this value to operate only on a blob with a matching
+     * Etag value.</td></tr>
+     * <tr><td>x-ms-if-tags</td><td>String</td><td>No</td><td>Specifies a SQL-like where clause on blob tags to operate
+     * only on a blob with matching tags.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     QueryType: String(SQL) (Required)
+     *     Expression: String (Required)
+     *     InputSerialization (Optional): {
+     *         Format (Required): {
+     *             Type: String(delimited/json/arrow/parquet) (Required)
+     *             DelimitedTextConfiguration (Optional): {
+     *                 ColumnSeparator: String (Optional)
+     *                 FieldQuote: String (Optional)
+     *                 RecordSeparator: String (Optional)
+     *                 EscapeChar: String (Optional)
+     *                 HasHeaders: Boolean (Optional)
+     *             }
+     *             JsonTextConfiguration (Optional): {
+     *                 RecordSeparator: String (Optional)
+     *             }
+     *             ArrowConfiguration (Optional): {
+     *                 Schema (Required): [
+     *                      (Required){
+     *                         Type: String (Required)
+     *                         Name: String (Optional)
+     *                         Precision: Integer (Optional)
+     *                         Scale: Integer (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             ParquetTextConfiguration (Optional): {
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     OutputSerialization (Optional): (recursive schema, see OutputSerialization above)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The number of bytes present in the response body.</td></tr>
+     * <tr><td>Content-Range</td><td>String</td><td>Indicates the range of bytes returned in this response.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>An opaque identifier for the current state of the resource.</td></tr>
+     * <tr><td>Content-MD5</td><td>byte[]</td><td>The blob content MD5 hash. Only returned if the full blob is
+     * read.</td></tr>
+     * <tr><td>Content-Encoding</td><td>String</td><td>The Content-Encoding of the blob.</td></tr>
+     * <tr><td>Cache-Control</td><td>String</td><td>The Cache-Control of the blob.</td></tr>
+     * <tr><td>Content-Disposition</td><td>String</td><td>The Content-Disposition of the blob.</td></tr>
+     * <tr><td>Content-Language</td><td>String</td><td>The Content-Language of the blob.</td></tr>
+     * <tr><td>x-ms-blob-sequence-number</td><td>long</td><td>The current sequence number for a page blob.</td></tr>
+     * <tr><td>x-ms-blob-type</td><td>String</td><td>The type of the blob.</td></tr>
+     * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>The CRC64 hash of the content.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>If this blob was the destination of a copy,
+     * specifies the completion time of the last attempted copy operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>If this blob was the destination of a copy, specifies
+     * the cause of the copy operation failure.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>Identifier for this copy operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>If this blob was the destination of a copy, specifies the
+     * number of bytes copied and the total bytes in the source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>If this blob was the destination of a copy, specifies the source
+     * URL.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>Status of the copy operation.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>Specifies the duration of the lease.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state of the blob.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status of the blob.</td></tr>
+     * <tr><td>Accept-Ranges</td><td>String</td><td>Indicates that the service supports requests for partial blob
+     * content.</td></tr>
+     * <tr><td>x-ms-blob-committed-block-count</td><td>int</td><td>The number of committed blocks present in the
+     * blob.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>Indicates whether the contents of the request are
+     * successfully encrypted.</td></tr>
+     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>The SHA-256 hash of the provided encryption
+     * key.</td></tr>
+     * <tr><td>x-ms-encryption-scope</td><td>String</td><td>Specifies the encryption scope used to encrypt the
+     * data.</td></tr>
+     * <tr><td>x-ms-blob-content-md5</td><td>byte[]</td><td>MD5 hash of the full blob content only returned for ranged
+     * reads. This is the hash of the complete blob, not just the requested range.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>Date-time value generated by the service that indicates the time at
+     * which the response was initiated.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
+     * @param queryRequest The query request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> queryWithResponseInternalAsync(BinaryData queryRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/xml";
+        final String accept = "application/octet-stream";
+        return FluxUtil.withContext(context -> service.query(this.client.getUrl(), contentType,
+            this.client.getServiceVersion().getVersion(), accept, queryRequest, requestOptions, context));
+    }
+
+    /**
+     * Queries the data of the specified blob with the provided query expressions.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
+     * information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
+     * resource's lease is active and matches this ID.</td></tr>
+     * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
+     * data provided in the request.</td></tr>
+     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>No</td><td>The SHA-256 hash of the provided encryption
+     * key. Must be provided if the encryption key is provided.</td></tr>
+     * <tr><td>x-ms-encryption-algorithm</td><td>String</td><td>No</td><td>The algorithm used to produce the encryption
+     * key hash. Must be provided if the encryption key is provided. Allowed values: "AES256".</td></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
+     * if it has been modified since the specified date-time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
+     * blob if it has not been modified since the specified date-time.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Specify this value to operate only on a blob with a
+     * non-matching Etag value.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Specify this value to operate only on a blob with a matching
+     * Etag value.</td></tr>
+     * <tr><td>x-ms-if-tags</td><td>String</td><td>No</td><td>Specifies a SQL-like where clause on blob tags to operate
+     * only on a blob with matching tags.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     QueryType: String(SQL) (Required)
+     *     Expression: String (Required)
+     *     InputSerialization (Optional): {
+     *         Format (Required): {
+     *             Type: String(delimited/json/arrow/parquet) (Required)
+     *             DelimitedTextConfiguration (Optional): {
+     *                 ColumnSeparator: String (Optional)
+     *                 FieldQuote: String (Optional)
+     *                 RecordSeparator: String (Optional)
+     *                 EscapeChar: String (Optional)
+     *                 HasHeaders: Boolean (Optional)
+     *             }
+     *             JsonTextConfiguration (Optional): {
+     *                 RecordSeparator: String (Optional)
+     *             }
+     *             ArrowConfiguration (Optional): {
+     *                 Schema (Required): [
+     *                      (Required){
+     *                         Type: String (Required)
+     *                         Name: String (Optional)
+     *                         Precision: Integer (Optional)
+     *                         Scale: Integer (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             ParquetTextConfiguration (Optional): {
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     OutputSerialization (Optional): (recursive schema, see OutputSerialization above)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The number of bytes present in the response body.</td></tr>
+     * <tr><td>Content-Range</td><td>String</td><td>Indicates the range of bytes returned in this response.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>An opaque identifier for the current state of the resource.</td></tr>
+     * <tr><td>Content-MD5</td><td>byte[]</td><td>The blob content MD5 hash. Only returned if the full blob is
+     * read.</td></tr>
+     * <tr><td>Content-Encoding</td><td>String</td><td>The Content-Encoding of the blob.</td></tr>
+     * <tr><td>Cache-Control</td><td>String</td><td>The Cache-Control of the blob.</td></tr>
+     * <tr><td>Content-Disposition</td><td>String</td><td>The Content-Disposition of the blob.</td></tr>
+     * <tr><td>Content-Language</td><td>String</td><td>The Content-Language of the blob.</td></tr>
+     * <tr><td>x-ms-blob-sequence-number</td><td>long</td><td>The current sequence number for a page blob.</td></tr>
+     * <tr><td>x-ms-blob-type</td><td>String</td><td>The type of the blob.</td></tr>
+     * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>The CRC64 hash of the content.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>If this blob was the destination of a copy,
+     * specifies the completion time of the last attempted copy operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>If this blob was the destination of a copy, specifies
+     * the cause of the copy operation failure.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>Identifier for this copy operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>If this blob was the destination of a copy, specifies the
+     * number of bytes copied and the total bytes in the source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>If this blob was the destination of a copy, specifies the source
+     * URL.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>Status of the copy operation.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>Specifies the duration of the lease.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state of the blob.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status of the blob.</td></tr>
+     * <tr><td>Accept-Ranges</td><td>String</td><td>Indicates that the service supports requests for partial blob
+     * content.</td></tr>
+     * <tr><td>x-ms-blob-committed-block-count</td><td>int</td><td>The number of committed blocks present in the
+     * blob.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>Indicates whether the contents of the request are
+     * successfully encrypted.</td></tr>
+     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>The SHA-256 hash of the provided encryption
+     * key.</td></tr>
+     * <tr><td>x-ms-encryption-scope</td><td>String</td><td>Specifies the encryption scope used to encrypt the
+     * data.</td></tr>
+     * <tr><td>x-ms-blob-content-md5</td><td>byte[]</td><td>MD5 hash of the full blob content only returned for ranged
+     * reads. This is the hash of the complete blob, not just the requested range.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>Date-time value generated by the service that indicates the time at
+     * which the response was initiated.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
+     * @param queryRequest The query request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> queryWithResponseInternal(BinaryData queryRequest, RequestOptions requestOptions) {
+        final String contentType = "application/xml";
+        final String accept = "application/octet-stream";
+        return service.querySync(this.client.getUrl(), contentType, this.client.getServiceVersion().getVersion(),
+            accept, queryRequest, requestOptions, Context.NONE);
     }
 }

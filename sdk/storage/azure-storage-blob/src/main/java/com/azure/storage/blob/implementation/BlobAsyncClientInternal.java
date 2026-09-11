@@ -36,6 +36,7 @@ import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
+import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.BlobsReleaseLeaseHeaders;
 import com.azure.storage.blob.implementation.models.BlobsRenewLeaseHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetExpiryHeaders;
@@ -47,6 +48,7 @@ import com.azure.storage.blob.implementation.models.BlobsSetTagsHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetTierHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobsUndeleteHeaders;
+import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -1656,6 +1658,160 @@ public final class BlobAsyncClientInternal {
     }
 
     /**
+     * Queries the data of the specified blob with the provided query expressions.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
+     * information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
+     * resource's lease is active and matches this ID.</td></tr>
+     * <tr><td>x-ms-encryption-key</td><td>String</td><td>No</td><td>Specifies the encryption key to use to encrypt the
+     * data provided in the request.</td></tr>
+     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>No</td><td>The SHA-256 hash of the provided encryption
+     * key. Must be provided if the encryption key is provided.</td></tr>
+     * <tr><td>x-ms-encryption-algorithm</td><td>String</td><td>No</td><td>The algorithm used to produce the encryption
+     * key hash. Must be provided if the encryption key is provided. Allowed values: "AES256".</td></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
+     * if it has been modified since the specified date-time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
+     * blob if it has not been modified since the specified date-time.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Specify this value to operate only on a blob with a
+     * non-matching Etag value.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Specify this value to operate only on a blob with a matching
+     * Etag value.</td></tr>
+     * <tr><td>x-ms-if-tags</td><td>String</td><td>No</td><td>Specifies a SQL-like where clause on blob tags to operate
+     * only on a blob with matching tags.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     QueryType: String(SQL) (Required)
+     *     Expression: String (Required)
+     *     InputSerialization (Optional): {
+     *         Format (Required): {
+     *             Type: String(delimited/json/arrow/parquet) (Required)
+     *             DelimitedTextConfiguration (Optional): {
+     *                 ColumnSeparator: String (Optional)
+     *                 FieldQuote: String (Optional)
+     *                 RecordSeparator: String (Optional)
+     *                 EscapeChar: String (Optional)
+     *                 HasHeaders: Boolean (Optional)
+     *             }
+     *             JsonTextConfiguration (Optional): {
+     *                 RecordSeparator: String (Optional)
+     *             }
+     *             ArrowConfiguration (Optional): {
+     *                 Schema (Required): [
+     *                      (Required){
+     *                         Type: String (Required)
+     *                         Name: String (Optional)
+     *                         Precision: Integer (Optional)
+     *                         Scale: Integer (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             ParquetTextConfiguration (Optional): {
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     OutputSerialization (Optional): (recursive schema, see OutputSerialization above)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The number of bytes present in the response body.</td></tr>
+     * <tr><td>Content-Range</td><td>String</td><td>Indicates the range of bytes returned in this response.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>An opaque identifier for the current state of the resource.</td></tr>
+     * <tr><td>Content-MD5</td><td>byte[]</td><td>The blob content MD5 hash. Only returned if the full blob is
+     * read.</td></tr>
+     * <tr><td>Content-Encoding</td><td>String</td><td>The Content-Encoding of the blob.</td></tr>
+     * <tr><td>Cache-Control</td><td>String</td><td>The Cache-Control of the blob.</td></tr>
+     * <tr><td>Content-Disposition</td><td>String</td><td>The Content-Disposition of the blob.</td></tr>
+     * <tr><td>Content-Language</td><td>String</td><td>The Content-Language of the blob.</td></tr>
+     * <tr><td>x-ms-blob-sequence-number</td><td>long</td><td>The current sequence number for a page blob.</td></tr>
+     * <tr><td>x-ms-blob-type</td><td>String</td><td>The type of the blob.</td></tr>
+     * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>The CRC64 hash of the content.</td></tr>
+     * <tr><td>x-ms-copy-completion-time</td><td>OffsetDateTime</td><td>If this blob was the destination of a copy,
+     * specifies the completion time of the last attempted copy operation.</td></tr>
+     * <tr><td>x-ms-copy-status-description</td><td>String</td><td>If this blob was the destination of a copy, specifies
+     * the cause of the copy operation failure.</td></tr>
+     * <tr><td>x-ms-copy-id</td><td>String</td><td>Identifier for this copy operation.</td></tr>
+     * <tr><td>x-ms-copy-progress</td><td>String</td><td>If this blob was the destination of a copy, specifies the
+     * number of bytes copied and the total bytes in the source.</td></tr>
+     * <tr><td>x-ms-copy-source</td><td>String</td><td>If this blob was the destination of a copy, specifies the source
+     * URL.</td></tr>
+     * <tr><td>x-ms-copy-status</td><td>String</td><td>Status of the copy operation.</td></tr>
+     * <tr><td>x-ms-lease-duration</td><td>String</td><td>Specifies the duration of the lease.</td></tr>
+     * <tr><td>x-ms-lease-state</td><td>String</td><td>The lease state of the blob.</td></tr>
+     * <tr><td>x-ms-lease-status</td><td>String</td><td>The lease status of the blob.</td></tr>
+     * <tr><td>Accept-Ranges</td><td>String</td><td>Indicates that the service supports requests for partial blob
+     * content.</td></tr>
+     * <tr><td>x-ms-blob-committed-block-count</td><td>int</td><td>The number of committed blocks present in the
+     * blob.</td></tr>
+     * <tr><td>x-ms-server-encrypted</td><td>boolean</td><td>Indicates whether the contents of the request are
+     * successfully encrypted.</td></tr>
+     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>The SHA-256 hash of the provided encryption
+     * key.</td></tr>
+     * <tr><td>x-ms-encryption-scope</td><td>String</td><td>Specifies the encryption scope used to encrypt the
+     * data.</td></tr>
+     * <tr><td>x-ms-blob-content-md5</td><td>byte[]</td><td>MD5 hash of the full blob content only returned for ranged
+     * reads. This is the hash of the complete blob, not just the requested range.</td></tr>
+     * <tr><td>Date</td><td>OffsetDateTime</td><td>Date-time value generated by the service that indicates the time at
+     * which the response was initiated.</td></tr>
+     * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
+     * request.</td></tr>
+     * <tr><td>x-ms-request-id</td><td>String</td><td>An opaque, globally-unique, server-generated string identifier for
+     * the request.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
+     * @param queryRequest The query request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> queryWithResponseInternal(BinaryData queryRequest, RequestOptions requestOptions) {
+        return this.serviceClient.queryWithResponseInternalAsync(queryRequest, requestOptions);
+    }
+
+    /**
      * Downloads the specified blob.
      * 
      * @param snapshot Specifies the snapshot of the blob.
@@ -2936,6 +3092,7 @@ public final class BlobAsyncClientInternal {
         RequestConditions requestConditions, RequestOptions requestOptions) {
         // Generated convenience method for setMetadataWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
@@ -2944,40 +3101,44 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (encryptionKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
         }
         if (encryptionKeySha256 != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
         }
         if (encryptionAlgorithm != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
                 encryptionAlgorithm.toString());
         }
         if (encryptionScope != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
         }
         if (ifTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
         return setMetadataWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -3024,7 +3185,11 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -3761,6 +3926,7 @@ public final class BlobAsyncClientInternal {
         RequestConditions requestConditions, RequestOptions requestOptions) {
         // Generated convenience method for createSnapshotWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
@@ -3769,40 +3935,44 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (encryptionKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
         }
         if (encryptionKeySha256 != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
         }
         if (encryptionAlgorithm != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
                 encryptionAlgorithm.toString());
         }
         if (encryptionScope != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
         }
         if (ifTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
         return createSnapshotWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -3849,7 +4019,11 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (encryptionKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
@@ -3952,6 +4126,7 @@ public final class BlobAsyncClientInternal {
         Boolean legalHold, RequestConditions requestConditions, RequestOptions requestOptions) {
         // Generated convenience method for startCopyFromUrlWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
@@ -3960,68 +4135,72 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (tier != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), tier.toString());
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), tier.toString());
         }
         if (rehydratePriority != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-rehydrate-priority"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-rehydrate-priority"),
                 rehydratePriority.toString());
         }
         if (sourceIfModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-modified-since"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-modified-since"),
                 String.valueOf(new DateTimeRfc1123(sourceIfModifiedSince)));
         }
         if (sourceIfUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-unmodified-since"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-unmodified-since"),
                 String.valueOf(new DateTimeRfc1123(sourceIfUnmodifiedSince)));
         }
         if (sourceIfMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-match"), sourceIfMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-match"), sourceIfMatch);
         }
         if (sourceIfNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-none-match"), sourceIfNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-none-match"), sourceIfNoneMatch);
         }
         if (sourceIfTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-tags"), sourceIfTags);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-tags"), sourceIfTags);
         }
         if (ifTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (blobTagsString != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-tags"), blobTagsString);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-tags"), blobTagsString);
         }
         if (sealBlob != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-seal-blob"), String.valueOf(sealBlob));
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-seal-blob"), String.valueOf(sealBlob));
         }
         if (immutabilityPolicyExpiry != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-until-date"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-until-date"),
                 String.valueOf(new DateTimeRfc1123(immutabilityPolicyExpiry)));
         }
         if (immutabilityPolicyMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-mode"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-mode"),
                 immutabilityPolicyMode.toString());
         }
         if (legalHold != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-legal-hold"), String.valueOf(legalHold));
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-legal-hold"), String.valueOf(legalHold));
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
         return startCopyFromUrlWithResponseInternal(copySource, requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -4082,7 +4261,11 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (tier != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), tier.toString());
@@ -4221,6 +4404,7 @@ public final class BlobAsyncClientInternal {
         RequestConditions requestConditions, RequestOptions requestOptions) {
         // Generated convenience method for copyFromUrlWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
@@ -4229,77 +4413,81 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (tier != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), tier.toString());
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), tier.toString());
         }
         if (sourceIfModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-modified-since"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-modified-since"),
                 String.valueOf(new DateTimeRfc1123(sourceIfModifiedSince)));
         }
         if (sourceIfUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-unmodified-since"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-unmodified-since"),
                 String.valueOf(new DateTimeRfc1123(sourceIfUnmodifiedSince)));
         }
         if (sourceIfMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-match"), sourceIfMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-match"), sourceIfMatch);
         }
         if (sourceIfNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-if-none-match"), sourceIfNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-if-none-match"), sourceIfNoneMatch);
         }
         if (ifTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (sourceContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-md5"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-content-md5"),
                 String.valueOf(sourceContentMd5));
         }
         if (blobTagsString != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-tags"), blobTagsString);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-tags"), blobTagsString);
         }
         if (immutabilityPolicyExpiry != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-until-date"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-until-date"),
                 String.valueOf(new DateTimeRfc1123(immutabilityPolicyExpiry)));
         }
         if (immutabilityPolicyMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-mode"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-immutability-policy-mode"),
                 immutabilityPolicyMode.toString());
         }
         if (legalHold != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-legal-hold"), String.valueOf(legalHold));
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-legal-hold"), String.valueOf(legalHold));
         }
         if (copySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-copy-source-authorization"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-copy-source-authorization"),
                 copySourceAuthorization);
         }
         if (encryptionScope != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-encryption-scope"), encryptionScope);
         }
         if (copySourceTags != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-copy-source-tag-option"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-copy-source-tag-option"),
                 copySourceTags.toString());
         }
         if (fileRequestIntent != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-request-intent"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-request-intent"),
                 fileRequestIntent.toString());
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+            requestOptionsLocal.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
         return copyFromUrlWithResponseInternal(copySource, requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -4365,7 +4553,11 @@ public final class BlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta"), String.valueOf(metadata));
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (tier != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), tier.toString());
@@ -5052,6 +5244,181 @@ public final class BlobAsyncClientInternal {
         // Generated convenience method for setTagsWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return setTagsWithResponseInternal(BinaryData.fromObject(tags, XML_SERIALIZER), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Queries the data of the specified blob with the provided query expressions.
+     * 
+     * @param queryRequest The query request.
+     * @param snapshot Specifies the snapshot of the blob.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param encryptionKey Specifies the encryption key to use to encrypt the data provided in the request.
+     * @param encryptionKeySha256 The SHA-256 hash of the provided encryption key. Must be provided if the encryption
+     * key is provided.
+     * @param encryptionAlgorithm The algorithm used to produce the encryption key hash. Must be provided if the
+     * encryption key is provided.
+     * @param ifTags Specifies a SQL-like where clause on blob tags to operate only on a blob with matching tags.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<BlobsQueryHeaders, BinaryData>> queryWithResponse(QueryRequest queryRequest,
+        String snapshot, Integer timeout, String leaseId, String encryptionKey, String encryptionKeySha256,
+        EncryptionAlgorithmType encryptionAlgorithm, String ifTags, RequestConditions requestConditions,
+        RequestOptions requestOptions) {
+        // Generated convenience method for queryWithResponseInternal
+        requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        if (snapshot != null) {
+            requestOptions.addQueryParam("snapshot", snapshot, false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (leaseId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+        }
+        if (encryptionKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
+        }
+        if (encryptionKeySha256 != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
+        }
+        if (encryptionAlgorithm != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
+                encryptionAlgorithm.toString());
+        }
+        if (ifTags != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        return queryWithResponseInternal(BinaryData.fromObject(queryRequest, XML_SERIALIZER), requestOptions)
+            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
+                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
+                protocolMethodResponse.getValue(), new BlobsQueryHeaders(protocolMethodResponse.getHeaders())));
+    }
+
+    /**
+     * Queries the data of the specified blob with the provided query expressions.
+     * 
+     * @param queryRequest The query request.
+     * @param snapshot Specifies the snapshot of the blob.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param encryptionKey Specifies the encryption key to use to encrypt the data provided in the request.
+     * @param encryptionKeySha256 The SHA-256 hash of the provided encryption key. Must be provided if the encryption
+     * key is provided.
+     * @param encryptionAlgorithm The algorithm used to produce the encryption key hash. Must be provided if the
+     * encryption key is provided.
+     * @param ifTags Specifies a SQL-like where clause on blob tags to operate only on a blob with matching tags.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> query(QueryRequest queryRequest, String snapshot, Integer timeout, String leaseId,
+        String encryptionKey, String encryptionKeySha256, EncryptionAlgorithmType encryptionAlgorithm, String ifTags,
+        RequestConditions requestConditions) {
+        // Generated convenience method for queryWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        if (snapshot != null) {
+            requestOptions.addQueryParam("snapshot", snapshot, false);
+        }
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (leaseId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+        }
+        if (encryptionKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
+        }
+        if (encryptionKeySha256 != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key-sha256"), encryptionKeySha256);
+        }
+        if (encryptionAlgorithm != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-algorithm"),
+                encryptionAlgorithm.toString());
+        }
+        if (ifTags != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        return queryWithResponseInternal(BinaryData.fromObject(queryRequest, XML_SERIALIZER), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Queries the data of the specified blob with the provided query expressions.
+     * 
+     * @param queryRequest The query request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> query(QueryRequest queryRequest) {
+        // Generated convenience method for queryWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return queryWithResponseInternal(BinaryData.fromObject(queryRequest, XML_SERIALIZER), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 }

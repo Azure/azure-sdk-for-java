@@ -2383,7 +2383,8 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Void>> undeleteWithResponse(Context context) {
-        return this.blobClientInternal.undeleteWithResponse(null, blobRequestOptions(context)).map(rb -> (Response<Void>) rb);
+        return this.blobClientInternal.undeleteWithResponse(null, blobRequestOptions(context))
+            .map(rb -> (Response<Void>) rb);
     }
 
     /**
