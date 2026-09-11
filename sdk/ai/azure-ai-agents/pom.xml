@@ -122,6 +122,14 @@
               <path>${project.basedir}/revapi.json</path>
             </configurationFile>
           </analysisConfigurationFiles>
+          <pipelineConfiguration combine.self="override">
+            <filters>
+              <include>
+                <item>class-and-package-tree-filter-provider</item>
+                <item>revapi.filter</item>
+              </include>
+            </filters>
+          </pipelineConfiguration>
         </configuration>
       </plugin>
     </plugins>

@@ -75,6 +75,7 @@ public final class ModelRouterDetails implements JsonSerializable<ModelRouterDet
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeArrayField("routing_trace", this.routingTrace, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("session_affinity", this.sessionAffinity);
         return jsonWriter.writeEndObject();
     }
 
@@ -92,6 +93,7 @@ public final class ModelRouterDetails implements JsonSerializable<ModelRouterDet
         return jsonReader.readObject(reader -> {
             ModelRouterMode mode = null;
             List<RoutingTraceEntry> routingTrace = null;
+            SessionAffinityDetails sessionAffinity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -99,11 +101,33 @@ public final class ModelRouterDetails implements JsonSerializable<ModelRouterDet
                     mode = ModelRouterMode.fromString(reader.getString());
                 } else if ("routing_trace".equals(fieldName)) {
                     routingTrace = reader.readArray(reader1 -> RoutingTraceEntry.fromJson(reader1));
+                } else if ("session_affinity".equals(fieldName)) {
+                    sessionAffinity = SessionAffinityDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ModelRouterDetails(mode, routingTrace);
+            ModelRouterDetails deserializedModelRouterDetails = new ModelRouterDetails(mode, routingTrace);
+            deserializedModelRouterDetails.sessionAffinity = sessionAffinity;
+            return deserializedModelRouterDetails;
         });
+    }
+
+    /*
+     * Session affinity metadata for the routing decision. Omitted when affinity metadata is unavailable or the preview
+     * feature is not enabled.
+     */
+    @Generated
+    private SessionAffinityDetails sessionAffinity;
+
+    /**
+     * Get the sessionAffinity property: Session affinity metadata for the routing decision. Omitted when affinity
+     * metadata is unavailable or the preview feature is not enabled.
+     *
+     * @return the sessionAffinity value.
+     */
+    @Generated
+    public SessionAffinityDetails getSessionAffinity() {
+        return this.sessionAffinity;
     }
 }

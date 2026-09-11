@@ -278,9 +278,11 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
+        jsonWriter.writeJsonField("harness", this.harness);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
         // AI Tooling: openai-java de-dup
@@ -311,9 +313,11 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public static PromptAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RaiConfig raiConfig = null;
+            AgentHarness harness = null;
             String model = null;
             AgentKind kind = AgentKind.PROMPT;
             String instructions = null;
+            List<SkillReference> skills = null;
             Double temperature = null;
             Double topP = null;
             // AI Tooling: openai-java de-dup
@@ -327,12 +331,16 @@ public final class PromptAgentDefinition extends AgentDefinition {
                 reader.nextToken();
                 if ("rai_config".equals(fieldName)) {
                     raiConfig = RaiConfig.fromJson(reader);
+                } else if ("harness".equals(fieldName)) {
+                    harness = AgentHarness.fromJson(reader);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = AgentKind.fromString(reader.getString());
                 } else if ("instructions".equals(fieldName)) {
                     instructions = reader.getString();
+                } else if ("skills".equals(fieldName)) {
+                    skills = reader.readArray(reader1 -> SkillReference.fromJson(reader1));
                 } else if ("temperature".equals(fieldName)) {
                     temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("top_p".equals(fieldName)) {
@@ -357,8 +365,10 @@ public final class PromptAgentDefinition extends AgentDefinition {
             }
             PromptAgentDefinition deserializedPromptAgentDefinition = new PromptAgentDefinition(model);
             deserializedPromptAgentDefinition.setRaiConfig(raiConfig);
+            deserializedPromptAgentDefinition.harness = harness;
             deserializedPromptAgentDefinition.kind = kind;
             deserializedPromptAgentDefinition.instructions = instructions;
+            deserializedPromptAgentDefinition.skills = skills;
             deserializedPromptAgentDefinition.temperature = temperature;
             deserializedPromptAgentDefinition.topP = topP;
             deserializedPromptAgentDefinition.reasoning = reasoning;
@@ -461,6 +471,65 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public PromptAgentDefinition setReasoning(Reasoning reasoning) {
         // AI Tooling: openai-java de-dup
         this.reasoning = reasoning;
+        return this;
+    }
+
+    /*
+     * The managed runtime and agent loop used to execute this prompt agent.
+     */
+    @Generated
+    private AgentHarness harness;
+
+    /*
+     * The Foundry skills available to this prompt agent. An omitted skill version is resolved and pinned when the agent
+     * version is created.
+     */
+    @Generated
+    private List<SkillReference> skills;
+
+    /**
+     * Get the harness property: The managed runtime and agent loop used to execute this prompt agent.
+     *
+     * @return the harness value.
+     */
+    @Generated
+    public AgentHarness getHarness() {
+        return this.harness;
+    }
+
+    /**
+     * Set the harness property: The managed runtime and agent loop used to execute this prompt agent.
+     *
+     * @param harness the harness value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    public PromptAgentDefinition setHarness(AgentHarness harness) {
+        this.harness = harness;
+        return this;
+    }
+
+    /**
+     * Get the skills property: The Foundry skills available to this prompt agent. An omitted skill version is resolved
+     * and pinned when the agent version is created.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    public List<SkillReference> getSkills() {
+        return this.skills;
+    }
+
+    /**
+     * Set the skills property: The Foundry skills available to this prompt agent. An omitted skill version is resolved
+     * and pinned when the agent version is created.
+     *
+     * @param skills the skills value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    public PromptAgentDefinition setSkills(List<SkillReference> skills) {
+        this.skills = skills;
         return this;
     }
 }

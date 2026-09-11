@@ -130,6 +130,7 @@ public final class DataGenerationJobOutputOptions implements JsonSerializable<Da
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("write_mode", this.writeMode == null ? null : this.writeMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -156,11 +157,45 @@ public final class DataGenerationJobOutputOptions implements JsonSerializable<Da
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDataGenerationJobOutputOptions.tags = tags;
+                } else if ("write_mode".equals(fieldName)) {
+                    deserializedDataGenerationJobOutputOptions.writeMode
+                        = DataGenerationJobOutputWriteMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedDataGenerationJobOutputOptions;
         });
+    }
+
+    /*
+     * Controls how dataset outputs are written. If omitted, defaults to `overwrite` and creates the next dataset
+     * version using only newly generated rows.
+     */
+    @Generated
+    private DataGenerationJobOutputWriteMode writeMode;
+
+    /**
+     * Get the writeMode property: Controls how dataset outputs are written. If omitted, defaults to `overwrite` and
+     * creates the next dataset version using only newly generated rows.
+     *
+     * @return the writeMode value.
+     */
+    @Generated
+    public DataGenerationJobOutputWriteMode getWriteMode() {
+        return this.writeMode;
+    }
+
+    /**
+     * Set the writeMode property: Controls how dataset outputs are written. If omitted, defaults to `overwrite` and
+     * creates the next dataset version using only newly generated rows.
+     *
+     * @param writeMode the writeMode value to set.
+     * @return the DataGenerationJobOutputOptions object itself.
+     */
+    @Generated
+    public DataGenerationJobOutputOptions setWriteMode(DataGenerationJobOutputWriteMode writeMode) {
+        this.writeMode = writeMode;
+        return this;
     }
 }
