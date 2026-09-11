@@ -107,6 +107,11 @@ public final class PublicIpAddressPropertiesFormatInner
      */
     private DeleteOptions deleteOption;
 
+    /*
+     * Whether the public IP address SKU has been upgraded from Standard to StandardV2.
+     */
+    private Boolean upgradedToV2;
+
     /**
      * Creates an instance of PublicIpAddressPropertiesFormatInner class.
      */
@@ -403,6 +408,15 @@ public final class PublicIpAddressPropertiesFormatInner
     }
 
     /**
+     * Get the upgradedToV2 property: Whether the public IP address SKU has been upgraded from Standard to StandardV2.
+     * 
+     * @return the upgradedToV2 value.
+     */
+    public Boolean upgradedToV2() {
+        return this.upgradedToV2;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -515,6 +529,9 @@ public final class PublicIpAddressPropertiesFormatInner
                 } else if ("deleteOption".equals(fieldName)) {
                     deserializedPublicIpAddressPropertiesFormatInner.deleteOption
                         = DeleteOptions.fromString(reader.getString());
+                } else if ("upgradedToV2".equals(fieldName)) {
+                    deserializedPublicIpAddressPropertiesFormatInner.upgradedToV2
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

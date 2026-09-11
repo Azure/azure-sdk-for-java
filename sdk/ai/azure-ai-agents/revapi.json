@@ -76,6 +76,18 @@
           "old": "field com.azure.ai.agents.models.ToolboxToolType.TOOLBOX_SEARCH_PREVIEW",
           "new": "field com.azure.ai.agents.models.ToolboxToolType.TOOLBOX_SEARCH_PREVIEW",
           "justification": "Breaking change in preview enum: a new preview constant was inserted earlier in ToolboxToolType, shifting the ordinal of TOOLBOX_SEARCH_PREVIEW. Ordinal-based code is not supported for preview enum constants."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeChanged|returnTypeTypeParametersChanged)",
+          "old": "(method|parameter) .* com\\.azure\\.ai\\.agents\\.BetaAgents(Async)?Client::(beginCreateOptimizationJob|cancelOptimizationJob|getOptimizationJob|listOptimizationJobs)\\(.*\\)",
+          "justification": "Breaking change in beta operation: optimization client methods now use AgentOptimization models after the optimization model hierarchy was restructured."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.removed",
+          "old": "class com\\.azure\\.ai\\.agents\\.models\\.(OptimizationAgentIdentifier|OptimizationCandidate|OptimizationDatasetCriterion|OptimizationDatasetInput|OptimizationDatasetInputType|OptimizationDatasetItem|OptimizationEvaluatorRef|OptimizationInlineDatasetInput|OptimizationJob|OptimizationJobInputs|OptimizationJobListItem|OptimizationJobProgress|OptimizationJobResult|OptimizationOptions|OptimizationReferenceDatasetInput|ProgrammaticToolCallingParameter)",
+          "justification": "Breaking change in beta operation: legacy optimization and programmatic tool-calling models were removed or replaced while aligning with the current preview service contract."
         }
       ]
     }

@@ -12,10 +12,10 @@ public final class AcknowledgeBulkOperationErrorsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AcknowledgeBulkOperationErrorsResponseInner model = BinaryData.fromString(
-            "{\"acknowledged\":[\"c\",\"refovgmkqsleyyvx\",\"qjpkcattpngjcrc\"],\"notFound\":[\"sqpjhvmdajvn\",\"sounqecanoaeu\",\"fhyhltrpmopjmcma\",\"u\"],\"skipped\":[\"thfuiuaodsfcpkvx\",\"dpuozmyz\"]}")
+            "{\"acknowledged\":[\"lopwiyig\",\"xpkd\",\"zb\"],\"notFound\":[\"uebbaumnyqup\",\"deoj\",\"a\"],\"skipped\":[\"khsmtxpsiebt\",\"hvpesapskrdqm\",\"jjdhtld\"]}")
             .toObject(AcknowledgeBulkOperationErrorsResponseInner.class);
-        Assertions.assertEquals("c", model.acknowledged().get(0));
-        Assertions.assertEquals("sqpjhvmdajvn", model.notFound().get(0));
-        Assertions.assertEquals("thfuiuaodsfcpkvx", model.skipped().get(0));
+        Assertions.assertEquals("lopwiyig", model.acknowledged().get(0));
+        Assertions.assertEquals("uebbaumnyqup", model.notFound().get(0));
+        Assertions.assertEquals("khsmtxpsiebt", model.skipped().get(0));
     }
 }

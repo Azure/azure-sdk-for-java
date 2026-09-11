@@ -3,4 +3,4 @@
 ## 1.0.0-beta.1 (2022-04-19)
 
 ### Features Added
-- Test batch release
+- Test batch release pipeline

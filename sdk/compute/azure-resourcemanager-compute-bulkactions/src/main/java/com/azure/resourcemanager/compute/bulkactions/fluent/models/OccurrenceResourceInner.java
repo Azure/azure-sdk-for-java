@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.bulkactions.models.Error;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceProvisioningState;
+import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceResourceProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -56,7 +56,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     /*
      * The current state of the resource
      */
-    private ResourceProvisioningState provisioningState;
+    private OccurrenceResourceProvisioningState provisioningState;
 
     /*
      * Error details for the resource. Only populated if resource is in failed state.
@@ -129,7 +129,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
      * 
      * @return the provisioningState value.
      */
-    public ResourceProvisioningState provisioningState() {
+    public OccurrenceResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -187,7 +187,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
                     deserializedOccurrenceResourceInner.notificationSettings = notificationSettings;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedOccurrenceResourceInner.provisioningState
-                        = ResourceProvisioningState.fromString(reader.getString());
+                        = OccurrenceResourceProvisioningState.fromString(reader.getString());
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedOccurrenceResourceInner.errorDetails = Error.fromJson(reader);
                 } else {

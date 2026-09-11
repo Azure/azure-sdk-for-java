@@ -15,24 +15,24 @@ public final class BulkCreateCustomPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomPriorityProfile model = BinaryData.fromString(
-            "{\"type\":\"Regular\",\"maxPricePerVM\":37.5628775407411,\"evictionPolicy\":\"Deallocate\",\"allocationStrategy\":\"LowestPrice\"}")
+            "{\"type\":\"Regular\",\"maxPricePerVM\":42.61463265976999,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"Prioritized\"}")
             .toObject(BulkCreateCustomPriorityProfile.class);
         Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(37.5628775407411D, model.maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
+        Assertions.assertEquals(42.61463265976999D, model.maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
+        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.REGULAR)
-            .withMaxPricePerVM(37.5628775407411D)
-            .withEvictionPolicy(EvictionPolicy.DEALLOCATE)
-            .withAllocationStrategy(BulkCreateCustomAllocationStrategy.LOWEST_PRICE);
+            .withMaxPricePerVM(42.61463265976999D)
+            .withEvictionPolicy(EvictionPolicy.DELETE)
+            .withAllocationStrategy(BulkCreateCustomAllocationStrategy.PRIORITIZED);
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomPriorityProfile.class);
         Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(37.5628775407411D, model.maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
+        Assertions.assertEquals(42.61463265976999D, model.maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
+        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 }

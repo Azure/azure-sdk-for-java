@@ -82,14 +82,8 @@ This repo routes Maven through an Azure Artifacts feed.
 </settings>
 ```
 
-**Internal contributors (Microsoft)** — set up the Maven Credential Provider:
-
-```bash
-# Run from outside the azure-sdk-for-java directory
-mvn dependency:get \
-  "-Dartifact=com.microsoft.azure:artifacts-maven-credprovider:3.1" \
-  "-DremoteRepositories=central::::https://pkgs.dev.azure.com/artifacts-public/PublicTools/_packaging/AzureArtifacts/maven/v1"
-```
+**Internal contributors (Microsoft)** — install the Maven Credential Provider by following the
+[official installation instructions on 1ES EngHub](https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/azure-artifacts/maven-credprovider).
 
 Then add to `.mvn/extensions.xml`:
 ```xml

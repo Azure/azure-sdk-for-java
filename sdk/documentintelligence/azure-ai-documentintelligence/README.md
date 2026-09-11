@@ -110,7 +110,7 @@ DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIn
     .buildAsyncClient();
 ```
 You will also need to [register a new Microsoft Entra application][register_aad_app] and grant access to Document Intelligence by assigning the `"Cognitive Services Data Reader"` role to your service principal.
-It is strongly recommended to use Microsoft Entra ID as your default authentication approach. On the other hand, using an `AzureKeyCredential` can be helpful on getting-started scenarios since it can be set up fastly.
+It is strongly recommended to use Microsoft Entra ID as your default authentication approach. On the other hand, using an `AzureKeyCredential` can be helpful on getting-started scenarios since it can be set up fast.
 
 ##### Get the API Key
 

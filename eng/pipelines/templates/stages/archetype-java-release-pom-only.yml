@@ -24,6 +24,7 @@ stages:
             path: azure-sdk-build-tools
           - checkout: self
             fetchDepth: 1
+            fetchTags: false
             path: azure-sdk-for-java
 
           - download: current

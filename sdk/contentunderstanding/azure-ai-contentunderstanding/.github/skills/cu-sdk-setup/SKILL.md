@@ -54,7 +54,7 @@ Before starting, ensure you have:
 > **[ASK USER] Prerequisites Check:**
 > After the probe above, confirm the remaining items:
 > 1. "Do you already have a **Microsoft Foundry resource** set up in Azure?" — If no, jump to **Step 5** (Azure Resource Setup) first, then return here.
-> 2. "Have you already deployed the required **AI models** (GPT-4.1, GPT-4.1-mini, text-embedding-3-large) in Microsoft Foundry?" — If no, include Step 5.3 and Step 6 in the workflow.
+> 2. "Have you already deployed supported **completion and embedding models** in Microsoft Foundry?" — If no, include Step 5.3 and Step 6 in the workflow.
 
 ## Package Directory
 
@@ -217,7 +217,7 @@ if (Test-Path ".env") {
 >
 > | HTTP code | Meaning | Action |
 > |-----------|---------|--------|
-> | `200` + all 3 models present in `modelDeployments` | **ALL_SET** | Show the detected values and ask *"Detected existing defaults: gpt-4.1=`<A>`, gpt-4.1-mini=`<B>`, text-embedding-3-large=`<C>`. Use these? (Y/n)"*. On Y, prefill the 3 env vars and **skip Step 6** (defaults already configured). On n, fall through to the per-model prompts below. |
+> | `200` + selected logical models and all 3 matching prebuilt aliases present in `modelDeployments` | **ALL_SET** | Show the detected model-to-deployment values and ask whether to use them. On Y, prefill the deployment variables and **skip Step 6**. On n, fall through to the per-model prompts below. |
 > | `200` + some models present | **PARTIAL** | Prefill the ones that are set. For missing models, ask per-item with the default shown below. After Step 4 completes, run Step 6 to fill the gaps. |
 > | `200` + no models | **NONE** | Fall through to the per-model prompts below. Step 6 will configure them. |
 > | `401` / `403` | **AUTH_ERROR** | Print a one-line warning: *"Probe unavailable (auth failed). If you're using DefaultAzureCredential, run `az login` and ensure the Cognitive Services User role is assigned. Continuing with manual entry."* Fall through to per-model prompts. |
@@ -227,11 +227,16 @@ if (Test-Path ".env") {
 >
 > The `setup_user_env.sh` / `setup_user_env.ps1` scripts implement this probe with hardened error handling (connect/read timeouts, transport-failure fallbacks). The pseudocode above is a conceptual sketch — treat the scripts as the source of truth.
 
-> **[ASK USER] Model deployment names (only when probe did not yield all values):**
-> For each model not already prefilled from the probe, ask with a sensible default:
-> - "What is your **GPT-4.1** deployment name?" (default: `gpt-4.1`) → `GPT_4_1_DEPLOYMENT`
-> - "What is your **GPT-4.1-mini** deployment name?" (default: `gpt-4.1-mini`) → `GPT_4_1_MINI_DEPLOYMENT`
-> - "What is your **text-embedding-3-large** deployment name?" (default: `text-embedding-3-large`) → `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT`
+> **[ASK USER] Model and deployment names:**
+> Ask for the logical model names first:
+> - Completion model → `CU_COMPLETION_MODEL` (default: `gpt-5.2`)
+> - Mini completion model → `CU_COMPLETION_MODEL_MINI` (default: `CU_COMPLETION_MODEL`)
+> - Embedding model → `CU_EMBEDDING_MODEL` (default: `text-embedding-3-large`)
+>
+> For each deployment not already prefilled from the probe, ask with a sensible default:
+> - Completion deployment → `CU_COMPLETION_MODEL_DEPLOYMENT` (default: `CU_COMPLETION_MODEL`)
+> - Mini completion deployment → `CU_COMPLETION_MINI_DEPLOYMENT` (default: `CU_COMPLETION_MODEL_DEPLOYMENT`)
+> - Embedding deployment → `CU_EMBEDDING_DEPLOYMENT` (default: `CU_EMBEDDING_MODEL`)
 >
 > If the user prefers to configure these later, let them know they can run `Sample00_UpdateDefaults` (Step 6) anytime before using prebuilt analyzers.
 
@@ -261,9 +266,12 @@ if (Test-Path ".env") {
 > Here's your configuration:
 >   CONTENTUNDERSTANDING_ENDPOINT = <value>
 >   Authentication: DefaultAzureCredential / API Key (masked)
->   GPT_4_1_DEPLOYMENT = <value>
->   GPT_4_1_MINI_DEPLOYMENT = <value>
->   TEXT_EMBEDDING_3_LARGE_DEPLOYMENT = <value>
+>   CU_COMPLETION_MODEL = <value>
+>   CU_COMPLETION_MODEL_MINI = <value>
+>   CU_EMBEDDING_MODEL = <value>
+>   CU_COMPLETION_MODEL_DEPLOYMENT = <value>
+>   CU_COMPLETION_MINI_DEPLOYMENT = <value>
+>   CU_EMBEDDING_DEPLOYMENT = <value>
 >
 > Does this look correct? (Yes / No — let me fix something)
 > ```
@@ -285,10 +293,13 @@ CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=gpt-4.1
-GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=gpt-5.2
+CU_COMPLETION_MODEL_MINI=gpt-5.2
+CU_EMBEDDING_MODEL=text-embedding-3-large
+CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 ```
 
 **Template (with cross-resource copy):**
@@ -303,10 +314,13 @@ CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=gpt-4.1
-GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=gpt-5.2
+CU_COMPLETION_MODEL_MINI=gpt-5.2
+CU_EMBEDDING_MODEL=text-embedding-3-large
+CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 
 # Cross-resource copy settings (only for Sample15_GrantCopyAuth)
 CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID=/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.CognitiveServices/accounts/{sourceAccountName}
@@ -360,16 +374,15 @@ This role is required even if you own the resource:
 
 | Analyzer Type | Required Models |
 |--------------|-----------------|
-| `prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, `prebuilt-videoSearch` | gpt-4.1-mini, text-embedding-3-large |
-| Other prebuilt analyzers (invoice, receipt, etc.) | gpt-4.1, text-embedding-3-large |
+| Prebuilt and custom analyzers that use generative models | A supported completion model and embedding model (for example, gpt-5.2 and text-embedding-3-large) |
 
 **To deploy a model:**
 1. In Microsoft Foundry → **Deployments** → **Deploy model** → **Deploy base model**
-2. Search and deploy: `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`
+2. Search for and deploy supported completion and embedding models, such as `gpt-5.2` and `text-embedding-3-large`.
 3. Note deployment names (recommendation: use the model name as the deployment name)
 
 > **[ASK USER] Models deployed:**
-> Ask: "Have you deployed the required models? Please provide the **deployment names** you used for each (GPT-4.1, GPT-4.1-mini, text-embedding-3-large)." Use these names to populate the `.env` file.
+> Ask: "Have you deployed the required models? Please provide each logical **model name** and its **deployment name**." Use these names to populate the `.env` file.
 
 ### Step 6: Load .env and Configure Model Defaults (One-Time Setup)
 
@@ -494,9 +507,12 @@ if [ ! -f ".env" ]; then
     cat > .env <<'EOF'
 CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/
 CONTENTUNDERSTANDING_KEY=
-GPT_4_1_DEPLOYMENT=gpt-4.1
-GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+CU_COMPLETION_MODEL=gpt-5.2
+CU_COMPLETION_MODEL_MINI=gpt-5.2
+CU_EMBEDDING_MODEL=text-embedding-3-large
+CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 EOF
     echo "Created .env — please edit and configure required variables"
 else
@@ -512,13 +528,16 @@ set -a && source .env && set +a
 Required for all samples:
 
 - `CONTENTUNDERSTANDING_ENDPOINT` — Microsoft Foundry resource endpoint URL.
-- `CONTENTUNDERSTANDING_KEY` — API key. Leave empty to use `DefaultAzureCredential` (run `az login` first).
+- `CONTENTUNDERSTANDING_KEY` — Optional API key for all samples. Leave empty to use `DefaultAzureCredential` (run `az login` first).
 
 Required for `Sample00_UpdateDefaults` (one-time model mapping):
 
-- `GPT_4_1_DEPLOYMENT` (default: `gpt-4.1`)
-- `GPT_4_1_MINI_DEPLOYMENT` (default: `gpt-4.1-mini`)
-- `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT` (default: `text-embedding-3-large`)
+- `CU_COMPLETION_MODEL_DEPLOYMENT` — completion deployment name.
+- `CU_EMBEDDING_DEPLOYMENT` — embedding deployment name.
+- `CU_COMPLETION_MODEL` — optional logical completion model name (default: `gpt-5.2`; also used by preview custom-analyzer samples).
+- `CU_COMPLETION_MODEL_MINI` — optional logical mini completion model name (default: `CU_COMPLETION_MODEL`).
+- `CU_COMPLETION_MINI_DEPLOYMENT` — optional mini deployment name (default: `CU_COMPLETION_MODEL_DEPLOYMENT`).
+- `CU_EMBEDDING_MODEL` — optional logical embedding model name (default: `text-embedding-3-large`).
 
 Required for `Sample15_GrantCopyAuth` (cross-resource analyzer copy) only:
 

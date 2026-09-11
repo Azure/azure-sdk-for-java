@@ -26,6 +26,11 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
      */
     private GateType type;
 
+    /*
+     * Scheduled start configuration for gates of type ScheduledStart.
+     */
+    private ScheduledStartConfiguration scheduledStartConfiguration;
+
     /**
      * Creates an instance of GateConfiguration class.
      */
@@ -73,6 +78,26 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
     }
 
     /**
+     * Get the scheduledStartConfiguration property: Scheduled start configuration for gates of type ScheduledStart.
+     * 
+     * @return the scheduledStartConfiguration value.
+     */
+    public ScheduledStartConfiguration scheduledStartConfiguration() {
+        return this.scheduledStartConfiguration;
+    }
+
+    /**
+     * Set the scheduledStartConfiguration property: Scheduled start configuration for gates of type ScheduledStart.
+     * 
+     * @param scheduledStartConfiguration the scheduledStartConfiguration value to set.
+     * @return the GateConfiguration object itself.
+     */
+    public GateConfiguration withScheduledStartConfiguration(ScheduledStartConfiguration scheduledStartConfiguration) {
+        this.scheduledStartConfiguration = scheduledStartConfiguration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +105,7 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("scheduledStartConfiguration", this.scheduledStartConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +129,9 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
                     deserializedGateConfiguration.type = GateType.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedGateConfiguration.displayName = reader.getString();
+                } else if ("scheduledStartConfiguration".equals(fieldName)) {
+                    deserializedGateConfiguration.scheduledStartConfiguration
+                        = ScheduledStartConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

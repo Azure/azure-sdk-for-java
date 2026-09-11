@@ -48,7 +48,6 @@ import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
 import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
-import com.azure.compute.batch.models.BatchNodeDisableSchedulingParameters;
 import com.azure.compute.batch.models.BatchNodeExtensionGetOptions;
 import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
@@ -66,6 +65,7 @@ import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsGetOptions;
 import com.azure.compute.batch.models.BatchNodeRemoveParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingDisableOptions;
+import com.azure.compute.batch.models.BatchNodeSchedulingDisableParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingEnableOptions;
 import com.azure.compute.batch.models.BatchNodeStartOptions;
 import com.azure.compute.batch.models.BatchNodeUserCreateOptions;
@@ -77,12 +77,12 @@ import com.azure.compute.batch.models.BatchNodeVMExtension;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
 import com.azure.compute.batch.models.BatchPoolDisableAutoScaleOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleOptions;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
@@ -141,7 +141,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -174,7 +173,7 @@ public final class BatchClient {
      * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList) {
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList) {
         createTasks(jobId, taskList, null);
     }
 
@@ -198,7 +197,7 @@ public final class BatchClient {
      * @param batchTaskBulkCreateOptions Optional parameters for Create Tasks operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList,
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchTaskBulkCreateOptions batchTaskBulkCreateOptions) {
         TaskSubmitter taskSubmitter = new SyncClientTaskSubmitter(this);
         TaskManager.createTasks(taskSubmitter, jobId, taskList, batchTaskBulkCreateOptions);
@@ -279,6 +278,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -660,6 +676,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1111,6 +1145,18 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1163,6 +1209,23 @@ public final class BatchClient {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1573,6 +1636,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1908,6 +1988,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -1932,6 +2030,23 @@ public final class BatchClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1994,6 +2109,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
@@ -2053,6 +2186,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
@@ -2123,6 +2274,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
@@ -2177,6 +2346,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2272,6 +2458,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -2336,6 +2540,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
@@ -2507,6 +2729,18 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2661,11 +2895,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -3001,6 +3230,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3367,6 +3613,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -3522,11 +3786,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -3862,6 +4121,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -3926,6 +4203,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
@@ -3979,6 +4274,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4044,6 +4356,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4174,11 +4504,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -4481,6 +4806,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4619,11 +4962,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -5096,11 +5434,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -5576,6 +5909,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5631,6 +5981,23 @@ public final class BatchClient {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5684,6 +6051,18 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5852,11 +6231,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6181,6 +6555,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6341,11 +6732,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6646,6 +7032,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -6818,11 +7222,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7147,6 +7546,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -7196,6 +7613,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7241,6 +7675,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7288,6 +7739,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7422,11 +7890,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7727,6 +8190,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7879,11 +8360,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -8360,14 +8836,27 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -8587,11 +9076,6 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -8761,11 +9245,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *         }
      *     ]
      * }
@@ -8802,6 +9281,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -8855,6 +9351,18 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
@@ -9090,14 +9598,27 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -9328,14 +9849,27 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -9458,6 +9992,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
@@ -9513,6 +10064,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
@@ -9542,6 +10110,18 @@ public final class BatchClient {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -9592,6 +10172,28 @@ public final class BatchClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -9632,6 +10234,27 @@ public final class BatchClient {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -9727,6 +10350,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -9758,19 +10399,31 @@ public final class BatchClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String username,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions);
+        return this.serviceClient.deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions);
     }
 
     /**
@@ -9800,10 +10453,28 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -9811,9 +10482,9 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String username,
         BinaryData parameters, RequestOptions requestOptions) {
-        return this.serviceClient.replaceNodeUserWithResponse(poolId, nodeId, userName, parameters, requestOptions);
+        return this.serviceClient.replaceNodeUserWithResponse(poolId, nodeId, username, parameters, requestOptions);
     }
 
     /**
@@ -9985,6 +10656,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -10028,6 +10716,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -10054,6 +10760,23 @@ public final class BatchClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -10099,6 +10822,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -10142,6 +10883,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -10186,6 +10945,24 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -10214,6 +10991,23 @@ public final class BatchClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
@@ -10255,6 +11049,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -10314,6 +11125,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -10571,6 +11399,23 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -10673,6 +11518,18 @@ public final class BatchClient {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -10723,6 +11580,28 @@ public final class BatchClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -10763,6 +11642,27 @@ public final class BatchClient {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -10968,11 +11868,12 @@ public final class BatchClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link SyncPoller} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchPool, Void> beginDeletePool(String poolId) {
-        PollerFlux<BatchPool, Void> asyncPoller = asyncClient.beginDeletePool(poolId);
+    public SyncPoller<BatchPool, BatchPool> beginDeletePool(String poolId) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginDeletePool(poolId);
         return asyncPoller.getSyncPoller();
     }
 
@@ -10992,13 +11893,13 @@ public final class BatchClient {
     public boolean poolExists(String poolId, BatchPoolExistsOptions options, RequestConditions requestConditions) {
         // Generated convenience method for poolExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11193,11 +12094,11 @@ public final class BatchClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link SyncPoller} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchJob, Void> beginDeleteJob(String jobId) {
-        PollerFlux<BatchJob, Void> asyncPoller = asyncClient.beginDeleteJob(jobId);
+    public SyncPoller<BatchJob, BatchJob> beginDeleteJob(String jobId) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginDeleteJob(jobId);
         return asyncPoller.getSyncPoller();
     }
 
@@ -11435,13 +12336,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for jobScheduleExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11513,11 +12414,12 @@ public final class BatchClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link SyncPoller} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
-        PollerFlux<BatchJobSchedule, Void> asyncPoller = asyncClient.beginDeleteJobSchedule(jobScheduleId);
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId) {
+        PollerFlux<BatchJobSchedule, BatchJobSchedule> asyncPoller = asyncClient.beginDeleteJobSchedule(jobScheduleId);
         return asyncPoller.getSyncPoller();
     }
 
@@ -11893,11 +12795,11 @@ public final class BatchClient {
     public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath,
         BatchTaskFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11910,7 +12812,7 @@ public final class BatchClient {
         // Retrieve response from getTaskFilePropertiesWithResponse and construct BatchFileProperties from its
         // headers
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -11931,7 +12833,7 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions());
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -11964,17 +12866,17 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNodeUser(String poolId, String nodeId, String userName) {
+    public void deleteNodeUser(String poolId, String nodeId, String username) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
+        deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).getValue();
     }
 
     /**
@@ -12334,11 +13236,11 @@ public final class BatchClient {
     public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
         BatchNodeFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12350,7 +13252,7 @@ public final class BatchClient {
         }
         // Retrieve response from getNodeFilePropertiesWithResponse and construct BatchFileProperties from its headers
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -12371,7 +13273,7 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -12415,10 +13317,10 @@ public final class BatchClient {
     public PagedIterable<BatchApplication> listApplications(BatchApplicationsListOptions options) {
         // Generated convenience method for listApplications
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12451,9 +13353,9 @@ public final class BatchClient {
     public BatchApplication getApplication(String applicationId, BatchApplicationGetOptions options) {
         // Generated convenience method for getApplicationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getApplicationWithResponse(applicationId, requestOptions).getValue().toObject(BatchApplication.class);
     }
@@ -12481,13 +13383,13 @@ public final class BatchClient {
     public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options) {
         // Generated convenience method for listPoolUsageMetrics
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         OffsetDateTime startTime = options == null ? null : options.getStartTime();
-        OffsetDateTime endtime = options == null ? null : options.getEndtime();
+        OffsetDateTime endTime = options == null ? null : options.getEndTime();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12495,8 +13397,8 @@ public final class BatchClient {
         if (startTime != null) {
             requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
         }
-        if (endtime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
+        if (endTime != null) {
+            requestOptions.addQueryParam("endtime", String.valueOf(endTime), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -12519,13 +13421,13 @@ public final class BatchClient {
     public PagedIterable<BatchPool> listPools(BatchPoolsListOptions options) {
         // Generated convenience method for listPools
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12579,13 +13481,13 @@ public final class BatchClient {
     void deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12627,12 +13529,13 @@ public final class BatchClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link SyncPoller} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+    public SyncPoller<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
         RequestConditions requestConditions) {
-        PollerFlux<BatchPool, Void> asyncPoller = asyncClient.beginDeletePool(poolId, options, requestConditions);
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginDeletePool(poolId, options, requestConditions);
         return asyncPoller.getSyncPoller();
     }
 
@@ -12652,15 +13555,15 @@ public final class BatchClient {
     public BatchPool getPool(String poolId, BatchPoolGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -12716,13 +13619,13 @@ public final class BatchClient {
     void stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12784,11 +13687,11 @@ public final class BatchClient {
     public PagedIterable<BatchSupportedImage> listSupportedImages(SupportedBatchImagesListOptions options) {
         // Generated convenience method for listSupportedImages
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12817,11 +13720,11 @@ public final class BatchClient {
     public PagedIterable<BatchPoolNodeCounts> listPoolNodeCounts(BatchPoolNodeCountsListOptions options) {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12857,14 +13760,14 @@ public final class BatchClient {
     void deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -12905,12 +13808,12 @@ public final class BatchClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link SyncPoller} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+    public SyncPoller<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
         RequestConditions requestConditions) {
-        PollerFlux<BatchJob, Void> asyncPoller = asyncClient.beginDeleteJob(jobId, options, requestConditions);
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginDeleteJob(jobId, options, requestConditions);
         return asyncPoller.getSyncPoller();
     }
 
@@ -12930,15 +13833,15 @@ public final class BatchClient {
     public BatchJob getJob(String jobId, BatchJobGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -12992,13 +13895,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13039,13 +13942,13 @@ public final class BatchClient {
     void enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13113,15 +14016,15 @@ public final class BatchClient {
     void terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -13190,13 +14093,13 @@ public final class BatchClient {
     public PagedIterable<BatchJob> listJobs(BatchJobsListOptions options) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13237,13 +14140,13 @@ public final class BatchClient {
         BatchJobsFromScheduleListOptions options) {
         // Generated convenience method for listJobsFromSchedule
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13294,12 +14197,12 @@ public final class BatchClient {
         BatchJobPreparationAndReleaseTaskStatusListOptions options) {
         // Generated convenience method for listJobPreparationAndReleaseTaskStatus
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13341,9 +14244,9 @@ public final class BatchClient {
     public BatchTaskCountsResult getJobTaskCounts(String jobId, BatchJobTaskCountsGetOptions options) {
         // Generated convenience method for getJobTaskCountsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getJobTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(BatchTaskCountsResult.class);
     }
@@ -13370,14 +14273,14 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13415,12 +14318,13 @@ public final class BatchClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link SyncPoller} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId,
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId,
         BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
-        PollerFlux<BatchJobSchedule, Void> asyncPoller
+        PollerFlux<BatchJobSchedule, BatchJobSchedule> asyncPoller
             = asyncClient.beginDeleteJobSchedule(jobScheduleId, options, requestConditions);
         return asyncPoller.getSyncPoller();
     }
@@ -13442,15 +14346,15 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13506,13 +14410,13 @@ public final class BatchClient {
         BatchJobScheduleReplaceOptions options, RequestConditions requestConditions) {
         // Generated convenience method for replaceJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13549,13 +14453,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13590,13 +14494,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for enableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13631,14 +14535,14 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13695,13 +14599,13 @@ public final class BatchClient {
     public PagedIterable<BatchJobSchedule> listJobSchedules(BatchJobSchedulesListOptions options) {
         // Generated convenience method for listJobSchedules
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13746,13 +14650,13 @@ public final class BatchClient {
     public PagedIterable<BatchTask> listTasks(String jobId, BatchTasksListOptions options) {
         // Generated convenience method for listTasks
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13810,9 +14714,9 @@ public final class BatchClient {
         BatchTaskCollectionCreateOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions).getValue()
             .toObject(BatchCreateTaskCollectionResult.class);
@@ -13841,13 +14745,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13891,15 +14795,15 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13950,13 +14854,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13994,10 +14898,10 @@ public final class BatchClient {
     public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options) {
         // Generated convenience method for listSubTasks
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14031,13 +14935,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14082,13 +14986,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for reactivateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14123,10 +15027,10 @@ public final class BatchClient {
     public void deleteTaskFile(String jobId, String taskId, String filePath, BatchTaskFileDeleteOptions options) {
         // Generated convenience method for deleteTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -14151,12 +15055,12 @@ public final class BatchClient {
     public BinaryData getTaskFile(String jobId, String taskId, String filePath, BatchTaskFileGetOptions options) {
         // Generated convenience method for getTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14189,12 +15093,12 @@ public final class BatchClient {
     public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, BatchTaskFilesListOptions options) {
         // Generated convenience method for listTaskFiles
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14219,7 +15123,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param options Optional parameters for Delete Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -14227,14 +15131,14 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNodeUser(String poolId, String nodeId, String userName, BatchNodeUserDeleteOptions options) {
+    public void deleteNodeUser(String poolId, String nodeId, String username, BatchNodeUserDeleteOptions options) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
+        deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).getValue();
     }
 
     /**
@@ -14253,10 +15157,10 @@ public final class BatchClient {
     public BatchNode getNode(String poolId, String nodeId, BatchNodeGetOptions options) {
         // Generated convenience method for getNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14285,10 +15189,10 @@ public final class BatchClient {
     void rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14335,9 +15239,9 @@ public final class BatchClient {
     void startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         startNodeWithResponse(poolId, nodeId, requestOptions).getValue();
     }
@@ -14383,10 +15287,10 @@ public final class BatchClient {
     void reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14434,10 +15338,10 @@ public final class BatchClient {
     void deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14484,10 +15388,10 @@ public final class BatchClient {
     public void disableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingDisableOptions options) {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDisableSchedulingParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchNodeSchedulingDisableParameters parameters = options == null ? null : options.getParameters();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14513,9 +15417,9 @@ public final class BatchClient {
     public void enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options) {
         // Generated convenience method for enableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
     }
@@ -14544,9 +15448,9 @@ public final class BatchClient {
         BatchNodeRemoteLoginSettingsGetOptions options) {
         // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).getValue()
             .toObject(BatchNodeRemoteLoginSettings.class);
@@ -14567,12 +15471,12 @@ public final class BatchClient {
     public PagedIterable<BatchNode> listNodes(String poolId, BatchNodesListOptions options) {
         // Generated convenience method for listNodes
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14609,10 +15513,10 @@ public final class BatchClient {
         BatchNodeExtensionGetOptions options) {
         // Generated convenience method for getNodeExtensionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14643,11 +15547,11 @@ public final class BatchClient {
         BatchNodeExtensionsListOptions options) {
         // Generated convenience method for listNodeExtensions
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14679,10 +15583,10 @@ public final class BatchClient {
     public void deleteNodeFile(String poolId, String nodeId, String filePath, BatchNodeFileDeleteOptions options) {
         // Generated convenience method for deleteNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -14707,12 +15611,12 @@ public final class BatchClient {
     public BinaryData getNodeFile(String poolId, String nodeId, String filePath, BatchNodeFileGetOptions options) {
         // Generated convenience method for getNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14745,12 +15649,12 @@ public final class BatchClient {
     public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, BatchNodeFilesListOptions options) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14783,9 +15687,9 @@ public final class BatchClient {
     public void createPool(BatchPoolCreateParameters pool, BatchPoolCreateOptions options) {
         // Generated convenience method for createPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).getValue();
     }
@@ -14831,13 +15735,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updatePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14902,13 +15806,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15028,9 +15932,9 @@ public final class BatchClient {
         BatchPoolPropertiesReplaceOptions options) {
         // Generated convenience method for replacePoolPropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
     }
@@ -15077,13 +15981,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15192,13 +16096,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15264,13 +16168,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15397,9 +16301,9 @@ public final class BatchClient {
     public void createJob(BatchJobCreateParameters job, BatchJobCreateOptions options) {
         // Generated convenience method for createJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         createJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
     }
@@ -15453,13 +16357,13 @@ public final class BatchClient {
         BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for updateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15515,9 +16419,9 @@ public final class BatchClient {
     public void createJobSchedule(BatchJobScheduleCreateParameters jobSchedule, BatchJobScheduleCreateOptions options) {
         // Generated convenience method for createJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions).getValue();
     }
@@ -15557,9 +16461,9 @@ public final class BatchClient {
     public void createTask(String jobId, BatchTaskCreateParameters task, BatchTaskCreateOptions options) {
         // Generated convenience method for createTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
     }
@@ -15606,9 +16510,9 @@ public final class BatchClient {
         BatchNodeUserCreateOptions options) {
         // Generated convenience method for createNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
     }
@@ -15645,7 +16549,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param options Optional parameters for Replace Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15654,15 +16558,15 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters parameters,
+    public void replaceNodeUser(String poolId, String nodeId, String username, BatchNodeUserUpdateParameters parameters,
         BatchNodeUserReplaceOptions options) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+        replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
             .getValue();
     }
 
@@ -15676,7 +16580,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15684,11 +16588,11 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceNodeUser(String poolId, String nodeId, String userName,
+    public void replaceNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserUpdateParameters parameters) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+        replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
             .getValue();
     }
 
@@ -15717,9 +16621,9 @@ public final class BatchClient {
         UploadBatchServiceLogsParameters parameters, BatchNodeLogsUploadOptions options) {
         // Generated convenience method for uploadNodeLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions).getValue()
             .toObject(UploadBatchServiceLogsResult.class);
@@ -15754,30 +16658,6 @@ public final class BatchClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -15804,55 +16684,6 @@ public final class BatchClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @param options Optional parameters for Enable Pool AutoScale operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters,
-        BatchPoolEnableAutoScaleOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -15876,9 +16707,9 @@ public final class BatchClient {
         BatchPoolEvaluateAutoScaleOptions options) {
         // Generated convenience method for evaluatePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue()
             .toObject(AutoScaleRun.class);
@@ -15898,10 +16729,83 @@ public final class BatchClient {
     public void disablePoolAutoScale(String poolId, BatchPoolDisableAutoScaleOptions options) {
         // Generated convenience method for disablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @param options Optional parameters for Enable Pool AutoScale operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters,
+        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
     }
 }

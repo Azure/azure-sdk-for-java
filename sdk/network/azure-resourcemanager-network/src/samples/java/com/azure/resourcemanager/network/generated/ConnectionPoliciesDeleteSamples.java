@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ConnectionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ConnectionPolicyDelete.json
+     * x-ms-original-file: 2025-09-01/ConnectionPolicyDelete.json
      */
     /**
      * Sample code: ConnectionPolicyDelete.

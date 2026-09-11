@@ -195,6 +195,7 @@ public final class AudioVisualContent extends AnalysisContent {
         jsonWriter.writeStringField("path", getPath());
         jsonWriter.writeStringField("markdown", getMarkdown());
         jsonWriter.writeMapField("fields", getFields(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", getMetadata(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeLongField("startTimeMs", this.startTimeMs);
         jsonWriter.writeLongField("endTimeMs", this.endTimeMs);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
@@ -228,6 +229,7 @@ public final class AudioVisualContent extends AnalysisContent {
             String path = null;
             String markdown = null;
             Map<String, ContentField> fields = null;
+            Map<String, String> metadata = null;
             long startTimeMs = 0L;
             long endTimeMs = 0L;
             AnalysisContentKind kind = AnalysisContentKind.AUDIO_VISUAL;
@@ -252,6 +254,8 @@ public final class AudioVisualContent extends AnalysisContent {
                     markdown = reader.getString();
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.readMap(reader1 -> ContentField.fromJson(reader1));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("startTimeMs".equals(fieldName)) {
                     startTimeMs = reader.getLong();
                 } else if ("endTimeMs".equals(fieldName)) {
@@ -283,6 +287,7 @@ public final class AudioVisualContent extends AnalysisContent {
             deserializedAudioVisualContent.setPath(path);
             deserializedAudioVisualContent.setMarkdown(markdown);
             deserializedAudioVisualContent.setFields(fields);
+            deserializedAudioVisualContent.setMetadata(metadata);
             deserializedAudioVisualContent.kind = kind;
             deserializedAudioVisualContent.width = width;
             deserializedAudioVisualContent.height = height;

@@ -24,7 +24,7 @@ public final class ScheduledActionsListResourcesMockTests {
     @Test
     public void testListResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wtoaukhfk\",\"id\":\"cisiz\",\"type\":\"a\",\"resourceId\":\"dsxjwuivedw\",\"notificationSettings\":[{\"destination\":\"eewxeiqbpsmg\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
+            = "{\"value\":[{\"name\":\"ek\",\"id\":\"eeksnbksdqhjvyk\",\"type\":\"eslk\",\"resourceId\":\"hustcpoqmavnwqjw\",\"notificationSettings\":[{\"destination\":\"nlejjjkxybwf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"ztensvkzykjtj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"wushcdp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"rmgjfbpkuwx\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +34,10 @@ public final class ScheduledActionsListResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ScheduledActionResource> response
-            = manager.scheduledActions().listResources("eeyaswl", "augmrmfjlr", com.azure.core.util.Context.NONE);
+            = manager.scheduledActions().listResources("xaptefhexcgjok", "ljnhvlqj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dsxjwuivedw", response.iterator().next().resourceId());
-        Assertions.assertEquals("eewxeiqbpsmg", response.iterator().next().notificationSettings().get(0).destination());
+        Assertions.assertEquals("hustcpoqmavnwqjw", response.iterator().next().resourceId());
+        Assertions.assertEquals("nlejjjkxybwf", response.iterator().next().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.iterator().next().notificationSettings().get(0).language());

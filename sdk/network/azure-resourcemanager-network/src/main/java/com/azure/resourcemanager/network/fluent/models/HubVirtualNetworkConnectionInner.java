@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.EnableOnlyIpv6PeeringState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import java.io.IOException;
@@ -228,6 +229,30 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
             this.innerProperties = new HubVirtualNetworkConnectionProperties();
         }
         this.innerProperties().withRoutingConfiguration(routingConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the enableOnlyIpv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @return the enableOnlyIpv6Peering value.
+     */
+    public EnableOnlyIpv6PeeringState enableOnlyIpv6Peering() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableOnlyIpv6Peering();
+    }
+
+    /**
+     * Set the enableOnlyIpv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @param enableOnlyIpv6Peering the enableOnlyIpv6Peering value to set.
+     * @return the HubVirtualNetworkConnectionInner object itself.
+     */
+    public HubVirtualNetworkConnectionInner
+        withEnableOnlyIpv6Peering(EnableOnlyIpv6PeeringState enableOnlyIpv6Peering) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withEnableOnlyIpv6Peering(enableOnlyIpv6Peering);
         return this;
     }
 

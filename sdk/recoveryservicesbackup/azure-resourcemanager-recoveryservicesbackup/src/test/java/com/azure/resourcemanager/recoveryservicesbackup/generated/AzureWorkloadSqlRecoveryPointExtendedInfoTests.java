@@ -14,13 +14,11 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSqlRecoveryPointExtendedInfo model = BinaryData.fromString(
-            "{\"dataDirectoryTimeInUTC\":\"2021-06-03T07:07:15Z\",\"dataDirectoryPaths\":[{\"type\":\"Log\",\"path\":\"qupevzh\",\"logicalName\":\"totxhojujb\"}],\"includedDatabases\":[{\"datasourceId\":\"mc\",\"datasourceName\":\"hixbjxyfwnyl\"},{\"datasourceId\":\"ool\",\"datasourceName\":\"tpkiwkkbnujry\"},{\"datasourceId\":\"tylbfpncurdoiw\",\"datasourceName\":\"thtywub\"},{\"datasourceId\":\"bihwqknfdnt\",\"datasourceName\":\"chrdgoihxumwcto\"}]}")
+            "{\"dataDirectoryTimeInUTC\":\"2021-06-25T06:45:10Z\",\"dataDirectoryPaths\":[{\"type\":\"Data\",\"path\":\"fzeeyebizik\",\"logicalName\":\"uhqlbjbsybbqwrvt\"},{\"type\":\"Log\",\"path\":\"fp\",\"logicalName\":\"mpipaslthaqfxs\"},{\"type\":\"Log\",\"path\":\"twbdsrezpdrhn\",\"logicalName\":\"yowqkdwytisibir\"}]}")
             .toObject(AzureWorkloadSqlRecoveryPointExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T07:07:15Z"), model.dataDirectoryTimeInUtc());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("qupevzh", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("totxhojujb", model.dataDirectoryPaths().get(0).logicalName());
-        Assertions.assertEquals("mc", model.includedDatabases().get(0).datasourceId());
-        Assertions.assertEquals("hixbjxyfwnyl", model.includedDatabases().get(0).datasourceName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T06:45:10Z"), model.dataDirectoryTimeInUtc());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("fzeeyebizik", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("uhqlbjbsybbqwrvt", model.dataDirectoryPaths().get(0).logicalName());
     }
 }

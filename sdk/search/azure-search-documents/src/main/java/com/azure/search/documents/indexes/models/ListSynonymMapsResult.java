@@ -70,11 +70,29 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
                 if ("value".equals(fieldName)) {
                     List<SynonymMap> synonymMaps = reader.readArray(reader1 -> SynonymMap.fromJson(reader1));
                     deserializedListSynonymMapsResult.synonymMaps = synonymMaps;
+                } else if ("@odata.nextLink".equals(fieldName)) {
+                    deserializedListSynonymMapsResult.odataNextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedListSynonymMapsResult;
         });
+    }
+
+    /*
+     * The URL that can be used to fetch the next set of results.
+     */
+    @Generated
+    private String odataNextLink;
+
+    /**
+     * Get the odataNextLink property: The URL that can be used to fetch the next set of results.
+     *
+     * @return the odataNextLink value.
+     */
+    @Generated
+    public String getOdataNextLink() {
+        return this.odataNextLink;
     }
 }

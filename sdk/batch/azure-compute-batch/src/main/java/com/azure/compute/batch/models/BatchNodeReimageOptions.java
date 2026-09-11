@@ -14,13 +14,6 @@ import java.time.Duration;
 public final class BatchNodeReimageOptions {
 
     /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
-    /*
      * The options to use for reimaging the Compute Node.
      */
     @Generated
@@ -34,20 +27,6 @@ public final class BatchNodeReimageOptions {
     }
 
     /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
-     */
-    @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.timeOutInSeconds);
-    }
-
-    /**
      * Get the parameters property: The options to use for reimaging the Compute Node.
      *
      * @return the parameters value.
@@ -55,23 +34,6 @@ public final class BatchNodeReimageOptions {
     @Generated
     public BatchNodeReimageParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchNodeReimageOptions object itself.
-     */
-    @Generated
-    public BatchNodeReimageOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
-        } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
-        }
-        return this;
     }
 
     /**
@@ -83,6 +45,44 @@ public final class BatchNodeReimageOptions {
     @Generated
     public BatchNodeReimageOptions setParameters(BatchNodeReimageParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
+     */
+    @Generated
+    private Long timeout;
+
+    /**
+     * Get the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeout value.
+     */
+    @Generated
+    public Duration getTimeout() {
+        if (this.timeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeout);
+    }
+
+    /**
+     * Set the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeout the timeout value to set.
+     * @return the BatchNodeReimageOptions object itself.
+     */
+    @Generated
+    public BatchNodeReimageOptions setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
+        } else {
+            this.timeout = timeout.getSeconds();
+        }
         return this;
     }
 }

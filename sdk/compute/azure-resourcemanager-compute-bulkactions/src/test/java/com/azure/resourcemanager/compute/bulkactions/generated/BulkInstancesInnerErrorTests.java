@@ -12,9 +12,9 @@ public final class BulkInstancesInnerErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkInstancesInnerError model
-            = BinaryData.fromString("{\"exceptionType\":\"qvpsvuoymg\",\"errorDetail\":\"elvezrypq\"}")
+            = BinaryData.fromString("{\"exceptionType\":\"rnntiewdjcv\",\"errorDetail\":\"uwrbehwagoh\"}")
                 .toObject(BulkInstancesInnerError.class);
-        Assertions.assertEquals("qvpsvuoymg", model.exceptionType());
-        Assertions.assertEquals("elvezrypq", model.errorDetail());
+        Assertions.assertEquals("rnntiewdjcv", model.exceptionType());
+        Assertions.assertEquals("uwrbehwagoh", model.errorDetail());
     }
 }

@@ -75,6 +75,12 @@
 
 - Updated `api-version` of policy to `2025-03-01`.
 
+### azure-resourcemanager-keyvault
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-02-01`.
+
 ### Other Changes
 
 #### Dependency Updates

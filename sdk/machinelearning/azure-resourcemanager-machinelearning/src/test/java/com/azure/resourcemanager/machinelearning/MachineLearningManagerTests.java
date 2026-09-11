@@ -75,6 +75,7 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
+        // AzurePipelinesCredential performs a synchronous OIDC token request on first use, so initialize it before asynchronous resource creation.
         resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI

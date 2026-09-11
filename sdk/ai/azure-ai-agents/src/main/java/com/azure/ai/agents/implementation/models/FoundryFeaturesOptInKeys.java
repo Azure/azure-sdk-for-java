@@ -34,9 +34,9 @@ public enum FoundryFeaturesOptInKeys {
     MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview"),
 
     /**
-     * Enum value Routines=V1Preview.
+     * Enum value Routines=V2Preview.
      */
-    ROUTINES_V1_PREVIEW("Routines=V1Preview"),
+    ROUTINES_V2_PREVIEW("Routines=V2Preview"),
 
     /**
      * Enum value Skills=V1Preview.

@@ -5,12 +5,16 @@
 package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
-import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Async sample demonstrating how to list all analyzers.
@@ -27,27 +31,24 @@ public class Sample07_ListAnalyzersAsyncTest extends ContentUnderstandingClientT
 
         // BEGIN:ContentUnderstandingListAnalyzersAsync
         // List all analyzers
-        PagedFlux<ContentAnalyzer> analyzers = contentUnderstandingAsyncClient.listAnalyzers();
+        List<ContentAnalyzer> analyzers = contentUnderstandingAsyncClient.listAnalyzers().collectList().block();
 
         System.out.println("Listing all analyzers:");
         System.out.println("======================");
 
-        final int[] count = { 0 };
-        final int[] prebuiltCount = { 0 };
-        final int[] customCount = { 0 };
+        int prebuiltCount = 0;
+        int customCount = 0;
 
-        analyzers.toIterable().forEach(analyzer -> {
-            count[0]++;
-
-            // Determine if this is a prebuilt or custom analyzer
+        for (int index = 0; index < analyzers.size(); index++) {
+            ContentAnalyzer analyzer = analyzers.get(index);
             boolean isPrebuilt = analyzer.getAnalyzerId().startsWith("prebuilt-");
             if (isPrebuilt) {
-                prebuiltCount[0]++;
+                prebuiltCount++;
             } else {
-                customCount[0]++;
+                customCount++;
             }
 
-            System.out.println("\nAnalyzer #" + count[0] + ":");
+            System.out.println("\nAnalyzer #" + (index + 1) + ":");
             System.out.println("  ID: " + analyzer.getAnalyzerId());
             System.out.println("  Type: " + (isPrebuilt ? "Prebuilt" : "Custom"));
 
@@ -80,12 +81,12 @@ public class Sample07_ListAnalyzersAsyncTest extends ContentUnderstandingClientT
             if (analyzer.getTags() != null && !analyzer.getTags().isEmpty()) {
                 System.out.println("  Tags: " + analyzer.getTags().size() + " tag(s)");
             }
-        });
+        }
 
         System.out.println("\n======================");
-        System.out.println("Total analyzers: " + count[0]);
-        System.out.println("  Prebuilt: " + prebuiltCount[0]);
-        System.out.println("  Custom: " + customCount[0]);
+        System.out.println("Total analyzers: " + analyzers.size());
+        System.out.println("  Prebuilt: " + prebuiltCount);
+        System.out.println("  Custom: " + customCount);
         // END:ContentUnderstandingListAnalyzersAsync
 
         // BEGIN:Assertion_ContentUnderstandingListAnalyzersAsync
@@ -93,54 +94,48 @@ public class Sample07_ListAnalyzersAsyncTest extends ContentUnderstandingClientT
         System.out.println("\nAnalyzers list retrieved successfully");
 
         // Verify we have at least the prebuilt analyzers
-        assertTrue(count[0] > 0, "Should have at least one analyzer");
-        assertTrue(prebuiltCount[0] > 0, "Should have at least one prebuilt analyzer");
-        System.out.println("Verified: Found " + count[0] + " total analyzer(s)");
-        System.out.println("Verified: Found " + prebuiltCount[0] + " prebuilt analyzer(s)");
-        if (customCount[0] > 0) {
-            System.out.println("Verified: Found " + customCount[0] + " custom analyzer(s)");
+        assertFalse(analyzers.isEmpty(), "Should have at least one analyzer");
+        assertTrue(prebuiltCount > 0, "Should have at least one prebuilt analyzer");
+        assertEquals(analyzers.size(), prebuiltCount + customCount,
+            "Total count should equal prebuilt plus custom count");
+        System.out.println("Verified: Found " + analyzers.size() + " total analyzer(s)");
+        System.out.println("Verified: Found " + prebuiltCount + " prebuilt analyzer(s)");
+        if (customCount > 0) {
+            System.out.println("Verified: Found " + customCount + " custom analyzer(s)");
         }
 
-        // Verify each analyzer has required properties
-        final int[] validatedCount = { 0 };
-        analyzers.toIterable().forEach(analyzer -> {
-            if (validatedCount[0] < 5) {
-                assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
-                assertFalse(analyzer.getAnalyzerId().trim().isEmpty(), "Analyzer ID should not be empty");
-                assertNotNull(analyzer.getStatus(), "Analyzer status should not be null");
-                validatedCount[0]++;
+        // Verify every analyzer has required properties and a unique ID
+        Set<String> analyzerIds = new HashSet<>();
+        int validatedPrebuiltCount = 0;
+        int validatedCustomCount = 0;
+        for (ContentAnalyzer analyzer : analyzers) {
+            assertNotNull(analyzer, "Analyzer should not be null");
+            assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
+            assertFalse(analyzer.getAnalyzerId().trim().isEmpty(), "Analyzer ID should not be empty");
+            assertFalse(analyzer.getAnalyzerId().contains(" "),
+                "Analyzer ID should not contain spaces: " + analyzer.getAnalyzerId());
+            assertNotNull(analyzer.getStatus(), "Analyzer status should not be null");
+            assertTrue(analyzerIds.add(analyzer.getAnalyzerId()),
+                "Analyzer ID should be unique: " + analyzer.getAnalyzerId());
+
+            if (analyzer.getAnalyzerId().startsWith("prebuilt-")) {
+                validatedPrebuiltCount++;
+                assertFalse(analyzer.getAnalyzerId().contains("_"),
+                    "Prebuilt analyzer ID should use hyphens, not underscores: " + analyzer.getAnalyzerId());
+            } else {
+                validatedCustomCount++;
             }
-        });
+        }
+
+        assertEquals(analyzers.size(), analyzerIds.size(), "All analyzer IDs should be unique");
+        assertEquals(prebuiltCount, validatedPrebuiltCount, "Prebuilt count should match validated analyzers");
+        assertEquals(customCount, validatedCustomCount, "Custom count should match validated analyzers");
+
+        assertTrue(analyzerIds.contains("prebuilt-document"), "Should contain prebuilt-document");
+        assertTrue(analyzerIds.contains("prebuilt-documentSearch"), "Should contain prebuilt-documentSearch");
+        assertTrue(analyzerIds.contains("prebuilt-invoice"), "Should contain prebuilt-invoice");
 
         System.out.println("All analyzer list properties validated successfully");
         // END:Assertion_ContentUnderstandingListAnalyzersAsync
-    }
-
-    @Test
-    public void testListAnalyzersWithMaxResultsAsync() {
-        // List all analyzers and filter for ready ones
-        PagedFlux<ContentAnalyzer> analyzers = contentUnderstandingAsyncClient.listAnalyzers();
-
-        System.out.println("\nListing ready analyzers:");
-        System.out.println("========================");
-
-        final int[] readyCount = { 0 };
-        analyzers.toIterable().forEach(analyzer -> {
-            if (analyzer.getStatus() != null && "ready".equalsIgnoreCase(analyzer.getStatus().toString())) {
-                readyCount[0]++;
-                System.out.println("\nReady Analyzer #" + readyCount[0] + ":");
-                System.out.println("  ID: " + analyzer.getAnalyzerId());
-                if (analyzer.getDescription() != null) {
-                    System.out.println("  Description: " + analyzer.getDescription());
-                }
-            }
-        });
-
-        System.out.println("\n========================");
-        System.out.println("Total ready analyzers: " + readyCount[0]);
-
-        // Verify
-        assertTrue(readyCount[0] > 0, "Should have at least one ready analyzer");
-        System.out.println("Verified: Found " + readyCount[0] + " ready analyzer(s)");
     }
 }

@@ -6,20 +6,37 @@ package com.azure.resourcemanager.horizondb.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
+import com.azure.resourcemanager.horizondb.models.PrivateEndpoint;
+import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.horizondb.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.horizondb.models.PrivateLinkServiceConnectionState;
 import org.junit.jupiter.api.Assertions;
 
 public final class PrivateEndpointConnectionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"groupIds\":[\"gcpo\"],\"privateEndpoint\":{\"id\":\"aajrm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zrlovmclwhijcoej\",\"actionsRequired\":\"bzaqsqsycbkbfk\"},\"provisioningState\":\"Creating\"},\"id\":\"kexxppof\",\"name\":\"xaxcfjpgddtocjjx\",\"type\":\"vpmouexhdzxib\"}")
+            "{\"properties\":{\"groupIds\":[\"yip\"],\"privateEndpoint\":{\"id\":\"qwpgrjbzn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xv\",\"actionsRequired\":\"byxqabn\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cyshurzafbljjgp\",\"name\":\"toqcjmklja\",\"type\":\"bqidtqaj\"}")
             .toObject(PrivateEndpointConnectionResourceInner.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("zrlovmclwhijcoej",
-            model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("bzaqsqsycbkbfk",
-            model.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("xv", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("byxqabn", model.properties().privateLinkServiceConnectionState().actionsRequired());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointConnectionResourceInner model
+            = new PrivateEndpointConnectionResourceInner()
+                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                        .withDescription("xv")
+                        .withActionsRequired("byxqabn")));
+        model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionResourceInner.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            model.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("xv", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("byxqabn", model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

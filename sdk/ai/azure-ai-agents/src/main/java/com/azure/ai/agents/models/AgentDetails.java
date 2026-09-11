@@ -97,6 +97,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             String name = null;
             AgentState state = null;
             AgentDetailsVersions versions = null;
+            AgentStateSource stateSource = null;
             AgentEndpointConfig agentEndpoint = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprintIdentity = null;
@@ -113,6 +114,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     state = AgentState.fromString(reader.getString());
                 } else if ("versions".equals(fieldName)) {
                     versions = AgentDetailsVersions.fromJson(reader);
+                } else if ("state_source".equals(fieldName)) {
+                    stateSource = AgentStateSource.fromString(reader.getString());
                 } else if ("agent_endpoint".equals(fieldName)) {
                     agentEndpoint = AgentEndpointConfig.fromJson(reader);
                 } else if ("instance_identity".equals(fieldName)) {
@@ -129,6 +132,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             }
             AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
             deserializedAgentDetails.state = state;
+            deserializedAgentDetails.stateSource = stateSource;
             deserializedAgentDetails.agentEndpoint = agentEndpoint;
             deserializedAgentDetails.instanceIdentity = instanceIdentity;
             deserializedAgentDetails.blueprintIdentity = blueprintIdentity;
@@ -263,5 +267,23 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Generated
     public AgentState getState() {
         return this.state;
+    }
+
+    /*
+     * The source of the agent's operational state. When the agent is disabled, indicates where the disabled state
+     * originates from. Empty when not derived from a specific source.
+     */
+    @Generated
+    private AgentStateSource stateSource;
+
+    /**
+     * Get the stateSource property: The source of the agent's operational state. When the agent is disabled, indicates
+     * where the disabled state originates from. Empty when not derived from a specific source.
+     *
+     * @return the stateSource value.
+     */
+    @Generated
+    public AgentStateSource getStateSource() {
+        return this.stateSource;
     }
 }

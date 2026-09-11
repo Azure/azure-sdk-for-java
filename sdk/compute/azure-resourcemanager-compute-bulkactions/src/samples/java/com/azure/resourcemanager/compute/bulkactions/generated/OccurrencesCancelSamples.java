@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Cancel_MaximumSet.

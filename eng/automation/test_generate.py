@@ -3,6 +3,7 @@ import tempfile
 import unittest
 
 from generate import update_revapi_skip
+from generate_utils import should_remove_generated_source_code
 from utils import is_first_release
 
 POM_WITH_REVAPI_TRUE = """\
@@ -132,6 +133,15 @@ class TestIsFirstRelease(unittest.TestCase):
     def test_missing_file_returns_false(self):
         sdk_root = self._make_sdk_root(None)
         self.assertFalse(is_first_release(sdk_root, self.GROUP, self.MODULE))
+
+
+class TestGeneratedSourceCleanup(unittest.TestCase):
+
+    def test_resources_module_cleanup_is_disabled(self):
+        self.assertFalse(should_remove_generated_source_code("azure-resourcemanager-resources"))
+
+    def test_other_module_cleanup_is_enabled(self):
+        self.assertTrue(should_remove_generated_source_code("azure-resourcemanager-compute"))
 
 
 if __name__ == "__main__":

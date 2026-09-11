@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class InterconnectGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/InterconnectGroupDelete.json
+     * x-ms-original-file: 2025-09-01/InterconnectGroupDelete.json
      */
     /**
      * Sample code: Delete interconnect group.

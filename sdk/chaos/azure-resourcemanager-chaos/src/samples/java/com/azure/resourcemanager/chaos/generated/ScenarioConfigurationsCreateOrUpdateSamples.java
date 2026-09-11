@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-import com.azure.resourcemanager.chaos.models.ConfigurationExclusions;
-import com.azure.resourcemanager.chaos.models.ConfigurationFilters;
 import com.azure.resourcemanager.chaos.models.KeyValuePair;
+import com.azure.resourcemanager.chaos.models.ResourceTargeting;
+import com.azure.resourcemanager.chaos.models.ResourceTargetingCriteria;
 import com.azure.resourcemanager.chaos.models.ScenarioConfigurationProperties;
 import java.util.Arrays;
 
@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ScenarioConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
      */
     /**
      * Sample code: Create or update a scenario configuration with physical zone targeting.
@@ -30,15 +30,15 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
             .withProperties(new ScenarioConfigurationProperties().withScenarioId(
                 "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012")
                 .withParameters(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("PT10M")))
-                .withExclusions(new ConfigurationExclusions().withResources(Arrays.asList(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))
-                .withFilters(new ConfigurationFilters().withLocations(Arrays.asList("westus2"))
-                    .withPhysicalZones(Arrays.asList("westus2-az1"))))
+                .withResourceTargeting(new ResourceTargeting()
+                    .withInclude(new ResourceTargetingCriteria().withPhysicalZones(Arrays.asList("westus2-az1")))
+                    .withExclude(new ResourceTargetingCriteria().withResources(Arrays.asList(
+                        "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a scenario configuration.
@@ -55,12 +55,15 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
                     new KeyValuePair().withKey("fakeTokenPlaceholder")
                         .withValue(
                             "[\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm1\",\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm2\"]")))
-                .withExclusions(new ConfigurationExclusions().withResources(Arrays.asList(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"))
-                    .withTags(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("production")))
-                    .withTypes(Arrays.asList("Microsoft.Compute/virtualMachineScaleSets")))
-                .withFilters(
-                    new ConfigurationFilters().withLocations(Arrays.asList("eastus")).withZones(Arrays.asList("1"))))
+                .withResourceTargeting(new ResourceTargeting()
+                    .withInclude(new ResourceTargetingCriteria().withLocations(Arrays.asList("eastus"))
+                        .withZones(Arrays.asList("1")))
+                    .withExclude(new ResourceTargetingCriteria()
+                        .withTypes(Arrays.asList("Microsoft.Compute/virtualMachineScaleSets"))
+                        .withTags(
+                            Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("production")))
+                        .withResources(Arrays.asList(
+                            "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))))
             .create();
     }
 }

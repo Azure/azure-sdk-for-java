@@ -150,7 +150,7 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -192,7 +192,7 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -289,7 +289,7 @@ public final class CommitsClientImpl implements CommitsClient {
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -339,7 +339,7 @@ public final class CommitsClientImpl implements CommitsClient {
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -539,7 +539,7 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkManagerName, commitName, context))
@@ -580,7 +580,7 @@ public final class CommitsClientImpl implements CommitsClient {
         if (commitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter commitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, commitName, context);
@@ -765,7 +765,7 @@ public final class CommitsClientImpl implements CommitsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -811,7 +811,7 @@ public final class CommitsClientImpl implements CommitsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -380,6 +380,123 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         encryptClient.upload(BinaryData.fromBytes(data), true);
     }
 
+    // Cross-SDK interoperability: Java must decrypt CSE v2 blobs written by other SDKs, whose per-region GCM nonces
+    // encode the region counter differently than Java's. This exercises a container of Python-produced blobs. Requires
+    // a container coordinated between languages; run manually. Verification/reorder-detection of the nonce schemes is
+    // covered without a live account by DecryptorV2ReorderTests.
+    @Disabled
+    @Test
+    public void crossPlatDecryptPythonV2() {
+        // The Python azure-storage-blob KeyWrapper("key1") test helper wraps the CEK with A256KW using this fixed KEK.
+        byte[] kek = fromHex("bea4114b9e4a07da664683ad2bad76412043e8bc90a4117d47c30fd4b4196d11");
+        AsyncKeyEncryptionKey key = new A256KwKey("key1", kek);
+
+        String containerName = "cross-sdk-cse-v2";
+        String endpoint = ENV.getPrimaryAccount().getBlobEndpoint();
+
+        // Reference plaintext uploaded alongside the encrypted blob.
+        BlobClient plaintextClient = new BlobClientBuilder().endpoint(endpoint)
+            .containerName(containerName)
+            .blobName("python_plaintext")
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .buildClient();
+        byte[] expected = plaintextClient.downloadContent().toBytes();
+
+        // Decrypt the Python-encrypted blob (Python nonce scheme) and confirm it round-trips without a false reorder.
+        EncryptedBlobClient decryptionClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2).endpoint(endpoint)
+            .containerName(containerName)
+            .blobName("python_encrypted")
+            .key(key, "A256KW")
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient();
+        ByteArrayOutputStream decrypted = new ByteArrayOutputStream();
+        decryptionClient.downloadStream(decrypted);
+
+        assertArraysEqual(expected, decrypted.toByteArray());
+    }
+
+    // Cross-SDK interoperability: Java must decrypt CSE v2 blobs written by other SDKs, whose per-region GCM nonces
+    // encode the region counter differently than Java's. This exercises a container of .NET-produced blobs. Requires
+    // a container coordinated between languages; run manually. Verification/reorder-detection of the nonce schemes is
+    // covered without a live account by DecryptorV2ReorderTests.
+    @Disabled
+    @Test
+    public void crossPlatDecryptDotnetV2() {
+        // A256KW (RFC 3394) key wrap with the fixed KEK coordinated across the .NET/Python/Java cross-SDK tests. .NET's
+        // test helper stores the key under the id "local:key1" (Python uses "key1"), so the id must match here.
+        byte[] kek = fromHex("bea4114b9e4a07da664683ad2bad76412043e8bc90a4117d47c30fd4b4196d11");
+        AsyncKeyEncryptionKey key = new A256KwKey("local:key1", kek);
+
+        String containerName = "cross-sdk-cse-v2";
+        String endpoint = ENV.getPrimaryAccount().getBlobEndpoint();
+
+        // Reference plaintext uploaded alongside the encrypted blob.
+        BlobClient plaintextClient = new BlobClientBuilder().endpoint(endpoint)
+            .containerName(containerName)
+            .blobName("dotnet_plaintext")
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .buildClient();
+        byte[] expected = plaintextClient.downloadContent().toBytes();
+
+        // Decrypt the .NET-encrypted blob (.NET nonce scheme) and confirm it round-trips without a false reorder.
+        EncryptedBlobClient decryptionClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2).endpoint(endpoint)
+            .containerName(containerName)
+            .blobName("dotnet_encrypted")
+            .key(key, "A256KW")
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient();
+        ByteArrayOutputStream decrypted = new ByteArrayOutputStream();
+        decryptionClient.downloadStream(decrypted);
+
+        assertArraysEqual(expected, decrypted.toByteArray());
+    }
+
+    private static byte[] fromHex(String hex) {
+        byte[] out = new byte[hex.length() / 2];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = (byte) Integer.parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+        }
+        return out;
+    }
+
+    // AES key-wrap (A256KW / RFC 3394) key encryption key, matching the wrapping used by other SDKs' test helpers.
+    static final class A256KwKey implements AsyncKeyEncryptionKey {
+        private final String keyId;
+        private final javax.crypto.SecretKey kek;
+
+        A256KwKey(String keyId, byte[] kekBytes) {
+            this.keyId = keyId;
+            this.kek = new SecretKeySpec(kekBytes, "AES");
+        }
+
+        @Override
+        public Mono<String> getKeyId() {
+            return Mono.just(keyId);
+        }
+
+        @Override
+        public Mono<byte[]> wrapKey(String algorithm, byte[] key) {
+            try {
+                Cipher cipher = Cipher.getInstance("AESWrap");
+                cipher.init(Cipher.WRAP_MODE, kek);
+                return Mono.just(cipher.wrap(new SecretKeySpec(key, "AES")));
+            } catch (GeneralSecurityException e) {
+                return Mono.error(e);
+            }
+        }
+
+        @Override
+        public Mono<byte[]> unwrapKey(String algorithm, byte[] encryptedKey) {
+            try {
+                Cipher cipher = Cipher.getInstance("AESWrap");
+                cipher.init(Cipher.UNWRAP_MODE, kek);
+                return Mono.just(cipher.unwrap(encryptedKey, "AES", Cipher.SECRET_KEY).getEncoded());
+            } catch (GeneralSecurityException e) {
+                return Mono.error(e);
+            }
+        }
+    }
+
     static class NoOpKey implements AsyncKeyEncryptionKey {
         @Override
         public Mono<String> getKeyId() {
@@ -597,6 +714,50 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         bec.setMetadata(metadata);
 
         assertThrows(Exception.class, () -> bec.downloadStream(new ByteArrayOutputStream()));
+    }
+
+    @LiveOnly
+    @Test
+    public void encryptionV2DetectRegionReorder() {
+        // Region must be large enough for at least a few regions; use the minimum region size to keep the blob small.
+        int regionDataLength = 16;
+        int regionCount = 4;
+        int regionTotalLength = NONCE_LENGTH + regionDataLength + TAG_LENGTH;
+        byte[] plaintext = getRandomByteArray(regionDataLength * regionCount);
+
+        String blobName = generateBlobName();
+        EncryptedBlobClient encryptedClient = new EncryptedBlobClient(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
+                .blobName(blobName)
+                .clientSideEncryptionOptions(
+                    new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionDataLength))
+                .buildEncryptedBlobAsyncClient());
+
+        // Upload with encryption.
+        encryptedClient.upload(BinaryData.fromBytes(plaintext));
+
+        // Download the raw ciphertext (bypassing decryption) and preserve its encryption metadata.
+        BlobClient plainClient = cc.getBlobClient(blobName);
+        byte[] ciphertext = plainClient.downloadContent().toBytes();
+        Map<String, String> metadata = plainClient.getProperties().getMetadata();
+
+        // Swap two otherwise-untampered authenticated regions and re-upload the tampered ciphertext.
+        swapRegions(ciphertext, 2, 3, regionTotalLength);
+        plainClient.upload(BinaryData.fromBytes(ciphertext), true);
+        plainClient.setMetadata(metadata);
+
+        // The reordering must now be detected on download.
+        assertThrows(Exception.class, () -> encryptedClient.downloadStream(new ByteArrayOutputStream()));
+    }
+
+    private static void swapRegions(byte[] buffer, int leftRegion, int rightRegion, int regionLength) {
+        int leftOffset = leftRegion * regionLength;
+        int rightOffset = rightRegion * regionLength;
+        for (int i = 0; i < regionLength; i++) {
+            byte temp = buffer[leftOffset + i];
+            buffer[leftOffset + i] = buffer[rightOffset + i];
+            buffer[rightOffset + i] = temp;
+        }
     }
 
     @Test

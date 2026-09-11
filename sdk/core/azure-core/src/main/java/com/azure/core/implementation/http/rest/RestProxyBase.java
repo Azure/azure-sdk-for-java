@@ -35,13 +35,17 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -211,6 +215,30 @@ public abstract class RestProxyBase {
         // body as an Object.
         ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
+    }
+
+    static final class ResponseBodyOwner implements Closeable {
+        private final AtomicBoolean closed = new AtomicBoolean();
+        private final HttpResponse response;
+
+        ResponseBodyOwner(HttpResponse response) {
+            this.response = response;
+        }
+
+        Flux<ByteBuffer> getBody() {
+            return getBody(response.getBody());
+        }
+
+        Flux<ByteBuffer> getBody(Flux<ByteBuffer> responseBody) {
+            return Flux.using(() -> this, ignored -> responseBody, ResponseBodyOwner::close);
+        }
+
+        @Override
+        public void close() {
+            if (closed.compareAndSet(false, true)) {
+                response.close();
+            }
+        }
     }
 
     /**

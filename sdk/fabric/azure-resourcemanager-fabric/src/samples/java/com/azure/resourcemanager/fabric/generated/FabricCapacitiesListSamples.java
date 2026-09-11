@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class FabricCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListBySubscription.json
+     * x-ms-original-file: 2026-08-01-preview/FabricCapacities_ListBySubscription.json
      */
     /**
      * Sample code: List capacities by subscription.

@@ -31,6 +31,11 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      */
     private OfferDetails offerDetails;
 
+    /*
+     * ARM ID of the Marketplace SaaS resource. Only used in Create operations.
+     */
+    private String saaSResourceId;
+
     /**
      * Creates an instance of MarketplaceDetails class.
      */
@@ -87,14 +92,35 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
     }
 
     /**
+     * Get the saaSResourceId property: ARM ID of the Marketplace SaaS resource. Only used in Create operations.
+     * 
+     * @return the saaSResourceId value.
+     */
+    public String saaSResourceId() {
+        return this.saaSResourceId;
+    }
+
+    /**
+     * Set the saaSResourceId property: ARM ID of the Marketplace SaaS resource. Only used in Create operations.
+     * 
+     * @param saaSResourceId the saaSResourceId value to set.
+     * @return the MarketplaceDetails object itself.
+     */
+    public MarketplaceDetails withSaaSResourceId(String saaSResourceId) {
+        this.saaSResourceId = saaSResourceId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("offerDetails", this.offerDetails);
         jsonWriter.writeStringField("subscriptionStatus",
             this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        jsonWriter.writeJsonField("offerDetails", this.offerDetails);
+        jsonWriter.writeStringField("saaSResourceId", this.saaSResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,7 +130,6 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      * @param jsonReader The JsonReader being read.
      * @return An instance of MarketplaceDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MarketplaceDetails.
      */
     public static MarketplaceDetails fromJson(JsonReader jsonReader) throws IOException {
@@ -114,13 +139,15 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("offerDetails".equals(fieldName)) {
-                    deserializedMarketplaceDetails.offerDetails = OfferDetails.fromJson(reader);
-                } else if ("subscriptionId".equals(fieldName)) {
+                if ("subscriptionId".equals(fieldName)) {
                     deserializedMarketplaceDetails.subscriptionId = reader.getString();
                 } else if ("subscriptionStatus".equals(fieldName)) {
                     deserializedMarketplaceDetails.subscriptionStatus
                         = MarketplaceSubscriptionStatus.fromString(reader.getString());
+                } else if ("offerDetails".equals(fieldName)) {
+                    deserializedMarketplaceDetails.offerDetails = OfferDetails.fromJson(reader);
+                } else if ("saaSResourceId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.saaSResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

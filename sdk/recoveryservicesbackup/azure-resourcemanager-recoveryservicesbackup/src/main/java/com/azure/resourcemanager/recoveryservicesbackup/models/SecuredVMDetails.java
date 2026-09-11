@@ -21,6 +21,12 @@ public final class SecuredVMDetails implements JsonSerializable<SecuredVMDetails
      */
     private String securedVmosDiskEncryptionSetId;
 
+    /*
+     * Data disk encryption settings for Secured VM. This will be used to provide Disk Encryption Set Id for each data
+     * disk.
+     */
+    private DataDiskEncryptionSettings dataDiskEncryptionSettings;
+
     /**
      * Creates an instance of SecuredVMDetails class.
      */
@@ -48,12 +54,35 @@ public final class SecuredVMDetails implements JsonSerializable<SecuredVMDetails
     }
 
     /**
+     * Get the dataDiskEncryptionSettings property: Data disk encryption settings for Secured VM. This will be used to
+     * provide Disk Encryption Set Id for each data disk.
+     * 
+     * @return the dataDiskEncryptionSettings value.
+     */
+    public DataDiskEncryptionSettings dataDiskEncryptionSettings() {
+        return this.dataDiskEncryptionSettings;
+    }
+
+    /**
+     * Set the dataDiskEncryptionSettings property: Data disk encryption settings for Secured VM. This will be used to
+     * provide Disk Encryption Set Id for each data disk.
+     * 
+     * @param dataDiskEncryptionSettings the dataDiskEncryptionSettings value to set.
+     * @return the SecuredVMDetails object itself.
+     */
+    public SecuredVMDetails withDataDiskEncryptionSettings(DataDiskEncryptionSettings dataDiskEncryptionSettings) {
+        this.dataDiskEncryptionSettings = dataDiskEncryptionSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("securedVMOsDiskEncryptionSetId", this.securedVmosDiskEncryptionSetId);
+        jsonWriter.writeJsonField("dataDiskEncryptionSettings", this.dataDiskEncryptionSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,6 +103,9 @@ public final class SecuredVMDetails implements JsonSerializable<SecuredVMDetails
 
                 if ("securedVMOsDiskEncryptionSetId".equals(fieldName)) {
                     deserializedSecuredVMDetails.securedVmosDiskEncryptionSetId = reader.getString();
+                } else if ("dataDiskEncryptionSettings".equals(fieldName)) {
+                    deserializedSecuredVMDetails.dataDiskEncryptionSettings
+                        = DataDiskEncryptionSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
