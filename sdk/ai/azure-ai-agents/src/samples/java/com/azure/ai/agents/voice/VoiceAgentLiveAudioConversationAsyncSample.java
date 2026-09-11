@@ -159,10 +159,11 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
 
     private static final class AudioProcessor implements AutoCloseable {
         private static final int CHUNK_BYTES = 2400;
+        private static final int MAX_PLAYBACK_CHUNKS = 8;
         private static final byte[] STOP = new byte[0];
         private final VoiceAgentWebSocketSessionAsyncClient session;
         private final AudioFormat format = new AudioFormat(VoiceAgentRealtimeSampleUtils.SAMPLE_RATE, 16, 1, true, false);
-        private final BlockingQueue<byte[]> playback = new LinkedBlockingQueue<>();
+        private final BlockingQueue<byte[]> playback = new LinkedBlockingQueue<>(MAX_PLAYBACK_CHUNKS);
         private final AtomicBoolean running = new AtomicBoolean();
         private TargetDataLine microphone;
         private SourceDataLine speaker;
@@ -228,7 +229,11 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
 
         void queueAudio(byte[] pcm) {
             if (pcm != null && pcm.length > 0) {
-                playback.offer(pcm);
+                try {
+                    playback.put(pcm);
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
 
