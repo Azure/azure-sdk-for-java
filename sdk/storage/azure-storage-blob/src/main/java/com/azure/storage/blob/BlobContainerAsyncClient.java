@@ -137,10 +137,8 @@ public final class BlobContainerAsyncClient {
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion)
-            .buildClient();
+        this.azureBlobStorage
+            = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;

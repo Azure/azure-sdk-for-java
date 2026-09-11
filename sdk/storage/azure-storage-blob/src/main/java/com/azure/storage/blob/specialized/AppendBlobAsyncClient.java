@@ -325,9 +325,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions, requestOptions)
             .map(rb -> {
                 AppendBlobsCreateHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null,
-                    hd.getVersionId());
+                AppendBlobItem item
+                    = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(), hd.isServerEncrypted(),
+                        hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null, hd.getVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -525,21 +525,18 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         CpkInfo cpk = getCustomerProvidedKey();
 
         return BinaryData.fromFlux(data, length, false)
-            .flatMap(binaryData -> this.appendBlobClientInternal
-                .appendBlockWithResponse(length, binaryData, null, opts.getContentMd5(), null,
-                    requestConditions.getLeaseId(), requestConditions.getMaxSize(),
-                    requestConditions.getAppendPosition(), cpk == null ? null : cpk.getEncryptionKey(),
-                    cpk == null ? null : cpk.getEncryptionKeySha256(),
-                    cpk == null ? null : cpk.getEncryptionAlgorithm(),
-                    encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
-                    requestConditions.getTagsConditions(), null, null, requestConditions,
-                    appendBlobRequestOptions(context)))
+            .flatMap(binaryData -> this.appendBlobClientInternal.appendBlockWithResponse(length, binaryData, null,
+                opts.getContentMd5(), null, requestConditions.getLeaseId(), requestConditions.getMaxSize(),
+                requestConditions.getAppendPosition(), cpk == null ? null : cpk.getEncryptionKey(),
+                cpk == null ? null : cpk.getEncryptionKeySha256(), cpk == null ? null : cpk.getEncryptionAlgorithm(),
+                encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
+                requestConditions.getTagsConditions(), null, null, requestConditions,
+                appendBlobRequestOptions(context)))
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item
-                    = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
-                        hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
-                        hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount(), null, hd.getContentCrc64());
+                AppendBlobItem item = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMd5(), hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount(), null, hd.getContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -687,10 +684,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 destRequestConditions, appendBlobRequestOptions(context))
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item
-                    = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
-                        hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
-                        hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount(), null, hd.getContentCrc64());
+                AppendBlobItem item = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMd5(), hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount(), null, hd.getContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -750,7 +746,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.appendBlobClientInternal
             .sealWithResponse(null, requestConditions.getLeaseId(), requestConditions.getAppendPosition(),
                 requestConditions, appendBlobRequestOptions(context))
-            .map(rb -> rb);
+            .map(rb -> (Response<Void>) rb);
     }
 
     /**

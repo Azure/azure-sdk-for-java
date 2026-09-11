@@ -66,14 +66,6 @@ public class BlobStorageCustomizations extends Customization {
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
         "src/main/java/module-info.java");
 
-    // Multipart batch plumbing for the submitBatch operation. The blob package models that request body as
-    // BinaryData and the batch clients live in azure-storage-blob-batch, so nothing references these; the emitter
-    // also generates them with a JsonSerializable bound that does not compile for an XML model.
-    // Nothing is removed here. SubmitBatchRequest/BodyFileDetails were dropped while the generated convenience
-    // clients were being deleted and nothing referenced them; the relocated BlobService*/BlobContainer*ClientInternal
-    // clients use SubmitBatchRequest for submitBatch, so they are retained.
-    private static final List<String> GENERATED_MODELS_TO_REMOVE = Arrays.asList();
-
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
@@ -98,9 +90,7 @@ public class BlobStorageCustomizations extends Customization {
         for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
             removeFileIfPresent(editor, path, logger);
         }
-        for (String className : GENERATED_MODELS_TO_REMOVE) {
-            removeFileIfPresent(editor, PKG_ROOT + "implementation/models/" + className + ".java", logger);
-        }
+
     }
 
     private static void removeFileIfPresent(Editor editor, String path, Logger logger) {

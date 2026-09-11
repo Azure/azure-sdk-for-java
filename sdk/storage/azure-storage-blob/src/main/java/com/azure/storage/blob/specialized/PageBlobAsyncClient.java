@@ -354,9 +354,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 immutabilityPolicy.getPolicyMode(), options.isLegalHold(), requestConditions, requestOptions)
             .map(rb -> {
                 PageBlobsCreateHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null,
-                    hd.getVersionId());
+                PageBlobItem item
+                    = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(), hd.isServerEncrypted(),
+                        hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -576,17 +576,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         CpkInfo cpk = getCustomerProvidedKey();
 
         return BinaryData.fromFlux(body, length, false)
-            .flatMap(binaryData -> this.pageBlobClientInternal
-            .uploadPagesWithResponse(length, pageRangeStr, binaryData, opts.getContentMd5(), null, null,
-                pageBlobRequestConditions.getLeaseId(), cpk == null ? null : cpk.getEncryptionKey(),
-                cpk == null ? null : cpk.getEncryptionKeySha256(),
+            .flatMap(binaryData -> this.pageBlobClientInternal.uploadPagesWithResponse(length, pageRangeStr, binaryData,
+                opts.getContentMd5(), null, null, pageBlobRequestConditions.getLeaseId(),
+                cpk == null ? null : cpk.getEncryptionKey(), cpk == null ? null : cpk.getEncryptionKeySha256(),
                 cpk == null ? null : cpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
-                pageBlobRequestConditions.getIfSequenceNumberEqualTo(),
-                pageBlobRequestConditions.getTagsConditions(), null, null, pageBlobRequestConditions,
-                pageBlobRequestOptions(context)))
+                pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getTagsConditions(),
+                null, null, pageBlobRequestConditions, pageBlobRequestOptions(context)))
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
@@ -773,14 +771,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 options.getSourceContentMd5(), null, null, cpk == null ? null : cpk.getEncryptionKey(),
                 cpk == null ? null : cpk.getEncryptionKeySha256(), cpk == null ? null : cpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
-                destRequestConditions.getLeaseId(),
-                destRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
+                destRequestConditions.getLeaseId(), destRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 destRequestConditions.getIfSequenceNumberLessThan(), destRequestConditions.getIfSequenceNumberEqualTo(),
                 destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), sourceAuth, options.getSourceShareTokenIntent(),
-                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, destRequestConditions,
-                pageBlobRequestOptions(context))
+                sourceRequestConditions.getIfNoneMatch(), sourceAuth, options.getSourceShareTokenIntent(), sourceCpkKey,
+                sourceCpkKeySha256, sourceCpkAlgorithm, destRequestConditions, pageBlobRequestOptions(context))
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
@@ -876,9 +872,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
-                pageBlobRequestConditions.getIfSequenceNumberEqualTo(),
-                pageBlobRequestConditions.getTagsConditions(), pageBlobRequestConditions,
-                pageBlobRequestOptions(context))
+                pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getTagsConditions(),
+                pageBlobRequestConditions, pageBlobRequestOptions(context))
             .map(rb -> {
                 PageBlobsClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
@@ -961,9 +956,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         context = context == null ? Context.NONE : context;
 
         return this.pageBlobClientInternal
-            .getPageRangesWithResponse(getSnapshotId(), null, blobRange.toHeaderValue(),
-                requestConditions.getLeaseId(), requestConditions.getTagsConditions(), null, null, requestConditions,
-                pageBlobRequestOptions(context))
+            .getPageRangesWithResponse(getSnapshotId(), null, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+                requestConditions.getTagsConditions(), null, null, requestConditions, pageBlobRequestOptions(context))
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue()));
     }
@@ -1066,12 +1060,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
-        return StorageImplUtils.applyOptionalTimeout(
-            this.pageBlobClientInternal.getPageRangesWithResponse(getSnapshotId(), null,
-                options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
-                requestConditions.getTagsConditions(), marker, options.getMaxResultsPerPage(), requestConditions,
-                pageBlobRequestOptions(context)),
-            timeout);
+        return StorageImplUtils.applyOptionalTimeout(this.pageBlobClientInternal.getPageRangesWithResponse(
+            getSnapshotId(), null, options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+            requestConditions.getTagsConditions(), marker, options.getMaxResultsPerPage(), requestConditions,
+            pageBlobRequestOptions(context)), timeout);
     }
 
     private static PageRangeItem toPageBlobRange(PageRange range) {
@@ -1379,12 +1371,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
-        return StorageImplUtils.applyOptionalTimeout(this.pageBlobClientInternal
-            .getPageRangesDiffWithResponse(getSnapshotId(), null, options.getPreviousSnapshot(), null,
-                options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
-                requestConditions.getTagsConditions(), marker, options.getMaxResultsPerPage(), requestConditions,
-                pageBlobRequestOptions(context)),
-            timeout);
+        return StorageImplUtils.applyOptionalTimeout(this.pageBlobClientInternal.getPageRangesDiffWithResponse(
+            getSnapshotId(), null, options.getPreviousSnapshot(), null, options.getRange().toHeaderValue(),
+            requestConditions.getLeaseId(), requestConditions.getTagsConditions(), marker,
+            options.getMaxResultsPerPage(), requestConditions, pageBlobRequestOptions(context)), timeout);
     }
 
     /**
@@ -1456,9 +1446,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         CpkInfo cpk = getCustomerProvidedKey();
 
         return this.pageBlobClientInternal
-            .resizeWithResponse(size, null, requestConditions.getLeaseId(),
-                cpk == null ? null : cpk.getEncryptionKey(), cpk == null ? null : cpk.getEncryptionKeySha256(),
-                cpk == null ? null : cpk.getEncryptionAlgorithm(),
+            .resizeWithResponse(size, null, requestConditions.getLeaseId(), cpk == null ? null : cpk.getEncryptionKey(),
+                cpk == null ? null : cpk.getEncryptionKeySha256(), cpk == null ? null : cpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
                 requestConditions.getTagsConditions(), requestConditions, pageBlobRequestOptions(context))
             .map(rb -> {
@@ -1542,10 +1531,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
         context = context == null ? Context.NONE : context;
 
-        return this.pageBlobClientInternal
-            .setSequenceNumberWithResponse(action, null, requestConditions.getLeaseId(),
-                requestConditions.getTagsConditions(), sequenceNumber, requestConditions,
-                pageBlobRequestOptions(context))
+        return this.pageBlobClientInternal.setSequenceNumberWithResponse(action, null, requestConditions.getLeaseId(),
+            requestConditions.getTagsConditions(), sequenceNumber, requestConditions, pageBlobRequestOptions(context))
             .map(rb -> {
                 PageBlobsSetSequenceNumberHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,

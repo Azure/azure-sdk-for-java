@@ -460,11 +460,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
         return dataMono.flatMap(data -> this.blockBlobClientInternal
             .uploadWithResponse(options.getLength(), data, null, null, options.getContentMd5(),
-                uploadHeaders.getContentType(), uploadHeaders.getContentEncoding(),
-                uploadHeaders.getContentLanguage(), uploadHeaders.getContentMd5(), uploadHeaders.getCacheControl(),
-                requestConditions.getLeaseId(), uploadHeaders.getContentDisposition(),
-                cpk == null ? null : cpk.getEncryptionKey(), cpk == null ? null : cpk.getEncryptionKeySha256(),
-                cpk == null ? null : cpk.getEncryptionAlgorithm(),
+                uploadHeaders.getContentType(), uploadHeaders.getContentEncoding(), uploadHeaders.getContentLanguage(),
+                uploadHeaders.getContentMd5(), uploadHeaders.getCacheControl(), requestConditions.getLeaseId(),
+                uploadHeaders.getContentDisposition(), cpk == null ? null : cpk.getEncryptionKey(),
+                cpk == null ? null : cpk.getEncryptionKeySha256(), cpk == null ? null : cpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getTier(),
                 requestConditions.getTagsConditions(), ModelHelper.tagsToString(options.getTags()),
                 immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
@@ -619,22 +618,20 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders fromUrlHeaders = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
         CpkInfo fromUrlCpk = getCustomerProvidedKey();
 
-        return this.blockBlobClientInternal
-            .uploadBlobFromUrlWithResponse(options.getSourceUrl(), null, null, null, fromUrlHeaders.getContentType(),
-                fromUrlHeaders.getContentEncoding(), fromUrlHeaders.getContentLanguage(),
-                fromUrlHeaders.getContentMd5(), fromUrlHeaders.getCacheControl(),
-                destinationRequestConditions.getLeaseId(), fromUrlHeaders.getContentDisposition(),
-                fromUrlCpk == null ? null : fromUrlCpk.getEncryptionKey(),
-                fromUrlCpk == null ? null : fromUrlCpk.getEncryptionKeySha256(),
-                fromUrlCpk == null ? null : fromUrlCpk.getEncryptionAlgorithm(),
-                encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getTier(),
-                destinationRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
-                sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(),
-                options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
-                options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(),
-                options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
-                destinationRequestConditions, blockBlobRequestOptions(context))
+        return this.blockBlobClientInternal.uploadBlobFromUrlWithResponse(options.getSourceUrl(), null, null, null,
+            fromUrlHeaders.getContentType(), fromUrlHeaders.getContentEncoding(), fromUrlHeaders.getContentLanguage(),
+            fromUrlHeaders.getContentMd5(), fromUrlHeaders.getCacheControl(), destinationRequestConditions.getLeaseId(),
+            fromUrlHeaders.getContentDisposition(), fromUrlCpk == null ? null : fromUrlCpk.getEncryptionKey(),
+            fromUrlCpk == null ? null : fromUrlCpk.getEncryptionKeySha256(),
+            fromUrlCpk == null ? null : fromUrlCpk.getEncryptionAlgorithm(),
+            encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getTier(),
+            destinationRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
+            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+            sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(),
+            options.getContentMd5(), ModelHelper.tagsToString(options.getTags()), options.isCopySourceBlobProperties(),
+            sourceAuth, ModelHelper.toCopySourceTags(options.getCopySourceTagsMode()),
+            options.getSourceShareTokenIntent(), sourceCpkKey,
+            sourceCpkKeySha256, sourceCpkAlgorithm, destinationRequestConditions, blockBlobRequestOptions(context))
             .map(rb -> {
                 BlockBlobsUploadBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
@@ -802,7 +799,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 stageCpk == null ? null : stageCpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(), null, null,
                 blockBlobRequestOptions(context))
-            .map(rb -> rb);
+            .map(rb -> (Response<Void>) rb);
 
     }
 
@@ -947,7 +944,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), sourceAuth,
                 options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
                 blockBlobRequestOptions(context))
-            .map(rb -> rb);
+            .map(rb -> (Response<Void>) rb);
     }
 
     /**

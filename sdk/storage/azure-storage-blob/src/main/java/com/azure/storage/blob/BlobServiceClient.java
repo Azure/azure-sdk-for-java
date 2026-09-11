@@ -120,10 +120,8 @@ public final class BlobServiceClient {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion)
-            .buildClient();
+        this.azureBlobStorage
+            = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -528,17 +526,14 @@ public final class BlobServiceClient {
         RequestOptionsHelper.addOptionalQueryParam(requestOptions, "marker", marker);
         RequestOptionsHelper.addOptionalQueryParam(requestOptions, "maxresults", options.getMaxResultsPerPage());
 
-        Callable<Response<BinaryData>> operation = () -> this.azureBlobStorage.getServices()
-            .filterBlobsWithResponse(options.getQuery(), requestOptions);
+        Callable<Response<BinaryData>> operation
+            = () -> this.azureBlobStorage.getServices().filterBlobsWithResponse(options.getQuery(), requestOptions);
 
-        Response<BinaryData> response
-            = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+        Response<BinaryData> response = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
         FilterBlobSegment segment = ModelHelper.deserializeXmlBody(response.getValue(), FilterBlobSegment::fromXml);
 
-        List<TaggedBlobItem> value = segment.getBlobs()
-            .stream()
-            .map(ModelHelper::populateTaggedBlobItem)
-            .collect(Collectors.toList());
+        List<TaggedBlobItem> value
+            = segment.getBlobs().stream().map(ModelHelper::populateTaggedBlobItem).collect(Collectors.toList());
 
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), value,
             segment.getNextMarker(), null);
@@ -595,8 +590,7 @@ public final class BlobServiceClient {
         RequestOptions requestOptions = RequestOptionsHelper.requestOptions(finalContext);
         Callable<Response<BinaryData>> operation
             = () -> this.azureBlobStorage.getServices().getPropertiesWithResponse(requestOptions);
-        Response<BinaryData> response
-            = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+        Response<BinaryData> response = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
         return new SimpleResponse<>(response,
             ModelHelper.deserializeXmlBody(response.getValue(), BlobServiceProperties::fromXml));
@@ -832,12 +826,13 @@ public final class BlobServiceClient {
         }
 
         Callable<Response<BinaryData>> operation = () -> this.azureBlobStorage.getServices()
-            .getUserDelegationKeyWithResponse(ModelHelper.serializeXmlBody(new KeyInfo()
-                .setStart(options.getStartsOn() == null
-                    ? ""
-                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
-                .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                .setDelegatedUserTenantId(options.getDelegatedUserTenantId())),
+            .getUserDelegationKeyWithResponse(
+                ModelHelper.serializeXmlBody(new KeyInfo()
+                    .setStart(options.getStartsOn() == null
+                        ? ""
+                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId())),
                 RequestOptionsHelper.requestOptions(finalContext));
 
         Response<BinaryData> response = sendRequest(operation, timeout, BlobStorageException.class);

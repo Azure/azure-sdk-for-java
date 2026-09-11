@@ -124,10 +124,8 @@ public final class BlobServiceAsyncClient {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion)
-            .buildClient();
+        this.azureBlobStorage
+            = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -641,10 +639,8 @@ public final class BlobServiceAsyncClient {
             .map(response -> {
                 FilterBlobSegment segment
                     = ModelHelper.deserializeXmlBody(response.getValue(), FilterBlobSegment::fromXml);
-                List<TaggedBlobItem> value = segment.getBlobs()
-                    .stream()
-                    .map(ModelHelper::populateTaggedBlobItem)
-                    .collect(Collectors.toList());
+                List<TaggedBlobItem> value
+                    = segment.getBlobs().stream().map(ModelHelper::populateTaggedBlobItem).collect(Collectors.toList());
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     value, segment.getNextMarker(), null);
             });
@@ -945,11 +941,10 @@ public final class BlobServiceAsyncClient {
         }
 
         return this.azureBlobStorage.getServices()
-            .getUserDelegationKeyWithResponseAsync(
-                ModelHelper.serializeXmlBody(
-                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                        .setDelegatedUserTenantId(delegatedUserTenantId)),
+            .getUserDelegationKeyWithResponseAsync(ModelHelper.serializeXmlBody(
+                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+                    .setDelegatedUserTenantId(delegatedUserTenantId)),
                 RequestOptionsHelper.requestOptions(context))
             .map(rb -> new SimpleResponse<>(rb,
                 ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml)));

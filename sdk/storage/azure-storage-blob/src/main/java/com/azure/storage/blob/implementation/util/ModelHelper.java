@@ -18,6 +18,7 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersCo
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobCopySourceTags;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
@@ -29,6 +30,7 @@ import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
@@ -798,6 +800,21 @@ public final class ModelHelper {
                 requestOptions.addHeader(METADATA_HEADER_PREFIX + entry.getKey(), entry.getValue());
             }
         }
+    }
+
+    /**
+     * Maps the public {@link BlobCopySourceTagsMode} onto the generated {@link BlobCopySourceTags}.
+     * <p>
+     * The spec models the copy source tags mode as a closed enum, so the emitter generates an internal
+     * {@code enum} while the shipped public type is an {@link com.azure.core.util.ExpandableStringEnum}. Both carry
+     * the same wire values, so the bridge is a value lookup. Remove once the spec exposes the type as an open union
+     * named {@code BlobCopySourceTagsMode} for java.
+     *
+     * @param mode The public copy source tags mode; may be {@code null}.
+     * @return The generated equivalent, or {@code null} if {@code mode} is {@code null}.
+     */
+    public static BlobCopySourceTags toCopySourceTags(BlobCopySourceTagsMode mode) {
+        return mode == null ? null : BlobCopySourceTags.fromString(mode.toString());
     }
 
     private ModelHelper() {
