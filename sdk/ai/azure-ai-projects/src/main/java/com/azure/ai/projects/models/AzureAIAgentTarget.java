@@ -17,7 +17,7 @@ import java.util.List;
  * Represents a target specifying an Azure AI agent.
  */
 @Fluent
-public final class AzureAIAgentTarget extends FoundryEvaluationTarget {
+public final class AzureAIAgentTarget extends Target {
 
     /*
      * The type of target.
