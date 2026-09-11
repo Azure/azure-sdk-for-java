@@ -1,4 +1,4 @@
 directory: specification/storage/data-plane/BlobStorage
-commit: 32e60969d6fd4ed0004390f2f0d4c7791fff03a7
+commit: e24c2db6b65d8878faa97dae06d4cc33b95fe55c
 repo: gunjansingh-msft/azure-rest-api-specs
 additionalDirectories: []
