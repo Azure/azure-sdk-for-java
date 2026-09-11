@@ -112,7 +112,7 @@ extends:
                   pwsh: true
                   workingDirectory: $(Pipeline.Workspace)
                 displayName: 'Generate Linting Reports'
-                condition: and(succeededOrFailed(), ne(variables['LintingGoals'], ''))
+                condition: and(always(), ne(variables['LintingGoals'], ''))
 
               - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                 parameters:

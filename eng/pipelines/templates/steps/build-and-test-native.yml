@@ -126,7 +126,7 @@ steps:
   - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
-    condition: succeededOrFailed()
+    condition: always()
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/TEST-*.xml'

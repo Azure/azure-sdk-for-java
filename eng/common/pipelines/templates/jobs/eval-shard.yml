@@ -53,12 +53,12 @@ jobs:
           displayName: 'Publish $(shardName) JUnit'
           artifactName: 'eval-result-$(shardName)-$(System.JobAttempt)'
           targetPath: $(Build.ArtifactStagingDirectory)/junit
-          condition: succeededOrFailed()
+          condition: always()
         - output: pipelineArtifact
           displayName: 'Publish $(shardName) transcripts (on failure)'
           artifactName: 'eval-debug-$(shardName)-$(System.JobAttempt)'
           targetPath: $(Build.ArtifactStagingDirectory)/debug
-          condition: and(succeededOrFailed(), failed())
+          condition: failed()
     steps:
       - checkout: self
         fetchDepth: 1
@@ -129,7 +129,7 @@ jobs:
           mkdir -p "$(Build.ArtifactStagingDirectory)/junit" "$(Build.ArtifactStagingDirectory)/debug"
           find "$(Build.SourcesDirectory)/artifacts/vally-results/$(shardName)" -name '*.junit.xml' -exec cp {} "$(Build.ArtifactStagingDirectory)/junit/" \;
         displayName: 'Collect $(shardName) JUnit'
-        condition: succeededOrFailed()
+        condition: always()
 
       # On a real failure keep transcripts; strip JUnit so Summary can't double-count it.
       - script: |
@@ -141,4 +141,4 @@ jobs:
             find "$dest" -name '*.junit.xml' -delete
           fi
         displayName: 'Collect $(shardName) transcripts (on failure)'
-        condition: and(succeededOrFailed(), failed())
+        condition: failed()

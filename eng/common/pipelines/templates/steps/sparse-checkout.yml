@@ -144,4 +144,4 @@ steps:
     - pwsh: |
         git config unset --global "http.extraheader"
       displayName: Removing git config auth header
-      condition: succeededOrFailed()
+      condition: always()

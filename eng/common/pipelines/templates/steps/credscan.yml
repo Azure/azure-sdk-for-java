@@ -52,4 +52,4 @@ steps:
 - pwsh: |
     Write-Host "Please check https://aka.ms/azsdk/credscan for more information about the cred scan failure."
   displayName: CredScan troubleshooting guide
-  condition: and(succeededOrFailed(), failed(), ne(variables['SKIP_CREDSCAN'], true))
+  condition: and(failed(), ne(variables['SKIP_CREDSCAN'], true))

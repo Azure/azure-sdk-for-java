@@ -72,7 +72,7 @@ jobs:
           artifactName: 'repository-$(System.JobName)'
           targetPath: '$(System.DefaultWorkingDirectory)'
           displayName: 'Capture repo state for analysis'
-          condition: and(succeededOrFailed(), or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule'))))
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
           sbomEnabled: false
 
     steps:
@@ -160,7 +160,7 @@ jobs:
               -LogFileDirectory $(Build.SourcesDirectory)
               -OutputDirectory $(System.DefaultWorkingDirectory)
               -UniqueId $(System.JobName)
-          condition: and(succeededOrFailed(), failed())
+          condition: failed()
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:

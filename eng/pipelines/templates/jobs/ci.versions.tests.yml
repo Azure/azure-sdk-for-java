@@ -54,7 +54,7 @@ jobs:
           artifactName: 'repository-$(System.JobName)'
           targetPath: '$(System.DefaultWorkingDirectory)'
           displayName: 'Capture repo state for analysis'
-          condition: and(succeededOrFailed(), or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule'))))
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
           sbomEnabled: false
 
         - ${{ each versionOverride in parameters.VersionOverrides }}:

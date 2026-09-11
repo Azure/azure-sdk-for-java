@@ -99,7 +99,7 @@ extends:
       - stage: Summary
         displayName: 'Summarize results'
         dependsOn: Eval
-        condition: succeededOrFailed()
+        condition: always()
         jobs:
           - template: /eng/common/pipelines/templates/jobs/eval-summarize.yml
             parameters:

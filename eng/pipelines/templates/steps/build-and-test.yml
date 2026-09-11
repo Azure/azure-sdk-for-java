@@ -257,10 +257,10 @@ steps:
       pwsh: true
       filePath: eng/pipelines/scripts/Update-TestNamesForReporting.ps1
       workingDirectory: $(System.DefaultWorkingDirectory)/sdk
-    condition: succeededOrFailed()
+    condition: always()
 
   - task: PublishTestResults@2
-    condition: succeededOrFailed()
+    condition: always()
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/TEST-*.xml'

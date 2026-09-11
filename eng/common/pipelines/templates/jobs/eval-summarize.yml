@@ -33,7 +33,7 @@ jobs:
             --results-root "$(Pipeline.Workspace)/eval-results" \
             --output-path "$(Build.ArtifactStagingDirectory)/eval-summary.md"
         displayName: 'Render Markdown rollup'
-        condition: succeededOrFailed()
+        condition: always()
 
       - task: PublishTestResults@2
         displayName: 'Publish eval rollup'
