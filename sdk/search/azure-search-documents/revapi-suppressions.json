@@ -1,98 +1,10 @@
 [
   {
-    "extension": "ignored-jackson-databind-removal",
-    "id": "sdk-jackson-removal",
-    "configuration": {
-      "enabled": true,
-      "ignoredPackages": {
-        "com.azure.search.documents.": [
-          "models",
-          "indexes.models"
-        ]
-      }
-    }
-  },
-  {
     "extension": "revapi.differences",
     "id": "sdk-suppressions",
     "configuration": {
       "ignore": true,
       "differences": [
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
-          "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
-          "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
-        },
-        {
-          "code": "java.method.returnTypeChangedCovariantly",
-          "new": {
-            "matcher": "regex",
-            "match": "method com.azure.search.documents.indexes.models.(CognitiveServicesAccountKey|ConditionalSkill|CustomEntityLookupSkill|DefaultCognitiveServicesAccount|DistanceScoringFunction|DocumentExtractionSkill|EntityRecognitionSkill|FreshnessScoringFunction|ImageAnalysisSkill|KeyPhraseExtractionSkill|LanguageDetectionSkill|MagnitudeScoringFunction|MergeSkill|OcrSkill|SentimentSkill|ShaperSkill|SplitSkill|TagScoringFunction|TextTranslationSkill|WebApiSkill) .*"
-          },
-          "justification": "Proper support for fluent setters in subtypes."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String, java.lang.String)",
-          "new": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String)",
-          "justification": "Breaking change in Search 03-01-2025 preview."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method <T> reactor.core.publisher.Mono<com.azure.core.http.rest.Response<T>> com.azure.search.documents.SearchAsyncClient::getDocumentWithResponse(java.lang.String, java.lang.Class<T>, java.util.List<java.lang.String>, com.azure.core.util.Context)",
-          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method reactor.core.publisher.Mono<com.azure.search.documents.util.SearchPagedResponse> com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
-          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(java.lang.String, com.azure.search.documents.models.SearchOptions, com.azure.core.util.Context)",
-          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method com.azure.search.documents.util.SearchPagedResponse com.azure.search.documents.SearchClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
-          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.core.util.Context)",
-          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
-          "justification": "Non-breaking change as class is final."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method java.lang.Double com.azure.search.documents.util.SearchPagedResponse::getCoverage()",
-          "justification": "Non-breaking change as class is final."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method java.util.Map<java.lang.String, java.util.List<com.azure.search.documents.models.FacetResult>> com.azure.search.documents.util.SearchPagedResponse::getFacets()",
-          "justification": "Non-breaking change as class is final."
-        },
-        {
-          "ignore": true,
-          "code": "java.field.enumConstantOrderChanged",
-          "old": "field com.azure.search.documents.SearchServiceVersion.V2026_04_01",
-          "justification": "Non-breaking change: new API version V2026_05_01_PREVIEW inserted before existing version."
-        },
         {
           "ignore": true,
           "code": "java.method.visibilityIncreased",
@@ -101,48 +13,6 @@
             "match": "method void com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\..*::<init>\\(.*\\)"
           },
           "justification": "Non-breaking change: constructor visibility increased on final classes in knowledgebases preview package."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": {
-            "matcher": "regex",
-            "match": "parameter .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieve\\(.*\\)"
-          },
-          "justification": "Intentional breaking change in knowledgebases preview: retrieve() signature restructured, knowledgeBaseName removed from parameters."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.numberOfParametersChanged",
-          "old": {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieveWithResponse\\(.*\\)"
-          },
-          "justification": "Intentional breaking change in knowledgebases preview: retrieveWithResponse() signature restructured."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.search.documents.knowledgebases.models.AIServices",
-          "justification": "Intentional rename in knowledgebases preview: AIServices renamed to AiServices per archboard guidance."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeBaseModelWebSummarizationActivityRecord::get(Input|Output)Tokens\\(\\)"
-          },
-          "justification": "Intentional rename in knowledgebases preview: getInputTokens()/getOutputTokens() renamed to getInputTokensCount()/getOutputTokensCount() per archboard guidance."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeSourceIngestionParameters::(get|set)AIServices\\(.*\\)"
-          },
-          "justification": "Intentional rename in knowledgebases preview: getAIServices()/setAIServices() renamed to getAiServices()/setAiServices() following AIServices to AiServices rename per archboard guidance."
         }
       ]
     }

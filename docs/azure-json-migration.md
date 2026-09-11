@@ -161,8 +161,12 @@ Jackson annotation removals, not removals of unrelated annotations.
 ```
 
 If the file already exists, append the extension to its top-level array.
-See [Adding a RevApi Suppression](contributor/code-quality.md#adding-a-revapi-suppression)
+See [Adding a RevApi Suppression](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md#adding-a-revapi-suppression)
 for discovery and migration details.
+
+Recheck this exception against the latest GA baseline after releases. If removing
+the extension no longer produces Jackson-related RevApi violations, remove it while
+preserving other suppressions. Delete the suppression file if no configuration remains.
 
 ---
 

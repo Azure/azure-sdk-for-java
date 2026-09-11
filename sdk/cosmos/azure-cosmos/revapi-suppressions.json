@@ -11,43 +11,8 @@
           "new": "(class|interface|enum|method|parameter) com\\.azure\\.cosmos\\..*",
           "annotationType": "com\\.azure\\.cosmos\\.util\\.Beta",
           "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
-        },
-        {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "new": "field com.azure.cosmos.models.PartitionKind.MULTI_HASH",
-          "justification": "removing beta tags on PartitionKind MultiHash for hierarchical partitioning GA"
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.cosmos.models.ChangeFeedMetaData",
-          "justification": "Fixes a bug to deserialize the conflictResolutionTimestamp Instant object."
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
-          "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
-        },
-        {
-          "code": "java.annotation.added",
-          "old": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
-          "justification": "Ignore CosmosDiagnosticsContext in CosmosDiagnostics to avoid stackoverflow error."
         }
       ]
-    }
-  },
-  {
-    "extension": "class-and-package-tree-filter-provider",
-    "id": "sdk-api-exclusions",
-    "configuration": {
-      "ignoredClasses": {
-        "com.azure.": [
-          "cosmos.BridgeInternal",
-          "cosmos.CosmosBridgeInternal",
-          "cosmos.models.ModelBridgeInternal",
-          "cosmos.util.UtilBridgeInternal"
-        ]
-      }
     }
   }
 ]

@@ -66,8 +66,8 @@ For example, a narrowly scoped suppression can use:
       "differences": [
         {
           "code": "java.method.visibilityIncreased",
-          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
-          "justification": "Non-breaking change as class is final."
+          "old": "method void com.azure.search.documents.knowledgebases.models.KnowledgeBaseImageContent::<init>(java.lang.String)",
+          "justification": "Non-breaking change: constructor visibility increased on a final class."
         }
       ]
     }
@@ -81,7 +81,7 @@ Keep shared analyzer, versioning, and cross-SDK policy under `eng/lintingconfigs
 move only SDK-specific exceptions into the local file. SDK-specific transform
 configuration, such as Jackson annotation-removal exceptions, preview-annotation
 filters, and approved class exclusions, also belongs in the local file.
-See [Search's configuration](../../sdk/search/azure-search-documents/revapi-suppressions.json)
+See [Search's configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/revapi-suppressions.json)
 for an example.
 
 Empty arrays in prefix-based `allowedPrefixes` or `ignoredPackages` settings match
@@ -98,6 +98,12 @@ When migrating an SDK, remove its matching central exceptions and any redundant
 child-POM file registration. Use `revapi-suppressions.json`, not `revapi.json`, for
 the local configuration. Analysis output remains in `target/revapi.json`, separate
 from the suppression input.
+
+Periodically revalidate SDK-local suppressions against the current GA baseline.
+Check proposed removals together: overlapping rules may each appear unnecessary
+when removed individually, even though at least one is still required. Remove empty
+extension blocks and delete the file when no configuration remains. A missing prior
+GA baseline is inconclusive, not evidence that a suppression is unnecessary.
 
 After building the SDK JAR, run from its directory:
 

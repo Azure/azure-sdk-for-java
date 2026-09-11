@@ -7,15 +7,6 @@
       "differences": [
         {
           "ignore": true,
-          "code": "java.method.visibilityReduced",
-          "old": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>()",
-          "new": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>(java.lang.Long)",
-          "oldVisibility": "public",
-          "newVisibility": "private",
-          "justification": "Changed due to stream-style serialization."
-        },
-        {
-          "ignore": true,
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.monitor.models.AlertSeverity com.azure.resourcemanager.monitor.models.AlertSeverity::fromLong(long)",
           "justification": "Changed due to stream-style serialization."
@@ -27,12 +18,6 @@
           "new": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
           "superClass": "com.azure.core.util.ExpandableStringEnum<com.azure.resourcemanager.monitor.models.AlertSeverity>",
           "justification": "Changed due to stream-style serialization."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(java.lang.String)",
-          "justification": "The property is a constant, and hence not settable."
         },
         {
           "code": "java.method.visibilityReduced",
@@ -52,21 +37,11 @@
         },
         {
           "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.resourcemanager.monitor.models.AlertRuleLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition::anyOf()",
-          "justification": "ActivityLogAlertLeafCondition replaced by AlertRuleAnyOfOrLeafCondition in TypeSpec migration."
-        },
-        {
-          "code": "java.method.removed",
           "old": {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\.ConditionOperator.*"
           },
           "justification": "ConditionOperator changed from enum to ExpandableStringEnum; enum-specific methods removed."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.monitor.models.MetricAlertAction::webhookProperties()",
-          "justification": "webhookProperties() removed in TypeSpec migration."
         },
         {
           "code": "java.class.removed",
@@ -101,30 +76,12 @@
           "justification": "TypeSpec migration: enum changed to ExpandableStringEnum."
         },
         {
-          "code": "java.class.noLongerInheritsFromClass",
-          "old": {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
-          },
-          "justification": "TypeSpec migration: base class changed."
-        },
-        {
           "code": "java.missing.newSuperType",
           "old": {
             "matcher": "regex",
             "match": "(enum|class) com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
           },
           "justification": "TypeSpec migration: super type changed."
-        },
-        {
-          "code": "java.method.returnTypeTypeParametersChanged",
-          "old": "method java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::allOf()",
-          "justification": "TypeSpec migration: allOf() return type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
-        },
-        {
-          "code": "java.method.parameterTypeParameterChanged",
-          "old": "parameter com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::withAllOf(===java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition>===)",
-          "justification": "TypeSpec migration: withAllOf() parameter type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
         },
         {
           "code": "java.method.visibilityIncreased",

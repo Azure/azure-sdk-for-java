@@ -193,7 +193,7 @@ Key steps:
 | Version mismatch | `python eng/versioning/update_versions.py --sr` |
 | Spelling errors | Fix or add to `.vscode/cspell.json` |
 | SpotBugs / Checkstyle | Fix code; see [code-quality.md](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) |
-| RevApi breaking change | Fix the incompatibility, or add an approved exception to the SDK-local `revapi-suppressions.json`; see [RevApi suppressions](code-quality.md#adding-a-revapi-suppression) |
+| RevApi breaking change | Fix the incompatibility, or add an approved exception to the SDK-local `revapi-suppressions.json`; see [RevApi suppressions](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md#adding-a-revapi-suppression) |
 | TypeSpec code outdated | Re-run `tsp-client update` |
 | Insufficient test coverage | Lower thresholds for beta: add `<jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>` to POM |
 

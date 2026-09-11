@@ -85,10 +85,15 @@ Describe 'SDK-local RevApi configuration' -Tag 'UnitTest' {
                 $extension.configuration | Should -Not -BeNullOrEmpty
                 if ($extension.extension -eq 'revapi.differences') {
                     $extension.configuration.ignore | Should -Be $true
+                    @($extension.configuration.differences).Count | Should -BeGreaterThan 0
                     foreach ($difference in $extension.configuration.differences) {
                         $difference.code | Should -Not -BeNullOrEmpty
                         [bool]($difference.old -or $difference.new) | Should -Be $true
                     }
+                } elseif ($extension.extension -eq 'ignored-jackson-databind-removal') {
+                    $extension.configuration.enabled | Should -Be $true
+                    @($extension.configuration.ignoredPackages.PSObject.Properties).Count |
+                        Should -BeGreaterThan 0
                 }
             }
 

@@ -14,14 +14,6 @@
           "justification": "Output-only immutable models' constructors are now private."
         },
         {
-          "code": "java.method.visibilityReduced",
-          "old": {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
-          },
-          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
-        },
-        {
           "code": "java.method.removed",
           "old": {
             "matcher": "regex",
