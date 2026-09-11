@@ -674,7 +674,7 @@ public final class BetaSkillsClient {
     public SkillVersion createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
         // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillVersionFromFilesWithResponseInternal(name,
+        return createSkillVersionFromFilesInternalWithResponse(name,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileFields("files",
                     content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
@@ -853,7 +853,7 @@ public final class BetaSkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
+    Response<BinaryData> createSkillVersionFromFilesInternalWithResponse(String name, BinaryData content,
         RequestOptions requestOptions) {
         // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
         // and hence not generated.
