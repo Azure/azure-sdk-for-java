@@ -15,19 +15,19 @@ import java.io.IOException;
  * Base class for targets with discriminator support.
  */
 @Immutable
-public class Target implements JsonSerializable<Target> {
+public class FoundryEvaluationTarget implements JsonSerializable<FoundryEvaluationTarget> {
 
     /*
      * The type of target.
      */
     @Generated
-    private String type = "Target";
+    private String type = "FoundryEvaluationTarget";
 
     /**
-     * Creates an instance of Target class.
+     * Creates an instance of FoundryEvaluationTarget class.
      */
     @Generated
-    public Target() {
+    public FoundryEvaluationTarget() {
     }
 
     /**
@@ -52,15 +52,15 @@ public class Target implements JsonSerializable<Target> {
     }
 
     /**
-     * Reads an instance of Target from the JsonReader.
+     * Reads an instance of FoundryEvaluationTarget from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Target if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IOException If an error occurs while reading the Target.
+     * @return An instance of FoundryEvaluationTarget if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FoundryEvaluationTarget.
      */
     @Generated
-    public static Target fromJson(JsonReader jsonReader) throws IOException {
+    public static FoundryEvaluationTarget fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -89,19 +89,19 @@ public class Target implements JsonSerializable<Target> {
     }
 
     @Generated
-    static Target fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static FoundryEvaluationTarget fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Target deserializedTarget = new Target();
+            FoundryEvaluationTarget deserializedFoundryEvaluationTarget = new FoundryEvaluationTarget();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedTarget.type = reader.getString();
+                    deserializedFoundryEvaluationTarget.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedTarget;
+            return deserializedFoundryEvaluationTarget;
         });
     }
 }
