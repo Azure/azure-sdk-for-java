@@ -3,20 +3,29 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.QueueMessageEncoding;
+import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.UpdateMessageResult;
 
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class ModelHelper {
@@ -86,8 +95,13 @@ public class ModelHelper {
         }
     }
 
-    public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders headers) {
-        return new QueueProperties(headers.getXMsMeta(), headers.getXMsApproximateMessagesCount());
+    public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders propertiesHeaders) {
+        Long count = propertiesHeaders.getApproximateMessagesCount();
+        return new QueueProperties(propertiesHeaders.getMetadata(), count == null ? 0L : count);
+    }
+
+    public static UpdateMessageResult transformUpdateMessageResult(MessageIdsUpdateHeaders updateHeaders) {
+        return new UpdateMessageResult(updateHeaders.getPopReceipt(), updateHeaders.getTimeNextVisible());
     }
 
     /**
@@ -107,4 +121,31 @@ public class ModelHelper {
         return new QueueStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
+
+    /**
+     * Wire prefix for user-defined queue metadata headers. The generated protocol methods document a single
+     * {@code x-ms-meta} header collection; on the wire each entry is emitted as {@code x-ms-meta-<key>}.
+     */
+
+    /**
+     * Converts a {@code List Queues} response into a {@link PagedResponse} of {@link QueueItem}, preserving
+     * the {@code NextMarker}-based continuation the hand-written paging depends on.
+     * <p>
+     * The service returns an empty {@code NextMarker} element on the final page. {@link com.azure.core.http.rest.PagedFlux}
+     * / {@link com.azure.core.http.rest.PagedIterable} treat any non-null continuation token as "more pages available",
+     * so an empty marker is normalized to {@code null} to terminate paging (mirroring the {@code len(NextMarker) > 0}
+     * check the other language SDKs use).
+     *
+     * @param response The typed list response from {@code getQueuesWithResponse[Async]}.
+     * @return The page of queue items with the continuation token populated from {@code NextMarker}.
+     */
+    public static PagedResponse<QueueItem> toQueueItemPage(Response<ListQueuesSegmentResponse> response) {
+        ListQueuesSegmentResponse body = response.getValue();
+        List<QueueItem> items = (body == null) ? Collections.emptyList() : body.getQueueItems();
+        String nextMarker = (body == null) ? null : body.getNextMarker();
+        String continuationToken = (nextMarker == null || nextMarker.isEmpty()) ? null : nextMarker;
+        return new PagedResponseBase<Void, QueueItem>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), items, continuationToken, null);
+    }
+
 }

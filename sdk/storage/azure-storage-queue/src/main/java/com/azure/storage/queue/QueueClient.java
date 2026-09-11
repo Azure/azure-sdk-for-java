@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -19,21 +20,24 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
-import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesEnqueueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
+import com.azure.storage.queue.implementation.QueueMessageIdsClientInternal;
+import com.azure.storage.queue.implementation.QueueMessagesClientInternal;
+import com.azure.storage.queue.implementation.QueueClientInternal;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
-import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
+import com.azure.storage.queue.implementation.models.PeekedMessages;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
-import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
+import com.azure.storage.queue.implementation.models.ReceivedMessages;
+import com.azure.storage.queue.implementation.models.SignedIdentifiers;
+import com.azure.storage.queue.implementation.models.ListOfSentMessage;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
+import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
-import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -86,6 +90,9 @@ import static com.azure.storage.common.implementation.StorageImplUtils.submitThr
 public final class QueueClient {
     private static final ClientLogger LOGGER = new ClientLogger(QueueClient.class);
     private final AzureQueueStorageImpl azureQueueStorage;
+    private final QueueClientInternal queueClientInternal;
+    private final QueueMessagesClientInternal messagesClientInternal;
+    private final QueueMessageIdsClientInternal messageIdsClientInternal;
     private final String queueName;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
@@ -113,6 +120,9 @@ public final class QueueClient {
         Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueAsyncClient asyncClient) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.azureQueueStorage = azureQueueStorage;
+        this.queueClientInternal = new QueueClientInternal(azureQueueStorage.getQueues());
+        this.messagesClientInternal = new QueueMessagesClientInternal(azureQueueStorage.getMessages());
+        this.messageIdsClientInternal = new QueueMessageIdsClientInternal(azureQueueStorage.getMessageIds());
         this.queueName = queueName;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
@@ -214,8 +224,11 @@ public final class QueueClient {
     public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-                .createNoCustomHeadersWithResponse(queueName, null, metadata, null, finalContext);
+            Supplier<Response<Void>> operation = () -> {
+                RequestOptions requestOptions
+                    = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
+                return this.queueClientInternal.createWithResponse(null, metadata, requestOptions);
+            };
 
             return submitThreadPool(operation, LOGGER, timeout);
         } catch (RuntimeException e) {
@@ -282,8 +295,11 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-                .createNoCustomHeadersWithResponse(queueName, null, metadata, null, finalContext);
+            Supplier<Response<Void>> operation = () -> {
+                RequestOptions requestOptions
+                    = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
+                return this.queueClientInternal.createWithResponse(null, metadata, requestOptions);
+            };
             Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
             return new SimpleResponse<>(response, true);
         } catch (QueueStorageException e) {
@@ -347,8 +363,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-            .deleteNoCustomHeadersWithResponse(queueName, null, null, finalContext);
+        Supplier<Response<Void>> operation = () -> this.queueClientInternal.deleteWithResponse(null,
+            RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
         return submitThreadPool(operation, LOGGER, timeout);
     }
 
@@ -407,8 +423,8 @@ public final class QueueClient {
     public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-                .deleteNoCustomHeadersWithResponse(queueName, null, null, finalContext);
+            Supplier<Response<Void>> operation = () -> this.queueClientInternal.deleteWithResponse(null,
+                RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
             Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
             return new SimpleResponse<>(response, true);
@@ -479,11 +495,12 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<QueuesGetPropertiesHeaders, Void>> operation
-            = () -> this.azureQueueStorage.getQueues().getPropertiesWithResponse(queueName, null, null, finalContext);
+        Supplier<Response<QueuesGetPropertiesHeaders>> operation
+            = () -> this.queueClientInternal.getPropertiesWithResponse(null,
+                RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
-        ResponseBase<QueuesGetPropertiesHeaders, Void> response = submitThreadPool(operation, LOGGER, timeout);
-        return new SimpleResponse<>(response, ModelHelper.transformQueueProperties(response.getDeserializedHeaders()));
+        Response<QueuesGetPropertiesHeaders> response = submitThreadPool(operation, LOGGER, timeout);
+        return new SimpleResponse<>(response, ModelHelper.transformQueueProperties(response.getValue()));
     }
 
     /**
@@ -563,8 +580,11 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-            .setMetadataNoCustomHeadersWithResponse(queueName, null, metadata, null, finalContext);
+        Supplier<Response<Void>> operation = () -> {
+            RequestOptions requestOptions
+                = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
+            return this.queueClientInternal.setMetadataWithResponse(null, metadata, requestOptions);
+        };
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -593,13 +613,14 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
-        ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper> responseBase
-            = azureQueueStorage.getQueues().getAccessPolicyWithResponse(queueName, null, null, Context.NONE);
+        ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers> responseBase
+            = queueClientInternal.getAccessPolicyWithResponse(null,
+                RequestOptionsHelper.queueRequestOptions(Context.NONE, azureQueueStorage.getUrl(), queueName));
 
         Supplier<PagedResponse<QueueSignedIdentifier>> response
-            = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
-                responseBase.getHeaders(), responseBase.getValue().items(), null,
-                responseBase.getDeserializedHeaders());
+            = () -> new PagedResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifier>(
+                responseBase.getRequest(), responseBase.getStatusCode(), responseBase.getHeaders(),
+                responseBase.getValue().getItems(), null, responseBase.getDeserializedHeaders());
 
         return new PagedIterable<>(response);
     }
@@ -669,8 +690,9 @@ public final class QueueClient {
     public Response<Void> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-            .setAccessPolicyNoCustomHeadersWithResponse(queueName, null, null, permissions, finalContext);
+        Supplier<Response<Void>> operation
+            = () -> this.queueClientInternal.setAccessPolicyWithResponse(null, new SignedIdentifiers(permissions),
+                RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -726,8 +748,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessages()
-            .clearNoCustomHeadersWithResponse(queueName, null, null, finalContext);
+        Supplier<Response<Void>> operation = () -> this.messagesClientInternal.clearWithResponse(null,
+            RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -898,17 +920,16 @@ public final class QueueClient {
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
         Context finalContext = context == null ? Context.NONE : context;
         String finalMessage = ModelHelper.encodeMessage(message, messageEncoding);
-        QueueMessage queueMessage = new QueueMessage().setMessageText(finalMessage);
+        QueueMessage queueMessage = new QueueMessage(finalMessage);
 
-        Supplier<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> operation
-            = () -> this.azureQueueStorage.getMessages()
-                .enqueueWithResponse(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds, null,
-                    null, finalContext);
+        Supplier<Response<ListOfSentMessage>> operation
+            = () -> this.messagesClientInternal.enqueueWithResponse(queueMessage, visibilityTimeoutInSeconds,
+                timeToLiveInSeconds, null,
+                RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
-        ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> response
-            = submitThreadPool(operation, LOGGER, timeout);
+        Response<ListOfSentMessage> response = submitThreadPool(operation, LOGGER, timeout);
 
-        return new SimpleResponse<>(response, response.getValue().items().get(0));
+        return new SimpleResponse<>(response, response.getValue().getItems().get(0));
     }
 
     /**
@@ -1022,28 +1043,26 @@ public final class QueueClient {
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
-        Supplier<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> operation
-            = () -> this.azureQueueStorage.getMessages()
-                .dequeueWithResponse(queueName, maxMessages, visibilityTimeoutInSeconds, null, null, finalContext);
+        Supplier<ResponseBase<MessagesDequeueHeaders, ReceivedMessages>> operation
+            = () -> this.messagesClientInternal.dequeueWithResponse(maxMessages, visibilityTimeoutInSeconds, null,
+                RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
-        ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response
-            = submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesDequeueHeaders, ReceivedMessages> response = submitThreadPool(operation, LOGGER, timeout);
 
         PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformedMessages
             = transformMessagesDequeueResponse(response);
 
         Supplier<PagedResponse<QueueMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(), transformedMessages, response.getDeserializedHeaders());
+            response.getStatusCode(), response.getHeaders(), transformedMessages, null);
 
         return new PagedIterable<>(res);
     }
 
-    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformMessagesDequeueResponse(
-        ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response) {
-        List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue().items();
-        if (queueMessageInternalItems == null) {
-            queueMessageInternalItems = Collections.emptyList();
-        }
+    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>
+        transformMessagesDequeueResponse(ResponseBase<MessagesDequeueHeaders, ReceivedMessages> response) {
+        ReceivedMessages wrapper = response.getValue();
+        List<QueueMessageItemInternal> queueMessageInternalItems
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
         List<QueueMessageItem> messageItems = new ArrayList<>();
 
         for (QueueMessageItemInternal queueMessageInternalItem : queueMessageInternalItems) {
@@ -1073,7 +1092,7 @@ public final class QueueClient {
             }
         }
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            messageItems, null, response.getDeserializedHeaders());
+            messageItems, null, null);
     }
 
     /**
@@ -1146,26 +1165,24 @@ public final class QueueClient {
     PagedIterable<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> operation
-            = () -> this.azureQueueStorage.getMessages()
-                .peekWithResponse(queueName, maxMessages, null, null, finalContext);
+        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessages>> operation
+            = () -> this.messagesClientInternal.peekWithResponse(maxMessages, null,
+                RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
-        ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response
-            = submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesPeekHeaders, PeekedMessages> response = submitThreadPool(operation, LOGGER, timeout);
 
         PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformedMessages
             = transformMessagesPeekResponse(response);
         Supplier<PagedResponse<PeekedMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(), transformedMessages, response.getDeserializedHeaders());
+            response.getStatusCode(), response.getHeaders(), transformedMessages, null);
         return new PagedIterable<>(res);
     }
 
     private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>
-        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
-        List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue().items();
-        if (peekedMessageInternalItems == null) {
-            peekedMessageInternalItems = Collections.emptyList();
-        }
+        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessages> response) {
+        PeekedMessages wrapper = response.getValue();
+        List<PeekedMessageItemInternal> peekedMessageInternalItems
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
         List<PeekedMessageItem> messageItems = new ArrayList<>();
 
         for (PeekedMessageItemInternal peekedMessageInternalItem : peekedMessageInternalItems) {
@@ -1195,7 +1212,7 @@ public final class QueueClient {
             }
         }
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            messageItems, null, response.getDeserializedHeaders());
+            messageItems, null, null);
     }
 
     /**
@@ -1276,20 +1293,20 @@ public final class QueueClient {
         QueueMessage message;
         if (messageText != null) {
             String finalMessage = ModelHelper.encodeMessage(BinaryData.fromString(messageText), messageEncoding);
-            message = new QueueMessage().setMessageText(finalMessage);
+            message = new QueueMessage(finalMessage);
         } else {
             message = null;
         }
         Context finalContext = context == null ? Context.NONE : context;
         Duration finalVisibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
-        Supplier<ResponseBase<MessageIdsUpdateHeaders, Void>> operation = () -> this.azureQueueStorage.getMessageIds()
-            .updateWithResponse(queueName, messageId, popReceipt, (int) finalVisibilityTimeout.getSeconds(), null, null,
-                message, finalContext);
+        Supplier<Response<MessageIdsUpdateHeaders>> operation
+            = () -> this.messageIdsClientInternal.updateWithResponse(messageId, popReceipt,
+                (int) finalVisibilityTimeout.getSeconds(), null, message, RequestOptionsHelper
+                    .messageIdRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName, messageId));
 
-        ResponseBase<MessageIdsUpdateHeaders, Void> response = submitThreadPool(operation, LOGGER, timeout);
+        Response<MessageIdsUpdateHeaders> response = submitThreadPool(operation, LOGGER, timeout);
 
-        UpdateMessageResult result = new UpdateMessageResult(response.getDeserializedHeaders().getXMsPopreceipt(),
-            response.getDeserializedHeaders().getXMsTimeNextVisible());
+        UpdateMessageResult result = ModelHelper.transformUpdateMessageResult(response.getValue());
         return new SimpleResponse<>(response, result);
     }
 
@@ -1354,8 +1371,9 @@ public final class QueueClient {
     public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessageIds()
-            .deleteNoCustomHeadersWithResponse(queueName, messageId, popReceipt, null, null, finalContext);
+        Supplier<Response<Void>> operation
+            = () -> this.messageIdsClientInternal.deleteWithResponse(messageId, popReceipt, null, RequestOptionsHelper
+                .messageIdRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName, messageId));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
