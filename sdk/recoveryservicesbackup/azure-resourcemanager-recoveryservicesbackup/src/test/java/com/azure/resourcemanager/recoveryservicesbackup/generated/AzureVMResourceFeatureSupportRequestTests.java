@@ -13,18 +13,18 @@ public final class AzureVMResourceFeatureSupportRequestTests {
     public void testDeserialize() throws Exception {
         AzureVMResourceFeatureSupportRequest model = BinaryData
             .fromString(
-                "{\"featureType\":\"AzureVMResourceBackup\",\"vmSize\":\"vlxhrpqhvmblc\",\"vmSku\":\"qehbhbcds\"}")
+                "{\"featureType\":\"AzureVMResourceBackup\",\"vmSize\":\"ewijymrhbguz\",\"vmSku\":\"kyewnfnzhhhqo\"}")
             .toObject(AzureVMResourceFeatureSupportRequest.class);
-        Assertions.assertEquals("vlxhrpqhvmblc", model.vmSize());
-        Assertions.assertEquals("qehbhbcds", model.vmSku());
+        Assertions.assertEquals("ewijymrhbguz", model.vmSize());
+        Assertions.assertEquals("kyewnfnzhhhqo", model.vmSku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureVMResourceFeatureSupportRequest model
-            = new AzureVMResourceFeatureSupportRequest().withVmSize("vlxhrpqhvmblc").withVmSku("qehbhbcds");
+            = new AzureVMResourceFeatureSupportRequest().withVmSize("ewijymrhbguz").withVmSku("kyewnfnzhhhqo");
         model = BinaryData.fromObject(model).toObject(AzureVMResourceFeatureSupportRequest.class);
-        Assertions.assertEquals("vlxhrpqhvmblc", model.vmSize());
-        Assertions.assertEquals("qehbhbcds", model.vmSku());
+        Assertions.assertEquals("ewijymrhbguz", model.vmSize());
+        Assertions.assertEquals("kyewnfnzhhhqo", model.vmSku());
     }
 }

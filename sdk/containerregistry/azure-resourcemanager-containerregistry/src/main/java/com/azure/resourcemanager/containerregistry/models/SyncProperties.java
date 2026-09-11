@@ -52,6 +52,11 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
      */
     private String gatewayEndpoint;
 
+    /*
+     * The authentication type used for the connected registry to sync with its parent.
+     */
+    private AuthType authType;
+
     /**
      * Creates an instance of SyncProperties class.
      */
@@ -166,15 +171,31 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
     }
 
     /**
+     * Get the authType property: The authentication type used for the connected registry to sync with its parent.
+     * 
+     * @return the authType value.
+     */
+    public AuthType authType() {
+        return this.authType;
+    }
+
+    /**
+     * Set the authType property: The authentication type used for the connected registry to sync with its parent.
+     * 
+     * @param authType the authType value to set.
+     * @return the SyncProperties object itself.
+     */
+    public SyncProperties withAuthType(AuthType authType) {
+        this.authType = authType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (tokenId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property tokenId in model SyncProperties"));
-        }
         if (messageTtl() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property messageTtl in model SyncProperties"));
@@ -189,10 +210,11 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tokenId", this.tokenId);
         jsonWriter.writeStringField("messageTtl", CoreUtils.durationToStringWithDays(this.messageTtl));
+        jsonWriter.writeStringField("tokenId", this.tokenId);
         jsonWriter.writeStringField("schedule", this.schedule);
         jsonWriter.writeStringField("syncWindow", CoreUtils.durationToStringWithDays(this.syncWindow));
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -212,11 +234,11 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tokenId".equals(fieldName)) {
-                    deserializedSyncProperties.tokenId = reader.getString();
-                } else if ("messageTtl".equals(fieldName)) {
+                if ("messageTtl".equals(fieldName)) {
                     deserializedSyncProperties.messageTtl
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("tokenId".equals(fieldName)) {
+                    deserializedSyncProperties.tokenId = reader.getString();
                 } else if ("schedule".equals(fieldName)) {
                     deserializedSyncProperties.schedule = reader.getString();
                 } else if ("syncWindow".equals(fieldName)) {
@@ -227,6 +249,8 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("gatewayEndpoint".equals(fieldName)) {
                     deserializedSyncProperties.gatewayEndpoint = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedSyncProperties.authType = AuthType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

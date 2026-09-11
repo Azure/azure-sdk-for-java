@@ -14,31 +14,31 @@ public final class AzureResourceProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceProtectionIntent model = BinaryData.fromString(
-            "{\"protectionIntentItemType\":\"AzureResourceItem\",\"friendlyName\":\"x\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"ytehqpuvjmvqmt\",\"itemId\":\"ckygroejnndljdju\",\"policyId\":\"br\",\"protectionState\":\"Protected\"}")
+            "{\"protectionIntentItemType\":\"AzureResourceItem\",\"friendlyName\":\"ndljdjuskbr\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"n\",\"itemId\":\"eysfaqegplw\",\"policyId\":\"shwddkvbxgk\",\"protectionState\":\"NotProtected\"}")
             .toObject(AzureResourceProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
-        Assertions.assertEquals("ytehqpuvjmvqmt", model.sourceResourceId());
-        Assertions.assertEquals("ckygroejnndljdju", model.itemId());
-        Assertions.assertEquals("br", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
-        Assertions.assertEquals("x", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("n", model.sourceResourceId());
+        Assertions.assertEquals("eysfaqegplw", model.itemId());
+        Assertions.assertEquals("shwddkvbxgk", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals("ndljdjuskbr", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureResourceProtectionIntent model
-            = new AzureResourceProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_WORKLOAD)
-                .withSourceResourceId("ytehqpuvjmvqmt")
-                .withItemId("ckygroejnndljdju")
-                .withPolicyId("br")
-                .withProtectionState(ProtectionStatus.PROTECTED)
-                .withFriendlyName("x");
+            = new AzureResourceProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
+                .withSourceResourceId("n")
+                .withItemId("eysfaqegplw")
+                .withPolicyId("shwddkvbxgk")
+                .withProtectionState(ProtectionStatus.NOT_PROTECTED)
+                .withFriendlyName("ndljdjuskbr");
         model = BinaryData.fromObject(model).toObject(AzureResourceProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
-        Assertions.assertEquals("ytehqpuvjmvqmt", model.sourceResourceId());
-        Assertions.assertEquals("ckygroejnndljdju", model.itemId());
-        Assertions.assertEquals("br", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
-        Assertions.assertEquals("x", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("n", model.sourceResourceId());
+        Assertions.assertEquals("eysfaqegplw", model.itemId());
+        Assertions.assertEquals("shwddkvbxgk", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals("ndljdjuskbr", model.friendlyName());
     }
 }
