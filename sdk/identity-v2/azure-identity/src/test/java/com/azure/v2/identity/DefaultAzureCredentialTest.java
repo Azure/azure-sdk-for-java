@@ -67,9 +67,9 @@ public class DefaultAzureCredentialTest {
 
             // test
             AccessToken firstToken = credential.getToken(request);
-            AccessToken cachedToken = credential.getToken(request);
+            AccessToken tokenFromCachedCredential = credential.getToken(request);
             Assertions.assertEquals(token, firstToken.getToken());
-            Assertions.assertEquals(token, cachedToken.getToken());
+            Assertions.assertEquals(token, tokenFromCachedCredential.getToken());
             Assertions.assertEquals(expiresAt.getSecond(), firstToken.getExpiresAt().getSecond());
             Assertions.assertEquals(1, managedIdentityMock.constructed().size());
             verify(managedIdentityMock.constructed().get(0), times(2)).authenticate(request);

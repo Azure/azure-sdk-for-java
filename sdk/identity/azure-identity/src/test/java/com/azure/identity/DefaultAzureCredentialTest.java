@@ -49,6 +49,9 @@ public class DefaultAzureCredentialTest {
     private static final String CLIENT_ID = UUID.randomUUID().toString();
     private static final String RESOURCE_ID = "/subscriptions/" + UUID.randomUUID()
         + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+    private static final int IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX = 1;
+    private static final int IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX = 5;
+    private static final int IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX = 6;
 
     @Test
     public void testUseEnvironmentCredential() {
@@ -126,29 +129,29 @@ public class DefaultAzureCredentialTest {
         String token = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
-        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "ManagedIdentityCredential"));
+        String clientId = "clientId".equals(identityType) ? CLIENT_ID : null;
+        String resourceId = "resourceId".equals(identityType) ? RESOURCE_ID : null;
 
         // mock
         try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class);
             MockedConstruction<IdentityClient> mocked
                 = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                    when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
+                    assertEquals(clientId, context.arguments().get(IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX));
+                    assertEquals(resourceId, context.arguments().get(IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX));
+                    Assertions.assertNull(context.arguments().get(IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX));
                     when(identityClient.authenticateWithManagedIdentityMsalClient(request))
                         .thenReturn(TestUtils.getMockAccessToken(token, expiresAt));
-                });
-            MockedConstruction<IntelliJCredential> intelliJCredentialMock
-                = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
-                    when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
                 })) {
             applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
                 .thenReturn(ManagedIdentitySourceType.AZURE_ARC);
 
             DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder().configuration(configuration);
-            if ("clientId".equals(identityType)) {
-                builder.managedIdentityClientId(CLIENT_ID);
+            if (clientId != null) {
+                builder.managedIdentityClientId(clientId);
             } else {
-                builder.managedIdentityResourceId(RESOURCE_ID);
+                builder.managedIdentityResourceId(resourceId);
             }
 
             // test
@@ -156,8 +159,7 @@ public class DefaultAzureCredentialTest {
                 .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(mocked);
-            Assertions.assertNotNull(intelliJCredentialMock);
+            assertEquals(1, mocked.constructed().size());
         }
     }
 
