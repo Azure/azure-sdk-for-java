@@ -740,4 +740,20 @@ public final class BetaRoutinesClient {
         return createOrUpdateRoutineWithResponse(routineName, createOrUpdateRoutineRequest, requestOptions).getValue()
             .toObject(Routine.class);
     }
+
+    /**
+     * Creates a new routine or replaces an existing routine without authorization.
+     *
+     * @param routineName The unique name of the routine.
+     * @param description The routine description.
+     * @param enabled Whether the routine is enabled.
+     * @param triggers The triggers that invoke the routine.
+     * @param action The action performed by the routine.
+     * @return The created or updated routine.
+     */
+    @ServiceMethod(returns = com.azure.core.annotation.ReturnType.SINGLE)
+    public Routine createOrUpdateRoutine(String routineName, String description, Boolean enabled,
+        Map<String, RoutineTrigger> triggers, RoutineAction action) {
+        return createOrUpdateRoutine(routineName, description, enabled, triggers, action, null);
+    }
 }
