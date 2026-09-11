@@ -71,7 +71,6 @@ BeforeAll {
         'feature/*',
         'hotfix/*',
         'release/*',
-        'restapi*',
         'pipelinev3*'
     )
     $script:ExpectedStaticTriggerExclusions = @(
