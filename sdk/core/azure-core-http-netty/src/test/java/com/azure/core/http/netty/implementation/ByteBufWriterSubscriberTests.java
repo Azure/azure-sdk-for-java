@@ -6,11 +6,13 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.http.netty.mocking.MockMonoSink;
 import com.azure.core.http.netty.mocking.WriteCountTrackingChannel;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,14 +32,55 @@ import java.util.stream.Stream;
 
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ByteBufWriteSubscriber}.
  */
 @SuppressWarnings("resource")
 public class ByteBufWriterSubscriberTests {
+    @ParameterizedTest
+    @ValueSource(ints = { 4096, 65536, 131136 })
+    public void heapBufferWritesDirectBuffersInBoundedChunks(int size) {
+        byte[] expected = new byte[size];
+        ThreadLocalRandom.current().nextBytes(expected);
+        ByteBuf data = PooledByteBufAllocator.DEFAULT.directBuffer(size).writeBytes(expected);
+        WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
+        try {
+            StepVerifier
+                .create(Mono.<Void>create(sink -> Flux.just(data).subscribe(new ByteBufWriteSubscriber(buffer -> {
+                    assertFalse(buffer.isDirect());
+                    assertTrue(buffer.remaining() <= 65536);
+                    channel.write(buffer);
+                }, sink, null, true))))
+                .verifyComplete();
+
+            assertArraysEqual(expected, channel.getDataWritten());
+        } finally {
+            data.release();
+        }
+    }
+
+    @Test
+    public void heapBufferWriteFailureStopsBeforeWritingRemainingData() {
+        ByteBuf data = PooledByteBufAllocator.DEFAULT.directBuffer(131136).writeZero(131136);
+        AtomicInteger writes = new AtomicInteger();
+        try {
+            StepVerifier
+                .create(Mono.<Void>create(sink -> Flux.just(data).subscribe(new ByteBufWriteSubscriber(buffer -> {
+                    writes.incrementAndGet();
+                    throw new IOException("write failed");
+                }, sink, null, true))))
+                .verifyError(IOException.class);
+            assertEquals(1, writes.get());
+        } finally {
+            data.release();
+        }
+    }
+
     /**
      * Tests that when multiple subscriptions are made to the subscriber all subscriptions after the first are ignored
      * and cancelled.

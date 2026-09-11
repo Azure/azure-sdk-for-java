@@ -8,7 +8,14 @@
 
 ### Bugs Fixed
 
+- Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Migrated Netty dependencies from `4.1.137.Final` to `4.2.17.Final`.
+- Upgraded Reactor Netty from `1.2.18` to `1.3.7` and Reactor from `3.7.19` to `3.8.7`.
 
 ## 1.16.7 (2026-08-27)
 
@@ -809,4 +816,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/src/samples/java/com/azure/core/http/netty)
-

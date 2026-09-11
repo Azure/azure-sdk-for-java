@@ -10,7 +10,8 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import org.junit.jupiter.api.AfterAll;
@@ -63,7 +64,7 @@ public class Netty4ConnectionPoolTests {
     public static void startTestServerAndEventLoopGroup() {
         server = NettyHttpClientLocalTestServer.getServer();
         server.start();
-        eventLoopGroup = new NioEventLoopGroup(2);
+        eventLoopGroup = new MultiThreadIoEventLoopGroup(2, NioIoHandler.newFactory());
         bootstrap = new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class);
         bootstrap.option(ChannelOption.AUTO_READ, false);
         SocketAddress socketAddress = new InetSocketAddress("localhost", server.getPort());
