@@ -9,8 +9,10 @@ import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
 import com.azure.resourcemanager.dataprotection.models.CmkKekIdentity;
 import com.azure.resourcemanager.dataprotection.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.dataprotection.models.CostManagementSettings;
 import com.azure.resourcemanager.dataprotection.models.EncryptionSettings;
 import com.azure.resourcemanager.dataprotection.models.EncryptionState;
+import com.azure.resourcemanager.dataprotection.models.GranularityLevel;
 import com.azure.resourcemanager.dataprotection.models.IdentityType;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilitySettings;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilityState;
@@ -28,7 +30,7 @@ import java.util.Map;
  */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/VaultCRUD/PatchBackupVault.json
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PatchBackupVault.json
      */
     /**
      * Sample code: Patch BackupVault.
@@ -48,7 +50,27 @@ public final class BackupVaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VaultCRUD/PatchBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PatchBackupVaultWithCostManagementSettings.json
+     */
+    /**
+     * Sample code: Patch BackupVault with Cost Management Settings.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void patchBackupVaultWithCostManagementSettings(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        BackupVaultResource resource = manager.backupVaults()
+            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newKey", "fakeTokenPlaceholder"))
+            .withProperties(new PatchBackupVaultInput().withCostManagementSettings(
+                new CostManagementSettings().withGranularityLevel(GranularityLevel.PROTECTED_ITEM_LEVEL)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PatchBackupVaultWithCMK.json
      */
     /**
      * Sample code: Patch BackupVault with CMK.
