@@ -16,7 +16,6 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentDefinitionSerializationTests {
@@ -69,12 +68,37 @@ public class VoiceAgentDefinitionSerializationTests {
         assertEquals(AgentKind.VOICE, voice.getKind());
         assertEquals(VoiceModelType.MANAGED, voice.getModelType());
         assertEquals("gpt-realtime", voice.getModel());
+        assertEquals("Keep replies short and natural.", voice.getInstructions());
         assertEquals(Boolean.TRUE, voice.isStore());
         assertEquals(VoiceOutputModality.AUDIO, voice.getOutputModalities().get(0));
+
+        VoiceAgentAudioInputConfig deserializedInput = voice.getAudio().getInput();
+        RealtimeAudioFormatsAudioPcm deserializedInputFormat
+            = assertInstanceOf(RealtimeAudioFormatsAudioPcm.class, deserializedInput.getFormat());
+        assertEquals(pcm.getRate(), deserializedInputFormat.getRate());
+        VoiceAgentServerVadTurnDetection deserializedVad
+            = assertInstanceOf(VoiceAgentServerVadTurnDetection.class, deserializedInput.getTurnDetection());
+        VoiceAgentServerVadTurnDetection originalVad = (VoiceAgentServerVadTurnDetection) input.getTurnDetection();
+        assertEquals(originalVad.getThreshold(), deserializedVad.getThreshold());
+        assertEquals(originalVad.getPrefixPaddingMs(), deserializedVad.getPrefixPaddingMs());
+        assertEquals(originalVad.getSilenceDurationMs(), deserializedVad.getSilenceDurationMs());
+        assertEquals(input.getTranscription().getModel(), deserializedInput.getTranscription().getModel());
+
+        VoiceAgentAudioOutputConfig deserializedOutput = voice.getAudio().getOutput();
+        RealtimeAudioFormatsAudioPcm deserializedOutputFormat
+            = assertInstanceOf(RealtimeAudioFormatsAudioPcm.class, deserializedOutput.getFormat());
+        assertEquals(pcm.getRate(), deserializedOutputFormat.getRate());
+        assertEquals(output.getVoice(), deserializedOutput.getVoice());
+        assertEquals(output.getVoiceType(), deserializedOutput.getVoiceType());
+
         assertEquals(2, voice.getTools().size());
-        assertInstanceOf(VoiceAgentFunctionTool.class, voice.getTools().get(0));
-        assertInstanceOf(VoiceAgentSystemTool.class, voice.getTools().get(1));
-        assertNotNull(voice.getAudio().getInput().getTurnDetection());
+        VoiceAgentFunctionTool deserializedFunction
+            = assertInstanceOf(VoiceAgentFunctionTool.class, voice.getTools().get(0));
+        assertEquals(functionTool.getName(), deserializedFunction.getName());
+        assertEquals(functionTool.getDescription(), deserializedFunction.getDescription());
+        VoiceAgentEndConversationSystemTool deserializedSystem
+            = assertInstanceOf(VoiceAgentEndConversationSystemTool.class, voice.getTools().get(1));
+        assertEquals(systemTool.getName(), deserializedSystem.getName());
     }
 
     @Test
