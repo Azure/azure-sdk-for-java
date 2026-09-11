@@ -570,8 +570,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        context = ContentValidationModeResolver.addContentValidationMode(context == null ? Context.NONE : context,
-            opts.getContentValidationAlgorithm(), length, false);
+        Context finalContext = ContentValidationModeResolver.addContentValidationMode(
+            context == null ? Context.NONE : context, opts.getContentValidationAlgorithm(), length, false);
 
         CpkInfo cpk = getCustomerProvidedKey();
 
@@ -584,7 +584,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
                 pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getTagsConditions(),
-                null, null, pageBlobRequestConditions, pageBlobRequestOptions(context)))
+                null, null, pageBlobRequestConditions, pageBlobRequestOptions(finalContext)))
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),

@@ -38,6 +38,7 @@ import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -1341,12 +1342,20 @@ public class BlobAsyncClientBase {
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
         Boolean getMD5, Context context) {
-        return azureBlobStorage.getBlobs()
-            .downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-                range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, null,
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
-                context);
+        // Each retried range re-reads with the ETag the first response returned, not the caller's ifMatch, so the
+        // conditions passed here are the caller's with ifMatch replaced.
+        RequestConditions rangeConditions
+            = new RequestConditions().setIfModifiedSince(requestConditions.getIfModifiedSince())
+                .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+                .setIfMatch(eTag)
+                .setIfNoneMatch(requestConditions.getIfNoneMatch());
+
+        return this.blobClientInternal.downloadWithResponse(snapshot, versionId, null, range.toHeaderValue(),
+            requestConditions.getLeaseId(), getMD5, null, null,
+            customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKey(),
+            customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKeySha256(),
+            customerProvidedKey == null ? null : customerProvidedKey.getEncryptionAlgorithm(),
+            requestConditions.getTagsConditions(), rangeConditions, blobRequestOptions(context));
     }
 
     /**
@@ -2709,17 +2718,21 @@ public class BlobAsyncClientBase {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-        return this.azureBlobStorage.getBlobs()
-            .queryWithResponseAsync(containerName, blobName, getSnapshotId(), null, requestConditions.getLeaseId(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null, qr, getCustomerProvidedKey(), context)
+        CpkInfo queryCpk = getCustomerProvidedKey();
+
+        return this.blobClientInternal
+            .queryWithResponse(qr, getSnapshotId(), null, requestConditions.getLeaseId(),
+                queryCpk == null ? null : queryCpk.getEncryptionKey(),
+                queryCpk == null ? null : queryCpk.getEncryptionKeySha256(),
+                queryCpk == null ? null : queryCpk.getEncryptionAlgorithm(), requestConditions.getTagsConditions(),
+                requestConditions, blobRequestOptions(context))
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 /* Parse the avro reactive stream. */
                 new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
                     queryOptions.getErrorConsumer()).read(),
-                ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders())));
+                ModelHelper.transformQueryHeaders(new BlobsQueryHeaders(response.getHeaders()),
+                    response.getHeaders())));
     }
 
     /**

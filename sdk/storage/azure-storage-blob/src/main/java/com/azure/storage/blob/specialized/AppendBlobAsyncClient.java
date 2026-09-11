@@ -519,8 +519,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobAppendBlockOptions opts = options == null ? new AppendBlobAppendBlockOptions() : options;
         AppendBlobRequestConditions requestConditions
             = opts.getRequestConditions() == null ? new AppendBlobRequestConditions() : opts.getRequestConditions();
-        context = ContentValidationModeResolver.addContentValidationMode(context == null ? Context.NONE : context,
-            opts.getContentValidationAlgorithm(), length, false);
+        Context finalContext = ContentValidationModeResolver.addContentValidationMode(
+            context == null ? Context.NONE : context, opts.getContentValidationAlgorithm(), length, false);
 
         CpkInfo cpk = getCustomerProvidedKey();
 
@@ -531,7 +531,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 cpk == null ? null : cpk.getEncryptionKeySha256(), cpk == null ? null : cpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
                 requestConditions.getTagsConditions(), null, null, requestConditions,
-                appendBlobRequestOptions(context)))
+                appendBlobRequestOptions(finalContext)))
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),

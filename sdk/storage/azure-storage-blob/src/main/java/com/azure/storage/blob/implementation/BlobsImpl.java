@@ -26,6 +26,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -80,9 +81,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> download(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<StreamResponse> download(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/")
         @ExpectedResponses({ 200, 206 })
@@ -90,7 +90,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> downloadSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
+        StreamResponse downloadSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/")
@@ -517,7 +517,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> query(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
+        Mono<StreamResponse> query(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/xml") BinaryData queryRequest, RequestOptions requestOptions, Context context);
 
@@ -527,7 +527,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> querySync(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
+        StreamResponse querySync(@HostParam("url") String url, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/xml") BinaryData queryRequest, RequestOptions requestOptions, Context context);
     }
@@ -674,7 +674,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
+    public Mono<StreamResponse> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.download(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -822,7 +822,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadWithResponseInternal(RequestOptions requestOptions) {
+    public StreamResponse downloadWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return service.downloadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
@@ -3863,8 +3863,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> queryWithResponseInternalAsync(BinaryData queryRequest,
-        RequestOptions requestOptions) {
+    public Mono<StreamResponse> queryWithResponseInternalAsync(BinaryData queryRequest, RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.query(this.client.getUrl(), contentType,
@@ -4020,7 +4019,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponseInternal(BinaryData queryRequest, RequestOptions requestOptions) {
+    public StreamResponse queryWithResponseInternal(BinaryData queryRequest, RequestOptions requestOptions) {
         final String contentType = "application/xml";
         final String accept = "application/octet-stream";
         return service.querySync(this.client.getUrl(), contentType, this.client.getServiceVersion().getVersion(),

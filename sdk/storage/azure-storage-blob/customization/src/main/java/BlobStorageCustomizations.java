@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
 /**
  * TypeSpec customization for azure-storage-blob.
@@ -75,7 +76,9 @@ public class BlobStorageCustomizations extends Customization {
         fixXmlSerializerRedundantCast(editor, logger);
         fixUrlAcronymHeaderNames(editor, logger);
         customizeQueryFormat(editor, logger);
+        retypeStreamingResponses(editor, logger);
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
+        removeBufferedStreamingConvenienceMethods(customization.getPackage(IMPL_PACKAGE), logger);
         restoreFluentModels(customization, logger);
         // Follow-up stages (ported from the queue customization) build on this removal pass:
         //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
@@ -374,6 +377,155 @@ public class BlobStorageCustomizations extends Customization {
         editor.replaceFile(path, updated);
         removeFileIfPresent(editor, PKG_ROOT + "implementation/models/ParquetTextConfiguration.java", logger);
         logger.info("Retyped QueryFormat.parquetTextConfiguration to Object and removed the generated model.");
+    }
+
+    // Download and Query stream their response bodies. typespec-java types both as Response<BinaryData>, and
+    // azure-core's AsyncRestProxy turns that into BinaryData.fromFlux(body), which aggregates the entire body into
+    // a byte array: every blob download would be buffered in memory, and the reliable-download retry in
+    // BlobAsyncClientBase cannot resume a range from a buffered response. AutoRest emitted StreamResponse for both,
+    // which azure-core recognises as Response<Flux<ByteBuffer>> and leaves unbuffered, so restore that shape on the
+    // two operations and drop the ResponseBase wrapper from their convenience methods. The wrapper only added
+    // typed headers built from the raw HttpHeaders, which the hand-written clients build for themselves.
+    // Every other operation keeps Response<BinaryData>: their bodies are XML documents that must be buffered.
+    private static final String STREAMING_RESPONSE_IMPORT = "import com.azure.core.http.rest.StreamResponse;";
+
+    // Alongside each WithResponse method the emitter generates a plain download()/query() that returns the body as
+    // BinaryData. Once the response is a StreamResponse those no longer compile, and buffering the body is exactly
+    // what the retype exists to avoid. Nothing calls them -- the hand-written clients always go through the
+    // WithResponse overloads -- so drop them rather than reintroducing a buffered path.
+    private static final List<String> STREAMING_CLIENTS = Arrays.asList("BlobAsyncClientInternal",
+        "BlobClientInternal");
+
+    private static void removeBufferedStreamingConvenienceMethods(PackageCustomization implementation, Logger logger) {
+        for (String className : STREAMING_CLIENTS) {
+            if (implementation.getClass(className) == null) {
+                logger.info("{} not present; skipping buffered convenience removal.", className);
+                continue;
+            }
+            implementation.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+                int removed = 0;
+                for (MethodDeclaration method : new ArrayList<>(clazz.getMethods())) {
+                    String name = method.getNameAsString();
+                    if (("download".equals(name) || "query".equals(name))
+                        && method.getType().asString().contains("BinaryData")) {
+                        method.remove();
+                        removed++;
+                    }
+                }
+                logger.info("Removed {} buffered download/query convenience methods from {}.", removed, className);
+            }));
+        }
+    }
+
+    // The customization runs on the emitter's output before it is formatted, so the wrapper bodies are matched with
+    // whitespace-tolerant patterns. Each anchors on the ResponseBase construction, which is what distinguishes the
+    // WithResponse convenience method from the plain one that maps the same protocol call to its body.
+    private static final String ASYNC_DOWNLOAD_WRAPPER = "return downloadWithResponseInternal\\(requestOptions\\)"
+        + "\\s*\\.map\\(protocolMethodResponse -> new ResponseBase<>\\([^;]*;";
+
+    private static final String ASYNC_QUERY_WRAPPER = "return queryWithResponseInternal\\(BinaryData"
+        + "\\.fromObject\\(queryRequest, XML_SERIALIZER\\), requestOptions\\)"
+        + "\\s*\\.map\\(protocolMethodResponse -> new ResponseBase<>\\([^;]*;";
+
+    private static final String SYNC_DOWNLOAD_WRAPPER = "Response<BinaryData> protocolMethodResponse\\s*=\\s*"
+        + "downloadWithResponseInternal\\(requestOptions\\);\\s*return new ResponseBase<>\\([^;]*;";
+
+    private static final String SYNC_QUERY_WRAPPER = "Response<BinaryData> protocolMethodResponse\\s*=\\s*"
+        + "queryWithResponseInternal\\(BinaryData\\.fromObject\\(queryRequest, XML_SERIALIZER\\), requestOptions\\);"
+        + "\\s*return new ResponseBase<>\\([^;]*;";
+
+    private static void retypeStreamingResponses(Editor editor, Logger logger) {
+        retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/BlobsImpl.java", new String[][] {
+            { "Mono<Response<BinaryData>> download(@HostParam", "Mono<StreamResponse> download(@HostParam" },
+            { "Response<BinaryData> downloadSync(@HostParam", "StreamResponse downloadSync(@HostParam" },
+            { "Mono<Response<BinaryData>> query(@HostParam", "Mono<StreamResponse> query(@HostParam" },
+            { "Response<BinaryData> querySync(@HostParam", "StreamResponse querySync(@HostParam" },
+            { "public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(",
+                "public Mono<StreamResponse> downloadWithResponseInternalAsync(" },
+            { "public Response<BinaryData> downloadWithResponseInternal(",
+                "public StreamResponse downloadWithResponseInternal(" },
+            { "public Mono<Response<BinaryData>> queryWithResponseInternalAsync(",
+                "public Mono<StreamResponse> queryWithResponseInternalAsync(" },
+            { "public Response<BinaryData> queryWithResponseInternal(",
+                "public StreamResponse queryWithResponseInternal(" } }, NO_PATTERNS);
+
+        retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/BlobAsyncClientInternal.java",
+            new String[][] {
+                { "Mono<Response<BinaryData>> downloadWithResponseInternal(",
+                    "Mono<StreamResponse> downloadWithResponseInternal(" },
+                { "Mono<Response<BinaryData>> queryWithResponseInternal(",
+                    "Mono<StreamResponse> queryWithResponseInternal(" },
+                { "public Mono<ResponseBase<BlobsDownloadHeaders, BinaryData>> downloadWithResponse(",
+                    "public Mono<StreamResponse> downloadWithResponse(" },
+                { "public Mono<ResponseBase<BlobsQueryHeaders, BinaryData>> queryWithResponse(",
+                    "public Mono<StreamResponse> queryWithResponse(" } },
+            new String[][] {
+                { ASYNC_DOWNLOAD_WRAPPER, "return downloadWithResponseInternal(requestOptions);" },
+                { ASYNC_QUERY_WRAPPER, "return queryWithResponseInternal("
+                    + "BinaryData.fromObject(queryRequest, XML_SERIALIZER), requestOptions);" } });
+
+        retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/BlobClientInternal.java", new String[][] {
+            { "Response<BinaryData> downloadWithResponseInternal(", "StreamResponse downloadWithResponseInternal(" },
+            { "Response<BinaryData> queryWithResponseInternal(", "StreamResponse queryWithResponseInternal(" },
+            { "public ResponseBase<BlobsDownloadHeaders, BinaryData> downloadWithResponse(",
+                "public StreamResponse downloadWithResponse(" },
+            { "public ResponseBase<BlobsQueryHeaders, BinaryData> queryWithResponse(",
+                "public StreamResponse queryWithResponse(" } },
+            new String[][] {
+                { SYNC_DOWNLOAD_WRAPPER, "return downloadWithResponseInternal(requestOptions);" },
+                { SYNC_QUERY_WRAPPER, "return queryWithResponseInternal("
+                    + "BinaryData.fromObject(queryRequest, XML_SERIALIZER), requestOptions);" } });
+    }
+
+    private static final String[][] NO_PATTERNS = new String[0][];
+
+    private static void retypeStreamingResponses(Editor editor, Logger logger, String path, String[][] replacements,
+        String[][] patterns) {
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("{} not present in editor; skipping the streaming retype.", path);
+            return;
+        }
+        String updated = content;
+        for (String[] replacement : replacements) {
+            if (!updated.contains(replacement[0])) {
+                throw new IllegalStateException(
+                    "Streaming retype target not found in " + path + ": " + replacement[0]);
+            }
+            updated = updated.replace(replacement[0], replacement[1]);
+        }
+        for (String[] pattern : patterns) {
+            String replaced = updated.replaceAll(pattern[0], Matcher.quoteReplacement(pattern[1]));
+            if (replaced.equals(updated)) {
+                throw new IllegalStateException(
+                    "Streaming retype pattern matched nothing in " + path + ": " + pattern[0]);
+            }
+            updated = replaced;
+        }
+        updated = addImport(updated, STREAMING_RESPONSE_IMPORT);
+        updated = removeImportIfUnused(updated, "com.azure.storage.blob.implementation.models.BlobsDownloadHeaders");
+        updated = removeImportIfUnused(updated, "com.azure.storage.blob.implementation.models.BlobsQueryHeaders");
+        editor.replaceFile(path, updated);
+        logger.info("Retyped the streaming download and query responses in {}.", path);
+    }
+
+    // The generated files all import com.azure.core.http.rest.Response, so anchor on it to keep the block sorted.
+    private static String addImport(String content, String importLine) {
+        if (content.contains(importLine)) {
+            return content;
+        }
+        String anchor = "import com.azure.core.http.rest.Response;";
+        return content.replace(anchor, anchor + "\n" + importLine);
+    }
+
+    private static String removeImportIfUnused(String content, String qualifiedName) {
+        String importLine = "import " + qualifiedName + ";\n";
+        if (!content.contains(importLine)) {
+            return content;
+        }
+        String simpleName = qualifiedName.substring(qualifiedName.lastIndexOf('.') + 1);
+        String withoutImport = content.replace(importLine, "");
+        return withoutImport.contains(simpleName) ? content : withoutImport;
     }
 
     // typespec-java writes these five header models to a file named ...FromURLHeaders.java but declares the class
