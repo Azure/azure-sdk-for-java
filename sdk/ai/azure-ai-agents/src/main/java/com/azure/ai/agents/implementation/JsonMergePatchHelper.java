@@ -16,6 +16,7 @@ import com.azure.ai.agents.models.McpProtocolConfiguration;
 import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
 
@@ -242,6 +243,23 @@ public class JsonMergePatchHelper {
 
     public static AgentCardSkillAccessor getAgentCardSkillAccessor() {
         return agentCardSkillAccessor;
+    }
+
+    private static UpdateTelephonyBindingRequestAccessor updateTelephonyBindingRequestAccessor;
+
+    public interface UpdateTelephonyBindingRequestAccessor {
+        UpdateTelephonyBindingRequest prepareModelForJsonMergePatch(
+            UpdateTelephonyBindingRequest updateTelephonyBindingRequest, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateTelephonyBindingRequest updateTelephonyBindingRequest);
+    }
+
+    public static void setUpdateTelephonyBindingRequestAccessor(UpdateTelephonyBindingRequestAccessor accessor) {
+        updateTelephonyBindingRequestAccessor = accessor;
+    }
+
+    public static UpdateTelephonyBindingRequestAccessor getUpdateTelephonyBindingRequestAccessor() {
+        return updateTelephonyBindingRequestAccessor;
     }
 
     private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;
