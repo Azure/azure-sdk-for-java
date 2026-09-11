@@ -151,7 +151,8 @@ public class VoiceAgentLiveTextConversationAsyncSample {
                     System.out.println("Timed out waiting for the agent's reply; cancelling the active response.");
                     return session.cancelResponse()
                         .then(completion.asMono().timeout(Duration.ofSeconds(10)))
-                        .onErrorResume(cancelError -> Mono.empty());
+                        .onErrorMap(cancelError -> new IllegalStateException(
+                            "Unable to cancel the active response.", cancelError));
                 })
                 .then(Mono.defer(() -> prompt(session, scanner, responseCompleted)));
         });
