@@ -32,12 +32,63 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        customizeVoicePreviewBuilders(libraryCustomization);
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void customizeVoicePreviewBuilders(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
+            customizeAgentEndpointConversationBuildMethods(builder);
+            customizeAgentTelephonyBuildMethods(builder);
+            for (String methodName : new String[] { "buildBetaAgentEndpointConversationsAsyncClient",
+                "buildBetaAgentEndpointConversationsClient", "buildBetaAgentTelephonyAsyncClient",
+                "buildBetaAgentTelephonyClient" }) {
+                getSingleMethod(builder, methodName)
+                    .addAnnotation(betaAnnotation("This method is in preview and may change in future releases."));
+            }
+        });
+    }
+
+    private static void customizeAgentEndpointConversationBuildMethods(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration asyncMethod
+            = getSingleMethod(builder, "buildBetaAgentEndpointConversationsAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsAsyncClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentEndpointConversationsClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+    }
+
+    private static void customizeAgentTelephonyBuildMethods(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration asyncMethod = getSingleMethod(builder, "buildBetaAgentTelephonyAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentTelephonyAsyncClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentTelephonies()); }"));
+
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentTelephonyClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentTelephonyClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentTelephonies()); }"));
+    }
+
+    private static MethodDeclaration getSingleMethod(ClassOrInterfaceDeclaration model, String methodName) {
+        List<MethodDeclaration> methods = model.getMethodsByName(methodName);
+        if (methods.size() != 1) {
+            throw new IllegalStateException(
+                "Expected one " + model.getNameAsString() + "." + methodName + " method, found " + methods.size()
+                    + ".");
+        }
+        return methods.get(0);
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
@@ -432,13 +483,43 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void modifyPollingStrategies(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.implementation", "OperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"))));
+        customizePollingStrategy(customization, "OperationLocationPollingStrategy",
+            "{ return AgentsServicePollUtils.poll(pollingStrategyOptions, serializer, endpoint, pollingContext, pollResponseType); }");
+        customizePollingStrategy(customization, "SyncOperationLocationPollingStrategy",
+            "{ return AgentsServicePollUtils.pollSync(pollingStrategyOptions, serializer, endpoint, pollingContext, pollResponseType); }");
+    }
 
-        customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+    private static void customizePollingStrategy(LibraryCustomization customization, String className,
+        String pollMethodBody) {
+        customization.getClass("com.azure.ai.agents.implementation", className).customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + " was not found."));
+            if (!clazz.getFieldByName("pollingStrategyOptions").isPresent()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "private final PollingStrategyOptions pollingStrategyOptions;"));
+            }
+
+            com.github.javaparser.ast.stmt.BlockStmt constructorBody = clazz.getConstructors().stream()
+                .filter(constructor -> constructor.getParameters().size() == 2)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(className + " two-parameter constructor was not found."))
+                .getBody();
+            String optionsAssignment = "this.pollingStrategyOptions = pollingStrategyOptions;";
+            if (constructorBody.getStatements().stream()
+                .noneMatch(statement -> optionsAssignment.equals(statement.toString()))) {
+                constructorBody.addStatement(1, StaticJavaParser.parseStatement(optionsAssignment));
+            }
+
+            List<MethodDeclaration> pollMethods = clazz.getMethodsByName("poll");
+            if (pollMethods.isEmpty()) {
+                String returnType = className.startsWith("Sync") ? "PollResponse<T>" : "Mono<PollResponse<T>>";
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public " + returnType
+                    + " poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) "
+                    + pollMethodBody));
+            } else {
+                pollMethods.get(0).setBody(StaticJavaParser.parseBlock(pollMethodBody));
+            }
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
