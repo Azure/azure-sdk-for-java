@@ -12,14 +12,6 @@
             "match": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)"
           },
           "justification": "Support new properties."
-        },
-        {
-          "code": "java.class.externalClassExposedInAPI",
-          "new": {
-            "matcher": "regex",
-            "match": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)"
-          },
-          "justification": "Support new properties."
         }
       ]
     }

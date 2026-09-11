@@ -158,7 +158,7 @@ files live next to the SDK's `pom.xml`:
 | `eng/lintingconfigs/revapi/{clientcore,track2}/revapi.json` | Shared RevApi policy and cross-SDK exceptions |
 | `sdk/<service>/<artifact>/checkstyle-suppressions.xml` | SDK-local Checkstyle suppressions |
 | `sdk/<service>/<artifact>/revapi-suppressions.json` | SDK-local RevApi exceptions |
-| `sdk/<service>/<artifact>/spotbugs-exclude.json` | SDK-local SpotBugs exclusion filters |
+| `sdk/<service>/<artifact>/spotbugs-exclude.xml` | SDK-local SpotBugs exclusion filters |
 
 ### Adding a CheckStyle Suppression
 

@@ -37,7 +37,7 @@
           "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
-          "justification": "Thi isn't an external class"
+          "justification": "This isn't an external class"
         }
       ]
     }

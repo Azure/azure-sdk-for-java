@@ -17,7 +17,7 @@
             "matcher": "regex",
             "match": "field com\\.azure\\.spring\\.cloud\\.feature\\.management\\.filters\\.TargetingFilter\\.(USERS|GROUPS)"
           },
-          "justification": "Previous value did was incorrect."
+          "justification": "Previous value was incorrect."
         }
       ]
     }

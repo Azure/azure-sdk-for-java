@@ -30,7 +30,7 @@
           "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
         },
         {
-          "code": "java\\.annotation\\.attributeValueChanged",
+          "code": "java.annotation.attributeValueChanged",
           "old": {
             "matcher": "regex",
             "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
