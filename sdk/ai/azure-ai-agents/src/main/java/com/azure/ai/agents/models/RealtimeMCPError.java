@@ -82,7 +82,7 @@ public class RealtimeMCPError implements JsonSerializable<RealtimeMCPError> {
                 } else if ("tool_execution_error".equals(discriminatorValue)) {
                     return RealtimeMCPToolExecutionError.fromJson(readerToUse.reset());
                 } else if ("http_error".equals(discriminatorValue)) {
-                    return RealtimeMCPHttpError.fromJson(readerToUse.reset());
+                    return RealtimeMcpHttpError.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
