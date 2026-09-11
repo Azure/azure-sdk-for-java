@@ -1,10 +1,13 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import java.io.IOException;
@@ -25,11 +28,92 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        preserveRoutineCompatibilityOverloads(libraryCustomization, logger);
+        renameCreateSkillVersionFromFilesHelpers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
-        private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+    private void preserveRoutineCompatibilityOverloads(LibraryCustomization customization, Logger logger) {
+        addRoutineCompatibilityOverload(customization, "BetaRoutinesClient", "Routine", false, logger);
+        addRoutineCompatibilityOverload(customization, "BetaRoutinesAsyncClient", "Mono<Routine>", true, logger);
+    }
+
+    private void addRoutineCompatibilityOverload(LibraryCustomization customization, String className,
+        String returnType, boolean isAsync, Logger logger) {
+        customization.getClass("com.azure.ai.projects", className).customizeAst(ast -> {
+            ast.addImport("com.azure.ai.projects.models.Routine");
+            ast.addImport("com.azure.ai.projects.models.RoutineAction");
+            ast.addImport("com.azure.ai.projects.models.RoutineTrigger");
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
+            ast.addImport("java.util.Map");
+            if (isAsync) {
+                ast.addImport("reactor.core.publisher.Mono");
+            }
+
+            ast.getClassByName(className).ifPresent(clazz -> {
+                if (hasRoutineCompatibilityOverload(clazz)) {
+                    return;
+                }
+
+                logger.info("Adding Revapi compatibility overload to {}", className);
+                clazz.addMethod("createOrUpdateRoutine", Modifier.Keyword.PUBLIC)
+                    .setType(returnType)
+                    .addParameter("String", "routineName")
+                    .addParameter("String", "description")
+                    .addParameter("Boolean", "enabled")
+                    .addParameter("Map<String, RoutineTrigger>", "triggers")
+                    .addParameter("RoutineAction", "action")
+                    .addAnnotation(StaticJavaParser.parseAnnotation(
+                        "@ServiceMethod(returns = com.azure.core.annotation.ReturnType.SINGLE)"))
+                    .setJavadocComment("Creates a new routine or replaces an existing routine without authorization.\n"
+                        + "\n"
+                        + "@param routineName The unique name of the routine.\n"
+                        + "@param description The routine description.\n"
+                        + "@param enabled Whether the routine is enabled.\n"
+                        + "@param triggers The triggers that invoke the routine.\n"
+                        + "@param action The action performed by the routine.\n"
+                        + "@return The created or updated routine.")
+                    .setBody(StaticJavaParser.parseBlock("{ return createOrUpdateRoutine(routineName, description, "
+                        + "enabled, triggers, action, null); }"));
+            });
+        });
+    }
+
+    private boolean hasRoutineCompatibilityOverload(TypeDeclaration<?> type) {
+        return type.getMethodsByName("createOrUpdateRoutine").stream().anyMatch(method ->
+            method.getParameters().size() == 5
+                && "String".equals(method.getParameter(0).getType().asString())
+                && "String".equals(method.getParameter(1).getType().asString())
+                && "Boolean".equals(method.getParameter(2).getType().asString())
+                && "Map<String, RoutineTrigger>".equals(method.getParameter(3).getType().asString())
+                && "RoutineAction".equals(method.getParameter(4).getType().asString()));
+    }
+
+    private void renameCreateSkillVersionFromFilesHelpers(LibraryCustomization customization, Logger logger) {
+        String oldName = "createSkillVersionFromFilesWithResponseInternal";
+        String newName = "createSkillVersionFromFilesInternalWithResponse";
+        for (String className : new String[] { "BetaSkillsClient", "BetaSkillsAsyncClient" }) {
+            customization.getClass("com.azure.ai.projects", className).customizeAst(ast -> {
+                TypeDeclaration<?> type = ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException("Could not find class " + className + "."));
+                MethodDeclaration helper = type.getMethodsByName(oldName)
+                    .stream()
+                    .filter(method -> !method.isPublic() && !method.isProtected() && !method.isPrivate())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "Could not find package-private method '" + oldName + "' on " + className + "."));
+
+                logger.info("Renaming {}#{} to {}", className, oldName, newName);
+                helper.setName(newName);
+                type.findAll(MethodCallExpr.class).stream()
+                    .filter(call -> !call.getScope().isPresent() && call.getNameAsString().equals(oldName))
+                    .forEach(call -> call.setName(newName));
+            });
+        }
+    }
+
+    private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
         customization.getPackage("com.azure.ai.projects")
             .listClasses()
             .stream()
