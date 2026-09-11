@@ -2240,7 +2240,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 Set<String> contactedRegions = diagnostics.getDiagnosticsContext().getContactedRegionNames();
                 if (effectivelyDisabled && response.cosmosException != null) {
                     assertThat(response.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-                    assertThat(contactedRegions).hasSize(1);
+                    assertThat(contactedRegions)
+                        .as("Attempt %s, injected faults %s, diagnostics: %s", attempt,
+                            rules.stream().mapToLong(FaultInjectionRule::getHitCount).sum(), diagnostics)
+                        .hasSize(1);
                     assertThat(contactedRegions.iterator().next()).isEqualToIgnoringCase(failingRegion);
                 } else {
                     assertThat(response.cosmosException).isNull();
@@ -2286,6 +2289,21 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     @DataProvider(name = "accountHedgingFlags")
     public Object[][] accountHedgingFlags() {
         return new Object[][] {{false, false}, {false, true}, {true, false}, {true, true}};
+    }
+
+    @Test(groups = "unit")
+    public void testQueryOperationPreservesPartitionKeyRouting() {
+        OperationInvocationParamsWrapper params = new OperationInvocationParamsWrapper();
+        params.asyncContainer = Mockito.mock(CosmosAsyncContainer.class);
+        params.queryRequestOptions = new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey("item"));
+        RuntimeException stopBeforeNetwork = new IllegalStateException("Stop before network I/O");
+        Mockito.when(params.asyncContainer.queryItems(Mockito.anyString(), Mockito.any(CosmosQueryRequestOptions.class),
+            Mockito.eq(TestObject.class))).thenThrow(stopBeforeNetwork);
+
+        Assertions.assertThatThrownBy(() -> resolveDataPlaneOperation(OperationType.Query).apply(params))
+            .isSameAs(stopBeforeNetwork);
+        assertThat(params.queryRequestOptions.getPartitionKey()).isEqualTo(new PartitionKey("item"));
+        assertThat(params.queryRequestOptions.getFeedRange()).isNull();
     }
 
     @Test(groups = "unit", dataProvider = "accountHedgingFlags")
@@ -2844,7 +2862,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
                     CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions == null ? new CosmosQueryRequestOptions() : paramsWrapper.queryRequestOptions;
-                    queryRequestOptions = paramsWrapper.feedRangeForQuery == null ? queryRequestOptions.setFeedRange(FeedRange.forFullRange()) : queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery);
+                    if (queryRequestOptions.getPartitionKey() == null || paramsWrapper.feedRangeForQuery != null) {
+                        queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery == null
+                            ? FeedRange.forFullRange() : paramsWrapper.feedRangeForQuery);
+                    }
                     String sql = paramsWrapper.querySql != null ? paramsWrapper.querySql : "SELECT * FROM c";
 
                     try {
