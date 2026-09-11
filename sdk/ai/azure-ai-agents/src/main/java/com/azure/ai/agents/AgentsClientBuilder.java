@@ -62,10 +62,14 @@ import java.util.stream.Stream;
     serviceClients = {
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
+        BetaAgentTelephonyClient.class,
+        BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
+        BetaAgentTelephonyAsyncClient.class,
+        BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
@@ -680,5 +684,55 @@ public final class AgentsClientBuilder
     @Generated
     public ToolboxesClient buildToolboxesClient() {
         return new ToolboxesClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of BetaAgentTelephonyAsyncClient class.
+     *
+     * @return an instance of BetaAgentTelephonyAsyncClient.
+     */
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentTelephonyAsyncClient buildBetaAgentTelephonyAsyncClient() {
+        return new BetaAgentTelephonyAsyncClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString()).getBetaAgentTelephonies());
+    }
+
+    /**
+     * Builds an instance of BetaAgentEndpointConversationsAsyncClient class.
+     *
+     * @return an instance of BetaAgentEndpointConversationsAsyncClient.
+     */
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
+        return new BetaAgentEndpointConversationsAsyncClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of BetaAgentTelephonyClient class.
+     *
+     * @return an instance of BetaAgentTelephonyClient.
+     */
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentTelephonyClient buildBetaAgentTelephonyClient() {
+        return new BetaAgentTelephonyClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString()).getBetaAgentTelephonies());
+    }
+
+    /**
+     * Builds an instance of BetaAgentEndpointConversationsClient class.
+     *
+     * @return an instance of BetaAgentEndpointConversationsClient.
+     */
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
+        return new BetaAgentEndpointConversationsClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
     }
 }
