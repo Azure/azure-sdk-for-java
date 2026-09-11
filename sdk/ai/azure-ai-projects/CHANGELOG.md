@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+- Renamed `AgentInsightHighlightedTrace.getDuration()` to `getDurationMs()` to clarify that the duration is measured in milliseconds.
+- Changed the return type of `AgentInsightHighlightedTrace.getTotalTokens()` from `Long` to `Integer`.
+- Moved `maxSamples` from `DataGenerationJobOptions` to supported scenario-specific models. `SimulationSeedDataGenerationJobOptions` no longer accepts it, while `TracesDataGenerationJobOptions` now has a no-argument constructor and optional `Integer` value configured through `setMaxSamples(...)`.
+
 ### Bugs Fixed
 
 ### Other Changes

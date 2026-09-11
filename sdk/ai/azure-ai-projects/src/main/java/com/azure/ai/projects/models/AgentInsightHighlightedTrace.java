@@ -40,7 +40,7 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
      * different models. Intended for relative usage comparison, not cost estimation.
      */
     @Generated
-    private Long totalTokens;
+    private Integer totalTokens;
 
     /*
      * The time when the trace was recorded.
@@ -52,16 +52,16 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
      * Creates an instance of AgentInsightHighlightedTrace class.
      *
      * @param summary the summary value to set.
-     * @param duration the duration value to set.
+     * @param durationMs the durationMs value to set.
      * @param timestamp the timestamp value to set.
      */
     @Generated
-    private AgentInsightHighlightedTrace(String summary, Duration duration, OffsetDateTime timestamp) {
+    private AgentInsightHighlightedTrace(String summary, Duration durationMs, OffsetDateTime timestamp) {
         this.summary = summary;
-        if (duration == null) {
-            this.duration = 0L;
+        if (durationMs == null) {
+            this.durationMs = 0L;
         } else {
-            this.duration = duration.toMillis();
+            this.durationMs = durationMs.toMillis();
         }
         if (timestamp == null) {
             this.timestamp = 0L;
@@ -97,7 +97,7 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
      * @return the totalTokens value.
      */
     @Generated
-    public Long getTotalTokens() {
+    public Integer getTotalTokens() {
         return this.totalTokens;
     }
 
@@ -119,7 +119,7 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("summary", this.summary);
-        jsonWriter.writeLongField("duration_ms", this.duration);
+        jsonWriter.writeLongField("duration_ms", this.durationMs);
         jsonWriter.writeLongField("timestamp", this.timestamp);
         jsonWriter.writeNumberField("total_tokens", this.totalTokens);
         return jsonWriter.writeEndObject();
@@ -139,9 +139,9 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
         return jsonReader.readObject(reader -> {
             String traceId = null;
             String summary = null;
-            Duration duration = null;
+            Duration durationMs = null;
             OffsetDateTime timestamp = null;
-            Long totalTokens = null;
+            Integer totalTokens = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -150,17 +150,17 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
                 } else if ("summary".equals(fieldName)) {
                     summary = reader.getString();
                 } else if ("duration_ms".equals(fieldName)) {
-                    duration = Duration.ofMillis(reader.getLong());
+                    durationMs = Duration.ofMillis(reader.getLong());
                 } else if ("timestamp".equals(fieldName)) {
                     timestamp = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("total_tokens".equals(fieldName)) {
-                    totalTokens = reader.getNullable(JsonReader::getLong);
+                    totalTokens = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             AgentInsightHighlightedTrace deserializedAgentInsightHighlightedTrace
-                = new AgentInsightHighlightedTrace(summary, duration, timestamp);
+                = new AgentInsightHighlightedTrace(summary, durationMs, timestamp);
             deserializedAgentInsightHighlightedTrace.traceId = traceId;
             deserializedAgentInsightHighlightedTrace.totalTokens = totalTokens;
             return deserializedAgentInsightHighlightedTrace;
@@ -171,15 +171,15 @@ public final class AgentInsightHighlightedTrace implements JsonSerializable<Agen
      * The end-to-end duration of the trace in milliseconds.
      */
     @Generated
-    private final long duration;
+    private final long durationMs;
 
     /**
-     * Get the duration property: The end-to-end duration of the trace in milliseconds.
+     * Get the durationMs property: The end-to-end duration of the trace in milliseconds.
      *
-     * @return the duration value.
+     * @return the durationMs value.
      */
     @Generated
-    public Duration getDuration() {
-        return Duration.ofMillis(this.duration);
+    public Duration getDurationMs() {
+        return Duration.ofMillis(this.durationMs);
     }
 }
