@@ -48,6 +48,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicReference<Disposable> backgroundRefreshDisposable = new AtomicReference<>();
     private volatile boolean isClosed;
     private volatile DatabaseAccount latestDatabaseAccount;
+    private final AtomicBoolean crossRegionalHedgingDisabledByAccount = new AtomicBoolean(false);
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
     private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(false);
     private final AtomicReference<EndpointProbeClient> thinClientProbeClient = new AtomicReference<>(null);
@@ -263,6 +264,10 @@ public class GlobalEndpointManager implements AutoCloseable {
      */
     public DatabaseAccount getLatestDatabaseAccount() {
         return this.latestDatabaseAccount;
+    }
+
+    AtomicBoolean getCrossRegionalHedgingDisabledByAccount() {
+        return this.crossRegionalHedgingDisabledByAccount;
     }
 
     public int getPreferredLocationCount() {
@@ -514,6 +519,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     try {
                         this.latestDatabaseAccount = databaseAccount;
+                        this.crossRegionalHedgingDisabledByAccount.set(databaseAccount.isCrossRegionalHedgingDisabled());
                         Collection<DatabaseAccountLocation> thinClientReadLocations =
                                 databaseAccount.getThinClientReadableLocations();
                         this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());

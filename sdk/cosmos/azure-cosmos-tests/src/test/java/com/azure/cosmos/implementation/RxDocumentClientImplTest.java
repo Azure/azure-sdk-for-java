@@ -10,9 +10,13 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
+import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -23,12 +27,15 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -47,6 +54,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,19 +62,25 @@ import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -590,6 +604,7 @@ public class RxDocumentClientImplTest {
                 "connectionMode",
                 "numberOfClients",
                 "isPpafEnabled",
+                "isCrossRegionalHedgingDisabledByAccount",
                 "isFalseProgSessionTokenMergeEnabled",
                 "excrgns",
                 "clientEndpoints",
@@ -613,6 +628,303 @@ public class RxDocumentClientImplTest {
             }
             httpClientMock.close();
         }
+    }
+
+    @Test(groups = "unit")
+    public void accountHedgingOverrideAppliesOnlyWithPpaf() throws Exception {
+        RxDocumentClientImpl client = Mockito.mock(RxDocumentClientImpl.class, Mockito.CALLS_REAL_METHODS);
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        AtomicBoolean disabledByAccount = new AtomicBoolean();
+        Mockito.when(endpointManager.getCrossRegionalHedgingDisabledByAccount()).thenReturn(disabledByAccount);
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover ppafManager =
+            Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+        Field endpointManagerField = RxDocumentClientImpl.class.getDeclaredField("globalEndpointManager");
+        endpointManagerField.setAccessible(true);
+        endpointManagerField.set(client, endpointManager);
+        Field ppafManagerField = RxDocumentClientImpl.class
+            .getDeclaredField("globalPartitionEndpointManagerForPerPartitionAutomaticFailover");
+        ppafManagerField.setAccessible(true);
+        ppafManagerField.set(client, ppafManager);
+
+        Method applicableRegions = RxDocumentClientImpl.class.getDeclaredMethod("getApplicableRegionsForSpeculation",
+            CosmosEndToEndOperationLatencyPolicyConfig.class, ResourceType.class, OperationType.class,
+            boolean.class, List.class);
+        applicableRegions.setAccessible(true);
+        CosmosEndToEndOperationLatencyPolicyConfig policy =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5))
+                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+                .build();
+
+        DatabaseAccount[] snapshots = {
+            null,
+            new DatabaseAccount("{\"disableCrossRegionalHedging\":true}"),
+            new DatabaseAccount("{\"disableCrossRegionalHedging\":false}"),
+            new DatabaseAccount("{\"disableCrossRegionalHedging\":true}"),
+            new DatabaseAccount("{}"),
+            new DatabaseAccount("{\"disableCrossRegionalHedging\":null}")
+        };
+
+        for (boolean ppafEnabled : new boolean[] {true, false}) {
+            Mockito.when(ppafManager.isPerPartitionAutomaticFailoverEnabled()).thenReturn(ppafEnabled);
+            for (DatabaseAccount snapshot : snapshots) {
+                disabledByAccount.set(snapshot != null && snapshot.isCrossRegionalHedgingDisabled());
+                for (OperationType operation : new OperationType[] {OperationType.Read, OperationType.Query}) {
+                    Mockito.clearInvocations(endpointManager);
+                    applicableRegions.invoke(client, policy, ResourceType.Document, operation, false, null);
+                    boolean disabled = ppafEnabled && snapshot != null
+                        && Boolean.TRUE.equals(snapshot.getBoolean("disableCrossRegionalHedging"));
+                    Mockito.verify(endpointManager, Mockito.times(disabled ? 0 : 1))
+                        .getApplicableReadRegionalRoutingContexts((List<String>) null);
+                }
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void accountHedgingOverrideIsInitializedAndRefreshedWithoutResettingPpcb() throws Exception {
+        AtomicReference<DatabaseAccount> account = new AtomicReference<>(hedgingAccount(true, true));
+        try (MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class)) {
+            httpClientMock.when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+                .thenReturn(dummyHttpClient());
+            RxDocumentClientImpl client = createClientWithAccount(account);
+            try {
+                client.init(null, null);
+                GlobalEndpointManager endpointManager = client.getGlobalEndpointManager();
+                Object circuitBreakerConfig = client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+                    .getCircuitBreakerConfig();
+                Method applicableRegions = RxDocumentClientImpl.class.getDeclaredMethod("getApplicableRegionsForSpeculation",
+                    CosmosEndToEndOperationLatencyPolicyConfig.class, ResourceType.class, OperationType.class,
+                    boolean.class, List.class);
+                applicableRegions.setAccessible(true);
+                CosmosEndToEndOperationLatencyPolicyConfig policy =
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5))
+                        .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+                        .build();
+
+                for (Boolean disabled : new Boolean[] {true, false, true, null, true}) {
+                    if (disabled != Boolean.TRUE || account.get().isCrossRegionalHedgingDisabled() != disabled) {
+                        account.set(hedgingAccount(true, disabled));
+                        endpointManager.refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
+                    }
+                    ObjectNode clientCfg = serializeClientConfig(client);
+                    assertThat(clientCfg.get("isPpafEnabled").asBoolean()).isTrue();
+                    assertThat(clientCfg.get("isCrossRegionalHedgingDisabledByAccount").asBoolean())
+                        .isEqualTo(Boolean.TRUE.equals(disabled));
+                    assertThat(clientCfg.get("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
+                    assertThat(client.getGlobalPartitionEndpointManagerForCircuitBreaker().getCircuitBreakerConfig())
+                        .isSameAs(circuitBreakerConfig);
+                    List<?> regions = (List<?>) applicableRegions.invoke(client, policy, ResourceType.Document,
+                        OperationType.Read, false, Collections.emptyList());
+                    assertThat(regions).hasSize(Boolean.TRUE.equals(disabled) ? 0 : 2);
+                }
+
+                account.set(hedgingAccount(false, true));
+                endpointManager.refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
+                assertThat(serializeClientConfig(client).get("isCrossRegionalHedgingDisabledByAccount").asBoolean()).isFalse();
+                assertThat((List<?>) applicableRegions.invoke(client, policy, ResourceType.Document,
+                    OperationType.Read, false, Collections.emptyList())).hasSize(2);
+            } finally {
+                client.close();
+            }
+        }
+    }
+
+    @DataProvider(name = "accountHedgingDisabled")
+    public Object[][] accountHedgingDisabled() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = "unit", dataProvider = "accountHedgingDisabled")
+    public void accountDisabledHedgingWaitsForPpcbFailover(boolean disabled) throws Exception {
+        AtomicReference<DatabaseAccount> account = new AtomicReference<>(hedgingAccount(true, disabled));
+        try (MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class)) {
+            httpClientMock.when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+                .thenReturn(dummyHttpClient());
+            RxDocumentClientImpl client = createClientWithAccount(account);
+            try {
+                client.init(null, null);
+                GlobalEndpointManager endpointManager = client.getGlobalEndpointManager();
+                GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcb =
+                    client.getGlobalPartitionEndpointManagerForCircuitBreaker();
+                PartitionKeyRange partition = new PartitionKeyRange("0", "", "FF");
+                String collectionId = "collectionRid";
+                AtomicReference<RxDocumentServiceRequest> lastRequest = new AtomicReference<>();
+                AtomicInteger reportedFailures = new AtomicInteger();
+                List<String> contactedRegions = new ArrayList<>();
+                ResourceResponse<Document> success = Mockito.mock(ResourceResponse.class);
+                Class<?> callbackType = ReflectionUtils.getClassBySimpleName(
+                    RxDocumentClientImpl.class.getDeclaredClasses(), "DocumentPointOperation");
+                Object callback = java.lang.reflect.Proxy.newProxyInstance(callbackType.getClassLoader(),
+                    new Class<?>[] {callbackType}, (proxy, method, arguments) -> Mono.defer(() -> {
+                        RequestOptions options = (RequestOptions) arguments[0];
+                        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                            client, OperationType.Read, ResourceType.Document);
+                        request.setResourceId(collectionId);
+                        request.requestContext.resolvedPartitionKeyRange = partition;
+                        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = partition;
+                        request.requestContext.setExcludeRegions(options.getExcludedRegions());
+                        request.requestContext.setCrossRegionAvailabilityContext(
+                            (CrossRegionAvailabilityContextForRxDocumentServiceRequest) arguments[3]);
+                        lastRequest.set(request);
+
+                        List<String> unavailable = ppcb.getUnavailableRegionsForPartitionKeyRange(
+                            request, collectionId, partition);
+                        RegionalRoutingContext target = endpointManager
+                            .getApplicableReadRegionalRoutingContexts(options.getExcludedRegions()).stream()
+                            .filter(region -> !unavailable.contains(endpointManager.getRegionName(
+                                region.getGatewayRegionalEndpoint(), OperationType.Read)))
+                            .findFirst().get();
+                        String regionName = endpointManager.getRegionName(target.getGatewayRegionalEndpoint(), OperationType.Read);
+                        contactedRegions.add(regionName);
+                        request.requestContext.regionalRoutingContextToRoute = target;
+
+                        if (regionName.equals("east us")) {
+                            return Mono.delay(Duration.ofSeconds(2))
+                                .then(Mono.<ResourceResponse<Document>>error(
+                                    BridgeInternal.createCosmosException(408, "Primary region timeout")))
+                                .doOnError(error -> {
+                                    reportedFailures.incrementAndGet();
+                                    ppcb.handleLocationExceptionForPartitionKeyRange(request, target, false);
+                                });
+                        }
+                        return Mono.just(success);
+                    }));
+                Method wrap = RxDocumentClientImpl.class.getDeclaredMethod("wrapPointOperationWithAvailabilityStrategy",
+                    ResourceType.class, OperationType.class, callbackType, RequestOptions.class, boolean.class,
+                    DiagnosticsClientContext.class, String.class);
+                wrap.setAccessible(true);
+                Supplier<Mono<ResourceResponse<Document>>> operation = () -> {
+                    try {
+                        return (Mono<ResourceResponse<Document>>) wrap.invoke(client, ResourceType.Document,
+                            OperationType.Read, callback, new RequestOptions(), false, client, collectionId);
+                    } catch (ReflectiveOperationException error) {
+                        throw new IllegalStateException(error);
+                    }
+                };
+
+                if (disabled) {
+                    do {
+                        StepVerifier.withVirtualTime(operation)
+                            .thenAwait(Duration.ofSeconds(2))
+                            .expectErrorMatches(error -> error instanceof CosmosException
+                                && ((CosmosException) error).getStatusCode() == 408)
+                            .verify(Duration.ofSeconds(5));
+                        assertThat(contactedRegions).containsOnly("east us");
+                        assertThat(reportedFailures.get()).isLessThan(100);
+                    } while (ppcb.getUnavailableRegionsForPartitionKeyRange(lastRequest.get(), collectionId, partition).isEmpty());
+                }
+
+                StepVerifier.withVirtualTime(operation)
+                    .thenAwait(Duration.ofSeconds(2))
+                    .expectNext(success)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                assertThat(contactedRegions.get(contactedRegions.size() - 1)).isEqualTo("west us");
+                if (disabled) {
+                    assertThat(reportedFailures.get()).isPositive();
+                    assertThat(ppcb.getUnavailableRegionsForPartitionKeyRange(lastRequest.get(), collectionId, partition))
+                        .containsExactly("east us");
+                } else {
+                    assertThat(reportedFailures.get()).isZero();
+                    assertThat(ppcb.getUnavailableRegionsForPartitionKeyRange(lastRequest.get(), collectionId, partition)).isEmpty();
+                }
+                ObjectNode clientCfg = serializeClientConfig(client);
+                assertThat(clientCfg.get("isCrossRegionalHedgingDisabledByAccount").asBoolean()).isEqualTo(disabled);
+                assertThat(clientCfg.get("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
+            } finally {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "accountHedgingDisabled")
+    public void accountHedgingOverrideControlsFeedSpeculation(boolean disabled) throws Exception {
+        AtomicReference<DatabaseAccount> account = new AtomicReference<>(hedgingAccount(true, disabled));
+        try (MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class)) {
+            httpClientMock.when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+                .thenReturn(dummyHttpClient());
+            RxDocumentClientImpl client = createClientWithAccount(account);
+            try {
+                client.init(null, null);
+                Method execute = RxDocumentClientImpl.class.getDeclaredMethod("executeFeedOperationWithAvailabilityStrategy",
+                    ResourceType.class, OperationType.class, Supplier.class, RxDocumentServiceRequest.class,
+                    BiFunction.class, String.class);
+                execute.setAccessible(true);
+                for (OperationType operationType : new OperationType[] {OperationType.Query, OperationType.ReadFeed}) {
+                    List<String> contactedRegions = new ArrayList<>();
+                    BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<String>> transport =
+                        (retryPolicy, request) -> Mono.defer(() -> {
+                            GlobalEndpointManager endpointManager = client.getGlobalEndpointManager();
+                            RegionalRoutingContext target = endpointManager.getApplicableReadRegionalRoutingContexts(
+                                request.requestContext.getExcludeRegions()).get(0);
+                            String region = endpointManager.getRegionName(target.getGatewayRegionalEndpoint(), operationType);
+                            request.requestContext.regionalRoutingContextToRoute = target;
+                            request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "FF");
+                            request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRange;
+                            contactedRegions.add(region);
+                            return region.equals("east us") ? Mono.never() : Mono.just(region);
+                        });
+                    Supplier<Mono<String>> operation = () -> {
+                        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(client, operationType, ResourceType.Document);
+                        request.setResourceId("collectionRid");
+                        request.requestContext.setExcludeRegions(Collections.emptyList());
+                        try {
+                            return (Mono<String>) execute.invoke(client, ResourceType.Document, operationType,
+                                (Supplier<DocumentClientRetryPolicy>) () -> Mockito.mock(DocumentClientRetryPolicy.class),
+                                request, transport, "collectionRid");
+                        } catch (ReflectiveOperationException error) {
+                            throw new IllegalStateException(error);
+                        }
+                    };
+                    if (disabled) {
+                        StepVerifier.withVirtualTime(operation).expectSubscription()
+                            .expectNoEvent(Duration.ofSeconds(2)).thenCancel().verify(Duration.ofSeconds(5));
+                        assertThat(contactedRegions).containsExactly("east us");
+                    } else {
+                        StepVerifier.withVirtualTime(operation).thenAwait(Duration.ofSeconds(2))
+                            .expectNext("west us").expectComplete().verify(Duration.ofSeconds(5));
+                        assertThat(contactedRegions).containsExactly("east us", "west us");
+                    }
+                }
+            } finally {
+                client.close();
+            }
+        }
+    }
+
+    private RxDocumentClientImpl createClientWithAccount(AtomicReference<DatabaseAccount> account) {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+        connectionPolicy.setPreferredRegions(Arrays.asList("East US", "West US"));
+        return new RxDocumentClientImpl(
+            URI.create("https://testaccount.documents.azure.com"), "ZmFrZQ==", null, connectionPolicy,
+            ConsistencyLevel.SESSION, null, new Configs(), null, null, false, false, false,
+            null, ApiType.SQL, new CosmosClientTelemetryConfig(), null, null, null, null,
+            this.defaultItemSerializer, false) {
+            @Override
+            public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+                return Flux.defer(() -> Flux.just(account.get()));
+            }
+        };
+    }
+
+    private static DatabaseAccount hedgingAccount(boolean ppafEnabled, Boolean disabled) {
+        DatabaseAccount account = new DatabaseAccount("{\"id\":\"testaccount\","
+            + "\"writableLocations\":[{\"name\":\"East US\","
+            + "\"databaseAccountEndpoint\":\"https://testaccount-eastus.documents.azure.com\"}],"
+            + "\"readableLocations\":[{\"name\":\"East US\","
+            + "\"databaseAccountEndpoint\":\"https://testaccount-eastus.documents.azure.com\"},"
+            + "{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://testaccount-westus.documents.azure.com\"}],"
+            + "\"userConsistencyPolicy\":{\"defaultConsistencyLevel\":\"Session\"}}");
+        account.set(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR, ppafEnabled);
+        if (disabled != null) {
+            account.set(Constants.Properties.DISABLE_CROSS_REGIONAL_HEDGING, disabled);
+        }
+        return account;
+    }
+
+    private static ObjectNode serializeClientConfig(RxDocumentClientImpl client) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return (ObjectNode) objectMapper.readTree(objectMapper.writeValueAsString(client.getConfig()));
     }
 
     private static HttpClient dummyHttpClient() {

@@ -11,6 +11,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added support for the account-level `disableCrossRegionalHedging` flag at client initialization and on account refresh when Per-Partition Automatic Failover (PPAF) is enabled. This flag suppresses availability strategy if and only if the account is PPAF enabled.
 
 ### 4.82.0 (2026-08-26)
 
