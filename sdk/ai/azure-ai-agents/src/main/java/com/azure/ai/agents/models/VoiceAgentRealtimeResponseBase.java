@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -22,7 +21,6 @@ import java.util.Map;
  * Properties shared by realtime responses returned by the voice-agent service.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAgentRealtimeResponseBase> {
 
     /*
@@ -35,7 +33,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * The object type, must be `realtime.response`.
      */
     @Generated
-    private VoiceResponseBaseObject object;
+    private VoiceResponseBaseObject1 object;
 
     /*
      * The final status of the response (`completed`, `cancelled`, `failed`, or
@@ -126,7 +124,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * @return the object value.
      */
     @Generated
-    public VoiceResponseBaseObject getObject() {
+    public VoiceResponseBaseObject1 getObject() {
         return this.object;
     }
 
@@ -137,7 +135,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * @return the VoiceAgentRealtimeResponseBase object itself.
      */
     @Generated
-    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject object) {
+    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject1 object) {
         this.object = object;
         return this;
     }
@@ -174,18 +172,6 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
     @Generated
     public RealtimeResponseStatus getStatusDetails() {
         return this.statusDetails;
-    }
-
-    /**
-     * Set the statusDetails property: Additional details about the status.
-     *
-     * @param statusDetails the statusDetails value to set.
-     * @return the VoiceAgentRealtimeResponseBase object itself.
-     */
-    @Generated
-    VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
-        this.statusDetails = statusDetails;
-        return this;
     }
 
     /**
@@ -370,7 +356,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
                     deserializedVoiceAgentRealtimeResponseBase.id = reader.getString();
                 } else if ("object".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponseBase.object
-                        = VoiceResponseBaseObject.fromString(reader.getString());
+                        = VoiceResponseBaseObject1.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponseBase.status
                         = VoiceResponseBaseStatus.fromString(reader.getString());
@@ -403,5 +389,17 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
             }
             return deserializedVoiceAgentRealtimeResponseBase;
         });
+    }
+
+    /**
+     * Set the statusDetails property: Additional details about the status.
+     *
+     * @param statusDetails the statusDetails value to set.
+     * @return the VoiceAgentRealtimeResponseBase object itself.
+     */
+    @Generated
+    VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
+        this.statusDetails = statusDetails;
+        return this;
     }
 }

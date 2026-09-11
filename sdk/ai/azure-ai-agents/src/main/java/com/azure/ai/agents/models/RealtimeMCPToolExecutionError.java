@@ -11,22 +11,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Realtime MCP protocol error.
+ * Realtime MCP tool execution error.
  */
 @Immutable
-public final class RealtimeMcpProtocolError extends RealtimeMcpError {
+public final class RealtimeMCPToolExecutionError extends RealtimeMCPError {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeMcpErrorType type = RealtimeMcpErrorType.PROTOCOL_ERROR;
-
-    /*
-     * The code property.
-     */
-    @Generated
-    private final long code;
+    private RealtimeMcpErrorType type = RealtimeMcpErrorType.TOOL_EXECUTION_ERROR;
 
     /*
      * The message property.
@@ -35,14 +29,12 @@ public final class RealtimeMcpProtocolError extends RealtimeMcpError {
     private final String message;
 
     /**
-     * Creates an instance of RealtimeMcpProtocolError class.
+     * Creates an instance of RealtimeMCPToolExecutionError class.
      *
-     * @param code the code value to set.
      * @param message the message value to set.
      */
     @Generated
-    public RealtimeMcpProtocolError(long code, String message) {
-        this.code = code;
+    public RealtimeMCPToolExecutionError(String message) {
         this.message = message;
     }
 
@@ -55,16 +47,6 @@ public final class RealtimeMcpProtocolError extends RealtimeMcpError {
     @Override
     public RealtimeMcpErrorType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the code property: The code property.
-     *
-     * @return the code value.
-     */
-    @Generated
-    public long getCode() {
-        return this.code;
     }
 
     /**
@@ -84,33 +66,29 @@ public final class RealtimeMcpProtocolError extends RealtimeMcpError {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("code", this.code);
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RealtimeMcpProtocolError from the JsonReader.
+     * Reads an instance of RealtimeMCPToolExecutionError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeMcpProtocolError if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of RealtimeMCPToolExecutionError if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeMcpProtocolError.
+     * @throws IOException If an error occurs while reading the RealtimeMCPToolExecutionError.
      */
     @Generated
-    public static RealtimeMcpProtocolError fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeMCPToolExecutionError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            long code = 0L;
             String message = null;
-            RealtimeMcpErrorType type = RealtimeMcpErrorType.PROTOCOL_ERROR;
+            RealtimeMcpErrorType type = RealtimeMcpErrorType.TOOL_EXECUTION_ERROR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("code".equals(fieldName)) {
-                    code = reader.getLong();
-                } else if ("message".equals(fieldName)) {
+                if ("message".equals(fieldName)) {
                     message = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeMcpErrorType.fromString(reader.getString());
@@ -118,9 +96,10 @@ public final class RealtimeMcpProtocolError extends RealtimeMcpError {
                     reader.skipChildren();
                 }
             }
-            RealtimeMcpProtocolError deserializedRealtimeMcpProtocolError = new RealtimeMcpProtocolError(code, message);
-            deserializedRealtimeMcpProtocolError.type = type;
-            return deserializedRealtimeMcpProtocolError;
+            RealtimeMCPToolExecutionError deserializedRealtimeMCPToolExecutionError
+                = new RealtimeMCPToolExecutionError(message);
+            deserializedRealtimeMCPToolExecutionError.type = type;
+            return deserializedRealtimeMCPToolExecutionError;
         });
     }
 }

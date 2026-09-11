@@ -262,6 +262,23 @@ public class JsonMergePatchHelper {
         return agentCardSkillAccessor;
     }
 
+    private static UpdateTelephonyBindingRequestAccessor updateTelephonyBindingRequestAccessor;
+
+    public interface UpdateTelephonyBindingRequestAccessor {
+        UpdateTelephonyBindingRequest prepareModelForJsonMergePatch(
+            UpdateTelephonyBindingRequest updateTelephonyBindingRequest, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateTelephonyBindingRequest updateTelephonyBindingRequest);
+    }
+
+    public static void setUpdateTelephonyBindingRequestAccessor(UpdateTelephonyBindingRequestAccessor accessor) {
+        updateTelephonyBindingRequestAccessor = accessor;
+    }
+
+    public static UpdateTelephonyBindingRequestAccessor getUpdateTelephonyBindingRequestAccessor() {
+        return updateTelephonyBindingRequestAccessor;
+    }
+
     private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;
 
     public interface UpdateAgentDetailsOptionsAccessor {

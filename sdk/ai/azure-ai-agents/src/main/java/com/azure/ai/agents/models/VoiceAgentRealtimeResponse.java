@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -21,7 +20,6 @@ import java.util.Map;
  * A live realtime response returned by the voice-agent service in both `response.created` and `response.done` events.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponseBase {
 
     /*
@@ -95,7 +93,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      * The object type, must be `realtime.response`.
      */
     @Generated
-    private VoiceResponseBaseObject object;
+    private VoiceResponseBaseObject1 object;
 
     /*
      * The unique ID of the response, will look like `resp_1234`.
@@ -228,7 +226,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      */
     @Generated
     @Override
-    public VoiceResponseBaseObject getObject() {
+    public VoiceResponseBaseObject1 getObject() {
         return this.object;
     }
 
@@ -292,7 +290,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
                     deserializedVoiceAgentRealtimeResponse.id = reader.getString();
                 } else if ("object".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponse.object
-                        = VoiceResponseBaseObject.fromString(reader.getString());
+                        = VoiceResponseBaseObject1.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponse.status
                         = VoiceResponseBaseStatus.fromString(reader.getString());

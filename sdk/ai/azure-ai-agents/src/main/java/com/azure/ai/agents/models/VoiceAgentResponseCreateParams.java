@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -21,7 +20,6 @@ import java.util.Map;
  * Parameters accepted by a voice-agent `response.create` event.
  */
 @Fluent
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentResponseCreateParams implements JsonSerializable<VoiceAgentResponseCreateParams> {
 
     /*
@@ -97,7 +95,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * Response-specific audio settings.
      */
     @Generated
-    private VoiceAgentResponseAudioConfig audio;
+    private PickPropertiesVoiceAgentAudioConfig audio;
 
     /*
      * Conversation items used as inline response input.
@@ -358,7 +356,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @return the audio value.
      */
     @Generated
-    public VoiceAgentResponseAudioConfig getAudio() {
+    public PickPropertiesVoiceAgentAudioConfig getAudio() {
         return this.audio;
     }
 
@@ -369,7 +367,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @return the VoiceAgentResponseCreateParams object itself.
      */
     @Generated
-    public VoiceAgentResponseCreateParams setAudio(VoiceAgentResponseAudioConfig audio) {
+    public VoiceAgentResponseCreateParams setAudio(PickPropertiesVoiceAgentAudioConfig audio) {
         this.audio = audio;
         return this;
     }
@@ -527,7 +525,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
                         = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
                     deserializedVoiceAgentResponseCreateParams.outputModalities = outputModalities;
                 } else if ("audio".equals(fieldName)) {
-                    deserializedVoiceAgentResponseCreateParams.audio = VoiceAgentResponseAudioConfig.fromJson(reader);
+                    deserializedVoiceAgentResponseCreateParams.audio
+                        = PickPropertiesVoiceAgentAudioConfig.fromJson(reader);
                 } else if ("input".equals(fieldName)) {
                     List<RealtimeConversationItem> input
                         = reader.readArray(reader1 -> RealtimeConversationItem.fromJson(reader1));

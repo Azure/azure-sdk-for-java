@@ -37,13 +37,6 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
     private String description;
 
     /**
-     * Creates an instance of VoiceAgentSystemTool class.
-     */
-    @Generated
-    public VoiceAgentSystemTool() {
-    }
-
-    /**
      * Get the type property: The tool kind.
      *
      * @return the type value.
@@ -133,6 +126,13 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
                 }
             }
         });
+    }
+
+    /**
+     * Creates an instance of VoiceAgentSystemTool class.
+     */
+    @Generated
+    public VoiceAgentSystemTool() {
     }
 
     @Generated

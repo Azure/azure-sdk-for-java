@@ -60,16 +60,16 @@ import java.util.stream.Stream;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        BetaVoiceAgentsConversationsClient.class,
-        BetaVoiceAgentsTelephonyClient.class,
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
+        BetaAgentTelephonyClient.class,
+        BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
-        BetaVoiceAgentsConversationsAsyncClient.class,
-        BetaVoiceAgentsTelephonyAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
+        BetaAgentTelephonyAsyncClient.class,
+        BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
@@ -95,9 +95,6 @@ public final class AgentsClientBuilder
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
-
-    private static final String VOICE_AGENTS_PREVIEW_FEATURES
-        = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
 
     private boolean allowPreview;
 
@@ -536,9 +533,7 @@ public final class AgentsClientBuilder
      * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
      * policies, retry settings, logging options, client options, and service version. Use this method
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
-     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
-     * {@link BetaVoiceAgentsTelephonyClient}, {@link BetaVoiceAgentsTelephonyAsyncClient},
-     * {@link BetaVoiceAgentsConversationsClient}, or {@link BetaVoiceAgentsConversationsAsyncClient}.
+     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient}
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
@@ -563,12 +558,8 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaVoiceAgentsTelephonyClient.class,
-            BetaVoiceAgentsConversationsClient.class,
             BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class,
-            BetaVoiceAgentsTelephonyAsyncClient.class,
-            BetaVoiceAgentsConversationsAsyncClient.class })
+            BetaMemoryStoresAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
@@ -609,38 +600,6 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an asynchronous beta client for preview voice-agent telephony operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for voice-agent preview operations, so
-         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
-         */
-        @Beta
-        public BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
-            return new BetaVoiceAgentsTelephonyAsyncClient(
-                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsTelephonies());
-        }
-
-        /**
-         * Builds an asynchronous beta client for preview voice-agent conversation operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for voice-agent preview operations, so
-         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaVoiceAgentsConversationsAsyncClient.
-         */
-        @Beta
-        public BetaVoiceAgentsConversationsAsyncClient buildBetaVoiceAgentsConversationsAsyncClient() {
-            return new BetaVoiceAgentsConversationsAsyncClient(
-                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsConversations());
-        }
-
-        /**
          * Builds a synchronous beta Agents client for preview agent optimization operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
@@ -668,38 +627,6 @@ public final class AgentsClientBuilder
         @Beta
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
-        }
-
-        /**
-         * Builds a synchronous beta client for preview voice-agent telephony operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for voice-agent preview operations, so
-         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaVoiceAgentsTelephonyClient.
-         */
-        @Beta
-        public BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
-            return new BetaVoiceAgentsTelephonyClient(
-                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsTelephonies());
-        }
-
-        /**
-         * Builds a synchronous beta client for preview voice-agent conversation operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for voice-agent preview operations, so
-         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaVoiceAgentsConversationsClient.
-         */
-        @Beta
-        public BetaVoiceAgentsConversationsClient buildBetaVoiceAgentsConversationsClient() {
-            return new BetaVoiceAgentsConversationsClient(
-                buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaVoiceAgentsConversations());
         }
     }
 
@@ -760,38 +687,52 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaVoiceAgentsConversationsAsyncClient class.
+     * Builds an instance of BetaAgentTelephonyAsyncClient class.
      *
-     * @return an instance of BetaVoiceAgentsConversationsAsyncClient.
+     * @return an instance of BetaAgentTelephonyAsyncClient.
      */
-    private BetaVoiceAgentsConversationsAsyncClient buildBetaVoiceAgentsConversationsAsyncClient() {
-        return new BetaVoiceAgentsConversationsAsyncClient(buildInnerClient().getBetaVoiceAgentsConversations());
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentTelephonyAsyncClient buildBetaAgentTelephonyAsyncClient() {
+        return new BetaAgentTelephonyAsyncClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString()).getBetaAgentTelephonies());
     }
 
     /**
-     * Builds an instance of BetaVoiceAgentsTelephonyAsyncClient class.
+     * Builds an instance of BetaAgentEndpointConversationsAsyncClient class.
      *
-     * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
+     * @return an instance of BetaAgentEndpointConversationsAsyncClient.
      */
-    private BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
-        return new BetaVoiceAgentsTelephonyAsyncClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
+        return new BetaAgentEndpointConversationsAsyncClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
     }
 
     /**
-     * Builds an instance of BetaVoiceAgentsConversationsClient class.
+     * Builds an instance of BetaAgentTelephonyClient class.
      *
-     * @return an instance of BetaVoiceAgentsConversationsClient.
+     * @return an instance of BetaAgentTelephonyClient.
      */
-    private BetaVoiceAgentsConversationsClient buildBetaVoiceAgentsConversationsClient() {
-        return new BetaVoiceAgentsConversationsClient(buildInnerClient().getBetaVoiceAgentsConversations());
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentTelephonyClient buildBetaAgentTelephonyClient() {
+        return new BetaAgentTelephonyClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString()).getBetaAgentTelephonies());
     }
 
     /**
-     * Builds an instance of BetaVoiceAgentsTelephonyClient class.
+     * Builds an instance of BetaAgentEndpointConversationsClient class.
      *
-     * @return an instance of BetaVoiceAgentsTelephonyClient.
+     * @return an instance of BetaAgentEndpointConversationsClient.
      */
-    private BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
-        return new BetaVoiceAgentsTelephonyClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
+    @Generated
+    @Beta(warningText = "This method is in preview and may change in future releases.")
+    public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
+        return new BetaAgentEndpointConversationsClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaAgentEndpointConversations());
     }
 }

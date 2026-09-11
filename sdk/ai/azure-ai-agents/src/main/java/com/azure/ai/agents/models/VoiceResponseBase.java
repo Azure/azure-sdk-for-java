@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -21,7 +20,6 @@ import java.util.List;
  * Properties shared by persisted voice responses.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
 
     /*
@@ -128,18 +126,6 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     @Generated
     public RealtimeResponseStatus getStatusDetails() {
         return this.statusDetails;
-    }
-
-    /**
-     * Set the statusDetails property: Additional details about the status.
-     *
-     * @param statusDetails the statusDetails value to set.
-     * @return the VoiceResponseBase object itself.
-     */
-    @Generated
-    VoiceResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
-        this.statusDetails = statusDetails;
-        return this;
     }
 
     /**
@@ -290,5 +276,17 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
             }
             return deserializedVoiceResponseBase;
         });
+    }
+
+    /**
+     * Set the statusDetails property: Additional details about the status.
+     *
+     * @param statusDetails the statusDetails value to set.
+     * @return the VoiceResponseBase object itself.
+     */
+    @Generated
+    VoiceResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
+        this.statusDetails = statusDetails;
+        return this;
     }
 }

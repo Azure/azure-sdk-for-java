@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when MCP tool call arguments are updated during response generation.
  */
 @Immutable
-public final class RealtimeServerEventResponseMcpCallArgumentsDelta extends RealtimeServerEvent {
+public final class RealtimeServerEventResponseMCPCallArgumentsDelta extends RealtimeServerEvent {
 
     /*
      * The type property.
@@ -59,7 +59,7 @@ public final class RealtimeServerEventResponseMcpCallArgumentsDelta extends Real
     private String obfuscation;
 
     /**
-     * Creates an instance of RealtimeServerEventResponseMcpCallArgumentsDelta class.
+     * Creates an instance of RealtimeServerEventResponseMCPCallArgumentsDelta class.
      *
      * @param eventId the eventId value to set.
      * @param responseId the responseId value to set.
@@ -68,7 +68,7 @@ public final class RealtimeServerEventResponseMcpCallArgumentsDelta extends Real
      * @param delta the delta value to set.
      */
     @Generated
-    private RealtimeServerEventResponseMcpCallArgumentsDelta(String eventId, String responseId, String itemId,
+    private RealtimeServerEventResponseMCPCallArgumentsDelta(String eventId, String responseId, String itemId,
         long outputIndex, String delta) {
         this.eventId = eventId;
         this.responseId = responseId;
@@ -166,16 +166,16 @@ public final class RealtimeServerEventResponseMcpCallArgumentsDelta extends Real
     }
 
     /**
-     * Reads an instance of RealtimeServerEventResponseMcpCallArgumentsDelta from the JsonReader.
+     * Reads an instance of RealtimeServerEventResponseMCPCallArgumentsDelta from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventResponseMcpCallArgumentsDelta if the JsonReader was pointing to an
+     * @return An instance of RealtimeServerEventResponseMCPCallArgumentsDelta if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMcpCallArgumentsDelta.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMCPCallArgumentsDelta.
      */
     @Generated
-    public static RealtimeServerEventResponseMcpCallArgumentsDelta fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventResponseMCPCallArgumentsDelta fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             String responseId = null;
@@ -205,11 +205,11 @@ public final class RealtimeServerEventResponseMcpCallArgumentsDelta extends Real
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventResponseMcpCallArgumentsDelta deserializedRealtimeServerEventResponseMcpCallArgumentsDelta
-                = new RealtimeServerEventResponseMcpCallArgumentsDelta(eventId, responseId, itemId, outputIndex, delta);
-            deserializedRealtimeServerEventResponseMcpCallArgumentsDelta.type = type;
-            deserializedRealtimeServerEventResponseMcpCallArgumentsDelta.obfuscation = obfuscation;
-            return deserializedRealtimeServerEventResponseMcpCallArgumentsDelta;
+            RealtimeServerEventResponseMCPCallArgumentsDelta deserializedRealtimeServerEventResponseMCPCallArgumentsDelta
+                = new RealtimeServerEventResponseMCPCallArgumentsDelta(eventId, responseId, itemId, outputIndex, delta);
+            deserializedRealtimeServerEventResponseMCPCallArgumentsDelta.type = type;
+            deserializedRealtimeServerEventResponseMCPCallArgumentsDelta.obfuscation = obfuscation;
+            return deserializedRealtimeServerEventResponseMCPCallArgumentsDelta;
         });
     }
 }

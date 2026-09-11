@@ -14,7 +14,7 @@ import java.io.IOException;
  * Realtime MCP HTTP error.
  */
 @Immutable
-public final class RealtimeMcpHttpError extends RealtimeMcpError {
+public final class RealtimeMcpHttpError extends RealtimeMCPError {
 
     /*
      * The type property.
