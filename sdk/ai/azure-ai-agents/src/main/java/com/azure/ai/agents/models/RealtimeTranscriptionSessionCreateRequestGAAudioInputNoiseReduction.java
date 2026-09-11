@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.NoiseReductionType;
 import java.io.IOException;
 
 /**
@@ -56,11 +57,11 @@ public final class RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseRed
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        // AI Tooling: openai-java de-dup
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.asString());
         return jsonWriter.writeEndObject();
     }
 
@@ -73,7 +74,6 @@ public final class RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseRed
      * @throws IOException If an error occurs while reading the
      * RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseReduction.
      */
-    @Generated
     public static RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseReduction fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
@@ -83,8 +83,9 @@ public final class RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseRed
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
+                    // AI Tooling: openai-java de-dup
                     deserializedRealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseReduction.type
-                        = NoiseReductionType.fromString(reader.getString());
+                        = NoiseReductionType.of(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
