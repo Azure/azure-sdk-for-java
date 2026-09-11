@@ -1,0 +1,12 @@
+[
+  {
+    "extension": "ignored-jackson-databind-removal",
+    "id": "sdk-jackson-removal",
+    "configuration": {
+      "enabled": true,
+      "ignoredPackages": {
+        "com.azure.containers.containerregistry.models": []
+      }
+    }
+  }
+]

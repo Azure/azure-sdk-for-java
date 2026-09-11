@@ -1,0 +1,30 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.varargOverloadsOnlyDifferInVarargParameter",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "extension": "ignored-jackson-databind-removal",
+    "id": "sdk-jackson-removal",
+    "configuration": {
+      "enabled": true,
+      "ignoredPackages": {
+        "com.azure.communication.": [
+          "email.models"
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.annotation.added",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Adding missing Jackson annotations to Job Router models."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Remove setter for Value from RouterWorkerSelector/RouterQueueSelector since it's in the constructor."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
+        },
+        {
+          "code": "java\\.annotation\\.attributeValueChanged",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Fix incorrect json attributes."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeTypeParametersChanged|returnTypeChanged)",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Accept and return Router models rather than BinaryData."
+        }
+      ]
+    }
+  },
+  {
+    "extension": "ignored-jackson-databind-removal",
+    "id": "sdk-jackson-removal",
+    "configuration": {
+      "enabled": true,
+      "ignoredPackages": {
+        "com.azure.communication.": [
+          "jobrouter.models"
+        ]
+      }
+    }
+  }
+]

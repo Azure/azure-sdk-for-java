@@ -1,0 +1,14 @@
+[
+  {
+    "extension": "class-and-package-tree-filter-provider",
+    "id": "sdk-api-exclusions",
+    "configuration": {
+      "ignoredClasses": {
+        "com.azure.": [
+          "spring.cloud.config.web.AppConfigurationEndpoint",
+          "spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEvent"
+        ]
+      }
+    }
+  }
+]

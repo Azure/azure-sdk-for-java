@@ -1729,5 +1729,29 @@
         <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
       </properties>
     </profile>
+
+    <profile>
+      <id>local-revapi-suppressions</id>
+      <activation>
+        <file>
+          <exists>revapi-suppressions.json</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <configuration>
+              <analysisConfigurationFiles combine.children="append">
+                <configurationFile>
+                  <path>${project.basedir}/revapi-suppressions.json</path>
+                </configurationFile>
+              </analysisConfigurationFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

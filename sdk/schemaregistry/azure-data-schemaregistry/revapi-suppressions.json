@@ -1,0 +1,26 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
+          "justification": "Another version of Schema Registry API released."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)"
+          },
+          "justification": "Additional schema formats are supported by Schema Registry."
+        }
+      ]
+    }
+  }
+]

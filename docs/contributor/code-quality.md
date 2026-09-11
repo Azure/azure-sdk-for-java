@@ -47,6 +47,64 @@ mvn revapi:check
 This compares the current API surface against the latest GA version on Maven Central
 and reports any incompatible changes.
 
+### Adding a RevApi Suppression
+
+For an approved API compatibility exception or a confirmed false positive, add
+`revapi-suppressions.json` next to the SDK's `pom.xml`. The client SDK parents
+automatically append this file to the shared RevApi configuration when it exists;
+no SDK-specific Maven plugin configuration or empty suppression file is needed.
+
+For example, a narrowly scoped suppression can use:
+
+```json
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
+          "justification": "Non-breaking change as class is final."
+        }
+      ]
+    }
+  }
+]
+```
+
+Use precise API signatures or narrowly scoped matchers, and justify every exception.
+Local ownership does not change the approval requirements for breaking changes.
+Keep shared analyzer, versioning, and cross-SDK policy under `eng/lintingconfigs/revapi/`;
+move only SDK-specific exceptions into the local file. SDK-specific transform
+configuration, such as Jackson annotation-removal exceptions, preview-annotation
+filters, and approved class exclusions, also belongs in the local file.
+See [Search's configuration](../../sdk/search/azure-search-documents/revapi-suppressions.json)
+for an example.
+
+Empty arrays in prefix-based `allowedPrefixes` or `ignoredPackages` settings match
+the key's prefix itself (for example, `"kotlin": []`). These are active rules, not
+empty suppression lists.
+
+Keep local extension instances separate from shared instances: use a distinct `id`
+(such as `sdk-suppressions`) or omit it. Reusing a shared instance's ID merges its
+configuration rather than overriding it, and repeated scalar settings can fail.
+Do not disable `revapi.failOnMissingConfigurationFiles`: the default failure behavior
+protects the required shared configuration too.
+
+When migrating an SDK, remove its matching central exceptions and any redundant
+child-POM file registration. Use `revapi-suppressions.json`, not `revapi.json`, for
+the local configuration. Analysis output remains in `target/revapi.json`, separate
+from the suppression input.
+
+After building the SDK JAR, run from its directory:
+
+```bash
+mvn revapi:check
+```
+
 ---
 
 ## Generating HTML Quality Reports
@@ -89,13 +147,18 @@ Add these flags to any Maven command for a faster local build:
 
 ## Configuration Files
 
-The linting configuration files live under `eng/lintingconfigs/`:
+Shared linting configuration lives under `eng/lintingconfigs/`. SDK-local suppression
+files live next to the SDK's `pom.xml`:
 
 | File | Purpose |
 |------|---------|
-| `eng/lintingconfigs/checkstyle/track2/checkstyle.xml` | CheckStyle rules |
+| `eng/lintingconfigs/checkstyle/{clientcore,track2,vnext}/checkstyle.xml` | Shared CheckStyle rules |
 | `eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml` | Per-module suppressions |
 | `eng/lintingconfigs/spotbugs/spotbugs-exclude.xml` | SpotBugs exclusion filters |
+| `eng/lintingconfigs/revapi/{clientcore,track2}/revapi.json` | Shared RevApi policy and cross-SDK exceptions |
+| `sdk/<service>/<artifact>/checkstyle-suppressions.xml` | SDK-local Checkstyle suppressions |
+| `sdk/<service>/<artifact>/revapi-suppressions.json` | SDK-local RevApi exceptions |
+| `sdk/<service>/<artifact>/spotbugs-exclude.json` | SDK-local SpotBugs exclusion filters |
 
 ### Adding a CheckStyle Suppression
 

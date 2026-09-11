@@ -1,0 +1,13 @@
+[
+  {
+    "extension": "class-and-package-tree-filter-provider",
+    "id": "sdk-api-exclusions",
+    "configuration": {
+      "ignoredClasses": {
+        "com.azure.": [
+          "core.util.Configuration"
+        ]
+      }
+    }
+  }
+]

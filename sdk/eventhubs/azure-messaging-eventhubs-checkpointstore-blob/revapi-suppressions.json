@@ -1,0 +1,16 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.removed",
+          "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
+          "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
+        }
+      ]
+    }
+  }
+]
