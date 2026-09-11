@@ -987,9 +987,7 @@ public final class ToolboxesClient {
      * 
      * <pre>
      * {@code
-     * {
-     *     String: BinaryData (Required)
-     * }
+     * BinaryData
      * }
      * </pre>
      * 
@@ -1041,9 +1039,9 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return anything.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public // TODO: temp customization until spec change
-    BinaryData invokeLatestToolboxMcp(String name, String contentType, BinaryData request) {
+    public BinaryData invokeLatestToolboxMcp(String name, String contentType, BinaryData request) {
         // Generated convenience method for invokeLatestToolboxMcpWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return invokeLatestToolboxMcpWithResponse(name, contentType, request, requestOptions).getValue();

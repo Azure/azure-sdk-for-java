@@ -2744,6 +2744,7 @@ public final class AgentsClient {
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
+     *     stopped_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -2782,6 +2783,7 @@ public final class AgentsClient {
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
+     *     stopped_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -2882,6 +2884,7 @@ public final class AgentsClient {
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
+     *     stopped_at: Long (Optional)
      * }
      * }
      * </pre>

@@ -1669,9 +1669,7 @@ public final class ToolboxesImpl {
      * 
      * <pre>
      * {@code
-     * {
-     *     String: BinaryData (Required)
-     * }
+     * BinaryData
      * }
      * </pre>
      * 
@@ -1716,9 +1714,7 @@ public final class ToolboxesImpl {
      * 
      * <pre>
      * {@code
-     * {
-     *     String: BinaryData (Required)
-     * }
+     * BinaryData
      * }
      * </pre>
      * 
