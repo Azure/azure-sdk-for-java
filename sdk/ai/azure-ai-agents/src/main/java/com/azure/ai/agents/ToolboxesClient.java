@@ -1041,9 +1041,9 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return anything.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData invokeLatestToolboxMcp(String name, String contentType, Map<String, BinaryData> request) {
+    public // TODO: temp customization until spec change
+    BinaryData invokeLatestToolboxMcp(String name, String contentType, BinaryData request) {
         // Generated convenience method for invokeLatestToolboxMcpWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return invokeLatestToolboxMcpWithResponse(name, contentType, request, requestOptions).getValue();
