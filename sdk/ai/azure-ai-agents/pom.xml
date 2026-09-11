@@ -68,6 +68,52 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.16.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty-http</artifactId>
+      <version>1.2.18</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http</artifactId>
+      <version>4.1.137.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport</artifactId>
+      <version>4.1.137.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-common</artifactId>
+      <version>4.1.137.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec</artifactId>
+      <version>4.1.137.Final</version> <!-- {x-version-update;io.netty:netty-codec;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-buffer</artifactId>
+      <version>4.1.137.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.12.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.squareup.okio</groupId>
+          <artifactId>okio</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.18.1</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
+    </dependency>
 
     <!-- test scope -->
     <dependency>
@@ -102,6 +148,14 @@
             <bannedDependencies>
               <includes>
                 <include>com.openai:openai-java:[4.45.0]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.2.18]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.137.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-transport:[4.1.137.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
+                <include>io.netty:netty-common:[4.1.137.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
+                <include>io.netty:netty-codec:[4.1.137.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
+                <include>io.netty:netty-buffer:[4.1.137.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>com.squareup.okhttp3:okhttp:[4.12.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okio:okio-jvm:[3.18.1]</include> <!-- {x-include-update;com.squareup.okio:okio-jvm;external_dependency} -->
               </includes>
             </bannedDependencies>
             <requireReleaseDeps>

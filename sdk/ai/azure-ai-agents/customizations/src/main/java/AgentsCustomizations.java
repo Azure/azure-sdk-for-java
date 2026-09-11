@@ -10,6 +10,9 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
@@ -45,6 +48,17 @@ public class AgentsCustomizations extends Customization {
         customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
             ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
+            addServiceClient(builder, "BetaVoiceAgentWebSocketClient.class");
+            addServiceClient(builder, "BetaVoiceAgentWebSocketAsyncClient.class");
+            ClassOrInterfaceDeclaration betaBuilder = builder.getMembers()
+                .stream()
+                .filter(member -> member.isClassOrInterfaceDeclaration()
+                    && "BetaAgentsClientBuilder".equals(member.asClassOrInterfaceDeclaration().getNameAsString()))
+                .map(member -> member.asClassOrInterfaceDeclaration())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated BetaAgentsClientBuilder was not found."));
+            addServiceClient(betaBuilder, "BetaVoiceAgentWebSocketClient.class");
+            addServiceClient(betaBuilder, "BetaVoiceAgentWebSocketAsyncClient.class");
             customizeAgentEndpointConversationBuildMethods(builder);
             customizeAgentTelephonyBuildMethods(builder);
             for (String methodName : new String[] { "buildBetaAgentEndpointConversationsAsyncClient",
@@ -452,6 +466,26 @@ public class AgentsCustomizations extends Customization {
                             .forEach(assignment -> assignment.findAncestor(ExpressionStmt.class)
                                 .ifPresent(ExpressionStmt::remove)));
                 }));
+        }
+    }
+
+    private static void addServiceClient(ClassOrInterfaceDeclaration builder, String serviceClient) {
+        NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
+            .filter(AnnotationExpr::isNormalAnnotationExpr)
+            .map(AnnotationExpr::asNormalAnnotationExpr)
+            .orElseThrow(() -> new IllegalStateException(
+                builder.getNameAsString() + " has no normal @ServiceClientBuilder annotation."));
+        MemberValuePair pair = annotation.getPairs().stream()
+            .filter(candidate -> "serviceClients".equals(candidate.getNameAsString()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("@ServiceClientBuilder has no serviceClients value."));
+        Expression value = pair.getValue();
+        ArrayInitializerExpr clients = value.isArrayInitializerExpr()
+            ? value.asArrayInitializerExpr()
+            : new ArrayInitializerExpr(new com.github.javaparser.ast.NodeList<>(value));
+        if (!clients.getValues().stream().anyMatch(existing -> serviceClient.equals(existing.toString()))) {
+            clients.getValues().add(StaticJavaParser.parseExpression(serviceClient));
+            pair.setValue(clients);
         }
     }
 
