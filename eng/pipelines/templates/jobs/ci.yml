@@ -90,7 +90,7 @@ jobs:
           componentgovernance:
             enabled: true
           codeql:
-            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            binaryLanguages: java
             compiled:
               enabled: true
 
@@ -111,14 +111,23 @@ jobs:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/ci*.yml' # necessary for save-package-properties.yml
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+        - checkout: self
+          path: s
+          fetchFilter: tree:0
+          fetchDepth: 0
+          fetchTags: ${{ parameters.TestPipeline }}
+          env:
+            AGENT_SOURCE_CHECKOUT_QUIET: 'true'
+          sparseCheckoutPatterns: >-
+            /*
+            !/*/
+            /eng
+            /.config
+            **/*.xml
+            **/*.md
+            **/ci*.yml
+            !sdk/**/test-recordings
+            !sdk/**/session-records
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -151,7 +160,6 @@ jobs:
         - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -321,15 +329,24 @@ jobs:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/*.yml'
-              - '.vscode/cspell.json'
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+        - checkout: self
+          path: s
+          fetchFilter: tree:0
+          fetchDepth: 0
+          fetchTags: ${{ parameters.TestPipeline }}
+          env:
+            AGENT_SOURCE_CHECKOUT_QUIET: 'true'
+          sparseCheckoutPatterns: >-
+            /*
+            !/*/
+            /eng
+            /.config
+            **/*.xml
+            **/*.md
+            **/*.yml
+            .vscode/cspell.json
+            !sdk/**/test-recordings
+            !sdk/**/session-records
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -365,7 +382,6 @@ jobs:
         - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
       - task: UseNode@1
         inputs:

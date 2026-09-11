@@ -24,14 +24,22 @@ jobs:
       os: linux
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
-            - '**/*.md'
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+      - checkout: self
+        fetchFilter: tree:0
+        fetchDepth: 0
+        fetchTags: false
+        env:
+          AGENT_SOURCE_CHECKOUT_QUIET: 'true'
+        sparseCheckoutPatterns: >-
+          /*
+          !/*/
+          /eng
+          /.config
+          sdk/${{ parameters.ServiceDirectory }}
+          **/*.xml
+          **/*.md
+          !sdk/**/test-recordings
+          !sdk/**/session-records
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
