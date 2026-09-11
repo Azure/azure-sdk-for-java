@@ -2,12 +2,70 @@
 # Licensed under the MIT License.
 
 BeforeAll {
-    Import-Module powershell-yaml -ErrorAction Stop
-
     $script:RepositoryRoot = Resolve-Path (Join-Path $PSScriptRoot '..' '..' '..')
-    $script:PullRequestConfig = Get-Content `
-        (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw |
-            ConvertFrom-Yaml -Ordered
+
+    function Get-YamlSequence {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Path,
+
+            [Parameter(Mandatory = $true)]
+            [string[]]$KeyPath
+        )
+
+        $lines = @(Get-Content -LiteralPath $Path)
+        $blockStart = 0
+        $blockEnd = $lines.Count
+        $parentIndent = -1
+
+        foreach ($key in $KeyPath) {
+            $keyLine = $null
+            for ($lineIndex = $blockStart; $lineIndex -lt $blockEnd; $lineIndex++) {
+                if ($lines[$lineIndex] -match "^(\s*)$([regex]::Escape($key)):\s*(?:#.*)?$" -and
+                    $Matches[1].Length -gt $parentIndent) {
+                    $keyLine = $lineIndex
+                    $parentIndent = $Matches[1].Length
+                    break
+                }
+            }
+
+            if ($null -eq $keyLine) {
+                throw "Could not find YAML key path '$($KeyPath -join '.')' in '$Path'."
+            }
+
+            $blockStart = $keyLine + 1
+            $blockEnd = $lines.Count
+            for ($lineIndex = $blockStart; $lineIndex -lt $lines.Count; $lineIndex++) {
+                if ($lines[$lineIndex] -match '^(\s*)\S') {
+                    $indent = $Matches[1].Length
+                    $isIndentlessSequenceItem = $indent -eq $parentIndent -and
+                        $lines[$lineIndex] -match '^\s*-\s+'
+                    if ($isIndentlessSequenceItem) {
+                        continue
+                    }
+                    if ($indent -le $parentIndent) {
+                        $blockEnd = $lineIndex
+                        break
+                    }
+                }
+            }
+
+            if ($blockEnd -le $blockStart) {
+                return @()
+            }
+        }
+
+        return @(
+            $lines[$blockStart..($blockEnd - 1)] |
+                ForEach-Object {
+                    if ($_ -match '^\s*-\s+([^#]+?)(?:\s+#.*)?$') {
+                        $Matches[1].Trim().Trim("'`"")
+                    }
+                }
+        )
+    }
+
+    $script:PullRequestPath = Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml'
     $script:ExpectedBranches = @(
         'main',
         'feature/*',
@@ -29,21 +87,27 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
     ) {
         param($Workflow)
 
-        $workflowConfig = Get-Content (Join-Path $script:RepositoryRoot $Workflow) -Raw |
-            ConvertFrom-Yaml -Ordered
+        $workflowBranches = Get-YamlSequence `
+            -Path (Join-Path $script:RepositoryRoot $Workflow) `
+            -KeyPath @('on', 'pull_request', 'branches')
+        $pullRequestBranches = Get-YamlSequence `
+            -Path $script:PullRequestPath `
+            -KeyPath @('pr', 'branches', 'include')
 
         Compare-Object `
             -ReferenceObject $script:ExpectedBranches `
-            -DifferenceObject @($workflowConfig.on.pull_request.branches) |
+            -DifferenceObject $workflowBranches |
                 Should -BeNullOrEmpty
         Compare-Object `
             -ReferenceObject $script:ExpectedBranches `
-            -DifferenceObject @($script:PullRequestConfig.pr.branches.include) |
+            -DifferenceObject $pullRequestBranches |
                 Should -BeNullOrEmpty
     }
 
     It 'limits static trigger exclusions to reviewed paths' {
-        $actualExclusions = @($script:PullRequestConfig.pr.paths.exclude)
+        $actualExclusions = Get-YamlSequence `
+            -Path $script:PullRequestPath `
+            -KeyPath @('pr', 'paths', 'exclude')
 
         Compare-Object `
             -ReferenceObject $script:ExpectedStaticTriggerExclusions `
@@ -56,7 +120,9 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
     }
 
     It 'keeps static documentation exclusions available to mixed-PR classification' {
-        $actualExcludePaths = @($script:PullRequestConfig.extends.parameters.ExcludePaths)
+        $actualExcludePaths = Get-YamlSequence `
+            -Path $script:PullRequestPath `
+            -KeyPath @('extends', 'parameters', 'ExcludePaths')
 
         $actualExcludePaths | Should -Contain 'docs/'
     }
