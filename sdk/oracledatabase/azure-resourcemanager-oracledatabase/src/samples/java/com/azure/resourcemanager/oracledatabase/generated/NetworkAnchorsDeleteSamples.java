@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class NetworkAnchorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkAnchors_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/NetworkAnchors_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkAnchors_Delete_MaximumSet.

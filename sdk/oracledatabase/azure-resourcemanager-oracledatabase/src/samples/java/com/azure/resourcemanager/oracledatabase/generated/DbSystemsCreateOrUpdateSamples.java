@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class DbSystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/DbSystems_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/DbSystems_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DbSystems_CreateOrUpdate_MaximumSet.

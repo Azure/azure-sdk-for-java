@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class ResourceAnchorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ResourceAnchors_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ResourceAnchors_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ResourceAnchors_Get_MaximumSet.

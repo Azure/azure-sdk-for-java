@@ -13,7 +13,7 @@ import com.azure.resourcemanager.oracledatabase.models.StorageManagementType;
  */
 public final class DbVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/DbVersions_ListByLocation_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/DbVersions_ListByLocation_MaximumSet_Gen.json
      */
     /**
      * Sample code: DbVersions_ListByLocation_MaximumSet.

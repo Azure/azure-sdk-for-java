@@ -12,7 +12,7 @@ import com.azure.resourcemanager.oracledatabase.models.DbNodeActionEnum;
  */
 public final class ExascaleDbNodesActionSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbNodes_Action_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ExascaleDbNodes_Action_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExascaleDbNodes_Action_MaximumSet.
@@ -27,7 +27,7 @@ public final class ExascaleDbNodesActionSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbNodes_Action_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ExascaleDbNodes_Action_MinimumSet_Gen.json
      */
     /**
      * Sample code: ExascaleDbNodes_Action_MinimumSet.

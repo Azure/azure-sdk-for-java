@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class NetworkAnchorsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkAnchors_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/NetworkAnchors_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkAnchors_Update_MaximumSet.
