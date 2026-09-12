@@ -22,7 +22,7 @@ public final class SbomComponentsListByFirmwareMockTests {
     @Test
     public void testListByFirmware() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"componentId\":\"ikf\",\"componentName\":\"wneaiv\",\"version\":\"czelpcirel\",\"license\":\"eae\",\"filePaths\":[\"bfatklddxbjhwu\",\"an\"],\"provisioningState\":\"Analyzing\"},\"id\":\"sphyoulpjrvxa\",\"name\":\"l\",\"type\":\"vimjwos\"}]}";
+            = "{\"value\":[{\"properties\":{\"componentId\":\"qvpsvuoymg\",\"componentName\":\"elvezrypq\",\"version\":\"feo\",\"license\":\"rqwky\",\"filePaths\":[\"bopgxedkowepbqp\"],\"provisioningState\":\"Analyzing\"},\"id\":\"bwccsnjvcdwxlpqe\",\"name\":\"ftnkhtj\",\"type\":\"y\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class SbomComponentsListByFirmwareMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SbomComponentResource> response
-            = manager.sbomComponents().listByFirmware("wi", "fnjhfjxwmszkkfo", "rey", com.azure.core.util.Context.NONE);
+        PagedIterable<SbomComponentResource> response = manager.sbomComponents()
+            .listByFirmware("vdnkfxusem", "wzrmuh", "pfcqdp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ikf", response.iterator().next().componentId());
-        Assertions.assertEquals("wneaiv", response.iterator().next().componentName());
-        Assertions.assertEquals("czelpcirel", response.iterator().next().version());
-        Assertions.assertEquals("eae", response.iterator().next().license());
-        Assertions.assertEquals("bfatklddxbjhwu", response.iterator().next().filePaths().get(0));
+        Assertions.assertEquals("qvpsvuoymg", response.iterator().next().componentId());
+        Assertions.assertEquals("elvezrypq", response.iterator().next().componentName());
+        Assertions.assertEquals("feo", response.iterator().next().version());
+        Assertions.assertEquals("rqwky", response.iterator().next().license());
+        Assertions.assertEquals("bopgxedkowepbqp", response.iterator().next().filePaths().get(0));
     }
 }

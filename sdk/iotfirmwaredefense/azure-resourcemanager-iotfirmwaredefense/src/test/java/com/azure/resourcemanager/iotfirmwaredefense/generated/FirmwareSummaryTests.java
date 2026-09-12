@@ -12,14 +12,14 @@ public final class FirmwareSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirmwareSummary model = BinaryData.fromString(
-            "{\"summaryType\":\"Firmware\",\"extractedSize\":3036268179431574452,\"fileSize\":4253810910381406422,\"extractedFileCount\":834189001666840770,\"componentCount\":5663355853068180050,\"binaryCount\":4407430111323762488,\"analysisTimeSeconds\":416543254607758865,\"rootFileSystems\":853590458031501964,\"provisioningState\":\"Failed\"}")
+            "{\"summaryType\":\"Firmware\",\"extractedSize\":9118429342651119617,\"fileSize\":2032891691540283618,\"extractedFileCount\":3898811101398882532,\"componentCount\":6983157428169854223,\"binaryCount\":3813824125962693379,\"analysisTimeSeconds\":7617442549431453664,\"rootFileSystems\":411911013999749991,\"provisioningState\":\"Analyzing\"}")
             .toObject(FirmwareSummary.class);
-        Assertions.assertEquals(3036268179431574452L, model.extractedSize());
-        Assertions.assertEquals(4253810910381406422L, model.fileSize());
-        Assertions.assertEquals(834189001666840770L, model.extractedFileCount());
-        Assertions.assertEquals(5663355853068180050L, model.componentCount());
-        Assertions.assertEquals(4407430111323762488L, model.binaryCount());
-        Assertions.assertEquals(416543254607758865L, model.analysisTimeSeconds());
-        Assertions.assertEquals(853590458031501964L, model.rootFileSystems());
+        Assertions.assertEquals(9118429342651119617L, model.extractedSize());
+        Assertions.assertEquals(2032891691540283618L, model.fileSize());
+        Assertions.assertEquals(3898811101398882532L, model.extractedFileCount());
+        Assertions.assertEquals(6983157428169854223L, model.componentCount());
+        Assertions.assertEquals(3813824125962693379L, model.binaryCount());
+        Assertions.assertEquals(7617442549431453664L, model.analysisTimeSeconds());
+        Assertions.assertEquals(411911013999749991L, model.rootFileSystems());
     }
 }

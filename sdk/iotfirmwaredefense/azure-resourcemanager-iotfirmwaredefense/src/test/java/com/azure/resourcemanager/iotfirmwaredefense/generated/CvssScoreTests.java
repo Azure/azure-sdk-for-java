@@ -6,14 +6,18 @@ package com.azure.resourcemanager.iotfirmwaredefense.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
+import com.azure.resourcemanager.iotfirmwaredefense.models.ExploitMaturityLevel;
 import org.junit.jupiter.api.Assertions;
 
 public final class CvssScoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CvssScore model
-            = BinaryData.fromString("{\"version\":439757511,\"score\":21.929462733995752}").toObject(CvssScore.class);
-        Assertions.assertEquals(439757511, model.version());
-        Assertions.assertEquals(21.929462733995752D, model.score());
+        CvssScore model = BinaryData.fromString(
+            "{\"version\":1895244941,\"score\":75.30674083437194,\"vectorString\":\"vwvxyslqbhsfx\",\"exploitMaturity\":\"NOT_DEFINED\"}")
+            .toObject(CvssScore.class);
+        Assertions.assertEquals(1895244941, model.version());
+        Assertions.assertEquals(75.30674083437194D, model.score());
+        Assertions.assertEquals("vwvxyslqbhsfx", model.vectorString());
+        Assertions.assertEquals(ExploitMaturityLevel.NOT_DEFINED, model.exploitMaturity());
     }
 }

@@ -12,12 +12,12 @@ public final class SbomComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SbomComponent model = BinaryData.fromString(
-            "{\"componentId\":\"rw\",\"componentName\":\"eiotwmcdytdx\",\"version\":\"txnrjaw\",\"license\":\"wgxhn\",\"filePaths\":[\"x\",\"bkpyc\",\"klwndnhjdauwhv\",\"l\"],\"provisioningState\":\"Failed\"}")
+            "{\"componentId\":\"aokonzmnsik\",\"componentName\":\"kqze\",\"version\":\"kdltfzxmhhvhg\",\"license\":\"eodkwobda\",\"filePaths\":[\"ibqdxbxwakbogqx\",\"dlkzgxhuri\",\"lbpodxunk\"],\"provisioningState\":\"Extracting\"}")
             .toObject(SbomComponent.class);
-        Assertions.assertEquals("rw", model.componentId());
-        Assertions.assertEquals("eiotwmcdytdx", model.componentName());
-        Assertions.assertEquals("txnrjaw", model.version());
-        Assertions.assertEquals("wgxhn", model.license());
-        Assertions.assertEquals("x", model.filePaths().get(0));
+        Assertions.assertEquals("aokonzmnsik", model.componentId());
+        Assertions.assertEquals("kqze", model.componentName());
+        Assertions.assertEquals("kdltfzxmhhvhg", model.version());
+        Assertions.assertEquals("eodkwobda", model.license());
+        Assertions.assertEquals("ibqdxbxwakbogqx", model.filePaths().get(0));
     }
 }
