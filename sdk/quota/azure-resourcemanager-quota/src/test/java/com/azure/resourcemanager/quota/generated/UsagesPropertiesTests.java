@@ -13,11 +13,11 @@ public final class UsagesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesProperties model = BinaryData.fromString(
-            "{\"usages\":{\"value\":593552862,\"usagesType\":\"Combined\"},\"unit\":\"xytxhpzxbz\",\"name\":{\"value\":\"abgl\",\"localizedValue\":\"hxw\"},\"resourceType\":\"tyq\",\"quotaPeriod\":\"lbbovplw\",\"isQuotaApplicable\":true,\"properties\":\"datagy\"}")
+            "{\"usages\":{\"value\":359396557,\"usagesType\":\"Combined\"},\"unit\":\"lvmbmpaxmodfvuef\",\"name\":{\"value\":\"bpfvm\",\"localizedValue\":\"hrfou\"},\"resourceType\":\"taakc\",\"quotaPeriod\":\"iyzvqtmnub\",\"isQuotaApplicable\":true,\"properties\":\"\\\"datazksmondj\\\"\"}")
             .toObject(UsagesProperties.class);
-        Assertions.assertEquals(593552862, model.usages().value());
+        Assertions.assertEquals(359396557, model.usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usages().usagesType());
-        Assertions.assertEquals("abgl", model.name().value());
-        Assertions.assertEquals("tyq", model.resourceType());
+        Assertions.assertEquals("bpfvm", model.name().value());
+        Assertions.assertEquals("taakc", model.resourceType());
     }
 }

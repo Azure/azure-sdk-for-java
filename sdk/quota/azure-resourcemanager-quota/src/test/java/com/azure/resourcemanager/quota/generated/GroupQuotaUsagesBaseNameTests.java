@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupQuotaUsagesBaseNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupQuotaUsagesBaseName model = BinaryData.fromString("{\"value\":\"enjbdlwtgrhp\",\"localizedValue\":\"pj\"}")
+        GroupQuotaUsagesBaseName model = BinaryData.fromString("{\"value\":\"tdzumveekgpw\",\"localizedValue\":\"uh\"}")
             .toObject(GroupQuotaUsagesBaseName.class);
-        Assertions.assertEquals("enjbdlwtgrhp", model.value());
+        Assertions.assertEquals("tdzumveekgpw", model.value());
     }
 }

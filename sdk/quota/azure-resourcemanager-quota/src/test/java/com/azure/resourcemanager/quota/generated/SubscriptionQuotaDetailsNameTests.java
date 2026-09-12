@@ -11,7 +11,7 @@ public final class SubscriptionQuotaDetailsNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotaDetailsName model
-            = BinaryData.fromString("{\"value\":\"rzpwvlqdqgbiq\",\"localizedValue\":\"ihkaetcktvfc\"}")
+            = BinaryData.fromString("{\"value\":\"lcxog\",\"localizedValue\":\"konzmnsik\"}")
                 .toObject(SubscriptionQuotaDetailsName.class);
     }
 }

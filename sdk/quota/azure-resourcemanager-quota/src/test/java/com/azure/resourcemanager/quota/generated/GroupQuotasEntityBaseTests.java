@@ -13,15 +13,15 @@ public final class GroupQuotasEntityBaseTests {
     public void testDeserialize() throws Exception {
         GroupQuotasEntityBase model = BinaryData
             .fromString(
-                "{\"displayName\":\"atscmd\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Accepted\"}")
+                "{\"displayName\":\"oskg\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"Succeeded\"}")
             .toObject(GroupQuotasEntityBase.class);
-        Assertions.assertEquals("atscmd", model.displayName());
+        Assertions.assertEquals("oskg", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotasEntityBase model = new GroupQuotasEntityBase().withDisplayName("atscmd");
+        GroupQuotasEntityBase model = new GroupQuotasEntityBase().withDisplayName("oskg");
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityBase.class);
-        Assertions.assertEquals("atscmd", model.displayName());
+        Assertions.assertEquals("oskg", model.displayName());
     }
 }

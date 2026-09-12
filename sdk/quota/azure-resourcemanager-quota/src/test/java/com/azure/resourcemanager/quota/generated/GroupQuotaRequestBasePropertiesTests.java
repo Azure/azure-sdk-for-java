@@ -12,10 +12,10 @@ public final class GroupQuotaRequestBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaRequestBaseProperties model = BinaryData.fromString(
-            "{\"limit\":5577829307856620135,\"name\":{\"value\":\"tyxolniwpwc\",\"localizedValue\":\"jfkgiawxk\"},\"region\":\"ypl\",\"comments\":\"kbasyypn\"}")
+            "{\"limit\":4306854274094965404,\"name\":{\"value\":\"txfvjrbirph\",\"localizedValue\":\"pcyvahfnljkyqx\"},\"region\":\"uujqgidokgjljyo\",\"comments\":\"vcltbgsncgh\"}")
             .toObject(GroupQuotaRequestBaseProperties.class);
-        Assertions.assertEquals(5577829307856620135L, model.limit());
-        Assertions.assertEquals("ypl", model.region());
-        Assertions.assertEquals("kbasyypn", model.comments());
+        Assertions.assertEquals(4306854274094965404L, model.limit());
+        Assertions.assertEquals("uujqgidokgjljyo", model.region());
+        Assertions.assertEquals("vcltbgsncgh", model.comments());
     }
 }

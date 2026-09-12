@@ -12,15 +12,15 @@ public final class GroupQuotasEntityPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotasEntityPatchProperties model
-            = BinaryData.fromString("{\"displayName\":\"ahbc\",\"provisioningState\":\"InProgress\"}")
+            = BinaryData.fromString("{\"displayName\":\"ggzfbu\",\"provisioningState\":\"InProgress\"}")
                 .toObject(GroupQuotasEntityPatchProperties.class);
-        Assertions.assertEquals("ahbc", model.displayName());
+        Assertions.assertEquals("ggzfbu", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotasEntityPatchProperties model = new GroupQuotasEntityPatchProperties().withDisplayName("ahbc");
+        GroupQuotasEntityPatchProperties model = new GroupQuotasEntityPatchProperties().withDisplayName("ggzfbu");
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityPatchProperties.class);
-        Assertions.assertEquals("ahbc", model.displayName());
+        Assertions.assertEquals("ggzfbu", model.displayName());
     }
 }

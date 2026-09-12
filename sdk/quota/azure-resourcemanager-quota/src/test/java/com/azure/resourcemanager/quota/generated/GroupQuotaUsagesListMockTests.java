@@ -22,7 +22,7 @@ public final class GroupQuotaUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"name\":{\"value\":\"gx\",\"localizedValue\":\"rslpmutwuoeg\"},\"limit\":5722379398974283920,\"usages\":3859577697194270181,\"unit\":\"yqsluic\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}]}";
+            = "{\"value\":[{\"properties\":{\"name\":{\"value\":\"rtwnawjslbi\",\"localizedValue\":\"ojgcyzt\"},\"limit\":2531418071966060965,\"usages\":8065912820128222599,\"unit\":\"qphchqnrnrpxehuw\"},\"id\":\"k\",\"name\":\"gaifmvik\",\"type\":\"bydvkhbejdz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class GroupQuotaUsagesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceUsages> response = manager.groupQuotaUsages()
-            .list("cvqvpkeqdcv", "rhvoods", "tbobz", "opcjwvnhd", com.azure.core.util.Context.NONE);
+            .list("fqntcyp", "xjvfoimwksl", "rcizjxvyd", "ceacvlhvygdy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(5722379398974283920L, response.iterator().next().properties().limit());
-        Assertions.assertEquals(3859577697194270181L, response.iterator().next().properties().usages());
-        Assertions.assertEquals("gx", response.iterator().next().properties().value());
+        Assertions.assertEquals(2531418071966060965L, response.iterator().next().properties().limit());
+        Assertions.assertEquals(8065912820128222599L, response.iterator().next().properties().usages());
+        Assertions.assertEquals("rtwnawjslbi", response.iterator().next().properties().value());
     }
 }
