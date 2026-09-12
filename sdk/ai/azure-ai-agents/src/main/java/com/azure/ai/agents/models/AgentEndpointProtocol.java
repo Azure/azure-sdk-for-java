@@ -78,4 +78,10 @@ public final class AgentEndpointProtocol extends ExpandableStringEnum<AgentEndpo
      */
     @Generated
     public static final AgentEndpointProtocol INVOCATIONS_WS = fromString("invocations_ws");
+
+    /**
+     * Static value voice for AgentEndpointProtocol.
+     */
+    @Generated
+    public static final AgentEndpointProtocol VOICE = fromString("voice");
 }

@@ -32,12 +32,53 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        customizeVoicePreviewBuilders(libraryCustomization);
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void customizeVoicePreviewBuilders(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
+            customizeAgentEndpointConversationBuildMethods(builder);
+            customizeAgentTelephonyBuildMethods(builder);
+            for (String methodName : new String[] { "buildBetaAgentEndpointConversationsAsyncClient",
+                "buildBetaAgentEndpointConversationsClient", "buildBetaAgentTelephonyAsyncClient",
+                "buildBetaAgentTelephonyClient" }) {
+                getSingleMethod(builder, methodName)
+                    .addAnnotation(betaAnnotation("This method is in preview and may change in future releases."));
+            }
+        });
+    }
+
+    private static void customizeAgentEndpointConversationBuildMethods(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration asyncMethod
+            = getSingleMethod(builder, "buildBetaAgentEndpointConversationsAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsAsyncClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentEndpointConversationsClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentEndpointConversations()); }"));
+    }
+
+    private static void customizeAgentTelephonyBuildMethods(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration asyncMethod = getSingleMethod(builder, "buildBetaAgentTelephonyAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentTelephonyAsyncClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentTelephonies()); }"));
+
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentTelephonyClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentTelephonyClient("
+            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
+            + ".getBetaAgentTelephonies()); }"));
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
