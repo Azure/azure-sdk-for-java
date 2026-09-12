@@ -19,86 +19,83 @@ public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfile model = BinaryData.fromString(
-            "{\"vnetConfiguration\":{\"vnet\":{\"resourceId\":\"phvwauyqncygu\",\"addressSpace\":\"vipmdscwxqupevzh\"},\"trustSubnet\":{\"resourceId\":\"totxhojujb\",\"addressSpace\":\"elmcuvhixbjxyfw\"},\"unTrustSubnet\":{\"resourceId\":\"lrcoolsttpki\",\"addressSpace\":\"kbnujr\"},\"ipOfTrustSubnetForUdr\":{\"resourceId\":\"tylbfpncurdoiw\",\"address\":\"thtywub\"}},\"vwanConfiguration\":{\"networkVirtualApplianceId\":\"ihwqknfdntwjchr\",\"vHub\":{\"resourceId\":\"oihxumwctondzjlu\",\"addressSpace\":\"fdlwg\"},\"trustSubnet\":{\"resourceId\":\"sb\",\"addressSpace\":\"ovvtgseinqfiu\"},\"unTrustSubnet\":{\"resourceId\":\"knpirgnepttwq\",\"addressSpace\":\"niffcdmqnroj\"},\"ipOfTrustSubnetForUdr\":{\"resourceId\":\"jnkrxf\",\"address\":\"dhcrati\"}},\"networkType\":\"VWAN\",\"publicIps\":[{\"resourceId\":\"nasx\",\"address\":\"tozqyzhftwesgo\"},{\"resourceId\":\"zhonnxkrlgnyhmo\",\"address\":\"xkk\"},{\"resourceId\":\"h\",\"address\":\"gh\"}],\"enableEgressNat\":\"DISABLED\",\"egressNatIp\":[{\"resourceId\":\"qxvcxgfrpdsofb\",\"address\":\"rnsvbuswd\"},{\"resourceId\":\"yybyc\",\"address\":\"nvjsrtkfa\"}],\"trustedRanges\":[\"pqgik\",\"zirtxdyuxzejntps\",\"wgioilqukry\",\"xtqmieoxor\"],\"privateSourceNatRulesDestination\":[\"f\",\"yaomtb\",\"hhavgrvkffovjz\"]}")
+            "{\"vnetConfiguration\":{\"vnet\":{\"resourceId\":\"vpsvuoymgcce\",\"addressSpace\":\"ezrypql\"},\"trustSubnet\":{\"resourceId\":\"eokerqwkyhkobopg\",\"addressSpace\":\"dkow\"},\"unTrustSubnet\":{\"resourceId\":\"bqpc\",\"addressSpace\":\"kbwcc\"},\"ipOfTrustSubnetForUdr\":{\"resourceId\":\"vcdwxlpqekftn\",\"address\":\"tjsyin\"}},\"vwanConfiguration\":{\"networkVirtualApplianceId\":\"qatmtdhtmdvy\",\"vHub\":{\"resourceId\":\"ikdgszywkbir\",\"addressSpace\":\"uzhlhkjoqrv\"},\"trustSubnet\":{\"resourceId\":\"atjinrvgoupmfiib\",\"addressSpace\":\"gjio\"},\"unTrustSubnet\":{\"resourceId\":\"rwxkvtkkgl\",\"addressSpace\":\"wjygvjayvblmhvk\"},\"ipOfTrustSubnetForUdr\":{\"resourceId\":\"bxvvyhg\",\"address\":\"pbyrqufegxu\"}},\"networkType\":\"VNET\",\"publicIps\":[{\"resourceId\":\"bnhlmc\",\"address\":\"p\"}],\"enableEgressNat\":\"ENABLED\",\"egressNatIp\":[{\"resourceId\":\"vgbmhr\",\"address\":\"kw\"},{\"resourceId\":\"ijejvegrhbpn\",\"address\":\"xexccbdreaxhcexd\"},{\"resourceId\":\"vqahqkghtpwi\",\"address\":\"hyjsvfycx\"},{\"resourceId\":\"fvoow\",\"address\":\"vmtgjqppy\"}],\"trustedRanges\":[\"ronzmyhgfip\",\"sxkm\",\"waekrrjreafxtsgu\"],\"privateSourceNatRulesDestination\":[\"glikkxwslolb\",\"pvuzlmv\",\"elfk\",\"gplcrpwjxeznoigb\"]}")
             .toObject(NetworkProfile.class);
-        Assertions.assertEquals("phvwauyqncygu", model.vnetConfiguration().vnet().resourceId());
-        Assertions.assertEquals("vipmdscwxqupevzh", model.vnetConfiguration().vnet().addressSpace());
-        Assertions.assertEquals("totxhojujb", model.vnetConfiguration().trustSubnet().resourceId());
-        Assertions.assertEquals("elmcuvhixbjxyfw", model.vnetConfiguration().trustSubnet().addressSpace());
-        Assertions.assertEquals("lrcoolsttpki", model.vnetConfiguration().unTrustSubnet().resourceId());
-        Assertions.assertEquals("kbnujr", model.vnetConfiguration().unTrustSubnet().addressSpace());
-        Assertions.assertEquals("tylbfpncurdoiw", model.vnetConfiguration().ipOfTrustSubnetForUdr().resourceId());
-        Assertions.assertEquals("thtywub", model.vnetConfiguration().ipOfTrustSubnetForUdr().address());
-        Assertions.assertEquals("ihwqknfdntwjchr", model.vwanConfiguration().networkVirtualApplianceId());
-        Assertions.assertEquals("oihxumwctondzjlu", model.vwanConfiguration().vHub().resourceId());
-        Assertions.assertEquals("fdlwg", model.vwanConfiguration().vHub().addressSpace());
-        Assertions.assertEquals("sb", model.vwanConfiguration().trustSubnet().resourceId());
-        Assertions.assertEquals("ovvtgseinqfiu", model.vwanConfiguration().trustSubnet().addressSpace());
-        Assertions.assertEquals("knpirgnepttwq", model.vwanConfiguration().unTrustSubnet().resourceId());
-        Assertions.assertEquals("niffcdmqnroj", model.vwanConfiguration().unTrustSubnet().addressSpace());
-        Assertions.assertEquals("jnkrxf", model.vwanConfiguration().ipOfTrustSubnetForUdr().resourceId());
-        Assertions.assertEquals("dhcrati", model.vwanConfiguration().ipOfTrustSubnetForUdr().address());
-        Assertions.assertEquals(NetworkType.VWAN, model.networkType());
-        Assertions.assertEquals("nasx", model.publicIps().get(0).resourceId());
-        Assertions.assertEquals("tozqyzhftwesgo", model.publicIps().get(0).address());
-        Assertions.assertEquals(EgressNat.DISABLED, model.enableEgressNat());
-        Assertions.assertEquals("qxvcxgfrpdsofb", model.egressNatIp().get(0).resourceId());
-        Assertions.assertEquals("rnsvbuswd", model.egressNatIp().get(0).address());
-        Assertions.assertEquals("pqgik", model.trustedRanges().get(0));
-        Assertions.assertEquals("f", model.privateSourceNatRulesDestination().get(0));
+        Assertions.assertEquals("vpsvuoymgcce", model.vnetConfiguration().vnet().resourceId());
+        Assertions.assertEquals("ezrypql", model.vnetConfiguration().vnet().addressSpace());
+        Assertions.assertEquals("eokerqwkyhkobopg", model.vnetConfiguration().trustSubnet().resourceId());
+        Assertions.assertEquals("dkow", model.vnetConfiguration().trustSubnet().addressSpace());
+        Assertions.assertEquals("bqpc", model.vnetConfiguration().unTrustSubnet().resourceId());
+        Assertions.assertEquals("kbwcc", model.vnetConfiguration().unTrustSubnet().addressSpace());
+        Assertions.assertEquals("vcdwxlpqekftn", model.vnetConfiguration().ipOfTrustSubnetForUdr().resourceId());
+        Assertions.assertEquals("tjsyin", model.vnetConfiguration().ipOfTrustSubnetForUdr().address());
+        Assertions.assertEquals("qatmtdhtmdvy", model.vwanConfiguration().networkVirtualApplianceId());
+        Assertions.assertEquals("ikdgszywkbir", model.vwanConfiguration().vHub().resourceId());
+        Assertions.assertEquals("uzhlhkjoqrv", model.vwanConfiguration().vHub().addressSpace());
+        Assertions.assertEquals("atjinrvgoupmfiib", model.vwanConfiguration().trustSubnet().resourceId());
+        Assertions.assertEquals("gjio", model.vwanConfiguration().trustSubnet().addressSpace());
+        Assertions.assertEquals("rwxkvtkkgl", model.vwanConfiguration().unTrustSubnet().resourceId());
+        Assertions.assertEquals("wjygvjayvblmhvk", model.vwanConfiguration().unTrustSubnet().addressSpace());
+        Assertions.assertEquals("bxvvyhg", model.vwanConfiguration().ipOfTrustSubnetForUdr().resourceId());
+        Assertions.assertEquals("pbyrqufegxu", model.vwanConfiguration().ipOfTrustSubnetForUdr().address());
+        Assertions.assertEquals(NetworkType.VNET, model.networkType());
+        Assertions.assertEquals("bnhlmc", model.publicIps().get(0).resourceId());
+        Assertions.assertEquals("p", model.publicIps().get(0).address());
+        Assertions.assertEquals(EgressNat.ENABLED, model.enableEgressNat());
+        Assertions.assertEquals("vgbmhr", model.egressNatIp().get(0).resourceId());
+        Assertions.assertEquals("kw", model.egressNatIp().get(0).address());
+        Assertions.assertEquals("ronzmyhgfip", model.trustedRanges().get(0));
+        Assertions.assertEquals("glikkxwslolb", model.privateSourceNatRulesDestination().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfile model
-            = new NetworkProfile()
-                .withVnetConfiguration(new VnetConfiguration()
-                    .withVnet(new IpAddressSpace().withResourceId("phvwauyqncygu").withAddressSpace("vipmdscwxqupevzh"))
-                    .withTrustSubnet(
-                        new IpAddressSpace().withResourceId("totxhojujb").withAddressSpace("elmcuvhixbjxyfw"))
-                    .withUnTrustSubnet(new IpAddressSpace().withResourceId("lrcoolsttpki").withAddressSpace("kbnujr"))
-                    .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId("tylbfpncurdoiw").withAddress("thtywub")))
-                .withVwanConfiguration(new VwanConfiguration().withNetworkVirtualApplianceId("ihwqknfdntwjchr")
-                    .withVHub(new IpAddressSpace().withResourceId("oihxumwctondzjlu").withAddressSpace("fdlwg"))
-                    .withTrustSubnet(new IpAddressSpace().withResourceId("sb").withAddressSpace("ovvtgseinqfiu"))
-                    .withUnTrustSubnet(
-                        new IpAddressSpace().withResourceId("knpirgnepttwq").withAddressSpace("niffcdmqnroj"))
-                    .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId("jnkrxf").withAddress("dhcrati")))
-                .withNetworkType(NetworkType.VWAN)
-                .withPublicIps(Arrays.asList(new IpAddress().withResourceId("nasx").withAddress("tozqyzhftwesgo"),
-                    new IpAddress().withResourceId("zhonnxkrlgnyhmo").withAddress("xkk"),
-                    new IpAddress().withResourceId("h").withAddress("gh")))
-                .withEnableEgressNat(EgressNat.DISABLED)
-                .withEgressNatIp(
-                    Arrays.asList(new IpAddress().withResourceId("qxvcxgfrpdsofb").withAddress("rnsvbuswd"),
-                        new IpAddress().withResourceId("yybyc").withAddress("nvjsrtkfa")))
-                .withTrustedRanges(Arrays.asList("pqgik", "zirtxdyuxzejntps", "wgioilqukry", "xtqmieoxor"))
-                .withPrivateSourceNatRulesDestination(Arrays.asList("f", "yaomtb", "hhavgrvkffovjz"));
+        NetworkProfile model = new NetworkProfile()
+            .withVnetConfiguration(new VnetConfiguration()
+                .withVnet(new IpAddressSpace().withResourceId("vpsvuoymgcce").withAddressSpace("ezrypql"))
+                .withTrustSubnet(new IpAddressSpace().withResourceId("eokerqwkyhkobopg").withAddressSpace("dkow"))
+                .withUnTrustSubnet(new IpAddressSpace().withResourceId("bqpc").withAddressSpace("kbwcc"))
+                .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId("vcdwxlpqekftn").withAddress("tjsyin")))
+            .withVwanConfiguration(new VwanConfiguration().withNetworkVirtualApplianceId("qatmtdhtmdvy")
+                .withVHub(new IpAddressSpace().withResourceId("ikdgszywkbir").withAddressSpace("uzhlhkjoqrv"))
+                .withTrustSubnet(new IpAddressSpace().withResourceId("atjinrvgoupmfiib").withAddressSpace("gjio"))
+                .withUnTrustSubnet(
+                    new IpAddressSpace().withResourceId("rwxkvtkkgl").withAddressSpace("wjygvjayvblmhvk"))
+                .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId("bxvvyhg").withAddress("pbyrqufegxu")))
+            .withNetworkType(NetworkType.VNET)
+            .withPublicIps(Arrays.asList(new IpAddress().withResourceId("bnhlmc").withAddress("p")))
+            .withEnableEgressNat(EgressNat.ENABLED)
+            .withEgressNatIp(Arrays.asList(new IpAddress().withResourceId("vgbmhr").withAddress("kw"),
+                new IpAddress().withResourceId("ijejvegrhbpn").withAddress("xexccbdreaxhcexd"),
+                new IpAddress().withResourceId("vqahqkghtpwi").withAddress("hyjsvfycx"),
+                new IpAddress().withResourceId("fvoow").withAddress("vmtgjqppy")))
+            .withTrustedRanges(Arrays.asList("ronzmyhgfip", "sxkm", "waekrrjreafxtsgu"))
+            .withPrivateSourceNatRulesDestination(Arrays.asList("glikkxwslolb", "pvuzlmv", "elfk", "gplcrpwjxeznoigb"));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals("phvwauyqncygu", model.vnetConfiguration().vnet().resourceId());
-        Assertions.assertEquals("vipmdscwxqupevzh", model.vnetConfiguration().vnet().addressSpace());
-        Assertions.assertEquals("totxhojujb", model.vnetConfiguration().trustSubnet().resourceId());
-        Assertions.assertEquals("elmcuvhixbjxyfw", model.vnetConfiguration().trustSubnet().addressSpace());
-        Assertions.assertEquals("lrcoolsttpki", model.vnetConfiguration().unTrustSubnet().resourceId());
-        Assertions.assertEquals("kbnujr", model.vnetConfiguration().unTrustSubnet().addressSpace());
-        Assertions.assertEquals("tylbfpncurdoiw", model.vnetConfiguration().ipOfTrustSubnetForUdr().resourceId());
-        Assertions.assertEquals("thtywub", model.vnetConfiguration().ipOfTrustSubnetForUdr().address());
-        Assertions.assertEquals("ihwqknfdntwjchr", model.vwanConfiguration().networkVirtualApplianceId());
-        Assertions.assertEquals("oihxumwctondzjlu", model.vwanConfiguration().vHub().resourceId());
-        Assertions.assertEquals("fdlwg", model.vwanConfiguration().vHub().addressSpace());
-        Assertions.assertEquals("sb", model.vwanConfiguration().trustSubnet().resourceId());
-        Assertions.assertEquals("ovvtgseinqfiu", model.vwanConfiguration().trustSubnet().addressSpace());
-        Assertions.assertEquals("knpirgnepttwq", model.vwanConfiguration().unTrustSubnet().resourceId());
-        Assertions.assertEquals("niffcdmqnroj", model.vwanConfiguration().unTrustSubnet().addressSpace());
-        Assertions.assertEquals("jnkrxf", model.vwanConfiguration().ipOfTrustSubnetForUdr().resourceId());
-        Assertions.assertEquals("dhcrati", model.vwanConfiguration().ipOfTrustSubnetForUdr().address());
-        Assertions.assertEquals(NetworkType.VWAN, model.networkType());
-        Assertions.assertEquals("nasx", model.publicIps().get(0).resourceId());
-        Assertions.assertEquals("tozqyzhftwesgo", model.publicIps().get(0).address());
-        Assertions.assertEquals(EgressNat.DISABLED, model.enableEgressNat());
-        Assertions.assertEquals("qxvcxgfrpdsofb", model.egressNatIp().get(0).resourceId());
-        Assertions.assertEquals("rnsvbuswd", model.egressNatIp().get(0).address());
-        Assertions.assertEquals("pqgik", model.trustedRanges().get(0));
-        Assertions.assertEquals("f", model.privateSourceNatRulesDestination().get(0));
+        Assertions.assertEquals("vpsvuoymgcce", model.vnetConfiguration().vnet().resourceId());
+        Assertions.assertEquals("ezrypql", model.vnetConfiguration().vnet().addressSpace());
+        Assertions.assertEquals("eokerqwkyhkobopg", model.vnetConfiguration().trustSubnet().resourceId());
+        Assertions.assertEquals("dkow", model.vnetConfiguration().trustSubnet().addressSpace());
+        Assertions.assertEquals("bqpc", model.vnetConfiguration().unTrustSubnet().resourceId());
+        Assertions.assertEquals("kbwcc", model.vnetConfiguration().unTrustSubnet().addressSpace());
+        Assertions.assertEquals("vcdwxlpqekftn", model.vnetConfiguration().ipOfTrustSubnetForUdr().resourceId());
+        Assertions.assertEquals("tjsyin", model.vnetConfiguration().ipOfTrustSubnetForUdr().address());
+        Assertions.assertEquals("qatmtdhtmdvy", model.vwanConfiguration().networkVirtualApplianceId());
+        Assertions.assertEquals("ikdgszywkbir", model.vwanConfiguration().vHub().resourceId());
+        Assertions.assertEquals("uzhlhkjoqrv", model.vwanConfiguration().vHub().addressSpace());
+        Assertions.assertEquals("atjinrvgoupmfiib", model.vwanConfiguration().trustSubnet().resourceId());
+        Assertions.assertEquals("gjio", model.vwanConfiguration().trustSubnet().addressSpace());
+        Assertions.assertEquals("rwxkvtkkgl", model.vwanConfiguration().unTrustSubnet().resourceId());
+        Assertions.assertEquals("wjygvjayvblmhvk", model.vwanConfiguration().unTrustSubnet().addressSpace());
+        Assertions.assertEquals("bxvvyhg", model.vwanConfiguration().ipOfTrustSubnetForUdr().resourceId());
+        Assertions.assertEquals("pbyrqufegxu", model.vwanConfiguration().ipOfTrustSubnetForUdr().address());
+        Assertions.assertEquals(NetworkType.VNET, model.networkType());
+        Assertions.assertEquals("bnhlmc", model.publicIps().get(0).resourceId());
+        Assertions.assertEquals("p", model.publicIps().get(0).address());
+        Assertions.assertEquals(EgressNat.ENABLED, model.enableEgressNat());
+        Assertions.assertEquals("vgbmhr", model.egressNatIp().get(0).resourceId());
+        Assertions.assertEquals("kw", model.egressNatIp().get(0).address());
+        Assertions.assertEquals("ronzmyhgfip", model.trustedRanges().get(0));
+        Assertions.assertEquals("glikkxwslolb", model.privateSourceNatRulesDestination().get(0));
     }
 }

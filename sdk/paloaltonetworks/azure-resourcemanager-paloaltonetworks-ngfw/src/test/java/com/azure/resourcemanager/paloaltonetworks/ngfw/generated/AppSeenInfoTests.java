@@ -12,14 +12,14 @@ public final class AppSeenInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppSeenInfo model = BinaryData.fromString(
-            "{\"title\":\"su\",\"category\":\"arm\",\"subCategory\":\"wdmjsjqbjhhyx\",\"risk\":\"rw\",\"tag\":\"yc\",\"technology\":\"duhpk\",\"standardPorts\":\"kgymareqnajxqug\"}")
+            "{\"title\":\"kpw\",\"category\":\"reqnovvqfov\",\"subCategory\":\"jxywsuws\",\"risk\":\"rsndsytgadgvra\",\"tag\":\"aeneqnzarrwl\",\"technology\":\"uu\",\"standardPorts\":\"jfqka\"}")
             .toObject(AppSeenInfo.class);
-        Assertions.assertEquals("su", model.title());
-        Assertions.assertEquals("arm", model.category());
-        Assertions.assertEquals("wdmjsjqbjhhyx", model.subCategory());
-        Assertions.assertEquals("rw", model.risk());
-        Assertions.assertEquals("yc", model.tag());
-        Assertions.assertEquals("duhpk", model.technology());
-        Assertions.assertEquals("kgymareqnajxqug", model.standardPorts());
+        Assertions.assertEquals("kpw", model.title());
+        Assertions.assertEquals("reqnovvqfov", model.category());
+        Assertions.assertEquals("jxywsuws", model.subCategory());
+        Assertions.assertEquals("rsndsytgadgvra", model.risk());
+        Assertions.assertEquals("aeneqnzarrwl", model.tag());
+        Assertions.assertEquals("uu", model.technology());
+        Assertions.assertEquals("jfqka", model.standardPorts());
     }
 }

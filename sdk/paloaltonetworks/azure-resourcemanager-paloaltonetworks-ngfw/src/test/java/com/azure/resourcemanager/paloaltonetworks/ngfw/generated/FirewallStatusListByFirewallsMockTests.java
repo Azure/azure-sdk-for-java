@@ -22,7 +22,7 @@ public final class FirewallStatusListByFirewallsMockTests {
     @Test
     public void testListByFirewalls() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"INITIALIZING\",\"healthReason\":\"cwjjxsgmbawvif\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Succeeded\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"wkloozr\",\"hubUrl\":\"xvcmufunlcp\"}},\"id\":\"vir\",\"name\":\"eyngjg\",\"type\":\"rquv\"}]}";
+            = "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"RED\",\"healthReason\":\"gmceituugedhfpj\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Deleted\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"olctae\",\"hubUrl\":\"syrled\"}},\"id\":\"ustbvtqigdx\",\"name\":\"vsgeafgf\",\"type\":\"sehxlzsxezp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class FirewallStatusListByFirewallsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FirewallStatusResource> response
-            = manager.firewallStatus().listByFirewalls("bzbcyksiv", "fogdrtbfcm", com.azure.core.util.Context.NONE);
+            = manager.firewallStatus().listByFirewalls("zrthqet", "pqrtvaoznqni", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wkloozr", response.iterator().next().strataCloudManagerInfo().folderName());
-        Assertions.assertEquals("xvcmufunlcp", response.iterator().next().strataCloudManagerInfo().hubUrl());
+        Assertions.assertEquals("olctae", response.iterator().next().strataCloudManagerInfo().folderName());
+        Assertions.assertEquals("syrled", response.iterator().next().strataCloudManagerInfo().hubUrl());
     }
 }

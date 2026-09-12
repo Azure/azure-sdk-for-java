@@ -27,7 +27,7 @@ public final class GlobalRulestacksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.globalRulestacks().delete("pnulaiywzej", com.azure.core.util.Context.NONE);
+        manager.globalRulestacks().delete("smwr", com.azure.core.util.Context.NONE);
 
     }
 }

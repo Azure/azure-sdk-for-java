@@ -74,6 +74,10 @@ public final class FirewallResourceImpl
         return this.innerModel().panEtag();
     }
 
+    public String firewallSku() {
+        return this.innerModel().firewallSku();
+    }
+
     public NetworkProfile networkProfile() {
         return this.innerModel().networkProfile();
     }
@@ -305,6 +309,11 @@ public final class FirewallResourceImpl
 
     public FirewallResourceImpl withPanEtag(String panEtag) {
         this.innerModel().withPanEtag(panEtag);
+        return this;
+    }
+
+    public FirewallResourceImpl withFirewallSku(String firewallSku) {
+        this.innerModel().withFirewallSku(firewallSku);
         return this;
     }
 

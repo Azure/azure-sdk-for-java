@@ -74,6 +74,13 @@ public interface FirewallResource {
     String panEtag();
 
     /**
+     * Gets the firewallSku property: Firewall SKU type, Default will be STANDARD.
+     * 
+     * @return the firewallSku value.
+     */
+    String firewallSku();
+
+    /**
      * Gets the networkProfile property: Network settings.
      * 
      * @return the networkProfile value.
@@ -287,11 +294,11 @@ public interface FirewallResource {
          * The stage of the FirewallResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithPanEtag,
-            DefinitionStages.WithIsPanoramaManaged, DefinitionStages.WithIsStrataCloudManaged,
-            DefinitionStages.WithPanoramaConfig, DefinitionStages.WithStrataCloudManagerConfig,
-            DefinitionStages.WithAssociatedRulestack, DefinitionStages.WithFrontEndSettings {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithPanEtag, DefinitionStages.WithFirewallSku, DefinitionStages.WithIsPanoramaManaged,
+            DefinitionStages.WithIsStrataCloudManaged, DefinitionStages.WithPanoramaConfig,
+            DefinitionStages.WithStrataCloudManagerConfig, DefinitionStages.WithAssociatedRulestack,
+            DefinitionStages.WithFrontEndSettings {
             /**
              * Executes the create request.
              * 
@@ -345,6 +352,19 @@ public interface FirewallResource {
              * @return the next definition stage.
              */
             WithCreate withPanEtag(String panEtag);
+        }
+
+        /**
+         * The stage of the FirewallResource definition allowing to specify firewallSku.
+         */
+        interface WithFirewallSku {
+            /**
+             * Specifies the firewallSku property: Firewall SKU type, Default will be STANDARD..
+             * 
+             * @param firewallSku Firewall SKU type, Default will be STANDARD.
+             * @return the next definition stage.
+             */
+            WithCreate withFirewallSku(String firewallSku);
         }
 
         /**

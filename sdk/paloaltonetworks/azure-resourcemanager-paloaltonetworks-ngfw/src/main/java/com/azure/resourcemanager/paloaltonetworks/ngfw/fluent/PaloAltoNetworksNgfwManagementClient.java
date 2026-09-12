@@ -54,6 +54,20 @@ public interface PaloAltoNetworksNgfwManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the CustomCaptureConfigurationsFirewallResourcesClient object to access its operations.
+     * 
+     * @return the CustomCaptureConfigurationsFirewallResourcesClient object.
+     */
+    CustomCaptureConfigurationsFirewallResourcesClient getCustomCaptureConfigurationsFirewallResources();
+
+    /**
+     * Gets the LogIngestionSettingsResourcesClient object to access its operations.
+     * 
+     * @return the LogIngestionSettingsResourcesClient object.
+     */
+    LogIngestionSettingsResourcesClient getLogIngestionSettingsResources();
+
+    /**
      * Gets the GlobalRulestacksClient object to access its operations.
      * 
      * @return the GlobalRulestacksClient object.

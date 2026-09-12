@@ -16,23 +16,25 @@ public final class DnsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsSettings model = BinaryData.fromString(
-            "{\"enableDnsProxy\":\"DISABLED\",\"enabledDnsType\":\"CUSTOM\",\"dnsServers\":[{\"resourceId\":\"huwrykqgaifm\",\"address\":\"klbydv\"}]}")
+            "{\"enableDnsProxy\":\"ENABLED\",\"enabledDnsType\":\"CUSTOM\",\"dnsServers\":[{\"resourceId\":\"nasx\",\"address\":\"tozqyzhftwesgo\"},{\"resourceId\":\"zhonnxkrlgnyhmo\",\"address\":\"xkk\"},{\"resourceId\":\"h\",\"address\":\"gh\"}]}")
             .toObject(DnsSettings.class);
-        Assertions.assertEquals(DnsProxy.DISABLED, model.enableDnsProxy());
+        Assertions.assertEquals(DnsProxy.ENABLED, model.enableDnsProxy());
         Assertions.assertEquals(EnabledDnsType.CUSTOM, model.enabledDnsType());
-        Assertions.assertEquals("huwrykqgaifm", model.dnsServers().get(0).resourceId());
-        Assertions.assertEquals("klbydv", model.dnsServers().get(0).address());
+        Assertions.assertEquals("nasx", model.dnsServers().get(0).resourceId());
+        Assertions.assertEquals("tozqyzhftwesgo", model.dnsServers().get(0).address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsSettings model = new DnsSettings().withEnableDnsProxy(DnsProxy.DISABLED)
+        DnsSettings model = new DnsSettings().withEnableDnsProxy(DnsProxy.ENABLED)
             .withEnabledDnsType(EnabledDnsType.CUSTOM)
-            .withDnsServers(Arrays.asList(new IpAddress().withResourceId("huwrykqgaifm").withAddress("klbydv")));
+            .withDnsServers(Arrays.asList(new IpAddress().withResourceId("nasx").withAddress("tozqyzhftwesgo"),
+                new IpAddress().withResourceId("zhonnxkrlgnyhmo").withAddress("xkk"),
+                new IpAddress().withResourceId("h").withAddress("gh")));
         model = BinaryData.fromObject(model).toObject(DnsSettings.class);
-        Assertions.assertEquals(DnsProxy.DISABLED, model.enableDnsProxy());
+        Assertions.assertEquals(DnsProxy.ENABLED, model.enableDnsProxy());
         Assertions.assertEquals(EnabledDnsType.CUSTOM, model.enabledDnsType());
-        Assertions.assertEquals("huwrykqgaifm", model.dnsServers().get(0).resourceId());
-        Assertions.assertEquals("klbydv", model.dnsServers().get(0).address());
+        Assertions.assertEquals("nasx", model.dnsServers().get(0).resourceId());
+        Assertions.assertEquals("tozqyzhftwesgo", model.dnsServers().get(0).address());
     }
 }

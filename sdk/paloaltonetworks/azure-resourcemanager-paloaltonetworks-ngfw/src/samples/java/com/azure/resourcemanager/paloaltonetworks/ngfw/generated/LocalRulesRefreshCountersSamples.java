@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class LocalRulesRefreshCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_refreshCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_refreshCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_refreshCounters_MinimumSet_Gen.
@@ -23,7 +23,7 @@ public final class LocalRulesRefreshCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRules_refreshCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRules_refreshCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRules_refreshCounters_MaximumSet_Gen.

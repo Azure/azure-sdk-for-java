@@ -28,8 +28,7 @@ public final class PreRulesRefreshCountersWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.preRules()
-            .refreshCountersWithResponse("hexcgjokj", "jnhvlqjbekpeeks", "bksdqhjvyklxesl",
-                com.azure.core.util.Context.NONE);
+            .refreshCountersWithResponse("vawu", "iqjtiogqgdmin", "ctteajohi", com.azure.core.util.Context.NONE);
 
     }
 }
