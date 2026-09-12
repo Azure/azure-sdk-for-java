@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
  */
 public final class CustomDomainsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/CustomDomains_Create.json
+     * x-ms-original-file: 2026-07-01/CustomDomains_Create.json
      */
     /**
      * Sample code: CustomDomains_Create.

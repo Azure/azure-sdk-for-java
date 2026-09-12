@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Rules_Delete.json
+     * x-ms-original-file: 2026-07-01/Rules_Delete.json
      */
     /**
      * Sample code: Rules_Delete.

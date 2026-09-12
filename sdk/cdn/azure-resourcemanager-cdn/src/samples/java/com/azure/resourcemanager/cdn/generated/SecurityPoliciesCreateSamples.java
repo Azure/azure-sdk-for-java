@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class SecurityPoliciesCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/SecurityPolicies_Create.json
+     * x-ms-original-file: 2026-07-01/SecurityPolicies_Create.json
      */
     /**
      * Sample code: SecurityPolicies_Create.

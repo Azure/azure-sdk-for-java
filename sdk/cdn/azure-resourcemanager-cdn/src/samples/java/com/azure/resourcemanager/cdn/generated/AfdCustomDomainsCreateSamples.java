@@ -12,7 +12,8 @@ import com.azure.resourcemanager.cdn.models.AfdCustomizedCipherSuiteForTls13;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsCustomizedCipherSuiteSet;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.AfdMinimumTlsVersion;
-import com.azure.resourcemanager.cdn.models.ClientCertificateRequiredAndValidatedAdvancedSettings;
+import com.azure.resourcemanager.cdn.models.AfdServerTlsGroup;
+import com.azure.resourcemanager.cdn.models.AfdServerTlsGroupPolicy;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import java.util.Arrays;
 
@@ -21,7 +22,7 @@ import java.util.Arrays;
  */
 public final class AfdCustomDomainsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDCustomDomains_Create.json
+     * x-ms-original-file: 2026-07-01/AFDCustomDomains_Create.json
      */
     /**
      * Sample code: AFDCustomDomains_Create.
@@ -31,26 +32,22 @@ public final class AfdCustomDomainsCreateSamples {
     public static void aFDCustomDomainsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient()
             .getAfdCustomDomains()
-            .create("RG", "profile1", "domain1",
-                new AfdDomainInner()
-                    .withTlsSettings(
-                        new AfdDomainHttpsParameters().withCertificateType(AfdCertificateType.MANAGED_CERTIFICATE)
-                            .withCipherSuiteSetType(AfdCipherSuiteSetType.CUSTOMIZED)
-                            .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12)
-                            .withCustomizedCipherSuiteSet(new AfdDomainHttpsCustomizedCipherSuiteSet()
-                                .withCipherSuiteSetForTls12(
-                                    Arrays.asList(AfdCustomizedCipherSuiteForTls12.ECDHE_RSA_AES128_GCM_SHA256))
-                                .withCipherSuiteSetForTls13(
-                                    Arrays.asList(AfdCustomizedCipherSuiteForTls13.TLS_AES_128_GCM_SHA256,
-                                        AfdCustomizedCipherSuiteForTls13.TLS_AES_256_GCM_SHA384))))
-                    .withMtlsSettings(new ClientCertificateRequiredAndValidatedAdvancedSettings()
-                        .withSecrets(Arrays.asList(new ResourceReference().withId(
-                            "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name1"),
-                            new ResourceReference().withId(
-                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name2")))
-                        .withAllowedFqdns(Arrays.asList("foo.contoso.com")))
-                    .withAzureDnsZone(new ResourceReference().withId(""))
-                    .withHostname("www.someDomain.net"),
-                com.azure.core.util.Context.NONE);
+            .create("RG", "profile1", "domain1", new AfdDomainInner()
+                .withTlsSettings(
+                    new AfdDomainHttpsParameters().withCertificateType(AfdCertificateType.MANAGED_CERTIFICATE)
+                        .withCipherSuiteSetType(AfdCipherSuiteSetType.CUSTOMIZED)
+                        .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12)
+                        .withCustomizedCipherSuiteSet(new AfdDomainHttpsCustomizedCipherSuiteSet()
+                            .withCipherSuiteSetForTls12(
+                                Arrays.asList(AfdCustomizedCipherSuiteForTls12.ECDHE_RSA_AES128_GCM_SHA256))
+                            .withCipherSuiteSetForTls13(
+                                Arrays.asList(AfdCustomizedCipherSuiteForTls13.TLS_AES_128_GCM_SHA256,
+                                    AfdCustomizedCipherSuiteForTls13.TLS_AES_256_GCM_SHA384)))
+                        .withServerTlsGroupPolicy(AfdServerTlsGroupPolicy.CUSTOM)
+                        .withServerTlsGroups(
+                            Arrays.asList(AfdServerTlsGroup.X25519MLKEM768, AfdServerTlsGroup.SEC_P256R1MLKEM768,
+                                AfdServerTlsGroup.X25519, AfdServerTlsGroup.PRIME256V1)))
+                .withAzureDnsZone(new ResourceReference().withId(""))
+                .withHostname("www.someDomain.net"), com.azure.core.util.Context.NONE);
     }
 }

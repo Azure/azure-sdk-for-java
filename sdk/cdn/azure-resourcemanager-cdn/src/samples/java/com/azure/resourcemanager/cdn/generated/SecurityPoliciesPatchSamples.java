@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class SecurityPoliciesPatchSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/SecurityPolicies_Patch.json
+     * x-ms-original-file: 2026-07-01/SecurityPolicies_Patch.json
      */
     /**
      * Sample code: SecurityPolicies_Patch.

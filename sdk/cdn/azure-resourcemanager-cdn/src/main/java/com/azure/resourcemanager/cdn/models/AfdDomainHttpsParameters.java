@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The JSON object that contains the properties to secure a domain.
@@ -36,6 +37,16 @@ public final class AfdDomainHttpsParameters implements JsonSerializable<AfdDomai
      * Customized cipher suites object that will be used for Https when cipherSuiteSetType is Customized.
      */
     private AfdDomainHttpsCustomizedCipherSuiteSet customizedCipherSuiteSet;
+
+    /*
+     * Server TLS group policy that will be used for Https.
+     */
+    private AfdServerTlsGroupPolicy serverTlsGroupPolicy;
+
+    /*
+     * Server TLS groups that will be used for Https when serverTlsGroupPolicy is Custom.
+     */
+    private List<AfdServerTlsGroup> serverTlsGroups;
 
     /*
      * Resource reference to the secret. ie. subs/rg/profile/secret
@@ -134,6 +145,48 @@ public final class AfdDomainHttpsParameters implements JsonSerializable<AfdDomai
     }
 
     /**
+     * Get the serverTlsGroupPolicy property: Server TLS group policy that will be used for Https.
+     * 
+     * @return the serverTlsGroupPolicy value.
+     */
+    public AfdServerTlsGroupPolicy serverTlsGroupPolicy() {
+        return this.serverTlsGroupPolicy;
+    }
+
+    /**
+     * Set the serverTlsGroupPolicy property: Server TLS group policy that will be used for Https.
+     * 
+     * @param serverTlsGroupPolicy the serverTlsGroupPolicy value to set.
+     * @return the AfdDomainHttpsParameters object itself.
+     */
+    public AfdDomainHttpsParameters withServerTlsGroupPolicy(AfdServerTlsGroupPolicy serverTlsGroupPolicy) {
+        this.serverTlsGroupPolicy = serverTlsGroupPolicy;
+        return this;
+    }
+
+    /**
+     * Get the serverTlsGroups property: Server TLS groups that will be used for Https when serverTlsGroupPolicy is
+     * Custom.
+     * 
+     * @return the serverTlsGroups value.
+     */
+    public List<AfdServerTlsGroup> serverTlsGroups() {
+        return this.serverTlsGroups;
+    }
+
+    /**
+     * Set the serverTlsGroups property: Server TLS groups that will be used for Https when serverTlsGroupPolicy is
+     * Custom.
+     * 
+     * @param serverTlsGroups the serverTlsGroups value to set.
+     * @return the AfdDomainHttpsParameters object itself.
+     */
+    public AfdDomainHttpsParameters withServerTlsGroups(List<AfdServerTlsGroup> serverTlsGroups) {
+        this.serverTlsGroups = serverTlsGroups;
+        return this;
+    }
+
+    /**
      * Get the secret property: Resource reference to the secret. ie. subs/rg/profile/secret.
      * 
      * @return the secret value.
@@ -187,6 +240,10 @@ public final class AfdDomainHttpsParameters implements JsonSerializable<AfdDomai
         jsonWriter.writeStringField("minimumTlsVersion",
             this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
         jsonWriter.writeJsonField("customizedCipherSuiteSet", this.customizedCipherSuiteSet);
+        jsonWriter.writeStringField("serverTlsGroupPolicy",
+            this.serverTlsGroupPolicy == null ? null : this.serverTlsGroupPolicy.toString());
+        jsonWriter.writeArrayField("serverTlsGroups", this.serverTlsGroups,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("secret", this.secret);
         return jsonWriter.writeEndObject();
     }
@@ -219,6 +276,13 @@ public final class AfdDomainHttpsParameters implements JsonSerializable<AfdDomai
                 } else if ("customizedCipherSuiteSet".equals(fieldName)) {
                     deserializedAfdDomainHttpsParameters.customizedCipherSuiteSet
                         = AfdDomainHttpsCustomizedCipherSuiteSet.fromJson(reader);
+                } else if ("serverTlsGroupPolicy".equals(fieldName)) {
+                    deserializedAfdDomainHttpsParameters.serverTlsGroupPolicy
+                        = AfdServerTlsGroupPolicy.fromString(reader.getString());
+                } else if ("serverTlsGroups".equals(fieldName)) {
+                    List<AfdServerTlsGroup> serverTlsGroups
+                        = reader.readArray(reader1 -> AfdServerTlsGroup.fromString(reader1.getString()));
+                    deserializedAfdDomainHttpsParameters.serverTlsGroups = serverTlsGroups;
                 } else if ("secret".equals(fieldName)) {
                     deserializedAfdDomainHttpsParameters.secret = ResourceReference.fromJson(reader);
                 } else {

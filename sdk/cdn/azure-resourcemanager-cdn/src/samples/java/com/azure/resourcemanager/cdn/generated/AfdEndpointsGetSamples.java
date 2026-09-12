@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDEndpoints_Get.json
+     * x-ms-original-file: 2026-07-01/AFDEndpoints_Get.json
      */
     /**
      * Sample code: AFDEndpoints_Get.

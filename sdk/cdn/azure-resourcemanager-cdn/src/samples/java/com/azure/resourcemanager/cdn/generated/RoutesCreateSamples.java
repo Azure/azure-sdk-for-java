@@ -9,7 +9,6 @@ import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
-import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.CompressionSettings;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -23,7 +22,7 @@ import java.util.Arrays;
  */
 public final class RoutesCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Routes_Create.json
+     * x-ms-original-file: 2026-07-01/Routes_Create.json
      */
     /**
      * Sample code: Routes_Create.
@@ -51,7 +50,6 @@ public final class RoutesCreateSamples {
                 .withForwardingProtocol(ForwardingProtocol.MATCH_REQUEST)
                 .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
                 .withHttpsRedirect(HttpsRedirect.ENABLED)
-                .withEnabledState(EnabledState.ENABLED)
-                .withGrpcState(AfdRouteGrpcState.ENABLED), com.azure.core.util.Context.NONE);
+                .withEnabledState(EnabledState.ENABLED), com.azure.core.util.Context.NONE);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class AfdProfilesUpgradeSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDProfiles_Upgrade.json
+     * x-ms-original-file: 2026-07-01/AFDProfiles_Upgrade.json
      */
     /**
      * Sample code: AFDProfiles_Upgrade.

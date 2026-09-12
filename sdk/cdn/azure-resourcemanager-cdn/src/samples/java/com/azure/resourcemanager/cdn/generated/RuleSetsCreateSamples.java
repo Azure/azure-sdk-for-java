@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RuleSetsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/RuleSets_Create.json
+     * x-ms-original-file: 2026-07-01/RuleSets_Create.json
      */
     /**
      * Sample code: RuleSets_Create.
@@ -19,6 +19,6 @@ public final class RuleSetsCreateSamples {
     public static void ruleSetsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
         manager.serviceClient()
             .getRuleSets()
-            .createWithResponse("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
+            .create("RG", "profile1", "ruleSet1", null, com.azure.core.util.Context.NONE);
     }
 }

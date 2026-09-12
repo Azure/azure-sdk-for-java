@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.resourcemanager.cdn.models.AfdEndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import java.util.Map;
  */
 public final class AfdEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDEndpoints_Update.json
+     * x-ms-original-file: 2026-07-01/AFDEndpoints_Update.json
      */
     /**
      * Sample code: AFDEndpoints_Update.
@@ -26,9 +25,7 @@ public final class AfdEndpointsUpdateSamples {
         manager.serviceClient()
             .getAfdEndpoints()
             .update("RG", "profile1", "endpoint1",
-                new AfdEndpointUpdateParameters().withTags(mapOf())
-                    .withEnabledState(EnabledState.ENABLED)
-                    .withEnforceMtls(EnforceMtlsEnabledState.DISABLED),
+                new AfdEndpointUpdateParameters().withTags(mapOf()).withEnabledState(EnabledState.ENABLED),
                 com.azure.core.util.Context.NONE);
     }
 

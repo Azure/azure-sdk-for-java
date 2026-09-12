@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cdn.models.ValidateSecretInput;
  */
 public final class AfdProfilesValidateSecretSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDProfiles_ValidateSecret.json
+     * x-ms-original-file: 2026-07-01/AFDProfiles_ValidateSecret.json
      */
     /**
      * Sample code: Validate_Secret.

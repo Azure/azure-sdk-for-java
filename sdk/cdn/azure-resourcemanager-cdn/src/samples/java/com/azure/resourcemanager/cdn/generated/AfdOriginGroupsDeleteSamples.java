@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdOriginGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDOriginGroups_Delete.json
+     * x-ms-original-file: 2026-07-01/AFDOriginGroups_Delete.json
      */
     /**
      * Sample code: AFDOriginGroups_Delete.

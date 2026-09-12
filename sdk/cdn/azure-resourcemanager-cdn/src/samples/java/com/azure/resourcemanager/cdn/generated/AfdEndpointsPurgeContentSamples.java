@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class AfdEndpointsPurgeContentSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDEndpoints_PurgeContent.json
+     * x-ms-original-file: 2026-07-01/AFDEndpoints_PurgeContent.json
      */
     /**
      * Sample code: AFDEndpoints_PurgeContent.

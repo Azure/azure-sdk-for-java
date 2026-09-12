@@ -1,16 +1,266 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0 (2026-08-20)
+
+- Package api-version 2026-07-01.
 
 ### Features Added
 
-- Supported `defineAfdEndpoint`, `defineOriginGroup`, `defineRuleSet` method in `CdnProfile` for Azure Front Door Standard/Premium Sku.
+* `models.EnforceMtlsEnabledState` was added
 
-### Breaking Changes
+* `models.DeliveryRuleConditionParametersType` was added
 
-- Changed `typeName()` return type from `String` to enum types (`DeliveryRuleActionParametersType`, `DeliveryRuleConditionParametersType`, `CertificateSourceParametersType`, `KeyVaultSigningKeyParametersType`) in condition/action parameter classes.
-- Changed `withTypeName(String)` parameter type to corresponding enum type in condition/action parameter classes.
-- Removed `fromInt(int)` method from `PolicySettingsDefaultCustomBlockResponseStatusCode` class. Use `fromValue(Integer)` instead.
+* `models.DeliveryRuleConditionParameters` was added
+
+* `models.Route$UpdateDefinitionStages` was added
+
+* `models.DeliveryRuleEdgeActionParameters` was added
+
+* `models.CertificateRevocationCheckEnabledState` was added
+
+* `models.Route$DefinitionStages` was added
+
+* `models.Route$Definition` was added
+
+* `models.Rule$Update` was added
+
+* `models.Rule$UpdateDefinitionStages$WithOrder` was added
+
+* `models.AfdCipherSuiteSetType` was added
+
+* `models.ClientCertificateRequiredAndValidatedAdvancedSettings` was added
+
+* `models.OriginAuthenticationType` was added
+
+* `models.OriginGroup$Update` was added
+
+* `models.Origin$UpdateDefinitionStages$Blank` was added
+
+* `models.AfdDomainMtlsParameters` was added
+
+* `models.OriginAuthenticationTokenDestinationHeader` was added
+
+* `models.Route$UpdateDefinitionStages$WithAttach` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages$WithAttach` was added
+
+* `models.ClientCertificateValidatedIfPresentedAdvancedSettings` was added
+
+* `models.OriginGroup$UpdateDefinitionStages$Blank` was added
+
+* `models.RuleSet$UpdateDefinitionStages$WithAttach` was added
+
+* `models.Origin` was added
+
+* `models.Route` was added
+
+* `models.CertificateNameCheckValidationMode` was added
+
+* `models.RuleSet$UpdateDefinitionStages$Blank` was added
+
+* `models.Origin$UpdateDefinitionStages$WithAttach` was added
+
+* `models.OriginGroup$UpdateDefinitionStages$WithAttach` was added
+
+* `models.CompleteMtlsPassthroughToOriginAdvancedSettings` was added
+
+* `models.DeliveryRuleActionParametersType` was added
+
+* `models.CdnMigrationToAfdParameters` was added
+
+* `models.AfdDomainHttpsCustomizedCipherSuiteSet` was added
+
+* `models.AfdSecretMtlsCertificateChain` was added
+
+* `models.MigrationEndpointMapping` was added
+
+* `models.ClientCertificateRequiredAndOriginValidatesAdvancedSettings` was added
+
+* `models.AfdEndpoint` was added
+
+* `models.DeliveryRuleActionParameters` was added
+
+* `models.RuleSet$Definition` was added
+
+* `models.Origin$UpdateDefinitionStages$WithHostname` was added
+
+* `models.RuleSet$Update` was added
+
+* `models.OriginGroup$UpdateDefinitionStages` was added
+
+* `models.Rule$UpdateDefinitionStages$WithAttach` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages$Attachable` was added
+
+* `models.Origin$UpdateDefinitionStages$Attachable` was added
+
+* `models.Rule$UpdateDefinitionStages$Blank` was added
+
+* `models.AfdUrlSigningActionParameters` was added
+
+* `models.CertificateSourceParameters` was added
+
+* `models.AfdServerTlsGroupPolicy` was added
+
+* `models.RuleSet` was added
+
+* `models.Usage` was added
+
+* `models.AfdEndpoint$Definition` was added
+
+* `models.Rule$UpdateDefinitionStages` was added
+
+* `models.Rule` was added
+
+* `models.Origin$DefinitionStages` was added
+
+* `models.OriginGroup$DefinitionStages` was added
+
+* `models.Route$UpdateDefinitionStages$Attachable` was added
+
+* `models.EdgeAction` was added
+
+* `models.Origin$Update` was added
+
+* `models.Rule$DefinitionStages` was added
+
+* `models.OriginGroup` was added
+
+* `models.RuleSet$DefinitionStages` was added
+
+* `models.BatchRuleProperties` was added
+
+* `models.OriginAuthenticationProperties` was added
+
+* `models.Origin$Definition` was added
+
+* `models.InvocationPoint` was added
+
+* `models.AfdCustomizedCipherSuiteForTls12` was added
+
+* `models.AfdCustomizedCipherSuiteForTls13` was added
+
+* `models.Rule$Definition` was added
+
+* `models.Route$UpdateDefinitionStages$WithOriginGroup` was added
+
+* `models.AfdServerTlsGroup` was added
+
+* `models.AfdUrlSigningAction` was added
+
+* `models.CertificateSourceParametersType` was added
+
+* `models.KeyVaultSigningKeyParametersType` was added
+
+* `models.Route$Update` was added
+
+* `models.RuleSet$UpdateDefinitionStages$Attachable` was added
+
+* `models.Origin$UpdateDefinitionStages` was added
+
+* `models.AfdEndpoint$Update` was added
+
+* `models.OriginGroup$UpdateDefinitionStages$Attachable` was added
+
+* `models.RuleSet$UpdateDefinitionStages` was added
+
+* `models.OriginGroup$Definition` was added
+
+* `models.Rule$UpdateDefinitionStages$WithActions` was added
+
+* `models.Rule$UpdateDefinitionStages$Attachable` was added
+
+* `models.MtlsScenarioType` was added
+
+* `models.AfdEndpoint$DefinitionStages` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages$Blank` was added
+
+* `models.TypeName` was added
+
+* `models.Route$UpdateDefinitionStages$Blank` was added
+
+#### `models.CdnProfile` was modified
+
+* `ruleSets()` was added
+* `afdEndpoints()` was added
+* `originGroups()` was added
+
+#### `models.CdnProfile$Definition` was modified
+
+* `withGlobal()` was added
+
+#### `models.KeyVaultSigningKeyParameters` was modified
+
+* `withTypeName(models.KeyVaultSigningKeyParametersType)` was added
+
+#### `models.AfdOriginGroupUpdateParameters` was modified
+
+* `withAuthentication(models.OriginAuthenticationProperties)` was added
+* `authentication()` was added
+
+#### `models.PolicySettingsDefaultCustomBlockResponseStatusCode` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `hashCode()` was added
+* `fromValue(java.lang.Integer)` was added
+* `equals(java.lang.Object)` was added
+* `getValue()` was added
+* `toString()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AfdMinimumTlsVersion` was modified
+
+* `TLS13` was added
+
+#### `models.SecurityPolicyWebApplicationFirewallAssociation` was modified
+
+* `withRoutes(java.util.List)` was added
+* `routes()` was added
+
+#### `models.AfdOriginUpdateParameters` was modified
+
+* `withCustomCertificateSubjects(java.util.List)` was added
+* `certificateNameCheckValidationMode()` was added
+* `customCertificateSubjects()` was added
+* `withCertificateNameCheckValidationMode(models.CertificateNameCheckValidationMode)` was added
+
+#### `models.AfdDomainHttpsParameters` was modified
+
+* `cipherSuiteSetType()` was added
+* `withServerTlsGroups(java.util.List)` was added
+* `serverTlsGroupPolicy()` was added
+* `withCustomizedCipherSuiteSet(models.AfdDomainHttpsCustomizedCipherSuiteSet)` was added
+* `serverTlsGroups()` was added
+* `customizedCipherSuiteSet()` was added
+* `withCipherSuiteSetType(models.AfdCipherSuiteSetType)` was added
+* `withServerTlsGroupPolicy(models.AfdServerTlsGroupPolicy)` was added
+
+#### `models.AfdEndpointUpdateParameters` was modified
+
+* `withEnforceMtls(models.EnforceMtlsEnabledState)` was added
+* `enforceMtls()` was added
+
+#### `models.AfdDomainUpdateParameters` was modified
+
+* `mtlsSettings()` was added
+* `withMtlsSettings(models.AfdDomainMtlsParameters)` was added
+
+#### `models.SecretType` was modified
+
+* `MTLS_CERTIFICATE_CHAIN` was added
+
+#### `models.SecurityPolicyWebApplicationFirewallParameters` was modified
+
+* `isProfileLevel()` was added
+* `withIsProfileLevel(java.lang.Boolean)` was added
+
+#### `models.DeliveryRuleActionValue` was modified
+
+* `AFD_URL_SIGNING` was added
+* `EDGE_ACTION` was added
 
 ## 2.53.10 (2026-08-18)
 

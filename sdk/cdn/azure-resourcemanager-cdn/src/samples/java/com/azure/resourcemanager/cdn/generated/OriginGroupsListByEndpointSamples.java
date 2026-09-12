@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class OriginGroupsListByEndpointSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/OriginGroups_ListByEndpoint.json
+     * x-ms-original-file: 2026-07-01/OriginGroups_ListByEndpoint.json
      */
     /**
      * Sample code: OriginsGroups_ListByEndpoint.
