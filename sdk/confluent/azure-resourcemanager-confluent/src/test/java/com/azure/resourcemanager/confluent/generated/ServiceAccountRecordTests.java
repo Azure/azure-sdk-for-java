@@ -12,16 +12,16 @@ public final class ServiceAccountRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceAccountRecord model = BinaryData.fromString(
-            "{\"kind\":\"ihleos\",\"id\":\"w\",\"metadata\":{\"self\":\"slyzrpzbchckqq\",\"resource_name\":\"ioxiysuiizyn\",\"created_at\":\"dy\",\"updated_at\":\"rwyhqmibzyhwitsm\",\"deleted_at\":\"yynpcdpumnzgmwz\"},\"display_name\":\"abikns\",\"description\":\"gj\"}")
+            "{\"kind\":\"iodhkhazxkhnz\",\"id\":\"nlwntoe\",\"metadata\":{\"self\":\"dwbwhkszzcmrvexz\",\"resource_name\":\"bt\",\"created_at\":\"sfraoyzko\",\"updated_at\":\"tlmngu\",\"deleted_at\":\"wqaldsyu\"},\"display_name\":\"imerqfobwyznk\",\"description\":\"kutwpf\"}")
             .toObject(ServiceAccountRecord.class);
-        Assertions.assertEquals("ihleos", model.kind());
-        Assertions.assertEquals("w", model.id());
-        Assertions.assertEquals("slyzrpzbchckqq", model.metadata().self());
-        Assertions.assertEquals("ioxiysuiizyn", model.metadata().resourceName());
-        Assertions.assertEquals("dy", model.metadata().createdAt());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", model.metadata().updatedAt());
-        Assertions.assertEquals("yynpcdpumnzgmwz", model.metadata().deletedAt());
-        Assertions.assertEquals("abikns", model.displayName());
-        Assertions.assertEquals("gj", model.description());
+        Assertions.assertEquals("iodhkhazxkhnz", model.kind());
+        Assertions.assertEquals("nlwntoe", model.id());
+        Assertions.assertEquals("dwbwhkszzcmrvexz", model.metadata().self());
+        Assertions.assertEquals("bt", model.metadata().resourceName());
+        Assertions.assertEquals("sfraoyzko", model.metadata().createdAt());
+        Assertions.assertEquals("tlmngu", model.metadata().updatedAt());
+        Assertions.assertEquals("wqaldsyu", model.metadata().deletedAt());
+        Assertions.assertEquals("imerqfobwyznk", model.displayName());
+        Assertions.assertEquals("kutwpf", model.description());
     }
 }

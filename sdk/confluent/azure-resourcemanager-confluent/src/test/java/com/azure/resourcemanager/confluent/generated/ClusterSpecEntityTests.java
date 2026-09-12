@@ -12,27 +12,27 @@ public final class ClusterSpecEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterSpecEntity model = BinaryData.fromString(
-            "{\"display_name\":\"fiakpjpqqm\",\"availability\":\"d\",\"cloud\":\"mmji\",\"zone\":\"eozphv\",\"region\":\"uyqncygupkvipmd\",\"kafka_bootstrap_endpoint\":\"wx\",\"http_endpoint\":\"pevzhfst\",\"api_endpoint\":\"xhojuj\",\"config\":{\"kind\":\"elmcuvhixbjxyfw\"},\"environment\":{\"id\":\"r\",\"environment\":\"o\",\"related\":\"ttpkiwkkbnujrywv\",\"resource_name\":\"lbfpncurd\"},\"network\":{\"id\":\"iithtywu\",\"environment\":\"cbihwqk\",\"related\":\"dntwjchrdgo\",\"resource_name\":\"xum\"},\"byok\":{\"id\":\"ond\",\"related\":\"luudfdlwggytsb\",\"resource_name\":\"ovvtgseinqfiu\"}}")
+            "{\"display_name\":\"dlwggytsbwtovv\",\"availability\":\"seinqfiuf\",\"cloud\":\"knpirgnepttwq\",\"zone\":\"niffcdmqnroj\",\"region\":\"ijnkrxfrdd\",\"kafka_bootstrap_endpoint\":\"ratiz\",\"http_endpoint\":\"onasxifto\",\"api_endpoint\":\"yzhftwesgogczh\",\"config\":{\"kind\":\"xkr\"},\"environment\":{\"id\":\"yhmossxkkg\",\"environment\":\"rrghxjbdhqxvcxgf\",\"related\":\"dsofbshrns\",\"resource_name\":\"uswdv\"},\"network\":{\"id\":\"bycnunvjsrtkf\",\"environment\":\"nopqgikyzirtx\",\"related\":\"uxzejntpsew\",\"resource_name\":\"oi\"},\"byok\":{\"id\":\"kr\",\"related\":\"xtqmieoxor\",\"resource_name\":\"ufhyaomtbgh\"}}")
             .toObject(ClusterSpecEntity.class);
-        Assertions.assertEquals("fiakpjpqqm", model.displayName());
-        Assertions.assertEquals("d", model.availability());
-        Assertions.assertEquals("mmji", model.cloud());
-        Assertions.assertEquals("eozphv", model.zone());
-        Assertions.assertEquals("uyqncygupkvipmd", model.region());
-        Assertions.assertEquals("wx", model.kafkaBootstrapEndpoint());
-        Assertions.assertEquals("pevzhfst", model.httpEndpoint());
-        Assertions.assertEquals("xhojuj", model.apiEndpoint());
-        Assertions.assertEquals("elmcuvhixbjxyfw", model.config().kind());
-        Assertions.assertEquals("r", model.environment().id());
-        Assertions.assertEquals("o", model.environment().environment());
-        Assertions.assertEquals("ttpkiwkkbnujrywv", model.environment().related());
-        Assertions.assertEquals("lbfpncurd", model.environment().resourceName());
-        Assertions.assertEquals("iithtywu", model.network().id());
-        Assertions.assertEquals("cbihwqk", model.network().environment());
-        Assertions.assertEquals("dntwjchrdgo", model.network().related());
-        Assertions.assertEquals("xum", model.network().resourceName());
-        Assertions.assertEquals("ond", model.byok().id());
-        Assertions.assertEquals("luudfdlwggytsb", model.byok().related());
-        Assertions.assertEquals("ovvtgseinqfiu", model.byok().resourceName());
+        Assertions.assertEquals("dlwggytsbwtovv", model.displayName());
+        Assertions.assertEquals("seinqfiuf", model.availability());
+        Assertions.assertEquals("knpirgnepttwq", model.cloud());
+        Assertions.assertEquals("niffcdmqnroj", model.zone());
+        Assertions.assertEquals("ijnkrxfrdd", model.region());
+        Assertions.assertEquals("ratiz", model.kafkaBootstrapEndpoint());
+        Assertions.assertEquals("onasxifto", model.httpEndpoint());
+        Assertions.assertEquals("yzhftwesgogczh", model.apiEndpoint());
+        Assertions.assertEquals("xkr", model.config().kind());
+        Assertions.assertEquals("yhmossxkkg", model.environment().id());
+        Assertions.assertEquals("rrghxjbdhqxvcxgf", model.environment().environment());
+        Assertions.assertEquals("dsofbshrns", model.environment().related());
+        Assertions.assertEquals("uswdv", model.environment().resourceName());
+        Assertions.assertEquals("bycnunvjsrtkf", model.network().id());
+        Assertions.assertEquals("nopqgikyzirtx", model.network().environment());
+        Assertions.assertEquals("uxzejntpsew", model.network().related());
+        Assertions.assertEquals("oi", model.network().resourceName());
+        Assertions.assertEquals("kr", model.byok().id());
+        Assertions.assertEquals("xtqmieoxor", model.byok().related());
+        Assertions.assertEquals("ufhyaomtbgh", model.byok().resourceName());
     }
 }

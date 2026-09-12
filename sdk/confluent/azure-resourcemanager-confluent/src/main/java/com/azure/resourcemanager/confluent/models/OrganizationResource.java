@@ -343,4 +343,47 @@ public interface OrganizationResource {
      * @return result of POST request to list regions supported by confluent.
      */
     ListRegionsSuccessResponse listRegions(ListAccessRequestModel body);
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    OrganizationResource linkSaaS(SaaSData body);
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    OrganizationResource linkSaaS(SaaSData body, Context context);
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context);
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    LatestLinkedSaaSResponse latestLinkedSaaS();
 }

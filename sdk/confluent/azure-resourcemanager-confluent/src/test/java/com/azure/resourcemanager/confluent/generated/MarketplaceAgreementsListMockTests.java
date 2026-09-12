@@ -22,7 +22,7 @@ public final class MarketplaceAgreementsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"hztgeqmgqzgwld\",\"name\":\"chillcecf\",\"type\":\"uwaoaguhicqlli\",\"properties\":{\"publisher\":\"csjvhrwef\",\"product\":\"wqejpmvsse\",\"plan\":\"epwamcxtcz\",\"licenseTextLink\":\"peuknijd\",\"privacyPolicyLink\":\"yespydjfbocyv\",\"retrieveDatetime\":\"2021-02-09T06:15:43Z\",\"signature\":\"rtywi\",\"accepted\":false}}]}";
+            = "{\"value\":[{\"id\":\"wnapfdq\",\"name\":\"wf\",\"type\":\"tnuwjtkschgc\",\"properties\":{\"publisher\":\"leseyqrhvyeldo\",\"product\":\"v\",\"plan\":\"wiswskukjtasbvw\",\"licenseTextLink\":\"pkxkdtxfk\",\"privacyPolicyLink\":\"lq\",\"retrieveDatetime\":\"2021-08-28T00:30:53Z\",\"signature\":\"nvgmmbugtywa\",\"accepted\":false}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class MarketplaceAgreementsListMockTests {
         PagedIterable<ConfluentAgreementResource> response
             = manager.marketplaceAgreements().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("csjvhrwef", response.iterator().next().publisher());
-        Assertions.assertEquals("wqejpmvsse", response.iterator().next().product());
-        Assertions.assertEquals("epwamcxtcz", response.iterator().next().plan());
-        Assertions.assertEquals("peuknijd", response.iterator().next().licenseTextLink());
-        Assertions.assertEquals("yespydjfbocyv", response.iterator().next().privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T06:15:43Z"),
+        Assertions.assertEquals("leseyqrhvyeldo", response.iterator().next().publisher());
+        Assertions.assertEquals("v", response.iterator().next().product());
+        Assertions.assertEquals("wiswskukjtasbvw", response.iterator().next().plan());
+        Assertions.assertEquals("pkxkdtxfk", response.iterator().next().licenseTextLink());
+        Assertions.assertEquals("lq", response.iterator().next().privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T00:30:53Z"),
             response.iterator().next().retrieveDatetime());
-        Assertions.assertEquals("rtywi", response.iterator().next().signature());
+        Assertions.assertEquals("nvgmmbugtywa", response.iterator().next().signature());
         Assertions.assertFalse(response.iterator().next().accepted());
     }
 }
