@@ -1,10 +1,12 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import java.io.IOException;
@@ -25,11 +27,35 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        renameCreateSkillVersionFromFilesHelpers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
-        private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+    private void renameCreateSkillVersionFromFilesHelpers(LibraryCustomization customization, Logger logger) {
+        String oldName = "createSkillVersionFromFilesWithResponseInternal";
+        String newName = "createSkillVersionFromFilesInternalWithResponse";
+        for (String className : new String[] { "BetaSkillsClient", "BetaSkillsAsyncClient" }) {
+            customization.getClass("com.azure.ai.projects", className).customizeAst(ast -> {
+                TypeDeclaration<?> type = ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException("Could not find class " + className + "."));
+                MethodDeclaration helper = type.getMethodsByName(oldName)
+                    .stream()
+                    .filter(method -> !method.isPublic() && !method.isProtected() && !method.isPrivate())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "Could not find package-private method '" + oldName + "' on " + className + "."));
+
+                logger.info("Renaming {}#{} to {}", className, oldName, newName);
+                helper.setName(newName);
+                type.findAll(MethodCallExpr.class).stream()
+                    .filter(call -> !call.getScope().isPresent() && call.getNameAsString().equals(oldName))
+                    .forEach(call -> call.setName(newName));
+            });
+        }
+    }
+
+    private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
         customization.getPackage("com.azure.ai.projects")
             .listClasses()
             .stream()

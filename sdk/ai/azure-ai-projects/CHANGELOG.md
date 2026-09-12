@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Moved `maxSamples` from `DataGenerationJobOptions` to supported scenario-specific models. `SimulationSeedDataGenerationJobOptions` no longer accepts it, while `TracesDataGenerationJobOptions` now has a no-argument constructor and optional `Integer` value configured through `setMaxSamples(...)`.
+
 ### Bugs Fixed
 
 ### Other Changes
