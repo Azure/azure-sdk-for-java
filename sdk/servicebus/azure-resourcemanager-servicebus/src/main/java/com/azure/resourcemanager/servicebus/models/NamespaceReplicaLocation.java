@@ -26,12 +26,6 @@ public final class NamespaceReplicaLocation implements JsonSerializable<Namespac
      */
     private GeoDRRoleType roleType;
 
-    /*
-     * Optional property that denotes the ARM ID of the Cluster. This is required, if a namespace replica should be
-     * placed in a Dedicated Event Hub Cluster
-     */
-    private String clusterArmId;
-
     /**
      * Creates an instance of NamespaceReplicaLocation class.
      */
@@ -79,28 +73,6 @@ public final class NamespaceReplicaLocation implements JsonSerializable<Namespac
     }
 
     /**
-     * Get the clusterArmId property: Optional property that denotes the ARM ID of the Cluster. This is required, if a
-     * namespace replica should be placed in a Dedicated Event Hub Cluster.
-     * 
-     * @return the clusterArmId value.
-     */
-    public String clusterArmId() {
-        return this.clusterArmId;
-    }
-
-    /**
-     * Set the clusterArmId property: Optional property that denotes the ARM ID of the Cluster. This is required, if a
-     * namespace replica should be placed in a Dedicated Event Hub Cluster.
-     * 
-     * @param clusterArmId the clusterArmId value to set.
-     * @return the NamespaceReplicaLocation object itself.
-     */
-    public NamespaceReplicaLocation withClusterArmId(String clusterArmId) {
-        this.clusterArmId = clusterArmId;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -116,7 +88,6 @@ public final class NamespaceReplicaLocation implements JsonSerializable<Namespac
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("locationName", this.locationName);
         jsonWriter.writeStringField("roleType", this.roleType == null ? null : this.roleType.toString());
-        jsonWriter.writeStringField("clusterArmId", this.clusterArmId);
         return jsonWriter.writeEndObject();
     }
 
@@ -139,8 +110,6 @@ public final class NamespaceReplicaLocation implements JsonSerializable<Namespac
                     deserializedNamespaceReplicaLocation.locationName = reader.getString();
                 } else if ("roleType".equals(fieldName)) {
                     deserializedNamespaceReplicaLocation.roleType = GeoDRRoleType.fromString(reader.getString());
-                } else if ("clusterArmId".equals(fieldName)) {
-                    deserializedNamespaceReplicaLocation.clusterArmId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

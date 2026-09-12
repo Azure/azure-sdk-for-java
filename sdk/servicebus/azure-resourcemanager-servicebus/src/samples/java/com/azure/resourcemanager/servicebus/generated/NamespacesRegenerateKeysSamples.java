@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters
  */
 public final class NamespacesRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleRegenerateKey.
