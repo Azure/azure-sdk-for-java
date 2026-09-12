@@ -113,6 +113,7 @@
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
     <module>sdk/edgeactions</module>
+    <module>sdk/edgeoperator</module>
     <module>sdk/edgeorder</module>
     <module>sdk/edgezones</module>
     <module>sdk/education</module>
