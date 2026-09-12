@@ -43,12 +43,12 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String monitorName) {
+    public void delete(String resourceGroupName, String monitorName) {
         this.serviceClient().delete(resourceGroupName, monitorName);
     }
 
-    public void delete(String resourceGroupName, String monitorName, Context context) {
-        this.serviceClient().delete(resourceGroupName, monitorName, context);
+    public void delete(String resourceGroupName, String monitorName, Boolean softDelete, Context context) {
+        this.serviceClient().delete(resourceGroupName, monitorName, softDelete, context);
     }
 
     public PagedIterable<ElasticMonitorResource> listByResourceGroup(String resourceGroupName) {
@@ -111,10 +111,11 @@ public final class MonitorsImpl implements Monitors {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        this.delete(resourceGroupName, monitorName, Context.NONE);
+        Boolean localSoftDelete = null;
+        this.delete(resourceGroupName, monitorName, localSoftDelete, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Boolean softDelete, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -125,7 +126,7 @@ public final class MonitorsImpl implements Monitors {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        this.delete(resourceGroupName, monitorName, context);
+        this.delete(resourceGroupName, monitorName, softDelete, context);
     }
 
     private MonitorsClient serviceClient() {

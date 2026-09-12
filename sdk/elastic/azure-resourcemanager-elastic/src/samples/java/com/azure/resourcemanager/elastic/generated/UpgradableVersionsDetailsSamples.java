@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class UpgradableVersionsDetailsSamples {
     /*
-     * x-ms-original-file: 2025-06-01/UpgradableVersions_Details.json
+     * x-ms-original-file: 2026-03-15-preview/UpgradableVersions_Details.json
      */
     /**
      * Sample code: UpgradableVersions_Details.

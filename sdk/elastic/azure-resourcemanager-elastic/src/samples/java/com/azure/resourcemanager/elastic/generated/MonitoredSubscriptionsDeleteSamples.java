@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class MonitoredSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/MonitoredSubscriptions_Delete.json
+     * x-ms-original-file: 2026-03-15-preview/MonitoredSubscriptions_Delete.json
      */
     /**
      * Sample code: Monitors_DeleteMonitoredSubscriptions.
