@@ -4,11 +4,23 @@
 
 ### Features Added
 
+- Added preview `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
+- Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
+- Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
+- Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
+
 ### Breaking Changes
+
+- Renamed `AgentTelephonyClient` and `AgentTelephonyAsyncClient` to `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`; use `AgentsClientBuilder.buildBetaAgentTelephonyClient()` or `buildBetaAgentTelephonyAsyncClient()`.
+- Moved telephony operations from `AgentsClient` and `AgentsAsyncClient` to `BetaAgentsClient` and `BetaAgentsAsyncClient`.
+- Moved `generateAgent` and `generateAgentWithResponse` from `AgentsClient` and `AgentsAsyncClient` to `BetaAgentsClient` and `BetaAgentsAsyncClient`.
+- Moved `getId()` and `getConversationId()` from `VoiceResponseBase` to `VoiceResponse`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.5.0 (2026-09-09)
 
