@@ -106,7 +106,8 @@ class AzureMonitorExporterBuilder {
         File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
             "Telemetry will not be stored to disk and retried on sporadic network failures");
         // Create customer-facing SDKStats if enabled (skip accumulator and listener when disabled)
-        boolean customerSdkStatsEnabled = isCustomerSdkStatsEnabled();
+        boolean sdkStatsDisabledAll = isSdkStatsDisabledAll(configProperties);
+        boolean customerSdkStatsEnabled = isCustomerSdkStatsEnabled(configProperties, sdkStatsDisabledAll);
         CustomerSdkStats customerSdkStats = customerSdkStatsEnabled ? createCustomerSdkStats() : null;
         CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener
             = customerSdkStats != null ? new CustomerSdkStatsTelemetryPipelineListener(customerSdkStats) : null;
@@ -116,7 +117,10 @@ class AzureMonitorExporterBuilder {
         if (LiveMetrics.isEnabled(configProperties)) {
             this.quickPulse = createQuickPulse(resource);
         }
-        startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
+        if (!sdkStatsDisabledAll) {
+            // Skip the Statsbeat exporter too, since its local storage starts background retry tasks.
+            startStatsbeatModule(statsbeatModule, configProperties, tempDir);
+        }
         if (customerSdkStatsEnabled) {
             startCustomerSdkStats(customerSdkStats, customerSdkStatsListener, resource);
         }
@@ -266,16 +270,20 @@ class AzureMonitorExporterBuilder {
         return CustomerSdkStats.create(version);
     }
 
-    private boolean isCustomerSdkStatsEnabled() {
-        return isCustomerSdkStatsEnabled(configProperties);
-    }
-
-    static boolean isCustomerSdkStatsEnabled(ConfigProperties configProperties) {
+    private static boolean isSdkStatsDisabledAll(ConfigProperties configProperties) {
         String disabledAll = configProperties.getString(SDKSTATS_DISABLED_ALL_ENV_VAR);
         if (disabledAll == null) {
             disabledAll = Configuration.getGlobalConfiguration().get(SDKSTATS_DISABLED_ALL_ENV_VAR);
         }
-        if ("true".equalsIgnoreCase(disabledAll)) {
+        return "true".equalsIgnoreCase(disabledAll);
+    }
+
+    static boolean isCustomerSdkStatsEnabled(ConfigProperties configProperties) {
+        return isCustomerSdkStatsEnabled(configProperties, isSdkStatsDisabledAll(configProperties));
+    }
+
+    private static boolean isCustomerSdkStatsEnabled(ConfigProperties configProperties, boolean disabledAll) {
+        if (disabledAll) {
             return false;
         }
         if ("true".equalsIgnoreCase(configProperties.getString(SDKSTATS_DISABLED_PROPERTY_NAME))) {
