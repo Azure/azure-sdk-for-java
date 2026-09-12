@@ -12,8 +12,8 @@ public final class PlaywrightWorkspaceQuotaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceQuotaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-03-05T22:19:57Z\",\"expiryAt\":\"2021-09-23T10:25:08Z\",\"allocatedValue\":632380018,\"usedValue\":67.16434940625449,\"percentageUsed\":41.25828630736659},\"provisioningState\":\"Deleting\"},\"id\":\"snzwd\",\"name\":\"jbavorxzdm\",\"type\":\"hctbqvudwxdn\"},{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-04-03T23:08:08Z\",\"expiryAt\":\"2021-04-25T09:28:58Z\",\"allocatedValue\":999513360,\"usedValue\":91.87943891580089,\"percentageUsed\":17.85380928963508},\"provisioningState\":\"Canceled\"},\"id\":\"cglhslazjdyggdt\",\"name\":\"ixhbkuofqweykhm\",\"type\":\"n\"},{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-09-26T05:32:17Z\",\"expiryAt\":\"2021-06-20T14:57:34Z\",\"allocatedValue\":669612849,\"usedValue\":59.155171189425324,\"percentageUsed\":39.26834725394179},\"provisioningState\":\"Failed\"},\"id\":\"bvyvdcsity\",\"name\":\"naamde\",\"type\":\"tehfiqscjeypvh\"},{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-07-11T20:22:05Z\",\"expiryAt\":\"2021-04-02T10:03:16Z\",\"allocatedValue\":177141497,\"usedValue\":66.14883842206869,\"percentageUsed\":80.03610214574573},\"provisioningState\":\"Deleting\"},\"id\":\"vgmkqsleyyvxyqjp\",\"name\":\"cattpngjcrcczsq\",\"type\":\"jh\"}],\"nextLink\":\"daj\"}")
+            "{\"value\":[{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-04-26T15:47:13Z\",\"expiryAt\":\"2021-09-09T14:12:28Z\",\"allocatedValue\":1123309807,\"usedValue\":54.27955963051963,\"percentageUsed\":72.30050635322169},\"provisioningState\":\"Accepted\"},\"id\":\"vmdajvnysou\",\"name\":\"q\",\"type\":\"canoaeupf\"}],\"nextLink\":\"hltrpmopjmcmatuo\"}")
             .toObject(PlaywrightWorkspaceQuotaListResult.class);
-        Assertions.assertEquals("daj", model.nextLink());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.nextLink());
     }
 }

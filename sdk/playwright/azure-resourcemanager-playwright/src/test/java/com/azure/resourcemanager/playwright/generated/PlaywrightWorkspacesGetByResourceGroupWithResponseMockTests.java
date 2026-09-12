@@ -23,7 +23,7 @@ public final class PlaywrightWorkspacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"zyiuokk\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"wz\",\"reporting\":\"Enabled\",\"storageUri\":\"mbsureximo\"},\"identity\":{\"principalId\":\"cfsf\",\"tenantId\":\"ymddys\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"vkd\":{\"principalId\":\"xhqyudxorrqnb\",\"clientId\":\"czvyifq\"},\"ulexxbczwtr\":{\"principalId\":\"sllr\",\"clientId\":\"vdfwatkpn\"},\"zdobpxjmflbvvnch\":{\"principalId\":\"iqzbq\",\"clientId\":\"sovmyokacspkwl\"}}},\"location\":\"cciw\",\"tags\":{\"foskghsauuimj\":\"uqkhrsajiwku\"},\"id\":\"vxieduugidyj\",\"name\":\"rfbyaosvexcso\",\"type\":\"pclhocohslk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"dataplaneUri\":\"mddystkiiux\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"o\",\"reporting\":\"Enabled\",\"storageUri\":\"b\",\"subnetId\":\"czvyifq\"},\"identity\":{\"principalId\":\"dvjsllrmvvdf\",\"tenantId\":\"t\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"yokacspkw\":{\"principalId\":\"lexxbczwtru\",\"clientId\":\"qzbqjvsov\"},\"zjuqkhrsaj\":{\"principalId\":\"zdobpxjmflbvvnch\",\"clientId\":\"cciw\"},\"sauuimj\":{\"principalId\":\"ku\",\"clientId\":\"oskg\"}}},\"location\":\"xieduugidyjrr\",\"tags\":{\"e\":\"aos\"},\"id\":\"csonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,16 @@ public final class PlaywrightWorkspacesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PlaywrightWorkspace response = manager.playwrightWorkspaces()
-            .getByResourceGroupWithResponse("vxodpu", "zmyzydagf", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("mbsureximo", "yocf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cciw", response.location());
-        Assertions.assertEquals("uqkhrsajiwku", response.tags().get("foskghsauuimj"));
+        Assertions.assertEquals("xieduugidyjrr", response.location());
+        Assertions.assertEquals("aos", response.tags().get("e"));
         Assertions.assertEquals(EnablementStatus.DISABLED, response.properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, response.properties().localAuth());
         Assertions.assertEquals(EnablementStatus.ENABLED, response.properties().reporting());
-        Assertions.assertEquals("mbsureximo", response.properties().storageUri());
+        Assertions.assertEquals("b", response.properties().storageUri());
+        Assertions.assertEquals("czvyifq", response.properties().subnetId());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }
