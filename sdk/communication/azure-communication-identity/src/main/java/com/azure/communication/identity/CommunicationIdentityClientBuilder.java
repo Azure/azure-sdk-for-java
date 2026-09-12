@@ -5,7 +5,7 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
-import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
+import com.azure.communication.identity.implementation.IdentityClientImpl;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -18,12 +18,14 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -32,9 +34,10 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +91,8 @@ public final class CommunicationIdentityClientBuilder implements
     private static final String SDK_VERSION = "version";
 
     private static final String COMMUNICATION_IDENTITY_PROPERTIES = "azure-communication-identity.properties";
+
+    private static final String API_VERSION_QUERY_PARAM = "api-version";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
@@ -364,18 +369,95 @@ public final class CommunicationIdentityClientBuilder implements
         return new CommunicationIdentityClient(createServiceImpl());
     }
 
-    private CommunicationIdentityClientImpl createServiceImpl() {
+    private IdentityClientImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
-
-        HttpPipeline builderPipeline = this.pipeline;
-        if (this.pipeline == null) {
-            builderPipeline = createHttpPipeline(httpClient, createHttpPipelineAuthPolicy(), customPolicies);
-        }
 
         CommunicationIdentityServiceVersion apiVersion
             = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
 
-        return new CommunicationIdentityClientImpl(builderPipeline, endpoint, apiVersion.getVersion());
+        HttpPipeline builderPipeline = this.pipeline;
+        if (this.pipeline == null) {
+            builderPipeline = createHttpPipeline(httpClient, createHttpPipelineAuthPolicy(), customPolicies,
+                apiVersion.getVersion());
+        }
+
+        return new IdentityClientImpl(builderPipeline, endpoint, mapServiceVersion(apiVersion));
+    }
+
+    /**
+     * Maps the public {@link CommunicationIdentityServiceVersion} onto the generated
+     * {@link IdentityServiceVersion}.
+     *
+     * <p>The generated client only declares the api-versions present in the TypeSpec {@code Versions}
+     * enum, which is a subset of the versions this library has shipped. For a value with no generated
+     * counterpart this returns the newest generated version purely to satisfy the constructor; the
+     * api-version actually sent is pinned by {@link #createApiVersionPolicy(String)}, so the caller's
+     * selection is what reaches the service.</p>
+     */
+    private IdentityServiceVersion mapServiceVersion(CommunicationIdentityServiceVersion apiVersion) {
+        for (IdentityServiceVersion generated : IdentityServiceVersion.values()) {
+            if (generated.getVersion().equals(apiVersion.getVersion())) {
+                return generated;
+            }
+        }
+
+        return IdentityServiceVersion.getLatest();
+    }
+
+    /**
+     * Pins the {@code api-version} query parameter to the service version selected on this builder.
+     *
+     * <p>This is the seam that decouples the public {@link CommunicationIdentityServiceVersion} from the
+     * generated {@link IdentityServiceVersion}. The generated client takes a typed enum rather than a
+     * string, so without this policy any version absent from that enum could not be reached at all.</p>
+     *
+     * @param apiVersion the api-version string to send.
+     * @return a policy that overwrites the api-version query parameter on every request.
+     */
+    private HttpPipelinePolicy createApiVersionPolicy(String apiVersion) {
+        return new ApiVersionPolicy(apiVersion, logger);
+    }
+
+    /**
+     * Overwrites the {@code api-version} query parameter with the version selected on the builder.
+     *
+     * <p>Extends {@link HttpPipelineSyncPolicy} rather than implementing {@link HttpPipelinePolicy}
+     * directly. That base class implements both the synchronous and the asynchronous entry points
+     * in terms of a single hook, so the rewrite happens on whichever path the caller used. A policy
+     * that supplies only {@code process} inherits the interface default for {@code processSync},
+     * which wraps the call in a {@code Mono} and blocks on it - an allocation and a subscription on
+     * every synchronous request, to substitute a string in a URL.</p>
+     *
+     * <p>No thread pool is exhausted by that: {@code HttpPipelineNextPolicy.process} recognises
+     * that it was entered from the synchronous default and returns to the synchronous chain, on
+     * the caller's own thread. The exception is a caller that invokes the synchronous client from
+     * a non-blocking thread, where that check inverts - azure-core then logs "The pipeline
+     * switched from synchronous to asynchronous" and the request completes asynchronously.</p>
+     *
+     * <p>The difference is invisible to the test suite. It is a cost rather than a behaviour, so
+     * no assertion here distinguishes the two forms.</p>
+     */
+    private static final class ApiVersionPolicy extends HttpPipelineSyncPolicy {
+        private final String apiVersion;
+        private final ClientLogger logger;
+
+        ApiVersionPolicy(String apiVersion, ClientLogger logger) {
+            this.apiVersion = apiVersion;
+            this.logger = logger;
+        }
+
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            if (urlBuilder.getQuery().containsKey(API_VERSION_QUERY_PARAM)) {
+                urlBuilder.setQueryParameter(API_VERSION_QUERY_PARAM, apiVersion);
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.toUrl());
+                } catch (MalformedURLException ex) {
+                    throw logger.logExceptionAsError(new IllegalStateException("Failed to set api-version.", ex));
+                }
+            }
+        }
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
@@ -395,10 +477,11 @@ public final class CommunicationIdentityClientBuilder implements
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient, HttpPipelinePolicy authorizationPolicy,
-        List<HttpPipelinePolicy> customPolicies) {
+        List<HttpPipelinePolicy> customPolicies, String apiVersion) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         applyRequiredPolicies(policies, authorizationPolicy);
+        policies.add(createApiVersionPolicy(apiVersion));
 
         if (customPolicies != null && customPolicies.size() > 0) {
             policies.addAll(customPolicies);

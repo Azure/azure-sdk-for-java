@@ -41,8 +41,7 @@ final class CommunicationIdentityClientUtils {
         final List<CommunicationTokenScope> scopesInput
             = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-        CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
-        tokenRequest.setScopes(scopesInput);
+        CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest(scopesInput);
 
         if (tokenExpiresIn != null) {
             int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresIn, logger);

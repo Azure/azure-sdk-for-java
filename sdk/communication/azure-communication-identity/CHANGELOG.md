@@ -1,8 +1,11 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 2.0.0 (Unreleased)
 
 ### Features Added
+
+- Added support for service version `2026-09-23`, which is now the default. Select it explicitly
+  with `CommunicationIdentityServiceVersion.V2026_09_23`.
 
 ### Breaking Changes
 

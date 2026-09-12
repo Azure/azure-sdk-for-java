@@ -4,8 +4,7 @@
 package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
+import com.azure.communication.identity.implementation.IdentityClientImpl;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
@@ -17,8 +16,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -50,11 +52,61 @@ import java.util.Objects;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
-    private final CommunicationIdentitiesImpl client;
+    private final IdentityOperationsClient client;
+    private final TeamsUserOperationsClient teamsUserClient;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
-    CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
-        client = communicationIdentityClient.getCommunicationIdentities();
+    CommunicationIdentityClient(IdentityClientImpl identityClient) {
+        client = new IdentityOperationsClient(identityClient.getIdentityOperations());
+        teamsUserClient = new TeamsUserOperationsClient(identityClient.getTeamsUserOperations());
+    }
+
+    /**
+     * Builds the {@link RequestOptions} the generated protocol methods take, carrying over the
+     * caller-supplied {@link Context}.
+     */
+    private static RequestOptions toRequestOptions(Context context) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            requestOptions.setContext(context);
+        }
+        return requestOptions;
+    }
+
+    /**
+     * Builds {@link RequestOptions} for the operations that return no content.
+     *
+     * <p>The generated protocol methods for {@code delete} and {@code revokeAccessTokens} declare no
+     * Accept header, because those operations respond 204 with no body, so azure-core falls back to
+     * the wildcard. The AutoRest-generated client this replaces sent {@code application/json} on
+     * every operation regardless of response shape. Setting it here keeps the bytes on the wire
+     * unchanged for existing callers.</p>
+     */
+    private static RequestOptions noContentRequestOptions(Context context) {
+        return toRequestOptions(context).setHeader(HttpHeaderName.ACCEPT, "application/json");
+    }
+
+    /**
+     * Deserializes the {@link BinaryData} body returned by a generated protocol method, preserving the
+     * status code and headers of the original response.
+     */
+    private static <T> Response<T> mapResponse(Response<BinaryData> response, Class<T> type) {
+        if (response == null) {
+            return null;
+        }
+        BinaryData value = response.getValue();
+        return new SimpleResponse<>(response, value == null ? null : value.toObject(type));
+    }
+
+    /**
+     * Calls the generated create protocol method. The request body is carried on {@link RequestOptions}
+     * because the generated signature takes no body parameter.
+     */
+    private Response<CommunicationIdentityAccessTokenResult>
+        createWithResponseInternal(CommunicationIdentityCreateRequest body, Context context) {
+        RequestOptions requestOptions = toRequestOptions(context);
+        requestOptions.setBody(BinaryData.fromObject(body));
+        return mapResponse(client.createWithResponse(requestOptions), CommunicationIdentityAccessTokenResult.class);
     }
 
     /**
@@ -78,7 +130,7 @@ public final class CommunicationIdentityClient {
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         Response<CommunicationIdentityAccessTokenResult> response
-            = client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
+            = createWithResponseInternal(new CommunicationIdentityCreateRequest(), context);
 
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(
@@ -139,7 +191,7 @@ public final class CommunicationIdentityClient {
             = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
         Response<CommunicationIdentityAccessTokenResult> response
-            = client.createWithResponse(communicationIdentityCreateRequest, context);
+            = createWithResponseInternal(communicationIdentityCreateRequest, context);
 
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(
@@ -171,7 +223,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteUser(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        client.delete(communicationUser.getId());
+        client.deleteWithResponse(communicationUser.getId(), noContentRequestOptions(null));
     }
 
     /**
@@ -186,7 +238,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.deleteWithResponse(communicationUser.getId(), context);
+        return client.deleteWithResponse(communicationUser.getId(), noContentRequestOptions(context));
     }
 
     /**
@@ -197,7 +249,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeTokens(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        client.revokeAccessTokens(communicationUser.getId());
+        client.revokeAccessTokensWithResponse(communicationUser.getId(), noContentRequestOptions(null));
     }
 
     /**
@@ -212,7 +264,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.revokeAccessTokensWithResponse(communicationUser.getId(), context);
+        return client.revokeAccessTokensWithResponse(communicationUser.getId(), noContentRequestOptions(context));
     }
 
     /**
@@ -273,8 +325,10 @@ public final class CommunicationIdentityClient {
         CommunicationIdentityAccessTokenRequest tokenRequest = CommunicationIdentityClientUtils
             .createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
-        Response<CommunicationIdentityAccessToken> response
-            = client.issueAccessTokenWithResponse(communicationUser.getId(), tokenRequest, context);
+        Response<CommunicationIdentityAccessToken> response = mapResponse(
+            client.issueAccessTokenWithResponse(communicationUser.getId(), BinaryData.fromObject(tokenRequest),
+                toRequestOptions(context)),
+            CommunicationIdentityAccessToken.class);
 
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(
@@ -318,7 +372,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
-        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(options);
+        CommunicationIdentityAccessToken rawToken = teamsUserClient.exchangeTeamsUserAccessToken(options);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
@@ -335,7 +389,8 @@ public final class CommunicationIdentityClient {
         Context context) {
         context = context == null ? Context.NONE : context;
         Response<CommunicationIdentityAccessToken> response
-            = client.exchangeTeamsUserAccessTokenWithResponse(options, context);
+            = mapResponse(teamsUserClient.exchangeTeamsUserAccessTokenWithResponse(BinaryData.fromObject(options),
+                toRequestOptions(context)), CommunicationIdentityAccessToken.class);
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Service failed to return a response or expected value."));

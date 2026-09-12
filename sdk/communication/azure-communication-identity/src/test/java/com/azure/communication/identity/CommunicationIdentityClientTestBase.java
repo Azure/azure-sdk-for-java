@@ -41,6 +41,26 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
     private static final String REDACTED = "REDACTED";
     private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
+
+    /*
+     * The existing recordings were captured against api-version 2023-10-01, which was the latest
+     * version this library supported before it moved to TypeSpec generation. Requests now carry
+     * 2026-09-23, so playback would fail to match on the request URI alone.
+     *
+     * Sanitizers are applied to both the recording and the incoming request, so rewriting the
+     * recorded value to the current one lets the two sides meet. Only this exact pair is affected:
+     * any other api-version still fails to match, so a regression that sent, say, 2022-10-01 would
+     * still be caught. The narrower gap - 2023-10-01 being accepted where 2026-09-23 is expected -
+     * is covered by CommunicationIdentityApiVersionTests, which asserts the exact api-version
+     * placed on the wire for every value of CommunicationIdentityServiceVersion, on both the
+     * synchronous and the asynchronous path.
+     *
+     * This is deliberately written in the old-to-new direction so that it retires itself: once the
+     * recordings are captured against 2026-09-23, the pattern matches nothing and this can be
+     * deleted.
+     */
+    private static final String RECORDED_API_VERSION = "api-version=2023-10-01";
+    private static final String CURRENT_API_VERSION = "api-version=2026-09-23";
     protected static final String SYNC_TEST_SUFFIX = "Sync";
     protected static final List<CommunicationTokenScope> SCOPES = Arrays.asList(CHAT, VOIP);
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -125,6 +145,8 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("$..userId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(
             new TestProxySanitizer(URI_IDENTITY_REPLACER_REGEX, "/identities/" + REDACTED, TestProxySanitizerType.URL));
+        customSanitizers
+            .add(new TestProxySanitizer(RECORDED_API_VERSION, CURRENT_API_VERSION, TestProxySanitizerType.URL));
         interceptorManager.addSanitizers(customSanitizers);
 
         if (interceptorManager.isPlaybackMode()) {
