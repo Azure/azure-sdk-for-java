@@ -1,5 +1,7 @@
 # Azure Template client library for Java
 
+<!-- This README is the source template for Azure SDK for Java client libraries. -->
+
 Use the guidelines in each section of this template to ensure consistency and readability of your README. 
 The README resides in your package's GitHub repository at the root of its directory within the repo. 
 It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on learn.microsoft.com. 
@@ -153,5 +155,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-
 
