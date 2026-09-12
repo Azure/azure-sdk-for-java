@@ -24,7 +24,7 @@ public final class InventoriesListBySolutionConfigurationMockTests {
     @Test
     public void testListBySolutionConfiguration() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"racstwity\",\"azureResourceId\":\"evxccedcp\",\"status\":\"Completed\",\"statusDetails\":\"odn\",\"provisioningState\":\"Failed\"},\"id\":\"tjc\",\"name\":\"nhltiugcxn\",\"type\":\"vvwxqi\"}]}";
+            = "{\"value\":[{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"xnbkfezzxscyhwzd\",\"azureResourceId\":\"rujbzbomvzzbtdc\",\"status\":\"Completed\",\"statusDetails\":\"iyujviylwdshfs\",\"provisioningState\":\"Canceled\"},\"id\":\"gy\",\"name\":\"frymsgaojfmwnc\",\"type\":\"tmr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class InventoriesListBySolutionConfigurationMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<InventoryResource> response
-            = manager.inventories().listBySolutionConfiguration("dl", "h", com.azure.core.util.Context.NONE);
+        PagedIterable<InventoryResource> response = manager.inventories()
+            .listBySolutionConfiguration("pjbi", "gjmfxumvfcl", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(CloudNativeType.EC2, response.iterator().next().properties().cloudNativeType());
-        Assertions.assertEquals("racstwity", response.iterator().next().properties().cloudNativeResourceId());
-        Assertions.assertEquals("evxccedcp", response.iterator().next().properties().azureResourceId());
+        Assertions.assertEquals("xnbkfezzxscyhwzd", response.iterator().next().properties().cloudNativeResourceId());
+        Assertions.assertEquals("rujbzbomvzzbtdc", response.iterator().next().properties().azureResourceId());
         Assertions.assertEquals(SolutionConfigurationStatus.COMPLETED,
             response.iterator().next().properties().status());
-        Assertions.assertEquals("odn", response.iterator().next().properties().statusDetails());
+        Assertions.assertEquals("iyujviylwdshfs", response.iterator().next().properties().statusDetails());
     }
 }

@@ -6,6 +6,8 @@ package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpCloudProfileUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpOrganizationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -13,17 +15,28 @@ import org.junit.jupiter.api.Assertions;
 public final class PublicCloudConnectorPropertiesUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PublicCloudConnectorPropertiesUpdate model
-            = BinaryData.fromString("{\"awsCloudProfile\":{\"excludedAccounts\":[\"fjpgddtocjjxhvp\"]}}")
-                .toObject(PublicCloudConnectorPropertiesUpdate.class);
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.awsCloudProfile().excludedAccounts().get(0));
+        PublicCloudConnectorPropertiesUpdate model = BinaryData.fromString(
+            "{\"awsCloudProfile\":{\"excludedAccounts\":[\"yqjpkcatt\"]},\"gcpCloudProfile\":{\"organizationProperties\":{\"excludedProjectNumbers\":[\"rcczsqpjhvmd\"],\"excludedFolderIds\":[\"nysounqe\"]}}}")
+            .toObject(PublicCloudConnectorPropertiesUpdate.class);
+        Assertions.assertEquals("yqjpkcatt", model.awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("rcczsqpjhvmd",
+            model.gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("nysounqe",
+            model.gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicCloudConnectorPropertiesUpdate model = new PublicCloudConnectorPropertiesUpdate()
-            .withAwsCloudProfile(new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("fjpgddtocjjxhvp")));
+            .withAwsCloudProfile(new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("yqjpkcatt")))
+            .withGcpCloudProfile(new GcpCloudProfileUpdate().withOrganizationProperties(
+                new GcpOrganizationPropertiesUpdate().withExcludedProjectNumbers(Arrays.asList("rcczsqpjhvmd"))
+                    .withExcludedFolderIds(Arrays.asList("nysounqe"))));
         model = BinaryData.fromObject(model).toObject(PublicCloudConnectorPropertiesUpdate.class);
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("yqjpkcatt", model.awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("rcczsqpjhvmd",
+            model.gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("nysounqe",
+            model.gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
     }
 }

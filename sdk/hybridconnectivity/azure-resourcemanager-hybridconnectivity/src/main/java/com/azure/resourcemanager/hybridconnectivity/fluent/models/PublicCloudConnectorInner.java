@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -23,6 +24,11 @@ public final class PublicCloudConnectorInner extends Resource {
      * The resource-specific properties for this resource.
      */
     private PublicCloudConnectorProperties properties;
+
+    /*
+     * The kind of the public cloud connector.
+     */
+    private HostType kind;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -68,6 +74,15 @@ public final class PublicCloudConnectorInner extends Resource {
     public PublicCloudConnectorInner withProperties(PublicCloudConnectorProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the kind property: The kind of the public cloud connector.
+     * 
+     * @return the kind value.
+     */
+    public HostType kind() {
+        return this.kind;
     }
 
     /**
@@ -168,6 +183,8 @@ public final class PublicCloudConnectorInner extends Resource {
                     deserializedPublicCloudConnectorInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedPublicCloudConnectorInner.properties = PublicCloudConnectorProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedPublicCloudConnectorInner.kind = HostType.fromString(reader.getString());
                 } else if ("systemData".equals(fieldName)) {
                     deserializedPublicCloudConnectorInner.systemData = SystemData.fromJson(reader);
                 } else {
