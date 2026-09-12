@@ -13,11 +13,11 @@ public final class ResourceDetailsObjectListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceDetailsObjectListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"status\":\"PendingReturn\",\"image\":\"uwiqzb\",\"imageVersion\":\"j\"},\"id\":\"ovm\",\"name\":\"okacspk\",\"type\":\"lhzdobp\"},{\"properties\":{\"status\":\"Allocated\",\"image\":\"flbvvnchrkcciwwz\",\"imageVersion\":\"uqkhrsajiwku\"},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"},{\"properties\":{\"status\":\"Returned\",\"image\":\"byao\",\"imageVersion\":\"v\"},\"id\":\"csonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"},{\"properties\":{\"status\":\"Returned\",\"image\":\"hfmvfaxkffe\",\"imageVersion\":\"ithlvmezyvshxm\"},\"id\":\"bbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}],\"nextLink\":\"uknvudwti\"}")
+            "{\"value\":[{\"properties\":{\"status\":\"Reimaging\",\"image\":\"nysounqe\",\"imageVersion\":\"a\"},\"id\":\"ae\",\"name\":\"pfhyhl\",\"type\":\"rpmopjmc\"},{\"properties\":{\"status\":\"Ready\",\"image\":\"u\",\"imageVersion\":\"kthfui\"},\"id\":\"odsfcpkvxodpuozm\",\"name\":\"zydagfuaxbezyiuo\",\"type\":\"ktwh\"},{\"properties\":{\"status\":\"PendingReimage\",\"image\":\"wz\",\"imageVersion\":\"wqsmbsur\"},\"id\":\"imoryocfsfksym\",\"name\":\"dystkiiuxhqyud\",\"type\":\"o\"}],\"nextLink\":\"qn\"}")
             .toObject(ResourceDetailsObjectListResult.class);
-        Assertions.assertEquals(ResourceStatus.PENDING_RETURN, model.value().get(0).properties().status());
-        Assertions.assertEquals("uwiqzb", model.value().get(0).properties().image());
-        Assertions.assertEquals("j", model.value().get(0).properties().imageVersion());
-        Assertions.assertEquals("uknvudwti", model.nextLink());
+        Assertions.assertEquals(ResourceStatus.REIMAGING, model.value().get(0).properties().status());
+        Assertions.assertEquals("nysounqe", model.value().get(0).properties().image());
+        Assertions.assertEquals("a", model.value().get(0).properties().imageVersion());
+        Assertions.assertEquals("qn", model.nextLink());
     }
 }

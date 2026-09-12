@@ -22,6 +22,16 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     private String kind = "AzureDevOps";
 
     /*
+     * An extra description to add to the Azure DevOps pool.
+     */
+    private String description;
+
+    /*
+     * Determines whether the service updates the Azure DevOps pool description.
+     */
+    private Boolean updateDescription;
+
+    /*
      * The list of Azure DevOps organizations the pool should be present in.
      */
     private List<Organization> organizations;
@@ -30,6 +40,11 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * The type of permission which determines which accounts are admins on the Azure DevOps pool.
      */
     private AzureDevOpsPermissionProfile permissionProfile;
+
+    /*
+     * An alias to reference the Azure DevOps pool name.
+     */
+    private String alias;
 
     /**
      * Creates an instance of AzureDevOpsOrganizationProfile class.
@@ -45,6 +60,46 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     @Override
     public String kind() {
         return this.kind;
+    }
+
+    /**
+     * Get the description property: An extra description to add to the Azure DevOps pool.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: An extra description to add to the Azure DevOps pool.
+     * 
+     * @param description the description value to set.
+     * @return the AzureDevOpsOrganizationProfile object itself.
+     */
+    public AzureDevOpsOrganizationProfile withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the updateDescription property: Determines whether the service updates the Azure DevOps pool description.
+     * 
+     * @return the updateDescription value.
+     */
+    public Boolean updateDescription() {
+        return this.updateDescription;
+    }
+
+    /**
+     * Set the updateDescription property: Determines whether the service updates the Azure DevOps pool description.
+     * 
+     * @param updateDescription the updateDescription value to set.
+     * @return the AzureDevOpsOrganizationProfile object itself.
+     */
+    public AzureDevOpsOrganizationProfile withUpdateDescription(Boolean updateDescription) {
+        this.updateDescription = updateDescription;
+        return this;
     }
 
     /**
@@ -90,6 +145,26 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     }
 
     /**
+     * Get the alias property: An alias to reference the Azure DevOps pool name.
+     * 
+     * @return the alias value.
+     */
+    public String alias() {
+        return this.alias;
+    }
+
+    /**
+     * Set the alias property: An alias to reference the Azure DevOps pool name.
+     * 
+     * @param alias the alias value to set.
+     * @return the AzureDevOpsOrganizationProfile object itself.
+     */
+    public AzureDevOpsOrganizationProfile withAlias(String alias) {
+        this.alias = alias;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -97,7 +172,10 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("organizations", this.organizations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("updateDescription", this.updateDescription);
         jsonWriter.writeJsonField("permissionProfile", this.permissionProfile);
+        jsonWriter.writeStringField("alias", this.alias);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,9 +201,16 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
                     deserializedAzureDevOpsOrganizationProfile.organizations = organizations;
                 } else if ("kind".equals(fieldName)) {
                     deserializedAzureDevOpsOrganizationProfile.kind = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureDevOpsOrganizationProfile.description = reader.getString();
+                } else if ("updateDescription".equals(fieldName)) {
+                    deserializedAzureDevOpsOrganizationProfile.updateDescription
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("permissionProfile".equals(fieldName)) {
                     deserializedAzureDevOpsOrganizationProfile.permissionProfile
                         = AzureDevOpsPermissionProfile.fromJson(reader);
+                } else if ("alias".equals(fieldName)) {
+                    deserializedAzureDevOpsOrganizationProfile.alias = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

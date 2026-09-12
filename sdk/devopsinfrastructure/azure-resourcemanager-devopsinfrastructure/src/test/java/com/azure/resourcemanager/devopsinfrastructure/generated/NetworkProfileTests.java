@@ -11,14 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkProfile model = BinaryData.fromString("{\"subnetId\":\"fthwxmnteiwa\"}").toObject(NetworkProfile.class);
-        Assertions.assertEquals("fthwxmnteiwa", model.subnetId());
+        NetworkProfile model = BinaryData.fromString(
+            "{\"subnetId\":\"oqvuhr\",\"staticIpAddressCount\":115248697,\"ipAddresses\":[\"yd\",\"glmjth\",\"qkwpyeicxmqc\",\"wqvhkhixuigdt\"]}")
+            .toObject(NetworkProfile.class);
+        Assertions.assertEquals("oqvuhr", model.subnetId());
+        Assertions.assertEquals(115248697, model.staticIpAddressCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfile model = new NetworkProfile().withSubnetId("fthwxmnteiwa");
+        NetworkProfile model = new NetworkProfile().withSubnetId("oqvuhr").withStaticIpAddressCount(115248697);
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals("fthwxmnteiwa", model.subnetId());
+        Assertions.assertEquals("oqvuhr", model.subnetId());
+        Assertions.assertEquals(115248697, model.staticIpAddressCount());
     }
 }

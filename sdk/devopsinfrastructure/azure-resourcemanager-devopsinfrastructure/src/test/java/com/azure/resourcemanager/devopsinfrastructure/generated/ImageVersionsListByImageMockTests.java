@@ -22,7 +22,7 @@ public final class ImageVersionsListByImageMockTests {
     @Test
     public void testListByImage() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"fzxiavrmb\"},\"id\":\"nokixrjqcirgz\",\"name\":\"frl\",\"type\":\"zszrnwoiindfpw\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"hxicslfaoqz\"},\"id\":\"yylhalnswhccsp\",\"name\":\"kaivwit\",\"type\":\"scywuggwoluhc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class ImageVersionsListByImageMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ImageVersion> response
-            = manager.imageVersions().listByImage("yowqkdwytisibir", "gpikpzimejza", com.azure.core.util.Context.NONE);
+            = manager.imageVersions().listByImage("bhdmsmlmzqhof", "rmaequ", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fzxiavrmb", response.iterator().next().properties().version());
+        Assertions.assertEquals("hxicslfaoqz", response.iterator().next().properties().version());
     }
 }

@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceDetailsObjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceDetailsObjectProperties model = BinaryData
-            .fromString("{\"status\":\"Leased\",\"image\":\"zcdrqjsdpydnfyhx\",\"imageVersion\":\"eoejzic\"}")
-            .toObject(ResourceDetailsObjectProperties.class);
+        ResourceDetailsObjectProperties model
+            = BinaryData.fromString("{\"status\":\"Leased\",\"image\":\"iqzbq\",\"imageVersion\":\"vsovmyokac\"}")
+                .toObject(ResourceDetailsObjectProperties.class);
         Assertions.assertEquals(ResourceStatus.LEASED, model.status());
-        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.image());
-        Assertions.assertEquals("eoejzic", model.imageVersion());
+        Assertions.assertEquals("iqzbq", model.image());
+        Assertions.assertEquals("vsovmyokac", model.imageVersion());
     }
 }

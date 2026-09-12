@@ -46,6 +46,11 @@ public final class PoolUpdateProperties implements JsonSerializable<PoolUpdatePr
      */
     private String devCenterProjectResourceId;
 
+    /*
+     * The runtime configuration of the pool.
+     */
+    private RuntimeConfiguration runtimeConfiguration;
+
     /**
      * Creates an instance of PoolUpdateProperties class.
      */
@@ -173,6 +178,26 @@ public final class PoolUpdateProperties implements JsonSerializable<PoolUpdatePr
     }
 
     /**
+     * Get the runtimeConfiguration property: The runtime configuration of the pool.
+     * 
+     * @return the runtimeConfiguration value.
+     */
+    public RuntimeConfiguration runtimeConfiguration() {
+        return this.runtimeConfiguration;
+    }
+
+    /**
+     * Set the runtimeConfiguration property: The runtime configuration of the pool.
+     * 
+     * @param runtimeConfiguration the runtimeConfiguration value to set.
+     * @return the PoolUpdateProperties object itself.
+     */
+    public PoolUpdateProperties withRuntimeConfiguration(RuntimeConfiguration runtimeConfiguration) {
+        this.runtimeConfiguration = runtimeConfiguration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -185,6 +210,7 @@ public final class PoolUpdateProperties implements JsonSerializable<PoolUpdatePr
         jsonWriter.writeJsonField("agentProfile", this.agentProfile);
         jsonWriter.writeJsonField("fabricProfile", this.fabricProfile);
         jsonWriter.writeStringField("devCenterProjectResourceId", this.devCenterProjectResourceId);
+        jsonWriter.writeJsonField("runtimeConfiguration", this.runtimeConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -216,6 +242,8 @@ public final class PoolUpdateProperties implements JsonSerializable<PoolUpdatePr
                     deserializedPoolUpdateProperties.fabricProfile = FabricProfile.fromJson(reader);
                 } else if ("devCenterProjectResourceId".equals(fieldName)) {
                     deserializedPoolUpdateProperties.devCenterProjectResourceId = reader.getString();
+                } else if ("runtimeConfiguration".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.runtimeConfiguration = RuntimeConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

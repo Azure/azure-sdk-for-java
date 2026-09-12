@@ -14,6 +14,7 @@ import com.azure.resourcemanager.devopsinfrastructure.fluent.models.CheckNameAva
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
 import com.azure.resourcemanager.devopsinfrastructure.models.CheckNameAvailability;
 import com.azure.resourcemanager.devopsinfrastructure.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.devopsinfrastructure.models.DeleteResourcesDetails;
 import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
 import com.azure.resourcemanager.devopsinfrastructure.models.Pools;
 
@@ -89,6 +90,15 @@ public final class PoolsImpl implements Pools {
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteResourcesWithResponse(String resourceGroupName, String poolName,
+        DeleteResourcesDetails body, Context context) {
+        return this.serviceClient().deleteResourcesWithResponse(resourceGroupName, poolName, body, context);
+    }
+
+    public void deleteResources(String resourceGroupName, String poolName, DeleteResourcesDetails body) {
+        this.serviceClient().deleteResources(resourceGroupName, poolName, body);
     }
 
     public Pool getById(String id) {

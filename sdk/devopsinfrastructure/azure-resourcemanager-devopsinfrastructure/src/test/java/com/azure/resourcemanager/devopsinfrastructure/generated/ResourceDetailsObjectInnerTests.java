@@ -13,10 +13,10 @@ public final class ResourceDetailsObjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceDetailsObjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"status\":\"NotReady\",\"image\":\"ldngkpoci\",\"imageVersion\":\"azyxoegukg\"},\"id\":\"piu\",\"name\":\"gygev\",\"type\":\"zntypmrb\"}")
+            "{\"properties\":{\"status\":\"Reimaging\",\"image\":\"czvyifq\",\"imageVersion\":\"vkd\"},\"id\":\"sllr\",\"name\":\"vvdfwatkpnpul\",\"type\":\"xxbczwtr\"}")
             .toObject(ResourceDetailsObjectInner.class);
-        Assertions.assertEquals(ResourceStatus.NOT_READY, model.properties().status());
-        Assertions.assertEquals("ldngkpoci", model.properties().image());
-        Assertions.assertEquals("azyxoegukg", model.properties().imageVersion());
+        Assertions.assertEquals(ResourceStatus.REIMAGING, model.properties().status());
+        Assertions.assertEquals("czvyifq", model.properties().image());
+        Assertions.assertEquals("vkd", model.properties().imageVersion());
     }
 }

@@ -12,8 +12,8 @@ public final class ImageVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"sytgadgvraea\"},\"id\":\"e\",\"name\":\"nzar\",\"type\":\"wlquuijfqkace\"}")
+            "{\"properties\":{\"version\":\"uicpd\"},\"id\":\"kzzlvmbmpaxmodf\",\"name\":\"uefywsbpfvmwy\",\"type\":\"rfouyftaakcpw\"}")
             .toObject(ImageVersionInner.class);
-        Assertions.assertEquals("sytgadgvraea", model.properties().version());
+        Assertions.assertEquals("uicpd", model.properties().version());
     }
 }

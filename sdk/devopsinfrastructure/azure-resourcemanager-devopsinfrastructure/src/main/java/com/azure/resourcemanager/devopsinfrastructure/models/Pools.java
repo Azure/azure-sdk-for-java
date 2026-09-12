@@ -128,6 +128,33 @@ public interface Pools {
     CheckNameAvailabilityResult checkNameAvailability(CheckNameAvailability body);
 
     /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteResourcesWithResponse(String resourceGroupName, String poolName, DeleteResourcesDetails body,
+        Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteResources(String resourceGroupName, String poolName, DeleteResourcesDetails body);
+
+    /**
      * Get a Pool.
      * 
      * @param id the resource ID.

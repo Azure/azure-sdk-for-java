@@ -6,19 +6,32 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devopsinfrastructure.models.DevOpsAzureSku;
+import com.azure.resourcemanager.devopsinfrastructure.models.VmSize;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DevOpsAzureSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DevOpsAzureSku model = BinaryData.fromString("{\"name\":\"qedqytbciqfoufl\"}").toObject(DevOpsAzureSku.class);
-        Assertions.assertEquals("qedqytbciqfoufl", model.name());
+        DevOpsAzureSku model = BinaryData.fromString(
+            "{\"name\":\"xsqwpgrjbznorc\",\"windowsNvmeDrive\":\"vsnb\",\"linuxNvmePath\":\"qabnmoc\",\"vmSizes\":[{\"name\":\"hurzafblj\"}]}")
+            .toObject(DevOpsAzureSku.class);
+        Assertions.assertEquals("xsqwpgrjbznorc", model.name());
+        Assertions.assertEquals("vsnb", model.windowsNvmeDrive());
+        Assertions.assertEquals("qabnmoc", model.linuxNvmePath());
+        Assertions.assertEquals("hurzafblj", model.vmSizes().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DevOpsAzureSku model = new DevOpsAzureSku().withName("qedqytbciqfoufl");
+        DevOpsAzureSku model = new DevOpsAzureSku().withName("xsqwpgrjbznorc")
+            .withWindowsNvmeDrive("vsnb")
+            .withLinuxNvmePath("qabnmoc")
+            .withVmSizes(Arrays.asList(new VmSize().withName("hurzafblj")));
         model = BinaryData.fromObject(model).toObject(DevOpsAzureSku.class);
-        Assertions.assertEquals("qedqytbciqfoufl", model.name());
+        Assertions.assertEquals("xsqwpgrjbznorc", model.name());
+        Assertions.assertEquals("vsnb", model.windowsNvmeDrive());
+        Assertions.assertEquals("qabnmoc", model.linuxNvmePath());
+        Assertions.assertEquals("hurzafblj", model.vmSizes().get(0).name());
     }
 }

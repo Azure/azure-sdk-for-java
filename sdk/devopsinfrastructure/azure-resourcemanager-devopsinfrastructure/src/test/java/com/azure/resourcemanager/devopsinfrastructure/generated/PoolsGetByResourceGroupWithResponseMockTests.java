@@ -23,7 +23,7 @@ public final class PoolsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1896138936,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ked\"},\"identity\":{\"principalId\":\"rwyhqmibzyhwitsm\",\"tenantId\":\"yynpcdpumnzgmwz\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"lwwrl\":{\"principalId\":\"knso\",\"clientId\":\"jhxbld\"},\"y\":{\"principalId\":\"m\",\"clientId\":\"cvokotllxdyhg\"},\"amqgxqquezikyw\":{\"principalId\":\"ogjltdtbnnhad\",\"clientId\":\"crkvcikhnv\"},\"cjzkzivgvvcna\":{\"principalId\":\"xkalla\",\"clientId\":\"elwuipi\"}}},\"location\":\"hyrnxxmu\",\"tags\":{\"tchealmf\":\"ndrdvstkwq\",\"iohgwxrtfud\":\"tdaaygdvwvg\",\"mnpkukghimdblxg\":\"epxgyqagvr\",\"mszkkfo\":\"imfnjhfjx\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"maximumConcurrency\":41792863,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ciqibrhosx\",\"runtimeConfiguration\":{\"workFolder\":\"rhzo\"}},\"identity\":{\"principalId\":\"bmrqyibahwfl\",\"tenantId\":\"zdtmhrkwofy\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wbwo\":{\"principalId\":\"cpi\",\"clientId\":\"pbtg\"},\"okulpiujwa\":{\"principalId\":\"washr\",\"clientId\":\"tkcnqxwb\"}}},\"location\":\"ipqiiobyuqerpq\",\"tags\":{\"auvfbtkuwhhmhyk\":\"wcciuqgbdbu\",\"hkoymkcdyhbp\":\"joxafnndlpi\"},\"id\":\"kpw\",\"name\":\"reqnovvqfov\",\"type\":\"jxywsuws\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class PoolsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Pool response = manager.pools()
-            .getByResourceGroupWithResponse("rpzbchckqqzqi", "xiy", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("apvhelxprgly", "tddckcb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hyrnxxmu", response.location());
-        Assertions.assertEquals("ndrdvstkwq", response.tags().get("tchealmf"));
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(1896138936, response.properties().maximumConcurrency());
-        Assertions.assertEquals("ked", response.properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ipqiiobyuqerpq", response.location());
+        Assertions.assertEquals("wcciuqgbdbu", response.tags().get("auvfbtkuwhhmhyk"));
+        Assertions.assertEquals(ProvisioningState.UPDATING, response.properties().provisioningState());
+        Assertions.assertEquals(41792863, response.properties().maximumConcurrency());
+        Assertions.assertEquals("ciqibrhosx", response.properties().devCenterProjectResourceId());
+        Assertions.assertEquals("rhzo", response.properties().runtimeConfiguration().workFolder());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 }

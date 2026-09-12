@@ -13,24 +13,27 @@ public final class OrganizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Organization model = BinaryData.fromString(
-            "{\"url\":\"cciqihnhungbwjz\",\"projects\":[\"ygxgispemvtz\",\"kufubljo\",\"xqeofjaeqjhqjba\",\"v\"],\"parallelism\":171596164,\"openAccess\":true}")
+            "{\"url\":\"douskcqvkocrcjdk\",\"projects\":[\"hxbnjbiksqrg\"],\"parallelism\":595941541,\"openAccess\":true,\"alias\":\"qpjwnzlljfm\"}")
             .toObject(Organization.class);
-        Assertions.assertEquals("cciqihnhungbwjz", model.url());
-        Assertions.assertEquals("ygxgispemvtz", model.projects().get(0));
-        Assertions.assertEquals(171596164, model.parallelism());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.url());
+        Assertions.assertEquals("hxbnjbiksqrg", model.projects().get(0));
+        Assertions.assertEquals(595941541, model.parallelism());
         Assertions.assertTrue(model.openAccess());
+        Assertions.assertEquals("qpjwnzlljfm", model.alias());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Organization model = new Organization().withUrl("cciqihnhungbwjz")
-            .withProjects(Arrays.asList("ygxgispemvtz", "kufubljo", "xqeofjaeqjhqjba", "v"))
-            .withParallelism(171596164)
-            .withOpenAccess(true);
+        Organization model = new Organization().withUrl("douskcqvkocrcjdk")
+            .withProjects(Arrays.asList("hxbnjbiksqrg"))
+            .withParallelism(595941541)
+            .withOpenAccess(true)
+            .withAlias("qpjwnzlljfm");
         model = BinaryData.fromObject(model).toObject(Organization.class);
-        Assertions.assertEquals("cciqihnhungbwjz", model.url());
-        Assertions.assertEquals("ygxgispemvtz", model.projects().get(0));
-        Assertions.assertEquals(171596164, model.parallelism());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.url());
+        Assertions.assertEquals("hxbnjbiksqrg", model.projects().get(0));
+        Assertions.assertEquals(595941541, model.parallelism());
         Assertions.assertTrue(model.openAccess());
+        Assertions.assertEquals("qpjwnzlljfm", model.alias());
     }
 }
