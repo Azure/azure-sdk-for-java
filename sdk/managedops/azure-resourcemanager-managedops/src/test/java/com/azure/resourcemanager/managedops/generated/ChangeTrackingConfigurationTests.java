@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeTrackingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeTrackingConfiguration model = BinaryData.fromString("{\"logAnalyticsWorkspaceId\":\"evdphlxaol\"}")
+        ChangeTrackingConfiguration model = BinaryData.fromString("{\"logAnalyticsWorkspaceId\":\"gejspodmailzyde\"}")
             .toObject(ChangeTrackingConfiguration.class);
-        Assertions.assertEquals("evdphlxaol", model.logAnalyticsWorkspaceId());
+        Assertions.assertEquals("gejspodmailzyde", model.logAnalyticsWorkspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeTrackingConfiguration model = new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("evdphlxaol");
+        ChangeTrackingConfiguration model
+            = new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("gejspodmailzyde");
         model = BinaryData.fromObject(model).toObject(ChangeTrackingConfiguration.class);
-        Assertions.assertEquals("evdphlxaol", model.logAnalyticsWorkspaceId());
+        Assertions.assertEquals("gejspodmailzyde", model.logAnalyticsWorkspaceId());
     }
 }

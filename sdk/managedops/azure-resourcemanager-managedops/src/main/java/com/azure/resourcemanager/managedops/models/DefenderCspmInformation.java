@@ -21,6 +21,11 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
      */
     private EnablementState enablementStatus;
 
+    /*
+     * Optional error message if the service is in Failed state.
+     */
+    private ErrorDetails errorDetails;
+
     /**
      * Creates an instance of DefenderCspmInformation class.
      */
@@ -37,6 +42,15 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
     }
 
     /**
+     * Get the errorDetails property: Optional error message if the service is in Failed state.
+     * 
+     * @return the errorDetails value.
+     */
+    public ErrorDetails errorDetails() {
+        return this.errorDetails;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -44,6 +58,7 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("enablementStatus",
             this.enablementStatus == null ? null : this.enablementStatus.toString());
+        jsonWriter.writeJsonField("errorDetails", this.errorDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,6 +81,8 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
                 if ("enablementStatus".equals(fieldName)) {
                     deserializedDefenderCspmInformation.enablementStatus
                         = EnablementState.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedDefenderCspmInformation.errorDetails = ErrorDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
