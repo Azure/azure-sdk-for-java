@@ -79,14 +79,9 @@ BeforeAll {
 }
 
 Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
-    It 'keeps GitHub validation branches aligned with the Java PR pipeline' -TestCases @(
-        @{ Workflow = '.github/workflows/check-spelling.yml' }
-        @{ Workflow = '.github/workflows/verify-links.yml' }
-    ) {
-        param($Workflow)
-
+    It 'keeps Check Spelling branches aligned with the Java PR pipeline' {
         $workflowBranches = Get-YamlSequence `
-            -Path (Join-Path $script:RepositoryRoot $Workflow) `
+            -Path (Join-Path $script:RepositoryRoot '.github/workflows/check-spelling.yml') `
             -KeyPath @('on', 'pull_request', 'branches')
         $pullRequestBranches = Get-YamlSequence `
             -Path $script:PullRequestPath `

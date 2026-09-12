@@ -2,12 +2,10 @@ name: Verify Links
 
 on:
   pull_request:
-    # Keep this list aligned with eng/pipelines/pullrequest.yml.
     branches:
       - main
-      - feature/*
-      - hotfix/*
       - release/*
+      - hotfix/*
 
 permissions:
   contents: read
