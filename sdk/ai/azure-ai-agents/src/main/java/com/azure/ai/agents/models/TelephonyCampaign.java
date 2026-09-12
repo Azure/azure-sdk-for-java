@@ -27,12 +27,6 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     private final String displayName;
 
     /*
-     * The active agent telephony binding used to originate campaign calls.
-     */
-    @Generated
-    private final String telephonyBindingId;
-
-    /*
      * An optional customer-declared purpose for campaign calls.
      */
     @Generated
@@ -123,45 +117,6 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     private final long updatedAt;
 
     /**
-     * Creates an instance of TelephonyCampaign class.
-     *
-     * @param displayName the displayName value to set.
-     * @param telephonyBindingId the telephonyBindingId value to set.
-     * @param id the id value to set.
-     * @param agentName the agentName value to set.
-     * @param configurationStatus the configurationStatus value to set.
-     * @param executionStatus the executionStatus value to set.
-     * @param retryPolicy the retryPolicy value to set.
-     * @param callJobCounts the callJobCounts value to set.
-     * @param createdAt the createdAt value to set.
-     * @param updatedAt the updatedAt value to set.
-     */
-    @Generated
-    private TelephonyCampaign(String displayName, String telephonyBindingId, String id, String agentName,
-        TelephonyCampaignConfigurationStatus configurationStatus, TelephonyCampaignExecutionStatus executionStatus,
-        TelephonyOutboundRetryPolicyResponse retryPolicy, TelephonyCampaignCallJobCounts callJobCounts,
-        OffsetDateTime createdAt, OffsetDateTime updatedAt) {
-        this.displayName = displayName;
-        this.telephonyBindingId = telephonyBindingId;
-        this.id = id;
-        this.agentName = agentName;
-        this.configurationStatus = configurationStatus;
-        this.executionStatus = executionStatus;
-        this.retryPolicy = retryPolicy;
-        this.callJobCounts = callJobCounts;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        if (updatedAt == null) {
-            this.updatedAt = 0L;
-        } else {
-            this.updatedAt = updatedAt.toEpochSecond();
-        }
-    }
-
-    /**
      * Get the displayName property: A customer-visible name for the campaign.
      *
      * @return the displayName value.
@@ -169,16 +124,6 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     @Generated
     public String getDisplayName() {
         return this.displayName;
-    }
-
-    /**
-     * Get the telephonyBindingId property: The active agent telephony binding used to originate campaign calls.
-     *
-     * @return the telephonyBindingId value.
-     */
-    @Generated
-    public String getTelephonyBindingId() {
-        return this.telephonyBindingId;
     }
 
     /**
@@ -342,7 +287,8 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("display_name", this.displayName);
-        jsonWriter.writeStringField("telephony_binding_id", this.telephonyBindingId);
+        jsonWriter.writeStringField("connection_name", this.connectionName);
+        jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object);
         jsonWriter.writeStringField("agent_name", this.agentName);
@@ -376,7 +322,8 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
     public static TelephonyCampaign fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String displayName = null;
-            String telephonyBindingId = null;
+            String connectionName = null;
+            String source = null;
             String id = null;
             String agentName = null;
             TelephonyCampaignConfigurationStatus configurationStatus = null;
@@ -396,8 +343,10 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
                 reader.nextToken();
                 if ("display_name".equals(fieldName)) {
                     displayName = reader.getString();
-                } else if ("telephony_binding_id".equals(fieldName)) {
-                    telephonyBindingId = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    source = reader.getString();
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("agent_name".equals(fieldName)) {
@@ -430,8 +379,8 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
                     reader.skipChildren();
                 }
             }
-            TelephonyCampaign deserializedTelephonyCampaign = new TelephonyCampaign(displayName, telephonyBindingId, id,
-                agentName, configurationStatus, executionStatus, retryPolicy, callJobCounts, createdAt, updatedAt);
+            TelephonyCampaign deserializedTelephonyCampaign = new TelephonyCampaign(displayName, connectionName, source,
+                id, agentName, configurationStatus, executionStatus, retryPolicy, callJobCounts, createdAt, updatedAt);
             deserializedTelephonyCampaign.purpose = purpose;
             deserializedTelephonyCampaign.schedule = schedule;
             deserializedTelephonyCampaign.latestSuccessfulValidationId = latestSuccessfulValidationId;
@@ -440,5 +389,87 @@ public final class TelephonyCampaign implements JsonSerializable<TelephonyCampai
             deserializedTelephonyCampaign.publishedAt = publishedAt;
             return deserializedTelephonyCampaign;
         });
+    }
+
+    /*
+     * The Foundry connection name in the current project used to originate campaign calls. Its category selects Twilio
+     * or Azure Communication Services / Teams Phone Extension. No inbound telephony binding is required.
+     */
+    @Generated
+    private final String connectionName;
+
+    /*
+     * The caller identity used to originate campaign calls. For a Twilio connection, provide an authorized E.164 phone
+     * number. For an Azure Communication Services / Teams Phone Extension connection, provide the Teams Resource
+     * Account object ID. The identity type is inferred from the connection category; originating does not change
+     * inbound routing.
+     */
+    @Generated
+    private final String source;
+
+    /**
+     * Creates an instance of TelephonyCampaign class.
+     *
+     * @param displayName the displayName value to set.
+     * @param connectionName the connectionName value to set.
+     * @param source the source value to set.
+     * @param id the id value to set.
+     * @param agentName the agentName value to set.
+     * @param configurationStatus the configurationStatus value to set.
+     * @param executionStatus the executionStatus value to set.
+     * @param retryPolicy the retryPolicy value to set.
+     * @param callJobCounts the callJobCounts value to set.
+     * @param createdAt the createdAt value to set.
+     * @param updatedAt the updatedAt value to set.
+     */
+    @Generated
+    private TelephonyCampaign(String displayName, String connectionName, String source, String id, String agentName,
+        TelephonyCampaignConfigurationStatus configurationStatus, TelephonyCampaignExecutionStatus executionStatus,
+        TelephonyOutboundRetryPolicyResponse retryPolicy, TelephonyCampaignCallJobCounts callJobCounts,
+        OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+        this.displayName = displayName;
+        this.connectionName = connectionName;
+        this.source = source;
+        this.id = id;
+        this.agentName = agentName;
+        this.configurationStatus = configurationStatus;
+        this.executionStatus = executionStatus;
+        this.retryPolicy = retryPolicy;
+        this.callJobCounts = callJobCounts;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (updatedAt == null) {
+            this.updatedAt = 0L;
+        } else {
+            this.updatedAt = updatedAt.toEpochSecond();
+        }
+    }
+
+    /**
+     * Get the connectionName property: The Foundry connection name in the current project used to originate campaign
+     * calls. Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony
+     * binding is required.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Get the source property: The caller identity used to originate campaign calls. For a Twilio connection, provide
+     * an authorized E.164 phone number. For an Azure Communication Services / Teams Phone Extension connection, provide
+     * the Teams Resource Account object ID. The identity type is inferred from the connection category; originating
+     * does not change inbound routing.
+     *
+     * @return the source value.
+     */
+    @Generated
+    public String getSource() {
+        return this.source;
     }
 }

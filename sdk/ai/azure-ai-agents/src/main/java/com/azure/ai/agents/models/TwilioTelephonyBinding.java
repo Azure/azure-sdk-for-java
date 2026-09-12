@@ -32,15 +32,15 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
      * Creates an instance of TwilioTelephonyBinding class.
      *
      * @param id the id value to set.
-     * @param connection the connection value to set.
+     * @param connectionName the connectionName value to set.
      * @param status the status value to set.
      * @param incomingCallUrl the incomingCallUrl value to set.
      * @param phoneNumber the phoneNumber value to set.
      */
     @Generated
-    private TwilioTelephonyBinding(String id, String connection, TelephonyBindingStatus status, String incomingCallUrl,
-        String phoneNumber) {
-        super(id, connection, status, incomingCallUrl);
+    private TwilioTelephonyBinding(String id, String connectionName, TelephonyBindingStatus status,
+        String incomingCallUrl, String phoneNumber) {
+        super(id, connectionName, status, incomingCallUrl);
         this.phoneNumber = phoneNumber;
     }
 
@@ -73,7 +73,7 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("connection", getConnection());
+        jsonWriter.writeStringField("connection_name", getConnectionName());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("incoming_call_url", getIncomingCallUrl());
         jsonWriter.writeStringField("label", getLabel());
@@ -95,7 +95,7 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
     public static TwilioTelephonyBinding fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String connection = null;
+            String connectionName = null;
             TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             String label = null;
@@ -106,8 +106,8 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("connection".equals(fieldName)) {
-                    connection = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
@@ -123,7 +123,7 @@ public final class TwilioTelephonyBinding extends TelephonyBinding {
                 }
             }
             TwilioTelephonyBinding deserializedTwilioTelephonyBinding
-                = new TwilioTelephonyBinding(id, connection, status, incomingCallUrl, phoneNumber);
+                = new TwilioTelephonyBinding(id, connectionName, status, incomingCallUrl, phoneNumber);
             deserializedTwilioTelephonyBinding.setLabel(label);
             deserializedTwilioTelephonyBinding.provider = provider;
             return deserializedTwilioTelephonyBinding;

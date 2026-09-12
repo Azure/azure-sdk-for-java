@@ -24,12 +24,6 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
     private final String displayName;
 
     /*
-     * The active agent telephony binding used to originate campaign calls.
-     */
-    @Generated
-    private final String telephonyBindingId;
-
-    /*
      * An optional customer-declared purpose for campaign calls.
      */
     @Generated
@@ -48,18 +42,6 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
     private TelephonyOutboundRetryPolicy retryPolicy;
 
     /**
-     * Creates an instance of CreateTelephonyCampaignRequest class.
-     *
-     * @param displayName the displayName value to set.
-     * @param telephonyBindingId the telephonyBindingId value to set.
-     */
-    @Generated
-    public CreateTelephonyCampaignRequest(String displayName, String telephonyBindingId) {
-        this.displayName = displayName;
-        this.telephonyBindingId = telephonyBindingId;
-    }
-
-    /**
      * Get the displayName property: A customer-visible name for the campaign.
      *
      * @return the displayName value.
@@ -67,16 +49,6 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
     @Generated
     public String getDisplayName() {
         return this.displayName;
-    }
-
-    /**
-     * Get the telephonyBindingId property: The active agent telephony binding used to originate campaign calls.
-     *
-     * @return the telephonyBindingId value.
-     */
-    @Generated
-    public String getTelephonyBindingId() {
-        return this.telephonyBindingId;
     }
 
     /**
@@ -153,7 +125,8 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("display_name", this.displayName);
-        jsonWriter.writeStringField("telephony_binding_id", this.telephonyBindingId);
+        jsonWriter.writeStringField("connection_name", this.connectionName);
+        jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("purpose", this.purpose);
         jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeJsonField("retry_policy", this.retryPolicy);
@@ -173,7 +146,8 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
     public static CreateTelephonyCampaignRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String displayName = null;
-            String telephonyBindingId = null;
+            String connectionName = null;
+            String source = null;
             String purpose = null;
             TelephonyCampaignSchedule schedule = null;
             TelephonyOutboundRetryPolicy retryPolicy = null;
@@ -182,8 +156,10 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
                 reader.nextToken();
                 if ("display_name".equals(fieldName)) {
                     displayName = reader.getString();
-                } else if ("telephony_binding_id".equals(fieldName)) {
-                    telephonyBindingId = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    source = reader.getString();
                 } else if ("purpose".equals(fieldName)) {
                     purpose = reader.getString();
                 } else if ("schedule".equals(fieldName)) {
@@ -195,11 +171,66 @@ public final class CreateTelephonyCampaignRequest implements JsonSerializable<Cr
                 }
             }
             CreateTelephonyCampaignRequest deserializedCreateTelephonyCampaignRequest
-                = new CreateTelephonyCampaignRequest(displayName, telephonyBindingId);
+                = new CreateTelephonyCampaignRequest(displayName, connectionName, source);
             deserializedCreateTelephonyCampaignRequest.purpose = purpose;
             deserializedCreateTelephonyCampaignRequest.schedule = schedule;
             deserializedCreateTelephonyCampaignRequest.retryPolicy = retryPolicy;
             return deserializedCreateTelephonyCampaignRequest;
         });
+    }
+
+    /*
+     * The Foundry connection name in the current project used to originate campaign calls. Its category selects Twilio
+     * or Azure Communication Services / Teams Phone Extension. No inbound telephony binding is required.
+     */
+    @Generated
+    private final String connectionName;
+
+    /*
+     * The caller identity used to originate campaign calls. For a Twilio connection, provide an authorized E.164 phone
+     * number. For an Azure Communication Services / Teams Phone Extension connection, provide the Teams Resource
+     * Account object ID. The identity type is inferred from the connection category; originating does not change
+     * inbound routing.
+     */
+    @Generated
+    private final String source;
+
+    /**
+     * Creates an instance of CreateTelephonyCampaignRequest class.
+     *
+     * @param displayName the displayName value to set.
+     * @param connectionName the connectionName value to set.
+     * @param source the source value to set.
+     */
+    @Generated
+    public CreateTelephonyCampaignRequest(String displayName, String connectionName, String source) {
+        this.displayName = displayName;
+        this.connectionName = connectionName;
+        this.source = source;
+    }
+
+    /**
+     * Get the connectionName property: The Foundry connection name in the current project used to originate campaign
+     * calls. Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony
+     * binding is required.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Get the source property: The caller identity used to originate campaign calls. For a Twilio connection, provide
+     * an authorized E.164 phone number. For an Azure Communication Services / Teams Phone Extension connection, provide
+     * the Teams Resource Account object ID. The identity type is inferred from the connection category; originating
+     * does not change inbound routing.
+     *
+     * @return the source value.
+     */
+    @Generated
+    public String getSource() {
+        return this.source;
     }
 }

@@ -34,13 +34,6 @@ public final class UpdateTelephonyBindingRequest implements JsonSerializable<Upd
     private String label;
 
     /*
-     * The replacement Foundry connection name. This property is valid only for a Teams Phone Extension binding; a
-     * Twilio binding's connection is immutable.
-     */
-    @Generated
-    private String connection;
-
-    /*
      * The replacement Teams Phone Extension display phone number. Omit it to preserve the current value; use null to
      * clear it. This property is valid only for a Teams Phone Extension binding.
      */
@@ -135,31 +128,6 @@ public final class UpdateTelephonyBindingRequest implements JsonSerializable<Upd
     }
 
     /**
-     * Get the connection property: The replacement Foundry connection name. This property is valid only for a Teams
-     * Phone Extension binding; a Twilio binding's connection is immutable.
-     *
-     * @return the connection value.
-     */
-    @Generated
-    public String getConnection() {
-        return this.connection;
-    }
-
-    /**
-     * Set the connection property: The replacement Foundry connection name. This property is valid only for a Teams
-     * Phone Extension binding; a Twilio binding's connection is immutable.
-     *
-     * @param connection the connection value to set.
-     * @return the UpdateTelephonyBindingRequest object itself.
-     */
-    @Generated
-    public UpdateTelephonyBindingRequest setConnection(String connection) {
-        this.connection = connection;
-        this.updatedProperties.add("connection");
-        return this;
-    }
-
-    /**
      * Get the phoneNumber property: The replacement Teams Phone Extension display phone number. Omit it to preserve the
      * current value; use null to clear it. This property is valid only for a Teams Phone Extension binding.
      *
@@ -196,7 +164,7 @@ public final class UpdateTelephonyBindingRequest implements JsonSerializable<Upd
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
             jsonWriter.writeStringField("label", this.label);
-            jsonWriter.writeStringField("connection", this.connection);
+            jsonWriter.writeStringField("connection_name", this.connectionName);
             jsonWriter.writeStringField("phone_number", this.phoneNumber);
             return jsonWriter.writeEndObject();
         }
@@ -219,11 +187,11 @@ public final class UpdateTelephonyBindingRequest implements JsonSerializable<Upd
                 jsonWriter.writeStringField("label", this.label);
             }
         }
-        if (updatedProperties.contains("connection")) {
-            if (this.connection == null) {
-                jsonWriter.writeNullField("connection");
+        if (updatedProperties.contains("connectionName")) {
+            if (this.connectionName == null) {
+                jsonWriter.writeNullField("connection_name");
             } else {
-                jsonWriter.writeStringField("connection", this.connection);
+                jsonWriter.writeStringField("connection_name", this.connectionName);
             }
         }
         if (updatedProperties.contains("phoneNumber")) {
@@ -257,8 +225,8 @@ public final class UpdateTelephonyBindingRequest implements JsonSerializable<Upd
                         = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("label".equals(fieldName)) {
                     deserializedUpdateTelephonyBindingRequest.label = reader.getString();
-                } else if ("connection".equals(fieldName)) {
-                    deserializedUpdateTelephonyBindingRequest.connection = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    deserializedUpdateTelephonyBindingRequest.connectionName = reader.getString();
                 } else if ("phone_number".equals(fieldName)) {
                     deserializedUpdateTelephonyBindingRequest.phoneNumber = reader.getString();
                 } else {
@@ -267,5 +235,37 @@ public final class UpdateTelephonyBindingRequest implements JsonSerializable<Upd
             }
             return deserializedUpdateTelephonyBindingRequest;
         });
+    }
+
+    /*
+     * The replacement Foundry connection name. This property is valid only for a Teams Phone Extension binding; a
+     * Twilio binding's connection is immutable.
+     */
+    @Generated
+    private String connectionName;
+
+    /**
+     * Get the connectionName property: The replacement Foundry connection name. This property is valid only for a Teams
+     * Phone Extension binding; a Twilio binding's connection is immutable.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Set the connectionName property: The replacement Foundry connection name. This property is valid only for a Teams
+     * Phone Extension binding; a Twilio binding's connection is immutable.
+     *
+     * @param connectionName the connectionName value to set.
+     * @return the UpdateTelephonyBindingRequest object itself.
+     */
+    @Generated
+    public UpdateTelephonyBindingRequest setConnectionName(String connectionName) {
+        this.connectionName = connectionName;
+        this.updatedProperties.add("connectionName");
+        return this;
     }
 }

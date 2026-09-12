@@ -63,10 +63,11 @@ public final class TelephonyCallLifecycleEvent implements JsonSerializable<Telep
     private final TelephonyCallTimestampSource timestampSource;
 
     /*
-     * A stable service-generated reason associated with the event.
+     * A stable service-generated reason associated with this lifecycle event, not necessarily the final outcome of the
+     * call. Additional string codes may be returned.
      */
     @Generated
-    private String reason;
+    private TelephonyCallLifecycleEventReason reason;
 
     /*
      * The provider event identifier used for idempotency, when supplied.
@@ -191,12 +192,13 @@ public final class TelephonyCallLifecycleEvent implements JsonSerializable<Telep
     }
 
     /**
-     * Get the reason property: A stable service-generated reason associated with the event.
+     * Get the reason property: A stable service-generated reason associated with this lifecycle event, not necessarily
+     * the final outcome of the call. Additional string codes may be returned.
      *
      * @return the reason value.
      */
     @Generated
-    public String getReason() {
+    public TelephonyCallLifecycleEventReason getReason() {
         return this.reason;
     }
 
@@ -254,7 +256,7 @@ public final class TelephonyCallLifecycleEvent implements JsonSerializable<Telep
         jsonWriter.writeStringField("timestamp_source",
             this.timestampSource == null ? null : this.timestampSource.toString());
         jsonWriter.writeNumberField("occurred_at", this.occurredAt);
-        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
         jsonWriter.writeStringField("provider_event_id", this.providerEventId);
         jsonWriter.writeNumberField("provider_sequence", this.providerSequence);
         jsonWriter.writeNumberField("provider_status_code", this.providerStatusCode);
@@ -281,7 +283,7 @@ public final class TelephonyCallLifecycleEvent implements JsonSerializable<Telep
             OffsetDateTime observedAt = null;
             TelephonyCallTimestampSource timestampSource = null;
             Long occurredAt = null;
-            String reason = null;
+            TelephonyCallLifecycleEventReason reason = null;
             String providerEventId = null;
             Long providerSequence = null;
             Integer providerStatusCode = null;
@@ -304,7 +306,7 @@ public final class TelephonyCallLifecycleEvent implements JsonSerializable<Telep
                 } else if ("occurred_at".equals(fieldName)) {
                     occurredAt = reader.getNullable(JsonReader::getLong);
                 } else if ("reason".equals(fieldName)) {
-                    reason = reader.getString();
+                    reason = TelephonyCallLifecycleEventReason.fromString(reader.getString());
                 } else if ("provider_event_id".equals(fieldName)) {
                     providerEventId = reader.getString();
                 } else if ("provider_sequence".equals(fieldName)) {

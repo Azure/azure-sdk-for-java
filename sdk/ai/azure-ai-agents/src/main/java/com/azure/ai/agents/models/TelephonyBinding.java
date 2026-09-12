@@ -30,12 +30,6 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     private final String id;
 
     /*
-     * The Foundry connection name for the telephony provider.
-     */
-    @Generated
-    private final String connection;
-
-    /*
      * The optional display label for the binding.
      */
     @Generated
@@ -57,14 +51,15 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
      * Creates an instance of TelephonyBinding class.
      *
      * @param id the id value to set.
-     * @param connection the connection value to set.
+     * @param connectionName the connectionName value to set.
      * @param status the status value to set.
      * @param incomingCallUrl the incomingCallUrl value to set.
      */
     @Generated
-    protected TelephonyBinding(String id, String connection, TelephonyBindingStatus status, String incomingCallUrl) {
+    protected TelephonyBinding(String id, String connectionName, TelephonyBindingStatus status,
+        String incomingCallUrl) {
         this.id = id;
-        this.connection = connection;
+        this.connectionName = connectionName;
         this.status = status;
         this.incomingCallUrl = incomingCallUrl;
     }
@@ -87,16 +82,6 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the connection property: The Foundry connection name for the telephony provider.
-     *
-     * @return the connection value.
-     */
-    @Generated
-    public String getConnection() {
-        return this.connection;
     }
 
     /**
@@ -149,7 +134,7 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("connection", this.connection);
+        jsonWriter.writeStringField("connection_name", this.connectionName);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("incoming_call_url", this.incomingCallUrl);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
@@ -199,7 +184,7 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
     static TelephonyBinding fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String connection = null;
+            String connectionName = null;
             TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
             TelephonyProvider provider = null;
@@ -209,8 +194,8 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("connection".equals(fieldName)) {
-                    connection = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = TelephonyBindingStatus.fromString(reader.getString());
                 } else if ("incoming_call_url".equals(fieldName)) {
@@ -224,10 +209,26 @@ public class TelephonyBinding implements JsonSerializable<TelephonyBinding> {
                 }
             }
             TelephonyBinding deserializedTelephonyBinding
-                = new TelephonyBinding(id, connection, status, incomingCallUrl);
+                = new TelephonyBinding(id, connectionName, status, incomingCallUrl);
             deserializedTelephonyBinding.provider = provider;
             deserializedTelephonyBinding.label = label;
             return deserializedTelephonyBinding;
         });
+    }
+
+    /*
+     * The Foundry connection name for the telephony provider.
+     */
+    @Generated
+    private final String connectionName;
+
+    /**
+     * Get the connectionName property: The Foundry connection name for the telephony provider.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
     }
 }

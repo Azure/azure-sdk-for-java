@@ -24,12 +24,6 @@ public class CreateTelephonyBindingRequest implements JsonSerializable<CreateTel
     private TelephonyProvider provider = TelephonyProvider.fromString("CreateTelephonyBindingRequest");
 
     /*
-     * The Foundry connection name for the telephony provider.
-     */
-    @Generated
-    private final String connection;
-
-    /*
      * An optional display label for the binding.
      */
     @Generated
@@ -38,11 +32,11 @@ public class CreateTelephonyBindingRequest implements JsonSerializable<CreateTel
     /**
      * Creates an instance of CreateTelephonyBindingRequest class.
      *
-     * @param connection the connection value to set.
+     * @param connectionName the connectionName value to set.
      */
     @Generated
-    public CreateTelephonyBindingRequest(String connection) {
-        this.connection = connection;
+    public CreateTelephonyBindingRequest(String connectionName) {
+        this.connectionName = connectionName;
     }
 
     /**
@@ -53,16 +47,6 @@ public class CreateTelephonyBindingRequest implements JsonSerializable<CreateTel
     @Generated
     public TelephonyProvider getProvider() {
         return this.provider;
-    }
-
-    /**
-     * Get the connection property: The Foundry connection name for the telephony provider.
-     *
-     * @return the connection value.
-     */
-    @Generated
-    public String getConnection() {
-        return this.connection;
     }
 
     /**
@@ -94,7 +78,7 @@ public class CreateTelephonyBindingRequest implements JsonSerializable<CreateTel
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("connection", this.connection);
+        jsonWriter.writeStringField("connection_name", this.connectionName);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
         jsonWriter.writeStringField("label", this.label);
         return jsonWriter.writeEndObject();
@@ -141,14 +125,14 @@ public class CreateTelephonyBindingRequest implements JsonSerializable<CreateTel
     @Generated
     static CreateTelephonyBindingRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String connection = null;
+            String connectionName = null;
             TelephonyProvider provider = null;
             String label = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("connection".equals(fieldName)) {
-                    connection = reader.getString();
+                if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
                 } else if ("provider".equals(fieldName)) {
                     provider = TelephonyProvider.fromString(reader.getString());
                 } else if ("label".equals(fieldName)) {
@@ -158,10 +142,26 @@ public class CreateTelephonyBindingRequest implements JsonSerializable<CreateTel
                 }
             }
             CreateTelephonyBindingRequest deserializedCreateTelephonyBindingRequest
-                = new CreateTelephonyBindingRequest(connection);
+                = new CreateTelephonyBindingRequest(connectionName);
             deserializedCreateTelephonyBindingRequest.provider = provider;
             deserializedCreateTelephonyBindingRequest.label = label;
             return deserializedCreateTelephonyBindingRequest;
         });
+    }
+
+    /*
+     * The Foundry connection name for the telephony provider.
+     */
+    @Generated
+    private final String connectionName;
+
+    /**
+     * Get the connectionName property: The Foundry connection name for the telephony provider.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
     }
 }

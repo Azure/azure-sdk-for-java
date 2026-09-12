@@ -101,10 +101,11 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
     private Long durationMs;
 
     /*
-     * The service-generated reason that the call ended.
+     * The service-generated reason that this single call ended, rather than the outcome of an overall outbound call
+     * job. Additional string codes may be returned.
      */
     @Generated
-    private String endReason;
+    private TelephonyCallEndReason endReason;
 
     /*
      * The provider status code associated with the terminal result.
@@ -325,12 +326,13 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
     }
 
     /**
-     * Get the endReason property: The service-generated reason that the call ended.
+     * Get the endReason property: The service-generated reason that this single call ended, rather than the outcome of
+     * an overall outbound call job. Additional string codes may be returned.
      *
      * @return the endReason value.
      */
     @Generated
-    public String getEndReason() {
+    public TelephonyCallEndReason getEndReason() {
         return this.endReason;
     }
 
@@ -427,7 +429,7 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
         jsonWriter.writeNumberField("agent_session_ready_at", this.agentSessionReadyAt);
         jsonWriter.writeNumberField("ended_at", this.endedAt);
         jsonWriter.writeNumberField("duration_ms", this.durationMs);
-        jsonWriter.writeStringField("end_reason", this.endReason);
+        jsonWriter.writeStringField("end_reason", this.endReason == null ? null : this.endReason.toString());
         jsonWriter.writeNumberField("provider_status_code", this.providerStatusCode);
         jsonWriter.writeNumberField("provider_sub_code", this.providerSubCode);
         jsonWriter.writeStringField("provider_message", this.providerMessage);
@@ -463,7 +465,7 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
             Long agentSessionReadyAt = null;
             Long endedAt = null;
             Long durationMs = null;
-            String endReason = null;
+            TelephonyCallEndReason endReason = null;
             Integer providerStatusCode = null;
             Integer providerSubCode = null;
             String providerMessage = null;
@@ -504,7 +506,7 @@ public final class TelephonyCallRecord implements JsonSerializable<TelephonyCall
                 } else if ("duration_ms".equals(fieldName)) {
                     durationMs = reader.getNullable(JsonReader::getLong);
                 } else if ("end_reason".equals(fieldName)) {
-                    endReason = reader.getString();
+                    endReason = TelephonyCallEndReason.fromString(reader.getString());
                 } else if ("provider_status_code".equals(fieldName)) {
                     providerStatusCode = reader.getNullable(JsonReader::getInt);
                 } else if ("provider_sub_code".equals(fieldName)) {

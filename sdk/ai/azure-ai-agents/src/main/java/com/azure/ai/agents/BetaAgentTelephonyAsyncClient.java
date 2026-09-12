@@ -62,7 +62,8 @@ public final class BetaAgentTelephonyAsyncClient {
      *         type: String(phone_number) (Required)
      *         value: String (Required)
      *     }
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -88,7 +89,8 @@ public final class BetaAgentTelephonyAsyncClient {
      *         type: String(phone_number) (Required)
      *         value: String (Required)
      *     }
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -113,7 +115,7 @@ public final class BetaAgentTelephonyAsyncClient {
      *     }
      *     attempt_count: int (Required)
      *     next_attempt_at: Long (Optional)
-     *     terminal_reason: String (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -163,7 +165,8 @@ public final class BetaAgentTelephonyAsyncClient {
      *         type: String(phone_number) (Required)
      *         value: String (Required)
      *     }
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -188,7 +191,7 @@ public final class BetaAgentTelephonyAsyncClient {
      *     }
      *     attempt_count: int (Required)
      *     next_attempt_at: Long (Optional)
-     *     terminal_reason: String (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -235,7 +238,8 @@ public final class BetaAgentTelephonyAsyncClient {
      *         type: String(phone_number) (Required)
      *         value: String (Required)
      *     }
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     structured_inputs (Optional): {
      *         String: BinaryData (Required)
@@ -260,7 +264,7 @@ public final class BetaAgentTelephonyAsyncClient {
      *     }
      *     attempt_count: int (Required)
      *     next_attempt_at: Long (Optional)
-     *     terminal_reason: String (Optional)
+     *     terminal_reason: String(no_answer/no_answer_timeout/answer_failed/bridge_cancelled/bridge_failed/voice_session_configuration_invalid/connection_project_mismatch/outbound_connection_changed/outbound_connection_unavailable/telephony_binding_invalid/telephony_binding_not_found/telephony_binding_inactive/telephony_binding_changed/campaign_not_found/campaign_cancelled/campaign_completed/campaign_failed/origination_fence_not_recorded/origination_reconciliation_timeout/cancellation_reconciliation_timeout/provider_callback_timeout_cancellation_reconciliation_timeout) (Optional)
      *     revision: long (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -307,7 +311,8 @@ public final class BetaAgentTelephonyAsyncClient {
      * {@code
      * {
      *     display_name: String (Required)
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     schedule (Optional): {
      *         type: String(immediate/scheduled) (Required)
@@ -327,7 +332,8 @@ public final class BetaAgentTelephonyAsyncClient {
      * {@code
      * {
      *     display_name: String (Required)
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     schedule (Optional): {
      *         type: String(immediate/scheduled) (Required)
@@ -396,7 +402,8 @@ public final class BetaAgentTelephonyAsyncClient {
      * {@code
      * {
      *     display_name: String (Required)
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     schedule (Optional): {
      *         type: String(immediate/scheduled) (Required)
@@ -666,7 +673,8 @@ public final class BetaAgentTelephonyAsyncClient {
      * {@code
      * {
      *     display_name: String (Required)
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     schedule (Optional): {
      *         type: String(immediate/scheduled) (Required)
@@ -728,7 +736,8 @@ public final class BetaAgentTelephonyAsyncClient {
      * {@code
      * {
      *     display_name: String (Required)
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     schedule (Optional): {
      *         type: String(immediate/scheduled) (Required)
@@ -790,7 +799,8 @@ public final class BetaAgentTelephonyAsyncClient {
      * {@code
      * {
      *     display_name: String (Required)
-     *     telephony_binding_id: String (Required)
+     *     connection_name: String (Required)
+     *     source: String (Required)
      *     purpose: String (Optional)
      *     schedule (Optional): {
      *         type: String(immediate/scheduled) (Required)

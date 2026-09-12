@@ -776,7 +776,7 @@ public final class BetaAgentsImpl {
      * {@code
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      * }
      * }
@@ -789,7 +789,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -857,7 +857,7 @@ public final class BetaAgentsImpl {
      * {@code
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      * }
      * }
@@ -870,7 +870,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -953,7 +953,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1017,7 +1017,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1074,7 +1074,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1135,7 +1135,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1168,7 +1168,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1215,7 +1215,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1261,7 +1261,7 @@ public final class BetaAgentsImpl {
      * {
      *     status: String(active/suspended) (Optional)
      *     label: String (Optional)
-     *     connection: String (Optional)
+     *     connection_name: String (Optional)
      *     phone_number: String (Optional)
      * }
      * }
@@ -1274,7 +1274,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1324,7 +1324,7 @@ public final class BetaAgentsImpl {
      * {
      *     status: String(active/suspended) (Optional)
      *     label: String (Optional)
-     *     connection: String (Optional)
+     *     connection_name: String (Optional)
      *     phone_number: String (Optional)
      * }
      * }
@@ -1337,7 +1337,7 @@ public final class BetaAgentsImpl {
      * {
      *     provider: String(teams_phone_extension/twilio) (Required)
      *     id: String (Required)
-     *     connection: String (Required)
+     *     connection_name: String (Required)
      *     label: String (Optional)
      *     status: String(active/suspended) (Required)
      *     incoming_call_url: String (Required)
@@ -1470,7 +1470,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1548,7 +1548,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1619,7 +1619,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1694,7 +1694,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1737,7 +1737,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1771,7 +1771,7 @@ public final class BetaAgentsImpl {
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
      *             timestamp_source: String(provider/gateway/derived) (Required)
-     *             reason: String (Optional)
+     *             reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *             provider_event_id: String (Optional)
      *             provider_sequence: Long (Optional)
      *             provider_status_code: Integer (Optional)
@@ -1825,7 +1825,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1859,7 +1859,7 @@ public final class BetaAgentsImpl {
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
      *             timestamp_source: String(provider/gateway/derived) (Required)
-     *             reason: String (Optional)
+     *             reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *             provider_event_id: String (Optional)
      *             provider_sequence: Long (Optional)
      *             provider_status_code: Integer (Optional)
@@ -1922,7 +1922,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -1956,7 +1956,7 @@ public final class BetaAgentsImpl {
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
      *             timestamp_source: String(provider/gateway/derived) (Required)
-     *             reason: String (Optional)
+     *             reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *             provider_event_id: String (Optional)
      *             provider_sequence: Long (Optional)
      *             provider_status_code: Integer (Optional)
@@ -2021,7 +2021,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -2055,7 +2055,7 @@ public final class BetaAgentsImpl {
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
      *             timestamp_source: String(provider/gateway/derived) (Required)
-     *             reason: String (Optional)
+     *             reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *             provider_event_id: String (Optional)
      *             provider_sequence: Long (Optional)
      *             provider_status_code: Integer (Optional)
@@ -2109,7 +2109,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -2143,7 +2143,7 @@ public final class BetaAgentsImpl {
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
      *             timestamp_source: String(provider/gateway/derived) (Required)
-     *             reason: String (Optional)
+     *             reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *             provider_event_id: String (Optional)
      *             provider_sequence: Long (Optional)
      *             provider_status_code: Integer (Optional)
@@ -2195,7 +2195,7 @@ public final class BetaAgentsImpl {
      *     agent_session_ready_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     duration_ms: Long (Optional)
-     *     end_reason: String (Optional)
+     *     end_reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *     provider_status_code: Integer (Optional)
      *     provider_sub_code: Integer (Optional)
      *     provider_message: String (Optional)
@@ -2229,7 +2229,7 @@ public final class BetaAgentsImpl {
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
      *             timestamp_source: String(provider/gateway/derived) (Required)
-     *             reason: String (Optional)
+     *             reason: String(invalid_webhook_payload/webhook_validation_failed/binding_not_found/binding_suspended/admission_rejected/admission_check_failed/route_agent_mismatch/invalid_binding_configuration/credential_resolution_failed/provider_resource_mismatch/endpoint_resolution_failed/ingress_setup_failed/live_call_conflict/live_call_persistence_failed/answer_failed/provider_disconnected/provider_busy/provider_no_answer/provider_cancelled/provider_failed/provider_stream_error/provider_stream_stopped/agent_session_connect_failed/media_stream_ended/bridge_cancelled/bridge_failed/managed_hangup/managed_transfer/manage_hangup_failed/manage_transfer_failed) (Optional)
      *             provider_event_id: String (Optional)
      *             provider_sequence: Long (Optional)
      *             provider_status_code: Integer (Optional)

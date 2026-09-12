@@ -26,12 +26,6 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
     private final TelephonyOutboundDestination destination;
 
     /*
-     * The active agent telephony binding used to originate the call.
-     */
-    @Generated
-    private final String telephonyBindingId;
-
-    /*
      * An optional customer-declared purpose for placing the call.
      */
     @Generated
@@ -58,18 +52,6 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
     private TelephonyOutboundRetryPolicy retryPolicy;
 
     /**
-     * Creates an instance of CreateTelephonyCallJobRequest class.
-     *
-     * @param destination the destination value to set.
-     * @param telephonyBindingId the telephonyBindingId value to set.
-     */
-    @Generated
-    public CreateTelephonyCallJobRequest(TelephonyOutboundDestination destination, String telephonyBindingId) {
-        this.destination = destination;
-        this.telephonyBindingId = telephonyBindingId;
-    }
-
-    /**
      * Get the destination property: The phone destination to call.
      *
      * @return the destination value.
@@ -77,16 +59,6 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
     @Generated
     public TelephonyOutboundDestination getDestination() {
         return this.destination;
-    }
-
-    /**
-     * Get the telephonyBindingId property: The active agent telephony binding used to originate the call.
-     *
-     * @return the telephonyBindingId value.
-     */
-    @Generated
-    public String getTelephonyBindingId() {
-        return this.telephonyBindingId;
     }
 
     /**
@@ -191,7 +163,8 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("destination", this.destination);
-        jsonWriter.writeStringField("telephony_binding_id", this.telephonyBindingId);
+        jsonWriter.writeStringField("connection_name", this.connectionName);
+        jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("purpose", this.purpose);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs, (writer, element) -> {
             if (element == null) {
@@ -218,7 +191,8 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
     public static CreateTelephonyCallJobRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelephonyOutboundDestination destination = null;
-            String telephonyBindingId = null;
+            String connectionName = null;
+            String source = null;
             String purpose = null;
             Map<String, BinaryData> structuredInputs = null;
             TelephonyCallJobSchedule schedule = null;
@@ -228,8 +202,10 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
                 reader.nextToken();
                 if ("destination".equals(fieldName)) {
                     destination = TelephonyOutboundDestination.fromJson(reader);
-                } else if ("telephony_binding_id".equals(fieldName)) {
-                    telephonyBindingId = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    source = reader.getString();
                 } else if ("purpose".equals(fieldName)) {
                     purpose = reader.getString();
                 } else if ("structured_inputs".equals(fieldName)) {
@@ -244,12 +220,68 @@ public final class CreateTelephonyCallJobRequest implements JsonSerializable<Cre
                 }
             }
             CreateTelephonyCallJobRequest deserializedCreateTelephonyCallJobRequest
-                = new CreateTelephonyCallJobRequest(destination, telephonyBindingId);
+                = new CreateTelephonyCallJobRequest(destination, connectionName, source);
             deserializedCreateTelephonyCallJobRequest.purpose = purpose;
             deserializedCreateTelephonyCallJobRequest.structuredInputs = structuredInputs;
             deserializedCreateTelephonyCallJobRequest.schedule = schedule;
             deserializedCreateTelephonyCallJobRequest.retryPolicy = retryPolicy;
             return deserializedCreateTelephonyCallJobRequest;
         });
+    }
+
+    /*
+     * The Foundry connection name in the current project used to originate the call. Its category selects Twilio or
+     * Azure Communication Services / Teams Phone Extension. No inbound telephony binding is required.
+     */
+    @Generated
+    private final String connectionName;
+
+    /*
+     * The caller identity used to originate the call. For a Twilio connection, provide an authorized E.164 phone
+     * number. For an Azure Communication Services / Teams Phone Extension connection, provide the Teams Resource
+     * Account object ID. The identity type is inferred from the connection category; originating does not change
+     * inbound routing.
+     */
+    @Generated
+    private final String source;
+
+    /**
+     * Creates an instance of CreateTelephonyCallJobRequest class.
+     *
+     * @param destination the destination value to set.
+     * @param connectionName the connectionName value to set.
+     * @param source the source value to set.
+     */
+    @Generated
+    public CreateTelephonyCallJobRequest(TelephonyOutboundDestination destination, String connectionName,
+        String source) {
+        this.destination = destination;
+        this.connectionName = connectionName;
+        this.source = source;
+    }
+
+    /**
+     * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
+     * Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony binding
+     * is required.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Get the source property: The caller identity used to originate the call. For a Twilio connection, provide an
+     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone Extension connection, provide
+     * the Teams Resource Account object ID. The identity type is inferred from the connection category; originating
+     * does not change inbound routing.
+     *
+     * @return the source value.
+     */
+    @Generated
+    public String getSource() {
+        return this.source;
     }
 }

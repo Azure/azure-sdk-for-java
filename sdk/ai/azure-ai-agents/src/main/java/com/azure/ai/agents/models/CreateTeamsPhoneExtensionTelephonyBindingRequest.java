@@ -37,12 +37,12 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingRequest extends Crea
     /**
      * Creates an instance of CreateTeamsPhoneExtensionTelephonyBindingRequest class.
      *
-     * @param connection the connection value to set.
+     * @param connectionName the connectionName value to set.
      * @param resourceAccountObjectId the resourceAccountObjectId value to set.
      */
     @Generated
-    public CreateTeamsPhoneExtensionTelephonyBindingRequest(String connection, String resourceAccountObjectId) {
-        super(connection);
+    public CreateTeamsPhoneExtensionTelephonyBindingRequest(String connectionName, String resourceAccountObjectId) {
+        super(connectionName);
         this.resourceAccountObjectId = resourceAccountObjectId;
     }
 
@@ -106,7 +106,7 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingRequest extends Crea
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("connection", getConnection());
+        jsonWriter.writeStringField("connection_name", getConnectionName());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("resource_account_object_id", this.resourceAccountObjectId);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
@@ -126,7 +126,7 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingRequest extends Crea
     @Generated
     public static CreateTeamsPhoneExtensionTelephonyBindingRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String connection = null;
+            String connectionName = null;
             String label = null;
             String resourceAccountObjectId = null;
             TelephonyProvider provider = TelephonyProvider.TEAMS_PHONE_EXTENSION;
@@ -134,8 +134,8 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingRequest extends Crea
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("connection".equals(fieldName)) {
-                    connection = reader.getString();
+                if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
                 } else if ("resource_account_object_id".equals(fieldName)) {
@@ -149,7 +149,7 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingRequest extends Crea
                 }
             }
             CreateTeamsPhoneExtensionTelephonyBindingRequest deserializedCreateTeamsPhoneExtensionTelephonyBindingRequest
-                = new CreateTeamsPhoneExtensionTelephonyBindingRequest(connection, resourceAccountObjectId);
+                = new CreateTeamsPhoneExtensionTelephonyBindingRequest(connectionName, resourceAccountObjectId);
             deserializedCreateTeamsPhoneExtensionTelephonyBindingRequest.setLabel(label);
             deserializedCreateTeamsPhoneExtensionTelephonyBindingRequest.provider = provider;
             deserializedCreateTeamsPhoneExtensionTelephonyBindingRequest.phoneNumber = phoneNumber;

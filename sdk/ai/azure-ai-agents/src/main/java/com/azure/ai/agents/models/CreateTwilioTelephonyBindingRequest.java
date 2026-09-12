@@ -31,12 +31,12 @@ public final class CreateTwilioTelephonyBindingRequest extends CreateTelephonyBi
     /**
      * Creates an instance of CreateTwilioTelephonyBindingRequest class.
      *
-     * @param connection the connection value to set.
+     * @param connectionName the connectionName value to set.
      * @param phoneNumber the phoneNumber value to set.
      */
     @Generated
-    public CreateTwilioTelephonyBindingRequest(String connection, String phoneNumber) {
-        super(connection);
+    public CreateTwilioTelephonyBindingRequest(String connectionName, String phoneNumber) {
+        super(connectionName);
         this.phoneNumber = phoneNumber;
     }
 
@@ -78,7 +78,7 @@ public final class CreateTwilioTelephonyBindingRequest extends CreateTelephonyBi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("connection", getConnection());
+        jsonWriter.writeStringField("connection_name", getConnectionName());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("phone_number", this.phoneNumber);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
@@ -97,15 +97,15 @@ public final class CreateTwilioTelephonyBindingRequest extends CreateTelephonyBi
     @Generated
     public static CreateTwilioTelephonyBindingRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String connection = null;
+            String connectionName = null;
             String label = null;
             String phoneNumber = null;
             TelephonyProvider provider = TelephonyProvider.TWILIO;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("connection".equals(fieldName)) {
-                    connection = reader.getString();
+                if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
                 } else if ("phone_number".equals(fieldName)) {
@@ -117,7 +117,7 @@ public final class CreateTwilioTelephonyBindingRequest extends CreateTelephonyBi
                 }
             }
             CreateTwilioTelephonyBindingRequest deserializedCreateTwilioTelephonyBindingRequest
-                = new CreateTwilioTelephonyBindingRequest(connection, phoneNumber);
+                = new CreateTwilioTelephonyBindingRequest(connectionName, phoneNumber);
             deserializedCreateTwilioTelephonyBindingRequest.setLabel(label);
             deserializedCreateTwilioTelephonyBindingRequest.provider = provider;
             return deserializedCreateTwilioTelephonyBindingRequest;

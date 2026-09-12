@@ -29,12 +29,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private final TelephonyOutboundDestination destination;
 
     /*
-     * The active agent telephony binding used to originate the call.
-     */
-    @Generated
-    private final String telephonyBindingId;
-
-    /*
      * An optional customer-declared purpose for placing the call.
      */
     @Generated
@@ -103,10 +97,12 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private Long nextAttemptAt;
 
     /*
-     * The stable reason for the terminal status, when available.
+     * The stable service-generated reason for the overall outbound call job, which can span multiple provider attempts,
+     * when available. Interpret this with `status`: a queued job can retain a temporary dispatch-deferral reason.
+     * Additional string codes may be returned.
      */
     @Generated
-    private String terminalReason;
+    private TelephonyCallJobTerminalReason terminalReason;
 
     /*
      * The monotonically increasing optimistic-concurrency revision.
@@ -127,44 +123,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private final long updatedAt;
 
     /**
-     * Creates an instance of TelephonyCallJob class.
-     *
-     * @param destination the destination value to set.
-     * @param telephonyBindingId the telephonyBindingId value to set.
-     * @param id the id value to set.
-     * @param agentName the agentName value to set.
-     * @param status the status value to set.
-     * @param retryPolicy the retryPolicy value to set.
-     * @param attemptCount the attemptCount value to set.
-     * @param revision the revision value to set.
-     * @param createdAt the createdAt value to set.
-     * @param updatedAt the updatedAt value to set.
-     */
-    @Generated
-    private TelephonyCallJob(TelephonyOutboundDestination destination, String telephonyBindingId, String id,
-        String agentName, TelephonyCallJobStatus status, TelephonyOutboundRetryPolicyResponse retryPolicy,
-        int attemptCount, long revision, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
-        this.destination = destination;
-        this.telephonyBindingId = telephonyBindingId;
-        this.id = id;
-        this.agentName = agentName;
-        this.status = status;
-        this.retryPolicy = retryPolicy;
-        this.attemptCount = attemptCount;
-        this.revision = revision;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        if (updatedAt == null) {
-            this.updatedAt = 0L;
-        } else {
-            this.updatedAt = updatedAt.toEpochSecond();
-        }
-    }
-
-    /**
      * Get the destination property: The phone destination to call.
      *
      * @return the destination value.
@@ -172,16 +130,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     @Generated
     public TelephonyOutboundDestination getDestination() {
         return this.destination;
-    }
-
-    /**
-     * Get the telephonyBindingId property: The active agent telephony binding used to originate the call.
-     *
-     * @return the telephonyBindingId value.
-     */
-    @Generated
-    public String getTelephonyBindingId() {
-        return this.telephonyBindingId;
     }
 
     /**
@@ -301,12 +249,14 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     }
 
     /**
-     * Get the terminalReason property: The stable reason for the terminal status, when available.
+     * Get the terminalReason property: The stable service-generated reason for the overall outbound call job, which can
+     * span multiple provider attempts, when available. Interpret this with `status`: a queued job can retain a
+     * temporary dispatch-deferral reason. Additional string codes may be returned.
      *
      * @return the terminalReason value.
      */
     @Generated
-    public String getTerminalReason() {
+    public TelephonyCallJobTerminalReason getTerminalReason() {
         return this.terminalReason;
     }
 
@@ -348,7 +298,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("destination", this.destination);
-        jsonWriter.writeStringField("telephony_binding_id", this.telephonyBindingId);
+        jsonWriter.writeStringField("connection_name", this.connectionName);
+        jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object);
         jsonWriter.writeStringField("agent_name", this.agentName);
@@ -369,7 +320,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
         jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeJsonField("cancellation", this.cancellation);
         jsonWriter.writeNumberField("next_attempt_at", this.nextAttemptAt);
-        jsonWriter.writeStringField("terminal_reason", this.terminalReason);
+        jsonWriter.writeStringField("terminal_reason",
+            this.terminalReason == null ? null : this.terminalReason.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -386,7 +338,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     public static TelephonyCallJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelephonyOutboundDestination destination = null;
-            String telephonyBindingId = null;
+            String connectionName = null;
+            String source = null;
             String id = null;
             String agentName = null;
             TelephonyCallJobStatus status = null;
@@ -400,14 +353,16 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
             TelephonyCallJobSchedule schedule = null;
             TelephonyCallJobCancellation cancellation = null;
             Long nextAttemptAt = null;
-            String terminalReason = null;
+            TelephonyCallJobTerminalReason terminalReason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("destination".equals(fieldName)) {
                     destination = TelephonyOutboundDestination.fromJson(reader);
-                } else if ("telephony_binding_id".equals(fieldName)) {
-                    telephonyBindingId = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
+                    connectionName = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    source = reader.getString();
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("agent_name".equals(fieldName)) {
@@ -436,13 +391,13 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
                 } else if ("next_attempt_at".equals(fieldName)) {
                     nextAttemptAt = reader.getNullable(JsonReader::getLong);
                 } else if ("terminal_reason".equals(fieldName)) {
-                    terminalReason = reader.getString();
+                    terminalReason = TelephonyCallJobTerminalReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            TelephonyCallJob deserializedTelephonyCallJob = new TelephonyCallJob(destination, telephonyBindingId, id,
-                agentName, status, retryPolicy, attemptCount, revision, createdAt, updatedAt);
+            TelephonyCallJob deserializedTelephonyCallJob = new TelephonyCallJob(destination, connectionName, source,
+                id, agentName, status, retryPolicy, attemptCount, revision, createdAt, updatedAt);
             deserializedTelephonyCallJob.purpose = purpose;
             deserializedTelephonyCallJob.structuredInputs = structuredInputs;
             deserializedTelephonyCallJob.schedule = schedule;
@@ -451,5 +406,86 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
             deserializedTelephonyCallJob.terminalReason = terminalReason;
             return deserializedTelephonyCallJob;
         });
+    }
+
+    /*
+     * The Foundry connection name in the current project used to originate the call. Its category selects Twilio or
+     * Azure Communication Services / Teams Phone Extension. No inbound telephony binding is required.
+     */
+    @Generated
+    private final String connectionName;
+
+    /*
+     * The caller identity used to originate the call. For a Twilio connection, provide an authorized E.164 phone
+     * number. For an Azure Communication Services / Teams Phone Extension connection, provide the Teams Resource
+     * Account object ID. The identity type is inferred from the connection category; originating does not change
+     * inbound routing.
+     */
+    @Generated
+    private final String source;
+
+    /**
+     * Creates an instance of TelephonyCallJob class.
+     *
+     * @param destination the destination value to set.
+     * @param connectionName the connectionName value to set.
+     * @param source the source value to set.
+     * @param id the id value to set.
+     * @param agentName the agentName value to set.
+     * @param status the status value to set.
+     * @param retryPolicy the retryPolicy value to set.
+     * @param attemptCount the attemptCount value to set.
+     * @param revision the revision value to set.
+     * @param createdAt the createdAt value to set.
+     * @param updatedAt the updatedAt value to set.
+     */
+    @Generated
+    private TelephonyCallJob(TelephonyOutboundDestination destination, String connectionName, String source, String id,
+        String agentName, TelephonyCallJobStatus status, TelephonyOutboundRetryPolicyResponse retryPolicy,
+        int attemptCount, long revision, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+        this.destination = destination;
+        this.connectionName = connectionName;
+        this.source = source;
+        this.id = id;
+        this.agentName = agentName;
+        this.status = status;
+        this.retryPolicy = retryPolicy;
+        this.attemptCount = attemptCount;
+        this.revision = revision;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (updatedAt == null) {
+            this.updatedAt = 0L;
+        } else {
+            this.updatedAt = updatedAt.toEpochSecond();
+        }
+    }
+
+    /**
+     * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
+     * Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony binding
+     * is required.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Get the source property: The caller identity used to originate the call. For a Twilio connection, provide an
+     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone Extension connection, provide
+     * the Teams Resource Account object ID. The identity type is inferred from the connection category; originating
+     * does not change inbound routing.
+     *
+     * @return the source value.
+     */
+    @Generated
+    public String getSource() {
+        return this.source;
     }
 }
