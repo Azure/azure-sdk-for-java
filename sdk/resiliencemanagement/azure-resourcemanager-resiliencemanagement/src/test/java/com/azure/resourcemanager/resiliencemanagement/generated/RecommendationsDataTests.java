@@ -13,12 +13,12 @@ public final class RecommendationsDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecommendationsData model = BinaryData.fromString(
-            "{\"highAvailability\":{\"enabledResourceCount\":2115323740575424074,\"notEnabledResourceCount\":9008468523752983121,\"notEvaluatedResourceCount\":341219494052551467,\"evaluationDateTime\":\"2021-02-02T06:21:41Z\"}}")
+            "{\"highAvailability\":{\"enabledResourceCount\":165417238037681242,\"notEnabledResourceCount\":3480922619213281392,\"notEvaluatedResourceCount\":6563700004505435420,\"evaluationDateTime\":\"2021-06-22T02:27:45Z\"}}")
             .toObject(RecommendationsData.class);
-        Assertions.assertEquals(2115323740575424074L, model.highAvailability().enabledResourceCount());
-        Assertions.assertEquals(9008468523752983121L, model.highAvailability().notEnabledResourceCount());
-        Assertions.assertEquals(341219494052551467L, model.highAvailability().notEvaluatedResourceCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T06:21:41Z"),
+        Assertions.assertEquals(165417238037681242L, model.highAvailability().enabledResourceCount());
+        Assertions.assertEquals(3480922619213281392L, model.highAvailability().notEnabledResourceCount());
+        Assertions.assertEquals(6563700004505435420L, model.highAvailability().notEvaluatedResourceCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T02:27:45Z"),
             model.highAvailability().evaluationDateTime());
     }
 }

@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociatedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociatedIdentity model
-            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ybyxc\"}")
-                .toObject(AssociatedIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("ybyxc", model.userAssignedIdentity());
+        AssociatedIdentity model = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"x\"}")
+            .toObject(AssociatedIdentity.class);
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals("x", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociatedIdentity model = new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentity("ybyxc");
+        AssociatedIdentity model = new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentity("x");
         model = BinaryData.fromObject(model).toObject(AssociatedIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("ybyxc", model.userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals("x", model.userAssignedIdentity());
     }
 }

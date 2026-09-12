@@ -12,21 +12,21 @@ public final class RecoveryGroupManualActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupManualAction model = BinaryData.fromString(
-            "{\"type\":\"ManualAction\",\"name\":\"lzlfbxzpuz\",\"description\":\"ispnqzahmgkbrp\",\"timeoutInMinutes\":188498280}")
+            "{\"type\":\"ManualAction\",\"name\":\"xmyskp\",\"description\":\"enbtkcxywny\",\"timeoutInMinutes\":782555579}")
             .toObject(RecoveryGroupManualAction.class);
-        Assertions.assertEquals("lzlfbxzpuz", model.name());
-        Assertions.assertEquals("ispnqzahmgkbrp", model.description());
-        Assertions.assertEquals(188498280, model.timeoutInMinutes());
+        Assertions.assertEquals("xmyskp", model.name());
+        Assertions.assertEquals("enbtkcxywny", model.description());
+        Assertions.assertEquals(782555579, model.timeoutInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryGroupManualAction model = new RecoveryGroupManualAction().withName("lzlfbxzpuz")
-            .withDescription("ispnqzahmgkbrp")
-            .withTimeoutInMinutes(188498280);
+        RecoveryGroupManualAction model = new RecoveryGroupManualAction().withName("xmyskp")
+            .withDescription("enbtkcxywny")
+            .withTimeoutInMinutes(782555579);
         model = BinaryData.fromObject(model).toObject(RecoveryGroupManualAction.class);
-        Assertions.assertEquals("lzlfbxzpuz", model.name());
-        Assertions.assertEquals("ispnqzahmgkbrp", model.description());
-        Assertions.assertEquals(188498280, model.timeoutInMinutes());
+        Assertions.assertEquals("xmyskp", model.name());
+        Assertions.assertEquals("enbtkcxywny", model.description());
+        Assertions.assertEquals(782555579, model.timeoutInMinutes());
     }
 }

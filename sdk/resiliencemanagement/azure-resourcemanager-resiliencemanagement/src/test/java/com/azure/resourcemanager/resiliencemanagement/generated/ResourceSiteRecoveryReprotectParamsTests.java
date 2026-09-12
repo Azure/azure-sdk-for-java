@@ -14,19 +14,20 @@ public final class ResourceSiteRecoveryReprotectParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSiteRecoveryReprotectParams model = BinaryData.fromString(
-            "{\"diskReprotectInputDetails\":[{\"diskResourceId\":\"zfikd\",\"stagingStorageAccountResourceId\":\"wq\"}]}")
+            "{\"diskReprotectInputDetails\":[{\"diskResourceId\":\"cxrslpmutwuoe\",\"stagingStorageAccountResourceId\":\"pkhjwni\"}]}")
             .toObject(ResourceSiteRecoveryReprotectParams.class);
-        Assertions.assertEquals("zfikd", model.diskReprotectInputDetails().get(0).diskResourceId());
-        Assertions.assertEquals("wq", model.diskReprotectInputDetails().get(0).stagingStorageAccountResourceId());
+        Assertions.assertEquals("cxrslpmutwuoe", model.diskReprotectInputDetails().get(0).diskResourceId());
+        Assertions.assertEquals("pkhjwni", model.diskReprotectInputDetails().get(0).stagingStorageAccountResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceSiteRecoveryReprotectParams model
-            = new ResourceSiteRecoveryReprotectParams().withDiskReprotectInputDetails(Arrays.asList(
-                new DiskReprotectInputDetails().withDiskResourceId("zfikd").withStagingStorageAccountResourceId("wq")));
+            = new ResourceSiteRecoveryReprotectParams().withDiskReprotectInputDetails(
+                Arrays.asList(new DiskReprotectInputDetails().withDiskResourceId("cxrslpmutwuoe")
+                    .withStagingStorageAccountResourceId("pkhjwni")));
         model = BinaryData.fromObject(model).toObject(ResourceSiteRecoveryReprotectParams.class);
-        Assertions.assertEquals("zfikd", model.diskReprotectInputDetails().get(0).diskResourceId());
-        Assertions.assertEquals("wq", model.diskReprotectInputDetails().get(0).stagingStorageAccountResourceId());
+        Assertions.assertEquals("cxrslpmutwuoe", model.diskReprotectInputDetails().get(0).diskResourceId());
+        Assertions.assertEquals("pkhjwni", model.diskReprotectInputDetails().get(0).stagingStorageAccountResourceId());
     }
 }

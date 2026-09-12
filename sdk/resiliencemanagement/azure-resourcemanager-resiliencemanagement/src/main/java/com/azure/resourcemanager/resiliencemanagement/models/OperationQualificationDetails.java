@@ -27,6 +27,11 @@ public final class OperationQualificationDetails implements JsonSerializable<Ope
      */
     private List<String> notQualifiedReasons;
 
+    /*
+     * Advisory resource feasibility reviews. Absent when no review was evaluated for this resource.
+     */
+    private List<ResourceFeasibilityReview> resourceFeasibilityReviews;
+
     /**
      * Creates an instance of OperationQualificationDetails class.
      */
@@ -52,6 +57,16 @@ public final class OperationQualificationDetails implements JsonSerializable<Ope
     }
 
     /**
+     * Get the resourceFeasibilityReviews property: Advisory resource feasibility reviews. Absent when no review was
+     * evaluated for this resource.
+     * 
+     * @return the resourceFeasibilityReviews value.
+     */
+    public List<ResourceFeasibilityReview> resourceFeasibilityReviews() {
+        return this.resourceFeasibilityReviews;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -61,6 +76,8 @@ public final class OperationQualificationDetails implements JsonSerializable<Ope
             this.qualificationState == null ? null : this.qualificationState.toString());
         jsonWriter.writeArrayField("notQualifiedReasons", this.notQualifiedReasons,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resourceFeasibilityReviews", this.resourceFeasibilityReviews,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +104,10 @@ public final class OperationQualificationDetails implements JsonSerializable<Ope
                 } else if ("notQualifiedReasons".equals(fieldName)) {
                     List<String> notQualifiedReasons = reader.readArray(reader1 -> reader1.getString());
                     deserializedOperationQualificationDetails.notQualifiedReasons = notQualifiedReasons;
+                } else if ("resourceFeasibilityReviews".equals(fieldName)) {
+                    List<ResourceFeasibilityReview> resourceFeasibilityReviews
+                        = reader.readArray(reader1 -> ResourceFeasibilityReview.fromJson(reader1));
+                    deserializedOperationQualificationDetails.resourceFeasibilityReviews = resourceFeasibilityReviews;
                 } else {
                     reader.skipChildren();
                 }

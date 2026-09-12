@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 public final class RecoveryPlanActionsFailoverMockTests {
     @Test
     public void testFailover() throws Exception {
-        String responseStr = "{\"jobId\":\"gh\"}";
+        String responseStr = "{\"jobId\":\"lbscmnlz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,15 +36,14 @@ public final class RecoveryPlanActionsFailoverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPlanActionBaseResponse response = manager.recoveryPlanActions()
-            .failover("hiqfyuttdiy", "b", "vnwsw",
-                new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
-                    .withFailoverRequestProperties(
-                        new FailoverRequestProperties().withSourceLocations(Arrays.asList("yctww"))
-                            .withSelectedResourceIds(Arrays.asList("xjlme", "vogygzyvneez"))
-                            .withExecutionConfigurations(
-                                new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED))),
+            .failover("yglqdhmrjzral", "xpjb", "ypsjoq", new FailoverRequest()
+                .withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
+                .withFailoverRequestProperties(new FailoverRequestProperties()
+                    .withSourceLocations(Arrays.asList("kyhfqzvsqxfxj", "l"))
+                    .withSelectedResourceIds(Arrays.asList("pzqjhhhq", "uwyvcacoyvi", "bsizus"))
+                    .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gh", response.jobId());
+        Assertions.assertEquals("lbscmnlz", response.jobId());
     }
 }

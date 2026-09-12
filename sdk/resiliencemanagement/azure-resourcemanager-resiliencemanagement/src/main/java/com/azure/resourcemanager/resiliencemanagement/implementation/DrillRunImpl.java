@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resiliencemanagement.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunInner;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunPropertiesInner;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRun;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunProperties;
 
@@ -33,7 +34,12 @@ public final class DrillRunImpl implements DrillRun {
     }
 
     public DrillRunProperties properties() {
-        return this.innerModel().properties();
+        DrillRunPropertiesInner inner = this.innerModel().properties();
+        if (inner != null) {
+            return new DrillRunPropertiesImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public SystemData systemData() {

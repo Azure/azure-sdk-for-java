@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class RecoveryPlanActionsTestFailoverCleanupMockTests {
     @Test
     public void testTestFailoverCleanup() throws Exception {
-        String responseStr = "{\"jobId\":\"jduyyespydjfb\"}";
+        String responseStr = "{\"jobId\":\"y\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class RecoveryPlanActionsTestFailoverCleanupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPlanActionBaseResponse response = manager.recoveryPlanActions()
-            .testFailoverCleanup("weftkwq", "jp", "vssehaepw",
-                new TestFailoverCleanupRequest().withComments("cxtczhupeukn"), com.azure.core.util.Context.NONE);
+            .testFailoverCleanup("qffawey", "rkphyjdxr", "vjuqdbrxmrgchb",
+                new TestFailoverCleanupRequest().withComments("xk"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jduyyespydjfb", response.jobId());
+        Assertions.assertEquals("y", response.jobId());
     }
 }

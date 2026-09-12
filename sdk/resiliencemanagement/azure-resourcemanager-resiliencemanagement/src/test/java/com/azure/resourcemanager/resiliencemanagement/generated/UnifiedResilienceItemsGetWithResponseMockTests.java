@@ -24,7 +24,7 @@ public final class UnifiedResilienceItemsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"goals\":{\"templateId\":\"sllywpvtio\",\"assignmentId\":\"zbpdbo\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT4H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryTimeActualInMinutes\":\"PT4H\",\"regionalRecoveryTimeObjectiveStatus\":\"Healthy\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"NotRequired\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":6595947903854557468,\"notEnabledResourceCount\":5022661736184384407,\"notEvaluatedResourceCount\":1248189771179011921,\"evaluationDateTime\":\"2021-09-25T20:48:26Z\"}},\"lastModifiedTime\":\"2021-03-21T10:43:03Z\"},\"id\":\"oqgrmtqjkqevadr\",\"name\":\"mwiuawvcm\",\"type\":\"z\"}";
+            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"goals\":{\"templateId\":\"agb\",\"assignmentId\":\"qvlsumywzas\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT15M\",\"regionalRecoveryPointObjectiveStatus\":\"NotEvaluated\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryTimeActualInMinutes\":\"PT1H\",\"regionalRecoveryTimeObjectiveStatus\":\"Healthy\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"NotRequired\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":293197962792845943,\"notEnabledResourceCount\":403784125481061093,\"notEvaluatedResourceCount\":6191872541641573976,\"evaluationDateTime\":\"2021-07-01T00:31:29Z\"}},\"lastModifiedTime\":\"2021-10-13T06:21:08Z\"},\"id\":\"pemtuoqu\",\"name\":\"l\",\"type\":\"egqavnigflqqb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,34 +34,34 @@ public final class UnifiedResilienceItemsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UnifiedResilienceItem response = manager.unifiedResilienceItems()
-            .getWithResponse("jrhuzgf", "on", com.azure.core.util.Context.NONE)
+            .getWithResponse("qg", "hlusrvxisi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sllywpvtio", response.properties().goals().templateId());
-        Assertions.assertEquals("zbpdbo", response.properties().goals().assignmentId());
-        Assertions.assertEquals(IsoDuration.PT4H,
-            response.properties().goals().regionalRecoveryPointObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT4H,
-            response.properties().goals().regionalRecoveryPointEstimatedInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY,
-            response.properties().goals().regionalRecoveryPointObjectiveStatus());
+        Assertions.assertEquals("agb", response.properties().goals().templateId());
+        Assertions.assertEquals("qvlsumywzas", response.properties().goals().assignmentId());
         Assertions.assertEquals(IsoDuration.PT15M,
+            response.properties().goals().regionalRecoveryPointObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT15M,
+            response.properties().goals().regionalRecoveryPointEstimatedInMinutes());
+        Assertions.assertEquals(ResilienceHealthStatus.NOT_EVALUATED,
+            response.properties().goals().regionalRecoveryPointObjectiveStatus());
+        Assertions.assertEquals(IsoDuration.PT24H,
             response.properties().goals().regionalRecoveryTimeObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT4H, response.properties().goals().regionalRecoveryTimeActualInMinutes());
+        Assertions.assertEquals(IsoDuration.PT1H, response.properties().goals().regionalRecoveryTimeActualInMinutes());
         Assertions.assertEquals(ResilienceHealthStatus.HEALTHY,
             response.properties().goals().regionalRecoveryTimeObjectiveStatus());
         Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED,
             response.properties().goals().requireHighAvailability());
         Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED,
             response.properties().goals().requireDisasterRecovery());
-        Assertions.assertEquals(6595947903854557468L,
+        Assertions.assertEquals(293197962792845943L,
             response.properties().recommendations().highAvailability().enabledResourceCount());
-        Assertions.assertEquals(5022661736184384407L,
+        Assertions.assertEquals(403784125481061093L,
             response.properties().recommendations().highAvailability().notEnabledResourceCount());
-        Assertions.assertEquals(1248189771179011921L,
+        Assertions.assertEquals(6191872541641573976L,
             response.properties().recommendations().highAvailability().notEvaluatedResourceCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T20:48:26Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T00:31:29Z"),
             response.properties().recommendations().highAvailability().evaluationDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T10:43:03Z"), response.properties().lastModifiedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T06:21:08Z"), response.properties().lastModifiedTime());
     }
 }

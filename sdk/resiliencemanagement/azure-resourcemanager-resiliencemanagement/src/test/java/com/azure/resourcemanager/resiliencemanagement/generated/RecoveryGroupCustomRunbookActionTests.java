@@ -16,37 +16,38 @@ public final class RecoveryGroupCustomRunbookActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupCustomRunbookAction model = BinaryData.fromString(
-            "{\"type\":\"CustomRunbook\",\"actionResourceId\":\"hibnuqqkpika\",\"parameters\":{\"gnbuy\":\"vtq\",\"fsiarbutr\":\"hijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"bnlankxmyskpb\"},\"name\":\"enbtkcxywny\",\"description\":\"rsyn\",\"timeoutInMinutes\":1857239406}")
+            "{\"type\":\"CustomRunbook\",\"actionResourceId\":\"synlqidybyxczfc\",\"parameters\":{\"wrqlfktsthsuco\":\"axdbabph\",\"bt\":\"mnyyazt\",\"ckzywbiexzfeyue\":\"wrqpue\",\"zyoxaepdkzjan\":\"xibxujwbhqwalm\"},\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"hdwbavxbniwdjs\"},\"name\":\"zt\",\"description\":\"bpg\",\"timeoutInMinutes\":421443987}")
             .toObject(RecoveryGroupCustomRunbookAction.class);
-        Assertions.assertEquals("enbtkcxywny", model.name());
-        Assertions.assertEquals("rsyn", model.description());
-        Assertions.assertEquals(1857239406, model.timeoutInMinutes());
-        Assertions.assertEquals("hibnuqqkpika", model.actionResourceId());
-        Assertions.assertEquals("vtq", model.parameters().get("gnbuy"));
+        Assertions.assertEquals("zt", model.name());
+        Assertions.assertEquals("bpg", model.description());
+        Assertions.assertEquals(421443987, model.timeoutInMinutes());
+        Assertions.assertEquals("synlqidybyxczfc", model.actionResourceId());
+        Assertions.assertEquals("axdbabph", model.parameters().get("wrqlfktsthsuco"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             model.associatedIdentity().type());
-        Assertions.assertEquals("bnlankxmyskpb", model.associatedIdentity().userAssignedIdentity());
+        Assertions.assertEquals("hdwbavxbniwdjs", model.associatedIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryGroupCustomRunbookAction model = new RecoveryGroupCustomRunbookAction().withName("enbtkcxywny")
-            .withDescription("rsyn")
-            .withTimeoutInMinutes(1857239406)
-            .withActionResourceId("hibnuqqkpika")
-            .withParameters(mapOf("gnbuy", "vtq", "fsiarbutr", "hijggme", "jrunmpxtt", "vpnazzm"))
+        RecoveryGroupCustomRunbookAction model = new RecoveryGroupCustomRunbookAction().withName("zt")
+            .withDescription("bpg")
+            .withTimeoutInMinutes(421443987)
+            .withActionResourceId("synlqidybyxczfc")
+            .withParameters(mapOf("wrqlfktsthsuco", "axdbabph", "bt", "mnyyazt", "ckzywbiexzfeyue", "wrqpue",
+                "zyoxaepdkzjan", "xibxujwbhqwalm"))
             .withAssociatedIdentity(
                 new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentity("bnlankxmyskpb"));
+                    .withUserAssignedIdentity("hdwbavxbniwdjs"));
         model = BinaryData.fromObject(model).toObject(RecoveryGroupCustomRunbookAction.class);
-        Assertions.assertEquals("enbtkcxywny", model.name());
-        Assertions.assertEquals("rsyn", model.description());
-        Assertions.assertEquals(1857239406, model.timeoutInMinutes());
-        Assertions.assertEquals("hibnuqqkpika", model.actionResourceId());
-        Assertions.assertEquals("vtq", model.parameters().get("gnbuy"));
+        Assertions.assertEquals("zt", model.name());
+        Assertions.assertEquals("bpg", model.description());
+        Assertions.assertEquals(421443987, model.timeoutInMinutes());
+        Assertions.assertEquals("synlqidybyxczfc", model.actionResourceId());
+        Assertions.assertEquals("axdbabph", model.parameters().get("wrqlfktsthsuco"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             model.associatedIdentity().type());
-        Assertions.assertEquals("bnlankxmyskpb", model.associatedIdentity().userAssignedIdentity());
+        Assertions.assertEquals("hdwbavxbniwdjs", model.associatedIdentity().userAssignedIdentity());
     }
 
     // Use "Map.of" if available

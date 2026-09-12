@@ -210,4 +210,69 @@ public interface DrillRuns {
      */
     void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body, Context context);
+
+    /**
+     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
+     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+     * attempt retries it. A report that has been finalized is never regenerated.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName);
+
+    /**
+     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
+     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+     * attempt retries it. A report that has been finalized is never regenerated.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        Context context);
+
+    /**
+     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
+     * returned expiryTimestamp and grants access to that single report only.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        ListReportDownloadUrlRequest body);
+
+    /**
+     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
+     * returned expiryTimestamp and grants access to that single report only.
+     * 
+     * @param serviceGroupName The name of the service group.
+     * @param operationId A GUID that represents the Long Running OperationId.
+     * @param drillName The name of the Drill.
+     * @param drillRunName The name of the DrillRun (GUID).
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
+        ListReportDownloadUrlRequest body, Context context);
 }

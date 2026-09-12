@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdent
 import com.azure.resourcemanager.resiliencemanagement.models.QualificationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ReprotectRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.ReprotectRequestProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewStatus;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewType;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceInclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceProtectionSolutionType;
 import com.azure.resourcemanager.resiliencemanagement.models.ValidateForRecoveryOperationBaseResponse;
@@ -28,7 +30,7 @@ public final class RecoveryPlanActionsValidateForReprotectMockTests {
     @Test
     public void testValidateForReprotect() throws Exception {
         String responseStr
-            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"awetzq\",\"provisioningState\":\"Succeeded\",\"resourceId\":\"wflj\",\"resourceLocation\":\"namtuatmzw\",\"resourcePhysicalZones\":[\"nc\",\"tjzmi\",\"vgbgatzuuvbxng\"],\"inclusionState\":\"Included\",\"needsAttention\":false,\"attentionReasons\":[\"httzlswvajqfutlx\",\"oqza\",\"unwqr\",\"zfrgqhaohcm\"],\"protectionStatus\":\"Unknown\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":false},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"None\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"yryxameblydyv\",\"associatedIdentity\":{\"type\":\"SystemAssigned\"},\"errorDetails\":{}},\"id\":\"ocxnehvsmtodl\",\"name\":\"pyapucygvoav\",\"type\":\"unssxlghieegjl\"},\"operationQualificationDetails\":{\"qualificationState\":\"Unknown\",\"notQualifiedReasons\":[\"aseksgbuxantuyg\",\"hgaqipirpiwrq\"]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"ulopmjnlexwhcb\",\"provisioningState\":\"Canceled\",\"resourceId\":\"k\",\"resourceLocation\":\"hu\",\"resourcePhysicalZones\":[\"rctat\",\"yintqpbrlcy\",\"duczkgof\"],\"inclusionState\":\"Included\",\"needsAttention\":true,\"attentionReasons\":[\"vcrrpcj\",\"tbstvjeaqnrmv\"],\"protectionStatus\":\"Protected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"AzureNative\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"uidvrmazlpdwwex\",\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"errorDetails\":{}},\"id\":\"azipbhpwvqsg\",\"name\":\"yy\",\"type\":\"uzivensrpmeyyvp\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"lbijpzgsksrfhfvo\",\"mknbnxwcdommpv\"]}}]}";
+            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"ivensrpmeyyvpk\",\"provisioningState\":\"Provisioning\",\"resourceId\":\"bijpzgsksrfh\",\"resourceLocation\":\"olmk\",\"resourcePhysicalZones\":[\"xwcdomm\",\"vfqawzfgbrttuiac\",\"kiexhajlfnthiq\"],\"inclusionState\":\"Excluded\",\"needsAttention\":false,\"attentionReasons\":[\"ygbpvnwswmt\",\"k\"],\"protectionStatus\":\"Protected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":false},{\"isAutoFailover\":false},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"CrossZoneVMRecovery\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"cvogygzyvne\",\"associatedIdentity\":{\"type\":\"UserAssigned\"},\"errorDetails\":{}},\"id\":\"gh\",\"name\":\"moqqtlffhzbk\",\"type\":\"kjj\"},\"operationQualificationDetails\":{\"qualificationState\":\"Excluded\",\"notQualifiedReasons\":[\"qnvhnqoe\",\"dogiyetesyp\",\"idbz\",\"jhqt\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"nynkbwet\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"hpsprkzyaupiac\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"afbwqroohtuovmao\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"jtumgh\",\"status\":\"Unavailable\"}]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"ve\",\"provisioningState\":\"NeedsAttention\",\"resourceId\":\"clbl\",\"resourceLocation\":\"xltbsjuscvsf\",\"resourcePhysicalZones\":[\"ctmgxuupbezqccy\",\"rtceukdqkkyihzt\",\"eq\",\"gqzgwldoychill\"],\"inclusionState\":\"Excluded\",\"needsAttention\":false,\"attentionReasons\":[\"waoaguhi\",\"qllizstac\",\"jvhrweft\",\"wqejpmvsse\"],\"protectionStatus\":\"NotProtected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":false},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"CustomRunbook\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"hupeuknijduy\",\"associatedIdentity\":{\"type\":\"None\"},\"errorDetails\":{}},\"id\":\"djfbocyv\",\"name\":\"hulrtywikdmhla\",\"type\":\"uflgbhgauacdixm\"},\"operationQualificationDetails\":{\"qualificationState\":\"Unknown\",\"notQualifiedReasons\":[\"sryjqgdkfno\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"qb\",\"status\":\"NotApplicable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"vefgwbmqjchntas\",\"status\":\"Unavailable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"mx\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"pzealbmqkyojw\",\"status\":\"Unavailable\"}]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"kmbtsuahx\",\"provisioningState\":\"Updating\",\"resourceId\":\"cmmzrrs\",\"resourceLocation\":\"biwsd\",\"resourcePhysicalZones\":[\"xqw\",\"diffjxcjrmmuab\"],\"inclusionState\":\"Included\",\"needsAttention\":false,\"attentionReasons\":[\"jonmc\",\"e\"],\"protectionStatus\":\"Unknown\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"AzureNative\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"ofvfkakpoldtve\",\"associatedIdentity\":{\"type\":\"SystemAssigned\"},\"errorDetails\":{}},\"id\":\"zhzjknyuxg\",\"name\":\"ttxpnrupza\",\"type\":\"mrdixtreki\"},\"operationQualificationDetails\":{\"qualificationState\":\"NotQualified\",\"notQualifiedReasons\":[\"skbruffgllukkut\",\"lxhrp\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"blcouqehbhbcdszi\",\"status\":\"Unavailable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"an\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"pmbltoormkfql\",\"status\":\"NotApplicable\"}]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"dykalsygaolnjpnn\",\"provisioningState\":\"Provisioning\",\"resourceId\":\"sibjgs\",\"resourceLocation\":\"xxahmrnadzyqegxy\",\"resourcePhysicalZones\":[\"inbmh\",\"bjijkgqxnh\",\"bkezn\",\"aujvaa\"],\"inclusionState\":\"Excluded\",\"needsAttention\":false,\"attentionReasons\":[\"wkdtaawxwf\",\"ka\"],\"protectionStatus\":\"NotProtected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"AzureSiteRecovery\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"ratbnxwbjs\",\"associatedIdentity\":{\"type\":\"UserAssigned\"},\"errorDetails\":{}},\"id\":\"kfpksokdgo\",\"name\":\"ewijymrhbguz\",\"type\":\"zkye\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"zhhh\",\"o\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"jkutycyarnr\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"g\",\"status\":\"NotApplicable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"zoghktdpyczhc\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"cnhz\",\"status\":\"NotApplicable\"}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,41 +40,62 @@ public final class RecoveryPlanActionsValidateForReprotectMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidateForRecoveryOperationBaseResponse response = manager.recoveryPlanActions()
-            .validateForReprotect("mnrxxbsojkl", "nhmdptysprqs", "nzxojpslsvjgpli",
+            .validateForReprotect("uczkgofxyfsruc", "crrpcjttbstvje", "qnrmvvfko",
                 new ReprotectRequest().withReprotectRequestProperties(new ReprotectRequestProperties()
-                    .withSelectedResourceIds(Arrays.asList("woyxqvapcohhou", "qpqojxcxzrzd", "gdzbenr"))),
+                    .withSelectedResourceIds(Arrays.asList("hktuidvrma", "lpdwwexymzvlazi", "bhpwvqsgnyy"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("awetzq",
+        Assertions.assertEquals("ivensrpmeyyvpk",
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .recoveryResourceUniqueId());
-        Assertions.assertEquals(ResourceInclusionState.INCLUDED,
+        Assertions.assertEquals(ResourceInclusionState.EXCLUDED,
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().inclusionState());
-        Assertions.assertEquals(ResourceProtectionSolutionType.NONE,
+        Assertions.assertEquals(ResourceProtectionSolutionType.CROSS_ZONE_VMRECOVERY,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .selectedProtectionSolutionType());
-        Assertions.assertEquals("yryxameblydyv",
+        Assertions.assertEquals("cvogygzyvne",
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().recoveryGroupId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .associatedIdentity()
                 .type());
-        Assertions.assertEquals(QualificationState.UNKNOWN,
+        Assertions.assertEquals(QualificationState.EXCLUDED,
             response.recoveryResourceQualifications().get(0).operationQualificationDetails().qualificationState());
-        Assertions.assertEquals("aseksgbuxantuyg",
+        Assertions.assertEquals("qnvhnqoe",
             response.recoveryResourceQualifications()
                 .get(0)
                 .operationQualificationDetails()
                 .notQualifiedReasons()
                 .get(0));
+        Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .feasibilityType());
+        Assertions.assertEquals("nynkbwet",
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .resourceType());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.FLAGGED,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .status());
     }
 }

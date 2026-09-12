@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalTemplatesListSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalTemplates_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalTemplates_List_MaximumSet.
@@ -22,7 +22,7 @@ public final class GoalTemplatesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalTemplates_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalTemplates_List_MinimumSet.

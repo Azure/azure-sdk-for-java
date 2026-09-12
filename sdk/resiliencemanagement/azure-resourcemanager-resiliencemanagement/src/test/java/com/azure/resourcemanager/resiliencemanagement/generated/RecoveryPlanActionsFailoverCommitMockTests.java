@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class RecoveryPlanActionsFailoverCommitMockTests {
     @Test
     public void testFailoverCommit() throws Exception {
-        String responseStr = "{\"jobId\":\"etesypvidbztjhqt\"}";
+        String responseStr = "{\"jobId\":\"utgqztwh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class RecoveryPlanActionsFailoverCommitMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPlanActionBaseResponse response = manager.recoveryPlanActions()
-            .failoverCommit("moqqtlffhzbk", "kjj", "avfqnvhnqoewdogi", com.azure.core.util.Context.NONE);
+            .failoverCommit("jiu", "ehgmvflnwyv", "kxrerlniylylyfwx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("etesypvidbztjhqt", response.jobId());
+        Assertions.assertEquals("utgqztwh", response.jobId());
     }
 }

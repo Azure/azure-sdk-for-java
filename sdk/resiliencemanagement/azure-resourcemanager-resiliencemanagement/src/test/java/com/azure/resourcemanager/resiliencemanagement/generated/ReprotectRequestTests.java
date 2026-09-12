@@ -14,16 +14,16 @@ public final class ReprotectRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReprotectRequest model
-            = BinaryData.fromString("{\"reprotectRequestProperties\":{\"selectedResourceIds\":[\"zfgs\"]}}")
+            = BinaryData.fromString("{\"reprotectRequestProperties\":{\"selectedResourceIds\":[\"lg\"]}}")
                 .toObject(ReprotectRequest.class);
-        Assertions.assertEquals("zfgs", model.reprotectRequestProperties().selectedResourceIds().get(0));
+        Assertions.assertEquals("lg", model.reprotectRequestProperties().selectedResourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReprotectRequest model = new ReprotectRequest().withReprotectRequestProperties(
-            new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("zfgs")));
+            new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("lg")));
         model = BinaryData.fromObject(model).toObject(ReprotectRequest.class);
-        Assertions.assertEquals("zfgs", model.reprotectRequestProperties().selectedResourceIds().get(0));
+        Assertions.assertEquals("lg", model.reprotectRequestProperties().selectedResourceIds().get(0));
     }
 }

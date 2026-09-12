@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.RequirementSelected
  */
 public final class GoalTemplatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalTemplates_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalTemplates_CreateOrUpdate_MinimumSet.
@@ -30,7 +30,7 @@ public final class GoalTemplatesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalTemplates_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalTemplates_CreateOrUpdate_MaximumSet.

@@ -16,36 +16,36 @@ public final class UnifiedResilienceItemListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnifiedResilienceItemListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"goals\":{\"templateId\":\"nzrdpsovwxz\",\"assignmentId\":\"ptgoeiybbabp\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT1H\",\"regionalRecoveryPointObjectiveStatus\":\"NotEvaluated\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryTimeActualInMinutes\":\"PT4H\",\"regionalRecoveryTimeObjectiveStatus\":\"Unhealthy\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"NotSelected\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":4050576157976136041,\"notEnabledResourceCount\":3660133580094068549,\"notEvaluatedResourceCount\":2909010011508190161,\"evaluationDateTime\":\"2021-07-26T11:46:41Z\"}},\"lastModifiedTime\":\"2021-03-21T12:11:25Z\"},\"id\":\"sxwaabzm\",\"name\":\"frygznmmax\",\"type\":\"izkzobgo\"},{\"properties\":{\"provisioningState\":\"Updating\",\"goals\":{\"templateId\":\"slnelx\",\"assignmentId\":\"eixynllxecwcroj\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT24H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryTimeActualInMinutes\":\"PT15M\",\"regionalRecoveryTimeObjectiveStatus\":\"Unhealthy\",\"requireHighAvailability\":\"NotSelected\",\"requireDisasterRecovery\":\"Required\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":2733288522403921236,\"notEnabledResourceCount\":2262259932255792293,\"notEvaluatedResourceCount\":1472225226718696941,\"evaluationDateTime\":\"2021-08-10T05:28:35Z\"}},\"lastModifiedTime\":\"2021-01-27T01:35:25Z\"},\"id\":\"h\",\"name\":\"aglkafhon\",\"type\":\"juj\"}],\"nextLink\":\"ckpzvcpopmxeln\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"goals\":{\"templateId\":\"xyasflvgsgzw\",\"assignmentId\":\"wakoihkn\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT24H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryTimeActualInMinutes\":\"PT4H\",\"regionalRecoveryTimeObjectiveStatus\":\"NotEvaluated\",\"requireHighAvailability\":\"NotSelected\",\"requireDisasterRecovery\":\"NotSelected\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":6462643283553404764,\"notEnabledResourceCount\":5738830187644828205,\"notEvaluatedResourceCount\":3362274562531904097,\"evaluationDateTime\":\"2021-03-01T02:30:44Z\"}},\"lastModifiedTime\":\"2021-10-31T06:49:44Z\"},\"id\":\"xmvwfg\",\"name\":\"ayxonsupeujl\",\"type\":\"qnhcvsqltnzoibg\"},{\"properties\":{\"provisioningState\":\"Provisioning\",\"goals\":{\"templateId\":\"xfyqonmpqoxwdo\",\"assignmentId\":\"dbxiqx\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT4H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT1H\",\"regionalRecoveryTimeActualInMinutes\":\"PT24H\",\"regionalRecoveryTimeObjectiveStatus\":\"Unhealthy\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"NotSelected\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":7408706972331065211,\"notEnabledResourceCount\":6821971010653821674,\"notEvaluatedResourceCount\":6184747778857225079,\"evaluationDateTime\":\"2021-06-10T04:43:01Z\"}},\"lastModifiedTime\":\"2021-05-06T06:02:30Z\"},\"id\":\"embnkbw\",\"name\":\"qvxkd\",\"type\":\"vqihebwtswbzuwf\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"goals\":{\"templateId\":\"agegiz\",\"assignmentId\":\"cjfelisdjubgg\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT24H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT1H\",\"regionalRecoveryTimeActualInMinutes\":\"PT1H\",\"regionalRecoveryTimeObjectiveStatus\":\"Healthy\",\"requireHighAvailability\":\"Required\",\"requireDisasterRecovery\":\"NotSelected\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":2961655587829999940,\"notEnabledResourceCount\":1058435758897538488,\"notEvaluatedResourceCount\":6496361123354645182,\"evaluationDateTime\":\"2021-09-10T16:15:02Z\"}},\"lastModifiedTime\":\"2021-01-21T21:08:17Z\"},\"id\":\"apvu\",\"name\":\"rylniofrzg\",\"type\":\"zjedmstkvnlv\"},{\"properties\":{\"provisioningState\":\"NeedsAttention\",\"goals\":{\"templateId\":\"iiznktwfan\",\"assignmentId\":\"nv\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT15M\",\"regionalRecoveryPointObjectiveStatus\":\"Healthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryTimeActualInMinutes\":\"PT24H\",\"regionalRecoveryTimeObjectiveStatus\":\"NotEvaluated\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"NotRequired\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":4996484199520117910,\"notEnabledResourceCount\":201396794516817899,\"notEvaluatedResourceCount\":3178116527930737291,\"evaluationDateTime\":\"2021-09-20T16:21:19Z\"}},\"lastModifiedTime\":\"2021-01-14T02:57:15Z\"},\"id\":\"sgcrpfbcunezzce\",\"name\":\"elfwy\",\"type\":\"wl\"}],\"nextLink\":\"jwetnpsihcla\"}")
             .toObject(UnifiedResilienceItemListResult.class);
-        Assertions.assertEquals("nzrdpsovwxz", model.value().get(0).properties().goals().templateId());
-        Assertions.assertEquals("ptgoeiybbabp", model.value().get(0).properties().goals().assignmentId());
-        Assertions.assertEquals(IsoDuration.PT15M,
-            model.value().get(0).properties().goals().regionalRecoveryPointObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT1H,
-            model.value().get(0).properties().goals().regionalRecoveryPointEstimatedInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.NOT_EVALUATED,
-            model.value().get(0).properties().goals().regionalRecoveryPointObjectiveStatus());
+        Assertions.assertEquals("xyasflvgsgzw", model.value().get(0).properties().goals().templateId());
+        Assertions.assertEquals("wakoihkn", model.value().get(0).properties().goals().assignmentId());
         Assertions.assertEquals(IsoDuration.PT4H,
+            model.value().get(0).properties().goals().regionalRecoveryPointObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT24H,
+            model.value().get(0).properties().goals().regionalRecoveryPointEstimatedInMinutes());
+        Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY,
+            model.value().get(0).properties().goals().regionalRecoveryPointObjectiveStatus());
+        Assertions.assertEquals(IsoDuration.PT24H,
             model.value().get(0).properties().goals().regionalRecoveryTimeObjectiveInMinutes());
         Assertions.assertEquals(IsoDuration.PT4H,
             model.value().get(0).properties().goals().regionalRecoveryTimeActualInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY,
+        Assertions.assertEquals(ResilienceHealthStatus.NOT_EVALUATED,
             model.value().get(0).properties().goals().regionalRecoveryTimeObjectiveStatus());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED,
+        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_SELECTED,
             model.value().get(0).properties().goals().requireHighAvailability());
         Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_SELECTED,
             model.value().get(0).properties().goals().requireDisasterRecovery());
-        Assertions.assertEquals(4050576157976136041L,
+        Assertions.assertEquals(6462643283553404764L,
             model.value().get(0).properties().recommendations().highAvailability().enabledResourceCount());
-        Assertions.assertEquals(3660133580094068549L,
+        Assertions.assertEquals(5738830187644828205L,
             model.value().get(0).properties().recommendations().highAvailability().notEnabledResourceCount());
-        Assertions.assertEquals(2909010011508190161L,
+        Assertions.assertEquals(3362274562531904097L,
             model.value().get(0).properties().recommendations().highAvailability().notEvaluatedResourceCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T11:46:41Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T02:30:44Z"),
             model.value().get(0).properties().recommendations().highAvailability().evaluationDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T12:11:25Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T06:49:44Z"),
             model.value().get(0).properties().lastModifiedTime());
-        Assertions.assertEquals("ckpzvcpopmxeln", model.nextLink());
+        Assertions.assertEquals("jwetnpsihcla", model.nextLink());
     }
 }

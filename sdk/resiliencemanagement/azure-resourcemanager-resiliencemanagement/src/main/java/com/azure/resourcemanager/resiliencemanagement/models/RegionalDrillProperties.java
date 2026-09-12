@@ -87,6 +87,25 @@ public final class RegionalDrillProperties extends DrillProperties {
      * {@inheritDoc}
      */
     @Override
+    public RegionalDrillProperties
+        withHealthModelMonitoringProperties(HealthModelMonitoringProperties healthModelMonitoringProperties) {
+        super.withHealthModelMonitoringProperties(healthModelMonitoringProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RegionalDrillProperties withSliMonitoringProperties(SliMonitoringProperties sliMonitoringProperties) {
+        super.withSliMonitoringProperties(sliMonitoringProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recoveryPlanProperties", recoveryPlanProperties());
@@ -94,6 +113,8 @@ public final class RegionalDrillProperties extends DrillProperties {
         jsonWriter.writeJsonField("chaosResourceProperties", chaosResourceProperties());
         jsonWriter.writeStringField("rbacSetupMode", rbacSetupMode() == null ? null : rbacSetupMode().toString());
         jsonWriter.writeJsonField("monitoringProperties", monitoringProperties());
+        jsonWriter.writeJsonField("healthModelMonitoringProperties", healthModelMonitoringProperties());
+        jsonWriter.writeJsonField("sliMonitoringProperties", sliMonitoringProperties());
         jsonWriter.writeStringField("drillType", this.drillType == null ? null : this.drillType.toString());
         return jsonWriter.writeEndObject();
     }
@@ -150,6 +171,12 @@ public final class RegionalDrillProperties extends DrillProperties {
                 } else if ("monitoringProperties".equals(fieldName)) {
                     deserializedRegionalDrillProperties
                         .withMonitoringProperties(MonitoringPropertiesOfDrill.fromJson(reader));
+                } else if ("healthModelMonitoringProperties".equals(fieldName)) {
+                    deserializedRegionalDrillProperties
+                        .withHealthModelMonitoringProperties(HealthModelMonitoringProperties.fromJson(reader));
+                } else if ("sliMonitoringProperties".equals(fieldName)) {
+                    deserializedRegionalDrillProperties
+                        .withSliMonitoringProperties(SliMonitoringProperties.fromJson(reader));
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedRegionalDrillProperties.withErrorDetails(ManagementError.fromJson(reader));
                 } else if ("drillType".equals(fieldName)) {

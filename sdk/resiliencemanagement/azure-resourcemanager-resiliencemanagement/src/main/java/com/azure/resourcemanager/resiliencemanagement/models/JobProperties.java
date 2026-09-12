@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunPropertiesInner;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -381,7 +382,7 @@ public class JobProperties implements JsonSerializable<JobProperties> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("DrillRun".equals(discriminatorValue)) {
-                    return DrillRunProperties.fromJson(readerToUse.reset());
+                    return DrillRunPropertiesInner.fromJson(readerToUse.reset());
                 } else if ("RecoveryPlan".equals(discriminatorValue)) {
                     return RecoveryJobProperties.fromJson(readerToUse.reset());
                 } else {

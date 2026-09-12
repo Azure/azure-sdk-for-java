@@ -14,9 +14,9 @@ public final class SupportedVerbsForStageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedVerbsForStage model
-            = BinaryData.fromString("{\"drillRunStage\":\"ReprotectReverse\",\"supportedVerbs\":[\"Start\",\"Start\"]}")
+            = BinaryData.fromString("{\"drillRunStage\":\"ReprotectReverse\",\"supportedVerbs\":[\"Retry\",\"Retry\"]}")
                 .toObject(SupportedVerbsForStage.class);
         Assertions.assertEquals(DrillRunSubtasks.REPROTECT_REVERSE, model.drillRunStage());
-        Assertions.assertEquals(DrillRunOperationVerbs.START, model.supportedVerbs().get(0));
+        Assertions.assertEquals(DrillRunOperationVerbs.RETRY, model.supportedVerbs().get(0));
     }
 }

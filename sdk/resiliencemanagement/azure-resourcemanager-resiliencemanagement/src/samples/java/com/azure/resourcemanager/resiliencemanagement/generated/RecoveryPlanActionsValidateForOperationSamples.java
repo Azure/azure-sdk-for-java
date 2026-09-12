@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.ValidateForOperatio
  */
 public final class RecoveryPlanActionsValidateForOperationSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForOperation_MaximumSet.

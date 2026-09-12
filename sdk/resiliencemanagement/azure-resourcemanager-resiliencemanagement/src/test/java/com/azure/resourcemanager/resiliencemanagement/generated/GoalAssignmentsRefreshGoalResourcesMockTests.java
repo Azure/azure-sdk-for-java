@@ -28,7 +28,7 @@ public final class GoalAssignmentsRefreshGoalResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.goalAssignments()
-            .refreshGoalResources("hkwfbkgozxwop", "bydpizqaclnapxb", com.azure.core.util.Context.NONE);
+            .refreshGoalResources("fhnykzcugs", "vxwlmzqwmvtxnj", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateForExecutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateForExecutionProperties model = BinaryData
-            .fromString("{\"operationName\":\"ReprotectReverse\",\"sourceLocations\":[\"hminyflnorwmduv\"]}")
-            .toObject(ValidateForExecutionProperties.class);
-        Assertions.assertEquals(DrillRunTasks.REPROTECT_REVERSE, model.operationName());
-        Assertions.assertEquals("hminyflnorwmduv", model.sourceLocations().get(0));
+        ValidateForExecutionProperties model
+            = BinaryData.fromString("{\"operationName\":\"Failover\",\"sourceLocations\":[\"y\",\"vpo\"]}")
+                .toObject(ValidateForExecutionProperties.class);
+        Assertions.assertEquals(DrillRunTasks.FAILOVER, model.operationName());
+        Assertions.assertEquals("y", model.sourceLocations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidateForExecutionProperties model
-            = new ValidateForExecutionProperties().withOperationName(DrillRunTasks.REPROTECT_REVERSE)
-                .withSourceLocations(Arrays.asList("hminyflnorwmduv"));
+            = new ValidateForExecutionProperties().withOperationName(DrillRunTasks.FAILOVER)
+                .withSourceLocations(Arrays.asList("y", "vpo"));
         model = BinaryData.fromObject(model).toObject(ValidateForExecutionProperties.class);
-        Assertions.assertEquals(DrillRunTasks.REPROTECT_REVERSE, model.operationName());
-        Assertions.assertEquals("hminyflnorwmduv", model.sourceLocations().get(0));
+        Assertions.assertEquals(DrillRunTasks.FAILOVER, model.operationName());
+        Assertions.assertEquals("y", model.sourceLocations().get(0));
     }
 }
