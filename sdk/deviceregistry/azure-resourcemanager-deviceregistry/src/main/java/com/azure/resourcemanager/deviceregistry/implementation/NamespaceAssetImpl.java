@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceAssetInner;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAsset;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetExecuteActionRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdate;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdateProperties;
@@ -154,6 +155,14 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
             .getWithResponse(resourceGroupName, namespaceName, assetName, context)
             .getValue();
         return this;
+    }
+
+    public void executeAction(NamespaceAssetExecuteActionRequest body) {
+        serviceManager.namespaceAssets().executeAction(resourceGroupName, namespaceName, assetName, body);
+    }
+
+    public void executeAction(NamespaceAssetExecuteActionRequest body, Context context) {
+        serviceManager.namespaceAssets().executeAction(resourceGroupName, namespaceName, assetName, body, context);
     }
 
     public NamespaceAssetImpl withRegion(Region location) {

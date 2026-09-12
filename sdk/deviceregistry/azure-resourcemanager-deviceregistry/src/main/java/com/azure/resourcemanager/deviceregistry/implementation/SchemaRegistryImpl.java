@@ -8,11 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.SchemaRegistryInner;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryProperties;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryUpdate;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryUpdateProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -50,7 +50,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
         return this.innerModel().properties();
     }
 
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -177,7 +177,7 @@ public final class SchemaRegistryImpl implements SchemaRegistry, SchemaRegistry.
         return this;
     }
 
-    public SchemaRegistryImpl withIdentity(SystemAssignedServiceIdentity identity) {
+    public SchemaRegistryImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;

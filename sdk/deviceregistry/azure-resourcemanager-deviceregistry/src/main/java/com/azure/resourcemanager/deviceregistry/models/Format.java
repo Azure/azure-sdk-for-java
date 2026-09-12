@@ -22,6 +22,11 @@ public final class Format extends ExpandableStringEnum<Format> {
     public static final Format DELTA_1_0 = fromString("Delta/1.0");
 
     /**
+     * W3C Web of Things JSON-LD format.
+     */
+    public static final Format JSON_LD_1_1 = fromString("JsonLD/1.1");
+
+    /**
      * Creates a new instance of Format value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

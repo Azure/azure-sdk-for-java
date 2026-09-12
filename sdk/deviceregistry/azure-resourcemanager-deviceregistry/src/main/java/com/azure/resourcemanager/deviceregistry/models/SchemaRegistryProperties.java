@@ -42,6 +42,12 @@ public final class SchemaRegistryProperties implements JsonSerializable<SchemaRe
     private String storageAccountContainerUrl;
 
     /*
+     * The identity used for outbound calls from the ADR schema registry. If not specified and the schema registry has a
+     * system-assigned identity enabled, the system-assigned identity is used by default.
+     */
+    private OutboundIdentity outboundIdentity;
+
+    /*
      * Provisioning state of the resource.
      */
     private ProvisioningState provisioningState;
@@ -142,6 +148,30 @@ public final class SchemaRegistryProperties implements JsonSerializable<SchemaRe
     }
 
     /**
+     * Get the outboundIdentity property: The identity used for outbound calls from the ADR schema registry. If not
+     * specified and the schema registry has a system-assigned identity enabled, the system-assigned identity is used by
+     * default.
+     * 
+     * @return the outboundIdentity value.
+     */
+    public OutboundIdentity outboundIdentity() {
+        return this.outboundIdentity;
+    }
+
+    /**
+     * Set the outboundIdentity property: The identity used for outbound calls from the ADR schema registry. If not
+     * specified and the schema registry has a system-assigned identity enabled, the system-assigned identity is used by
+     * default.
+     * 
+     * @param outboundIdentity the outboundIdentity value to set.
+     * @return the SchemaRegistryProperties object itself.
+     */
+    public SchemaRegistryProperties withOutboundIdentity(OutboundIdentity outboundIdentity) {
+        this.outboundIdentity = outboundIdentity;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
@@ -160,6 +190,7 @@ public final class SchemaRegistryProperties implements JsonSerializable<SchemaRe
         jsonWriter.writeStringField("storageAccountContainerUrl", this.storageAccountContainerUrl);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("outboundIdentity", this.outboundIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,6 +220,8 @@ public final class SchemaRegistryProperties implements JsonSerializable<SchemaRe
                     deserializedSchemaRegistryProperties.displayName = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedSchemaRegistryProperties.description = reader.getString();
+                } else if ("outboundIdentity".equals(fieldName)) {
+                    deserializedSchemaRegistryProperties.outboundIdentity = OutboundIdentity.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSchemaRegistryProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

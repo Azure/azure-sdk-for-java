@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NamespaceMigrateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamespaceMigrateRequest model = BinaryData
-            .fromString(
-                "{\"scope\":\"Resources\",\"resourceIds\":[\"oxgvclt\",\"gsncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"]}")
+        NamespaceMigrateRequest model = BinaryData.fromString(
+            "{\"scope\":\"Resources\",\"resourceIds\":[\"rbnlankxmyskp\",\"henbtkcxywnytn\",\"synlqidybyxczfc\",\"haaxdbabphl\"]}")
             .toObject(NamespaceMigrateRequest.class);
         Assertions.assertEquals(Scope.RESOURCES, model.scope());
-        Assertions.assertEquals("oxgvclt", model.resourceIds().get(0));
+        Assertions.assertEquals("rbnlankxmyskp", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamespaceMigrateRequest model = new NamespaceMigrateRequest().withScope(Scope.RESOURCES)
-            .withResourceIds(Arrays.asList("oxgvclt", "gsncghkjeszz", "bijhtxfvgxbf", "mxnehmp"));
+            .withResourceIds(Arrays.asList("rbnlankxmyskp", "henbtkcxywnytn", "synlqidybyxczfc", "haaxdbabphl"));
         model = BinaryData.fromObject(model).toObject(NamespaceMigrateRequest.class);
         Assertions.assertEquals(Scope.RESOURCES, model.scope());
-        Assertions.assertEquals("oxgvclt", model.resourceIds().get(0));
+        Assertions.assertEquals("rbnlankxmyskp", model.resourceIds().get(0));
     }
 }
