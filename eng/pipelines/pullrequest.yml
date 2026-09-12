@@ -5,13 +5,12 @@ pr:
     - feature/*
     - hotfix/*
     - release/*
-    - restapi*
-    - pipelinev3*
   paths:
     include:
       - "*"
     exclude:
       - .github/skills/azsdk-common-*/**
+      - docs/**
 
 parameters:
   - name: Service
@@ -49,9 +48,9 @@ extends:
     # This is Necessary since FromSource runs hover around 60,
     # which is the default, and intermittently time out.
     TimeoutInMinutes: 90
-    # See pr->paths->exclude comment above. Anything added/removed there
-    # needs to be added/removed here.
+    # Keep the docs path synchronized with pr.paths.exclude above.
     ExcludePaths:
+    - docs/
     - eng/versioning/external_dependencies.txt
     - eng/versioning/version_client.txt
     - eng/versioning/version_java_files.txt
