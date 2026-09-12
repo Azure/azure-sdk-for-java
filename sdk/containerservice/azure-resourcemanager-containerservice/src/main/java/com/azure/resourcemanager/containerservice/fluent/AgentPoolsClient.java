@@ -18,6 +18,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PoolBootstrapDataInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolUpdate;
 import com.azure.resourcemanager.containerservice.models.ListBootstrapDataRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -992,6 +993,166 @@ public interface AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName, String agentPoolName,
         ListBootstrapDataRequest body);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolUpdate parameters, String ifMatch);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters, String ifMatch);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolUpdate parameters);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolUpdate parameters);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolUpdate parameters, String ifMatch, Context context);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AgentPoolInner> updateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters, String ifMatch);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AgentPoolInner> updateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentPoolInner update(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters);
+
+    /**
+     * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for
+     * more information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentPoolInner update(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolUpdate parameters, String ifMatch, Context context);
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.

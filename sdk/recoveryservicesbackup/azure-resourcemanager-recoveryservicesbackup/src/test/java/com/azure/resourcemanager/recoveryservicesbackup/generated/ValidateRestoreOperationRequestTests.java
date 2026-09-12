@@ -14,16 +14,16 @@ public final class ValidateRestoreOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateRestoreOperationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"ValidateRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"pdsxzakuejkm\"]}}")
+            "{\"objectType\":\"ValidateRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"jlfyou\",\"pckyec\",\"cdigpt\"]}}")
             .toObject(ValidateRestoreOperationRequest.class);
-        Assertions.assertEquals("pdsxzakuejkm", model.restoreRequest().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jlfyou", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateRestoreOperationRequest model = new ValidateRestoreOperationRequest()
-            .withRestoreRequest(new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("pdsxzakuejkm")));
+        ValidateRestoreOperationRequest model = new ValidateRestoreOperationRequest().withRestoreRequest(
+            new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("jlfyou", "pckyec", "cdigpt")));
         model = BinaryData.fromObject(model).toObject(ValidateRestoreOperationRequest.class);
-        Assertions.assertEquals("pdsxzakuejkm", model.restoreRequest().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jlfyou", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 }

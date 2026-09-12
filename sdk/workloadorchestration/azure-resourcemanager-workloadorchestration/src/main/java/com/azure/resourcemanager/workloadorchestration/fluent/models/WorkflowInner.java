@@ -25,7 +25,7 @@ public final class WorkflowInner extends ProxyResource {
     private WorkflowProperties properties;
 
     /*
-     * The extendedLocation property.
+     * The extended location of the resource.
      */
     private ExtendedLocation extendedLocation;
 
@@ -84,7 +84,7 @@ public final class WorkflowInner extends ProxyResource {
     }
 
     /**
-     * Get the extendedLocation property: The extendedLocation property.
+     * Get the extendedLocation property: The extended location of the resource.
      * 
      * @return the extendedLocation value.
      */
@@ -93,7 +93,7 @@ public final class WorkflowInner extends ProxyResource {
     }
 
     /**
-     * Set the extendedLocation property: The extendedLocation property.
+     * Set the extendedLocation property: The extended location of the resource.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the WorkflowInner object itself.

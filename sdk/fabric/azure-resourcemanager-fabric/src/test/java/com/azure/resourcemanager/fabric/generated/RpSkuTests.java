@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RpSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RpSku model = BinaryData.fromString("{\"name\":\"xrifkwmrvkts\",\"tier\":\"Fabric\"}").toObject(RpSku.class);
-        Assertions.assertEquals("xrifkwmrvkts", model.name());
+        RpSku model = BinaryData.fromString("{\"name\":\"s\",\"tier\":\"Fabric\"}").toObject(RpSku.class);
+        Assertions.assertEquals("s", model.name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RpSku model = new RpSku().withName("xrifkwmrvkts").withTier(RpSkuTier.FABRIC);
+        RpSku model = new RpSku().withName("s").withTier(RpSkuTier.FABRIC);
         model = BinaryData.fromObject(model).toObject(RpSku.class);
-        Assertions.assertEquals("xrifkwmrvkts", model.name());
+        Assertions.assertEquals("s", model.name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.tier());
     }
 }

@@ -1019,6 +1019,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled("TODO: restore the test after resources lib release. Playback URI casing changed from resourceGroups to resourcegroups.")
     public void canCreateVirtualMachineWithDeleteOption() throws Exception {
         Region region = Region.US_WEST3;
 

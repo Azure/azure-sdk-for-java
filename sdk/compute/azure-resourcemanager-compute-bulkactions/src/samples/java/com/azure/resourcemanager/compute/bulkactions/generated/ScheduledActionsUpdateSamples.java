@@ -9,13 +9,13 @@ import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
 import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdateProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsScheduleUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Update_MaximumSet.
@@ -40,26 +40,27 @@ public final class ScheduledActionsUpdateSamples {
         manager.scheduledActions()
             .update("rgcompute", "myScheduledAction",
                 new ScheduledActionUpdate().withTags(mapOf("key9989", "fakeTokenPlaceholder"))
-                    .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                        .withActionType(ScheduledActionType.START)
-                        .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                        .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("19:00:00")
-                            .withTimeZone("America/Los_Angeles")
-                            .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
-                            .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                            .withExecutionParameters(new RecurringScheduledActionsExecutionParameters()
-                                .withOptimizationPreference(OptimizationPreference.COST)
-                                .withRetryPolicy(new RecurringScheduledActionsRetryPolicy().withRetryCount(17)
-                                    .withRetryWindowInMinutes(29)))
-                            .withDeadlineType(RecurringScheduledActionsDeadlineType.UNKNOWN))
-                        .withNotificationSettings(
-                            Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true)))
-                        .withDisabled(true)),
+                    .withProperties(
+                        new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                            .withActionType(ScheduledActionType.START)
+                            .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
+                            .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
+                            .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("19:00:00")
+                                .withTimeZone("America/Los_Angeles")
+                                .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
+                                .withRequestedMonths(Arrays.asList(Month.JANUARY))
+                                .withRequestedDaysOfTheMonth(Arrays.asList(15))
+                                .withExecutionParameters(new ScheduledActionsExecutionParameters()
+                                    .withOptimizationPreference(OptimizationPreference.COST)
+                                    .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(17)
+                                        .withRetryWindowInMinutes(29)))
+                                .withDeadlineType(ScheduledActionsDeadlineType.UNKNOWN))
+                            .withNotificationSettings(
+                                Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                                    .withType(NotificationType.EMAIL)
+                                    .withLanguage(Language.EN_US)
+                                    .withDisabled(true)))
+                            .withDisabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 

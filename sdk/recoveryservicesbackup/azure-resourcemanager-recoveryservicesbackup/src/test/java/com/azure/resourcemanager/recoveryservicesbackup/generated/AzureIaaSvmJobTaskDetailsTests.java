@@ -14,15 +14,15 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"psfxsf\",\"startTime\":\"2021-06-27T03:41:35Z\",\"endTime\":\"2021-07-16T14:55:45Z\",\"instanceId\":\"mvagbwidqlvhuko\",\"duration\":\"PT100H15M24S\",\"status\":\"i\",\"progressPercentage\":21.16068549152601,\"taskExecutionDetails\":\"nmjmvlwyzgiblk\"}")
+            "{\"taskId\":\"y\",\"startTime\":\"2021-08-09T07:54:10Z\",\"endTime\":\"2021-02-03T10:01:03Z\",\"instanceId\":\"nqcymczngnbdxxew\",\"duration\":\"PT121H51M33S\",\"status\":\"vudb\",\"progressPercentage\":98.9480135905309,\"taskExecutionDetails\":\"tvq\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("psfxsf", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T03:41:35Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T14:55:45Z"), model.endTime());
-        Assertions.assertEquals("mvagbwidqlvhuko", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT100H15M24S"), model.duration());
-        Assertions.assertEquals("i", model.status());
-        Assertions.assertEquals(21.16068549152601D, model.progressPercentage());
-        Assertions.assertEquals("nmjmvlwyzgiblk", model.taskExecutionDetails());
+        Assertions.assertEquals("y", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T07:54:10Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T10:01:03Z"), model.endTime());
+        Assertions.assertEquals("nqcymczngnbdxxew", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT121H51M33S"), model.duration());
+        Assertions.assertEquals("vudb", model.status());
+        Assertions.assertEquals(98.9480135905309D, model.progressPercentage());
+        Assertions.assertEquals("tvq", model.taskExecutionDetails());
     }
 }

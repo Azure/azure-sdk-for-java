@@ -25,7 +25,7 @@ public final class ResourceGuardsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"qxtbjwgnyf\",\"requestResourceType\":\"fzsvtuikzh\"}],\"vaultCriticalOperationExclusionList\":[\"glcfhmlrqryxyn\",\"nzrdpsovwxz\",\"ptgoeiybbabp\",\"hv\"],\"description\":\"lkvn\"},\"eTag\":\"lrigjkskyri\",\"location\":\"vzidsxwaab\",\"tags\":{\"izkzobgo\":\"frygznmmax\",\"ieixynllxe\":\"xlhslnel\"},\"id\":\"wcrojphslhcaw\",\"name\":\"u\",\"type\":\"i\"}";
+            = "{\"properties\":{\"provisioningState\":\"Unknown\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"hajqglcfh\",\"requestResourceType\":\"rqryxynqn\"},{\"vaultCriticalOperation\":\"dpsovwxznptgo\",\"requestResourceType\":\"ybbabpfhvfsl\"},{\"vaultCriticalOperation\":\"ntjlr\",\"requestResourceType\":\"jkskyr\"}],\"vaultCriticalOperationExclusionList\":[\"vzidsxwaab\",\"mifrygznmma\"],\"description\":\"izkzobgo\"},\"eTag\":\"lhslnelxieixyn\",\"location\":\"xecwcro\",\"tags\":{\"fmvigorqjbttzh\":\"slhcawjutifd\",\"juj\":\"aglkafhon\"},\"id\":\"ickpz\",\"name\":\"cpopmxel\",\"type\":\"wcltyjede\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,19 @@ public final class ResourceGuardsPutWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardResource response = manager.resourceGuards()
-            .define("mo")
-            .withRegion("rrqwexjk")
-            .withExistingResourceGroup("yurmochpprprs")
-            .withTags(mapOf("btqwpwyawbzas", "apjwogqqnobpudcd"))
-            .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("ndbnwieh")))
-            .withEtag("qsfapaqt")
+            .define("eln")
+            .withRegion("udcdabtqwpwyawb")
+            .withExistingResourceGroup("jptmcgsbost")
+            .withTags(mapOf("i", "qbucljgkyexaoguy", "ault", "ids"))
+            .withProperties(
+                new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("uubw", "fqsfa", "aqtferr")))
+            .withEtag("mfxapjwogqqno")
             .create();
 
-        Assertions.assertEquals("vzidsxwaab", response.location());
-        Assertions.assertEquals("frygznmmax", response.tags().get("izkzobgo"));
-        Assertions.assertEquals("glcfhmlrqryxyn", response.properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("lrigjkskyri", response.etag());
+        Assertions.assertEquals("xecwcro", response.location());
+        Assertions.assertEquals("slhcawjutifd", response.tags().get("fmvigorqjbttzh"));
+        Assertions.assertEquals("vzidsxwaab", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("lhslnelxieixyn", response.etag());
     }
 
     // Use "Map.of" if available

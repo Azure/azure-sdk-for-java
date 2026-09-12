@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -46,7 +47,7 @@ public class ConfidentialLedgerClientSample {
 
             ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
                         .httpClient(httpClient)
                         .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();

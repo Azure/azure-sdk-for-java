@@ -136,13 +136,12 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             Exception loadException = loadConfiguration(sourceList);
             if (loadException != null) {
                 if (resource.isRefresh()) {
-                    logger.warn("Azure App Configuration failed during refresh for store: "
-                        + resource.getEndpoint() + ". Continuing with existing configuration.");
-                } else {
-                    logger.error("Azure App Configuration failed to load configuration during startup for store: "
-                        + resource.getEndpoint() + ". Application cannot start without required configuration.");
-                    failedToGeneratePropertySource(loadException);
+                    throw new RuntimeException(
+                        "Failed to refresh property sources for " + resource.getEndpoint(), loadException);
                 }
+                logger.error("Azure App Configuration failed to load configuration during startup for store: "
+                    + resource.getEndpoint() + ". Application cannot start without required configuration.");
+                failedToGeneratePropertySource(loadException);
             }
         }
 

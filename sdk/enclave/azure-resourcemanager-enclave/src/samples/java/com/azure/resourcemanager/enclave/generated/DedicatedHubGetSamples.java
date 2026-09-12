@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class DedicatedHubGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_Get.json
+     * x-ms-original-file: 2026-04-01/DedicatedHubs_Get.json
      */
     /**
      * Sample code: DedicatedHub_Get.

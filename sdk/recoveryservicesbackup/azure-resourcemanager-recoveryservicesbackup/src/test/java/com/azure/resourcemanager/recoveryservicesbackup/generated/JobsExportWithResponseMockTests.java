@@ -27,7 +27,7 @@ public final class JobsExportWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.jobs().exportWithResponse("amppultassaekewn", "zeajbk", "jlcyizy", com.azure.core.util.Context.NONE);
+        manager.jobs().exportWithResponse("gawgazmxjqi", "h", "jjsbcmlzaahzbhur", com.azure.core.util.Context.NONE);
 
     }
 }

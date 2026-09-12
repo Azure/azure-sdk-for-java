@@ -59,7 +59,7 @@ public final class ScheduledActionsExtensionProperties
     /*
      * The status of the last provisioning operation performed on the resource.
      */
-    private RecurringScheduledActionsProvisioningState provisioningState;
+    private ScheduledActionsProvisioningState provisioningState;
 
     /*
      * The notification settings for the scheduled action at a resource level. Resource level notification settings are
@@ -141,7 +141,7 @@ public final class ScheduledActionsExtensionProperties
      * 
      * @return the provisioningState value.
      */
-    public RecurringScheduledActionsProvisioningState provisioningState() {
+    public ScheduledActionsProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -216,7 +216,7 @@ public final class ScheduledActionsExtensionProperties
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedScheduledActionsExtensionProperties.provisioningState
-                        = RecurringScheduledActionsProvisioningState.fromString(reader.getString());
+                        = ScheduledActionsProvisioningState.fromString(reader.getString());
                 } else if ("resourceNotificationSettings".equals(fieldName)) {
                     List<NotificationProperties> resourceNotificationSettings
                         = reader.readArray(reader1 -> NotificationProperties.fromJson(reader1));

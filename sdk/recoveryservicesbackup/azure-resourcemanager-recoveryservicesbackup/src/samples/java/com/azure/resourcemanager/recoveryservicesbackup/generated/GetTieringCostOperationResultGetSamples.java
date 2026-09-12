@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class GetTieringCostOperationResultGetSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/TieringCost/GetTieringCostOperationResult.json
+     * x-ms-original-file: 2026-08-01/TieringCost/GetTieringCostOperationResult.json
      */
     /**
      * Sample code: Fetch Tiering Cost Operation Result.

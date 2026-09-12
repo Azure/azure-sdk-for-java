@@ -25,7 +25,7 @@ public final class BackupProtectedItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"Invalid\",\"workloadType\":\"GenericDataSource\",\"containerName\":\"obygoo\",\"sourceResourceId\":\"qa\",\"policyId\":\"xv\",\"lastRecoveryPoint\":\"2021-10-26T16:17:33Z\",\"backupSetName\":\"fucsaodjnosdkvi\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-06-08T21:08:28Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"rnzpducdaak\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"oimyfpqd\"],\"isArchiveEnabled\":false,\"policyName\":\"pnw\",\"softDeleteRetentionPeriodInDays\":907870780,\"vaultId\":\"vpctfj\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"Configured\",\"sourceSideScanSummary\":\"NotApplicable\"}},\"tags\":{\"ejjk\":\"uhznwhvuldbk\",\"azmxjqi\":\"igaw\",\"jjsbcmlzaahzbhur\":\"h\",\"lirh\":\"olk\"},\"location\":\"ojusuzgfjzcva\",\"eTag\":\"oialahfxwccokdx\",\"id\":\"kmkcz\",\"name\":\"nuhhoqeqshav\",\"type\":\"jqkx\"}]}";
+            = "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"MAB\",\"workloadType\":\"VM\",\"containerName\":\"lahfxwccokdxk\",\"sourceResourceId\":\"mkczynuhhoqe\",\"policyId\":\"havl\",\"lastRecoveryPoint\":\"2021-10-11T04:07:20Z\",\"backupSetName\":\"yrqolnthbbnkgz\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-01-24T18:32:45Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"jthfceyjnc\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"jbpfiddh\",\"rufzcqyjmq\",\"fuiocuselq\",\"rsazrhxud\"],\"isArchiveEnabled\":false,\"policyName\":\"tffisjmr\",\"softDeleteRetentionPeriodInDays\":1669709441,\"sourceLocation\":\"wdmdlgyqixokwt\",\"vaultId\":\"whvagnqfq\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"ConfigurationFailed\",\"sourceSideScanSummary\":\"Healthy\"}},\"tags\":{\"n\":\"lcaymjchtv\",\"z\":\"laqd\",\"othymgobl\":\"zawatuwqkokbc\",\"gwi\":\"msn\"},\"location\":\"an\",\"eTag\":\"khtmhobcyanrfv\",\"id\":\"vkhgv\",\"name\":\"ogxkfnaoa\",\"type\":\"ymhcctopuo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,33 +34,33 @@ public final class BackupProtectedItemsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ProtectedItemResource> response = manager.backupProtectedItems()
-            .list("dcvxodkrvfsxxby", "e", "qlvge", "pwgoljt", com.azure.core.util.Context.NONE);
+        PagedIterable<ProtectedItemResource> response
+            = manager.backupProtectedItems().list("olk", "lirh", "mojusuz", "fjzc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("obygoo", response.iterator().next().properties().containerName());
-        Assertions.assertEquals("qa", response.iterator().next().properties().sourceResourceId());
-        Assertions.assertEquals("xv", response.iterator().next().properties().policyId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T16:17:33Z"),
+        Assertions.assertEquals("lahfxwccokdxk", response.iterator().next().properties().containerName());
+        Assertions.assertEquals("mkczynuhhoqe", response.iterator().next().properties().sourceResourceId());
+        Assertions.assertEquals("havl", response.iterator().next().properties().policyId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T04:07:20Z"),
             response.iterator().next().properties().lastRecoveryPoint());
-        Assertions.assertEquals("fucsaodjnosdkvi", response.iterator().next().properties().backupSetName());
-        Assertions.assertEquals(CreateMode.RECOVER, response.iterator().next().properties().createMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T21:08:28Z"),
+        Assertions.assertEquals("yrqolnthbbnkgz", response.iterator().next().properties().backupSetName());
+        Assertions.assertEquals(CreateMode.INVALID, response.iterator().next().properties().createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T18:32:45Z"),
             response.iterator().next().properties().deferredDeleteTimeInUtc());
         Assertions.assertTrue(response.iterator().next().properties().isScheduledForDeferredDelete());
-        Assertions.assertEquals("rnzpducdaak", response.iterator().next().properties().deferredDeleteTimeRemaining());
+        Assertions.assertEquals("jthfceyjnc", response.iterator().next().properties().deferredDeleteTimeRemaining());
         Assertions.assertTrue(response.iterator().next().properties().isDeferredDeleteScheduleUpcoming());
-        Assertions.assertFalse(response.iterator().next().properties().isRehydrate());
-        Assertions.assertEquals("oimyfpqd",
+        Assertions.assertTrue(response.iterator().next().properties().isRehydrate());
+        Assertions.assertEquals("jbpfiddh",
             response.iterator().next().properties().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(response.iterator().next().properties().isArchiveEnabled());
-        Assertions.assertEquals("pnw", response.iterator().next().properties().policyName());
-        Assertions.assertEquals(907870780, response.iterator().next().properties().softDeleteRetentionPeriodInDays());
-        Assertions.assertEquals(SourceSideScanStatus.CONFIGURED,
+        Assertions.assertEquals("tffisjmr", response.iterator().next().properties().policyName());
+        Assertions.assertEquals(1669709441, response.iterator().next().properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SourceSideScanStatus.CONFIGURATION_FAILED,
             response.iterator().next().properties().sourceSideScanInfo().sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.NOT_APPLICABLE,
+        Assertions.assertEquals(SourceSideScanSummary.HEALTHY,
             response.iterator().next().properties().sourceSideScanInfo().sourceSideScanSummary());
-        Assertions.assertEquals("uhznwhvuldbk", response.iterator().next().tags().get("ejjk"));
-        Assertions.assertEquals("ojusuzgfjzcva", response.iterator().next().location());
-        Assertions.assertEquals("oialahfxwccokdx", response.iterator().next().etag());
+        Assertions.assertEquals("lcaymjchtv", response.iterator().next().tags().get("n"));
+        Assertions.assertEquals("an", response.iterator().next().location());
+        Assertions.assertEquals("khtmhobcyanrfv", response.iterator().next().etag());
     }
 }

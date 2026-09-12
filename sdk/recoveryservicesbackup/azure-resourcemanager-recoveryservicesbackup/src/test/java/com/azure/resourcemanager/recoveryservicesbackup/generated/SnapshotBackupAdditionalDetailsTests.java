@@ -14,35 +14,36 @@ public final class SnapshotBackupAdditionalDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotBackupAdditionalDetails model = BinaryData.fromString(
-            "{\"instantRpRetentionRangeInDays\":1773834271,\"instantRPDetails\":\"xpunjqi\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"vvi\",\"identityName\":\"cgx\",\"userAssignedIdentityProperties\":{\"clientId\":\"sserxhtvsoxhlwn\",\"principalId\":\"j\"}}}")
+            "{\"instantRpRetentionRangeInDays\":1086614322,\"instantRPDetails\":\"xxhljfpgpic\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"zhrgmqgjsxvpqc\",\"identityName\":\"rmbodt\",\"userAssignedIdentityProperties\":{\"clientId\":\"qgvriibakcla\",\"principalId\":\"fr\"}}}")
             .toObject(SnapshotBackupAdditionalDetails.class);
-        Assertions.assertEquals(1773834271, model.instantRpRetentionRangeInDays());
-        Assertions.assertEquals("xpunjqi", model.instantRPDetails());
-        Assertions.assertEquals("vvi", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("cgx", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("sserxhtvsoxhlwn",
+        Assertions.assertEquals(1086614322, model.instantRpRetentionRangeInDays());
+        Assertions.assertEquals("xxhljfpgpic", model.instantRPDetails());
+        Assertions.assertEquals("zhrgmqgjsxvpqc", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("rmbodt", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("qgvriibakcla",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("j",
+        Assertions.assertEquals("fr",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotBackupAdditionalDetails model = new SnapshotBackupAdditionalDetails()
-            .withInstantRpRetentionRangeInDays(1773834271)
-            .withInstantRPDetails("xpunjqi")
-            .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails().withIdentityArmId("vvi")
-                .withIdentityName("cgx")
-                .withUserAssignedIdentityProperties(
-                    new UserAssignedIdentityProperties().withClientId("sserxhtvsoxhlwn").withPrincipalId("j")));
+        SnapshotBackupAdditionalDetails model
+            = new SnapshotBackupAdditionalDetails().withInstantRpRetentionRangeInDays(1086614322)
+                .withInstantRPDetails("xxhljfpgpic")
+                .withUserAssignedManagedIdentityDetails(
+                    new UserAssignedManagedIdentityDetails().withIdentityArmId("zhrgmqgjsxvpqc")
+                        .withIdentityName("rmbodt")
+                        .withUserAssignedIdentityProperties(
+                            new UserAssignedIdentityProperties().withClientId("qgvriibakcla").withPrincipalId("fr")));
         model = BinaryData.fromObject(model).toObject(SnapshotBackupAdditionalDetails.class);
-        Assertions.assertEquals(1773834271, model.instantRpRetentionRangeInDays());
-        Assertions.assertEquals("xpunjqi", model.instantRPDetails());
-        Assertions.assertEquals("vvi", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("cgx", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("sserxhtvsoxhlwn",
+        Assertions.assertEquals(1086614322, model.instantRpRetentionRangeInDays());
+        Assertions.assertEquals("xxhljfpgpic", model.instantRPDetails());
+        Assertions.assertEquals("zhrgmqgjsxvpqc", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("rmbodt", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("qgvriibakcla",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("j",
+        Assertions.assertEquals("fr",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
     }
 }

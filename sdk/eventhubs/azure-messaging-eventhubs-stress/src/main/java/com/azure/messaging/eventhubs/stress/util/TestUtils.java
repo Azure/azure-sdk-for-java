@@ -7,8 +7,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;

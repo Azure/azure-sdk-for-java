@@ -8,7 +8,29 @@
 
 ### Bugs Fixed
 
+- Fixed encrypted downloads to apply the initial blob version lock when request conditions are omitted and to send the
+  generated `If-Match` value in RFC 9110-conformant form.
+
 ### Other Changes
+
+## 12.34.2 (2026-08-26)
+
+### Bugs Fixed
+- Fixed a bug where client-side encryption 2.0 could not detect a rearrangement of otherwise-untampered authenticated regions in blob content. This is now detected and an exception is thrown. For data recovery purposes, this behavior can be reverted by setting the `AZURE_STORAGE_CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS` environment variable (or the `Azure.Storage.CseV2AllowMisorderedAuthRegions` system property) to `true`.
+- Fixed an issue where the client-side encryption (v2) region nonce counter was truncated to 32 bits, which could
+  cause GCM nonce reuse for blobs exceeding 2^32 authenticated regions. The full 64-bit region index is now used so
+  every region receives a unique nonce. Blobs with at most 2^31 authenticated regions remain byte-for-byte compatible;
+  subsequent regions now use the corrected 64-bit encoding.
+
+## 12.34.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
 
 ## 12.35.0-beta.1 (2026-07-28)
 
@@ -737,4 +759,3 @@ and
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports client side encryption for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-

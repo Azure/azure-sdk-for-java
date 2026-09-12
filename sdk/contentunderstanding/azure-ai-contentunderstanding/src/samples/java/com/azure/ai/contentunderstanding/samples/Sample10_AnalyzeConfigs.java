@@ -33,6 +33,13 @@ import java.util.stream.Collectors;
  * 3. Extracting hyperlinks from documents
  * 4. Extracting formulas from document pages
  * 5. Extracting annotations from documents
+ *
+ * <p>The {@code prebuilt-documentSearch} analyzer enables detailed output, OCR, layout, formula extraction, figure
+ * descriptions, and figure analysis by default. It returns charts in Chart.js format, tables in HTML, and annotations
+ * in Markdown.</p>
+ *
+ * <p>Signature detection is available in {@code 2026-06-01-preview} when layout extraction and detailed output are
+ * enabled. See {@link Sample_Advanced_DetectSignatures} for reading signature regions and metadata.</p>
  */
 public class Sample10_AnalyzeConfigs {
 
@@ -168,5 +175,6 @@ public class Sample10_AnalyzeConfigs {
             }
         }
         // END:ContentUnderstandingExtractAnnotations
+
     }
 }

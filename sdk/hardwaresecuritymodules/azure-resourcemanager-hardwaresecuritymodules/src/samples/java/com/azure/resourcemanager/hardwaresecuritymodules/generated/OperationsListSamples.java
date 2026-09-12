@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-31/OperationsList.json
+     * x-ms-original-file: 2025-12-01-preview/OperationsList.json
      */
     /**
      * Sample code: Get a list of Payment HSM operations.

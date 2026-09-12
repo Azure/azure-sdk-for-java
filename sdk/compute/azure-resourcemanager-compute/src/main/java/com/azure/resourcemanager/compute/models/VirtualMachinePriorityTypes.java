@@ -8,24 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the priority for a standalone virtual machine or the virtual machines in the scale set. 'Low' enum will be
- * deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot VM/VMSS.
+ * Specifies the priority for a standalone virtual machine or the virtual machines in the scale set.
  */
 public final class VirtualMachinePriorityTypes extends ExpandableStringEnum<VirtualMachinePriorityTypes> {
     /**
-     * Static value Regular for VirtualMachinePriorityTypes.
+     * Regular Priority for a standalone virtual machine or the virtual machines in the scale set.
+     * This is the default priority and it will be used to deploy regular VM/VMSS.
      */
     public static final VirtualMachinePriorityTypes REGULAR = fromString("Regular");
 
     /**
-     * Static value Low for VirtualMachinePriorityTypes.
+     * Low priority for a standalone virtual machine or the virtual machines in the scale set. Will be Deprecated, use
+     * Spot instead.
      */
     public static final VirtualMachinePriorityTypes LOW = fromString("Low");
 
     /**
-     * Static value Spot for VirtualMachinePriorityTypes.
+     * Spot priority for a standalone virtual machine or the virtual machines in the scale set.
      */
     public static final VirtualMachinePriorityTypes SPOT = fromString("Spot");
+
+    /**
+     * SpotPlus priority for a standalone virtual machine or the virtual machines in the scale set.
+     * This is an enum value that will be used to deploy Azure Spot Plus VM/VMSS, which is the next
+     * generation of Azure Spot VM/VMSS with more reliability and longer running time.
+     */
+    public static final VirtualMachinePriorityTypes SPOT_PLUS = fromString("SpotPlus");
 
     /**
      * Creates a new instance of VirtualMachinePriorityTypes value.

@@ -24,6 +24,7 @@
 <suite name="e2e">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
   </listeners>
   <test name="e2e" group-by-instances="true">
     <groups>

@@ -142,8 +142,8 @@ public class DataLakeFileSystemClient {
      * Initializes a new DataLakeFileClient object by concatenating fileName to the end of DataLakeFileSystemClient's
      * URL. The new DataLakeFileClient uses the same request policy pipeline as the DataLakeFileSystemClient.
      *
-     * @param fileName A {@code String} representing the name of the file. If the path name contains special characters,
-     * pass in the url encoded version of the path name.
+     * @param fileName A {@code String} representing the name of the file. Pass the name unencoded; the client
+     * percent-encodes it when building the request URL.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -170,8 +170,8 @@ public class DataLakeFileSystemClient {
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
-     * @param directoryName A {@code String} representing the name of the directory. If the path name contains special
-     * characters, pass in the url encoded version of the path name.
+     * @param directoryName A {@code String} representing the name of the directory.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1151,8 +1151,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1173,8 +1173,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param overwrite Whether to overwrite, should a directory exist.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
@@ -1210,8 +1210,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
@@ -1274,8 +1274,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1305,8 +1305,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1344,8 +1344,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1376,8 +1376,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String -->
      *
-     * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDirectory(String directoryName) {
@@ -1403,8 +1403,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -1431,8 +1431,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String -->
      *
-     * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return {@code true} if the directory is successfully deleted, {@code false} if the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1466,8 +1466,8 @@ public class DataLakeFileSystemClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

@@ -27,121 +27,122 @@ public final class LongTermRetentionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LongTermRetentionPolicy model = BinaryData.fromString(
-            "{\"retentionPolicyType\":\"LongTermRetentionPolicy\",\"dailySchedule\":{\"retentionTimes\":[\"2021-05-03T03:00:46Z\",\"2021-09-10T23:02:27Z\",\"2021-11-14T08:40:48Z\"],\"retentionDuration\":{\"count\":240582317,\"durationType\":\"Months\"}},\"weeklySchedule\":{\"daysOfTheWeek\":[\"Monday\",\"Wednesday\",\"Monday\",\"Saturday\"],\"retentionTimes\":[\"2021-10-11T18:38:45Z\",\"2021-01-20T19:50:29Z\",\"2021-08-16T03:47:52Z\"],\"retentionDuration\":{\"count\":367170768,\"durationType\":\"Days\"}},\"monthlySchedule\":{\"retentionScheduleFormatType\":\"Weekly\",\"retentionScheduleDaily\":{\"daysOfTheMonth\":[{\"date\":370827804,\"isLast\":false}]},\"retentionScheduleWeekly\":{\"daysOfTheWeek\":[\"Saturday\",\"Friday\",\"Friday\",\"Sunday\"],\"weeksOfTheMonth\":[\"First\",\"Third\",\"Third\",\"Last\"]},\"retentionTimes\":[\"2021-04-27T14:33:17Z\",\"2021-07-31T13:07:21Z\"],\"retentionDuration\":{\"count\":642883737,\"durationType\":\"Months\"}},\"yearlySchedule\":{\"retentionScheduleFormatType\":\"Weekly\",\"monthsOfYear\":[\"December\"],\"retentionScheduleDaily\":{\"daysOfTheMonth\":[{\"date\":436205084,\"isLast\":true},{\"date\":1412186545,\"isLast\":false},{\"date\":2085491837,\"isLast\":true},{\"date\":361835019,\"isLast\":false}]},\"retentionScheduleWeekly\":{\"daysOfTheWeek\":[\"Sunday\"],\"weeksOfTheMonth\":[\"First\",\"First\",\"Invalid\",\"Third\"]},\"retentionTimes\":[\"2021-04-11T05:09:16Z\"],\"retentionDuration\":{\"count\":958421959,\"durationType\":\"Years\"}}}")
+            "{\"retentionPolicyType\":\"LongTermRetentionPolicy\",\"dailySchedule\":{\"retentionTimes\":[\"2021-09-03T09:45:28Z\",\"2021-12-04T12:24:02Z\"],\"retentionDuration\":{\"count\":803310481,\"durationType\":\"Invalid\"}},\"weeklySchedule\":{\"daysOfTheWeek\":[\"Sunday\",\"Thursday\"],\"retentionTimes\":[\"2021-05-26T21:18:05Z\",\"2021-08-08T04:54:28Z\"],\"retentionDuration\":{\"count\":1887871151,\"durationType\":\"Years\"}},\"monthlySchedule\":{\"retentionScheduleFormatType\":\"Invalid\",\"retentionScheduleDaily\":{\"daysOfTheMonth\":[{\"date\":1106573164,\"isLast\":true},{\"date\":578758071,\"isLast\":true},{\"date\":1529964299,\"isLast\":false}]},\"retentionScheduleWeekly\":{\"daysOfTheWeek\":[\"Tuesday\",\"Sunday\",\"Thursday\"],\"weeksOfTheMonth\":[\"Last\",\"Last\",\"Invalid\"]},\"retentionTimes\":[\"2021-02-28T02:21:16Z\"],\"retentionDuration\":{\"count\":1907394577,\"durationType\":\"Months\"}},\"yearlySchedule\":{\"retentionScheduleFormatType\":\"Weekly\",\"monthsOfYear\":[\"February\",\"January\",\"February\"],\"retentionScheduleDaily\":{\"daysOfTheMonth\":[{\"date\":487171106,\"isLast\":true},{\"date\":1546979917,\"isLast\":true},{\"date\":896744832,\"isLast\":true},{\"date\":1513875811,\"isLast\":false}]},\"retentionScheduleWeekly\":{\"daysOfTheWeek\":[\"Sunday\",\"Tuesday\"],\"weeksOfTheMonth\":[\"First\",\"Third\",\"Invalid\",\"Invalid\"]},\"retentionTimes\":[\"2021-10-31T10:07:09Z\"],\"retentionDuration\":{\"count\":1877333822,\"durationType\":\"Invalid\"}}}")
             .toObject(LongTermRetentionPolicy.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T03:00:46Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T09:45:28Z"),
             model.dailySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(240582317, model.dailySchedule().retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.dailySchedule().retentionDuration().durationType());
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.weeklySchedule().daysOfTheWeek().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T18:38:45Z"),
+        Assertions.assertEquals(803310481, model.dailySchedule().retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.INVALID,
+            model.dailySchedule().retentionDuration().durationType());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.weeklySchedule().daysOfTheWeek().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T21:18:05Z"),
             model.weeklySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(367170768, model.weeklySchedule().retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.weeklySchedule().retentionDuration().durationType());
-        Assertions.assertEquals(RetentionScheduleFormat.WEEKLY, model.monthlySchedule().retentionScheduleFormatType());
-        Assertions.assertEquals(370827804,
+        Assertions.assertEquals(1887871151, model.weeklySchedule().retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.weeklySchedule().retentionDuration().durationType());
+        Assertions.assertEquals(RetentionScheduleFormat.INVALID, model.monthlySchedule().retentionScheduleFormatType());
+        Assertions.assertEquals(1106573164,
             model.monthlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).date());
-        Assertions.assertFalse(model.monthlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).isLast());
-        Assertions.assertEquals(DayOfWeek.SATURDAY,
+        Assertions.assertTrue(model.monthlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).isLast());
+        Assertions.assertEquals(DayOfWeek.TUESDAY,
             model.monthlySchedule().retentionScheduleWeekly().daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.FIRST,
+        Assertions.assertEquals(WeekOfMonth.LAST,
             model.monthlySchedule().retentionScheduleWeekly().weeksOfTheMonth().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-27T14:33:17Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T02:21:16Z"),
             model.monthlySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(642883737, model.monthlySchedule().retentionDuration().count());
+        Assertions.assertEquals(1907394577, model.monthlySchedule().retentionDuration().count());
         Assertions.assertEquals(RetentionDurationType.MONTHS,
             model.monthlySchedule().retentionDuration().durationType());
         Assertions.assertEquals(RetentionScheduleFormat.WEEKLY, model.yearlySchedule().retentionScheduleFormatType());
-        Assertions.assertEquals(MonthOfYear.DECEMBER, model.yearlySchedule().monthsOfYear().get(0));
-        Assertions.assertEquals(436205084,
+        Assertions.assertEquals(MonthOfYear.FEBRUARY, model.yearlySchedule().monthsOfYear().get(0));
+        Assertions.assertEquals(487171106,
             model.yearlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).date());
         Assertions.assertTrue(model.yearlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).isLast());
         Assertions.assertEquals(DayOfWeek.SUNDAY,
             model.yearlySchedule().retentionScheduleWeekly().daysOfTheWeek().get(0));
         Assertions.assertEquals(WeekOfMonth.FIRST,
             model.yearlySchedule().retentionScheduleWeekly().weeksOfTheMonth().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T05:09:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T10:07:09Z"),
             model.yearlySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(958421959, model.yearlySchedule().retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.YEARS, model.yearlySchedule().retentionDuration().durationType());
+        Assertions.assertEquals(1877333822, model.yearlySchedule().retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.INVALID,
+            model.yearlySchedule().retentionDuration().durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LongTermRetentionPolicy model = new LongTermRetentionPolicy()
             .withDailySchedule(new DailyRetentionSchedule()
-                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-05-03T03:00:46Z"),
-                    OffsetDateTime.parse("2021-09-10T23:02:27Z"), OffsetDateTime.parse("2021-11-14T08:40:48Z")))
+                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-03T09:45:28Z"),
+                    OffsetDateTime.parse("2021-12-04T12:24:02Z")))
                 .withRetentionDuration(
-                    new RetentionDuration().withCount(240582317).withDurationType(RetentionDurationType.MONTHS)))
-            .withWeeklySchedule(new WeeklyRetentionSchedule()
-                .withDaysOfTheWeek(
-                    Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.SATURDAY))
-                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-10-11T18:38:45Z"),
-                    OffsetDateTime.parse("2021-01-20T19:50:29Z"), OffsetDateTime.parse("2021-08-16T03:47:52Z")))
-                .withRetentionDuration(
-                    new RetentionDuration().withCount(367170768).withDurationType(RetentionDurationType.DAYS)))
-            .withMonthlySchedule(
-                new MonthlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                    .withRetentionScheduleDaily(new DailyRetentionFormat()
-                        .withDaysOfTheMonth(Arrays.asList(new Day().withDate(370827804).withIsLast(false))))
-                    .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
-                        .withDaysOfTheWeek(
-                            Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.FRIDAY, DayOfWeek.FRIDAY, DayOfWeek.SUNDAY))
-                        .withWeeksOfTheMonth(
-                            Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.THIRD, WeekOfMonth.THIRD, WeekOfMonth.LAST)))
-                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-04-27T14:33:17Z"),
-                        OffsetDateTime.parse("2021-07-31T13:07:21Z")))
+                    new RetentionDuration().withCount(803310481).withDurationType(RetentionDurationType.INVALID)))
+            .withWeeklySchedule(
+                new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.THURSDAY))
+                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-05-26T21:18:05Z"),
+                        OffsetDateTime.parse("2021-08-08T04:54:28Z")))
                     .withRetentionDuration(
-                        new RetentionDuration().withCount(642883737).withDurationType(RetentionDurationType.MONTHS)))
+                        new RetentionDuration().withCount(1887871151).withDurationType(RetentionDurationType.YEARS)))
+            .withMonthlySchedule(
+                new MonthlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.INVALID)
+                    .withRetentionScheduleDaily(new DailyRetentionFormat().withDaysOfTheMonth(Arrays.asList(
+                        new Day().withDate(1106573164).withIsLast(true), new Day().withDate(578758071).withIsLast(true),
+                        new Day().withDate(1529964299).withIsLast(false))))
+                    .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.THURSDAY))
+                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST, WeekOfMonth.LAST, WeekOfMonth.INVALID)))
+                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-02-28T02:21:16Z")))
+                    .withRetentionDuration(
+                        new RetentionDuration().withCount(1907394577).withDurationType(RetentionDurationType.MONTHS)))
             .withYearlySchedule(new YearlyRetentionSchedule()
                 .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                .withMonthsOfYear(Arrays.asList(MonthOfYear.DECEMBER))
+                .withMonthsOfYear(Arrays.asList(MonthOfYear.FEBRUARY, MonthOfYear.JANUARY, MonthOfYear.FEBRUARY))
                 .withRetentionScheduleDaily(new DailyRetentionFormat().withDaysOfTheMonth(Arrays.asList(
-                    new Day().withDate(436205084).withIsLast(true), new Day().withDate(1412186545).withIsLast(false),
-                    new Day().withDate(2085491837).withIsLast(true), new Day().withDate(361835019).withIsLast(false))))
+                    new Day().withDate(487171106).withIsLast(true), new Day().withDate(1546979917).withIsLast(true),
+                    new Day().withDate(896744832).withIsLast(true), new Day().withDate(1513875811).withIsLast(false))))
                 .withRetentionScheduleWeekly(
-                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.FIRST, WeekOfMonth.INVALID,
-                            WeekOfMonth.THIRD)))
-                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-04-11T05:09:16Z")))
+                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.THIRD, WeekOfMonth.INVALID,
+                            WeekOfMonth.INVALID)))
+                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-10-31T10:07:09Z")))
                 .withRetentionDuration(
-                    new RetentionDuration().withCount(958421959).withDurationType(RetentionDurationType.YEARS)));
+                    new RetentionDuration().withCount(1877333822).withDurationType(RetentionDurationType.INVALID)));
         model = BinaryData.fromObject(model).toObject(LongTermRetentionPolicy.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T03:00:46Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T09:45:28Z"),
             model.dailySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(240582317, model.dailySchedule().retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.dailySchedule().retentionDuration().durationType());
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.weeklySchedule().daysOfTheWeek().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T18:38:45Z"),
+        Assertions.assertEquals(803310481, model.dailySchedule().retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.INVALID,
+            model.dailySchedule().retentionDuration().durationType());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.weeklySchedule().daysOfTheWeek().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T21:18:05Z"),
             model.weeklySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(367170768, model.weeklySchedule().retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.weeklySchedule().retentionDuration().durationType());
-        Assertions.assertEquals(RetentionScheduleFormat.WEEKLY, model.monthlySchedule().retentionScheduleFormatType());
-        Assertions.assertEquals(370827804,
+        Assertions.assertEquals(1887871151, model.weeklySchedule().retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.weeklySchedule().retentionDuration().durationType());
+        Assertions.assertEquals(RetentionScheduleFormat.INVALID, model.monthlySchedule().retentionScheduleFormatType());
+        Assertions.assertEquals(1106573164,
             model.monthlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).date());
-        Assertions.assertFalse(model.monthlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).isLast());
-        Assertions.assertEquals(DayOfWeek.SATURDAY,
+        Assertions.assertTrue(model.monthlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).isLast());
+        Assertions.assertEquals(DayOfWeek.TUESDAY,
             model.monthlySchedule().retentionScheduleWeekly().daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.FIRST,
+        Assertions.assertEquals(WeekOfMonth.LAST,
             model.monthlySchedule().retentionScheduleWeekly().weeksOfTheMonth().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-27T14:33:17Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T02:21:16Z"),
             model.monthlySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(642883737, model.monthlySchedule().retentionDuration().count());
+        Assertions.assertEquals(1907394577, model.monthlySchedule().retentionDuration().count());
         Assertions.assertEquals(RetentionDurationType.MONTHS,
             model.monthlySchedule().retentionDuration().durationType());
         Assertions.assertEquals(RetentionScheduleFormat.WEEKLY, model.yearlySchedule().retentionScheduleFormatType());
-        Assertions.assertEquals(MonthOfYear.DECEMBER, model.yearlySchedule().monthsOfYear().get(0));
-        Assertions.assertEquals(436205084,
+        Assertions.assertEquals(MonthOfYear.FEBRUARY, model.yearlySchedule().monthsOfYear().get(0));
+        Assertions.assertEquals(487171106,
             model.yearlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).date());
         Assertions.assertTrue(model.yearlySchedule().retentionScheduleDaily().daysOfTheMonth().get(0).isLast());
         Assertions.assertEquals(DayOfWeek.SUNDAY,
             model.yearlySchedule().retentionScheduleWeekly().daysOfTheWeek().get(0));
         Assertions.assertEquals(WeekOfMonth.FIRST,
             model.yearlySchedule().retentionScheduleWeekly().weeksOfTheMonth().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T05:09:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T10:07:09Z"),
             model.yearlySchedule().retentionTimes().get(0));
-        Assertions.assertEquals(958421959, model.yearlySchedule().retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.YEARS, model.yearlySchedule().retentionDuration().durationType());
+        Assertions.assertEquals(1877333822, model.yearlySchedule().retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.INVALID,
+            model.yearlySchedule().retentionDuration().durationType());
     }
 }

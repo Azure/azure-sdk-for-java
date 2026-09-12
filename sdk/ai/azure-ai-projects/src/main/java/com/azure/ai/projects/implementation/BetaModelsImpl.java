@@ -950,8 +950,7 @@ public final class BetaModelsImpl {
     /**
      * Delete a model version
      * 
-     * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
-     * successfully or if the ModelVersion does not exist.
+     * Removes the specified model version. Returns 200 whether the version existed or not.
      * 
      * @param name The name of the resource.
      * @param version The version of the ModelVersion to delete.
@@ -972,8 +971,7 @@ public final class BetaModelsImpl {
     /**
      * Delete a model version
      * 
-     * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
-     * successfully or if the ModelVersion does not exist.
+     * Removes the specified model version. Returns 200 whether the version existed or not.
      * 
      * @param name The name of the resource.
      * @param version The version of the ModelVersion to delete.
@@ -993,7 +991,7 @@ public final class BetaModelsImpl {
     /**
      * Update a model version
      * 
-     * Update an existing ModelVersion with the given version id.
+     * Updates an existing model version identified by its version ID.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1073,7 +1071,7 @@ public final class BetaModelsImpl {
     /**
      * Update a model version
      * 
-     * Update an existing ModelVersion with the given version id.
+     * Updates an existing model version identified by its version ID.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1208,6 +1206,13 @@ public final class BetaModelsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Location</td><td>String</td><td>URL to poll for operation status.</td></tr>
+     * </table>
+     * 
      * @param name Name of the model.
      * @param version Version of the model.
      * @param modelVersion Model version to create.
@@ -1287,6 +1292,13 @@ public final class BetaModelsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Location</td><td>String</td><td>URL to poll for operation status.</td></tr>
+     * </table>
+     * 
      * @param name Name of the model.
      * @param version Version of the model.
      * @param modelVersion Model version to create.
@@ -1345,7 +1357,7 @@ public final class BetaModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param pendingUploadRequest The pendingUploadRequest parameter.
+     * @param pendingUploadRequest The pending upload request request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1402,7 +1414,7 @@ public final class BetaModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param pendingUploadRequest The pendingUploadRequest parameter.
+     * @param pendingUploadRequest The pending upload request request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1453,7 +1465,7 @@ public final class BetaModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param credentialRequest The credentialRequest parameter.
+     * @param credentialRequest The credential request request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1507,7 +1519,7 @@ public final class BetaModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param credentialRequest The credentialRequest parameter.
+     * @param credentialRequest The credential request request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1790,20 +1802,26 @@ public final class BetaModelsImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

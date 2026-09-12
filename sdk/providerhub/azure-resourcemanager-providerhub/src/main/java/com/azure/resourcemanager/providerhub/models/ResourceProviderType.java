@@ -52,6 +52,11 @@ public final class ResourceProviderType extends ExpandableStringEnum<ResourcePro
     public static final ResourceProviderType AUTHORIZATION_FREE = fromString("AuthorizationFree");
 
     /**
+     * The resource provider has been decommissioned.
+     */
+    public static final ResourceProviderType DECOMMISSIONED = fromString("Decommissioned");
+
+    /**
      * Creates a new instance of ResourceProviderType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

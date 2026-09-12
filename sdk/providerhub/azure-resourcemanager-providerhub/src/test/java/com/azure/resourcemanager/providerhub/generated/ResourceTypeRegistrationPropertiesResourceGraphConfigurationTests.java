@@ -12,20 +12,20 @@ public final class ResourceTypeRegistrationPropertiesResourceGraphConfigurationT
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceGraphConfiguration model
-            = BinaryData.fromString("{\"enabled\":false,\"apiVersion\":\"awumuaslzkwrrwo\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"apiVersion\":\"orxvxcjzhqiz\"}")
                 .toObject(ResourceTypeRegistrationPropertiesResourceGraphConfiguration.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("awumuaslzkwrrwo", model.apiVersion());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("orxvxcjzhqiz", model.apiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceGraphConfiguration model
-            = new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(false)
-                .withApiVersion("awumuaslzkwrrwo");
+            = new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(true)
+                .withApiVersion("orxvxcjzhqiz");
         model
             = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceGraphConfiguration.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("awumuaslzkwrrwo", model.apiVersion());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("orxvxcjzhqiz", model.apiVersion());
     }
 }

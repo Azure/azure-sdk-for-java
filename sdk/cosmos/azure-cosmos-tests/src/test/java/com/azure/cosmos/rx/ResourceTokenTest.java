@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -13,7 +14,6 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -53,7 +53,7 @@ import java.util.UUID;
 
 // TODO change to use external TestSuiteBase
 public class ResourceTokenTest extends TestSuiteBase {
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -316,7 +316,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             }
 
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(documentUrl, options);
+                    .readDocument(documentUrl, null, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
             validateSuccess(readObservable, validator);
@@ -347,7 +347,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(PartitionKey.NONE);
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocument.getSelfLink(), options);
+                    .readDocument(createdDocument.getSelfLink(), null, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId()).build();
             validateSuccess(readObservable, validator);
@@ -383,7 +383,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(documentUrl, options);
+                    .readDocument(documentUrl, null, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
             validateSuccess(readObservable, validator);
@@ -420,7 +420,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             options.setPartitionKey(new PartitionKey(partitionKey));
 
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(documentUrl, options);
+                    .readDocument(documentUrl, null, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
             validateResourceResponseFailure(readObservable, validator);
         } finally {
@@ -452,7 +452,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
+                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), null, options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
             validateResourceResponseFailure(readObservable, validator);
         } finally {

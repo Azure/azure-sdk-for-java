@@ -11,7 +11,7 @@ public final class MaintenanceReadinessRefreshOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceReadinessRefreshOperation model = BinaryData.fromString(
-            "{\"kind\":\"MaintenanceReadinessRefresh\",\"isDisabled\":true,\"disabledReason\":\"lrbpbewtghfgbl\",\"status\":\"Failed\",\"refreshedByMicrosoft\":true,\"message\":\"lvqhjkbegibtnmx\"}")
+            "{\"kind\":\"MaintenanceReadinessRefresh\",\"isDisabled\":true,\"disabledReason\":\"ostmgrcf\",\"status\":\"Failed\",\"refreshedByMicrosoft\":true,\"message\":\"qjhhkxbpv\"}")
             .toObject(MaintenanceReadinessRefreshOperation.class);
     }
 }

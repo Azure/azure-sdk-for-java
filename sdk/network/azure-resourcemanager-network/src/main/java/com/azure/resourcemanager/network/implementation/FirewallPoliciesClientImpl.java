@@ -92,7 +92,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("firewallPolicyName") String firewallPolicyName, @HeaderParam("Content-Type") String contentType,
+            @PathParam("firewallPolicyName") String firewallPolicyName,
+            @QueryParam("afcManagedSync") Boolean afcManagedSync, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FirewallPolicyInner parameters,
             Context context);
 
@@ -179,7 +180,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -218,7 +219,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -282,6 +283,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,7 +292,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String firewallPolicyName, FirewallPolicyInner parameters) {
+        String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -311,13 +314,13 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, firewallPolicyName, contentType, accept, parameters,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, firewallPolicyName, afcManagedSync, contentType,
+                accept, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -327,6 +330,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -335,7 +340,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
+        String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -357,12 +362,34 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, firewallPolicyName, contentType, accept, parameters, context);
+            resourceGroupName, firewallPolicyName, afcManagedSync, contentType, accept, parameters, context);
+    }
+
+    /**
+     * Creates or updates the specified Firewall Policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of firewallPolicy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync);
+        return this.client.<FirewallPolicyInner, FirewallPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FirewallPolicyInner.class, FirewallPolicyInner.class, this.client.getContext());
     }
 
     /**
@@ -379,8 +406,9 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters) {
+        final Boolean afcManagedSync = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters);
+            = createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync);
         return this.client.<FirewallPolicyInner, FirewallPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
             FirewallPolicyInner.class, FirewallPolicyInner.class, this.client.getContext());
     }
@@ -391,6 +419,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -399,10 +429,11 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
+        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName,
+            parameters, afcManagedSync, context);
         return this.client.<FirewallPolicyInner, FirewallPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
             FirewallPolicyInner.class, FirewallPolicyInner.class, context);
     }
@@ -421,7 +452,9 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters).getSyncPoller();
+        final Boolean afcManagedSync = null;
+        return this.beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync)
+            .getSyncPoller();
     }
 
     /**
@@ -430,6 +463,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -438,9 +473,30 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, context)
+        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync,
+        Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync, context)
             .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified Firewall Policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return firewallPolicy Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String firewallPolicyName,
+        FirewallPolicyInner parameters, Boolean afcManagedSync) {
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -457,7 +513,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String firewallPolicyName,
         FirewallPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters).last()
+        final Boolean afcManagedSync = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -467,6 +524,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -475,8 +534,9 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String firewallPolicyName,
-        FirewallPolicyInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, context).last()
+        FirewallPolicyInner parameters, Boolean afcManagedSync, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -494,7 +554,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyInner createOrUpdate(String resourceGroupName, String firewallPolicyName,
         FirewallPolicyInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters).block();
+        final Boolean afcManagedSync = null;
+        return createOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync).block();
     }
 
     /**
@@ -503,6 +564,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,8 +574,8 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyInner createOrUpdate(String resourceGroupName, String firewallPolicyName,
-        FirewallPolicyInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
+        FirewallPolicyInner parameters, Boolean afcManagedSync, Context context) {
+        return createOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, afcManagedSync, context).block();
     }
 
     /**
@@ -550,7 +613,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -596,7 +659,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -685,7 +748,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, firewallPolicyName, context))
@@ -722,7 +785,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, context);
@@ -883,7 +946,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -919,7 +982,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1007,7 +1070,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1037,7 +1100,7 @@ public final class FirewallPoliciesClientImpl implements InnerSupportsGet<Firewa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)

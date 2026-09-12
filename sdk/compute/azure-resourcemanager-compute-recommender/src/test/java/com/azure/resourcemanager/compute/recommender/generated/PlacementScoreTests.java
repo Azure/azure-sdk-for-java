@@ -12,12 +12,12 @@ public final class PlacementScoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementScore model = BinaryData.fromString(
-            "{\"sku\":\"hbcryffdfdosyge\",\"region\":\"aojakhmsbzjhcrz\",\"availabilityZone\":\"dphlxaolt\",\"score\":\"trg\",\"isQuotaAvailable\":false}")
+            "{\"sku\":\"fvzwdzuhty\",\"region\":\"isdkfthwxmnteiw\",\"availabilityZone\":\"pvkmijcmmxdcuf\",\"score\":\"srp\",\"isQuotaAvailable\":true}")
             .toObject(PlacementScore.class);
-        Assertions.assertEquals("hbcryffdfdosyge", model.sku());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.region());
-        Assertions.assertEquals("dphlxaolt", model.availabilityZone());
-        Assertions.assertEquals("trg", model.score());
-        Assertions.assertFalse(model.isQuotaAvailable());
+        Assertions.assertEquals("fvzwdzuhty", model.sku());
+        Assertions.assertEquals("isdkfthwxmnteiw", model.region());
+        Assertions.assertEquals("pvkmijcmmxdcuf", model.availabilityZone());
+        Assertions.assertEquals("srp", model.score());
+        Assertions.assertTrue(model.isQuotaAvailable());
     }
 }

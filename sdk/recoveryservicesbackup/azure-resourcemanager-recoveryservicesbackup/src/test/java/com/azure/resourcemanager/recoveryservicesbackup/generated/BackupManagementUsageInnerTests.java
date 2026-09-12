@@ -14,14 +14,14 @@ public final class BackupManagementUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupManagementUsageInner model = BinaryData.fromString(
-            "{\"unit\":\"Count\",\"quotaPeriod\":\"zs\",\"nextResetTime\":\"2021-02-27T19:41:03Z\",\"currentValue\":2697008716276129011,\"limit\":4088709833204487864,\"name\":{\"value\":\"srsx\",\"localizedValue\":\"plbjaze\"}}")
+            "{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"tm\",\"nextResetTime\":\"2021-08-25T07:55:06Z\",\"currentValue\":7895575263068629252,\"limit\":1609360141146087924,\"name\":{\"value\":\"apte\",\"localizedValue\":\"excgjokjljnhvl\"}}")
             .toObject(BackupManagementUsageInner.class);
-        Assertions.assertEquals(UsagesUnit.COUNT, model.unit());
-        Assertions.assertEquals("zs", model.quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T19:41:03Z"), model.nextResetTime());
-        Assertions.assertEquals(2697008716276129011L, model.currentValue());
-        Assertions.assertEquals(4088709833204487864L, model.limit());
-        Assertions.assertEquals("srsx", model.name().value());
-        Assertions.assertEquals("plbjaze", model.name().localizedValue());
+        Assertions.assertEquals(UsagesUnit.COUNT_PER_SECOND, model.unit());
+        Assertions.assertEquals("tm", model.quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T07:55:06Z"), model.nextResetTime());
+        Assertions.assertEquals(7895575263068629252L, model.currentValue());
+        Assertions.assertEquals(1609360141146087924L, model.limit());
+        Assertions.assertEquals("apte", model.name().value());
+        Assertions.assertEquals("excgjokjljnhvl", model.name().localizedValue());
     }
 }

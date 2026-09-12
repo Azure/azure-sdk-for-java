@@ -753,6 +753,32 @@ class ServiceBusManagementSerializerTest {
     }
 
     /**
+     * Verify the topic-level SqlFilterCount and CorrelationFilterCount survive an XML serialize/deserialize round-trip.
+     */
+    @Test
+    void topicFilterCountsRoundTrip() throws IOException {
+        // Arrange
+        final TopicDescription topicDescription
+            = new TopicDescription().setSubscriptionCount(2).setSqlFilterCount(7).setCorrelationFilterCount(9);
+        final CreateTopicBody body
+            = new CreateTopicBody().setContent(new CreateTopicBodyContent().setTopicDescription(topicDescription));
+
+        // Act
+        final String serialized = SERIALIZER.serialize(body, SerializerEncoding.XML);
+        final CreateTopicBody roundTripped = SERIALIZER.deserialize(serialized, CreateTopicBody.class);
+        final TopicDescription actual = roundTripped.getContent().getTopicDescription();
+
+        // Assert - the elements are emitted (toXml) and read back (fromXml)
+        assertTrue(serialized.contains("<SqlFilterCount>7</SqlFilterCount>"),
+            "Serialized payload does not contain SqlFilterCount");
+        assertTrue(serialized.contains("<CorrelationFilterCount>9</CorrelationFilterCount>"),
+            "Serialized payload does not contain CorrelationFilterCount");
+        assertEquals(2, actual.getSubscriptionCount());
+        assertEquals(7, actual.getSqlFilterCount());
+        assertEquals(9, actual.getCorrelationFilterCount());
+    }
+
+    /**
      * Given a file name, gets the corresponding resource and its contents as a string.
      *
      * @param fileName Name of file to fetch.

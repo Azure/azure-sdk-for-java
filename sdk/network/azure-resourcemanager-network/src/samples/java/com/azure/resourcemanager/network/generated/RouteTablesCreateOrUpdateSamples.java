@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class RouteTablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/RouteTableCreate.json
+     * x-ms-original-file: 2025-09-01/RouteTableCreate.json
      */
     /**
      * Sample code: Create route table.
@@ -31,7 +31,7 @@ public final class RouteTablesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/RouteTableCreateWithRoute.json
+     * x-ms-original-file: 2025-09-01/RouteTableCreateWithRoute.json
      */
     /**
      * Sample code: Create route table with route.
@@ -51,7 +51,7 @@ public final class RouteTablesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/RouteTableCreateWithDisablePeeringRoute.json
+     * x-ms-original-file: 2025-09-01/RouteTableCreateWithDisablePeeringRoute.json
      */
     /**
      * Sample code: Create route table with disable peering route.
@@ -70,7 +70,7 @@ public final class RouteTablesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/RouteTableCreateWithEcmpRoute.json
+     * x-ms-original-file: 2025-09-01/RouteTableCreateWithEcmpRoute.json
      */
     /**
      * Sample code: Create route table with ECMP route.

@@ -12,8 +12,8 @@ public final class LicenseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Failed\"},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}],\"nextLink\":\"fnljky\"}")
+            "{\"value\":[{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"mwvvjektcxsenhw\",\"name\":\"rsffrzpwvlqdqgbi\",\"type\":\"ylihkaetckt\"},{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Failed\"},\"id\":\"fsnkymuctq\",\"name\":\"jf\",\"type\":\"ebrjcxe\"},{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Failed\"},\"id\":\"tttxfvjrb\",\"name\":\"rp\",\"type\":\"xepcyvahfn\"},{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"xjvuujqgidokg\",\"name\":\"ljyoxgvcltb\",\"type\":\"sncghkjeszz\"}],\"nextLink\":\"ijhtxf\"}")
             .toObject(LicenseListResult.class);
-        Assertions.assertEquals("fnljky", model.nextLink());
+        Assertions.assertEquals("ijhtxf", model.nextLink());
     }
 }

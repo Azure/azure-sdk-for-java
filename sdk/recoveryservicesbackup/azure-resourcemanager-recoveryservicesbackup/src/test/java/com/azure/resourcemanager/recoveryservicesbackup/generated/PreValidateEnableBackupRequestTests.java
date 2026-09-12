@@ -13,25 +13,25 @@ public final class PreValidateEnableBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreValidateEnableBackupRequest model = BinaryData.fromString(
-            "{\"resourceType\":\"SystemState\",\"resourceId\":\"iw\",\"vaultId\":\"m\",\"properties\":\"zhzzwvywrg\"}")
+            "{\"resourceType\":\"SAPHanaDatabase\",\"resourceId\":\"gydgrpxncakiq\",\"vaultId\":\"ndjrkclamggl\",\"properties\":\"mfejdoqeykglty\"}")
             .toObject(PreValidateEnableBackupRequest.class);
-        Assertions.assertEquals(DataSourceType.SYSTEM_STATE, model.resourceType());
-        Assertions.assertEquals("iw", model.resourceId());
-        Assertions.assertEquals("m", model.vaultId());
-        Assertions.assertEquals("zhzzwvywrg", model.properties());
+        Assertions.assertEquals(DataSourceType.SAPHANA_DATABASE, model.resourceType());
+        Assertions.assertEquals("gydgrpxncakiq", model.resourceId());
+        Assertions.assertEquals("ndjrkclamggl", model.vaultId());
+        Assertions.assertEquals("mfejdoqeykglty", model.properties());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreValidateEnableBackupRequest model
-            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SYSTEM_STATE)
-                .withResourceId("iw")
-                .withVaultId("m")
-                .withProperties("zhzzwvywrg");
+            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SAPHANA_DATABASE)
+                .withResourceId("gydgrpxncakiq")
+                .withVaultId("ndjrkclamggl")
+                .withProperties("mfejdoqeykglty");
         model = BinaryData.fromObject(model).toObject(PreValidateEnableBackupRequest.class);
-        Assertions.assertEquals(DataSourceType.SYSTEM_STATE, model.resourceType());
-        Assertions.assertEquals("iw", model.resourceId());
-        Assertions.assertEquals("m", model.vaultId());
-        Assertions.assertEquals("zhzzwvywrg", model.properties());
+        Assertions.assertEquals(DataSourceType.SAPHANA_DATABASE, model.resourceType());
+        Assertions.assertEquals("gydgrpxncakiq", model.resourceId());
+        Assertions.assertEquals("ndjrkclamggl", model.vaultId());
+        Assertions.assertEquals("mfejdoqeykglty", model.properties());
     }
 }

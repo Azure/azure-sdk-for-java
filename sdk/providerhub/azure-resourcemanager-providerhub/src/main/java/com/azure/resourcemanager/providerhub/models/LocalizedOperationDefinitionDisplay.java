@@ -186,6 +186,15 @@ public final class LocalizedOperationDefinitionDisplay extends LocalizedOperatio
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalizedOperationDefinitionDisplay withQpsPloc(LocalizedOperationDisplayDefinitionQpsPloc qpsPloc) {
+        super.withQpsPloc(qpsPloc);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -250,6 +259,9 @@ public final class LocalizedOperationDefinitionDisplay extends LocalizedOperatio
         if (zhHant() != null) {
             zhHant().validate();
         }
+        if (qpsPloc() != null) {
+            qpsPloc().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LocalizedOperationDefinitionDisplay.class);
@@ -278,6 +290,7 @@ public final class LocalizedOperationDefinitionDisplay extends LocalizedOperatio
         jsonWriter.writeJsonField("sv", sv());
         jsonWriter.writeJsonField("zhHans", zhHans());
         jsonWriter.writeJsonField("zhHant", zhHant());
+        jsonWriter.writeJsonField("qpsPloc", qpsPloc());
         return jsonWriter.writeEndObject();
     }
 
@@ -352,6 +365,9 @@ public final class LocalizedOperationDefinitionDisplay extends LocalizedOperatio
                 } else if ("zhHant".equals(fieldName)) {
                     deserializedLocalizedOperationDefinitionDisplay
                         .withZhHant(LocalizedOperationDisplayDefinitionZhHant.fromJson(reader));
+                } else if ("qpsPloc".equals(fieldName)) {
+                    deserializedLocalizedOperationDefinitionDisplay
+                        .withQpsPloc(LocalizedOperationDisplayDefinitionQpsPloc.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

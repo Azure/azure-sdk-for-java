@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class CommitsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkManagerCommitDelete.json
+     * x-ms-original-file: 2025-09-01/NetworkManagerCommitDelete.json
      */
     /**
      * Sample code: Delete Network Manager Commit.

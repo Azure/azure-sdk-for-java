@@ -41,13 +41,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
+      <version>3.1.5</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -72,55 +72,55 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.58.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.59.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.81.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.82.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.21.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.9.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.9.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.11.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.11.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.35.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.35.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.31.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.31.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.30.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.30.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -128,7 +128,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -143,13 +143,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -198,9 +198,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>tools.jackson.core:jackson-databind:[3.1.4]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-actuator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>tools.jackson.core:jackson-databind:[3.1.5]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -209,7 +209,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

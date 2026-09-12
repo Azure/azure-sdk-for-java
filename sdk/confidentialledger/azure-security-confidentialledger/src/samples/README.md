@@ -45,7 +45,7 @@ HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(t
 
 ConfidentialLedgerClient confidentialLedgerClient =
     new ConfidentialLedgerClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
             .httpClient(httpClient)
             .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
             .buildClient();

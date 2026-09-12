@@ -411,6 +411,8 @@ public final class AzureVmWorkloadSapAseDatabaseProtectedItem extends AzureVmWor
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

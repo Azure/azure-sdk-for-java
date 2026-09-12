@@ -12,6 +12,7 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.PointF;
 import com.azure.ai.contentunderstanding.models.RectangleF;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -46,12 +47,9 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         AnalysisResult result = operation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+            return pollResponse.getFinalResult()
+                .switchIfEmpty(Mono.error(new AssertionError("Analysis returned no final result.")));
         }).block();
 
         assertNotNull(result, "Analysis result should not be null");
@@ -108,35 +106,10 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
         }
         assertTrue(hasDocumentSource, "At least one field should have DocumentSource grounding");
         assertTrue(hasPolygonSource, "At least one DocumentSource should have polygon coordinates");
+        assertContentSourceParseRoundTrip(documentContent);
     }
 
-    @Test
-    public void testContentSourceParseRoundTripAsync() {
-        String invoiceUrl
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf";
-
-        AnalysisInput input = new AnalysisInput();
-        input.setUrl(invoiceUrl);
-
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
-            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
-
-        AnalysisResult result = operation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block();
-
-        assertNotNull(result, "Analysis result should not be null");
-        assertNotNull(result.getContents(), "Result should contain contents");
-        assertFalse(result.getContents().isEmpty(), "Result contents should not be empty");
-        assertInstanceOf(DocumentContent.class, result.getContents().get(0), "Content should be DocumentContent");
-        DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
-        assertNotNull(documentContent.getFields(), "Document should have fields");
-
+    private static void assertContentSourceParseRoundTrip(DocumentContent documentContent) {
         // --- DocumentSource.parse() — typed method for multi-segment ---
         // Prefer a real multi-source field; fall back to deterministically constructing a
         // multi-segment wire string from a single source so the test doesn't depend on the
@@ -214,5 +187,16 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
                 System.out.println("  parseAll -> page " + ds.getPageNumber() + " (page-only)");
             }
         }
+
+        ContentSource originalSource = fieldWithSource.getSources().get(0);
+        assertInstanceOf(DocumentSource.class, originalSource);
+        int pageNumber = ((DocumentSource) originalSource).getPageNumber();
+        List<ContentSource> pageOnlySources = ContentSource.parseAll("D(" + pageNumber + ")");
+        assertEquals(1, pageOnlySources.size());
+        assertInstanceOf(DocumentSource.class, pageOnlySources.get(0));
+        DocumentSource pageOnly = (DocumentSource) pageOnlySources.get(0);
+        assertEquals(pageNumber, pageOnly.getPageNumber());
+        assertNull(pageOnly.getPolygon(), "Page-only source should have null polygon");
+        assertNull(pageOnly.getBoundingBox(), "Page-only source should have null BoundingBox");
     }
 }

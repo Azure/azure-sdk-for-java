@@ -57,8 +57,7 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public SyncOperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
-        super(PollingUtils.OPERATION_LOCATION_HEADER,
-            AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));
+        super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null

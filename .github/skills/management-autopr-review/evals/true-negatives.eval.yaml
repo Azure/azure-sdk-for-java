@@ -1,0 +1,259 @@
+name: management-autopr-reviewer-true-negatives
+description: False-positive and deduplication tests for the unattended reviewer.
+
+tags:
+  area: management-autopr-reviewer
+
+defaults:
+  runs: 3
+  timeout: "300s"
+  model: gpt-5.6-terra
+  judge_model: gpt-5.6-terra
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: additive-beta-update-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-additive-beta-update-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-additive-beta-update-pom.diff"
+          dest: "pr-diff/006-pom.xml.diff"
+        - src: "fixtures/tn-additive-beta-update-changelog.diff"
+          dest: "pr-diff/017-CHANGELOG.md.diff"
+        - src: "fixtures/tn-additive-beta-update-java.diff"
+          dest: "pr-diff/042-WidgetCreateModeSupport.java.diff"
+        - src: "fixtures/tn-additive-beta-update-model.diff"
+          dest: "pr-diff/061-CreateMode.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no false positive concern"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
+      - type: prompt
+    rubric:
+      - The beta package correctly targets a preview API.
+      - The public Java changes are additive and the POM dependency alignment is expected generated churn.
+      - No Blocking or Warning item should be raised; MGMT-API-VERSION may provide informational context.
+
+  - name: beta-breaking-changelog-is-not-main-concern
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-beta-breaking-changelog-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-beta-breaking-changelog-pom.diff"
+          dest: "pr-diff/005-pom.xml.diff"
+        - src: "fixtures/tn-beta-breaking-changelog-changelog.diff"
+          dest: "pr-diff/016-CHANGELOG.md.diff"
+        - src: "fixtures/tn-beta-breaking-changelog-java.diff"
+          dest: "pr-diff/047-WidgetManager.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no beta breaking concern"
+        config:
+          pattern: "\\[MGMT-BREAKING\\]"
+  - name: generated-only-java-is-not-reviewed
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-generated-only-java-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-generated-only-java.diff"
+          dest: "pr-diff/031-WidgetTests.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no generated-path concern"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
+
+  - name: pageable-list-and-helper-shapes-are-clean
+    tags:
+      rule: list-return
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-list-return-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-list-return-public.diff"
+          dest: "pr-diff/011-Widgets.java.diff"
+        - src: "fixtures/tn-list-return-async.diff"
+          dest: "pr-diff/028-WidgetsAsyncClient.java.diff"
+        - src: "fixtures/tn-list-return-keys.diff"
+          dest: "pr-diff/047-CommunicationServiceKeys.java.diff"
+        - src: "fixtures/tn-list-return-credentials.diff"
+          dest: "pr-diff/063-FleetCredentialResults.java.diff"
+        - src: "fixtures/tn-list-return-implementation.diff"
+          dest: "pr-diff/104-WidgetsClientImpl.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no list return concern"
+        config:
+          pattern: "\\[MGMT-LIST-RETURN\\]"
+
+  - name: matching-service-folder-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-service-folder-match-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-service-folder-match-pom.diff"
+          dest: "pr-diff/010-pom.xml.diff"
+        - src: "fixtures/tn-service-folder-match-java.diff"
+          dest: "pr-diff/040-BulkActionsManager.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no service folder mismatch"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - The third module-name segment is compute and matches sdk/compute.
+      - The reviewer must not raise MGMT-FOLDER.
+
+  - name: prior-concern-is-carried-once
+    tags:
+      rule: prior-state
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-prior-concern-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-prior-concern-comments.json"
+          dest: "github-responses/list-issue-comments.json"
+        - src: "fixtures/tn-prior-concern-changelog.diff"
+          dest: "pr-diff/015-CHANGELOG.md.diff"
+        - src: "fixtures/tn-prior-concern-java.diff"
+          dest: "pr-diff/046-WidgetManager.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to update the review state for the
+      synthetic PR. GitHub responses are materialized under github-responses
+      and per-file patches under pr-diff. Return the replacement current-state
+      review comment as the final response; do not modify the materialized
+      GitHub responses.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "concern carried forward"
+        config:
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*Carried forward"
+      - type: output-not-matches
+        name: "not marked new"
+        config:
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\]\\s+New\\b"
+      - type: prompt
+    rubric:
+      - The existing MGMT-API-VERSION-OVERLAP concern still applies.
+      - It must retain the same ID and be marked Carried forward, without restating the question as new.
+
+  - name: standard-manager-name-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-manager-clean-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-manager-clean-java.diff"
+          dest: "pr-diff/032-ContainerServiceManager.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no standard manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
+
+  - name: reordered-manager-identity-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-manager-reordered-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-manager-reordered-java.diff"
+          dest: "pr-diff/033-ContainerAppsApiManager.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no reordered manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
+
+  - name: unchanged-legacy-manager-name-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-manager-legacy-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-manager-legacy-java.diff"
+          dest: "pr-diff/034-AppNetworkManagerSupport.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no legacy manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"

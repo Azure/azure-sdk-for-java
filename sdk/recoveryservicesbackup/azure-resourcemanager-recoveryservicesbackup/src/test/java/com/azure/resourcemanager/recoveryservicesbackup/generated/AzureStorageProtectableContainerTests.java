@@ -13,11 +13,11 @@ public final class AzureStorageProtectableContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageProtectableContainer model = BinaryData.fromString(
-            "{\"protectableContainerType\":\"StorageContainer\",\"friendlyName\":\"rmcqmiciijqpkz\",\"backupManagementType\":\"MAB\",\"healthStatus\":\"xjmcsmyqwixvcpw\",\"containerId\":\"wy\"}")
+            "{\"protectableContainerType\":\"StorageContainer\",\"friendlyName\":\"pra\",\"backupManagementType\":\"DefaultBackup\",\"healthStatus\":\"geslabnsmj\",\"containerId\":\"ynq\"}")
             .toObject(AzureStorageProtectableContainer.class);
-        Assertions.assertEquals("rmcqmiciijqpkz", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("xjmcsmyqwixvcpw", model.healthStatus());
-        Assertions.assertEquals("wy", model.containerId());
+        Assertions.assertEquals("pra", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("geslabnsmj", model.healthStatus());
+        Assertions.assertEquals("ynq", model.containerId());
     }
 }

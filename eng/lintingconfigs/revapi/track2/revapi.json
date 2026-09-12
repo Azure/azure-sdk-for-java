@@ -10,16 +10,6 @@
     }
   },
   {
-    "extension": "revapi.java.filter.annotated",
-    "configuration": {
-      "exclude": [
-        "@com.azure.ai.projects.implementation.utils.Beta",
-        "@com.azure.ai.agents.implementation.utils.Beta"
-
-      ]
-    }
-  },
-  {
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
@@ -1037,6 +1027,51 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.compute.models.ExecutedValidation com.azure.resourcemanager.compute.models.ExecutedValidation::withStatus(com.azure.resourcemanager.compute.models.ValidationStatus)",
           "justification": "ExecutedValidation is output-only; fluent setter removed as part of immutable model cleanup."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.resources\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.resources\\.models\\.PolicyLogInfo\\:\\:(ancestors|complianceReasonCode|policyAssignmentDisplayName|policyDefinitionDisplayName|policyDefinitionGroupNames|policyExemptionIds|policySetDefinitionCategory|policySetDefinitionDisplayName|resourceLocation)\\(\\)"
+          },
+          "justification": "PolicyLogInfo properties were removed because they are not supported by the Policy service."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.resources\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.resources\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.resources.models.AzureResourceBase",
+          "justification": "Unused legacy base model removed during TypeSpec migration."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.resources\\.models\\.ResourceReferenceExtended"
+          },
+          "justification": "TypeSpec composition flattens ResourceReference properties instead of generating Java inheritance."
         },
         {
           "code" : "java.class.removed",
@@ -2146,6 +2181,23 @@
           "justification": "Breaking change in beta operation: EvaluationRulesClient/EvaluationRulesAsyncClient are retained; only the overload of createOrUpdateEvaluationRule that took FoundryFeaturesOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
         }
       ]
+    }
+  },
+  {
+    "extension": "revapi.filter",
+    "configuration": {
+      "elements": {
+        "exclude": [
+          {
+            "matcher": "java",
+            "match": "@com.azure.ai.projects.implementation.utils.Beta(**) ^*;"
+          },
+          {
+            "matcher": "java",
+            "match": "@com.azure.ai.agents.implementation.utils.Beta(**) ^*;"
+          }
+        ]
+      }
     }
   }
 ]

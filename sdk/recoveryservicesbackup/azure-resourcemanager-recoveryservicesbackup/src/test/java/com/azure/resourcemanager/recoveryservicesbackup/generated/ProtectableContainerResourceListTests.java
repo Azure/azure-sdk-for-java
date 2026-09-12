@@ -13,16 +13,16 @@ public final class ProtectableContainerResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectableContainerResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"e\",\"tags\":{\"hortu\":\"jiriuxeg\"},\"eTag\":\"wlpjfelqerppt\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"qnzmnhiil\",\"backupManagementType\":\"AzureStorage\",\"healthStatus\":\"cjgckbbcccgzpra\",\"containerId\":\"nyuffat\"},\"id\":\"ftipwcxbyubhiq\",\"name\":\"xyur\",\"type\":\"pnuhzafccnu\"},{\"location\":\"i\",\"tags\":{\"vatvcrkd\":\"lbuigv\"},\"eTag\":\"nbqxvhcsyhzlwxae\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"ur\",\"backupManagementType\":\"Invalid\",\"healthStatus\":\"d\",\"containerId\":\"dwead\"},\"id\":\"zmwntopagt\",\"name\":\"mvmmagoaqylkjz\",\"type\":\"jiuazjc\"}],\"nextLink\":\"xitp\"}")
+            "{\"value\":[{\"location\":\"oclxiut\",\"tags\":{\"r\":\"yzyzjd\",\"xjeaoqaqbzgyh\":\"jb\",\"v\":\"w\",\"e\":\"atbwbqam\"},\"eTag\":\"iyslpkcvmwfaux\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"myw\",\"backupManagementType\":\"AzureIaasVM\",\"healthStatus\":\"c\",\"containerId\":\"iciijqpkzfbojx\"},\"id\":\"cs\",\"name\":\"yqwixvcpwnkwywzw\",\"type\":\"falickduoiqtamty\"}],\"nextLink\":\"kn\"}")
             .toObject(ProtectableContainerResourceList.class);
-        Assertions.assertEquals("xitp", model.nextLink());
-        Assertions.assertEquals("e", model.value().get(0).location());
-        Assertions.assertEquals("jiriuxeg", model.value().get(0).tags().get("hortu"));
-        Assertions.assertEquals("wlpjfelqerppt", model.value().get(0).eTag());
-        Assertions.assertEquals("qnzmnhiil", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE,
+        Assertions.assertEquals("kn", model.nextLink());
+        Assertions.assertEquals("oclxiut", model.value().get(0).location());
+        Assertions.assertEquals("yzyzjd", model.value().get(0).tags().get("r"));
+        Assertions.assertEquals("iyslpkcvmwfaux", model.value().get(0).eTag());
+        Assertions.assertEquals("myw", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM,
             model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("cjgckbbcccgzpra", model.value().get(0).properties().healthStatus());
-        Assertions.assertEquals("nyuffat", model.value().get(0).properties().containerId());
+        Assertions.assertEquals("c", model.value().get(0).properties().healthStatus());
+        Assertions.assertEquals("iciijqpkzfbojx", model.value().get(0).properties().containerId());
     }
 }

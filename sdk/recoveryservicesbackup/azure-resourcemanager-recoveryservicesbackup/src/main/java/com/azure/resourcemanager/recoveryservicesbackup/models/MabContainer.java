@@ -315,6 +315,8 @@ public final class MabContainer extends ProtectionContainer {
                     deserializedMabContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedMabContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedMabContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedMabContainer.containerType = ProtectableContainerType.fromString(reader.getString());
                 } else if ("canReRegister".equals(fieldName)) {

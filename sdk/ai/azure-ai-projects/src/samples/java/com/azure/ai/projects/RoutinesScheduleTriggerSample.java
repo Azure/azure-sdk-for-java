@@ -56,7 +56,7 @@ public class RoutinesScheduleTriggerSample {
             triggers.put("every_five_minutes", trigger);
 
             com.azure.ai.projects.models.Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by the schedule-trigger sample.", true, triggers, action);
+                "Routine used by the schedule-trigger sample.", true, triggers, action, null);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
             System.out.printf("cron expression: %s; time zone: %s%n",
                 trigger.getCronExpression(), trigger.getTimeZone());
