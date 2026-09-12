@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.AdvancedPlatformMetricsRuleType;
  */
 public final class AdvancedPlatformMetricsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Get.json
+     * x-ms-original-file: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Get.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_Get - Get advanced platform metrics rule.

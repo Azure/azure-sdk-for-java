@@ -30,6 +30,7 @@ import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.Placement;
+import com.azure.resourcemanager.storage.models.PolicyViolationAction;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingChoice;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
@@ -52,7 +53,7 @@ import java.util.Map;
  */
 public final class StorageAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/NfsV3AccountCreate.json
+     * x-ms-original-file: 2026-06-01/NfsV3AccountCreate.json
      */
     /**
      * Sample code: NfsV3AccountCreate.
@@ -78,7 +79,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateWithSmartAccessTier.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateWithSmartAccessTier.json
      */
     /**
      * Sample code: StorageAccountCreateWithSmartAccessTier.
@@ -120,7 +121,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreate.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreate.json
      */
     /**
      * Sample code: StorageAccountCreate.
@@ -130,42 +131,45 @@ public final class StorageAccountsCreateSamples {
     public static void storageAccountCreate(com.azure.resourcemanager.storage.StorageManager manager) {
         manager.serviceClient()
             .getStorageAccounts()
-            .create("res9101", "sto4445", new StorageAccountCreateParameters()
-                .withSku(new Sku().withName(SkuName.STANDARD_GRS))
-                .withKind(Kind.STORAGE)
-                .withLocation("eastus")
-                .withExtendedLocation(
-                    new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
-                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                .withSasPolicy(
-                    new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
-                .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
-                .withEncryption(new Encryption()
-                    .withServices(new EncryptionServices()
-                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                    .withKeySource(KeySource.MICROSOFT_STORAGE)
-                    .withRequireInfrastructureEncryption(false))
-                .withIsSftpEnabled(true)
-                .withIsHnsEnabled(true)
-                .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
-                    .withPublishMicrosoftEndpoints(true)
-                    .withPublishInternetEndpoints(true))
-                .withAllowBlobPublicAccess(false)
-                .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
-                .withAllowSharedKeyAccess(true)
-                .withDefaultToOAuthAuthentication(false)
-                .withGeoPriorityReplicationStatus(new GeoPriorityReplicationStatus().withIsBlobEnabled(true))
-                .withAllowSharedKeyAccessForServices(new StorageAccountSharedKeyAccessProperties()
-                    .withBlob(new ServiceSharedKeyAccessProperties().withEnabled(true))
-                    .withFile(new ServiceSharedKeyAccessProperties().withEnabled(false))
-                    .withTable(new ServiceSharedKeyAccessProperties().withEnabled(false))
-                    .withQueue(new ServiceSharedKeyAccessProperties().withEnabled(true))),
+            .create("res9101", "sto4445",
+                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_GRS))
+                    .withKind(Kind.STORAGE)
+                    .withLocation("eastus")
+                    .withExtendedLocation(
+                        new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG)
+                        .withRequireUserBoundUserDelegationSas(true)
+                        .withRequireUserBoundUserDelegationSasAction(PolicyViolationAction.BLOCK))
+                    .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE)
+                        .withRequireInfrastructureEncryption(false))
+                    .withIsSftpEnabled(true)
+                    .withIsHnsEnabled(true)
+                    .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                        .withPublishMicrosoftEndpoints(true)
+                        .withPublishInternetEndpoints(true))
+                    .withAllowBlobPublicAccess(false)
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                    .withAllowSharedKeyAccess(true)
+                    .withDefaultToOAuthAuthentication(false)
+                    .withGeoPriorityReplicationStatus(new GeoPriorityReplicationStatus().withIsBlobEnabled(true))
+                    .withAllowSharedKeyAccessForServices(new StorageAccountSharedKeyAccessProperties()
+                        .withBlob(new ServiceSharedKeyAccessProperties().withEnabled(true))
+                        .withFile(new ServiceSharedKeyAccessProperties().withEnabled(false))
+                        .withTable(new ServiceSharedKeyAccessProperties().withEnabled(false))
+                        .withQueue(new ServiceSharedKeyAccessProperties().withEnabled(true)))
+                    .withAllowCrossTenantDelegationSas(false),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreate_zones.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreate_zones.json
      */
     /**
      * Sample code: StorageAccountCreate_zones.
@@ -204,7 +208,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreate_placement.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreate_placement.json
      */
     /**
      * Sample code: StorageAccountCreate_placement.
@@ -243,7 +247,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateDisallowPublicNetworkAccess.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateDisallowPublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountCreateDisallowPublicNetworkAccess.
@@ -281,7 +285,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateDnsEndpointTypeToStandard.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateDnsEndpointTypeToStandard.json
      */
     /**
      * Sample code: StorageAccountCreateDnsEndpointTypeToStandard.
@@ -321,7 +325,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
      */
     /**
      * Sample code: StorageAccountCreateDnsEndpointTypeToAzureDnsZone.
@@ -361,7 +365,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateWithDataCollaborationPolicy.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateWithDataCollaborationPolicy.json
      */
     /**
      * Sample code: StorageAccountCreateWithDataCollaborationPolicy.
@@ -384,7 +388,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreatePremiumBlockBlobStorage.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreatePremiumBlockBlobStorage.json
      */
     /**
      * Sample code: StorageAccountCreatePremiumBlockBlobStorage.
@@ -412,7 +416,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateWithImmutabilityPolicy.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountCreateWithImmutabilityPolicy.
@@ -438,7 +442,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
      */
     /**
      * Sample code: StorageAccountCreateAllowedCopyScopeToPrivateLink.
@@ -474,7 +478,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateEnablePublicNetworkAccess.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateEnablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountCreateEnablePublicNetworkAccess.
@@ -512,7 +516,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountCreateAllowedCopyScopeToAAD.
@@ -548,7 +552,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.
@@ -582,7 +586,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: 2026-06-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.

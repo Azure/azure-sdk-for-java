@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageAccountsAbortHierarchicalNamespaceMigrationSamples {
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountAbortHierarchicalNamespaceMigration.json
+     * x-ms-original-file: 2026-06-01/StorageAccountAbortHierarchicalNamespaceMigration.json
      */
     /**
      * Sample code: StorageAccountAbortHierarchicalNamespaceMigration.

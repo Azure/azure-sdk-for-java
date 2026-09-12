@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageTaskAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsForAccount.json
+     * x-ms-original-file: 2026-06-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsForAccount.json
      */
     /**
      * Sample code: ListStorageTaskAssignmentsForAccount.
