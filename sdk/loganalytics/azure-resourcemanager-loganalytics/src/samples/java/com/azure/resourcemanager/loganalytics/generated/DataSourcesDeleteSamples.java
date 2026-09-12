@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class DataSourcesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesDelete.json
+     * x-ms-original-file: 2026-03-01/DataSourcesDelete.json
      */
     /**
      * Sample code: DataSourcesDelete.

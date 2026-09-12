@@ -13,27 +13,27 @@ public final class SearchResultsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SearchResults model = BinaryData.fromString(
-            "{\"query\":\"pglydz\",\"description\":\"rvqeevtoepryutn\",\"limit\":2045022432,\"startSearchTime\":\"2021-12-10T03:43:23Z\",\"endSearchTime\":\"2021-01-20T06:32:43Z\",\"sourceTable\":\"vzvfvaawzqadfl\",\"azureAsyncOperationId\":\"ur\"}")
+            "{\"query\":\"eznoig\",\"description\":\"njwmwkpnbsazejj\",\"limit\":247031885,\"startSearchTime\":\"2021-09-12T12:18:54Z\",\"endSearchTime\":\"2021-06-19T07:22:27Z\",\"sourceTable\":\"xttaugzxnfaaz\",\"azureAsyncOperationId\":\"dtnkdmkq\"}")
             .toObject(SearchResults.class);
-        Assertions.assertEquals("pglydz", model.query());
-        Assertions.assertEquals("rvqeevtoepryutn", model.description());
-        Assertions.assertEquals(2045022432, model.limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T03:43:23Z"), model.startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T06:32:43Z"), model.endSearchTime());
+        Assertions.assertEquals("eznoig", model.query());
+        Assertions.assertEquals("njwmwkpnbsazejj", model.description());
+        Assertions.assertEquals(247031885, model.limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T12:18:54Z"), model.startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T07:22:27Z"), model.endSearchTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchResults model = new SearchResults().withQuery("pglydz")
-            .withDescription("rvqeevtoepryutn")
-            .withLimit(2045022432)
-            .withStartSearchTime(OffsetDateTime.parse("2021-12-10T03:43:23Z"))
-            .withEndSearchTime(OffsetDateTime.parse("2021-01-20T06:32:43Z"));
+        SearchResults model = new SearchResults().withQuery("eznoig")
+            .withDescription("njwmwkpnbsazejj")
+            .withLimit(247031885)
+            .withStartSearchTime(OffsetDateTime.parse("2021-09-12T12:18:54Z"))
+            .withEndSearchTime(OffsetDateTime.parse("2021-06-19T07:22:27Z"));
         model = BinaryData.fromObject(model).toObject(SearchResults.class);
-        Assertions.assertEquals("pglydz", model.query());
-        Assertions.assertEquals("rvqeevtoepryutn", model.description());
-        Assertions.assertEquals(2045022432, model.limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T03:43:23Z"), model.startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T06:32:43Z"), model.endSearchTime());
+        Assertions.assertEquals("eznoig", model.query());
+        Assertions.assertEquals("njwmwkpnbsazejj", model.description());
+        Assertions.assertEquals(247031885, model.limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T12:18:54Z"), model.startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T07:22:27Z"), model.endSearchTime());
     }
 }

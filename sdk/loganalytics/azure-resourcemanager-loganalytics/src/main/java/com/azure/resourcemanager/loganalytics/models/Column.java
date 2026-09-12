@@ -32,7 +32,8 @@ public final class Column implements JsonSerializable<Column> {
     private ColumnDataTypeHintEnum dataTypeHint;
 
     /*
-     * Column display name.
+     * Column display name. Can be set at creation time; after creation, updates must either match column name or set to
+     * null/empty. If not provided, defaults to column name.
      */
     private String displayName;
 
@@ -118,7 +119,8 @@ public final class Column implements JsonSerializable<Column> {
     }
 
     /**
-     * Get the displayName property: Column display name.
+     * Get the displayName property: Column display name. Can be set at creation time; after creation, updates must
+     * either match column name or set to null/empty. If not provided, defaults to column name.
      * 
      * @return the displayName value.
      */
@@ -127,7 +129,8 @@ public final class Column implements JsonSerializable<Column> {
     }
 
     /**
-     * Set the displayName property: Column display name.
+     * Set the displayName property: Column display name. Can be set at creation time; after creation, updates must
+     * either match column name or set to null/empty. If not provided, defaults to column name.
      * 
      * @param displayName the displayName value to set.
      * @return the Column object itself.

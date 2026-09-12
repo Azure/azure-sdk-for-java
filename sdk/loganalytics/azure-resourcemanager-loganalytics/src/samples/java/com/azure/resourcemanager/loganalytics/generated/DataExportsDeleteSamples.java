@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class DataExportsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataExportDelete.json
+     * x-ms-original-file: 2026-03-01/DataExportDelete.json
      */
     /**
      * Sample code: DataExportDelete.

@@ -14,27 +14,27 @@ public final class ColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Column model = BinaryData.fromString(
-            "{\"name\":\"mfdn\",\"type\":\"dateTime\",\"dataTypeHint\":\"guid\",\"displayName\":\"vfcjnaeoisrvhmg\",\"description\":\"ffukiscvw\",\"isDefaultDisplay\":true,\"isHidden\":false}")
+            "{\"name\":\"kyzirtxdyux\",\"type\":\"guid\",\"dataTypeHint\":\"guid\",\"displayName\":\"sewgioilqukr\",\"description\":\"xtqmieoxor\",\"isDefaultDisplay\":true,\"isHidden\":true}")
             .toObject(Column.class);
-        Assertions.assertEquals("mfdn", model.name());
-        Assertions.assertEquals(ColumnTypeEnum.DATE_TIME, model.type());
+        Assertions.assertEquals("kyzirtxdyux", model.name());
+        Assertions.assertEquals(ColumnTypeEnum.GUID, model.type());
         Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.dataTypeHint());
-        Assertions.assertEquals("vfcjnaeoisrvhmg", model.displayName());
-        Assertions.assertEquals("ffukiscvw", model.description());
+        Assertions.assertEquals("sewgioilqukr", model.displayName());
+        Assertions.assertEquals("xtqmieoxor", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Column model = new Column().withName("mfdn")
-            .withType(ColumnTypeEnum.DATE_TIME)
+        Column model = new Column().withName("kyzirtxdyux")
+            .withType(ColumnTypeEnum.GUID)
             .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
-            .withDisplayName("vfcjnaeoisrvhmg")
-            .withDescription("ffukiscvw");
+            .withDisplayName("sewgioilqukr")
+            .withDescription("xtqmieoxor");
         model = BinaryData.fromObject(model).toObject(Column.class);
-        Assertions.assertEquals("mfdn", model.name());
-        Assertions.assertEquals(ColumnTypeEnum.DATE_TIME, model.type());
+        Assertions.assertEquals("kyzirtxdyux", model.name());
+        Assertions.assertEquals(ColumnTypeEnum.GUID, model.type());
         Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.dataTypeHint());
-        Assertions.assertEquals("vfcjnaeoisrvhmg", model.displayName());
-        Assertions.assertEquals("ffukiscvw", model.description());
+        Assertions.assertEquals("sewgioilqukr", model.displayName());
+        Assertions.assertEquals("xtqmieoxor", model.description());
     }
 }

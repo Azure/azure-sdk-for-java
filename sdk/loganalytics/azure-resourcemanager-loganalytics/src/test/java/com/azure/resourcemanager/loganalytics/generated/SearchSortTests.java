@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchSortTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchSort model
-            = BinaryData.fromString("{\"name\":\"vzmlovuanashcxl\",\"order\":\"desc\"}").toObject(SearchSort.class);
-        Assertions.assertEquals("vzmlovuanashcxl", model.name());
+        SearchSort model = BinaryData.fromString("{\"name\":\"h\",\"order\":\"desc\"}").toObject(SearchSort.class);
+        Assertions.assertEquals("h", model.name());
         Assertions.assertEquals(SearchSortEnum.DESC, model.order());
     }
 }

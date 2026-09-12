@@ -13,16 +13,16 @@ public final class WorkspaceListManagementGroupsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceListManagementGroupsResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"serverCount\":585664743,\"isGateway\":true,\"name\":\"awaoqvmmbnpqfrt\",\"id\":\"kzmegnitgvkxlz\",\"created\":\"2021-04-18T23:17Z\",\"dataReceived\":\"2021-09-29T03:03:45Z\",\"version\":\"gcealzxwh\",\"sku\":\"nsymoyqhlwigd\"}},{\"properties\":{\"serverCount\":1406005278,\"isGateway\":true,\"name\":\"omfaj\",\"id\":\"asqvd\",\"created\":\"2021-08-06T04:39:44Z\",\"dataReceived\":\"2020-12-24T11:41:16Z\",\"version\":\"xakjsqzhzb\",\"sku\":\"kgimsidxasic\"}},{\"properties\":{\"serverCount\":1482071473,\"isGateway\":true,\"name\":\"kgfmocwahpq\",\"id\":\"tjeaahhvjhh\",\"created\":\"2021-11-24T03:40:22Z\",\"dataReceived\":\"2021-02-08T20:51:05Z\",\"version\":\"bjjidjksyxky\",\"sku\":\"xevbl\"}},{\"properties\":{\"serverCount\":815119769,\"isGateway\":true,\"name\":\"lageuaulxun\",\"id\":\"jbnkpp\",\"created\":\"2021-09-29T01:40:14Z\",\"dataReceived\":\"2021-04-02T07:56:28Z\",\"version\":\"svxeizzgwklnsr\",\"sku\":\"feycxcktp\"}}],\"nextLink\":\"merteeammxqiek\"}")
+            "{\"value\":[{\"properties\":{\"serverCount\":2021052492,\"isGateway\":false,\"name\":\"xk\",\"id\":\"loazuruocbgoo\",\"created\":\"2021-07-17T06:26:59Z\",\"dataReceived\":\"2021-08-02T17:26:36Z\",\"version\":\"bfhjxakvvjgsl\",\"sku\":\"dilmyww\"}},{\"properties\":{\"serverCount\":558167493,\"isGateway\":false,\"name\":\"edabgyvudtjue\",\"id\":\"cihxuuwhcjyx\",\"created\":\"2021-09-16T17:42:02Z\",\"dataReceived\":\"2021-08-23T00:43:43Z\",\"version\":\"ayakkudzpx\",\"sku\":\"jplmagstcy\"}}],\"nextLink\":\"pfkyrkdbdgiogsj\"}")
             .toObject(WorkspaceListManagementGroupsResult.class);
-        Assertions.assertEquals(585664743, model.value().get(0).serverCount());
-        Assertions.assertTrue(model.value().get(0).isGateway());
-        Assertions.assertEquals("awaoqvmmbnpqfrt", model.value().get(0).name());
-        Assertions.assertEquals("kzmegnitgvkxlz", model.value().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T23:17Z"), model.value().get(0).created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T03:03:45Z"), model.value().get(0).dataReceived());
-        Assertions.assertEquals("gcealzxwh", model.value().get(0).version());
-        Assertions.assertEquals("nsymoyqhlwigd", model.value().get(0).sku());
-        Assertions.assertEquals("merteeammxqiek", model.nextLink());
+        Assertions.assertEquals(2021052492, model.value().get(0).serverCount());
+        Assertions.assertFalse(model.value().get(0).isGateway());
+        Assertions.assertEquals("xk", model.value().get(0).name());
+        Assertions.assertEquals("loazuruocbgoo", model.value().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T06:26:59Z"), model.value().get(0).created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T17:26:36Z"), model.value().get(0).dataReceived());
+        Assertions.assertEquals("bfhjxakvvjgsl", model.value().get(0).version());
+        Assertions.assertEquals("dilmyww", model.value().get(0).sku());
+        Assertions.assertEquals("pfkyrkdbdgiogsj", model.nextLink());
     }
 }

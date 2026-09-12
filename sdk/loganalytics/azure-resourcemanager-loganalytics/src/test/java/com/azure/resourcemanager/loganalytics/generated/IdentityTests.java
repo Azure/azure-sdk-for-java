@@ -16,18 +16,19 @@ public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Identity model = BinaryData.fromString(
-            "{\"principalId\":\"dkcglhsl\",\"tenantId\":\"jdyggdtji\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yvdcsitynnaa\":{\"principalId\":\"ofqweykhmenevfye\",\"clientId\":\"whybcib\"},\"ezrkgqhcjrefo\":{\"principalId\":\"ectehf\",\"clientId\":\"scjeypv\"},\"zsqpjhvmdajvny\":{\"principalId\":\"mkqsleyyv\",\"clientId\":\"qjpkcattpngjcrc\"}}}")
+            "{\"principalId\":\"jnxqbzvddntwn\",\"tenantId\":\"icbtwnpzao\",\"type\":\"None\",\"userAssignedIdentities\":{\"ciwqvhk\":{\"principalId\":\"hcffcyddglmjthjq\",\"clientId\":\"pyeicxm\"},\"w\":{\"principalId\":\"xuigdtopbobj\",\"clientId\":\"hm\"},\"iotkftutqxl\":{\"principalId\":\"m\",\"clientId\":\"hrzayvvtpgvdf\"},\"tthzrvqd\":{\"principalId\":\"xlefgugnxkrx\",\"clientId\":\"mi\"}}}")
             .toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model = new Identity().withType(IdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("yvdcsitynnaa", new UserIdentityProperties(), "ezrkgqhcjrefo",
-                new UserIdentityProperties(), "zsqpjhvmdajvny", new UserIdentityProperties()));
+        Identity model = new Identity().withType(IdentityType.NONE)
+            .withUserAssignedIdentities(
+                mapOf("ciwqvhk", new UserIdentityProperties(), "w", new UserIdentityProperties(), "iotkftutqxl",
+                    new UserIdentityProperties(), "tthzrvqd", new UserIdentityProperties()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

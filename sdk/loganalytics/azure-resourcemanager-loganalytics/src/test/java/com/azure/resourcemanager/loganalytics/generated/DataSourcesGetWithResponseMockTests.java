@@ -22,7 +22,7 @@ public final class DataSourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":\"\\\"datayuttdiygbpvnwswm\\\"\",\"etag\":\"k\",\"kind\":\"NetworkMonitoring\",\"tags\":{\"gzyvnee\":\"wgzwxjlmecvog\",\"ffhzbkrkjjjavfq\":\"aifghtmoqqt\",\"wdogiyetesyp\":\"vhnqo\",\"jhqt\":\"idbz\"},\"id\":\"ovnynkbwetnju\",\"name\":\"p\",\"type\":\"prkzya\"}";
+            = "{\"properties\":\"\\\"dataywhslwkojpllndnp\\\"\",\"etag\":\"rpqaf\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"coc\":\"snnfhyetefyp\",\"urmlmuo\":\"fjgtixrjvzuy\"},\"id\":\"lbau\",\"name\":\"ropions\",\"type\":\"onwpnga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class DataSourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataSource response = manager.dataSources()
-            .getWithResponse("fgbrtt", "iac", "kiexhajlfnthiq", com.azure.core.util.Context.NONE)
+            .getWithResponse("juahokqto", "kauxof", "hfphwpnulaiywze", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("k", response.etag());
-        Assertions.assertEquals(DataSourceKind.NETWORK_MONITORING, response.kind());
-        Assertions.assertEquals("wgzwxjlmecvog", response.tags().get("gzyvnee"));
+        Assertions.assertEquals("rpqaf", response.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, response.kind());
+        Assertions.assertEquals("snnfhyetefyp", response.tags().get("coc"));
     }
 }

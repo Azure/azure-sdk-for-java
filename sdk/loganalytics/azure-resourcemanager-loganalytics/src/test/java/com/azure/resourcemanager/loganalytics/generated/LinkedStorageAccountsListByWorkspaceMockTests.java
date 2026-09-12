@@ -22,7 +22,7 @@ public final class LinkedStorageAccountsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"qavn\"]},\"id\":\"flqqbtnyjpylxd\",\"name\":\"fvabmvmsxba\",\"type\":\"vwjcnkottlwuh\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataSourceType\":\"Alerts\",\"storageAccountIds\":[\"v\",\"kxrerlniylylyfwx\"]},\"id\":\"tgqztwhghmup\",\"name\":\"xyjtcdxabbujf\",\"type\":\"abe\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class LinkedStorageAccountsListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LinkedStorageAccountsResource> response
-            = manager.linkedStorageAccounts().listByWorkspace("gv", "pemtuoqu", com.azure.core.util.Context.NONE);
+            = manager.linkedStorageAccounts().listByWorkspace("scmnlziji", "fehgmv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qavn", response.iterator().next().storageAccountIds().get(0));
+        Assertions.assertEquals("v", response.iterator().next().storageAccountIds().get(0));
     }
 }

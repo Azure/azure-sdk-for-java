@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class SummaryLogsOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsGet.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsGet.json
      */
     /**
      * Sample code: SummaryLogsGet.

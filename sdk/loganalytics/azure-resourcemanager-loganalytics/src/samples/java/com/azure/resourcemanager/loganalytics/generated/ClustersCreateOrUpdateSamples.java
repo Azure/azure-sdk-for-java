@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersCreate.json
+     * x-ms-original-file: 2026-03-01/ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.

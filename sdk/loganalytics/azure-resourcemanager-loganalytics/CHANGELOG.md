@@ -1,14 +1,60 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.3.0 (2026-08-09)
+
+- Azure Resource Manager LogAnalytics client library for Java. This package contains Microsoft Azure SDK for LogAnalytics Management SDK.  Package api-version 2026-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.SummaryLogsUserIdentityProperties` was added
 
-### Bugs Fixed
+* `models.SummaryLogsIdentityType` was added
 
-### Other Changes
+* `models.WorkspacePurgeLakeDataTimeRange` was added
+
+* `models.TableProtectionLevelEnum` was added
+
+* `models.WorkspacePurgeLakeDataBody` was added
+
+* `models.SummaryLogsIdentity` was added
+
+#### `models.Table$Update` was modified
+
+* `withProtectionLevel(models.TableProtectionLevelEnum)` was added
+
+#### `models.SummaryLogs$Definition` was modified
+
+* `withIdentity(models.SummaryLogsIdentity)` was added
+
+#### `models.WorkspaceFeatures` was modified
+
+* `withDataAuthorizationMode(java.lang.Boolean)` was added
+* `dataAuthorizationMode()` was added
+
+#### `models.WorkspacePurges` was modified
+
+* `purgeLakeData(java.lang.String,java.lang.String,models.WorkspacePurgeLakeDataBody)` was added
+* `purgeLakeData(java.lang.String,java.lang.String,models.WorkspacePurgeLakeDataBody,com.azure.core.util.Context)` was added
+
+#### `models.ColumnDataTypeHintEnum` was modified
+
+* `VECTOR16` was added
+
+#### `models.SummaryLogs$Update` was modified
+
+* `withIdentity(models.SummaryLogsIdentity)` was added
+
+#### `models.Table` was modified
+
+* `protectionLevel()` was added
+
+#### `models.Table$Definition` was modified
+
+* `withProtectionLevel(models.TableProtectionLevelEnum)` was added
+
+#### `models.SummaryLogs` was modified
+
+* `identity()` was added
 
 ## 2.2.0 (2026-05-09)
 

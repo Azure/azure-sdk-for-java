@@ -13,21 +13,21 @@ public final class RestoredLogsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoredLogs model = BinaryData.fromString(
-            "{\"startRestoreTime\":\"2021-04-25T19:47:18Z\",\"endRestoreTime\":\"2021-02-28T21:39:36Z\",\"sourceTable\":\"xndticokpvzmlqtm\",\"azureAsyncOperationId\":\"gxobfirclnp\"}")
+            "{\"startRestoreTime\":\"2021-01-29T06:17:27Z\",\"endRestoreTime\":\"2020-12-21T21:02:08Z\",\"sourceTable\":\"nvrk\",\"azureAsyncOperationId\":\"ou\"}")
             .toObject(RestoredLogs.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T19:47:18Z"), model.startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T21:39:36Z"), model.endRestoreTime());
-        Assertions.assertEquals("xndticokpvzmlqtm", model.sourceTable());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T06:17:27Z"), model.startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T21:02:08Z"), model.endRestoreTime());
+        Assertions.assertEquals("nvrk", model.sourceTable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoredLogs model = new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-04-25T19:47:18Z"))
-            .withEndRestoreTime(OffsetDateTime.parse("2021-02-28T21:39:36Z"))
-            .withSourceTable("xndticokpvzmlqtm");
+        RestoredLogs model = new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-01-29T06:17:27Z"))
+            .withEndRestoreTime(OffsetDateTime.parse("2020-12-21T21:02:08Z"))
+            .withSourceTable("nvrk");
         model = BinaryData.fromObject(model).toObject(RestoredLogs.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T19:47:18Z"), model.startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T21:39:36Z"), model.endRestoreTime());
-        Assertions.assertEquals("xndticokpvzmlqtm", model.sourceTable());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T06:17:27Z"), model.startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T21:02:08Z"), model.endRestoreTime());
+        Assertions.assertEquals("nvrk", model.sourceTable());
     }
 }
