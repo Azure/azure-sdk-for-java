@@ -25,6 +25,23 @@ public interface DataMaskingRulesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
+     * @param skip The number of elements in the collection to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database data masking rules as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Long skip);
+
+    /**
+     * Gets a list of database data masking rules.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -57,6 +74,7 @@ public interface DataMaskingRulesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
+     * @param skip The number of elements in the collection to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +83,7 @@ public interface DataMaskingRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMaskingRuleInner> listByDatabase(String resourceGroupName, String serverName, String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName, Context context);
+        DataMaskingPolicyName dataMaskingPolicyName, Long skip, Context context);
 
     /**
      * Creates or updates a database data masking rule.

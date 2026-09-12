@@ -480,6 +480,35 @@ public final class ExtendedServerBlobAuditingPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the requiredFields property: Specifies the required fields to include in audit events (optional).
+     * Each item must be a valid audit_event field name.
+     * Can only be specified when isAzureMonitorTargetEnabled is true.
+     * For the complete list of valid field names, see the audit_event table schema documentation.
+     * 
+     * @return the requiredFields value.
+     */
+    public List<String> requiredFields() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredFields();
+    }
+
+    /**
+     * Set the requiredFields property: Specifies the required fields to include in audit events (optional).
+     * Each item must be a valid audit_event field name.
+     * Can only be specified when isAzureMonitorTargetEnabled is true.
+     * For the complete list of valid field names, see the audit_event table schema documentation.
+     * 
+     * @param requiredFields the requiredFields value to set.
+     * @return the ExtendedServerBlobAuditingPolicyInner object itself.
+     */
+    public ExtendedServerBlobAuditingPolicyInner withRequiredFields(List<String> requiredFields) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExtendedServerBlobAuditingPolicyProperties();
+        }
+        this.innerProperties().withRequiredFields(requiredFields);
+        return this;
+    }
+
+    /**
      * Get the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
      * 
