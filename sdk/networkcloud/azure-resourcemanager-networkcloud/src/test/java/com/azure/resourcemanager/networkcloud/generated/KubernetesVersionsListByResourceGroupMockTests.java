@@ -23,7 +23,7 @@ public final class KubernetesVersionsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"values\":[{\"description\":\"es\",\"version\":\"fjlpze\"},{\"description\":\"oyrplixl\",\"version\":\"mllpquevhamfowg\"},{\"description\":\"tmk\",\"version\":\"xpk\"}],\"provisioningState\":\"Canceled\"},\"etag\":\"xofqovchi\",\"extendedLocation\":{\"name\":\"bplvfidu\",\"type\":\"CustomLocation\"},\"location\":\"ekxbyjg\",\"tags\":{\"x\":\"e\",\"dagrhrdicxdw\":\"ihpq\",\"vcxjsgbipcukdvek\":\"jfowxwy\",\"scrdp\":\"buhoduchv\"},\"id\":\"bfdyjduss\",\"name\":\"yszekbhwlka\",\"type\":\"ggkrehbf\"}]}";
+            = "{\"value\":[{\"properties\":{\"values\":[{\"description\":\"avidnievwffcv\",\"version\":\"ezslp\"},{\"description\":\"gcbdsvalpnptw\",\"version\":\"kx\"}],\"provisioningState\":\"Accepted\"},\"etag\":\"wugxyqvnjobf\",\"extendedLocation\":{\"name\":\"lhld\",\"type\":\"CustomLocation\"},\"location\":\"zz\",\"tags\":{\"djpxpqht\":\"mfaewzgi\",\"ezsdsuxheq\":\"qhnmhk\",\"qgwokmikp\":\"gcruxspinym\",\"ipfdvhaxdvwzaehp\":\"zfbmjxuv\"},\"id\":\"hthdklmvetatlakf\",\"name\":\"oixwgiksb\",\"type\":\"vtooxrpo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class KubernetesVersionsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<KubernetesVersion> response = manager.kubernetesVersions()
-            .listByResourceGroup("xzvsgeafgf", 729939553, "ehxlzsxezppk", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("pynwlslrcigtzjcv", 1447146223, "qlapsnsso", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ekxbyjg", response.iterator().next().location());
-        Assertions.assertEquals("e", response.iterator().next().tags().get("x"));
-        Assertions.assertEquals("bplvfidu", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("zz", response.iterator().next().location());
+        Assertions.assertEquals("mfaewzgi", response.iterator().next().tags().get("djpxpqht"));
+        Assertions.assertEquals("lhld", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

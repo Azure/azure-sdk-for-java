@@ -24,7 +24,7 @@ public final class AccessBridgesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ipv4ConnectedPrefix\":\"zfav\",\"ipv6ConnectedPrefix\":\"zwfbcyaykmmfzs\",\"networkId\":\"fwxrzxmdew\",\"securityRules\":[{\"description\":\"krplbjazejww\",\"direction\":\"Outbound\",\"ipv4Addresses\":[\"y\",\"suhbrnn\",\"jxsqwjhqkbiwetp\"],\"ipv6Addresses\":[\"c\",\"qiqyhgfsetzlexbs\",\"ledynojpz\",\"uwfbzkkdtnhqsy\"],\"port\":\"ljselp\"},{\"description\":\"bafvafhlbylcc\",\"direction\":\"Inbound\",\"ipv4Addresses\":[\"rhyzdf\",\"rsofpltdbmairrh\",\"hfnrac\",\"npq\"],\"ipv6Addresses\":[\"uuj\",\"ouhdawsigrb\"],\"port\":\"bxsjybvitvqkj\"}],\"detailedStatus\":\"Running\",\"detailedStatusMessage\":\"umtggmuwdchozfn\",\"endpoints\":[{\"fqdn\":\"lv\",\"ipv4Address\":\"oakizvoai\",\"ipv6Address\":\"a\",\"name\":\"nuwiguyxlykwph\"},{\"fqdn\":\"zc\",\"ipv4Address\":\"hmpejtlkexaonw\",\"ipv6Address\":\"kcq\",\"name\":\"xhxknlc\"},{\"fqdn\":\"mmkyu\",\"ipv4Address\":\"jubyqjfkakfq\",\"ipv6Address\":\"kemyil\",\"name\":\"dxjascowvfdj\"}],\"protocol\":\"TCP\",\"provisioningState\":\"Provisioning\"},\"etag\":\"lkksnmgzvyfi\",\"extendedLocation\":{\"name\":\"dkz\",\"type\":\"CustomLocation\"},\"location\":\"wsithuqolyahlu\",\"tags\":{\"fhyqezvqqugdrft\":\"ulsutrjbhxy\",\"wtl\":\"cvexreuqu\",\"qtvbczsu\":\"vfwhreagkhyxv\",\"ykgsangpszng\":\"mdgglmepjpfs\"},\"id\":\"fpgylkve\",\"name\":\"jujcngoad\",\"type\":\"edmzrgjfoknub\"}]}";
+            = "{\"value\":[{\"properties\":{\"ipv4ConnectedPrefix\":\"aonwivkcqhrxh\",\"ipv6ConnectedPrefix\":\"nlccrm\",\"networkId\":\"kyupijubyqj\",\"securityRules\":[{\"description\":\"fqfrkemyildudxja\",\"direction\":\"Outbound\",\"ipv4Addresses\":[\"vfdjkpdxp\",\"lkksnmgzvyfi\",\"dkz\",\"qnwsithuqolyah\"],\"ipv6Addresses\":[\"wqulsutrjbhxykf\",\"y\"],\"port\":\"ezvqq\"},{\"description\":\"drftbcvexreuquo\",\"direction\":\"Outbound\",\"ipv4Addresses\":[\"vfwhreagkhyxv\"],\"ipv6Addresses\":[\"vbczsulmdg\",\"lmepjpf\",\"eykgsangpszngaf\"],\"port\":\"g\"},{\"description\":\"kvec\",\"direction\":\"Inbound\",\"ipv4Addresses\":[\"ngoadyedmzr\",\"jfoknubnoitpkp\",\"trgdgxvc\",\"qraswugyxpqitwei\"],\"ipv6Addresses\":[\"vskbuhzacaq\",\"yltcoqcuj\",\"dsxzakuejkmvb\",\"ztjofqcvovjufyc\"],\"port\":\"jmlbemyejiriux\"},{\"description\":\"thor\",\"direction\":\"Outbound\",\"ipv4Addresses\":[\"wlpjfelqerppt\",\"bgqnz\",\"nhii\",\"ialwc\"],\"ipv6Addresses\":[\"kbbccc\",\"zpraoxn\"],\"port\":\"uffatsgftipwc\"}],\"detailedStatus\":\"Running\",\"detailedStatusMessage\":\"bh\",\"endpoints\":[{\"fqdn\":\"yurnpnuhzafc\",\"ipv4Address\":\"uhiigbyl\",\"ipv6Address\":\"igvxvatvcrk\",\"name\":\"b\"},{\"fqdn\":\"qxvhcsyhzlwxa\",\"ipv4Address\":\"ov\",\"ipv6Address\":\"exdnd\",\"name\":\"dwead\"},{\"fqdn\":\"zmwntopagt\",\"ipv4Address\":\"v\",\"ipv6Address\":\"agoaqylkjztji\",\"name\":\"zjcg\"}],\"protocol\":\"UDP\",\"provisioningState\":\"Failed\"},\"etag\":\"inzcpdltkrlgj\",\"extendedLocation\":{\"name\":\"tbdrvcqgue\",\"type\":\"EdgeZone\"},\"location\":\"ompheqdur\",\"tags\":{\"clcdigptajbrzmq\":\"ujlfyoumpcky\",\"lxiutgjcyzyzjdnr\":\"ucycijo\",\"xjeaoqaqbzgyh\":\"jb\",\"v\":\"w\"},\"id\":\"atbwbqam\",\"name\":\"e\",\"type\":\"liys\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,22 +33,22 @@ public final class AccessBridgesListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AccessBridge> response = manager.accessBridges()
-            .listByResourceGroup("hcdpkupnqrmgj", 425904374, "pkuwxeoioj", com.azure.core.util.Context.NONE);
+        PagedIterable<AccessBridge> response
+            = manager.accessBridges().listByResourceGroup("wxh", 1205134397, "ejtlk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wsithuqolyahlu", response.iterator().next().location());
-        Assertions.assertEquals("ulsutrjbhxy", response.iterator().next().tags().get("fhyqezvqqugdrft"));
-        Assertions.assertEquals("dkz", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
-            response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("zfav", response.iterator().next().ipv4ConnectedPrefix());
-        Assertions.assertEquals("zwfbcyaykmmfzs", response.iterator().next().ipv6ConnectedPrefix());
-        Assertions.assertEquals("fwxrzxmdew", response.iterator().next().networkId());
-        Assertions.assertEquals("krplbjazejww", response.iterator().next().securityRules().get(0).description());
+        Assertions.assertEquals("ompheqdur", response.iterator().next().location());
+        Assertions.assertEquals("ujlfyoumpcky", response.iterator().next().tags().get("clcdigptajbrzmq"));
+        Assertions.assertEquals("tbdrvcqgue", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("aonwivkcqhrxh", response.iterator().next().ipv4ConnectedPrefix());
+        Assertions.assertEquals("nlccrm", response.iterator().next().ipv6ConnectedPrefix());
+        Assertions.assertEquals("kyupijubyqj", response.iterator().next().networkId());
+        Assertions.assertEquals("fqfrkemyildudxja", response.iterator().next().securityRules().get(0).description());
         Assertions.assertEquals(SecurityRuleDirection.OUTBOUND,
             response.iterator().next().securityRules().get(0).direction());
-        Assertions.assertEquals("y", response.iterator().next().securityRules().get(0).ipv4Addresses().get(0));
-        Assertions.assertEquals("c", response.iterator().next().securityRules().get(0).ipv6Addresses().get(0));
-        Assertions.assertEquals("ljselp", response.iterator().next().securityRules().get(0).port());
+        Assertions.assertEquals("vfdjkpdxp", response.iterator().next().securityRules().get(0).ipv4Addresses().get(0));
+        Assertions.assertEquals("wqulsutrjbhxykf",
+            response.iterator().next().securityRules().get(0).ipv6Addresses().get(0));
+        Assertions.assertEquals("ezvqq", response.iterator().next().securityRules().get(0).port());
     }
 }

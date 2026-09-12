@@ -14,21 +14,21 @@ public final class ClusterContinueUpdateVersionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterContinueUpdateVersionParameters model
-            = BinaryData.fromString("{\"machineGroupTargetingMode\":\"AlphaByRack\",\"safeguardMode\":\"None\"}")
+            = BinaryData.fromString("{\"machineGroupTargetingMode\":\"AlphaByRack\",\"safeguardMode\":\"All\"}")
                 .toObject(ClusterContinueUpdateVersionParameters.class);
         Assertions.assertEquals(ClusterContinueUpdateVersionMachineGroupTargetingMode.ALPHA_BY_RACK,
             model.machineGroupTargetingMode());
-        Assertions.assertEquals(ClusterContinueUpdateVersionSafeguardMode.NONE, model.safeguardMode());
+        Assertions.assertEquals(ClusterContinueUpdateVersionSafeguardMode.ALL, model.safeguardMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterContinueUpdateVersionParameters model = new ClusterContinueUpdateVersionParameters()
             .withMachineGroupTargetingMode(ClusterContinueUpdateVersionMachineGroupTargetingMode.ALPHA_BY_RACK)
-            .withSafeguardMode(ClusterContinueUpdateVersionSafeguardMode.NONE);
+            .withSafeguardMode(ClusterContinueUpdateVersionSafeguardMode.ALL);
         model = BinaryData.fromObject(model).toObject(ClusterContinueUpdateVersionParameters.class);
         Assertions.assertEquals(ClusterContinueUpdateVersionMachineGroupTargetingMode.ALPHA_BY_RACK,
             model.machineGroupTargetingMode());
-        Assertions.assertEquals(ClusterContinueUpdateVersionSafeguardMode.NONE, model.safeguardMode());
+        Assertions.assertEquals(ClusterContinueUpdateVersionSafeguardMode.ALL, model.safeguardMode());
     }
 }

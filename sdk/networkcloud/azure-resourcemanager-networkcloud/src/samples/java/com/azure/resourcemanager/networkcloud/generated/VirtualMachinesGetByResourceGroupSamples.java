@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Get.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Get.json
      */
     /**
      * Sample code: Get virtual machine.

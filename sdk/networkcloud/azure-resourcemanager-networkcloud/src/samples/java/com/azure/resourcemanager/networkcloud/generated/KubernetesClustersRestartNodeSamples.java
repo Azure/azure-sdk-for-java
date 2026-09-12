@@ -11,7 +11,7 @@ import com.azure.resourcemanager.networkcloud.models.KubernetesClusterRestartNod
  */
 public final class KubernetesClustersRestartNodeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_RestartNode.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_RestartNode.json
      */
     /**
      * Sample code: Restart a Kubernetes cluster node.

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class TrunkedNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Create.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Create.json
      */
     /**
      * Sample code: Create or update trunked network.

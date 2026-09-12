@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class RackSkusListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RackSkus_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/RackSkus_ListBySubscription.json
      */
     /**
      * Sample code: List rack SKUs for subscription.

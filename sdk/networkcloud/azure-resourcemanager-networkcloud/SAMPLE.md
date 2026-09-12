@@ -227,7 +227,7 @@ import java.util.Map;
  */
 public final class AccessBridgesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update access bridge.
@@ -280,7 +280,7 @@ import com.azure.resourcemanager.networkcloud.models.AccessBridgeAllowedName;
  */
 public final class AccessBridgesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_Delete.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_Delete.json
      */
     /**
      * Sample code: Delete access bridge.
@@ -304,7 +304,7 @@ import com.azure.resourcemanager.networkcloud.models.AccessBridgeAllowedName;
  */
 public final class AccessBridgesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_Get.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_Get.json
      */
     /**
      * Sample code: Get access bridge.
@@ -327,7 +327,7 @@ public final class AccessBridgesGetByResourceGroupSamples {
  */
 public final class AccessBridgesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_ListBySubscription.json
      */
     /**
      * Sample code: List access bridges for subscription.
@@ -349,7 +349,7 @@ public final class AccessBridgesListSamples {
  */
 public final class AccessBridgesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_ListByResourceGroup.json
      */
     /**
      * Sample code: List access bridges for resource group.
@@ -380,7 +380,7 @@ import java.util.Map;
  */
 public final class AccessBridgesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_Patch.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_Patch.json
      */
     /**
      * Sample code: Patch access bridge.
@@ -444,7 +444,7 @@ import java.util.Map;
  */
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_Create.json
+     * x-ms-original-file: 2026-07-01/AgentPools_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster agent pool.
@@ -509,7 +509,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
  */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_Delete.json
+     * x-ms-original-file: 2026-07-01/AgentPools_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes cluster agent pool.
@@ -533,7 +533,7 @@ public final class AgentPoolsDeleteSamples {
  */
 public final class AgentPoolsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_Get.json
+     * x-ms-original-file: 2026-07-01/AgentPools_Get.json
      */
     /**
      * Sample code: Get Kubernetes cluster agent pool.
@@ -557,7 +557,7 @@ public final class AgentPoolsGetSamples {
  */
 public final class AgentPoolsListByKubernetesClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_ListByKubernetesCluster.json
+     * x-ms-original-file: 2026-07-01/AgentPools_ListByKubernetesCluster.json
      */
     /**
      * Sample code: List agent pools of the Kubernetes cluster.
@@ -589,7 +589,7 @@ import java.util.Map;
  */
 public final class AgentPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_Patch.json
+     * x-ms-original-file: 2026-07-01/AgentPools_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster agent pool.
@@ -644,7 +644,7 @@ import java.util.Map;
  */
 public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_Create.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_Create.json
      */
     /**
      * Sample code: Create or update bare metal machine key set of cluster.
@@ -701,7 +701,7 @@ public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
  */
 public final class BareMetalMachineKeySetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_Delete.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_Delete.json
      */
     /**
      * Sample code: Delete bare metal machine key set of cluster.
@@ -725,7 +725,7 @@ public final class BareMetalMachineKeySetsDeleteSamples {
  */
 public final class BareMetalMachineKeySetsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_Get.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_Get.json
      */
     /**
      * Sample code: Get bare metal machine key set of cluster.
@@ -749,7 +749,7 @@ public final class BareMetalMachineKeySetsGetSamples {
  */
 public final class BareMetalMachineKeySetsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_ListByCluster.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_ListByCluster.json
      */
     /**
      * Sample code: List bare metal machine key sets of the cluster.
@@ -780,7 +780,7 @@ import java.util.Map;
  */
 public final class BareMetalMachineKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_Patch.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine key set of cluster.
@@ -834,7 +834,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineEvacuate;
  */
 public final class BareMetalMachinesCordonSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Cordon.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Cordon.json
      */
     /**
      * Sample code: Cordon bare metal machine.
@@ -864,7 +864,7 @@ import java.util.Map;
  */
 public final class BareMetalMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Create.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Create.json
      */
     /**
      * Sample code: Create or update bare metal machine.
@@ -918,7 +918,7 @@ public final class BareMetalMachinesCreateOrUpdateSamples {
  */
 public final class BareMetalMachinesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Delete.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Delete.json
      */
     /**
      * Sample code: Delete bare metal machine.
@@ -940,7 +940,7 @@ public final class BareMetalMachinesDeleteSamples {
  */
 public final class BareMetalMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Get.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Get.json
      */
     /**
      * Sample code: Get bare metal machine.
@@ -963,7 +963,7 @@ public final class BareMetalMachinesGetByResourceGroupSamples {
  */
 public final class BareMetalMachinesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_ListBySubscription.json
      */
     /**
      * Sample code: List bare metal machines for subscription.
@@ -985,7 +985,7 @@ public final class BareMetalMachinesListSamples {
  */
 public final class BareMetalMachinesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_ListByResourceGroup.json
      */
     /**
      * Sample code: List bare metal machines for resource group.
@@ -1011,7 +1011,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineSkipShutdow
  */
 public final class BareMetalMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_PowerOff.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_PowerOff.json
      */
     /**
      * Sample code: Power off bare metal machine.
@@ -1038,7 +1038,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReimageSafe
  */
 public final class BareMetalMachinesReimageSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Reimage.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Reimage.json
      */
     /**
      * Sample code: Reimage bare metal machine.
@@ -1067,7 +1067,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplaceStor
  */
 public final class BareMetalMachinesReplaceSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Replace.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Replace.json
      */
     /**
      * Sample code: Replace bare metal machine.
@@ -1099,7 +1099,7 @@ public final class BareMetalMachinesReplaceSamples {
  */
 public final class BareMetalMachinesRestartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Restart.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Restart.json
      */
     /**
      * Sample code: Restart bare metal machine.
@@ -1124,7 +1124,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunCommandSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunCommand.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunCommand.json
      */
     /**
      * Sample code: Run command on bare metal machine.
@@ -1155,7 +1155,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunDataExtractsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunDataExtracts.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunDataExtracts.json
      */
     /**
      * Sample code: Run data extraction on bare metal machine.
@@ -1187,7 +1187,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunDataExtractsRestrictedSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunDataExtractsRestricted.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunDataExtractsRestricted.json
      */
     /**
      * Sample code: Run restricted data extraction on bare metal machine.
@@ -1219,7 +1219,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunReadCommandsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunReadCommands_Hostname.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunReadCommands_Hostname.json
      */
     /**
      * Sample code: Run and retrieve output from a single read only command on bare metal machine.
@@ -1237,7 +1237,7 @@ public final class BareMetalMachinesRunReadCommandsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunReadCommands_Multiple.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunReadCommands_Multiple.json
      */
     /**
      * Sample code: Run and retrieve output from read only commands on bare metal machine.
@@ -1267,7 +1267,7 @@ public final class BareMetalMachinesRunReadCommandsSamples {
  */
 public final class BareMetalMachinesStartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Start.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Start.json
      */
     /**
      * Sample code: Start bare metal machine.
@@ -1289,7 +1289,7 @@ public final class BareMetalMachinesStartSamples {
  */
 public final class BareMetalMachinesUncordonSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Uncordon.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Uncordon.json
      */
     /**
      * Sample code: Uncordon bare metal machine.
@@ -1315,7 +1315,7 @@ import java.util.Map;
  */
 public final class BareMetalMachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Patch.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine.
@@ -1365,7 +1365,7 @@ import java.util.Map;
  */
 public final class BmcKeySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Create.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Create.json
      */
     /**
      * Sample code: Create or update baseboard management controller key set of cluster.
@@ -1419,7 +1419,7 @@ public final class BmcKeySetsCreateOrUpdateSamples {
  */
 public final class BmcKeySetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Delete.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Delete.json
      */
     /**
      * Sample code: Delete baseboard management controller key set of cluster.
@@ -1442,7 +1442,7 @@ public final class BmcKeySetsDeleteSamples {
  */
 public final class BmcKeySetsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Get.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Get.json
      */
     /**
      * Sample code: Get baseboard management controller key set of cluster.
@@ -1465,7 +1465,7 @@ public final class BmcKeySetsGetSamples {
  */
 public final class BmcKeySetsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_ListByCluster.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_ListByCluster.json
      */
     /**
      * Sample code: List baseboard management controller key sets of the cluster.
@@ -1496,7 +1496,7 @@ import java.util.Map;
  */
 public final class BmcKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Patch.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Patch.json
      */
     /**
      * Sample code: Patch baseboard management controller key set of cluster.
@@ -1556,7 +1556,7 @@ import java.util.Map;
  */
 public final class CloudServicesNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Create.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Create.json
      */
     /**
      * Sample code: Create or update cloud services network.
@@ -1607,7 +1607,7 @@ public final class CloudServicesNetworksCreateOrUpdateSamples {
  */
 public final class CloudServicesNetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Delete.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Delete.json
      */
     /**
      * Sample code: Delete cloud services network.
@@ -1629,7 +1629,7 @@ public final class CloudServicesNetworksDeleteSamples {
  */
 public final class CloudServicesNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Get.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Get.json
      */
     /**
      * Sample code: Get cloud services network.
@@ -1652,7 +1652,7 @@ public final class CloudServicesNetworksGetByResourceGroupSamples {
  */
 public final class CloudServicesNetworksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_ListBySubscription.json
      */
     /**
      * Sample code: List cloud services networks for subscription.
@@ -1674,7 +1674,7 @@ public final class CloudServicesNetworksListSamples {
  */
 public final class CloudServicesNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_ListByResourceGroup.json
      */
     /**
      * Sample code: List cloud services networks for resource group.
@@ -1707,7 +1707,7 @@ import java.util.Map;
  */
 public final class CloudServicesNetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Patch.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Patch.json
      */
     /**
      * Sample code: Patch cloud services network.
@@ -1763,7 +1763,7 @@ import java.util.Map;
  */
 public final class ClusterManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Create.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Create.json
      */
     /**
      * Sample code: Create or update cluster manager.
@@ -1789,7 +1789,7 @@ public final class ClusterManagersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Create_Uami.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Create_Uami.json
      */
     /**
      * Sample code: Create or update cluster manager with user assigned identity.
@@ -1839,7 +1839,7 @@ public final class ClusterManagersCreateOrUpdateSamples {
  */
 public final class ClusterManagersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Delete.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Delete.json
      */
     /**
      * Sample code: Delete cluster manager.
@@ -1861,7 +1861,7 @@ public final class ClusterManagersDeleteSamples {
  */
 public final class ClusterManagersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Get.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Get.json
      */
     /**
      * Sample code: Get cluster manager.
@@ -1884,7 +1884,7 @@ public final class ClusterManagersGetByResourceGroupSamples {
  */
 public final class ClusterManagersListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_ListBySubscription.json
      */
     /**
      * Sample code: List cluster managers for subscription.
@@ -1906,7 +1906,7 @@ public final class ClusterManagersListSamples {
  */
 public final class ClusterManagersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_ListByResourceGroup.json
      */
     /**
      * Sample code: List cluster managers for resource group.
@@ -1936,7 +1936,7 @@ import java.util.Map;
  */
 public final class ClusterManagersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Patch.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Patch.json
      */
     /**
      * Sample code: Patch cluster manager.
@@ -1983,7 +1983,7 @@ import com.azure.resourcemanager.networkcloud.models.RelayPrivateEndpointConnect
  */
 public final class ClusterManagersUpdateRelayPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_UpdateRelayPrivateEndpointConnection_Approve.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_UpdateRelayPrivateEndpointConnection_Approve.json
      */
     /**
      * Sample code: Approve private endpoint connection.
@@ -2003,7 +2003,7 @@ public final class ClusterManagersUpdateRelayPrivateEndpointConnectionSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_UpdateRelayPrivateEndpointConnection_Reject.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_UpdateRelayPrivateEndpointConnection_Reject.json
      */
     /**
      * Sample code: Reject private endpoint connection.
@@ -2036,7 +2036,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterContinueUpdateVersio
  */
 public final class ClustersContinueUpdateVersionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ContinueUpdateVersion.json
+     * x-ms-original-file: 2026-07-01/Clusters_ContinueUpdateVersion.json
      */
     /**
      * Sample code: Continue update cluster version.
@@ -2096,7 +2096,7 @@ import java.util.Map;
  */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Create.json
+     * x-ms-original-file: 2026-07-01/Clusters_Create.json
      */
     /**
      * Sample code: Create or update cluster.
@@ -2252,7 +2252,7 @@ public final class ClustersCreateOrUpdateSamples {
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Delete.json
+     * x-ms-original-file: 2026-07-01/Clusters_Delete.json
      */
     /**
      * Sample code: Delete cluster.
@@ -2276,7 +2276,7 @@ import java.util.Arrays;
  */
 public final class ClustersDeploySamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Deploy.json
+     * x-ms-original-file: 2026-07-01/Clusters_Deploy.json
      */
     /**
      * Sample code: Deploy cluster.
@@ -2290,7 +2290,7 @@ public final class ClustersDeploySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Deploy_SkipValidation.json
+     * x-ms-original-file: 2026-07-01/Clusters_Deploy_SkipValidation.json
      */
     /**
      * Sample code: Deploy cluster skipping validation.
@@ -2315,7 +2315,7 @@ public final class ClustersDeploySamples {
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Get.json
+     * x-ms-original-file: 2026-07-01/Clusters_Get.json
      */
     /**
      * Sample code: Get cluster.
@@ -2342,7 +2342,7 @@ import java.util.Arrays;
  */
 public final class ClustersInspectSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Inspect.json
+     * x-ms-original-file: 2026-07-01/Clusters_Inspect.json
      */
     /**
      * Sample code: Inspect cluster.
@@ -2368,7 +2368,7 @@ public final class ClustersInspectSamples {
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/Clusters_ListBySubscription.json
      */
     /**
      * Sample code: List clusters for subscription.
@@ -2389,7 +2389,7 @@ public final class ClustersListSamples {
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/Clusters_ListByResourceGroup.json
      */
     /**
      * Sample code: List clusters for resource group.
@@ -2414,7 +2414,7 @@ import java.util.Arrays;
  */
 public final class ClustersRotateCredentialSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_RotateCredential.json
+     * x-ms-original-file: 2026-07-01/Clusters_RotateCredential.json
      */
     /**
      * Sample code: Rotate one or more managed credentials.
@@ -2442,7 +2442,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterScanRuntimeParameter
  */
 public final class ClustersScanRuntimeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ScanRuntime.json
+     * x-ms-original-file: 2026-07-01/Clusters_ScanRuntime.json
      */
     /**
      * Sample code: Execute a runtime protection scan on the cluster.
@@ -2462,11 +2462,11 @@ public final class ClustersScanRuntimeSamples {
 ### Clusters_Update
 
 ```java
-import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
+import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentialsPatch;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
-import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurationData;
+import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurationDataPatch;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
-import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
+import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyPatch;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyType;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputOverride;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
@@ -2475,15 +2475,15 @@ import com.azure.resourcemanager.networkcloud.models.IdentitySelector;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentitySelectorType;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.networkcloud.models.RackDefinition;
-import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.RackDefinitionPatch;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionDefinitionUpdateMode;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionEnforcementLevel;
 import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationData;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationDataPatch;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
-import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdGrouping;
+import com.azure.resourcemanager.networkcloud.models.ValidationThresholdPatch;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdType;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsContainerScan;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
@@ -2496,7 +2496,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_UpdateStrategy.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_UpdateStrategy.json
      */
     /**
      * Sample code: Patch update strategy.
@@ -2509,7 +2509,7 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withUpdateStrategy(new ClusterUpdateStrategy().withMaxUnavailable(4L)
+            .withUpdateStrategy(new ClusterUpdateStrategyPatch().withMaxUnavailable(4L)
                 .withStrategyType(ClusterUpdateStrategyType.RACK)
                 .withThresholdType(ValidationThresholdType.COUNT_SUCCESS)
                 .withThresholdValue(4L)
@@ -2518,7 +2518,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_VulnerabilityScanning.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_VulnerabilityScanning.json
      */
     /**
      * Sample code: Patch vulnerability scanning.
@@ -2537,7 +2537,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_Location.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_Location.json
      */
     /**
      * Sample code: Patch cluster location.
@@ -2555,7 +2555,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_AggregatorOrSingleRackDefinition.json
      */
     /**
      * Sample code: Patch cluster AggregatorOrSingleRackDefinition.
@@ -2569,50 +2569,47 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withAggregatorOrSingleRackDefinition(
-                new RackDefinition()
-                    .withBareMetalMachineConfigurationData(Arrays.asList(
-                        new BareMetalMachineConfigurationData()
-                            .withBmcCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
-                                .withUsername("username"))
-                            .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
-                            .withBootMacAddress("00:BB:CC:DD:EE:FF")
-                            .withMachineDetails("extraDetails")
-                            .withMachineName("bmmName1")
-                            .withRackSlot(1L)
-                            .withSerialNumber("BM1219XXX"),
-                        new BareMetalMachineConfigurationData()
-                            .withBmcCredentials(
-                                new AdministrativeCredentials()
-                                    .withPassword("fakeTokenPlaceholder")
-                                    .withUsername("username"))
-                            .withBmcMacAddress("AA:BB:CC:DD:EE:00")
-                            .withBootMacAddress("00:BB:CC:DD:EE:00")
-                            .withMachineDetails("extraDetails")
-                            .withMachineName("bmmName2")
-                            .withRackSlot(2L)
-                            .withSerialNumber("BM1219YYY")))
-                    .withNetworkRackId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
-                    .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
-                    .withRackSerialNumber("newSerialNumber")
-                    .withRackSkuId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
-                    .withStorageApplianceConfigurationData(Arrays.asList(new StorageApplianceConfigurationData()
-                        .withAdminCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
+            .withAggregatorOrSingleRackDefinition(new RackDefinitionPatch()
+                .withBareMetalMachineConfigurationData(Arrays.asList(
+                    new BareMetalMachineConfigurationDataPatch()
+                        .withBmcCredentials(new AdministrativeCredentialsPatch().withPassword("fakeTokenPlaceholder")
                             .withUsername("username"))
+                        .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
+                        .withBootMacAddress("00:BB:CC:DD:EE:FF")
+                        .withMachineDetails("extraDetails")
+                        .withMachineName("bmmName1")
                         .withRackSlot(1L)
-                        .withSerialNumber("BM1219XXX")
-                        .withStorageApplianceName("vmName"))))
+                        .withSerialNumber("BM1219XXX"),
+                    new BareMetalMachineConfigurationDataPatch()
+                        .withBmcCredentials(new AdministrativeCredentialsPatch().withPassword("fakeTokenPlaceholder")
+                            .withUsername("username"))
+                        .withBmcMacAddress("AA:BB:CC:DD:EE:00")
+                        .withBootMacAddress("00:BB:CC:DD:EE:00")
+                        .withMachineDetails("extraDetails")
+                        .withMachineName("bmmName2")
+                        .withRackSlot(2L)
+                        .withSerialNumber("BM1219YYY")))
+                .withNetworkRackId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
+                .withRackSerialNumber("newSerialNumber")
+                .withRackSkuId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                .withStorageApplianceConfigurationData(Arrays.asList(new StorageApplianceConfigurationDataPatch()
+                    .withAdminCredentials(new AdministrativeCredentialsPatch().withPassword("fakeTokenPlaceholder")
+                        .withUsername("username"))
+                    .withRackSlot(1L)
+                    .withSerialNumber("BM1219XXX")
+                    .withStorageApplianceName("vmName"))))
             .withComputeDeploymentThreshold(
-                new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
+                new ValidationThresholdPatch().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
                     .withType(ValidationThresholdType.PERCENT_SUCCESS)
                     .withValue(90L))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_CommandOutput.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_CommandOutput.json
      */
     /**
      * Sample code: Patch cluster command output.
@@ -2646,7 +2643,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_RuntimeProtectionConfiguration.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_RuntimeProtectionConfiguration.json
      */
     /**
      * Sample code: Patch runtime protection configuration.
@@ -2660,14 +2657,14 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withRuntimeProtectionConfiguration(new RuntimeProtectionConfiguration()
+            .withRuntimeProtectionConfiguration(new RuntimeProtectionConfigurationPatch()
                 .withDefinitionUpdateMode(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC)
                 .withEnforcementLevel(RuntimeProtectionEnforcementLevel.ON_DEMAND))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_SecretArchive.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_SecretArchive.json
      */
     /**
      * Sample code: Patch secret archive.
@@ -2689,7 +2686,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Patch_AnalyticsOutput.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_AnalyticsOutput.json
      */
     /**
      * Sample code: Patch cluster analytics output.
@@ -2742,7 +2739,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionSafegua
  */
 public final class ClustersUpdateVersionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_UpdateVersion.json
+     * x-ms-original-file: 2026-07-01/Clusters_UpdateVersion.json
      */
     /**
      * Sample code: Update cluster version.
@@ -2775,7 +2772,7 @@ import java.util.Map;
  */
 public final class ConsolesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Create.json
+     * x-ms-original-file: 2026-07-01/Consoles_Create.json
      */
     /**
      * Sample code: Create or update virtual machine console.
@@ -2820,7 +2817,7 @@ public final class ConsolesCreateOrUpdateSamples {
  */
 public final class ConsolesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Delete.json
+     * x-ms-original-file: 2026-07-01/Consoles_Delete.json
      */
     /**
      * Sample code: Delete virtual machine console.
@@ -2842,7 +2839,7 @@ public final class ConsolesDeleteSamples {
  */
 public final class ConsolesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Get.json
+     * x-ms-original-file: 2026-07-01/Consoles_Get.json
      */
     /**
      * Sample code: Get virtual machine console.
@@ -2864,7 +2861,7 @@ public final class ConsolesGetSamples {
  */
 public final class ConsolesListByVirtualMachineSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_ListByVirtualMachine.json
+     * x-ms-original-file: 2026-07-01/Consoles_ListByVirtualMachine.json
      */
     /**
      * Sample code: List consoles of the virtual machine.
@@ -2885,7 +2882,7 @@ public final class ConsolesListByVirtualMachineSamples {
 ```java
 import com.azure.resourcemanager.networkcloud.models.Console;
 import com.azure.resourcemanager.networkcloud.models.ConsoleEnabled;
-import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKeyPatch;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -2895,7 +2892,7 @@ import java.util.Map;
  */
 public final class ConsolesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Patch.json
+     * x-ms-original-file: 2026-07-01/Consoles_Patch.json
      */
     /**
      * Sample code: Patch virtual machine console.
@@ -2910,7 +2907,7 @@ public final class ConsolesUpdateSamples {
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withEnabled(ConsoleEnabled.TRUE)
             .withExpiration(OffsetDateTime.parse("2022-06-01T01:27:03.008Z"))
-            .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
+            .withSshPublicKey(new SshPublicKeyPatch().withKeyData("fakeTokenPlaceholder"))
             .apply();
     }
 
@@ -2941,7 +2938,7 @@ import java.util.Map;
  */
 public final class KubernetesClusterFeaturesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusterFeatures_Create.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusterFeatures_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster feature.
@@ -2982,7 +2979,7 @@ public final class KubernetesClusterFeaturesCreateOrUpdateSamples {
  */
 public final class KubernetesClusterFeaturesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusterFeatures_Delete.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusterFeatures_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes cluster feature.
@@ -3006,7 +3003,7 @@ public final class KubernetesClusterFeaturesDeleteSamples {
  */
 public final class KubernetesClusterFeaturesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusterFeatures_Get.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusterFeatures_Get.json
      */
     /**
      * Sample code: Get Kubernetes cluster feature.
@@ -3029,7 +3026,7 @@ public final class KubernetesClusterFeaturesGetSamples {
  */
 public final class KubernetesClusterFeaturesListByKubernetesClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusterFeatures_ListByKubernetesCluster.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusterFeatures_ListByKubernetesCluster.json
      */
     /**
      * Sample code: List features for the Kubernetes cluster.
@@ -3059,7 +3056,7 @@ import java.util.Map;
  */
 public final class KubernetesClusterFeaturesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusterFeatures_Patch.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusterFeatures_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster feature.
@@ -3134,7 +3131,7 @@ import java.util.Map;
  */
 public final class KubernetesClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Create.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster.
@@ -3234,7 +3231,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_L2LoadBalancer_Create.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_L2LoadBalancer_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster with a layer 2 load balancer.
@@ -3338,7 +3335,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
  */
 public final class KubernetesClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Delete.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes cluster.
@@ -3360,7 +3357,7 @@ public final class KubernetesClustersDeleteSamples {
  */
 public final class KubernetesClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Get.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Get.json
      */
     /**
      * Sample code: Get Kubernetes cluster.
@@ -3383,7 +3380,7 @@ public final class KubernetesClustersGetByResourceGroupSamples {
  */
 public final class KubernetesClustersListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_ListBySubscription.json
      */
     /**
      * Sample code: List Kubernetes clusters for subscription.
@@ -3405,7 +3402,7 @@ public final class KubernetesClustersListSamples {
  */
 public final class KubernetesClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_ListByResourceGroup.json
      */
     /**
      * Sample code: List Kubernetes clusters for resource group.
@@ -3430,7 +3427,7 @@ import com.azure.resourcemanager.networkcloud.models.KubernetesClusterRestartNod
  */
 public final class KubernetesClustersRestartNodeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_RestartNode.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_RestartNode.json
      */
     /**
      * Sample code: Restart a Kubernetes cluster node.
@@ -3463,7 +3460,7 @@ import java.util.Map;
  */
 public final class KubernetesClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Patch.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster.
@@ -3514,7 +3511,7 @@ import java.util.Map;
  */
 public final class KubernetesVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_Create.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes versions.
@@ -3556,7 +3553,7 @@ public final class KubernetesVersionsCreateOrUpdateSamples {
  */
 public final class KubernetesVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_Delete.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes versions.
@@ -3578,7 +3575,7 @@ public final class KubernetesVersionsDeleteSamples {
  */
 public final class KubernetesVersionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_Get.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_Get.json
      */
     /**
      * Sample code: Get Kubernetes versions.
@@ -3600,7 +3597,7 @@ public final class KubernetesVersionsGetByResourceGroupSamples {
  */
 public final class KubernetesVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_ListBySubscription.json
      */
     /**
      * Sample code: List Kubernetes versions for subscription.
@@ -3622,7 +3619,7 @@ public final class KubernetesVersionsListSamples {
  */
 public final class KubernetesVersionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_ListByResourceGroup.json
      */
     /**
      * Sample code: List Kubernetes versions for resource group.
@@ -3649,7 +3646,7 @@ import java.util.Map;
  */
 public final class KubernetesVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesVersions_UpdateTags.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_UpdateTags.json
      */
     /**
      * Sample code: Patch Kubernetes versions.
@@ -3691,7 +3688,7 @@ import java.util.Map;
  */
 public final class L2NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_Create.json
+     * x-ms-original-file: 2026-07-01/L2Networks_Create.json
      */
     /**
      * Sample code: Create or update L2 network.
@@ -3736,7 +3733,7 @@ public final class L2NetworksCreateOrUpdateSamples {
  */
 public final class L2NetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_Delete.json
+     * x-ms-original-file: 2026-07-01/L2Networks_Delete.json
      */
     /**
      * Sample code: Delete L2 network.
@@ -3757,7 +3754,7 @@ public final class L2NetworksDeleteSamples {
  */
 public final class L2NetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_Get.json
+     * x-ms-original-file: 2026-07-01/L2Networks_Get.json
      */
     /**
      * Sample code: Get L2 network.
@@ -3779,7 +3776,7 @@ public final class L2NetworksGetByResourceGroupSamples {
  */
 public final class L2NetworksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/L2Networks_ListBySubscription.json
      */
     /**
      * Sample code: List L2 networks for subscription.
@@ -3801,7 +3798,7 @@ public final class L2NetworksListSamples {
  */
 public final class L2NetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/L2Networks_ListByResourceGroup.json
      */
     /**
      * Sample code: List L2 networks for resource group.
@@ -3827,7 +3824,7 @@ import java.util.Map;
  */
 public final class L2NetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_Patch.json
+     * x-ms-original-file: 2026-07-01/L2Networks_Patch.json
      */
     /**
      * Sample code: Patch L2 network.
@@ -3869,7 +3866,7 @@ import java.util.Map;
  */
 public final class L3NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_Create.json
+     * x-ms-original-file: 2026-07-01/L3Networks_Create.json
      */
     /**
      * Sample code: Create or update L3 network.
@@ -3917,7 +3914,7 @@ public final class L3NetworksCreateOrUpdateSamples {
  */
 public final class L3NetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_Delete.json
+     * x-ms-original-file: 2026-07-01/L3Networks_Delete.json
      */
     /**
      * Sample code: Delete L3 network.
@@ -3938,7 +3935,7 @@ public final class L3NetworksDeleteSamples {
  */
 public final class L3NetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_Get.json
+     * x-ms-original-file: 2026-07-01/L3Networks_Get.json
      */
     /**
      * Sample code: Get L3 network.
@@ -3960,7 +3957,7 @@ public final class L3NetworksGetByResourceGroupSamples {
  */
 public final class L3NetworksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/L3Networks_ListBySubscription.json
      */
     /**
      * Sample code: List L3 networks for subscription.
@@ -3982,7 +3979,7 @@ public final class L3NetworksListSamples {
  */
 public final class L3NetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/L3Networks_ListByResourceGroup.json
      */
     /**
      * Sample code: List L3 networks for resource group.
@@ -4008,7 +4005,7 @@ import java.util.Map;
  */
 public final class L3NetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_Patch.json
+     * x-ms-original-file: 2026-07-01/L3Networks_Patch.json
      */
     /**
      * Sample code: Patch L3 network.
@@ -4050,7 +4047,7 @@ import java.util.Map;
  */
 public final class MetricsConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Create.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Create.json
      */
     /**
      * Sample code: Create or update metrics configuration of cluster.
@@ -4094,7 +4091,7 @@ public final class MetricsConfigurationsCreateOrUpdateSamples {
  */
 public final class MetricsConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Delete.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Delete.json
      */
     /**
      * Sample code: Delete metrics configuration of cluster.
@@ -4117,7 +4114,7 @@ public final class MetricsConfigurationsDeleteSamples {
  */
 public final class MetricsConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Get.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Get.json
      */
     /**
      * Sample code: Get metrics configuration of cluster.
@@ -4140,7 +4137,7 @@ public final class MetricsConfigurationsGetSamples {
  */
 public final class MetricsConfigurationsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_ListByCluster.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_ListByCluster.json
      */
     /**
      * Sample code: List metrics configurations of the cluster.
@@ -4168,7 +4165,7 @@ import java.util.Map;
  */
 public final class MetricsConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Patch.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Patch.json
      */
     /**
      * Sample code: Patch metrics configuration of cluster.
@@ -4209,7 +4206,7 @@ public final class MetricsConfigurationsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-07-01/Operations_List.json
      */
     /**
      * Sample code: List resource provider operations.
@@ -4231,7 +4228,7 @@ public final class OperationsListSamples {
  */
 public final class RackSkusGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RackSkus_Get.json
+     * x-ms-original-file: 2026-07-01/RackSkus_Get.json
      */
     /**
      * Sample code: Get rack SKU resource.
@@ -4252,7 +4249,7 @@ public final class RackSkusGetSamples {
  */
 public final class RackSkusListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RackSkus_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/RackSkus_ListBySubscription.json
      */
     /**
      * Sample code: List rack SKUs for subscription.
@@ -4278,7 +4275,7 @@ import java.util.Map;
  */
 public final class RacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_Create.json
+     * x-ms-original-file: 2026-07-01/Racks_Create.json
      */
     /**
      * Sample code: Create or update rack.
@@ -4324,7 +4321,7 @@ public final class RacksCreateOrUpdateSamples {
  */
 public final class RacksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_Delete.json
+     * x-ms-original-file: 2026-07-01/Racks_Delete.json
      */
     /**
      * Sample code: Delete rack.
@@ -4345,7 +4342,7 @@ public final class RacksDeleteSamples {
  */
 public final class RacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_Get.json
+     * x-ms-original-file: 2026-07-01/Racks_Get.json
      */
     /**
      * Sample code: Get rack.
@@ -4367,7 +4364,7 @@ public final class RacksGetByResourceGroupSamples {
  */
 public final class RacksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/Racks_ListBySubscription.json
      */
     /**
      * Sample code: List racks for subscription.
@@ -4388,7 +4385,7 @@ public final class RacksListSamples {
  */
 public final class RacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/Racks_ListByResourceGroup.json
      */
     /**
      * Sample code: List racks for resource group.
@@ -4413,7 +4410,7 @@ import java.util.Map;
  */
 public final class RacksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_Patch.json
+     * x-ms-original-file: 2026-07-01/Racks_Patch.json
      */
     /**
      * Sample code: Patch rack.
@@ -4459,7 +4456,7 @@ import java.util.Map;
  */
 public final class StorageAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_Create.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_Create.json
      */
     /**
      * Sample code: Create or update storage appliance.
@@ -4475,13 +4472,13 @@ public final class StorageAppliancesCreateOrUpdateSamples {
             .withExtendedLocation(new ExtendedLocation().withName(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                 .withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withAdministratorCredentials(
-                new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("adminUser"))
             .withRackId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
+            .withStorageApplianceSkuId("684E-3B16-399E")
             .withRackSlot(1L)
             .withSerialNumber("BM1219XXX")
-            .withStorageApplianceSkuId("684E-3B16-399E")
+            .withAdministratorCredentials(
+                new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("adminUser"))
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .create();
     }
@@ -4508,7 +4505,7 @@ public final class StorageAppliancesCreateOrUpdateSamples {
  */
 public final class StorageAppliancesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_Delete.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_Delete.json
      */
     /**
      * Sample code: Delete storage appliance.
@@ -4530,7 +4527,7 @@ public final class StorageAppliancesDeleteSamples {
  */
 public final class StorageAppliancesDisableRemoteVendorManagementSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_DisableRemoteVendorManagement.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_DisableRemoteVendorManagement.json
      */
     /**
      * Sample code: Turn off remote vendor management for storage appliance.
@@ -4557,7 +4554,7 @@ import java.util.Arrays;
  */
 public final class StorageAppliancesEnableRemoteVendorManagementSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_EnableRemoteVendorManagement.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_EnableRemoteVendorManagement.json
      */
     /**
      * Sample code: Turn on remote vendor management for storage appliance.
@@ -4583,7 +4580,7 @@ public final class StorageAppliancesEnableRemoteVendorManagementSamples {
  */
 public final class StorageAppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_Get.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_Get.json
      */
     /**
      * Sample code: Get storage appliance.
@@ -4606,7 +4603,7 @@ public final class StorageAppliancesGetByResourceGroupSamples {
  */
 public final class StorageAppliancesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_ListBySubscription.json
      */
     /**
      * Sample code: List storage appliances for subscription.
@@ -4628,7 +4625,7 @@ public final class StorageAppliancesListSamples {
  */
 public final class StorageAppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_ListByResourceGroup.json
      */
     /**
      * Sample code: List storage appliances for resource group.
@@ -4655,7 +4652,7 @@ import java.util.Arrays;
  */
 public final class StorageAppliancesRunReadCommandsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_RunReadCommands.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_RunReadCommands.json
      */
     /**
      * Sample code: Run and retrieve output from read only commands on storage appliance.
@@ -4688,7 +4685,7 @@ import java.util.Map;
  */
 public final class StorageAppliancesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_Patch.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_Patch.json
      */
     /**
      * Sample code: Patch storage appliance.
@@ -4734,7 +4731,7 @@ import java.util.Map;
  */
 public final class TrunkedNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Create.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Create.json
      */
     /**
      * Sample code: Create or update trunked network.
@@ -4781,7 +4778,7 @@ public final class TrunkedNetworksCreateOrUpdateSamples {
  */
 public final class TrunkedNetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Delete.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Delete.json
      */
     /**
      * Sample code: Delete trunked network.
@@ -4803,7 +4800,7 @@ public final class TrunkedNetworksDeleteSamples {
  */
 public final class TrunkedNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Get.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Get.json
      */
     /**
      * Sample code: Get Trunked network.
@@ -4826,7 +4823,7 @@ public final class TrunkedNetworksGetByResourceGroupSamples {
  */
 public final class TrunkedNetworksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_ListBySubscription.json
      */
     /**
      * Sample code: List trunked networks for subscription.
@@ -4848,7 +4845,7 @@ public final class TrunkedNetworksListSamples {
  */
 public final class TrunkedNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_ListByResourceGroup.json
      */
     /**
      * Sample code: List Trunked networks for resource group.
@@ -4875,7 +4872,7 @@ import java.util.Map;
  */
 public final class TrunkedNetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Patch.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Patch.json
      */
     /**
      * Sample code: Patch trunked network.
@@ -4914,7 +4911,7 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachineAssignRelayPa
  */
 public final class VirtualMachinesAssignRelaySamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_AssignRelay.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_AssignRelay.json
      */
     /**
      * Sample code: Assign relay to the Microsoft.HybridCompute machine for a virtual machine.
@@ -4965,7 +4962,7 @@ import java.util.Map;
  */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Create.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Create.json
      */
     /**
      * Sample code: Create or update virtual machine.
@@ -5045,7 +5042,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
  */
 public final class VirtualMachinesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Delete.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Delete.json
      */
     /**
      * Sample code: Delete virtual machine.
@@ -5067,7 +5064,7 @@ public final class VirtualMachinesDeleteSamples {
  */
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Get.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Get.json
      */
     /**
      * Sample code: Get virtual machine.
@@ -5090,7 +5087,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
  */
 public final class VirtualMachinesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_ListBySubscription.json
      */
     /**
      * Sample code: List virtual machines for subscription.
@@ -5112,7 +5109,7 @@ public final class VirtualMachinesListSamples {
  */
 public final class VirtualMachinesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_ListByResourceGroup.json
      */
     /**
      * Sample code: List virtual machines for resource group.
@@ -5138,7 +5135,7 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParam
  */
 public final class VirtualMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_PowerOff.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_PowerOff.json
      */
     /**
      * Sample code: Power off virtual machine.
@@ -5162,7 +5159,7 @@ public final class VirtualMachinesPowerOffSamples {
  */
 public final class VirtualMachinesReimageSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Reimage.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Reimage.json
      */
     /**
      * Sample code: Reimage virtual machine.
@@ -5183,7 +5180,7 @@ public final class VirtualMachinesReimageSamples {
  */
 public final class VirtualMachinesRestartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Restart.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Restart.json
      */
     /**
      * Sample code: Restart virtual machine.
@@ -5204,7 +5201,7 @@ public final class VirtualMachinesRestartSamples {
  */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Start.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Start.json
      */
     /**
      * Sample code: Start virtual machine.
@@ -5220,7 +5217,7 @@ public final class VirtualMachinesStartSamples {
 ### VirtualMachines_Update
 
 ```java
-import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentialsPatch;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
@@ -5233,7 +5230,7 @@ import java.util.Map;
  */
 public final class VirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Patch.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Patch.json
      */
     /**
      * Sample code: Patch virtual machine.
@@ -5250,7 +5247,7 @@ public final class VirtualMachinesUpdateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1",
                     new UserAssignedIdentity())))
-            .withVmImageRepositoryCredentials(new ImageRepositoryCredentials().withPassword("fakeTokenPlaceholder")
+            .withVmImageRepositoryCredentials(new ImageRepositoryCredentialsPatch().withPassword("fakeTokenPlaceholder")
                 .withRegistryUrl("myacr.azurecr.io")
                 .withUsername("myuser"))
             .apply();
@@ -5283,7 +5280,7 @@ import java.util.Map;
  */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Create.json
+     * x-ms-original-file: 2026-07-01/Volumes_Create.json
      */
     /**
      * Sample code: Create or update volume.
@@ -5327,7 +5324,7 @@ public final class VolumesCreateOrUpdateSamples {
  */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Delete.json
+     * x-ms-original-file: 2026-07-01/Volumes_Delete.json
      */
     /**
      * Sample code: Delete volume.
@@ -5348,7 +5345,7 @@ public final class VolumesDeleteSamples {
  */
 public final class VolumesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Get.json
+     * x-ms-original-file: 2026-07-01/Volumes_Get.json
      */
     /**
      * Sample code: Get volume.
@@ -5370,7 +5367,7 @@ public final class VolumesGetByResourceGroupSamples {
  */
 public final class VolumesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/Volumes_ListBySubscription.json
      */
     /**
      * Sample code: List volume for subscription.
@@ -5391,7 +5388,7 @@ public final class VolumesListSamples {
  */
 public final class VolumesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/Volumes_ListByResourceGroup.json
      */
     /**
      * Sample code: List volumes for resource group.
@@ -5416,7 +5413,7 @@ import java.util.Map;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Patch.json
+     * x-ms-original-file: 2026-07-01/Volumes_Patch.json
      */
     /**
      * Sample code: Patch volume.

@@ -27,14 +27,14 @@ import java.util.List;
 @Fluent
 public final class StorageApplianceProperties implements JsonSerializable<StorageApplianceProperties> {
     /*
-     * The credentials of the administrative interface on this storage appliance.
-     */
-    private AdministrativeCredentials administratorCredentials;
-
-    /*
      * The resource ID of the rack where this storage appliance resides.
      */
     private String rackId;
+
+    /*
+     * The SKU for the storage appliance.
+     */
+    private String storageApplianceSkuId;
 
     /*
      * The slot the storage appliance is in the rack based on the BOM configuration.
@@ -47,9 +47,9 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     private String serialNumber;
 
     /*
-     * The SKU for the storage appliance.
+     * The credentials of the administrative interface on this storage appliance.
      */
-    private String storageApplianceSkuId;
+    private AdministrativeCredentials administratorCredentials;
 
     /*
      * The CA certificate information issued by the platform for connecting to TLS interfaces for the storage appliance.
@@ -140,28 +140,6 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @return the administratorCredentials value.
-     */
-    public AdministrativeCredentials administratorCredentials() {
-        return this.administratorCredentials;
-    }
-
-    /**
-     * Set the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @param administratorCredentials the administratorCredentials value to set.
-     * @return the StorageApplianceProperties object itself.
-     */
-    public StorageApplianceProperties withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
-        this.administratorCredentials = administratorCredentials;
-        return this;
-    }
-
-    /**
      * Get the rackId property: The resource ID of the rack where this storage appliance resides.
      * 
      * @return the rackId value.
@@ -178,6 +156,26 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
      */
     public StorageApplianceProperties withRackId(String rackId) {
         this.rackId = rackId;
+        return this;
+    }
+
+    /**
+     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @return the storageApplianceSkuId value.
+     */
+    public String storageApplianceSkuId() {
+        return this.storageApplianceSkuId;
+    }
+
+    /**
+     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
+     * @return the StorageApplianceProperties object itself.
+     */
+    public StorageApplianceProperties withStorageApplianceSkuId(String storageApplianceSkuId) {
+        this.storageApplianceSkuId = storageApplianceSkuId;
         return this;
     }
 
@@ -222,22 +220,24 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
+     * Get the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
      * 
-     * @return the storageApplianceSkuId value.
+     * @return the administratorCredentials value.
      */
-    public String storageApplianceSkuId() {
-        return this.storageApplianceSkuId;
+    public AdministrativeCredentials administratorCredentials() {
+        return this.administratorCredentials;
     }
 
     /**
-     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
+     * Set the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
      * 
-     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
+     * @param administratorCredentials the administratorCredentials value to set.
      * @return the StorageApplianceProperties object itself.
      */
-    public StorageApplianceProperties withStorageApplianceSkuId(String storageApplianceSkuId) {
-        this.storageApplianceSkuId = storageApplianceSkuId;
+    public StorageApplianceProperties withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
+        this.administratorCredentials = administratorCredentials;
         return this;
     }
 
@@ -395,11 +395,11 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("administratorCredentials", this.administratorCredentials);
         jsonWriter.writeStringField("rackId", this.rackId);
+        jsonWriter.writeStringField("storageApplianceSkuId", this.storageApplianceSkuId);
         jsonWriter.writeLongField("rackSlot", this.rackSlot);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
-        jsonWriter.writeStringField("storageApplianceSkuId", this.storageApplianceSkuId);
+        jsonWriter.writeJsonField("administratorCredentials", this.administratorCredentials);
         return jsonWriter.writeEndObject();
     }
 
@@ -419,17 +419,17 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("administratorCredentials".equals(fieldName)) {
-                    deserializedStorageApplianceProperties.administratorCredentials
-                        = AdministrativeCredentials.fromJson(reader);
-                } else if ("rackId".equals(fieldName)) {
+                if ("rackId".equals(fieldName)) {
                     deserializedStorageApplianceProperties.rackId = reader.getString();
+                } else if ("storageApplianceSkuId".equals(fieldName)) {
+                    deserializedStorageApplianceProperties.storageApplianceSkuId = reader.getString();
                 } else if ("rackSlot".equals(fieldName)) {
                     deserializedStorageApplianceProperties.rackSlot = reader.getLong();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedStorageApplianceProperties.serialNumber = reader.getString();
-                } else if ("storageApplianceSkuId".equals(fieldName)) {
-                    deserializedStorageApplianceProperties.storageApplianceSkuId = reader.getString();
+                } else if ("administratorCredentials".equals(fieldName)) {
+                    deserializedStorageApplianceProperties.administratorCredentials
+                        = AdministrativeCredentials.fromJson(reader);
                 } else if ("caCertificate".equals(fieldName)) {
                     deserializedStorageApplianceProperties.caCertificate = CertificateInfo.fromJson(reader);
                 } else if ("capacity".equals(fieldName)) {

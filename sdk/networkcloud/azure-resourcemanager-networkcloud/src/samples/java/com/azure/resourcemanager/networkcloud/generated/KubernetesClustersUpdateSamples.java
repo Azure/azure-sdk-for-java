@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class KubernetesClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Patch.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster.

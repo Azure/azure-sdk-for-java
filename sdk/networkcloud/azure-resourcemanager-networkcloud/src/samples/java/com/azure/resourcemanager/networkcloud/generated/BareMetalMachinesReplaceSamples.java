@@ -14,7 +14,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplaceStor
  */
 public final class BareMetalMachinesReplaceSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Replace.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Replace.json
      */
     /**
      * Sample code: Replace bare metal machine.

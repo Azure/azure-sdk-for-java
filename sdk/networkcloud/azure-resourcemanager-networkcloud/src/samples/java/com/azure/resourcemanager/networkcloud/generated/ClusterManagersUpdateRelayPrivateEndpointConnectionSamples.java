@@ -12,7 +12,7 @@ import com.azure.resourcemanager.networkcloud.models.RelayPrivateEndpointConnect
  */
 public final class ClusterManagersUpdateRelayPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_UpdateRelayPrivateEndpointConnection_Approve.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_UpdateRelayPrivateEndpointConnection_Approve.json
      */
     /**
      * Sample code: Approve private endpoint connection.
@@ -32,7 +32,7 @@ public final class ClusterManagersUpdateRelayPrivateEndpointConnectionSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_UpdateRelayPrivateEndpointConnection_Reject.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_UpdateRelayPrivateEndpointConnection_Reject.json
      */
     /**
      * Sample code: Reject private endpoint connection.

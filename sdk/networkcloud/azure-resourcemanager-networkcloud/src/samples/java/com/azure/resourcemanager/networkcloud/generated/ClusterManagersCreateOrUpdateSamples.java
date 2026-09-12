@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ClusterManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Create.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Create.json
      */
     /**
      * Sample code: Create or update cluster manager.
@@ -43,7 +43,7 @@ public final class ClusterManagersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Create_Uami.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Create_Uami.json
      */
     /**
      * Sample code: Create or update cluster manager with user assigned identity.

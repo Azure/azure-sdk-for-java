@@ -22,7 +22,7 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sizeMiB\":181851911706260962,\"storageApplianceId\":\"iwm\",\"allocatedSizeMiB\":375695126412184600,\"assignedStorageApplianceId\":\"dlhvdv\",\"attachedTo\":[\"hbeae\",\"jzmhkdclacroczfm\",\"ner\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"xzs\",\"serialNumber\":\"zezbzu\",\"provisioningState\":\"Accepted\"},\"etag\":\"evzske\",\"extendedLocation\":{\"name\":\"cgwfsgqkstyecu\",\"type\":\"EdgeZone\"},\"location\":\"ijpardavsjcf\",\"tags\":{\"zvcmcokxi\":\"pzdqw\",\"nzvajbvbnkrdem\":\"ekuvfrjwuca\",\"misvpztd\":\"idackzidgzwdyd\",\"tpjfojiunrlshxuk\":\"vykpxkqe\"},\"id\":\"sykdtoi\",\"name\":\"oancdrco\",\"type\":\"nvxuldxonckb\"}";
+            = "{\"properties\":{\"sizeMiB\":7386100199703803632,\"storageApplianceId\":\"vumspbfsf\",\"allocatedSizeMiB\":7647705627683284158,\"assignedStorageApplianceId\":\"wfcuqfpyyxmzr\",\"attachedTo\":[\"vwituw\",\"yyjshcybwfuppo\",\"prcmvouujxdiik\",\"oxrezsvavlrxik\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"wlunpipcwybs\",\"serialNumber\":\"ncnpat\",\"provisioningState\":\"Accepted\"},\"etag\":\"aebwfwhxorpwa\",\"extendedLocation\":{\"name\":\"tzwugexojfccy\",\"type\":\"EdgeZone\"},\"location\":\"rh\",\"tags\":{\"zzxezmnrkj\":\"azjpwexcdrzpro\",\"lokfpmijpdvzv\":\"pjeuxsp\",\"rwyambhbafebzxfk\":\"bhwbdqufvcgnrgla\"},\"id\":\"qutibhl\",\"name\":\"nntrvrkps\",\"type\":\"bduxvzmlghnys\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .getByResourceGroupWithResponse("exmnv", "vmuw", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("iwrycgnwplrrb", "hctsbbibti", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ijpardavsjcf", response.location());
-        Assertions.assertEquals("pzdqw", response.tags().get("zvcmcokxi"));
-        Assertions.assertEquals("cgwfsgqkstyecu", response.extendedLocation().name());
+        Assertions.assertEquals("rh", response.location());
+        Assertions.assertEquals("azjpwexcdrzpro", response.tags().get("zzxezmnrkj"));
+        Assertions.assertEquals("tzwugexojfccy", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
-        Assertions.assertEquals(181851911706260962L, response.sizeMiB());
-        Assertions.assertEquals("iwm", response.storageApplianceId());
+        Assertions.assertEquals(7386100199703803632L, response.sizeMiB());
+        Assertions.assertEquals("vumspbfsf", response.storageApplianceId());
     }
 }

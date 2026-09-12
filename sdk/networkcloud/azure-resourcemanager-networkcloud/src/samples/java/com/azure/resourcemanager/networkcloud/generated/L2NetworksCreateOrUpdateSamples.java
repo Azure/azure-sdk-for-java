@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class L2NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L2Networks_Create.json
+     * x-ms-original-file: 2026-07-01/L2Networks_Create.json
      */
     /**
      * Sample code: Create or update L2 network.

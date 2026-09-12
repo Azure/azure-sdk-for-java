@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class AccessBridgesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update access bridge.

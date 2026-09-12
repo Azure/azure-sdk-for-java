@@ -76,19 +76,18 @@ public interface StorageAppliance {
     SystemData systemData();
 
     /**
-     * Gets the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @return the administratorCredentials value.
-     */
-    AdministrativeCredentials administratorCredentials();
-
-    /**
      * Gets the rackId property: The resource ID of the rack where this storage appliance resides.
      * 
      * @return the rackId value.
      */
     String rackId();
+
+    /**
+     * Gets the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @return the storageApplianceSkuId value.
+     */
+    String storageApplianceSkuId();
 
     /**
      * Gets the rackSlot property: The slot the storage appliance is in the rack based on the BOM configuration.
@@ -105,11 +104,12 @@ public interface StorageAppliance {
     String serialNumber();
 
     /**
-     * Gets the storageApplianceSkuId property: The SKU for the storage appliance.
+     * Gets the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
      * 
-     * @return the storageApplianceSkuId value.
+     * @return the administratorCredentials value.
      */
-    String storageApplianceSkuId();
+    AdministrativeCredentials administratorCredentials();
 
     /**
      * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
@@ -259,9 +259,9 @@ public interface StorageAppliance {
      * The entirety of the StorageAppliance definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
-        DefinitionStages.WithAdministratorCredentials, DefinitionStages.WithRackId, DefinitionStages.WithRackSlot,
-        DefinitionStages.WithSerialNumber, DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithCreate {
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation, DefinitionStages.WithRackId,
+        DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithRackSlot, DefinitionStages.WithSerialNumber,
+        DefinitionStages.WithAdministratorCredentials, DefinitionStages.WithCreate {
     }
 
     /**
@@ -320,22 +320,7 @@ public interface StorageAppliance {
              * the resource.
              * @return the next definition stage.
              */
-            WithAdministratorCredentials withExtendedLocation(ExtendedLocation extendedLocation);
-        }
-
-        /**
-         * The stage of the StorageAppliance definition allowing to specify administratorCredentials.
-         */
-        interface WithAdministratorCredentials {
-            /**
-             * Specifies the administratorCredentials property: The credentials of the administrative interface on this
-             * storage appliance..
-             * 
-             * @param administratorCredentials The credentials of the administrative interface on this storage
-             * appliance.
-             * @return the next definition stage.
-             */
-            WithRackId withAdministratorCredentials(AdministrativeCredentials administratorCredentials);
+            WithRackId withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**
@@ -348,7 +333,20 @@ public interface StorageAppliance {
              * @param rackId The resource ID of the rack where this storage appliance resides.
              * @return the next definition stage.
              */
-            WithRackSlot withRackId(String rackId);
+            WithStorageApplianceSkuId withRackId(String rackId);
+        }
+
+        /**
+         * The stage of the StorageAppliance definition allowing to specify storageApplianceSkuId.
+         */
+        interface WithStorageApplianceSkuId {
+            /**
+             * Specifies the storageApplianceSkuId property: The SKU for the storage appliance..
+             * 
+             * @param storageApplianceSkuId The SKU for the storage appliance.
+             * @return the next definition stage.
+             */
+            WithRackSlot withStorageApplianceSkuId(String storageApplianceSkuId);
         }
 
         /**
@@ -375,20 +373,22 @@ public interface StorageAppliance {
              * @param serialNumber The serial number for the storage appliance.
              * @return the next definition stage.
              */
-            WithStorageApplianceSkuId withSerialNumber(String serialNumber);
+            WithAdministratorCredentials withSerialNumber(String serialNumber);
         }
 
         /**
-         * The stage of the StorageAppliance definition allowing to specify storageApplianceSkuId.
+         * The stage of the StorageAppliance definition allowing to specify administratorCredentials.
          */
-        interface WithStorageApplianceSkuId {
+        interface WithAdministratorCredentials {
             /**
-             * Specifies the storageApplianceSkuId property: The SKU for the storage appliance..
+             * Specifies the administratorCredentials property: The credentials of the administrative interface on this
+             * storage appliance..
              * 
-             * @param storageApplianceSkuId The SKU for the storage appliance.
+             * @param administratorCredentials The credentials of the administrative interface on this storage
+             * appliance.
              * @return the next definition stage.
              */
-            WithCreate withStorageApplianceSkuId(String storageApplianceSkuId);
+            WithCreate withAdministratorCredentials(AdministrativeCredentials administratorCredentials);
         }
 
         /**

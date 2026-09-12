@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BareMetalMachineKeySetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_Delete.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_Delete.json
      */
     /**
      * Sample code: Delete bare metal machine key set of cluster.

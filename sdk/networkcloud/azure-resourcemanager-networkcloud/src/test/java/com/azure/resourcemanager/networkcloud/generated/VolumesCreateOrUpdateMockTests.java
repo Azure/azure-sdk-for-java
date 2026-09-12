@@ -25,7 +25,7 @@ public final class VolumesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sizeMiB\":1894227724898676418,\"storageApplianceId\":\"biwksde\",\"allocatedSizeMiB\":302403613316415534,\"assignedStorageApplianceId\":\"fpzvoikvntwczf\",\"attachedTo\":[\"shl\",\"xpblalh\",\"ezpfki\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"dqzsaaoqdsgp\",\"serialNumber\":\"txjqfiafc\",\"provisioningState\":\"Succeeded\"},\"etag\":\"bfijzzcaoijol\",\"extendedLocation\":{\"name\":\"uauktwieopexelx\",\"type\":\"CustomLocation\"},\"location\":\"rswyilj\",\"tags\":{\"do\":\"kgxyxyauxre\"},\"id\":\"mcnltmwytkujsqyc\",\"name\":\"moxfablq\",\"type\":\"pwbmwhria\"}";
+            = "{\"properties\":{\"sizeMiB\":4096011701815811098,\"storageApplianceId\":\"zcnjfmbbfnvjxit\",\"allocatedSizeMiB\":3165070550087880230,\"assignedStorageApplianceId\":\"rtiklsmnihqlco\",\"attachedTo\":[\"yiibh\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"gbudav\",\"serialNumber\":\"orbccqcdhth\",\"provisioningState\":\"Succeeded\"},\"etag\":\"irknucosaw\",\"extendedLocation\":{\"name\":\"dtnagzlgpyaix\",\"type\":\"CustomLocation\"},\"location\":\"qjjtsmuydqfttka\",\"tags\":{\"jermhzic\":\"dueurgmcdcpkshl\",\"glhphzwx\":\"bfdjhyaaknyukibx\"},\"id\":\"tej\",\"name\":\"iilhvtozyagj\",\"type\":\"nxkbylhyyxgf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,23 +35,24 @@ public final class VolumesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .define("dgsjsat")
-            .withRegion("wdwisvn")
-            .withExistingResourceGroup("fcvcewbwq")
-            .withExtendedLocation(new ExtendedLocation().withName("qqt").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withSizeMiB(3609336538530529746L)
-            .withTags(mapOf("yh", "lajamca", "yklleynqanhkiggl", "tpzcr"))
-            .withStorageApplianceId("mazdfsqxh")
-            .withIfMatch("yctajqz")
-            .withIfNoneMatch("vale")
+            .define("qnm")
+            .withRegion("q")
+            .withExistingResourceGroup("bjdqkn")
+            .withExtendedLocation(
+                new ExtendedLocation().withName("thxuarigrjdl").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withSizeMiB(8298518230366342546L)
+            .withTags(mapOf("pruulhg", "rbzkuastaxk", "izwxvs", "t"))
+            .withStorageApplianceId("wn")
+            .withIfMatch("rtwletyves")
+            .withIfNoneMatch("rtlhpdhwyn")
             .create();
 
-        Assertions.assertEquals("rswyilj", response.location());
-        Assertions.assertEquals("kgxyxyauxre", response.tags().get("do"));
-        Assertions.assertEquals("uauktwieopexelx", response.extendedLocation().name());
+        Assertions.assertEquals("qjjtsmuydqfttka", response.location());
+        Assertions.assertEquals("dueurgmcdcpkshl", response.tags().get("jermhzic"));
+        Assertions.assertEquals("dtnagzlgpyaix", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals(1894227724898676418L, response.sizeMiB());
-        Assertions.assertEquals("biwksde", response.storageApplianceId());
+        Assertions.assertEquals(4096011701815811098L, response.sizeMiB());
+        Assertions.assertEquals("zcnjfmbbfnvjxit", response.storageApplianceId());
     }
 
     // Use "Map.of" if available

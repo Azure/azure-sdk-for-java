@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Create.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Create.json
      */
     /**
      * Sample code: Create or update virtual machine.

@@ -5,18 +5,18 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceMetricsConfigurationStatusLogLevel;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceMetricsConfigurationStatusMetricsLevel;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceMonitoringConfigurationStatus;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceMonitoringConfigurationStatusLogLevel;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceMonitoringConfigurationStatusMetricsLevel;
 import org.junit.jupiter.api.Assertions;
 
 public final class StorageApplianceMonitoringConfigurationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageApplianceMonitoringConfigurationStatus model
-            = BinaryData.fromString("{\"logLevel\":\"Default\",\"metricsLevel\":\"Default\"}")
+            = BinaryData.fromString("{\"logLevel\":\"Nexus\",\"metricsLevel\":\"Nexus\"}")
                 .toObject(StorageApplianceMonitoringConfigurationStatus.class);
-        Assertions.assertEquals(StorageApplianceMetricsConfigurationStatusLogLevel.DEFAULT, model.logLevel());
-        Assertions.assertEquals(StorageApplianceMetricsConfigurationStatusMetricsLevel.DEFAULT, model.metricsLevel());
+        Assertions.assertEquals(StorageApplianceMonitoringConfigurationStatusLogLevel.NEXUS, model.logLevel());
+        Assertions.assertEquals(StorageApplianceMonitoringConfigurationStatusMetricsLevel.NEXUS, model.metricsLevel());
     }
 }

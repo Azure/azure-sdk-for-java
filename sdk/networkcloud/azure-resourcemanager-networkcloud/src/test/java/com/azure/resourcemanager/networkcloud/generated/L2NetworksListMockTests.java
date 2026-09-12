@@ -24,7 +24,7 @@ public final class L2NetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"fa\",\"l2IsolationDomainId\":\"zwjcaye\",\"associatedResourceIds\":[\"ransyby\",\"polwzrghsrlei\"],\"clusterId\":\"fscjfn\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"uagfqwtltngv\",\"hybridAksClustersAssociatedIds\":[\"uptrklz\"],\"virtualMachinesAssociatedIds\":[\"ajwolxfs\",\"aghm\",\"ynwlslrcigtzjcv\"],\"provisioningState\":\"Failed\"},\"etag\":\"a\",\"extendedLocation\":{\"name\":\"snsso\",\"type\":\"CustomLocation\"},\"location\":\"pavidnievwffc\",\"tags\":{\"xgcbdsvalpnpt\":\"ezslp\",\"x\":\"trkxgpazwu\"},\"id\":\"qvn\",\"name\":\"obfelhldiuhz\",\"type\":\"gqlmfaewzgi\"}]}";
+            = "{\"value\":[{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"dhuruzytzarog\",\"l2IsolationDomainId\":\"tmol\",\"associatedResourceIds\":[\"wmpinmzv\",\"kneerzztrknsj\",\"lugdybnhrxlelf\",\"hkeizcp\"],\"clusterId\":\"tdmiwjekptyca\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"zcqymlcfn\",\"hybridAksClustersAssociatedIds\":[\"hsurlgw\",\"kpmmz\",\"stauolawi\",\"bmom\"],\"virtualMachinesAssociatedIds\":[\"vjhvvlr\",\"ohewjj\",\"ajnkdflqionswae\",\"kzfzqxjosho\"],\"provisioningState\":\"Accepted\"},\"etag\":\"ryegp\",\"extendedLocation\":{\"name\":\"h\",\"type\":\"CustomLocation\"},\"location\":\"exznlwkbfokxkhup\",\"tags\":{\"yfcemftz\":\"ufgjblcdr\",\"ekdfqnhttwd\":\"yykyalu\",\"mhmnulwemp\":\"wrczfjjnnuxxrk\",\"usnaw\":\"cifrhjulrsulwzpf\"},\"id\":\"hhgzotf\",\"name\":\"iyrgkoek\",\"type\":\"zwx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class L2NetworksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<L2Network> response
-            = manager.l2Networks().list(177488240, "ewjzl", com.azure.core.util.Context.NONE);
+            = manager.l2Networks().list(1839777593, "udivbxnhsqeaeonq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pavidnievwffc", response.iterator().next().location());
-        Assertions.assertEquals("ezslp", response.iterator().next().tags().get("xgcbdsvalpnpt"));
-        Assertions.assertEquals("snsso", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("exznlwkbfokxkhup", response.iterator().next().location());
+        Assertions.assertEquals("ufgjblcdr", response.iterator().next().tags().get("yfcemftz"));
+        Assertions.assertEquals("h", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("fa", response.iterator().next().interfaceName());
-        Assertions.assertEquals("zwjcaye", response.iterator().next().l2IsolationDomainId());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("dhuruzytzarog", response.iterator().next().interfaceName());
+        Assertions.assertEquals("tmol", response.iterator().next().l2IsolationDomainId());
     }
 }

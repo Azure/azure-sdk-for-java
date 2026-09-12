@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class CloudServicesNetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Patch.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Patch.json
      */
     /**
      * Sample code: Patch cloud services network.

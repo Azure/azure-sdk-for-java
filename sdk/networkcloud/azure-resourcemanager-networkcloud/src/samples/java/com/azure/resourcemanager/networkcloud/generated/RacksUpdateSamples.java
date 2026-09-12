@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class RacksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_Patch.json
+     * x-ms-original-file: 2026-07-01/Racks_Patch.json
      */
     /**
      * Sample code: Patch rack.

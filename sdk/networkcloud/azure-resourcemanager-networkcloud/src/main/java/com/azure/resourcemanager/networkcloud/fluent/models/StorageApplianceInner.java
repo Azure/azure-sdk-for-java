@@ -172,31 +172,6 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
-     * Get the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @return the administratorCredentials value.
-     */
-    public AdministrativeCredentials administratorCredentials() {
-        return this.innerProperties() == null ? null : this.innerProperties().administratorCredentials();
-    }
-
-    /**
-     * Set the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @param administratorCredentials the administratorCredentials value to set.
-     * @return the StorageApplianceInner object itself.
-     */
-    public StorageApplianceInner withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageApplianceProperties();
-        }
-        this.innerProperties().withAdministratorCredentials(administratorCredentials);
-        return this;
-    }
-
-    /**
      * Get the rackId property: The resource ID of the rack where this storage appliance resides.
      * 
      * @return the rackId value.
@@ -216,6 +191,29 @@ public final class StorageApplianceInner extends Resource {
             this.innerProperties = new StorageApplianceProperties();
         }
         this.innerProperties().withRackId(rackId);
+        return this;
+    }
+
+    /**
+     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @return the storageApplianceSkuId value.
+     */
+    public String storageApplianceSkuId() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageApplianceSkuId();
+    }
+
+    /**
+     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
+     * @return the StorageApplianceInner object itself.
+     */
+    public StorageApplianceInner withStorageApplianceSkuId(String storageApplianceSkuId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageApplianceProperties();
+        }
+        this.innerProperties().withStorageApplianceSkuId(storageApplianceSkuId);
         return this;
     }
 
@@ -266,25 +264,27 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
-     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
+     * Get the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
      * 
-     * @return the storageApplianceSkuId value.
+     * @return the administratorCredentials value.
      */
-    public String storageApplianceSkuId() {
-        return this.innerProperties() == null ? null : this.innerProperties().storageApplianceSkuId();
+    public AdministrativeCredentials administratorCredentials() {
+        return this.innerProperties() == null ? null : this.innerProperties().administratorCredentials();
     }
 
     /**
-     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
+     * Set the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
      * 
-     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
+     * @param administratorCredentials the administratorCredentials value to set.
      * @return the StorageApplianceInner object itself.
      */
-    public StorageApplianceInner withStorageApplianceSkuId(String storageApplianceSkuId) {
+    public StorageApplianceInner withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StorageApplianceProperties();
         }
-        this.innerProperties().withStorageApplianceSkuId(storageApplianceSkuId);
+        this.innerProperties().withAdministratorCredentials(administratorCredentials);
         return this;
     }
 
