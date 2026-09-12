@@ -8,21 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of deadline the scheduled action follows for its schedule.
+ * How the scheduled time is interpreted for the resource operation.
  */
 public final class ScheduledActionsDeadlineType extends ExpandableStringEnum<ScheduledActionsDeadlineType> {
     /**
-     * Default value of Unknown.
-     */
-    public static final ScheduledActionsDeadlineType UNKNOWN = fromString("Unknown");
-
-    /**
-     * Initiate the operation at the given deadline.
+     * Starts the operation at the scheduled time.
      */
     public static final ScheduledActionsDeadlineType INITIATE_AT = fromString("InitiateAt");
 
     /**
-     * Complete the operation by the given deadline.
+     * Completes the operation by the scheduled time.
      */
     public static final ScheduledActionsDeadlineType COMPLETE_BY = fromString("CompleteBy");
 

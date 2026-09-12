@@ -14,21 +14,21 @@ public final class ResourcesWithContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourcesWithContext model = BinaryData.fromString(
-            "{\"resources\":[{\"resourceId\":\"luwfzitonpeqfpjk\",\"resourceContext\":\"lxofpdvhpfxxypin\"},{\"resourceId\":\"nmayhuybb\",\"resourceContext\":\"podepoo\"},{\"resourceId\":\"inuvamiheogn\",\"resourceContext\":\"rxzxtheo\"},{\"resourceId\":\"usivye\",\"resourceContext\":\"cciqihnhungbwjz\"}]}")
+            "{\"resources\":[{\"resourceId\":\"s\",\"resourceContext\":\"n\"},{\"resourceId\":\"gvfcj\",\"resourceContext\":\"wzo\"},{\"resourceId\":\"xjtfelluwfzit\",\"resourceContext\":\"np\"},{\"resourceId\":\"qfpjk\",\"resourceContext\":\"lxofpdvhpfxxypin\"}]}")
             .toObject(ResourcesWithContext.class);
-        Assertions.assertEquals("luwfzitonpeqfpjk", model.resources().get(0).resourceId());
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.resources().get(0).resourceContext());
+        Assertions.assertEquals("s", model.resources().get(0).resourceId());
+        Assertions.assertEquals("n", model.resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcesWithContext model = new ResourcesWithContext().withResources(Arrays.asList(
-            new ResourceWithContext().withResourceId("luwfzitonpeqfpjk").withResourceContext("lxofpdvhpfxxypin"),
-            new ResourceWithContext().withResourceId("nmayhuybb").withResourceContext("podepoo"),
-            new ResourceWithContext().withResourceId("inuvamiheogn").withResourceContext("rxzxtheo"),
-            new ResourceWithContext().withResourceId("usivye").withResourceContext("cciqihnhungbwjz")));
+        ResourcesWithContext model = new ResourcesWithContext()
+            .withResources(Arrays.asList(new ResourceWithContext().withResourceId("s").withResourceContext("n"),
+                new ResourceWithContext().withResourceId("gvfcj").withResourceContext("wzo"),
+                new ResourceWithContext().withResourceId("xjtfelluwfzit").withResourceContext("np"),
+                new ResourceWithContext().withResourceId("qfpjk").withResourceContext("lxofpdvhpfxxypin")));
         model = BinaryData.fromObject(model).toObject(ResourcesWithContext.class);
-        Assertions.assertEquals("luwfzitonpeqfpjk", model.resources().get(0).resourceId());
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.resources().get(0).resourceContext());
+        Assertions.assertEquals("s", model.resources().get(0).resourceId());
+        Assertions.assertEquals("n", model.resources().get(0).resourceContext());
     }
 }

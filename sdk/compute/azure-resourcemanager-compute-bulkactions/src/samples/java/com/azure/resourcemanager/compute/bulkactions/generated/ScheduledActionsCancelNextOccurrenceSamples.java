@@ -12,19 +12,20 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCancelNextOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_CancelNextOccurrence_MaximumSet.
+     * Sample code: Cancel the next scheduled action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsCancelNextOccurrenceMaximumSet(
+    public static void cancelTheNextScheduledActionOccurrence(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .cancelNextOccurrence("rgcompute", "myScheduledAction",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm",
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")),
                 com.azure.core.util.Context.NONE);
     }
 }

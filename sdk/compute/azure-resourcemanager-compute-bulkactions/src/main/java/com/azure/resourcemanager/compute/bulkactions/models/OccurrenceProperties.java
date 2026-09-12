@@ -14,22 +14,22 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * Properties for an occurrence.
+ * Properties of a scheduled action occurrence.
  */
 @Immutable
 public final class OccurrenceProperties implements JsonSerializable<OccurrenceProperties> {
     /*
-     * The time the occurrence is scheduled for. This value can be changed by calling the delay API
+     * Read-only. The UTC date and time when the occurrence is scheduled to run.
      */
     private OffsetDateTime scheduledTime;
 
     /*
-     * The result for occurrences that achieved a terminal state
+     * Read-only. The result summary after the occurrence reaches a final state.
      */
     private OccurrenceResultSummary resultSummary;
 
     /*
-     * The aggregated provisioning state of the occurrence
+     * Read-only. The current state of the occurrence.
      */
     private OccurrenceState provisioningState;
 
@@ -40,8 +40,7 @@ public final class OccurrenceProperties implements JsonSerializable<OccurrencePr
     }
 
     /**
-     * Get the scheduledTime property: The time the occurrence is scheduled for. This value can be changed by calling
-     * the delay API.
+     * Get the scheduledTime property: Read-only. The UTC date and time when the occurrence is scheduled to run.
      * 
      * @return the scheduledTime value.
      */
@@ -50,7 +49,7 @@ public final class OccurrenceProperties implements JsonSerializable<OccurrencePr
     }
 
     /**
-     * Get the resultSummary property: The result for occurrences that achieved a terminal state.
+     * Get the resultSummary property: Read-only. The result summary after the occurrence reaches a final state.
      * 
      * @return the resultSummary value.
      */
@@ -59,7 +58,7 @@ public final class OccurrenceProperties implements JsonSerializable<OccurrencePr
     }
 
     /**
-     * Get the provisioningState property: The aggregated provisioning state of the occurrence.
+     * Get the provisioningState property: Read-only. The current state of the occurrence.
      * 
      * @return the provisioningState value.
      */

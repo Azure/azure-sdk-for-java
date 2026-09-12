@@ -27,8 +27,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreatesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
-import com.azure.resourcemanager.compute.bulkactions.fluent.LaunchBulkInstancesOperationsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.OccurrenceExtensionsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.OccurrencesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.OperationsClient;
@@ -163,20 +163,6 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
     }
 
     /**
-     * The LaunchBulkInstancesOperationsClient object to access its operations.
-     */
-    private final LaunchBulkInstancesOperationsClient launchBulkInstancesOperations;
-
-    /**
-     * Gets the LaunchBulkInstancesOperationsClient object to access its operations.
-     * 
-     * @return the LaunchBulkInstancesOperationsClient object.
-     */
-    public LaunchBulkInstancesOperationsClient getLaunchBulkInstancesOperations() {
-        return this.launchBulkInstancesOperations;
-    }
-
-    /**
      * The BulkCreateCustomsClient object to access its operations.
      */
     private final BulkCreateCustomsClient bulkCreateCustoms;
@@ -188,6 +174,20 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
      */
     public BulkCreateCustomsClient getBulkCreateCustoms() {
         return this.bulkCreateCustoms;
+    }
+
+    /**
+     * The BulkCreatesClient object to access its operations.
+     */
+    private final BulkCreatesClient bulkCreates;
+
+    /**
+     * Gets the BulkCreatesClient object to access its operations.
+     * 
+     * @return the BulkCreatesClient object.
+     */
+    public BulkCreatesClient getBulkCreates() {
+        return this.bulkCreates;
     }
 
     /**
@@ -277,11 +277,11 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-08-06-preview";
+        this.apiVersion = "2026-09-06-preview";
         this.operations = new OperationsClientImpl(this);
         this.virtualMachineBulkOperations = new VirtualMachineBulkOperationsClientImpl(this);
-        this.launchBulkInstancesOperations = new LaunchBulkInstancesOperationsClientImpl(this);
         this.bulkCreateCustoms = new BulkCreateCustomsClientImpl(this);
+        this.bulkCreates = new BulkCreatesClientImpl(this);
         this.scheduledActions = new ScheduledActionsClientImpl(this);
         this.scheduledActionExtensions = new ScheduledActionExtensionsClientImpl(this);
         this.scheduledActionOperationStatus = new ScheduledActionOperationStatusClientImpl(this);

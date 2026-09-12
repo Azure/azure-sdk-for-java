@@ -26,6 +26,12 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
      */
     private int rank;
 
+    /*
+     * The maximum capacity to place in this zone. The sum across capped zones must not exceed the requested capacity,
+     * and when every zone preference is capped the sum must equal the requested capacity.
+     */
+    private Integer targetMaxCapacity;
+
     /**
      * Creates an instance of ZonePreference class.
      */
@@ -73,6 +79,30 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
+     * Get the targetMaxCapacity property: The maximum capacity to place in this zone. The sum across capped zones must
+     * not exceed the requested capacity, and when every zone preference is capped the sum must equal the requested
+     * capacity.
+     * 
+     * @return the targetMaxCapacity value.
+     */
+    public Integer targetMaxCapacity() {
+        return this.targetMaxCapacity;
+    }
+
+    /**
+     * Set the targetMaxCapacity property: The maximum capacity to place in this zone. The sum across capped zones must
+     * not exceed the requested capacity, and when every zone preference is capped the sum must equal the requested
+     * capacity.
+     * 
+     * @param targetMaxCapacity the targetMaxCapacity value to set.
+     * @return the ZonePreference object itself.
+     */
+    public ZonePreference withTargetMaxCapacity(Integer targetMaxCapacity) {
+        this.targetMaxCapacity = targetMaxCapacity;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +110,7 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("zone", this.zone);
         jsonWriter.writeIntField("rank", this.rank);
+        jsonWriter.writeNumberField("targetMaxCapacity", this.targetMaxCapacity);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +134,8 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
                     deserializedZonePreference.zone = reader.getString();
                 } else if ("rank".equals(fieldName)) {
                     deserializedZonePreference.rank = reader.getInt();
+                } else if ("targetMaxCapacity".equals(fieldName)) {
+                    deserializedZonePreference.targetMaxCapacity = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
