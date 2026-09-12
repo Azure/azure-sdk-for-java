@@ -13,16 +13,16 @@ public final class ManagedCassandraManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedCassandraManagedServiceIdentity model = BinaryData
-            .fromString("{\"principalId\":\"wgoljtzx\",\"tenantId\":\"xsdobygoogxqapjx\",\"type\":\"SystemAssigned\"}")
+            .fromString("{\"principalId\":\"rdxrizagbbgiarks\",\"tenantId\":\"pgdqxwabzrw\",\"type\":\"None\"}")
             .toObject(ManagedCassandraManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedCassandraResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedCassandraResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedCassandraManagedServiceIdentity model = new ManagedCassandraManagedServiceIdentity()
-            .withType(ManagedCassandraResourceIdentityType.SYSTEM_ASSIGNED);
+        ManagedCassandraManagedServiceIdentity model
+            = new ManagedCassandraManagedServiceIdentity().withType(ManagedCassandraResourceIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(ManagedCassandraManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedCassandraResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedCassandraResourceIdentityType.NONE, model.type());
     }
 }

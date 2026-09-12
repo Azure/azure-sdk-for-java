@@ -11,7 +11,7 @@ public final class RestorableLocationResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableLocationResource model = BinaryData.fromString(
-            "{\"locationName\":\"kszanmhwgpte\",\"regionalDatabaseAccountInstanceId\":\"iuwkirkskwzts\",\"creationTime\":\"2021-06-15T15:30:40Z\",\"deletionTime\":\"2021-09-12T23:31:09Z\"}")
+            "{\"locationName\":\"bjesylslur\",\"regionalDatabaseAccountInstanceId\":\"fygpnyhgd\",\"creationTime\":\"2021-12-02T17:52:08Z\",\"deletionTime\":\"2021-04-30T16:17:48Z\"}")
             .toObject(RestorableLocationResource.class);
     }
 }

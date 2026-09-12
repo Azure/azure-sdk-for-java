@@ -12,10 +12,10 @@ public final class FleetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"InternallyReady\"},\"location\":\"utxfptofhgnuyw\",\"tags\":{\"aaqwvkg\":\"gvad\"},\"id\":\"pytpmpvdnogehlu\",\"name\":\"b\",\"type\":\"rtbnu\"},{\"properties\":{\"provisioningState\":\"Initializing\"},\"location\":\"zsvbxxyjisskobq\",\"tags\":{\"smvrkdpsqe\":\"flioewyhxe\",\"ses\":\"fbdxm\",\"ib\":\"rujbjpppktlp\",\"qplgtkihonikz\":\"mthieatnejrnmin\"},\"id\":\"r\",\"name\":\"f\",\"type\":\"f\"}],\"nextLink\":\"lzfbpntogken\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Online\"},\"location\":\"iuajklnacgdn\",\"tags\":{\"d\":\"onmzrjjaojpzn\",\"qyuddk\":\"zigecwsad\",\"hheuyuun\":\"wqdm\"},\"id\":\"myevyigdeipn\",\"name\":\"izej\",\"type\":\"li\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"jzwhajod\",\"tags\":{\"hdyncradxs\":\"o\",\"e\":\"w\",\"ygihiclmslnu\":\"pfapmqnmelyk\",\"awexizb\":\"kqvzlbbbajdexq\"},\"id\":\"zetjizwh\",\"name\":\"nbmajvvyxtvvx\",\"type\":\"akzixb\"}],\"nextLink\":\"ybfmlngfwhrmvl\"}")
             .toObject(FleetListResult.class);
-        Assertions.assertEquals("utxfptofhgnuyw", model.value().get(0).location());
-        Assertions.assertEquals("gvad", model.value().get(0).tags().get("aaqwvkg"));
-        Assertions.assertEquals("lzfbpntogken", model.nextLink());
+        Assertions.assertEquals("iuajklnacgdn", model.value().get(0).location());
+        Assertions.assertEquals("onmzrjjaojpzn", model.value().get(0).tags().get("d"));
+        Assertions.assertEquals("ybfmlngfwhrmvl", model.nextLink());
     }
 }

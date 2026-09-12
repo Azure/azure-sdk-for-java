@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesGetSqlStoredProcedureSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlStoredProcedureGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlStoredProcedureGet.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureGet.

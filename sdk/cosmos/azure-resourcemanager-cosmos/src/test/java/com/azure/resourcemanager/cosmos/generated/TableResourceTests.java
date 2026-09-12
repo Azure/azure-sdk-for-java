@@ -15,29 +15,29 @@ public final class TableResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableResource model = BinaryData.fromString(
-            "{\"id\":\"nadzyq\",\"restoreParameters\":{\"restoreSource\":\"yi\",\"restoreTimestampInUtc\":\"2021-08-23T03:34:59Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}")
+            "{\"id\":\"jogeslabnsmjkwyn\",\"restoreParameters\":{\"restoreSource\":\"ekqsykvwjtqpkev\",\"restoreTimestampInUtc\":\"2021-09-09T16:32:42Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"}")
             .toObject(TableResource.class);
-        Assertions.assertEquals("nadzyq", model.id());
-        Assertions.assertEquals("yi", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T03:34:59Z"),
+        Assertions.assertEquals("jogeslabnsmjkwyn", model.id());
+        Assertions.assertEquals("ekqsykvwjtqpkev", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T16:32:42Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
+        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableResource model = new TableResource().withId("nadzyq")
-            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("yi")
-                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-08-23T03:34:59Z"))
-                .withRestoreWithTtlDisabled(false))
-            .withCreateMode(CreateMode.RESTORE);
+        TableResource model = new TableResource().withId("jogeslabnsmjkwyn")
+            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("ekqsykvwjtqpkev")
+                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-09-09T16:32:42Z"))
+                .withRestoreWithTtlDisabled(true))
+            .withCreateMode(CreateMode.DEFAULT);
         model = BinaryData.fromObject(model).toObject(TableResource.class);
-        Assertions.assertEquals("nadzyq", model.id());
-        Assertions.assertEquals("yi", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T03:34:59Z"),
+        Assertions.assertEquals("jogeslabnsmjkwyn", model.id());
+        Assertions.assertEquals("ekqsykvwjtqpkev", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T16:32:42Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
+        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
     }
 }

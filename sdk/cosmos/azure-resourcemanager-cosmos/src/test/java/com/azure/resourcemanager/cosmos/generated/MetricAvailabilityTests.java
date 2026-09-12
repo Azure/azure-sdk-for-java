@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.MetricAvailability;
 public final class MetricAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricAvailability model = BinaryData.fromString("{\"timeGrain\":\"alm\",\"retention\":\"tdaaygdvwvg\"}")
+        MetricAvailability model = BinaryData.fromString("{\"timeGrain\":\"wiipfpub\",\"retention\":\"bwwift\"}")
             .toObject(MetricAvailability.class);
     }
 }

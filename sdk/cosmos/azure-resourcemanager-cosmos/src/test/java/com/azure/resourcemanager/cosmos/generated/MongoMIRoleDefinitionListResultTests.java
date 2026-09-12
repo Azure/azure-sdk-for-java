@@ -13,15 +13,15 @@ public final class MongoMIRoleDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoMIRoleDefinitionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"id\":\"p\",\"roleName\":\"iwifhbk\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"ohqcl\",\"aihtgsiqikvllrh\"],\"permissions\":[{\"id\":\"lxkoi\",\"dataActions\":[\"rawrqkzawbunmp\",\"klwzlw\",\"epr\"],\"notDataActions\":[\"zltkaszfj\",\"xscbduxapgrcqe\",\"mvrdjomlnwsbv\"]}]},\"id\":\"lsflxk\",\"name\":\"esdfedsb\",\"type\":\"zancoinmp\"},{\"properties\":{\"id\":\"cqidkltvdhqnufbx\",\"roleName\":\"iibntojo\",\"type\":\"CustomRole\",\"assignableScopes\":[\"y\",\"hu\"],\"permissions\":[{\"id\":\"uwudhuaor\",\"dataActions\":[\"ehwvumosqirc\",\"mqprlobru\",\"ejcvjkjyczcmta\",\"elajdyol\"],\"notDataActions\":[\"yxqfmzsizzhravr\"]},{\"id\":\"kjymgqbgcxh\",\"dataActions\":[\"gzxlermkmerghski\",\"hnp\",\"pkcbkfukdljq\"],\"notDataActions\":[\"sdydshkp\",\"fyaloowwzizzny\"]}]},\"id\":\"pqzstifgufyjf\",\"name\":\"kqiyvnd\",\"type\":\"okgw\"}],\"nextLink\":\"ymzqhrqpfzl\"}")
+            "{\"value\":[{\"properties\":{\"id\":\"ggchxvlqgf\",\"roleName\":\"vecic\",\"type\":\"CustomRole\",\"assignableScopes\":[\"irlzbipiunn\"],\"permissions\":[{\"id\":\"zzzkuer\",\"dataActions\":[\"jomipvw\",\"a\",\"jttwykoxv\",\"wofxxdplrel\"],\"notDataActions\":[\"gahcbt\"]},{\"id\":\"lbpxrhrfjenrazwe\",\"dataActions\":[\"tlhqas\",\"tostjixyzsecig\"],\"notDataActions\":[\"wjtacfvv\",\"dp\",\"bpzfomcsaugbrh\"]},{\"id\":\"wltkfysuntethklx\",\"dataActions\":[\"vasyyhgqok\",\"bmsrkix\"],\"notDataActions\":[\"hw\"]}]},\"id\":\"qomaqsyilpzzbrw\",\"name\":\"rzozsxagyso\",\"type\":\"liiksybv\"},{\"properties\":{\"id\":\"nhylsbhujcy\",\"roleName\":\"llmxvpstiz\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"ql\"],\"permissions\":[{\"id\":\"vaidy\",\"dataActions\":[\"htrrqwfy\"],\"notDataActions\":[\"t\",\"jjrnogykugdlavsa\"]},{\"id\":\"thkslgeuufkb\",\"dataActions\":[\"bxjblajybdnb\",\"csbto\",\"sazdjmofsvpz\",\"gnywxu\"],\"notDataActions\":[\"fj\"]}]},\"id\":\"gwtmszcf\",\"name\":\"zqpeqr\",\"type\":\"gfurdpagknx\"},{\"properties\":{\"id\":\"vrgihl\",\"roleName\":\"ffew\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"jcgeipqxxsdyaf\",\"tydsmm\"],\"permissions\":[{\"id\":\"clejqzhpv\",\"dataActions\":[\"badjze\",\"llgfy\",\"gtqscjpvqerq\"],\"notDataActions\":[\"mwdz\",\"zlhcu\"]}]},\"id\":\"lqpwwvmb\",\"name\":\"ecfwlbghnkfrw\",\"type\":\"oh\"}],\"nextLink\":\"dsnjzpchiypb\"}")
             .toObject(MongoMIRoleDefinitionListResult.class);
-        Assertions.assertEquals("p", model.value().get(0).idPropertiesId());
-        Assertions.assertEquals("iwifhbk", model.value().get(0).roleName());
-        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("ohqcl", model.value().get(0).assignableScopes().get(0));
-        Assertions.assertEquals("lxkoi", model.value().get(0).permissions().get(0).id());
-        Assertions.assertEquals("rawrqkzawbunmp", model.value().get(0).permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("zltkaszfj", model.value().get(0).permissions().get(0).notDataActions().get(0));
-        Assertions.assertEquals("ymzqhrqpfzl", model.nextLink());
+        Assertions.assertEquals("ggchxvlqgf", model.value().get(0).idPropertiesId());
+        Assertions.assertEquals("vecic", model.value().get(0).roleName());
+        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("irlzbipiunn", model.value().get(0).assignableScopes().get(0));
+        Assertions.assertEquals("zzzkuer", model.value().get(0).permissions().get(0).id());
+        Assertions.assertEquals("jomipvw", model.value().get(0).permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("gahcbt", model.value().get(0).permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("dsnjzpchiypb", model.nextLink());
     }
 }

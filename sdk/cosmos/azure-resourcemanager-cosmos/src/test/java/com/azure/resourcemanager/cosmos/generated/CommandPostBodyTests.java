@@ -14,28 +14,28 @@ public final class CommandPostBodyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommandPostBody model = BinaryData.fromString(
-            "{\"command\":\"wkppnwyytfvp\",\"arguments\":{\"vuldbkkejjk\":\"jikffffgkuhznw\",\"azmxjqi\":\"igaw\",\"jjsbcmlzaahzbhur\":\"h\",\"lirh\":\"olk\"},\"host\":\"mojusuz\",\"cassandra-stop-start\":false,\"readwrite\":true}")
+            "{\"command\":\"ydtnaczkfwfatgaw\",\"arguments\":{\"ecsaaqgoqbdiu\":\"skivdwgtqcu\",\"hrbkhtmqowi\":\"csbskowkrbh\",\"ruozkgyfp\":\"asfgqgucyhfaimqv\"},\"host\":\"oehgfmqmskkixvlz\",\"cassandra-stop-start\":true,\"readwrite\":true}")
             .toObject(CommandPostBody.class);
-        Assertions.assertEquals("wkppnwyytfvp", model.command());
-        Assertions.assertEquals("jikffffgkuhznw", model.arguments().get("vuldbkkejjk"));
-        Assertions.assertEquals("mojusuz", model.host());
-        Assertions.assertFalse(model.cassandraStopStart());
+        Assertions.assertEquals("ydtnaczkfwfatgaw", model.command());
+        Assertions.assertEquals("skivdwgtqcu", model.arguments().get("ecsaaqgoqbdiu"));
+        Assertions.assertEquals("oehgfmqmskkixvlz", model.host());
+        Assertions.assertTrue(model.cassandraStopStart());
         Assertions.assertTrue(model.readwrite());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommandPostBody model = new CommandPostBody().withCommand("wkppnwyytfvp")
+        CommandPostBody model = new CommandPostBody().withCommand("ydtnaczkfwfatgaw")
             .withArguments(
-                mapOf("vuldbkkejjk", "jikffffgkuhznw", "azmxjqi", "igaw", "jjsbcmlzaahzbhur", "h", "lirh", "olk"))
-            .withHost("mojusuz")
-            .withCassandraStopStart(false)
+                mapOf("ecsaaqgoqbdiu", "skivdwgtqcu", "hrbkhtmqowi", "csbskowkrbh", "ruozkgyfp", "asfgqgucyhfaimqv"))
+            .withHost("oehgfmqmskkixvlz")
+            .withCassandraStopStart(true)
             .withReadwrite(true);
         model = BinaryData.fromObject(model).toObject(CommandPostBody.class);
-        Assertions.assertEquals("wkppnwyytfvp", model.command());
-        Assertions.assertEquals("jikffffgkuhznw", model.arguments().get("vuldbkkejjk"));
-        Assertions.assertEquals("mojusuz", model.host());
-        Assertions.assertFalse(model.cassandraStopStart());
+        Assertions.assertEquals("ydtnaczkfwfatgaw", model.command());
+        Assertions.assertEquals("skivdwgtqcu", model.arguments().get("ecsaaqgoqbdiu"));
+        Assertions.assertEquals("oehgfmqmskkixvlz", model.host());
+        Assertions.assertTrue(model.cassandraStopStart());
         Assertions.assertTrue(model.readwrite());
     }
 

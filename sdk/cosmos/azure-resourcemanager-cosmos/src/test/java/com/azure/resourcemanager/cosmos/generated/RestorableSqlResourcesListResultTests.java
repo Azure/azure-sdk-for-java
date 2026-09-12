@@ -12,8 +12,8 @@ public final class RestorableSqlResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableSqlResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"qpzfzxsoxin\",\"name\":\"jlzkdrocqsxy\",\"type\":\"qtcmiwdwisv\",\"databaseName\":\"eylajamcajyhft\",\"collectionNames\":[\"rryklleynqan\"]},{\"id\":\"igglclwalhvub\",\"name\":\"zphetxdqcm\",\"type\":\"tajqzj\",\"databaseName\":\"lecxbibiwks\",\"collectionNames\":[\"yxsbfpz\"]}],\"nextLink\":\"ikvntw\"}")
+            "{\"value\":[{\"id\":\"irupkqnstpaqpi\",\"name\":\"gbv\",\"type\":\"mehfxrttxbm\",\"databaseName\":\"nn\",\"collectionNames\":[\"bqcamalec\",\"cxs\"]},{\"id\":\"bzdxmsynb\",\"name\":\"nnyufxuzm\",\"type\":\"zyq\",\"databaseName\":\"rnxhjtlxfikjk\",\"collectionNames\":[\"avwwuasnjeg\",\"htrxbozp\",\"jcnwjzb\"]}],\"nextLink\":\"lxrnwvdsvo\"}")
             .toObject(RestorableSqlResourcesListResult.class);
-        Assertions.assertEquals("ikvntw", model.nextLink());
+        Assertions.assertEquals("lxrnwvdsvo", model.nextLink());
     }
 }

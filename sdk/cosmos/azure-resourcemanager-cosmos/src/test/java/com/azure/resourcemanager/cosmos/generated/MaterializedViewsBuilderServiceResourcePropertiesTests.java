@@ -13,9 +13,9 @@ public final class MaterializedViewsBuilderServiceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaterializedViewsBuilderServiceResourceProperties model = BinaryData.fromString(
-            "{\"serviceType\":\"MaterializedViewsBuilder\",\"locations\":[{\"name\":\"xuwhttn\",\"location\":\"s\",\"status\":\"Error\"}],\"creationTime\":\"2021-09-12T11:29:30Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1378368314,\"status\":\"Deleting\",\"gvo\":\"\\\"dataekpdzzmssg\\\"\",\"cwztlvvws\":\"\\\"datayejidbdqzsqun\\\"\",\"pwpwfkcauxuva\":\"\\\"datamrkkyjtr\\\"\"}")
+            "{\"serviceType\":\"MaterializedViewsBuilder\",\"locations\":[{\"name\":\"hxnrn\",\"location\":\"inaegesbx\",\"status\":\"Updating\"},{\"name\":\"mjmoplu\",\"location\":\"ykkfhsovadkrm\",\"status\":\"Deleting\"},{\"name\":\"qpdkesjqbzkqmx\",\"location\":\"o\",\"status\":\"Updating\"}],\"creationTime\":\"2021-04-12T14:42:56Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":2046149630,\"status\":\"Creating\",\"ikwsbzrhdugq\":\"\\\"datanrr\\\"\",\"ru\":\"\\\"datahtrgz\\\"\",\"nczk\":\"\\\"datajfhrjhiycbause\\\"\"}")
             .toObject(MaterializedViewsBuilderServiceResourceProperties.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1378368314, model.instanceCount());
+        Assertions.assertEquals(2046149630, model.instanceCount());
     }
 }

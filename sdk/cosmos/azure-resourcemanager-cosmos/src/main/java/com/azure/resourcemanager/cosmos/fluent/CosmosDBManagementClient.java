@@ -61,6 +61,20 @@ public interface CosmosDBManagementClient {
     DatabaseAccountsClient getDatabaseAccounts();
 
     /**
+     * Gets the CopyJobsClient object to access its operations.
+     * 
+     * @return the CopyJobsClient object.
+     */
+    CopyJobsClient getCopyJobs();
+
+    /**
+     * Gets the GraphResourcesClient object to access its operations.
+     * 
+     * @return the GraphResourcesClient object.
+     */
+    GraphResourcesClient getGraphResources();
+
+    /**
      * Gets the SqlResourcesClient object to access its operations.
      * 
      * @return the SqlResourcesClient object.
@@ -96,6 +110,27 @@ public interface CosmosDBManagementClient {
     GremlinResourcesClient getGremlinResources();
 
     /**
+     * Gets the DataTransferJobsClient object to access its operations.
+     * 
+     * @return the DataTransferJobsClient object.
+     */
+    DataTransferJobsClient getDataTransferJobs();
+
+    /**
+     * Gets the GarnetClustersClient object to access its operations.
+     * 
+     * @return the GarnetClustersClient object.
+     */
+    GarnetClustersClient getGarnetClusters();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
      * Gets the NotebookWorkspacesClient object to access its operations.
      * 
      * @return the NotebookWorkspacesClient object.
@@ -115,6 +150,34 @@ public interface CosmosDBManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the SoftDeletedDatabaseAccountsClient object to access its operations.
+     * 
+     * @return the SoftDeletedDatabaseAccountsClient object.
+     */
+    SoftDeletedDatabaseAccountsClient getSoftDeletedDatabaseAccounts();
+
+    /**
+     * Gets the SoftDeletedSqlDatabasesClient object to access its operations.
+     * 
+     * @return the SoftDeletedSqlDatabasesClient object.
+     */
+    SoftDeletedSqlDatabasesClient getSoftDeletedSqlDatabases();
+
+    /**
+     * Gets the SoftDeletedSqlContainersClient object to access its operations.
+     * 
+     * @return the SoftDeletedSqlContainersClient object.
+     */
+    SoftDeletedSqlContainersClient getSoftDeletedSqlContainers();
+
+    /**
+     * Gets the ChaosFaultsClient object to access its operations.
+     * 
+     * @return the ChaosFaultsClient object.
+     */
+    ChaosFaultsClient getChaosFaults();
 
     /**
      * Gets the DatabasesClient object to access its operations.
@@ -306,6 +369,34 @@ public interface CosmosDBManagementClient {
     ServicesClient getServices();
 
     /**
+     * Gets the ThroughputPoolsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolsClient object.
+     */
+    ThroughputPoolsClient getThroughputPools();
+
+    /**
+     * Gets the ThroughputPoolsOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolsOperationsClient object.
+     */
+    ThroughputPoolsOperationsClient getThroughputPoolsOperations();
+
+    /**
+     * Gets the ThroughputPoolAccountsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountsClient object.
+     */
+    ThroughputPoolAccountsClient getThroughputPoolAccounts();
+
+    /**
+     * Gets the ThroughputPoolAccountsOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountsOperationsClient object.
+     */
+    ThroughputPoolAccountsOperationsClient getThroughputPoolAccountsOperations();
+
+    /**
      * Gets the MongoMIResourcesClient object to access its operations.
      * 
      * @return the MongoMIResourcesClient object.
@@ -318,6 +409,13 @@ public interface CosmosDBManagementClient {
      * @return the FleetsClient object.
      */
     FleetsClient getFleets();
+
+    /**
+     * Gets the FleetAnalyticsClient object to access its operations.
+     * 
+     * @return the FleetAnalyticsClient object.
+     */
+    FleetAnalyticsClient getFleetAnalytics();
 
     /**
      * Gets the FleetspacesClient object to access its operations.

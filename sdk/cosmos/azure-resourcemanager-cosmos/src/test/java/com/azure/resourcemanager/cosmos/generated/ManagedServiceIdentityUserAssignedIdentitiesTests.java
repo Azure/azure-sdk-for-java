@@ -11,7 +11,7 @@ public final class ManagedServiceIdentityUserAssignedIdentitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentityUserAssignedIdentities model
-            = BinaryData.fromString("{\"principalId\":\"lryav\",\"clientId\":\"heun\"}")
+            = BinaryData.fromString("{\"principalId\":\"kgshwa\",\"clientId\":\"ixzbinjeputtmryw\"}")
                 .toObject(ManagedServiceIdentityUserAssignedIdentities.class);
     }
 

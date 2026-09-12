@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Capacity model = BinaryData.fromString("{\"totalThroughputLimit\":212177726}").toObject(Capacity.class);
-        Assertions.assertEquals(212177726, model.totalThroughputLimit());
+        Capacity model = BinaryData.fromString("{\"totalThroughputLimit\":2139015356}").toObject(Capacity.class);
+        Assertions.assertEquals(2139015356, model.totalThroughputLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Capacity model = new Capacity().withTotalThroughputLimit(212177726);
+        Capacity model = new Capacity().withTotalThroughputLimit(2139015356);
         model = BinaryData.fromObject(model).toObject(Capacity.class);
-        Assertions.assertEquals(212177726, model.totalThroughputLimit());
+        Assertions.assertEquals(2139015356, model.totalThroughputLimit());
     }
 }

@@ -13,18 +13,18 @@ public final class CreateUpdateOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateUpdateOptions model
-            = BinaryData.fromString("{\"throughput\":615108235,\"autoscaleSettings\":{\"maxThroughput\":1075232734}}")
+            = BinaryData.fromString("{\"throughput\":1466032347,\"autoscaleSettings\":{\"maxThroughput\":1063869072}}")
                 .toObject(CreateUpdateOptions.class);
-        Assertions.assertEquals(615108235, model.throughput());
-        Assertions.assertEquals(1075232734, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1466032347, model.throughput());
+        Assertions.assertEquals(1063869072, model.autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateUpdateOptions model = new CreateUpdateOptions().withThroughput(615108235)
-            .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1075232734));
+        CreateUpdateOptions model = new CreateUpdateOptions().withThroughput(1466032347)
+            .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1063869072));
         model = BinaryData.fromObject(model).toObject(CreateUpdateOptions.class);
-        Assertions.assertEquals(615108235, model.throughput());
-        Assertions.assertEquals(1075232734, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1466032347, model.throughput());
+        Assertions.assertEquals(1063869072, model.autoscaleSettings().maxThroughput());
     }
 }

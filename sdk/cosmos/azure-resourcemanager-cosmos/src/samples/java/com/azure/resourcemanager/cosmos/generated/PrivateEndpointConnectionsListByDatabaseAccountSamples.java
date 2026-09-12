@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class PrivateEndpointConnectionsListByDatabaseAccountSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBPrivateEndpointConnectionListGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionListGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.

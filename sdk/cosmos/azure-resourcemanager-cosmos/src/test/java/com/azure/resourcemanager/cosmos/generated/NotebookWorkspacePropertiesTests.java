@@ -11,7 +11,7 @@ public final class NotebookWorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotebookWorkspaceProperties model
-            = BinaryData.fromString("{\"notebookServerEndpoint\":\"ywauyqnjckhm\",\"status\":\"gjs\"}")
+            = BinaryData.fromString("{\"notebookServerEndpoint\":\"fwtgdfkkauigvmua\",\"status\":\"czfedyuep\"}")
                 .toObject(NotebookWorkspaceProperties.class);
     }
 }

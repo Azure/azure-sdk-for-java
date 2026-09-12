@@ -12,11 +12,11 @@ public final class TableRoleAssignmentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableRoleAssignmentListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"pifdfaifyzyzeyu\",\"scope\":\"eidszlfytoi\",\"principalId\":\"gygvfltgvdiho\",\"provisioningState\":\"krxwet\"},\"id\":\"drcyrucpcun\",\"name\":\"uzdqumoenod\",\"type\":\"aienhqhsknd\"},{\"properties\":{\"roleDefinitionId\":\"qkaadlknw\",\"scope\":\"anniyopetxivcnr\",\"principalId\":\"xnucaephblkwqp\",\"provisioningState\":\"vbqsdt\"},\"id\":\"bctvivuzqym\",\"name\":\"uo\",\"type\":\"o\"},{\"properties\":{\"roleDefinitionId\":\"it\",\"scope\":\"hzvb\",\"principalId\":\"cdb\",\"provisioningState\":\"fzndscxmxeatkd\"},\"id\":\"wnrdjyibqbnaom\",\"name\":\"jrmkuhmaxljalf\",\"type\":\"hcjmo\"}],\"nextLink\":\"anc\"}")
+            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"xk\",\"scope\":\"cxetyvkunmignoh\",\"principalId\":\"kgqogjw\",\"provisioningState\":\"nd\"},\"id\":\"vabbx\",\"name\":\"hmedeilbjywfcfxz\",\"type\":\"rzzihvwypus\"},{\"properties\":{\"roleDefinitionId\":\"slczwciidjsllf\",\"scope\":\"vdmvxadqa\",\"principalId\":\"rgnawbabgfbk\",\"provisioningState\":\"jmfczlfsyqkf\"},\"id\":\"zgowox\",\"name\":\"mj\",\"type\":\"ajcxnyqgxhl\"}],\"nextLink\":\"rvxisimjceagbj\"}")
             .toObject(TableRoleAssignmentListResult.class);
-        Assertions.assertEquals("pifdfaifyzyzeyu", model.value().get(0).roleDefinitionId());
-        Assertions.assertEquals("eidszlfytoi", model.value().get(0).scope());
-        Assertions.assertEquals("gygvfltgvdiho", model.value().get(0).principalId());
-        Assertions.assertEquals("anc", model.nextLink());
+        Assertions.assertEquals("xk", model.value().get(0).roleDefinitionId());
+        Assertions.assertEquals("cxetyvkunmignoh", model.value().get(0).scope());
+        Assertions.assertEquals("kgqogjw", model.value().get(0).principalId());
+        Assertions.assertEquals("rvxisimjceagbj", model.nextLink());
     }
 }

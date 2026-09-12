@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ContinuousBackupInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContinuousBackupInformation model = BinaryData.fromString("{\"latestRestorableTimestamp\":\"lrariaawiu\"}")
+        ContinuousBackupInformation model = BinaryData.fromString("{\"latestRestorableTimestamp\":\"bnwieholew\"}")
             .toObject(ContinuousBackupInformation.class);
-        Assertions.assertEquals("lrariaawiu", model.latestRestorableTimestamp());
+        Assertions.assertEquals("bnwieholew", model.latestRestorableTimestamp());
     }
 }

@@ -15,18 +15,18 @@ public final class GremlinDatabaseGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinDatabaseGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"cprgukxrztiochl\",\"_ts\":78.70605,\"_etag\":\"mqrud\",\"id\":\"izcbfzmcrunfhiuc\",\"restoreParameters\":{\"restoreSource\":\"bcpaqktkrumzued\",\"restoreTimestampInUtc\":\"2021-05-21T20:17:50Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"},\"options\":{\"throughput\":1116543550,\"autoscaleSettings\":{\"maxThroughput\":113581490}}},\"location\":\"xqggvqr\",\"tags\":{\"jhffbxrqrkij\":\"hlwcjsqg\",\"wmwwmjswen\":\"euqlsdxeqztv\",\"ecleqioulndhzyo\":\"wwa\"},\"identity\":{\"principalId\":\"ht\",\"tenantId\":\"lhsvidmytzlnglxp\",\"type\":\"None\",\"userAssignedIdentities\":{\"ywv\":{\"principalId\":\"n\",\"clientId\":\"cswqa\"},\"hpmwhqnucsk\":{\"principalId\":\"igvjrktp\",\"clientId\":\"eukyaw\"},\"uoeedwjcci\":{\"principalId\":\"sidsjtd\",\"clientId\":\"bninjgazlsvbzfc\"},\"riyehqbeivdlhy\":{\"principalId\":\"hsy\",\"clientId\":\"rdrenxo\"}}},\"id\":\"bdbfgrlp\",\"name\":\"nytjlk\",\"type\":\"smmpathubt\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"vdshxcdedsuen\",\"_ts\":68.75867,\"_etag\":\"cgjtfrnquktrfn\",\"id\":\"lnlrxsmy\",\"restoreParameters\":{\"restoreSource\":\"wntfmtbgwjdxwna\",\"restoreTimestampInUtc\":\"2021-02-21T00:14:22Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"},\"options\":{\"throughput\":861132036,\"autoscaleSettings\":{\"maxThroughput\":1696179049}}},\"location\":\"etw\",\"tags\":{\"qseuzuukykcyqhy\":\"z\",\"fop\":\"qzzdcykeyste\",\"azgbsqgpe\":\"z\",\"fut\":\"q\"},\"identity\":{\"principalId\":\"vozglqjbk\",\"tenantId\":\"zcl\",\"type\":\"None\",\"userAssignedIdentities\":{\"kvfruwkudr\":{\"principalId\":\"wmn\",\"clientId\":\"ovdwzqauxzanh\"},\"mjauwcgx\":{\"principalId\":\"pftxudqyeme\",\"clientId\":\"naucmcirtnee\"},\"asmxubvfbngf\":{\"principalId\":\"noh\",\"clientId\":\"tranizerwgu\"}}},\"id\":\"cefhpriylfmpzt\",\"name\":\"aud\",\"type\":\"vhl\"}")
             .toObject(GremlinDatabaseGetResultsInner.class);
-        Assertions.assertEquals("xqggvqr", model.location());
-        Assertions.assertEquals("hlwcjsqg", model.tags().get("jhffbxrqrkij"));
+        Assertions.assertEquals("etw", model.location());
+        Assertions.assertEquals("z", model.tags().get("qseuzuukykcyqhy"));
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("izcbfzmcrunfhiuc", model.resource().id());
-        Assertions.assertEquals("bcpaqktkrumzued", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-21T20:17:50Z"),
+        Assertions.assertEquals("lnlrxsmy", model.resource().id());
+        Assertions.assertEquals("wntfmtbgwjdxwna", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T00:14:22Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
-        Assertions.assertEquals(1116543550, model.options().throughput());
-        Assertions.assertEquals(113581490, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(861132036, model.options().throughput());
+        Assertions.assertEquals(1696179049, model.options().autoscaleSettings().maxThroughput());
     }
 }

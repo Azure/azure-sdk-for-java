@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class FleetGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetGet.json
+     * x-ms-original-file: 2026-04-01-preview/fleet/CosmosDBFleetGet.json
      */
     /**
      * Sample code: CosmosDB Fleet Get.

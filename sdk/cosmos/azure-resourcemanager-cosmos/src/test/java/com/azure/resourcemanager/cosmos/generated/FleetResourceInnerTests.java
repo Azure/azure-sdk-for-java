@@ -14,20 +14,19 @@ public final class FleetResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"bgsosc\",\"tags\":{\"n\":\"ezfvbe\",\"tekwwnthropm\":\"fkbpjn\",\"yiurztvktjh\":\"ud\",\"hpuzxkpye\":\"fecqkoqyouerga\"},\"id\":\"hfdyldhgye\",\"name\":\"zfz\",\"type\":\"iyuq\"}")
+            "{\"properties\":{\"provisioningState\":\"Initializing\"},\"location\":\"wuzrono\",\"tags\":{\"nwysodcikgxkkzzf\":\"zfk\"},\"id\":\"d\",\"name\":\"ekebawnxzs\",\"type\":\"wyfixi\"}")
             .toObject(FleetResourceInner.class);
-        Assertions.assertEquals("bgsosc", model.location());
-        Assertions.assertEquals("ezfvbe", model.tags().get("n"));
+        Assertions.assertEquals("wuzrono", model.location());
+        Assertions.assertEquals("zfk", model.tags().get("nwysodcikgxkkzzf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetResourceInner model = new FleetResourceInner().withLocation("bgsosc")
-            .withTags(
-                mapOf("n", "ezfvbe", "tekwwnthropm", "fkbpjn", "yiurztvktjh", "ud", "hpuzxkpye", "fecqkoqyouerga"));
+        FleetResourceInner model
+            = new FleetResourceInner().withLocation("wuzrono").withTags(mapOf("nwysodcikgxkkzzf", "zfk"));
         model = BinaryData.fromObject(model).toObject(FleetResourceInner.class);
-        Assertions.assertEquals("bgsosc", model.location());
-        Assertions.assertEquals("ezfvbe", model.tags().get("n"));
+        Assertions.assertEquals("wuzrono", model.location());
+        Assertions.assertEquals("zfk", model.tags().get("nwysodcikgxkkzzf"));
     }
 
     // Use "Map.of" if available

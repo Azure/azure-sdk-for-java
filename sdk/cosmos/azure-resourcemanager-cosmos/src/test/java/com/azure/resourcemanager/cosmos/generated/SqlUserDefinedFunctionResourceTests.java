@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlUserDefinedFunctionResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlUserDefinedFunctionResource model = BinaryData.fromString("{\"id\":\"nomdrkywuhpsv\",\"body\":\"urut\"}")
+        SqlUserDefinedFunctionResource model = BinaryData.fromString("{\"id\":\"hr\",\"body\":\"qgjsxvpqcbfrmbod\"}")
             .toObject(SqlUserDefinedFunctionResource.class);
-        Assertions.assertEquals("nomdrkywuhpsv", model.id());
-        Assertions.assertEquals("urut", model.body());
+        Assertions.assertEquals("hr", model.id());
+        Assertions.assertEquals("qgjsxvpqcbfrmbod", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlUserDefinedFunctionResource model
-            = new SqlUserDefinedFunctionResource().withId("nomdrkywuhpsv").withBody("urut");
+            = new SqlUserDefinedFunctionResource().withId("hr").withBody("qgjsxvpqcbfrmbod");
         model = BinaryData.fromObject(model).toObject(SqlUserDefinedFunctionResource.class);
-        Assertions.assertEquals("nomdrkywuhpsv", model.id());
-        Assertions.assertEquals("urut", model.body());
+        Assertions.assertEquals("hr", model.id());
+        Assertions.assertEquals("qgjsxvpqcbfrmbod", model.body());
     }
 }

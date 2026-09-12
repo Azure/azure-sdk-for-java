@@ -11,7 +11,7 @@ public final class RestorableGremlinDatabaseGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableGremlinDatabaseGetResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"gffjw\",\"operationType\":\"Recreate\",\"canUndelete\":\"tw\",\"canUndeleteReason\":\"aqkifmxawostfz\",\"eventTimestamp\":\"hrkmjqncfv\",\"ownerId\":\"cnhemvwfnq\",\"ownerResourceId\":\"ypvndrw\"}},\"id\":\"od\",\"name\":\"grssgw\",\"type\":\"kainjmuymvecvzt\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"nwfmzvzt\",\"operationType\":\"Create\",\"canUndelete\":\"pamqxfcssanybz\",\"canUndeleteReason\":\"hvdfe\",\"eventTimestamp\":\"yj\",\"ownerId\":\"cdhlywkho\",\"ownerResourceId\":\"junzxezriwg\"}},\"id\":\"wapcqksaaapxjhc\",\"name\":\"ibenwsdfpvda\",\"type\":\"lfrcqklpmvz\"}")
             .toObject(RestorableGremlinDatabaseGetResultInner.class);
     }
 }

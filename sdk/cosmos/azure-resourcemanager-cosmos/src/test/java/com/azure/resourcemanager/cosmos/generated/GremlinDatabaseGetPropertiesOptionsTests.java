@@ -12,9 +12,9 @@ public final class GremlinDatabaseGetPropertiesOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinDatabaseGetPropertiesOptions model
-            = BinaryData.fromString("{\"throughput\":153061632,\"autoscaleSettings\":{\"maxThroughput\":185461650}}")
+            = BinaryData.fromString("{\"throughput\":297293023,\"autoscaleSettings\":{\"maxThroughput\":356088444}}")
                 .toObject(GremlinDatabaseGetPropertiesOptions.class);
-        Assertions.assertEquals(153061632, model.throughput());
-        Assertions.assertEquals(185461650, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(297293023, model.throughput());
+        Assertions.assertEquals(356088444, model.autoscaleSettings().maxThroughput());
     }
 }

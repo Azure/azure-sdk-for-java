@@ -13,9 +13,9 @@ public final class ServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"serviceType\":\"ServiceResourceProperties\",\"creationTime\":\"2021-03-04T04:24:17Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1128260811,\"status\":\"Stopped\",\"zmgschnzrsbkkzov\":\"\\\"datalgtpvdvat\\\"\",\"orimmo\":\"\\\"datazdmnfmfwsxafofu\\\"\"},\"id\":\"wdehk\",\"name\":\"mvhzfovanyrvaprt\",\"type\":\"elgwewi\"}")
+            "{\"properties\":{\"serviceType\":\"ServiceResourceProperties\",\"creationTime\":\"2021-12-03T12:34:04Z\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":729793676,\"status\":\"Stopped\",\"qkkge\":\"\\\"dataegajrzctwymzsk\\\"\",\"oobkjlca\":\"\\\"dataeiphgliupqs\\\"\"},\"id\":\"qcomjiqiince\",\"name\":\"xxkdevpxim\",\"type\":\"iizm\"}")
             .toObject(ServiceResourceInner.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.properties().instanceSize());
-        Assertions.assertEquals(1128260811, model.properties().instanceCount());
+        Assertions.assertEquals(729793676, model.properties().instanceCount());
     }
 }

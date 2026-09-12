@@ -14,15 +14,15 @@ public final class SqlDatabaseGetPropertiesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDatabaseGetPropertiesResource model = BinaryData.fromString(
-            "{\"_rid\":\"acqqudfnbyxbaaab\",\"_ts\":68.72236,\"_etag\":\"yffimrzrtuzqogs\",\"_colls\":\"nevfdnw\",\"_users\":\"mewzsyyc\",\"id\":\"uzsoi\",\"restoreParameters\":{\"restoreSource\":\"dpfrxtrthzvaytdw\",\"restoreTimestampInUtc\":\"2021-10-18T23:06:28Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}")
+            "{\"_rid\":\"fhwygzlvdnkfxus\",\"_ts\":40.43431,\"_etag\":\"zrmuhapfcqdps\",\"_colls\":\"qvpsvuoymg\",\"_users\":\"elvezrypq\",\"id\":\"mfe\",\"restoreParameters\":{\"restoreSource\":\"rqwky\",\"restoreTimestampInUtc\":\"2021-10-15T18:34:18Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"}")
             .toObject(SqlDatabaseGetPropertiesResource.class);
-        Assertions.assertEquals("uzsoi", model.id());
-        Assertions.assertEquals("dpfrxtrthzvaytdw", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-18T23:06:28Z"),
+        Assertions.assertEquals("mfe", model.id());
+        Assertions.assertEquals("rqwky", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T18:34:18Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
-        Assertions.assertEquals("nevfdnw", model.colls());
-        Assertions.assertEquals("mewzsyyc", model.users());
+        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
+        Assertions.assertEquals("qvpsvuoymg", model.colls());
+        Assertions.assertEquals("elvezrypq", model.users());
     }
 }

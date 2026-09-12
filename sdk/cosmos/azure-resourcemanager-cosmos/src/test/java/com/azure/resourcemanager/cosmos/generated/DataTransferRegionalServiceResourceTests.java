@@ -11,7 +11,7 @@ public final class DataTransferRegionalServiceResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataTransferRegionalServiceResource model
-            = BinaryData.fromString("{\"name\":\"hragpxmib\",\"location\":\"nupoyryefqmwovyz\",\"status\":\"Stopped\"}")
+            = BinaryData.fromString("{\"name\":\"donb\",\"location\":\"snfzyviiwsuanz\",\"status\":\"Creating\"}")
                 .toObject(DataTransferRegionalServiceResource.class);
     }
 }

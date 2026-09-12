@@ -13,12 +13,12 @@ public final class RestorableDatabaseAccountGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableDatabaseAccountGetResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountName\":\"cstu\",\"creationTime\":\"2021-07-03T20:06:36Z\",\"oldestRestorableTime\":\"2021-04-30T06:39:11Z\",\"deletionTime\":\"2021-03-10T18:00:39Z\",\"apiType\":\"GremlinV2\",\"restorableLocations\":[{\"locationName\":\"ich\",\"regionalDatabaseAccountInstanceId\":\"sysmvxodgw\",\"creationTime\":\"2021-05-12T18:30:37Z\",\"deletionTime\":\"2021-01-18T02:37:15Z\"},{\"locationName\":\"fcuvbdujgcwx\",\"regionalDatabaseAccountInstanceId\":\"cbbwjtrdxriz\",\"creationTime\":\"2021-08-26T17:56:52Z\",\"deletionTime\":\"2021-11-07T06:36:39Z\"}]},\"location\":\"arksykpgdq\",\"id\":\"abzrwiqrxha\",\"name\":\"lcdosqkpt\",\"type\":\"qgki\"}")
+            "{\"properties\":{\"accountName\":\"jpch\",\"creationTime\":\"2021-11-14T14:50:56Z\",\"oldestRestorableTime\":\"2021-04-02T00:33:46Z\",\"deletionTime\":\"2020-12-21T03:15:31Z\",\"apiType\":\"GremlinV2\",\"restorableLocations\":[{\"locationName\":\"owuywevtjrie\",\"regionalDatabaseAccountInstanceId\":\"mwlaoklfnis\",\"creationTime\":\"2021-08-22T00:20:17Z\",\"deletionTime\":\"2021-07-11T02:42:20Z\"},{\"locationName\":\"mtredscnnstjc\",\"regionalDatabaseAccountInstanceId\":\"uvtzrxzhclec\",\"creationTime\":\"2021-02-03T12:47:34Z\",\"deletionTime\":\"2021-04-20T14:45:47Z\"},{\"locationName\":\"cloyhy\",\"regionalDatabaseAccountInstanceId\":\"gi\",\"creationTime\":\"2021-06-25T15:50:43Z\",\"deletionTime\":\"2021-09-01T17:58:46Z\"}]},\"location\":\"esgzs\",\"id\":\"mwb\",\"name\":\"orj\",\"type\":\"lb\"}")
             .toObject(RestorableDatabaseAccountGetResultInner.class);
-        Assertions.assertEquals("arksykpgdq", model.location());
-        Assertions.assertEquals("cstu", model.accountName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T20:06:36Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T06:39:11Z"), model.oldestRestorableTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-10T18:00:39Z"), model.deletionTime());
+        Assertions.assertEquals("esgzs", model.location());
+        Assertions.assertEquals("jpch", model.accountName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-14T14:50:56Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T00:33:46Z"), model.oldestRestorableTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T03:15:31Z"), model.deletionTime());
     }
 }

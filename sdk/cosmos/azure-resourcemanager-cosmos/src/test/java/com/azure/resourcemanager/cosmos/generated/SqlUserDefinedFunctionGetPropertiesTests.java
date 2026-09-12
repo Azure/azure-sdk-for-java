@@ -12,9 +12,9 @@ public final class SqlUserDefinedFunctionGetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlUserDefinedFunctionGetProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"jctzenkei\",\"_ts\":71.052414,\"_etag\":\"mkdasv\",\"id\":\"lyhb\",\"body\":\"udchxgsrboldforo\"}}")
+            "{\"resource\":{\"_rid\":\"mhha\",\"_ts\":54.6727,\"_etag\":\"mzvupor\",\"id\":\"zdfuydzvkfvxcnqm\",\"body\":\"psw\"}}")
             .toObject(SqlUserDefinedFunctionGetProperties.class);
-        Assertions.assertEquals("lyhb", model.resource().id());
-        Assertions.assertEquals("udchxgsrboldforo", model.resource().body());
+        Assertions.assertEquals("zdfuydzvkfvxcnqm", model.resource().id());
+        Assertions.assertEquals("psw", model.resource().body());
     }
 }

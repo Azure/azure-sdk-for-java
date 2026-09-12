@@ -13,13 +13,12 @@ public final class ConnectionErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionError model = BinaryData.fromString(
-            "{\"connectionState\":\"InternalOperatorToDataCenterCertificateError\",\"iPFrom\":\"gencdgmoq\",\"iPTo\":\"qih\",\"port\":1592793613,\"exception\":\"wlt\"}")
+            "{\"connectionState\":\"OperatorToDataCenterNetworkError\",\"iPFrom\":\"vucgji\",\"iPTo\":\"iqpmnufz\",\"port\":415443610,\"exception\":\"x\"}")
             .toObject(ConnectionError.class);
-        Assertions.assertEquals(ConnectionState.INTERNAL_OPERATOR_TO_DATA_CENTER_CERTIFICATE_ERROR,
-            model.connectionState());
-        Assertions.assertEquals("gencdgmoq", model.iPFrom());
-        Assertions.assertEquals("qih", model.iPTo());
-        Assertions.assertEquals(1592793613, model.port());
-        Assertions.assertEquals("wlt", model.exception());
+        Assertions.assertEquals(ConnectionState.OPERATOR_TO_DATA_CENTER_NETWORK_ERROR, model.connectionState());
+        Assertions.assertEquals("vucgji", model.iPFrom());
+        Assertions.assertEquals("iqpmnufz", model.iPTo());
+        Assertions.assertEquals(415443610, model.port());
+        Assertions.assertEquals("x", model.exception());
     }
 }

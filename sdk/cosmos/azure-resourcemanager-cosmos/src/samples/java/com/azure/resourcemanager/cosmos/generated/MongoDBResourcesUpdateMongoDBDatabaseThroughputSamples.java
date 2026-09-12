@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class MongoDBResourcesUpdateMongoDBDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBDatabaseThroughputUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBDatabaseThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseThroughputUpdate.
