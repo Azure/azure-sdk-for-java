@@ -64,8 +64,8 @@ public class SoftwareUpdateClientTest extends SoftwareUpdateTestBase {
                 .isPresent());
         } finally {
             if (importSucceeded) {
-                SyncPoller<BinaryData, BinaryData> deletePoller = softwareUpdateClient.beginDeleteUpdate(PROVIDER,
-                    NAME, VERSION, new RequestOptions());
+                SyncPoller<BinaryData, BinaryData> deletePoller
+                    = softwareUpdateClient.beginDeleteUpdate(PROVIDER, NAME, VERSION, new RequestOptions());
                 PollResponse<BinaryData> deleteResponse = deletePoller.waitForCompletion();
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteResponse.getStatus());
             }
