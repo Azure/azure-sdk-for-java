@@ -26,5 +26,5 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: Verify ChangeLogEntry for ${{ parameters.PackageName }}
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})
     continueOnError: false

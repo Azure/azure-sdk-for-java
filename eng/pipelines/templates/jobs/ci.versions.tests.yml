@@ -32,7 +32,7 @@ parameters:
 
 jobs:
   - job:
-    condition: ne(variables['Skip.Test'], 'true')
+    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml

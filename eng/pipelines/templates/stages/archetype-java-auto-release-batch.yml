@@ -90,7 +90,7 @@ stages:
       - job: VerifyReleaseVersion
         displayName: Verify auto-release versions
         dependsOn: PrepareAutoReleasePackages
-        condition: ne(variables['Skip.VersionVerification'], 'true')
+        condition: and(succeeded(), ne(variables['Skip.VersionVerification'], 'true'))
         pool:
           name: $(LINUXPOOL)
           image: $(LINUXVMIMAGE)
