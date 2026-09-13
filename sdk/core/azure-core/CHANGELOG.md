@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Prevented key credential headers from being forwarded when a redirect changes the request authority.
+  ([#50215](https://github.com/Azure/azure-sdk-for-java/issues/50215))
+
 ### Other Changes
 
 ## 1.59.1 (2026-08-27)

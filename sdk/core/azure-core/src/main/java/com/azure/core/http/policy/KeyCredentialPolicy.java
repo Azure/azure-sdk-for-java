@@ -23,6 +23,9 @@ import java.util.Objects;
  * <p>This class is useful when you need to authorize requests with a key. It ensures that the requests are sent over
  * HTTPS to prevent the key from being leaked. The key is set in the header of the HTTP request.</p>
  *
+ * <p>When used with {@link RedirectPolicy}, the key is not included in a redirected request if the redirect changes
+ * the request authority.</p>
+ *
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code KeyCredentialPolicy} is created with a key and a header name. The policy can then be
@@ -100,7 +103,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 
-        setCredential(context.getHttpRequest().getHeaders());
+        setCredential(context);
         return next.process();
     }
 
@@ -111,8 +114,16 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 
-        setCredential(context.getHttpRequest().getHeaders());
+        setCredential(context);
         return next.processSync();
+    }
+
+    private void setCredential(HttpPipelineCallContext context) {
+        if (RedirectPolicy.shouldSetSensitiveHeader(context, name)) {
+            setCredential(context.getHttpRequest().getHeaders());
+        } else {
+            context.getHttpRequest().getHeaders().remove(name);
+        }
     }
 
     void setCredential(HttpHeaders headers) {
