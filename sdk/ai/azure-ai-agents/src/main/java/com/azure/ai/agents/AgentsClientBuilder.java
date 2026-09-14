@@ -60,16 +60,16 @@ import java.util.stream.Stream;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaVoiceAgentsConversationsClient.class,
+        BetaVoiceAgentsTelephonyClient.class,
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
-        BetaAgentTelephonyClient.class,
-        BetaAgentEndpointConversationsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
+        BetaVoiceAgentsConversationsAsyncClient.class,
+        BetaVoiceAgentsTelephonyAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
-        BetaAgentTelephonyAsyncClient.class,
-        BetaAgentEndpointConversationsAsyncClient.class,
         AgentsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
@@ -796,5 +796,45 @@ public final class AgentsClientBuilder
     private BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
         return new BetaAgentEndpointConversationsClient(
             buildInnerClient(VOICE_AGENTS_PREVIEW_FEATURES).getBetaAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsConversationsAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsConversationsAsyncClient.
+     */
+    @Generated
+    public BetaVoiceAgentsConversationsAsyncClient buildBetaVoiceAgentsConversationsAsyncClient() {
+        return new BetaVoiceAgentsConversationsAsyncClient(buildInnerClient().getBetaVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsTelephonyAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
+     */
+    @Generated
+    public BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
+        return new BetaVoiceAgentsTelephonyAsyncClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsConversationsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsConversationsClient.
+     */
+    @Generated
+    public BetaVoiceAgentsConversationsClient buildBetaVoiceAgentsConversationsClient() {
+        return new BetaVoiceAgentsConversationsClient(buildInnerClient().getBetaVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsTelephonyClient class.
+     *
+     * @return an instance of BetaVoiceAgentsTelephonyClient.
+     */
+    @Generated
+    public BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
+        return new BetaVoiceAgentsTelephonyClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
     }
 }
