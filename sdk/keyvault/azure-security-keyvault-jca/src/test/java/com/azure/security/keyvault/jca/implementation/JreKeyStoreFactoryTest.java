@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import java.security.KeyStore;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class JreKeyStoreFactoryTest {
     @Test
     public void test() {
         KeyStore jreKeyStore = JreKeyStoreFactory.getDefaultKeyStore();
-        assertFalse(jreKeyStore.getType().equals(KeyVaultKeyStore.KEY_STORE_TYPE));
+        assertNotEquals(KeyVaultKeyStore.KEY_STORE_TYPE, jreKeyStore.getType());
     }
 }
