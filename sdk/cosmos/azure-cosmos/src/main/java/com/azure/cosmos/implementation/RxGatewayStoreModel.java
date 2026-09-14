@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -714,12 +713,18 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         new RxDocumentServiceResponse(this.clientContext, rsp);
                 }
                 rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+                if (httpRequest.reactorNettyRequestRecord() != null) {
+                    httpRequest.reactorNettyRequestRecord().markResponseProcessingCompleted();
+                }
                 return rxDocumentServiceResponse;
             }).onErrorResume(throwable -> {
                 Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                 if (!(unwrappedException instanceof Exception)) {
                     // fatal error
                     logger.error("Unexpected failure " + unwrappedException.getMessage(), unwrappedException);
+                    if (httpRequest.reactorNettyRequestRecord() != null) {
+                        httpRequest.reactorNettyRequestRecord().markResponseProcessingCompleted();
+                    }
                     return Mono.error(unwrappedException);
                 }
 
@@ -790,65 +795,61 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
                 }
 
+                if (httpRequest.reactorNettyRequestRecord() != null) {
+                    httpRequest.reactorNettyRequestRecord().markResponseProcessingCompleted();
+                }
                 return Mono.error(dce);
-            }).transformDeferred(response -> {
-                AtomicBoolean completed = new AtomicBoolean();
-                return response
-                    .doOnNext(result -> completed.set(true))
-                    .doOnError(error -> completed.set(true))
-                    .doFinally(signalType -> {
+            }).doFinally(signalType -> {
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
 
-                        if (signalType != SignalType.CANCEL || completed.get()) {
-                            return;
-                        }
+                ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+                if (reactorNettyRequestRecord == null || reactorNettyRequestRecord.isResponseProcessingCompleted()) {
+                    return;
+                }
 
-                        if (httpRequest.reactorNettyRequestRecord() != null) {
+                OperationCancelledException oce = new OperationCancelledException("", httpRequest.uri());
 
-                            OperationCancelledException oce = new OperationCancelledException("", httpRequest.uri());
+                RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
 
-                            ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+                GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
-                            RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
-                            long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
+                request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
 
-                            GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
+                // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                // The endpoint is known at request-send time and should not be lost on cancellation.
+                cosmosExceptionAccessor()
+                    .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
 
-                            request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+                if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
 
-                            // Always set the request URI so endpoint is captured in diagnostics on cancellation.
-                            // The endpoint is known at request-send time and should not be lost on cancellation.
-                            cosmosExceptionAccessor()
-                                .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
+                        request.requestContext.getCrossRegionAvailabilityContext();
 
-                            if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
+                    if (availabilityStrategyContextForReq.getAvailabilityStrategyContext() != null
+                        && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()
+                        && (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled()
+                            || availabilityStrategyContextForReq.getFeedOperationContextForCircuitBreaker() != null)) {
 
-                                CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
-                                    request.requestContext.getCrossRegionAvailabilityContext();
+                        BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                                if (availabilityStrategyContextForReq.getAvailabilityStrategyContext() != null
-                                    && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()
-                                    && (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled()
-                                        || availabilityStrategyContextForReq.getFeedOperationContextForCircuitBreaker() != null)) {
+                        cosmosExceptionAccessor()
+                            .setFaultInjectionRuleId(
+                                oce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(transportRequestId));
 
-                                    BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
+                        cosmosExceptionAccessor()
+                            .setFaultInjectionEvaluationResults(
+                                oce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(transportRequestId));
 
-                                    cosmosExceptionAccessor()
-                                        .setFaultInjectionRuleId(
-                                            oce,
-                                            request.faultInjectionRequestContext
-                                                .getFaultInjectionRuleId(transportRequestId));
-
-                                    cosmosExceptionAccessor()
-                                        .setFaultInjectionEvaluationResults(
-                                            oce,
-                                            request.faultInjectionRequestContext
-                                                .getFaultInjectionRuleEvaluationResults(transportRequestId));
-
-                                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
-                                }
-                            }
-                        }
-                    });
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                    }
+                }
             });
     }
 

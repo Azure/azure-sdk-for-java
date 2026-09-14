@@ -98,14 +98,19 @@ public class RxGatewayStoreModelTest {
     @DataProvider(name = "completedFeedResponses")
     public Object[][] completedFeedResponses() {
         return new Object[][] {
-            {OperationType.Query, 200},
-            {OperationType.ReadFeed, 200},
-            {OperationType.ReadFeed, 304}
+            {OperationType.Query, 200, "response"},
+            {OperationType.ReadFeed, 200, "response"},
+            {OperationType.ReadFeed, 304, "response"},
+            {OperationType.Query, 429, "response"},
+            {OperationType.ReadFeed, 503, "response"},
+            {OperationType.ReadFeed, 408, "transportError"},
+            {OperationType.ReadFeed, 408, "bodyError"}
         };
     }
 
     @Test(groups = "unit", dataProvider = "completedFeedResponses")
-    public void completedFeedCancellationDoesNotRecordTimeout(OperationType operation, int statusCode) throws Exception {
+    public void completedFeedCancellationDoesNotRecordTimeout(OperationType operation, int statusCode,
+                                                             String completionType) throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         GlobalEndpointManager endpoints = Mockito.mock(GlobalEndpointManager.class);
         Mockito.when(endpoints.getRegionName(Mockito.any(URI.class), Mockito.any(OperationType.class), Mockito.anyBoolean()))
@@ -123,28 +128,64 @@ public class RxGatewayStoreModelTest {
             new AvailabilityStrategyContext(false, false), new AtomicBoolean(),
             new PerPartitionCircuitBreakerInfoHolder(), new PerPartitionAutomaticFailoverInfoHolder()));
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "https://account-eastus.documents.azure.com/dbs/db/colls/coll/docs", 443);
-        HttpResponse httpResponse = new HttpResponse() {
-            @Override public int statusCode() { return statusCode; }
-            @Override public String headerValue(String name) { return null; }
-            @Override public HttpHeaders headers() { return new HttpHeaders(); }
-            @Override public Mono<ByteBuf> body() { return Mono.empty(); }
-            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
-        }.withRequest(httpRequest);
+        request.requestContext.reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+        Mono<ByteBuf> body = "bodyError".equals(completionType)
+            ? Mono.error(ReadTimeoutException.INSTANCE) : Mono.empty();
+        HttpResponse httpResponse = createFeedHttpResponse(httpRequest, statusCode, body);
+        Mono<HttpResponse> httpResponseMono = "transportError".equals(completionType)
+            ? Mono.error(ReadTimeoutException.INSTANCE) : Mono.just(httpResponse);
         Method converter = RxGatewayStoreModel.class.getDeclaredMethod("toDocumentServiceResponse", Mono.class,
             RxDocumentServiceRequest.class, HttpRequest.class);
         converter.setAccessible(true);
         Mono<RxDocumentServiceResponse> response = (Mono<RxDocumentServiceResponse>) converter.invoke(
-            store, Mono.just(httpResponse), request, httpRequest);
+            store, httpResponseMono, request, httpRequest);
         CountDownLatch terminated = new CountDownLatch(1);
-        StepVerifier.create(response.doFinally(signal -> terminated.countDown()).flux().take(1))
-            .assertNext(result -> assertThat(result.getStatusCode()).isEqualTo(statusCode))
-            .verifyComplete();
+        assertThat(httpRequest.reactorNettyRequestRecord().isResponseProcessingCompleted()).isFalse();
+        StepVerifier.create(response.doFinally(signal -> terminated.countDown())
+                .map(RxDocumentServiceResponse::getStatusCode)
+                .onErrorResume(CosmosException.class, error -> Mono.just(error.getStatusCode()))
+                .flux().take(1))
+            .expectNext(statusCode)
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
         assertThat(terminated.await(5, TimeUnit.SECONDS)).isTrue();
+        assertThat(httpRequest.reactorNettyRequestRecord().isResponseProcessingCompleted()).isTrue();
         ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
             .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
         assertThat(statistics.getGatewayStatisticsList()).hasSize(1);
         assertThat(statistics.getGatewayStatisticsList().get(0).getStatusCode()).isEqualTo(statusCode);
         assertThat(request.requestContext.cancelledGatewayRequestTimelineContexts).isEmpty();
+
+        HttpRequest nextHttpRequest = new HttpRequest(HttpMethod.GET, httpRequest.uri(), 443, new HttpHeaders());
+        assertThat(nextHttpRequest.reactorNettyRequestRecord()).isNotSameAs(httpRequest.reactorNettyRequestRecord());
+        request.requestContext.reactorNettyRequestRecord = nextHttpRequest.reactorNettyRequestRecord();
+        CountDownLatch bodySubscribed = new CountDownLatch(1);
+        CountDownLatch cancelled = new CountDownLatch(1);
+        HttpResponse pendingResponse = createFeedHttpResponse(nextHttpRequest, 200,
+            Mono.<ByteBuf>never().doOnSubscribe(subscription -> bodySubscribed.countDown()));
+        Mono<RxDocumentServiceResponse> nextResponse = (Mono<RxDocumentServiceResponse>) converter.invoke(
+            store, Mono.just(pendingResponse), request, nextHttpRequest);
+        reactor.core.Disposable nextSubscription = nextResponse.doFinally(signal -> cancelled.countDown()).subscribe();
+        try {
+            assertThat(bodySubscribed.await(5, TimeUnit.SECONDS)).isTrue();
+            assertThat(nextHttpRequest.reactorNettyRequestRecord().isResponseProcessingCompleted()).isFalse();
+        } finally {
+            nextSubscription.dispose();
+        }
+        assertThat(cancelled.await(5, TimeUnit.SECONDS)).isTrue();
+        assertThat(statistics.getGatewayStatisticsList()).hasSize(2);
+        assertThat(statistics.getGatewayStatisticsList().get(1).getStatusCode()).isEqualTo(408);
+        assertThat(request.requestContext.cancelledGatewayRequestTimelineContexts).hasSize(1);
+    }
+
+    private HttpResponse createFeedHttpResponse(HttpRequest httpRequest, int statusCode, Mono<ByteBuf> body) {
+        return new HttpResponse() {
+            @Override public int statusCode() { return statusCode; }
+            @Override public String headerValue(String name) { return null; }
+            @Override public HttpHeaders headers() { return new HttpHeaders(); }
+            @Override public Mono<ByteBuf> body() { return body; }
+            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
+        }.withRequest(httpRequest);
     }
 
     @DataProvider(name = "sessionTokenConfigProvider")
