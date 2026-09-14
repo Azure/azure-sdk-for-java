@@ -14,11 +14,11 @@ public final class StorageApplianceRunReadCommandsParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageApplianceRunReadCommandsParameters model = BinaryData.fromString(
-            "{\"commands\":[{\"arguments\":[\"qatucoigebxnc\",\"wfepbnwgfmx\",\"gcgbjb\",\"dlfgtdysnaq\"],\"command\":\"flq\"},{\"arguments\":[\"q\",\"amz\",\"rwd\"],\"command\":\"qzeqyjleziunjxdf\"},{\"arguments\":[\"tkw\",\"eg\"],\"command\":\"amlbnseqacjjvpil\"}],\"limitTimeSeconds\":2761164625261152121}")
+            "{\"commands\":[{\"arguments\":[\"xlzhcoxovnekh\",\"nlusfnrd\",\"jxtxrdc\",\"tjvidt\"],\"command\":\"gepuslvyjtc\"},{\"arguments\":[\"kasizie\",\"fuughtuqfec\",\"xeygtuhxuic\"],\"command\":\"uewmrswnjlxuzrhw\"},{\"arguments\":[\"xjbaqehgpdohzjq\"],\"command\":\"tu\"}],\"limitTimeSeconds\":738733205694234937}")
             .toObject(StorageApplianceRunReadCommandsParameters.class);
-        Assertions.assertEquals("qatucoigebxnc", model.commands().get(0).arguments().get(0));
-        Assertions.assertEquals("flq", model.commands().get(0).command());
-        Assertions.assertEquals(2761164625261152121L, model.limitTimeSeconds());
+        Assertions.assertEquals("xlzhcoxovnekh", model.commands().get(0).arguments().get(0));
+        Assertions.assertEquals("gepuslvyjtc", model.commands().get(0).command());
+        Assertions.assertEquals(738733205694234937L, model.limitTimeSeconds());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,16 +26,17 @@ public final class StorageApplianceRunReadCommandsParametersTests {
         StorageApplianceRunReadCommandsParameters model
             = new StorageApplianceRunReadCommandsParameters().withCommands(Arrays.asList(
                 new StorageApplianceCommandSpecification()
-                    .withArguments(Arrays.asList("qatucoigebxnc", "wfepbnwgfmx", "gcgbjb", "dlfgtdysnaq"))
-                    .withCommand("flq"),
-                new StorageApplianceCommandSpecification().withArguments(Arrays.asList("q", "amz", "rwd"))
-                    .withCommand("qzeqyjleziunjxdf"),
-                new StorageApplianceCommandSpecification().withArguments(Arrays.asList("tkw", "eg"))
-                    .withCommand("amlbnseqacjjvpil")))
-                .withLimitTimeSeconds(2761164625261152121L);
+                    .withArguments(Arrays.asList("xlzhcoxovnekh", "nlusfnrd", "jxtxrdc", "tjvidt"))
+                    .withCommand("gepuslvyjtc"),
+                new StorageApplianceCommandSpecification()
+                    .withArguments(Arrays.asList("kasizie", "fuughtuqfec", "xeygtuhxuic"))
+                    .withCommand("uewmrswnjlxuzrhw"),
+                new StorageApplianceCommandSpecification().withArguments(Arrays.asList("xjbaqehgpdohzjq"))
+                    .withCommand("tu")))
+                .withLimitTimeSeconds(738733205694234937L);
         model = BinaryData.fromObject(model).toObject(StorageApplianceRunReadCommandsParameters.class);
-        Assertions.assertEquals("qatucoigebxnc", model.commands().get(0).arguments().get(0));
-        Assertions.assertEquals("flq", model.commands().get(0).command());
-        Assertions.assertEquals(2761164625261152121L, model.limitTimeSeconds());
+        Assertions.assertEquals("xlzhcoxovnekh", model.commands().get(0).arguments().get(0));
+        Assertions.assertEquals("gepuslvyjtc", model.commands().get(0).command());
+        Assertions.assertEquals(738733205694234937L, model.limitTimeSeconds());
     }
 }

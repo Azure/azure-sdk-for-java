@@ -13,19 +13,19 @@ public final class ClusterMetricsConfigurationPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMetricsConfigurationPatchProperties model = BinaryData.fromString(
-            "{\"collectionInterval\":6451178347944930838,\"enabledMetrics\":[\"l\",\"cmpzqjhhhqx\",\"w\",\"vcacoyv\"]}")
+            "{\"collectionInterval\":6846122532062228348,\"enabledMetrics\":[\"gsjgkzzlta\",\"hbzffovwmbjlzqs\",\"zpgvdwnapfd\"]}")
             .toObject(ClusterMetricsConfigurationPatchProperties.class);
-        Assertions.assertEquals(6451178347944930838L, model.collectionInterval());
-        Assertions.assertEquals("l", model.enabledMetrics().get(0));
+        Assertions.assertEquals(6846122532062228348L, model.collectionInterval());
+        Assertions.assertEquals("gsjgkzzlta", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationPatchProperties model
-            = new ClusterMetricsConfigurationPatchProperties().withCollectionInterval(6451178347944930838L)
-                .withEnabledMetrics(Arrays.asList("l", "cmpzqjhhhqx", "w", "vcacoyv"));
+            = new ClusterMetricsConfigurationPatchProperties().withCollectionInterval(6846122532062228348L)
+                .withEnabledMetrics(Arrays.asList("gsjgkzzlta", "hbzffovwmbjlzqs", "zpgvdwnapfd"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationPatchProperties.class);
-        Assertions.assertEquals(6451178347944930838L, model.collectionInterval());
-        Assertions.assertEquals("l", model.enabledMetrics().get(0));
+        Assertions.assertEquals(6846122532062228348L, model.collectionInterval());
+        Assertions.assertEquals("gsjgkzzlta", model.enabledMetrics().get(0));
     }
 }

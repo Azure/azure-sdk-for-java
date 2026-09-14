@@ -13,17 +13,17 @@ public final class StorageApplianceEnableRemoteVendorManagementParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageApplianceEnableRemoteVendorManagementParameters model
-            = BinaryData.fromString("{\"supportEndpoints\":[\"wmrswnjlxuzrh\",\"pusxjb\",\"qehgpd\"]}")
+            = BinaryData.fromString("{\"supportEndpoints\":[\"ons\",\"onwpnga\",\"innixjawrtmjfj\"]}")
                 .toObject(StorageApplianceEnableRemoteVendorManagementParameters.class);
-        Assertions.assertEquals("wmrswnjlxuzrh", model.supportEndpoints().get(0));
+        Assertions.assertEquals("ons", model.supportEndpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageApplianceEnableRemoteVendorManagementParameters model
             = new StorageApplianceEnableRemoteVendorManagementParameters()
-                .withSupportEndpoints(Arrays.asList("wmrswnjlxuzrh", "pusxjb", "qehgpd"));
+                .withSupportEndpoints(Arrays.asList("ons", "onwpnga", "innixjawrtmjfj"));
         model = BinaryData.fromObject(model).toObject(StorageApplianceEnableRemoteVendorManagementParameters.class);
-        Assertions.assertEquals("wmrswnjlxuzrh", model.supportEndpoints().get(0));
+        Assertions.assertEquals("ons", model.supportEndpoints().get(0));
     }
 }

@@ -172,6 +172,31 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
+     * Get the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
+     * 
+     * @return the administratorCredentials value.
+     */
+    public AdministrativeCredentials administratorCredentials() {
+        return this.innerProperties() == null ? null : this.innerProperties().administratorCredentials();
+    }
+
+    /**
+     * Set the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
+     * 
+     * @param administratorCredentials the administratorCredentials value to set.
+     * @return the StorageApplianceInner object itself.
+     */
+    public StorageApplianceInner withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageApplianceProperties();
+        }
+        this.innerProperties().withAdministratorCredentials(administratorCredentials);
+        return this;
+    }
+
+    /**
      * Get the rackId property: The resource ID of the rack where this storage appliance resides.
      * 
      * @return the rackId value.
@@ -260,31 +285,6 @@ public final class StorageApplianceInner extends Resource {
             this.innerProperties = new StorageApplianceProperties();
         }
         this.innerProperties().withSerialNumber(serialNumber);
-        return this;
-    }
-
-    /**
-     * Get the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @return the administratorCredentials value.
-     */
-    public AdministrativeCredentials administratorCredentials() {
-        return this.innerProperties() == null ? null : this.innerProperties().administratorCredentials();
-    }
-
-    /**
-     * Set the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @param administratorCredentials the administratorCredentials value to set.
-     * @return the StorageApplianceInner object itself.
-     */
-    public StorageApplianceInner withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageApplianceProperties();
-        }
-        this.innerProperties().withAdministratorCredentials(administratorCredentials);
         return this;
     }
 

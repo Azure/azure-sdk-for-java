@@ -21,7 +21,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"xhzzyse\",\"isDataAction\":true,\"display\":{\"provider\":\"vzrrryveimi\",\"resource\":\"kdyzatvfuzk\",\"operation\":\"tjvv\",\"description\":\"xwigsye\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"jn\",\"isDataAction\":true,\"display\":{\"provider\":\"juskbrreqyn\",\"resource\":\"eysfaqegplw\",\"operation\":\"shwddkvbxgk\",\"description\":\"sybwptdaca\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

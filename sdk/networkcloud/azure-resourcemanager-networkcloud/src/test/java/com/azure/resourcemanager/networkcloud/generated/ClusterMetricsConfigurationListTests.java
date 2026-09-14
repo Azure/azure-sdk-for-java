@@ -13,14 +13,14 @@ public final class ClusterMetricsConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMetricsConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"enabledMetrics\":[\"izus\"],\"collectionInterval\":7450762951595269456,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"cmnlzijiufehg\",\"disabledMetrics\":[\"lnwyvqkxr\",\"rlniyl\"],\"provisioningState\":\"Canceled\"},\"etag\":\"wxzut\",\"extendedLocation\":{\"name\":\"qztw\",\"type\":\"EdgeZone\"},\"location\":\"mupgxy\",\"tags\":{\"enbbklqpxzucafed\":\"dxabbujfta\"},\"id\":\"wwnlzafwxudgnh\",\"name\":\"ookrtalvnbw\",\"type\":\"pbeme\"},{\"properties\":{\"enabledMetrics\":[\"lvdjjukyr\",\"nqodxahhxhq\",\"aqnvzoqgyipemchg\",\"v\"],\"collectionInterval\":3412130211088691149,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"dtx\",\"disabledMetrics\":[\"ghwzhomewjjstli\",\"hqawmo\",\"ia\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"vodrrslblxydkxr\",\"extendedLocation\":{\"name\":\"vvbxiwkgfbqljnq\",\"type\":\"CustomLocation\"},\"location\":\"chocokulehur\",\"tags\":{\"rkphyjdxr\":\"qffawey\",\"pxkiyf\":\"vjuqdbrxmrgchb\",\"bajbuscgduusi\":\"j\"},\"id\":\"ycblevpmcl\",\"name\":\"jy\",\"type\":\"kyxl\"},{\"properties\":{\"enabledMetrics\":[\"jgkz\",\"ltafhbzffo\",\"wmbjlzqsczpg\"],\"collectionInterval\":6701223648625852362,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"fdqwowftpt\",\"disabledMetrics\":[\"jtks\",\"h\",\"cgqyhleseyq\",\"hvyeldotj\"],\"provisioningState\":\"Canceled\"},\"etag\":\"iswskuk\",\"extendedLocation\":{\"name\":\"tasbvw\",\"type\":\"EdgeZone\"},\"location\":\"kxkdtxfkndlq\",\"tags\":{\"qaqkuea\":\"knvgmmbugtywat\"},\"id\":\"groeshoyg\",\"name\":\"cbyfqxkf\",\"type\":\"oytehqpuvjm\"},{\"properties\":{\"enabledMetrics\":[\"tdwckygr\",\"ejnndljdju\"],\"collectionInterval\":1184887112554755145,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"qyn\",\"disabledMetrics\":[\"ysfaqegplwrysh\",\"ddkvbxgkqu\",\"ybwptda\"],\"provisioningState\":\"Accepted\"},\"etag\":\"vlf\",\"extendedLocation\":{\"name\":\"tymtpoiwenazer\",\"type\":\"EdgeZone\"},\"location\":\"rs\",\"tags\":{\"essmzhhku\":\"sxkdnwqapfgsdpc\",\"dqq\":\"ip\"},\"id\":\"tekva\",\"name\":\"blhtjq\",\"type\":\"qyv\"}],\"nextLink\":\"hta\"}")
+            "{\"value\":[{\"properties\":{\"enabledMetrics\":[\"ftptnuwj\"],\"collectionInterval\":4365343436736122741,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"cgqyhleseyq\",\"disabledMetrics\":[\"y\",\"ldotjvdkwisws\"],\"provisioningState\":\"Accepted\"},\"etag\":\"tasbvw\",\"extendedLocation\":{\"name\":\"spkxkdt\",\"type\":\"EdgeZone\"},\"location\":\"ndlqvtwknvgmmbu\",\"tags\":{\"kueatgroeshoy\":\"watmqa\"},\"id\":\"zcbyfq\",\"name\":\"kfaoytehq\",\"type\":\"uvjmv\"}],\"nextLink\":\"tdwckygr\"}")
             .toObject(ClusterMetricsConfigurationList.class);
-        Assertions.assertEquals("mupgxy", model.value().get(0).location());
-        Assertions.assertEquals("dxabbujfta", model.value().get(0).tags().get("enbbklqpxzucafed"));
-        Assertions.assertEquals("qztw", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("ndlqvtwknvgmmbu", model.value().get(0).location());
+        Assertions.assertEquals("watmqa", model.value().get(0).tags().get("kueatgroeshoy"));
+        Assertions.assertEquals("spkxkdt", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("izus", model.value().get(0).enabledMetrics().get(0));
-        Assertions.assertEquals(7450762951595269456L, model.value().get(0).collectionInterval());
-        Assertions.assertEquals("hta", model.nextLink());
+        Assertions.assertEquals("ftptnuwj", model.value().get(0).enabledMetrics().get(0));
+        Assertions.assertEquals(4365343436736122741L, model.value().get(0).collectionInterval());
+        Assertions.assertEquals("tdwckygr", model.nextLink());
     }
 }

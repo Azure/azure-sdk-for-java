@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-08-18)
+## 2.0.0 (2026-09-14)
 
 - Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -48,8 +48,8 @@
 
 #### `models.StorageAppliance$DefinitionStages` was modified
 
-* `withAdministratorCredentials(models.AdministrativeCredentials)` was removed in stage 4
-* `withRackId(java.lang.String)` was removed in stage 5
+* `withRackSlot(long)` was removed in stage 6
+* `withSerialNumber(java.lang.String)` was removed in stage 7
 * `withStorageApplianceSkuId(java.lang.String)` was removed in stage 8
 
 #### `models.VirtualMachineAssignRelayParameters` was modified
@@ -58,9 +58,9 @@
 
 #### `models.VirtualMachinePatchParameters` was modified
 
+* `withVmImageRepositoryCredentials(models.ImageRepositoryCredentials)` was removed
 * `validate()` was removed
 * `models.ImageRepositoryCredentials vmImageRepositoryCredentials()` -> `models.ImageRepositoryCredentialsPatch vmImageRepositoryCredentials()`
-* `withVmImageRepositoryCredentials(models.ImageRepositoryCredentials)` was removed
 
 #### `models.BareMetalMachinePowerOffParameters` was modified
 
@@ -100,14 +100,14 @@
 
 * `ClusterCapacity()` was changed to private access
 * `validate()` was removed
-* `withAvailableCoreCount(java.lang.Long)` was removed
 * `withTotalCoreCount(java.lang.Long)` was removed
-* `withTotalApplianceStorageGB(java.lang.Long)` was removed
 * `withAvailableApplianceStorageGB(java.lang.Long)` was removed
 * `withAvailableMemoryGB(java.lang.Long)` was removed
+* `withTotalApplianceStorageGB(java.lang.Long)` was removed
+* `withAvailableCoreCount(java.lang.Long)` was removed
 * `withAvailableHostStorageGB(java.lang.Long)` was removed
-* `withTotalHostStorageGB(java.lang.Long)` was removed
 * `withTotalMemoryGB(java.lang.Long)` was removed
+* `withTotalHostStorageGB(java.lang.Long)` was removed
 
 #### `models.ClusterAvailableUpgradeVersion` was modified
 
@@ -161,20 +161,20 @@
 
 #### `models.OperationStatusResult` was modified
 
-* `java.time.OffsetDateTime endTime()` -> `java.time.OffsetDateTime endTime()`
-* `java.lang.String outputHead()` -> `java.lang.String outputHead()`
 * `java.lang.String resultUrl()` -> `java.lang.String resultUrl()`
-* `innerModel()` was removed
+* `java.time.OffsetDateTime endTime()` -> `java.time.OffsetDateTime endTime()`
 * `java.lang.String name()` -> `java.lang.String name()`
-* `java.lang.Float percentComplete()` -> `java.lang.Double percentComplete()`
-* `java.lang.String status()` -> `java.lang.String status()`
-* `java.time.OffsetDateTime startTime()` -> `java.time.OffsetDateTime startTime()`
+* `com.azure.core.management.exception.ManagementError error()` -> `com.azure.core.management.exception.ManagementError error()`
 * `java.lang.String id()` -> `java.lang.String id()`
 * `java.util.List operations()` -> `java.util.List operations()`
-* `java.lang.String resultRef()` -> `java.lang.String resultRef()`
-* `com.azure.core.management.exception.ManagementError error()` -> `com.azure.core.management.exception.ManagementError error()`
 * `java.lang.String resourceId()` -> `java.lang.String resourceId()`
+* `java.lang.String status()` -> `java.lang.String status()`
 * `java.lang.String exitCode()` -> `java.lang.String exitCode()`
+* `java.lang.String outputHead()` -> `java.lang.String outputHead()`
+* `java.time.OffsetDateTime startTime()` -> `java.time.OffsetDateTime startTime()`
+* `java.lang.Float percentComplete()` -> `java.lang.Double percentComplete()`
+* `innerModel()` was removed
+* `java.lang.String resultRef()` -> `java.lang.String resultRef()`
 
 #### `models.LldpNeighbor` was modified
 
@@ -193,8 +193,8 @@
 #### `models.KubernetesClusterFeatures` was modified
 
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
 
 #### `models.ClusterUpdateStrategy` was modified
@@ -242,16 +242,16 @@
 #### `models.ClusterManagers` was modified
 
 * `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.AgentPools` was modified
 
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.StringKeyValuePair` was modified
 
@@ -355,10 +355,10 @@
 
 #### `models.L2Networks` was modified
 
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
-* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 
 #### `models.EndpointDependency` was modified
 
@@ -391,8 +391,8 @@
 
 #### `models.BareMetalMachineKeySets` was modified
 
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
 
@@ -407,9 +407,9 @@
 #### `models.Racks` was modified
 
 * `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.ClusterManagerPatchParameters` was modified
 
@@ -422,14 +422,14 @@
 #### `models.StorageAppliances` was modified
 
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.UserAssignedIdentity` was modified
 
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `validate()` was removed
 
 #### `models.AadConfiguration` was modified
@@ -439,15 +439,15 @@
 #### `models.ConsolePatchParameters` was modified
 
 * `withSshPublicKey(models.SshPublicKey)` was removed
-* `validate()` was removed
 * `models.SshPublicKey sshPublicKey()` -> `models.SshPublicKeyPatch sshPublicKey()`
+* `validate()` was removed
 
 #### `models.Clusters` was modified
 
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 
 #### `models.HardwareValidationStatus` was modified
 
@@ -480,10 +480,10 @@
 
 #### `models.MetricsConfigurations` was modified
 
-* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.ActionState` was modified
 
@@ -497,16 +497,16 @@
 #### `models.Volumes` was modified
 
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.KubernetesClusters` was modified
 
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
-* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 
 #### `models.L2ServiceLoadBalancerConfiguration` was modified
 
@@ -518,9 +518,9 @@
 
 #### `models.ExtendedLocation` was modified
 
-* `java.lang.String type()` -> `models.ExtendedLocationType type()`
-* `validate()` was removed
 * `withType(java.lang.String)` was removed
+* `validate()` was removed
+* `java.lang.String type()` -> `models.ExtendedLocationType type()`
 
 #### `models.ManagedResourceGroupConfiguration` was modified
 
@@ -533,9 +533,9 @@
 #### `models.Consoles` was modified
 
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.HardwareInventory` was modified
 
@@ -552,32 +552,32 @@
 
 #### `models.L3Networks` was modified
 
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
-* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 
 #### `models.ClusterPatchParameters` was modified
 
-* `models.RuntimeProtectionConfiguration runtimeProtectionConfiguration()` -> `models.RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration()`
-* `withComputeDeploymentThreshold(models.ValidationThreshold)` was removed
-* `withAggregatorOrSingleRackDefinition(models.RackDefinition)` was removed
 * `withClusterServicePrincipal(models.ServicePrincipalInformation)` was removed
-* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was removed
-* `models.ClusterUpdateStrategy updateStrategy()` -> `models.ClusterUpdateStrategyPatch updateStrategy()`
 * `validate()` was removed
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was removed
 * `models.RackDefinition aggregatorOrSingleRackDefinition()` -> `models.RackDefinitionPatch aggregatorOrSingleRackDefinition()`
-* `models.ServicePrincipalInformation clusterServicePrincipal()` -> `models.ServicePrincipalInformationPatch clusterServicePrincipal()`
 * `models.ValidationThreshold computeDeploymentThreshold()` -> `models.ValidationThresholdPatch computeDeploymentThreshold()`
 * `models.ClusterSecretArchive secretArchive()` -> `models.ClusterSecretArchivePatch secretArchive()`
 * `withSecretArchive(models.ClusterSecretArchive)` was removed
+* `withComputeDeploymentThreshold(models.ValidationThreshold)` was removed
+* `withAggregatorOrSingleRackDefinition(models.RackDefinition)` was removed
+* `models.ServicePrincipalInformation clusterServicePrincipal()` -> `models.ServicePrincipalInformationPatch clusterServicePrincipal()`
+* `models.ClusterUpdateStrategy updateStrategy()` -> `models.ClusterUpdateStrategyPatch updateStrategy()`
+* `models.RuntimeProtectionConfiguration runtimeProtectionConfiguration()` -> `models.RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration()`
 * `withUpdateStrategy(models.ClusterUpdateStrategy)` was removed
 
 #### `models.ManagedServiceIdentity` was modified
 
-* `validate()` was removed
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
 
 #### `models.L3NetworkPatchParameters` was modified
 
@@ -599,8 +599,8 @@
 
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 
 #### `models.ClusterScanRuntimeParameters` was modified
 
@@ -645,13 +645,13 @@
 
 #### `models.Cluster$Update` was modified
 
-* `withComputeDeploymentThreshold(models.ValidationThreshold)` was removed
-* `withAggregatorOrSingleRackDefinition(models.RackDefinition)` was removed
-* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was removed
-* `withClusterServicePrincipal(models.ServicePrincipalInformation)` was removed
-* `withSecretArchive(models.ClusterSecretArchive)` was removed
-* `withComputeRackDefinitions(java.util.List)` was removed
 * `withUpdateStrategy(models.ClusterUpdateStrategy)` was removed
+* `withSecretArchive(models.ClusterSecretArchive)` was removed
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was removed
+* `withComputeDeploymentThreshold(models.ValidationThreshold)` was removed
+* `withClusterServicePrincipal(models.ServicePrincipalInformation)` was removed
+* `withComputeRackDefinitions(java.util.List)` was removed
+* `withAggregatorOrSingleRackDefinition(models.RackDefinition)` was removed
 
 #### `models.StorageApplianceConfigurationData` was modified
 
@@ -664,24 +664,24 @@
 
 #### `models.BmcKeySets` was modified
 
-* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.BareMetalMachines` was modified
 
-* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `reimage(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 
 #### `models.VirtualMachines` was modified
 
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.AnalyticsOutputSettings` was modified
@@ -711,9 +711,9 @@
 
 #### `models.TrunkedNetworks` was modified
 
-* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.OperationStatusResult deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
 * `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.CloudServicesNetworkStorageOptions` was modified
@@ -858,8 +858,8 @@
 
 #### `models.OperationStatusResult` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.StorageAppliance` was modified
 
@@ -883,25 +883,25 @@
 
 #### `models.RuntimeProtectionStatus` was modified
 
-* `definitionUpdateMode()` was added
 * `agentHealthStatus()` was added
-* `enforcementLevel()` was added
-* `agentHealthStatusIssues()` was added
 * `agentLicenseStatus()` was added
+* `agentHealthStatusIssues()` was added
+* `definitionUpdateMode()` was added
+* `enforcementLevel()` was added
 
 #### `models.ClusterManager` was modified
 
 * `kind()` was added
-* `relayConfiguration()` was added
 * `updateRelayPrivateEndpointConnection(models.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters,com.azure.core.util.Context)` was added
 * `updateRelayPrivateEndpointConnection()` was added
+* `relayConfiguration()` was added
 
 #### `models.BareMetalMachine` was modified
 
-* `bmcIpv6Address()` was added
-* `reimage(models.BareMetalMachineReimageParameters,com.azure.core.util.Context)` was added
-* `bmcIpv4Address()` was added
 * `monitoringConfigurationStatus()` was added
+* `bmcIpv6Address()` was added
+* `bmcIpv4Address()` was added
+* `reimage(models.BareMetalMachineReimageParameters,com.azure.core.util.Context)` was added
 
 #### `models.CommandOutputType` was modified
 
@@ -909,13 +909,13 @@
 
 #### `models.Cluster` was modified
 
-* `inspect(models.ClusterInspectParameters,com.azure.core.util.Context)` was added
+* `kind()` was added
 * `rotateCredential(models.ClusterRotateCredentialParameters)` was added
 * `inspect()` was added
 * `managedCredentials()` was added
-* `rotateCredential(models.ClusterRotateCredentialParameters,com.azure.core.util.Context)` was added
-* `kind()` was added
+* `inspect(models.ClusterInspectParameters,com.azure.core.util.Context)` was added
 * `lastSuccessfulVersionUpdateTime()` was added
+* `rotateCredential(models.ClusterRotateCredentialParameters,com.azure.core.util.Context)` was added
 
 #### `models.ConsolePatchParameters` was modified
 
@@ -925,8 +925,8 @@
 
 * `inspect(java.lang.String,java.lang.String,models.ClusterInspectParameters,com.azure.core.util.Context)` was added
 * `inspect(java.lang.String,java.lang.String)` was added
-* `rotateCredential(java.lang.String,java.lang.String,models.ClusterRotateCredentialParameters,com.azure.core.util.Context)` was added
 * `rotateCredential(java.lang.String,java.lang.String,models.ClusterRotateCredentialParameters)` was added
+* `rotateCredential(java.lang.String,java.lang.String,models.ClusterRotateCredentialParameters,com.azure.core.util.Context)` was added
 
 #### `models.Volume` was modified
 
@@ -938,17 +938,17 @@
 
 #### `models.ClusterPatchParameters` was modified
 
-* `withComputeDeploymentThreshold(models.ValidationThresholdPatch)` was added
-* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfigurationPatch)` was added
-* `withClusterServicePrincipal(models.ServicePrincipalInformationPatch)` was added
-* `withUpdateStrategy(models.ClusterUpdateStrategyPatch)` was added
-* `withAggregatorOrSingleRackDefinition(models.RackDefinitionPatch)` was added
 * `withSecretArchive(models.ClusterSecretArchivePatch)` was added
+* `withAggregatorOrSingleRackDefinition(models.RackDefinitionPatch)` was added
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfigurationPatch)` was added
+* `withUpdateStrategy(models.ClusterUpdateStrategyPatch)` was added
+* `withClusterServicePrincipal(models.ServicePrincipalInformationPatch)` was added
+* `withComputeDeploymentThreshold(models.ValidationThresholdPatch)` was added
 
 #### `NetworkCloudManager` was modified
 
-* `kubernetesVersions()` was added
 * `accessBridges()` was added
+* `kubernetesVersions()` was added
 
 #### `models.VirtualMachine$Update` was modified
 
@@ -965,13 +965,13 @@
 
 #### `models.Cluster$Update` was modified
 
-* `withClusterServicePrincipal(models.ServicePrincipalInformationPatch)` was added
-* `withComputeRackDefinitionsForUpdate(java.util.List)` was added
-* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfigurationPatch)` was added
 * `withUpdateStrategy(models.ClusterUpdateStrategyPatch)` was added
-* `withComputeDeploymentThreshold(models.ValidationThresholdPatch)` was added
-* `withAggregatorOrSingleRackDefinition(models.RackDefinitionPatch)` was added
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfigurationPatch)` was added
+* `withComputeRackDefinitionsForUpdate(java.util.List)` was added
 * `withSecretArchive(models.ClusterSecretArchivePatch)` was added
+* `withComputeDeploymentThreshold(models.ValidationThresholdPatch)` was added
+* `withClusterServicePrincipal(models.ServicePrincipalInformationPatch)` was added
+* `withAggregatorOrSingleRackDefinition(models.RackDefinitionPatch)` was added
 
 #### `models.BareMetalMachines` was modified
 

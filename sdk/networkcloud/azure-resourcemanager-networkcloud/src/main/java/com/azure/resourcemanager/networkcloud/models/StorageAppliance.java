@@ -76,6 +76,14 @@ public interface StorageAppliance {
     SystemData systemData();
 
     /**
+     * Gets the administratorCredentials property: The credentials of the administrative interface on this storage
+     * appliance.
+     * 
+     * @return the administratorCredentials value.
+     */
+    AdministrativeCredentials administratorCredentials();
+
+    /**
      * Gets the rackId property: The resource ID of the rack where this storage appliance resides.
      * 
      * @return the rackId value.
@@ -102,14 +110,6 @@ public interface StorageAppliance {
      * @return the serialNumber value.
      */
     String serialNumber();
-
-    /**
-     * Gets the administratorCredentials property: The credentials of the administrative interface on this storage
-     * appliance.
-     * 
-     * @return the administratorCredentials value.
-     */
-    AdministrativeCredentials administratorCredentials();
 
     /**
      * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
@@ -258,10 +258,11 @@ public interface StorageAppliance {
     /**
      * The entirety of the StorageAppliance definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation, DefinitionStages.WithRackId,
-        DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithRackSlot, DefinitionStages.WithSerialNumber,
-        DefinitionStages.WithAdministratorCredentials, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithAdministratorCredentials,
+        DefinitionStages.WithRackId, DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithRackSlot,
+        DefinitionStages.WithSerialNumber, DefinitionStages.WithCreate {
     }
 
     /**
@@ -320,7 +321,22 @@ public interface StorageAppliance {
              * the resource.
              * @return the next definition stage.
              */
-            WithRackId withExtendedLocation(ExtendedLocation extendedLocation);
+            WithAdministratorCredentials withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+
+        /**
+         * The stage of the StorageAppliance definition allowing to specify administratorCredentials.
+         */
+        interface WithAdministratorCredentials {
+            /**
+             * Specifies the administratorCredentials property: The credentials of the administrative interface on this
+             * storage appliance..
+             * 
+             * @param administratorCredentials The credentials of the administrative interface on this storage
+             * appliance.
+             * @return the next definition stage.
+             */
+            WithRackId withAdministratorCredentials(AdministrativeCredentials administratorCredentials);
         }
 
         /**
@@ -373,22 +389,7 @@ public interface StorageAppliance {
              * @param serialNumber The serial number for the storage appliance.
              * @return the next definition stage.
              */
-            WithAdministratorCredentials withSerialNumber(String serialNumber);
-        }
-
-        /**
-         * The stage of the StorageAppliance definition allowing to specify administratorCredentials.
-         */
-        interface WithAdministratorCredentials {
-            /**
-             * Specifies the administratorCredentials property: The credentials of the administrative interface on this
-             * storage appliance..
-             * 
-             * @param administratorCredentials The credentials of the administrative interface on this storage
-             * appliance.
-             * @return the next definition stage.
-             */
-            WithCreate withAdministratorCredentials(AdministrativeCredentials administratorCredentials);
+            WithCreate withSerialNumber(String serialNumber);
         }
 
         /**
