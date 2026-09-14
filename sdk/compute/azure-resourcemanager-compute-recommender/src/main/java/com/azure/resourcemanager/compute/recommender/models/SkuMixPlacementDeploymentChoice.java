@@ -18,11 +18,6 @@ import java.util.List;
 @Immutable
 public final class SkuMixPlacementDeploymentChoice implements JsonSerializable<SkuMixPlacementDeploymentChoice> {
     /*
-     * Unique identifier for this deployment choice.
-     */
-    private String id;
-
-    /*
      * Placement score from 0 to 9 (inclusive). Higher is better.
      */
     private int score;
@@ -36,15 +31,6 @@ public final class SkuMixPlacementDeploymentChoice implements JsonSerializable<S
      * Creates an instance of SkuMixPlacementDeploymentChoice class.
      */
     private SkuMixPlacementDeploymentChoice() {
-    }
-
-    /**
-     * Get the id property: Unique identifier for this deployment choice.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -71,7 +57,6 @@ public final class SkuMixPlacementDeploymentChoice implements JsonSerializable<S
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeIntField("score", this.score);
         jsonWriter.writeArrayField("skuSplit", this.skuSplit, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -94,9 +79,7 @@ public final class SkuMixPlacementDeploymentChoice implements JsonSerializable<S
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedSkuMixPlacementDeploymentChoice.id = reader.getString();
-                } else if ("score".equals(fieldName)) {
+                if ("score".equals(fieldName)) {
                     deserializedSkuMixPlacementDeploymentChoice.score = reader.getInt();
                 } else if ("skuSplit".equals(fieldName)) {
                     List<SkuMixPlacementItem> skuSplit

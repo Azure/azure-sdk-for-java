@@ -13,20 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationDataAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationDataAuthorization model = BinaryData
-            .fromString(
-                "{\"role\":\"LimitedOwner\",\"resourceTypes\":[\"qxaekqsykv\",\"jtqpkevmyltjcrsp\",\"klurccl\"]}")
+        ApplicationDataAuthorization model = BinaryData.fromString(
+            "{\"role\":\"LimitedOwner\",\"resourceTypes\":[\"rzx\",\"dew\",\"rsxkr\",\"lbjazejww\"],\"excludeApplicationIdFromManifest\":false}")
             .toObject(ApplicationDataAuthorization.class);
         Assertions.assertEquals(Role.LIMITED_OWNER, model.role());
-        Assertions.assertEquals("qxaekqsykv", model.resourceTypes().get(0));
+        Assertions.assertEquals("rzx", model.resourceTypes().get(0));
+        Assertions.assertFalse(model.excludeApplicationIdFromManifest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationDataAuthorization model = new ApplicationDataAuthorization().withRole(Role.LIMITED_OWNER)
-            .withResourceTypes(Arrays.asList("qxaekqsykv", "jtqpkevmyltjcrsp", "klurccl"));
+            .withResourceTypes(Arrays.asList("rzx", "dew", "rsxkr", "lbjazejww"))
+            .withExcludeApplicationIdFromManifest(false);
         model = BinaryData.fromObject(model).toObject(ApplicationDataAuthorization.class);
         Assertions.assertEquals(Role.LIMITED_OWNER, model.role());
-        Assertions.assertEquals("qxaekqsykv", model.resourceTypes().get(0));
+        Assertions.assertEquals("rzx", model.resourceTypes().get(0));
+        Assertions.assertFalse(model.excludeApplicationIdFromManifest());
     }
 }

@@ -16,19 +16,26 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_AttachResources_MaximumSet.
+     * Sample code: Add resources to a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsAttachResourcesMaximumSet(
+    public static void addResourcesToAScheduledAction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .attachResources("rgcompute", "myScheduledAction", new ResourceAttachRequest()
-                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")
+            .attachResources("rgcompute", "myScheduledAction", new ResourceAttachRequest().withResources(Arrays.asList(
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm")
+                    .withNotificationSettings(
+                        Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                            .withType(NotificationType.EMAIL)
+                            .withLanguage(Language.EN_US)
+                            .withDisabled(true))),
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")
                     .withNotificationSettings(
                         Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                             .withType(NotificationType.EMAIL)

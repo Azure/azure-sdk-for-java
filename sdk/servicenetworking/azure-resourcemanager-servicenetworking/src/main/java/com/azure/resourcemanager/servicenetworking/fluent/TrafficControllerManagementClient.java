@@ -75,6 +75,20 @@ public interface TrafficControllerManagementClient {
     TrafficControllerInterfacesClient getTrafficControllerInterfaces();
 
     /**
+     * Gets the PrivateEndpointConnectionsInterfacesClient object to access its operations.
+     * 
+     * @return the PrivateEndpointConnectionsInterfacesClient object.
+     */
+    PrivateEndpointConnectionsInterfacesClient getPrivateEndpointConnectionsInterfaces();
+
+    /**
+     * Gets the PrivateLinkResourcesInterfacesClient object to access its operations.
+     * 
+     * @return the PrivateLinkResourcesInterfacesClient object.
+     */
+    PrivateLinkResourcesInterfacesClient getPrivateLinkResourcesInterfaces();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.

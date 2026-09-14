@@ -8332,8 +8332,8 @@ public final class SearchIndexClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileMultipartWithResponseAsync(String name, BinaryData body,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileMultipartWithResponseInternalAsync(String name,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.uploadKnowledgeSourceFileMultipart(this.getEndpoint(),
@@ -8374,7 +8374,7 @@ public final class SearchIndexClientImpl {
      * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadKnowledgeSourceFileMultipartWithResponse(String name, BinaryData body,
+    public Response<BinaryData> uploadKnowledgeSourceFileMultipartWithResponseInternal(String name, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -8676,7 +8676,7 @@ public final class SearchIndexClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseAsync(String fileId, String name,
+    public Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternalAsync(String fileId, String name,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -8720,8 +8720,8 @@ public final class SearchIndexClientImpl {
      * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateKnowledgeSourceFileWithResponse(String fileId, String name, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateKnowledgeSourceFileWithResponseInternal(String fileId, String name,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.updateKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId,

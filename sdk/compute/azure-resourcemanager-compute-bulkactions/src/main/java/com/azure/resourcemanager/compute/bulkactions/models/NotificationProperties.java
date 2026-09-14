@@ -12,27 +12,27 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The information about notifications to be send to about upcoming operations.
+ * Settings for notifications about upcoming scheduled action operations.
  */
 @Fluent
 public final class NotificationProperties implements JsonSerializable<NotificationProperties> {
     /*
-     * Where the notification should be sent. For email, it should follow email format.
+     * The notification destination. For email notifications, specify a valid email address.
      */
     private String destination;
 
     /*
-     * Type of notification to be sent.
+     * The notification delivery method.
      */
     private NotificationType type;
 
     /*
-     * The language the notification should be sent on.
+     * The language used for the notification.
      */
     private Language language;
 
     /*
-     * Tells if the notification is enabled or not.
+     * If true, notifications to this destination are disabled.
      */
     private Boolean disabled;
 
@@ -43,7 +43,8 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Get the destination property: Where the notification should be sent. For email, it should follow email format.
+     * Get the destination property: The notification destination. For email notifications, specify a valid email
+     * address.
      * 
      * @return the destination value.
      */
@@ -52,7 +53,8 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Set the destination property: Where the notification should be sent. For email, it should follow email format.
+     * Set the destination property: The notification destination. For email notifications, specify a valid email
+     * address.
      * 
      * @param destination the destination value to set.
      * @return the NotificationProperties object itself.
@@ -63,7 +65,7 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Get the type property: Type of notification to be sent.
+     * Get the type property: The notification delivery method.
      * 
      * @return the type value.
      */
@@ -72,7 +74,7 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Set the type property: Type of notification to be sent.
+     * Set the type property: The notification delivery method.
      * 
      * @param type the type value to set.
      * @return the NotificationProperties object itself.
@@ -83,7 +85,7 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Get the language property: The language the notification should be sent on.
+     * Get the language property: The language used for the notification.
      * 
      * @return the language value.
      */
@@ -92,7 +94,7 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Set the language property: The language the notification should be sent on.
+     * Set the language property: The language used for the notification.
      * 
      * @param language the language value to set.
      * @return the NotificationProperties object itself.
@@ -103,7 +105,7 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Get the disabled property: Tells if the notification is enabled or not.
+     * Get the disabled property: If true, notifications to this destination are disabled.
      * 
      * @return the disabled value.
      */
@@ -112,7 +114,7 @@ public final class NotificationProperties implements JsonSerializable<Notificati
     }
 
     /**
-     * Set the disabled property: Tells if the notification is enabled or not.
+     * Set the disabled property: If true, notifications to this destination are disabled.
      * 
      * @param disabled the disabled value to set.
      * @return the NotificationProperties object itself.

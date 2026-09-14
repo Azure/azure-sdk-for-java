@@ -13,7 +13,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
  */
 public final class AssociationsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/AssociationPatch.json
+     * x-ms-original-file: 2026-03-01/AssociationPatch.json
      */
     /**
      * Sample code: Update Association.

@@ -89,6 +89,13 @@ public interface FleetMember {
     FleetMemberStatus status();
 
     /**
+     * Gets the meshProperties property: The Mesh Member Properties associated with this Fleet Member.
+     * 
+     * @return the meshProperties value.
+     */
+    MeshProperties meshProperties();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.

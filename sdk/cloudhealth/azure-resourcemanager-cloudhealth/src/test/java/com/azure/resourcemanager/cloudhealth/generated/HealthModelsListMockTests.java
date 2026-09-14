@@ -23,7 +23,7 @@ public final class HealthModelsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"mebwjscjpah\",\"tenantId\":\"veabfqxnmwmqtib\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"aeukm\":{\"principalId\":\"dt\",\"clientId\":\"cttadi\"},\"yxeb\":{\"principalId\":\"ieekpndzaa\",\"clientId\":\"udqmeqwigpibudq\"}}},\"location\":\"bpmzzn\",\"tags\":{\"heioqa\":\"fyaqitm\"},\"id\":\"hvseufuqyrx\",\"name\":\"dlcgqlsismjqfr\",\"type\":\"dgamquhiosrsj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"fegcea\",\"tenantId\":\"xwh\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"omfaj\":{\"principalId\":\"moy\",\"clientId\":\"lwigdivbkbx\"},\"guxak\":{\"principalId\":\"asqvd\",\"clientId\":\"y\"}}},\"location\":\"qzhzbezkgimsi\",\"tags\":{\"skgfmocwahpq\":\"sicddyvv\"},\"id\":\"atjeaahh\",\"name\":\"jhhn\",\"type\":\"kzyb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class HealthModelsListMockTests {
 
         PagedIterable<HealthModel> response = manager.healthModels().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bpmzzn", response.iterator().next().location());
-        Assertions.assertEquals("fyaqitm", response.iterator().next().tags().get("heioqa"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+        Assertions.assertEquals("qzhzbezkgimsi", response.iterator().next().location());
+        Assertions.assertEquals("sicddyvv", response.iterator().next().tags().get("skgfmocwahpq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
     }
 }

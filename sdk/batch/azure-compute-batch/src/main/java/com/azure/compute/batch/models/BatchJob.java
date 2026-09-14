@@ -151,12 +151,6 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /*
-     * The Pool settings associated with the Job.
-     */
-    @Generated
-    private final BatchPoolInfo poolInfo;
-
-    /*
      * (This property is not available by default. Please contact support for more information) The network
      * configuration for the Job.
      */
@@ -174,17 +168,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
      * The execution information for the Job.
      */
     @Generated
-    private BatchJobExecutionInfo executionInfo;
-
-    /**
-     * Creates an instance of BatchJob class.
-     *
-     * @param poolInfo the poolInfo value to set.
-     */
-    @Generated
-    public BatchJob(BatchPoolInfo poolInfo) {
-        this.poolInfo = poolInfo;
-    }
+    private BatchJobExecutionDetails executionInfo;
 
     /**
      * Get the id property: A string that uniquely identifies the Job within the Account. The ID is case-preserving and
@@ -454,16 +438,6 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Get the poolInfo property: The Pool settings associated with the Job.
-     *
-     * @return the poolInfo value.
-     */
-    @Generated
-    public BatchPoolInfo getPoolInfo() {
-        return this.poolInfo;
-    }
-
-    /**
      * Get the networkConfiguration property: (This property is not available by default. Please contact support for
      * more information) The network configuration for the Job.
      *
@@ -504,7 +478,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
      * @return the executionInfo value.
      */
     @Generated
-    public BatchJobExecutionInfo getExecutionInfo() {
+    public BatchJobExecutionDetails getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -515,7 +489,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("poolInfo", this.poolInfo);
+        jsonWriter.writeJsonField("poolInfo", this.poolDetails);
         jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeBooleanField("allowTaskPreemption", this.allowTaskPreemption);
         jsonWriter.writeNumberField("maxParallelTasks", this.maxParallelTasks);
@@ -545,7 +519,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
             OffsetDateTime creationTime = null;
             BatchJobState state = null;
             OffsetDateTime stateTransitionTime = null;
-            BatchPoolInfo poolInfo = null;
+            BatchPoolDetails poolDetails = null;
             String displayName = null;
             Boolean usesTaskDependencies = null;
             BatchJobState previousState = null;
@@ -562,7 +536,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
             BatchTaskFailureMode taskFailureMode = null;
             BatchJobNetworkConfiguration networkConfiguration = null;
             List<BatchMetadataItem> metadata = null;
-            BatchJobExecutionInfo executionInfo = null;
+            BatchJobExecutionDetails executionInfo = null;
             BatchJobStatistics jobStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -585,7 +559,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
                     stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("poolInfo".equals(fieldName)) {
-                    poolInfo = BatchPoolInfo.fromJson(reader);
+                    poolDetails = BatchPoolDetails.fromJson(reader);
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
                 } else if ("usesTaskDependencies".equals(fieldName)) {
@@ -620,14 +594,14 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("executionInfo".equals(fieldName)) {
-                    executionInfo = BatchJobExecutionInfo.fromJson(reader);
+                    executionInfo = BatchJobExecutionDetails.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {
                     jobStatistics = BatchJobStatistics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            BatchJob deserializedBatchJob = new BatchJob(poolInfo);
+            BatchJob deserializedBatchJob = new BatchJob(poolDetails);
             deserializedBatchJob.id = id;
             deserializedBatchJob.url = url;
             deserializedBatchJob.eTag = eTag;
@@ -730,5 +704,31 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     @Generated
     public BatchJobStatistics getJobStatistics() {
         return this.jobStatistics;
+    }
+
+    /*
+     * The Pool settings associated with the Job.
+     */
+    @Generated
+    private final BatchPoolDetails poolDetails;
+
+    /**
+     * Creates an instance of BatchJob class.
+     *
+     * @param poolDetails the poolDetails value to set.
+     */
+    @Generated
+    public BatchJob(BatchPoolDetails poolDetails) {
+        this.poolDetails = poolDetails;
+    }
+
+    /**
+     * Get the poolDetails property: The Pool settings associated with the Job.
+     *
+     * @return the poolDetails value.
+     */
+    @Generated
+    public BatchPoolDetails getPoolDetails() {
+        return this.poolDetails;
     }
 }

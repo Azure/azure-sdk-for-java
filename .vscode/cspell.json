@@ -54,6 +54,7 @@
     "*.crt",
     "*.yml",
     ".github/skills/agentic-workflows/**",
+    ".github/skills/azsdk-common-*/**",
     ".github/workflows/issue-triage.md",
     ".vscode/cspell.json",
     ".vscode/eclipse-format-azure-sdk-for-java.xml",

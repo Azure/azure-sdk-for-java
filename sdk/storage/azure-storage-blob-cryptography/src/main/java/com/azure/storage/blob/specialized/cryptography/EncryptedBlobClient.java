@@ -486,12 +486,18 @@ public class EncryptedBlobClient extends BlobClient {
         return range != null && (range.getOffset() != 0 || range.getCount() != null);
     }
 
+    static BlobRequestConditions applyETagLock(BlobRequestConditions requestConditions, String eTag) {
+        BlobRequestConditions finalConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        return finalConditions.setIfMatch(StorageImplUtils.toETagHeaderValue(eTag));
+    }
+
     private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions, Duration timeout,
         Context context) {
         BlobProperties initialProperties
             = this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
-        requestConditions.setIfMatch(initialProperties.getETag());
+        applyETagLock(requestConditions, initialProperties.getETag());
 
         String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {

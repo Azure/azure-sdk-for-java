@@ -24,6 +24,7 @@ import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestRequ
 import com.azure.resourcemanager.providerhub.models.ResourceProviderService;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderType;
 import com.azure.resourcemanager.providerhub.models.ResourceType;
+import com.azure.resourcemanager.providerhub.models.TokenAuthConfiguration;
 import java.io.IOException;
 import java.util.List;
 
@@ -136,6 +137,11 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
      * The resource provider authorization rules.
      */
     private ResourceProviderAuthorizationRules resourceProviderAuthorizationRules;
+
+    /*
+     * The token auth configuration.
+     */
+    private TokenAuthConfiguration tokenAuthConfiguration;
 
     /**
      * Creates an instance of ResourceProviderManifestInner class.
@@ -333,6 +339,15 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
+     * Get the tokenAuthConfiguration property: The token auth configuration.
+     * 
+     * @return the tokenAuthConfiguration value.
+     */
+    public TokenAuthConfiguration tokenAuthConfiguration() {
+        return this.tokenAuthConfiguration;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -377,6 +392,9 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
         if (resourceProviderAuthorizationRules() != null) {
             resourceProviderAuthorizationRules().validate();
         }
+        if (tokenAuthConfiguration() != null) {
+            tokenAuthConfiguration().validate();
+        }
     }
 
     /**
@@ -413,6 +431,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
         jsonWriter.writeArrayField("linkedNotificationRules", this.linkedNotificationRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("resourceProviderAuthorizationRules", this.resourceProviderAuthorizationRules);
+        jsonWriter.writeJsonField("tokenAuthConfiguration", this.tokenAuthConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -496,6 +515,9 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
                 } else if ("resourceProviderAuthorizationRules".equals(fieldName)) {
                     deserializedResourceProviderManifestInner.resourceProviderAuthorizationRules
                         = ResourceProviderAuthorizationRules.fromJson(reader);
+                } else if ("tokenAuthConfiguration".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.tokenAuthConfiguration
+                        = TokenAuthConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

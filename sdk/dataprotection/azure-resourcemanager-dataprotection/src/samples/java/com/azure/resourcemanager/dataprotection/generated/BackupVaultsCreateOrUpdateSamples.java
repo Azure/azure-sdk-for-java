@@ -9,13 +9,16 @@ import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
 import com.azure.resourcemanager.dataprotection.models.CmkKekIdentity;
 import com.azure.resourcemanager.dataprotection.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.dataprotection.models.CostManagementSettings;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreSettings;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreState;
 import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreSettings;
 import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreState;
+import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.EncryptionSettings;
 import com.azure.resourcemanager.dataprotection.models.EncryptionState;
 import com.azure.resourcemanager.dataprotection.models.FeatureSettings;
+import com.azure.resourcemanager.dataprotection.models.GranularityLevel;
 import com.azure.resourcemanager.dataprotection.models.IdentityType;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilitySettings;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilityState;
@@ -36,7 +39,7 @@ import java.util.Map;
  */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/VaultCRUD/PutBackupVault.json
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVault.json
      */
     /**
      * Sample code: Create BackupVault.
@@ -64,7 +67,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/PutBackupVaultWithUndelete.json
+     * x-ms-original-file: 2026-06-01/PutBackupVaultWithUndelete.json
      */
     /**
      * Sample code: Restore a soft-deleted backup vault.
@@ -99,7 +102,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VaultCRUD/PutBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultWithCMK.json
      */
     /**
      * Sample code: Create BackupVault With CMK.
@@ -123,7 +126,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
                         .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
                         .withKekIdentity(new CmkKekIdentity().withIdentityType(IdentityType.USER_ASSIGNED)
                             .withIdentityId(
-                                "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                                "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourceGroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
                         .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED)))
                 .withStorageSettings(
                     Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
@@ -133,7 +136,73 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VaultCRUD/PutBackupVaultWithMSI.json
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultCMKSettings_ResourceGuardEnabled.json
+     */
+    /**
+     * Sample code: Create or Update Backup Vault With CMK and Resource Guard Enabled.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createOrUpdateBackupVaultWithCMKAndResourceGuardEnabled(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults()
+            .define("swaggerExample")
+            .withRegion("WestUS")
+            .withExistingResourceGroup("SampleResourceGroup")
+            .withProperties(new BackupVault()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                .withSecuritySettings(new SecuritySettings()
+                    .withSoftDeleteSettings(
+                        new SoftDeleteSettings().withState(SoftDeleteState.OFF).withRetentionDurationInDays(0.0D))
+                    .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.DISABLED))
+                    .withEncryptionSettings(new EncryptionSettings().withState(EncryptionState.ENABLED)
+                        .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                        .withKekIdentity(new CmkKekIdentity().withIdentityType(IdentityType.USER_ASSIGNED)
+                            .withIdentityId(
+                                "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                        .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED)))
+                .withStorageSettings(
+                    Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT))))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withIdentity(new DppIdentityDetails().withType("None"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultWithCostManagementSettings.json
+     */
+    /**
+     * Sample code: Create BackupVault With Cost Management Settings.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupVaultWithCostManagementSettings(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults()
+            .define("swaggerExample")
+            .withRegion("WestUS")
+            .withExistingResourceGroup("SampleResourceGroup")
+            .withProperties(new BackupVault()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                .withCostManagementSettings(
+                    new CostManagementSettings().withGranularityLevel(GranularityLevel.PROTECTED_ITEM_LEVEL))
+                .withSecuritySettings(new SecuritySettings()
+                    .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.fromString("Enabled"))
+                        .withRetentionDurationInDays(14.0D)))
+                .withStorageSettings(
+                    Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+                .withFeatureSettings(new FeatureSettings().withCrossRegionRestoreSettings(
+                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultWithMSI.json
      */
     /**
      * Sample code: Create BackupVault With MSI.

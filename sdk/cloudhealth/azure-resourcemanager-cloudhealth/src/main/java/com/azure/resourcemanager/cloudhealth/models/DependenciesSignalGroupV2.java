@@ -19,7 +19,7 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
     /*
      * Aggregation type for child dependencies.
      */
-    private DependenciesAggregationType aggregationType;
+    private AggregationType aggregationType;
 
     /*
      * Degraded threshold for aggregation. For MinHealthy: parent is degraded when healthy count/percentage falls to or
@@ -38,7 +38,7 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
     /*
      * Unit type for the aggregation thresholds. Required when aggregationType is MinHealthy or MaxNotHealthy.
      */
-    private DependenciesAggregationUnit unit;
+    private AggregationUnit unit;
 
     /*
      * If true, children with Unknown health state are excluded from aggregation calculations. Defaults to true.
@@ -56,7 +56,7 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
      * 
      * @return the aggregationType value.
      */
-    public DependenciesAggregationType aggregationType() {
+    public AggregationType aggregationType() {
         return this.aggregationType;
     }
 
@@ -66,7 +66,7 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
      * @param aggregationType the aggregationType value to set.
      * @return the DependenciesSignalGroupV2 object itself.
      */
-    public DependenciesSignalGroupV2 withAggregationType(DependenciesAggregationType aggregationType) {
+    public DependenciesSignalGroupV2 withAggregationType(AggregationType aggregationType) {
         this.aggregationType = aggregationType;
         return this;
     }
@@ -129,7 +129,7 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
      * 
      * @return the unit value.
      */
-    public DependenciesAggregationUnit unit() {
+    public AggregationUnit unit() {
         return this.unit;
     }
 
@@ -140,7 +140,7 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
      * @param unit the unit value to set.
      * @return the DependenciesSignalGroupV2 object itself.
      */
-    public DependenciesSignalGroupV2 withUnit(DependenciesAggregationUnit unit) {
+    public DependenciesSignalGroupV2 withUnit(AggregationUnit unit) {
         this.unit = unit;
         return this;
     }
@@ -200,15 +200,14 @@ public final class DependenciesSignalGroupV2 implements JsonSerializable<Depende
 
                 if ("aggregationType".equals(fieldName)) {
                     deserializedDependenciesSignalGroupV2.aggregationType
-                        = DependenciesAggregationType.fromString(reader.getString());
+                        = AggregationType.fromString(reader.getString());
                 } else if ("degradedThreshold".equals(fieldName)) {
                     deserializedDependenciesSignalGroupV2.degradedThreshold = reader.getNullable(JsonReader::getDouble);
                 } else if ("unhealthyThreshold".equals(fieldName)) {
                     deserializedDependenciesSignalGroupV2.unhealthyThreshold
                         = reader.getNullable(JsonReader::getDouble);
                 } else if ("unit".equals(fieldName)) {
-                    deserializedDependenciesSignalGroupV2.unit
-                        = DependenciesAggregationUnit.fromString(reader.getString());
+                    deserializedDependenciesSignalGroupV2.unit = AggregationUnit.fromString(reader.getString());
                 } else if ("ignoreUnknown".equals(fieldName)) {
                     deserializedDependenciesSignalGroupV2.ignoreUnknown = reader.getNullable(JsonReader::getBoolean);
                 } else {
