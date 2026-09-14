@@ -10,6 +10,37 @@ All the tools/utilities used in Microsoft Azure Java SDK's build config are defi
 
 - `lintingconfigs` - CheckStyle and SpotBugs rule configurations.
 
+## PR Documentation Validation
+
+The unified Java PR pipeline excludes `docs/**`, shared `.github/skills/azsdk-common-*/**` content, and exactly
+these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `LICENSE.txt`, `NOTICE.txt`,
+`README.md`, `SECURITY.md`, and `SUPPORT.md`. The `docs/` and root-document entries are also listed in
+`ExcludePaths` in [pullrequest.yml](pipelines/pullrequest.yml), so they do not select Java packages in mixed PRs.
+SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
+Build/Analyze orchestration and the existing test-matrix classifier are unchanged.
+
+The required **Check Spelling** job still checks all supported PR branches without path filters, using the existing
+CSpell configuration and ignore rules. In the same job, [Test-RootDocumentationExclusions.ps1](scripts/Test-RootDocumentationExclusions.ps1)
+checks the entire tracked-path inventory, even if spelling fails or has no files to check. A native regex prefilter
+limits detailed comparisons to root candidates, including unusual root characters needed for culture-aware matching.
+This temporary guard rejects longer prefixes (such as `README.md.template` or `README.md/src/Example.java`) and
+case-only aliases because package selection still uses prefix matching. Nested names such as `sdk/example/README.md`
+do not collide with root exclusions. Git inventory failures also fail the job. Rename a colliding path or remove
+its matching root-document exclusion from both lists before adding it. Shared matcher hardening remains an upstream
+`azure-sdk-tools` change; do not patch `eng/common` locally. **Verify Links** remains a separate, unchanged workflow.
+
+Run the guard and its regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1 (no YAML module required):
+
+```powershell
+./eng/scripts/Test-RootDocumentationExclusions.ps1
+Import-Module Pester -RequiredVersion 5.7.1
+Invoke-Pester -Path @(
+    'eng/scripts/tests/PullRequest-Trigger.tests.ps1',
+    'eng/scripts/tests/RootDocumentationExclusions.tests.ps1',
+    'eng/scripts/tests/Classify-PRChanges.tests.ps1'
+) -Tag UnitTest -Output Detailed
+```
+
 ## Sparse Checkouts
 
 Java-owned pipeline jobs use the native Azure Pipelines
