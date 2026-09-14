@@ -124,9 +124,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createBindingWithResponse(String agentName, BinaryData telephonyBinding,
+    public Response<BinaryData> createTelephonyBindingWithResponse(String agentName, BinaryData telephonyBinding,
         RequestOptions requestOptions) {
-        return this.serviceClient.createBindingWithResponse(agentName, telephonyBinding, requestOptions);
+        return this.serviceClient.createTelephonyBindingWithResponse(agentName, telephonyBinding, requestOptions);
     }
 
     /**
@@ -183,8 +183,8 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listBindings(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listBindings(agentName, requestOptions);
+    public PagedIterable<BinaryData> listTelephonyBindings(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listTelephonyBindings(agentName, requestOptions);
     }
 
     /**
@@ -227,9 +227,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBindingWithResponse(String agentName, String bindingId,
+    public Response<BinaryData> getTelephonyBindingWithResponse(String agentName, String bindingId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getBindingWithResponse(agentName, bindingId, requestOptions);
+        return this.serviceClient.getTelephonyBindingWithResponse(agentName, bindingId, requestOptions);
     }
 
     /**
@@ -286,9 +286,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateBindingWithResponse(String agentName, String bindingId, String ifMatch,
+    public Response<BinaryData> updateTelephonyBindingWithResponse(String agentName, String bindingId, String ifMatch,
         BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.updateBindingWithResponse(agentName, bindingId, ifMatch, body, requestOptions);
+        return this.serviceClient.updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, body,
+            requestOptions);
     }
 
     /**
@@ -309,9 +310,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteBindingWithResponse(String agentName, String bindingId, String ifMatch,
+    public Response<Void> deleteTelephonyBindingWithResponse(String agentName, String bindingId, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteBindingWithResponse(agentName, bindingId, ifMatch, requestOptions);
+        return this.serviceClient.deleteTelephonyBindingWithResponse(agentName, bindingId, ifMatch, requestOptions);
     }
 
     /**
@@ -382,8 +383,8 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCalls(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listCalls(agentName, requestOptions);
+    public PagedIterable<BinaryData> listTelephonyCalls(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listTelephonyCalls(agentName, requestOptions);
     }
 
     /**
@@ -467,8 +468,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCallWithResponse(String agentName, String callId, RequestOptions requestOptions) {
-        return this.serviceClient.getCallWithResponse(agentName, callId, requestOptions);
+    public Response<BinaryData> getTelephonyCallWithResponse(String agentName, String callId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyCallWithResponse(agentName, callId, requestOptions);
     }
 
     /**
@@ -561,9 +563,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> transferCallWithResponse(String agentName, String callId,
+    public Response<BinaryData> transferTelephonyCallWithResponse(String agentName, String callId,
         BinaryData transferTelephonyCallRequest, RequestOptions requestOptions) {
-        return this.serviceClient.transferCallWithResponse(agentName, callId, transferTelephonyCallRequest,
+        return this.serviceClient.transferTelephonyCallWithResponse(agentName, callId, transferTelephonyCallRequest,
             requestOptions);
     }
 
@@ -646,8 +648,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> endCallWithResponse(String agentName, String callId, RequestOptions requestOptions) {
-        return this.serviceClient.endCallWithResponse(agentName, callId, requestOptions);
+    public Response<BinaryData> endTelephonyCallWithResponse(String agentName, String callId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.endTelephonyCallWithResponse(agentName, callId, requestOptions);
     }
 
     /**
@@ -692,8 +695,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTransferTargetsWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.getTransferTargetsWithResponse(agentName, requestOptions);
+    public Response<BinaryData> getTelephonyTransferTargetsWithResponse(String agentName,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyTransferTargetsWithResponse(agentName, requestOptions);
     }
 
     /**
@@ -757,9 +761,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> replaceTransferTargetsWithResponse(String agentName, String ifMatch,
+    public Response<BinaryData> replaceTelephonyTransferTargetsWithResponse(String agentName, String ifMatch,
         BinaryData replaceTelephonyTransferTargetsRequest, RequestOptions requestOptions) {
-        return this.serviceClient.replaceTransferTargetsWithResponse(agentName, ifMatch,
+        return this.serviceClient.replaceTelephonyTransferTargetsWithResponse(agentName, ifMatch,
             replaceTelephonyTransferTargetsRequest, requestOptions);
     }
 
@@ -859,9 +863,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCallJobWithResponse(String agentName, String idempotencyKey, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createCallJobWithResponse(agentName, idempotencyKey, body, requestOptions);
+    public Response<BinaryData> createTelephonyCallJobWithResponse(String agentName, String idempotencyKey,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createTelephonyCallJobWithResponse(agentName, idempotencyKey, body, requestOptions);
     }
 
     /**
@@ -931,9 +935,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCallJobWithResponse(String agentName, String callJobId,
+    public Response<BinaryData> getTelephonyCallJobWithResponse(String agentName, String callJobId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCallJobWithResponse(agentName, callJobId, requestOptions);
+        return this.serviceClient.getTelephonyCallJobWithResponse(agentName, callJobId, requestOptions);
     }
 
     /**
@@ -1005,9 +1009,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelCallJobWithResponse(String agentName, String callJobId, String ifMatch,
+    public Response<BinaryData> cancelTelephonyCallJobWithResponse(String agentName, String callJobId, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.cancelCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions);
+        return this.serviceClient.cancelTelephonyCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions);
     }
 
     /**
@@ -1095,9 +1099,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCampaignWithResponse(String agentName, BinaryData body,
+    public Response<BinaryData> createTelephonyCampaignWithResponse(String agentName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createCampaignWithResponse(agentName, body, requestOptions);
+        return this.serviceClient.createTelephonyCampaignWithResponse(agentName, body, requestOptions);
     }
 
     /**
@@ -1160,9 +1164,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> getTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCampaignWithResponse(agentName, campaignId, requestOptions);
+        return this.serviceClient.getTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1222,9 +1226,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginImportCampaignRecipients(String agentName, String campaignId,
-        String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportCampaignRecipients(agentName, campaignId, idempotencyKey, body,
+    public SyncPoller<BinaryData, BinaryData> beginImportTelephonyCampaignRecipients(String agentName,
+        String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportTelephonyCampaignRecipients(agentName, campaignId, idempotencyKey, body,
             requestOptions);
     }
 
@@ -1281,9 +1285,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCampaignRecipientImportWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> getTelephonyCampaignRecipientImportWithResponse(String agentName, String campaignId,
         String importId, RequestOptions requestOptions) {
-        return this.serviceClient.getCampaignRecipientImportWithResponse(agentName, campaignId, importId,
+        return this.serviceClient.getTelephonyCampaignRecipientImportWithResponse(agentName, campaignId, importId,
             requestOptions);
     }
 
@@ -1318,9 +1322,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginValidateCampaign(String agentName, String campaignId,
+    public SyncPoller<BinaryData, BinaryData> beginValidateTelephonyCampaign(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginValidateCampaign(agentName, campaignId, requestOptions);
+        return this.serviceClient.beginValidateTelephonyCampaign(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1365,9 +1369,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPublishCampaign(String agentName, String campaignId, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginPublishCampaign(agentName, campaignId, body, requestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginPublishTelephonyCampaign(String agentName, String campaignId,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginPublishTelephonyCampaign(agentName, campaignId, body, requestOptions);
     }
 
     /**
@@ -1427,9 +1431,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> pauseCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> pauseTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.pauseCampaignWithResponse(agentName, campaignId, requestOptions);
+        return this.serviceClient.pauseTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1489,9 +1493,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> resumeCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> resumeTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.resumeCampaignWithResponse(agentName, campaignId, requestOptions);
+        return this.serviceClient.resumeTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1551,9 +1555,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> cancelTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.cancelCampaignWithResponse(agentName, campaignId, requestOptions);
+        return this.serviceClient.cancelTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1605,9 +1609,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String agentName, String operationId,
+    public Response<BinaryData> getTelephonyOperationWithResponse(String agentName, String operationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponse(agentName, operationId, requestOptions);
+        return this.serviceClient.getTelephonyOperationWithResponse(agentName, operationId, requestOptions);
     }
 
     /**
@@ -1627,10 +1631,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding createBinding(String agentName, CreateTelephonyBindingRequest telephonyBinding) {
-        // Generated convenience method for createBindingWithResponse
+    public TelephonyBinding createTelephonyBinding(String agentName, CreateTelephonyBindingRequest telephonyBinding) {
+        // Generated convenience method for createTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions).getValue()
+        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
+            .getValue()
             .toObject(TelephonyBinding.class);
     }
 
@@ -1662,9 +1667,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyBindingListItem> listBindings(String agentName, TelephonyProvider provider,
+    public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
         TelephonyBindingStatus status, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listBindings
+        // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
             requestOptions.addQueryParam("provider", provider.toString(), false);
@@ -1684,7 +1689,7 @@ public final class BetaVoiceAgentsTelephonyClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listBindings(agentName, requestOptions)
+        return serviceClient.listTelephonyBindings(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
     }
 
@@ -1704,10 +1709,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyBindingListItem> listBindings(String agentName) {
-        // Generated convenience method for listBindings
+    public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName) {
+        // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listBindings(agentName, requestOptions)
+        return serviceClient.listTelephonyBindings(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
     }
 
@@ -1730,10 +1735,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding getBinding(String agentName, String bindingId) {
-        // Generated convenience method for getBindingWithResponse
+    public TelephonyBinding getTelephonyBinding(String agentName, String bindingId) {
+        // Generated convenience method for getTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBindingWithResponse(agentName, bindingId, requestOptions).getValue().toObject(TelephonyBinding.class);
+        return getTelephonyBindingWithResponse(agentName, bindingId, requestOptions).getValue()
+            .toObject(TelephonyBinding.class);
     }
 
     /**
@@ -1756,16 +1762,17 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding updateBinding(String agentName, String bindingId, String ifMatch,
+    public TelephonyBinding updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
         UpdateTelephonyBindingRequest body) {
-        // Generated convenience method for updateBindingWithResponse
+        // Generated convenience method for updateTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, true);
         BinaryData bodyInBinaryData = BinaryData.fromObject(body);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         bodyInBinaryData.getLength();
         JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, false);
-        return updateBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions).getValue()
+        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
+            .getValue()
             .toObject(TelephonyBinding.class);
     }
 
@@ -1787,10 +1794,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteBinding(String agentName, String bindingId, String ifMatch) {
-        // Generated convenience method for deleteBindingWithResponse
+    public void deleteTelephonyBinding(String agentName, String bindingId, String ifMatch) {
+        // Generated convenience method for deleteTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteBindingWithResponse(agentName, bindingId, ifMatch, requestOptions).getValue();
+        deleteTelephonyBindingWithResponse(agentName, bindingId, ifMatch, requestOptions).getValue();
     }
 
     /**
@@ -1823,10 +1830,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCallSummary> listCalls(String agentName, TelephonyProvider provider,
+    public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
         TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
         PageOrder order, String after, String before) {
-        // Generated convenience method for listCalls
+        // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
             requestOptions.addQueryParam("provider", provider.toString(), false);
@@ -1852,7 +1859,7 @@ public final class BetaVoiceAgentsTelephonyClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listCalls(agentName, requestOptions)
+        return serviceClient.listTelephonyCalls(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 
@@ -1872,10 +1879,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCallSummary> listCalls(String agentName) {
-        // Generated convenience method for listCalls
+    public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName) {
+        // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listCalls(agentName, requestOptions)
+        return serviceClient.listTelephonyCalls(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 
@@ -1898,10 +1905,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallRecord getCall(String agentName, String callId) {
-        // Generated convenience method for getCallWithResponse
+    public TelephonyCallRecord getTelephonyCall(String agentName, String callId) {
+        // Generated convenience method for getTelephonyCallWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCallWithResponse(agentName, callId, requestOptions).getValue().toObject(TelephonyCallRecord.class);
+        return getTelephonyCallWithResponse(agentName, callId, requestOptions).getValue()
+            .toObject(TelephonyCallRecord.class);
     }
 
     /**
@@ -1922,12 +1930,13 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallRecord transferCall(String agentName, String callId, String target) {
-        // Generated convenience method for transferCallWithResponse
+    public TelephonyCallRecord transferTelephonyCall(String agentName, String callId, String target) {
+        // Generated convenience method for transferTelephonyCallWithResponse
         RequestOptions requestOptions = new RequestOptions();
         TransferTelephonyCallRequest transferTelephonyCallRequestObj = new TransferTelephonyCallRequest(target);
         BinaryData transferTelephonyCallRequest = BinaryData.fromObject(transferTelephonyCallRequestObj);
-        return transferCallWithResponse(agentName, callId, transferTelephonyCallRequest, requestOptions).getValue()
+        return transferTelephonyCallWithResponse(agentName, callId, transferTelephonyCallRequest, requestOptions)
+            .getValue()
             .toObject(TelephonyCallRecord.class);
     }
 
@@ -1948,10 +1957,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallRecord endCall(String agentName, String callId) {
-        // Generated convenience method for endCallWithResponse
+    public TelephonyCallRecord endTelephonyCall(String agentName, String callId) {
+        // Generated convenience method for endTelephonyCallWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return endCallWithResponse(agentName, callId, requestOptions).getValue().toObject(TelephonyCallRecord.class);
+        return endTelephonyCallWithResponse(agentName, callId, requestOptions).getValue()
+            .toObject(TelephonyCallRecord.class);
     }
 
     /**
@@ -1972,10 +1982,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyTransferTargets getTransferTargets(String agentName) {
-        // Generated convenience method for getTransferTargetsWithResponse
+    public TelephonyTransferTargets getTelephonyTransferTargets(String agentName) {
+        // Generated convenience method for getTelephonyTransferTargetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTransferTargetsWithResponse(agentName, requestOptions).getValue()
+        return getTelephonyTransferTargetsWithResponse(agentName, requestOptions).getValue()
             .toObject(TelephonyTransferTargets.class);
     }
 
@@ -1999,15 +2009,15 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyTransferTargets replaceTransferTargets(String agentName, String ifMatch,
+    public TelephonyTransferTargets replaceTelephonyTransferTargets(String agentName, String ifMatch,
         List<TelephonyTransferTarget> transferTargets) {
-        // Generated convenience method for replaceTransferTargetsWithResponse
+        // Generated convenience method for replaceTelephonyTransferTargetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReplaceTelephonyTransferTargetsRequest replaceTelephonyTransferTargetsRequestObj
             = new ReplaceTelephonyTransferTargetsRequest(transferTargets);
         BinaryData replaceTelephonyTransferTargetsRequest
             = BinaryData.fromObject(replaceTelephonyTransferTargetsRequestObj);
-        return replaceTransferTargetsWithResponse(agentName, ifMatch, replaceTelephonyTransferTargetsRequest,
+        return replaceTelephonyTransferTargetsWithResponse(agentName, ifMatch, replaceTelephonyTransferTargetsRequest,
             requestOptions).getValue().toObject(TelephonyTransferTargets.class);
     }
 
@@ -2030,12 +2040,12 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallJob createCallJob(String agentName, String idempotencyKey, CreateTelephonyCallJobRequest body) {
-        // Generated convenience method for createCallJobWithResponse
+    public TelephonyCallJob createTelephonyCallJob(String agentName, String idempotencyKey,
+        CreateTelephonyCallJobRequest body) {
+        // Generated convenience method for createTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(TelephonyCallJob.class);
+        return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
+            requestOptions).getValue().toObject(TelephonyCallJob.class);
     }
 
     /**
@@ -2057,10 +2067,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallJob getCallJob(String agentName, String callJobId) {
-        // Generated convenience method for getCallJobWithResponse
+    public TelephonyCallJob getTelephonyCallJob(String agentName, String callJobId) {
+        // Generated convenience method for getTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCallJobWithResponse(agentName, callJobId, requestOptions).getValue().toObject(TelephonyCallJob.class);
+        return getTelephonyCallJobWithResponse(agentName, callJobId, requestOptions).getValue()
+            .toObject(TelephonyCallJob.class);
     }
 
     /**
@@ -2082,10 +2093,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallJob cancelCallJob(String agentName, String callJobId, String ifMatch) {
-        // Generated convenience method for cancelCallJobWithResponse
+    public TelephonyCallJob cancelTelephonyCallJob(String agentName, String callJobId, String ifMatch) {
+        // Generated convenience method for cancelTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions).getValue()
+        return cancelTelephonyCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions).getValue()
             .toObject(TelephonyCallJob.class);
     }
 
@@ -2106,10 +2117,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign createCampaign(String agentName, CreateTelephonyCampaignRequest body) {
-        // Generated convenience method for createCampaignWithResponse
+    public TelephonyCampaign createTelephonyCampaign(String agentName, CreateTelephonyCampaignRequest body) {
+        // Generated convenience method for createTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCampaignWithResponse(agentName, BinaryData.fromObject(body), requestOptions).getValue()
+        return createTelephonyCampaignWithResponse(agentName, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(TelephonyCampaign.class);
     }
 
@@ -2132,10 +2143,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign getCampaign(String agentName, String campaignId) {
-        // Generated convenience method for getCampaignWithResponse
+    public TelephonyCampaign getTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for getTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
+        return getTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
             .toObject(TelephonyCampaign.class);
     }
 
@@ -2158,11 +2169,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginImportCampaignRecipients(String agentName,
-        String campaignId, String idempotencyKey, ImportTelephonyCampaignRecipientsRequest body) {
-        // Generated convenience method for beginImportCampaignRecipientsWithModel
+    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginImportTelephonyCampaignRecipients(
+        String agentName, String campaignId, String idempotencyKey, ImportTelephonyCampaignRecipientsRequest body) {
+        // Generated convenience method for beginImportTelephonyCampaignRecipientsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginImportCampaignRecipientsWithModel(agentName, campaignId, idempotencyKey,
+        return serviceClient.beginImportTelephonyCampaignRecipientsWithModel(agentName, campaignId, idempotencyKey,
             BinaryData.fromObject(body), requestOptions);
     }
 
@@ -2186,11 +2197,12 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaignRecipientImport getCampaignRecipientImport(String agentName, String campaignId,
+    public TelephonyCampaignRecipientImport getTelephonyCampaignRecipientImport(String agentName, String campaignId,
         String importId) {
-        // Generated convenience method for getCampaignRecipientImportWithResponse
+        // Generated convenience method for getTelephonyCampaignRecipientImportWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCampaignRecipientImportWithResponse(agentName, campaignId, importId, requestOptions).getValue()
+        return getTelephonyCampaignRecipientImportWithResponse(agentName, campaignId, importId, requestOptions)
+            .getValue()
             .toObject(TelephonyCampaignRecipientImport.class);
     }
 
@@ -2211,11 +2223,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginValidateCampaign(String agentName,
+    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginValidateTelephonyCampaign(String agentName,
         String campaignId) {
-        // Generated convenience method for beginValidateCampaignWithModel
+        // Generated convenience method for beginValidateTelephonyCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginValidateCampaignWithModel(agentName, campaignId, requestOptions);
+        return serviceClient.beginValidateTelephonyCampaignWithModel(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -2236,11 +2248,11 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginPublishCampaign(String agentName,
+    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginPublishTelephonyCampaign(String agentName,
         String campaignId, PublishTelephonyCampaignRequest body) {
-        // Generated convenience method for beginPublishCampaignWithModel
+        // Generated convenience method for beginPublishTelephonyCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginPublishCampaignWithModel(agentName, campaignId, BinaryData.fromObject(body),
+        return serviceClient.beginPublishTelephonyCampaignWithModel(agentName, campaignId, BinaryData.fromObject(body),
             requestOptions);
     }
 
@@ -2261,10 +2273,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign pauseCampaign(String agentName, String campaignId) {
-        // Generated convenience method for pauseCampaignWithResponse
+    public TelephonyCampaign pauseTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for pauseTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return pauseCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
+        return pauseTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
             .toObject(TelephonyCampaign.class);
     }
 
@@ -2285,10 +2297,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign resumeCampaign(String agentName, String campaignId) {
-        // Generated convenience method for resumeCampaignWithResponse
+    public TelephonyCampaign resumeTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for resumeTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return resumeCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
+        return resumeTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
             .toObject(TelephonyCampaign.class);
     }
 
@@ -2309,10 +2321,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign cancelCampaign(String agentName, String campaignId) {
-        // Generated convenience method for cancelCampaignWithResponse
+    public TelephonyCampaign cancelTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for cancelTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
+        return cancelTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
             .toObject(TelephonyCampaign.class);
     }
 
@@ -2335,10 +2347,10 @@ public final class BetaVoiceAgentsTelephonyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyOperation getOperation(String agentName, String operationId) {
-        // Generated convenience method for getOperationWithResponse
+    public TelephonyOperation getTelephonyOperation(String agentName, String operationId) {
+        // Generated convenience method for getTelephonyOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(agentName, operationId, requestOptions).getValue()
+        return getTelephonyOperationWithResponse(agentName, operationId, requestOptions).getValue()
             .toObject(TelephonyOperation.class);
     }
 }

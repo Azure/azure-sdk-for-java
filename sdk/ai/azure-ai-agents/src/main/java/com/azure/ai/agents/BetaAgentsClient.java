@@ -888,8 +888,8 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createFromPromptWithResponse(body, requestOptions);
+    public Response<BinaryData> createAgentFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createAgentFromPromptWithResponse(body, requestOptions);
     }
 
     /**
@@ -909,9 +909,9 @@ public final class BetaAgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createFromPrompt(BinaryData body) {
-        // Generated convenience method for createFromPromptWithResponse
+    public AgentDetails createAgentFromPrompt(BinaryData body) {
+        // Generated convenience method for createAgentFromPromptWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createFromPromptWithResponse(body, requestOptions).getValue().toObject(AgentDetails.class);
+        return createAgentFromPromptWithResponse(body, requestOptions).getValue().toObject(AgentDetails.class);
     }
 }

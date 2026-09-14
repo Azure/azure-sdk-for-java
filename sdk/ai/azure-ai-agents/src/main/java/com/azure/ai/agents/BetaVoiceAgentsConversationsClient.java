@@ -133,8 +133,8 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.list(agentName, requestOptions);
+    public PagedIterable<BinaryData> listAgentConversations(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversations(agentName, requestOptions);
     }
 
     /**
@@ -209,9 +209,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String agentName, String conversationId,
+    public Response<BinaryData> getAgentConversationWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(agentName, conversationId, requestOptions);
+        return this.serviceClient.getAgentConversationWithResponse(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -231,8 +231,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String agentName, String conversationId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(agentName, conversationId, requestOptions);
+    public Response<Void> deleteAgentConversationWithResponse(String agentName, String conversationId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteAgentConversationWithResponse(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -338,9 +339,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listResponses(String agentName, String conversationId,
+    public PagedIterable<BinaryData> listAgentConversationResponses(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.listResponses(agentName, conversationId, requestOptions);
+        return this.serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -429,9 +430,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResponseWithResponse(String agentName, String conversationId, String responseId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getResponseWithResponse(agentName, conversationId, responseId, requestOptions);
+    public Response<BinaryData> getAgentConversationResponseWithResponse(String agentName, String conversationId,
+        String responseId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationResponseWithResponse(agentName, conversationId, responseId,
+            requestOptions);
     }
 
     /**
@@ -483,9 +485,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listResponseItems(String agentName, String conversationId, String responseId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listResponseItems(agentName, conversationId, responseId, requestOptions);
+    public PagedIterable<BinaryData> listAgentConversationResponseItems(String agentName, String conversationId,
+        String responseId, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId,
+            requestOptions);
     }
 
     /**
@@ -535,8 +538,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listItems(String agentName, String conversationId, RequestOptions requestOptions) {
-        return this.serviceClient.listItems(agentName, conversationId, requestOptions);
+    public PagedIterable<BinaryData> listAgentConversationItems(String agentName, String conversationId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -572,9 +576,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getItemWithResponse(agentName, conversationId, itemId, requestOptions);
+    public Response<BinaryData> getAgentConversationItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationItemWithResponse(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -624,9 +629,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAudioItemWithResponse(agentName, conversationId, itemId, requestOptions);
+    public Response<BinaryData> getAgentConversationAudioItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationAudioItemWithResponse(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -657,9 +663,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadAudioItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.downloadAudioItemWithResponse(agentName, conversationId, itemId, requestOptions);
+    public Response<BinaryData> downloadAgentConversationAudioItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadAgentConversationAudioItemWithResponse(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -702,9 +709,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getGeneratedAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
-        return this.serviceClient.getGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions);
+    public Response<BinaryData> getAgentConversationGeneratedAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -736,10 +744,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadGeneratedAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
-        return this.serviceClient.downloadGeneratedAudioItemWithResponse(agentName, conversationId, itemId,
-            requestOptions);
+    public Response<BinaryData> downloadAgentConversationGeneratedAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId,
+            itemId, requestOptions);
     }
 
     /**
@@ -788,9 +796,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioWithResponse(String agentName, String conversationId,
+    public Response<BinaryData> getAgentConversationAudioWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getAudioWithResponse(agentName, conversationId, requestOptions);
+        return this.serviceClient.getAgentConversationAudioWithResponse(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -824,9 +832,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadAudioWithResponse(String agentName, String conversationId,
+    public Response<BinaryData> downloadAgentConversationAudioWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.downloadAudioWithResponse(agentName, conversationId, requestOptions);
+        return this.serviceClient.downloadAgentConversationAudioWithResponse(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -857,9 +865,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VoiceConversation> list(String agentName, Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for list
+    public PagedIterable<VoiceConversation> listAgentConversations(String agentName, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -873,7 +881,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.list(agentName, requestOptions)
+        return serviceClient.listAgentConversations(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
     }
 
@@ -895,10 +903,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VoiceConversation> list(String agentName) {
-        // Generated convenience method for list
+    public PagedIterable<VoiceConversation> listAgentConversations(String agentName) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(agentName, requestOptions)
+        return serviceClient.listAgentConversations(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
     }
 
@@ -923,10 +931,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceConversation get(String agentName, String conversationId) {
-        // Generated convenience method for getWithResponse
+    public VoiceConversation getAgentConversation(String agentName, String conversationId) {
+        // Generated convenience method for getAgentConversationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(agentName, conversationId, requestOptions).getValue().toObject(VoiceConversation.class);
+        return getAgentConversationWithResponse(agentName, conversationId, requestOptions).getValue()
+            .toObject(VoiceConversation.class);
     }
 
     /**
@@ -946,10 +955,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String agentName, String conversationId) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteAgentConversation(String agentName, String conversationId) {
+        // Generated convenience method for deleteAgentConversationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(agentName, conversationId, requestOptions).getValue();
+        deleteAgentConversationWithResponse(agentName, conversationId, requestOptions).getValue();
     }
 
     /**
@@ -981,9 +990,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VoiceResponse> listResponses(String agentName, String conversationId, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listResponses
+    public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -997,7 +1006,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listResponses(agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
     }
 
@@ -1020,10 +1029,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VoiceResponse> listResponses(String agentName, String conversationId) {
-        // Generated convenience method for listResponses
+    public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId) {
+        // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listResponses(agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
     }
 
@@ -1049,10 +1058,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceResponse getResponse(String agentName, String conversationId, String responseId) {
-        // Generated convenience method for getResponseWithResponse
+    public VoiceResponse getAgentConversationResponse(String agentName, String conversationId, String responseId) {
+        // Generated convenience method for getAgentConversationResponseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getResponseWithResponse(agentName, conversationId, responseId, requestOptions).getValue()
+        return getAgentConversationResponseWithResponse(agentName, conversationId, responseId, requestOptions)
+            .getValue()
             .toObject(VoiceResponse.class);
     }
 
@@ -1087,9 +1097,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RealtimeConversationItem> listResponseItems(String agentName, String conversationId,
-        String responseId, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listResponseItems
+    public PagedIterable<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
+        String conversationId, String responseId, Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1103,7 +1113,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listResponseItems(agentName, conversationId, responseId, requestOptions)
+        return serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1128,11 +1138,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RealtimeConversationItem> listResponseItems(String agentName, String conversationId,
-        String responseId) {
-        // Generated convenience method for listResponseItems
+    public PagedIterable<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
+        String conversationId, String responseId) {
+        // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listResponseItems(agentName, conversationId, responseId, requestOptions)
+        return serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1165,9 +1175,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RealtimeConversationItem> listItems(String agentName, String conversationId, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listItems
+    public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1181,7 +1191,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listItems(agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1204,10 +1214,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RealtimeConversationItem> listItems(String agentName, String conversationId) {
-        // Generated convenience method for listItems
+    public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId) {
+        // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listItems(agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1235,10 +1245,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RealtimeConversationItem getItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for getItemWithResponse
+    public RealtimeConversationItem getAgentConversationItem(String agentName, String conversationId, String itemId) {
+        // Generated convenience method for getAgentConversationItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
+        return getAgentConversationItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
             .toObject(RealtimeConversationItem.class);
     }
 
@@ -1272,10 +1282,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceAudioItemResponse getAudioItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for getAudioItemWithResponse
+    public VoiceAudioItemResponse getAgentConversationAudioItem(String agentName, String conversationId,
+        String itemId) {
+        // Generated convenience method for getAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
+        return getAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
             .toObject(VoiceAudioItemResponse.class);
     }
 
@@ -1301,10 +1312,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadAudioItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for downloadAudioItemWithResponse
+    public BinaryData downloadAgentConversationAudioItem(String agentName, String conversationId, String itemId) {
+        // Generated convenience method for downloadAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue();
+        return downloadAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
+            .getValue();
     }
 
     /**
@@ -1330,11 +1342,12 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceGeneratedAudioItemResponse getGeneratedAudioItem(String agentName, String conversationId,
-        String itemId) {
-        // Generated convenience method for getGeneratedAudioItemWithResponse
+    public VoiceGeneratedAudioItemResponse getAgentConversationGeneratedAudioItem(String agentName,
+        String conversationId, String itemId) {
+        // Generated convenience method for getAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
+        return getAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
+            .getValue()
             .toObject(VoiceGeneratedAudioItemResponse.class);
     }
 
@@ -1361,10 +1374,12 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadGeneratedAudioItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for downloadGeneratedAudioItemWithResponse
+    public BinaryData downloadAgentConversationGeneratedAudioItem(String agentName, String conversationId,
+        String itemId) {
+        // Generated convenience method for downloadAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue();
+        return downloadAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId,
+            requestOptions).getValue();
     }
 
     /**
@@ -1396,10 +1411,10 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceRecordingResponse getAudio(String agentName, String conversationId) {
-        // Generated convenience method for getAudioWithResponse
+    public VoiceRecordingResponse getAgentConversationAudio(String agentName, String conversationId) {
+        // Generated convenience method for getAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioWithResponse(agentName, conversationId, requestOptions).getValue()
+        return getAgentConversationAudioWithResponse(agentName, conversationId, requestOptions).getValue()
             .toObject(VoiceRecordingResponse.class);
     }
 
@@ -1428,9 +1443,9 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadAudio(String agentName, String conversationId) {
-        // Generated convenience method for downloadAudioWithResponse
+    public BinaryData downloadAgentConversationAudio(String agentName, String conversationId) {
+        // Generated convenience method for downloadAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadAudioWithResponse(agentName, conversationId, requestOptions).getValue();
+        return downloadAgentConversationAudioWithResponse(agentName, conversationId, requestOptions).getValue();
     }
 }

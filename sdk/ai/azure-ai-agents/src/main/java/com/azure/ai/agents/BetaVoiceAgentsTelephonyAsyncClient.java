@@ -131,9 +131,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createBindingWithResponse(String agentName, BinaryData telephonyBinding,
+    public Mono<Response<BinaryData>> createTelephonyBindingWithResponse(String agentName, BinaryData telephonyBinding,
         RequestOptions requestOptions) {
-        return this.serviceClient.createBindingWithResponseAsync(agentName, telephonyBinding, requestOptions);
+        return this.serviceClient.createTelephonyBindingWithResponseAsync(agentName, telephonyBinding, requestOptions);
     }
 
     /**
@@ -190,8 +190,8 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listBindings(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listBindingsAsync(agentName, requestOptions);
+    public PagedFlux<BinaryData> listTelephonyBindings(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listTelephonyBindingsAsync(agentName, requestOptions);
     }
 
     /**
@@ -235,9 +235,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBindingWithResponse(String agentName, String bindingId,
+    public Mono<Response<BinaryData>> getTelephonyBindingWithResponse(String agentName, String bindingId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getBindingWithResponseAsync(agentName, bindingId, requestOptions);
+        return this.serviceClient.getTelephonyBindingWithResponseAsync(agentName, bindingId, requestOptions);
     }
 
     /**
@@ -295,9 +295,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateBindingWithResponse(String agentName, String bindingId, String ifMatch,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.updateBindingWithResponseAsync(agentName, bindingId, ifMatch, body, requestOptions);
+    public Mono<Response<BinaryData>> updateTelephonyBindingWithResponse(String agentName, String bindingId,
+        String ifMatch, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.updateTelephonyBindingWithResponseAsync(agentName, bindingId, ifMatch, body,
+            requestOptions);
     }
 
     /**
@@ -318,9 +319,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteBindingWithResponse(String agentName, String bindingId, String ifMatch,
+    public Mono<Response<Void>> deleteTelephonyBindingWithResponse(String agentName, String bindingId, String ifMatch,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteBindingWithResponseAsync(agentName, bindingId, ifMatch, requestOptions);
+        return this.serviceClient.deleteTelephonyBindingWithResponseAsync(agentName, bindingId, ifMatch,
+            requestOptions);
     }
 
     /**
@@ -391,8 +393,8 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listCalls(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listCallsAsync(agentName, requestOptions);
+    public PagedFlux<BinaryData> listTelephonyCalls(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listTelephonyCallsAsync(agentName, requestOptions);
     }
 
     /**
@@ -477,9 +479,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCallWithResponse(String agentName, String callId,
+    public Mono<Response<BinaryData>> getTelephonyCallWithResponse(String agentName, String callId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCallWithResponseAsync(agentName, callId, requestOptions);
+        return this.serviceClient.getTelephonyCallWithResponseAsync(agentName, callId, requestOptions);
     }
 
     /**
@@ -573,10 +575,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> transferCallWithResponse(String agentName, String callId,
+    public Mono<Response<BinaryData>> transferTelephonyCallWithResponse(String agentName, String callId,
         BinaryData transferTelephonyCallRequest, RequestOptions requestOptions) {
-        return this.serviceClient.transferCallWithResponseAsync(agentName, callId, transferTelephonyCallRequest,
-            requestOptions);
+        return this.serviceClient.transferTelephonyCallWithResponseAsync(agentName, callId,
+            transferTelephonyCallRequest, requestOptions);
     }
 
     /**
@@ -659,9 +661,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> endCallWithResponse(String agentName, String callId,
+    public Mono<Response<BinaryData>> endTelephonyCallWithResponse(String agentName, String callId,
         RequestOptions requestOptions) {
-        return this.serviceClient.endCallWithResponseAsync(agentName, callId, requestOptions);
+        return this.serviceClient.endTelephonyCallWithResponseAsync(agentName, callId, requestOptions);
     }
 
     /**
@@ -707,8 +709,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTransferTargetsWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.getTransferTargetsWithResponseAsync(agentName, requestOptions);
+    public Mono<Response<BinaryData>> getTelephonyTransferTargetsWithResponse(String agentName,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyTransferTargetsWithResponseAsync(agentName, requestOptions);
     }
 
     /**
@@ -773,9 +776,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> replaceTransferTargetsWithResponse(String agentName, String ifMatch,
+    public Mono<Response<BinaryData>> replaceTelephonyTransferTargetsWithResponse(String agentName, String ifMatch,
         BinaryData replaceTelephonyTransferTargetsRequest, RequestOptions requestOptions) {
-        return this.serviceClient.replaceTransferTargetsWithResponseAsync(agentName, ifMatch,
+        return this.serviceClient.replaceTelephonyTransferTargetsWithResponseAsync(agentName, ifMatch,
             replaceTelephonyTransferTargetsRequest, requestOptions);
     }
 
@@ -876,9 +879,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCallJobWithResponse(String agentName, String idempotencyKey,
+    public Mono<Response<BinaryData>> createTelephonyCallJobWithResponse(String agentName, String idempotencyKey,
         BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createCallJobWithResponseAsync(agentName, idempotencyKey, body, requestOptions);
+        return this.serviceClient.createTelephonyCallJobWithResponseAsync(agentName, idempotencyKey, body,
+            requestOptions);
     }
 
     /**
@@ -949,9 +953,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCallJobWithResponse(String agentName, String callJobId,
+    public Mono<Response<BinaryData>> getTelephonyCallJobWithResponse(String agentName, String callJobId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCallJobWithResponseAsync(agentName, callJobId, requestOptions);
+        return this.serviceClient.getTelephonyCallJobWithResponseAsync(agentName, callJobId, requestOptions);
     }
 
     /**
@@ -1024,9 +1028,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelCallJobWithResponse(String agentName, String callJobId, String ifMatch,
-        RequestOptions requestOptions) {
-        return this.serviceClient.cancelCallJobWithResponseAsync(agentName, callJobId, ifMatch, requestOptions);
+    public Mono<Response<BinaryData>> cancelTelephonyCallJobWithResponse(String agentName, String callJobId,
+        String ifMatch, RequestOptions requestOptions) {
+        return this.serviceClient.cancelTelephonyCallJobWithResponseAsync(agentName, callJobId, ifMatch,
+            requestOptions);
     }
 
     /**
@@ -1115,9 +1120,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCampaignWithResponse(String agentName, BinaryData body,
+    public Mono<Response<BinaryData>> createTelephonyCampaignWithResponse(String agentName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createCampaignWithResponseAsync(agentName, body, requestOptions);
+        return this.serviceClient.createTelephonyCampaignWithResponseAsync(agentName, body, requestOptions);
     }
 
     /**
@@ -1180,9 +1185,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCampaignWithResponse(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> getTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCampaignWithResponseAsync(agentName, campaignId, requestOptions);
+        return this.serviceClient.getTelephonyCampaignWithResponseAsync(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1242,10 +1247,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportCampaignRecipients(String agentName, String campaignId,
-        String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportCampaignRecipientsAsync(agentName, campaignId, idempotencyKey, body,
-            requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginImportTelephonyCampaignRecipients(String agentName,
+        String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportTelephonyCampaignRecipientsAsync(agentName, campaignId, idempotencyKey,
+            body, requestOptions);
     }
 
     /**
@@ -1302,9 +1307,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCampaignRecipientImportWithResponse(String agentName, String campaignId,
-        String importId, RequestOptions requestOptions) {
-        return this.serviceClient.getCampaignRecipientImportWithResponseAsync(agentName, campaignId, importId,
+    public Mono<Response<BinaryData>> getTelephonyCampaignRecipientImportWithResponse(String agentName,
+        String campaignId, String importId, RequestOptions requestOptions) {
+        return this.serviceClient.getTelephonyCampaignRecipientImportWithResponseAsync(agentName, campaignId, importId,
             requestOptions);
     }
 
@@ -1339,9 +1344,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginValidateCampaign(String agentName, String campaignId,
+    public PollerFlux<BinaryData, BinaryData> beginValidateTelephonyCampaign(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginValidateCampaignAsync(agentName, campaignId, requestOptions);
+        return this.serviceClient.beginValidateTelephonyCampaignAsync(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1386,9 +1391,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginPublishCampaign(String agentName, String campaignId, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginPublishCampaignAsync(agentName, campaignId, body, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginPublishTelephonyCampaign(String agentName, String campaignId,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginPublishTelephonyCampaignAsync(agentName, campaignId, body, requestOptions);
     }
 
     /**
@@ -1449,9 +1454,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> pauseCampaignWithResponse(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> pauseTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.pauseCampaignWithResponseAsync(agentName, campaignId, requestOptions);
+        return this.serviceClient.pauseTelephonyCampaignWithResponseAsync(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1512,9 +1517,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> resumeCampaignWithResponse(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> resumeTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.resumeCampaignWithResponseAsync(agentName, campaignId, requestOptions);
+        return this.serviceClient.resumeTelephonyCampaignWithResponseAsync(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1575,9 +1580,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelCampaignWithResponse(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> cancelTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
-        return this.serviceClient.cancelCampaignWithResponseAsync(agentName, campaignId, requestOptions);
+        return this.serviceClient.cancelTelephonyCampaignWithResponseAsync(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -1630,9 +1635,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String agentName, String operationId,
+    public Mono<Response<BinaryData>> getTelephonyOperationWithResponse(String agentName, String operationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(agentName, operationId, requestOptions);
+        return this.serviceClient.getTelephonyOperationWithResponseAsync(agentName, operationId, requestOptions);
     }
 
     /**
@@ -1652,10 +1657,11 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyBinding> createBinding(String agentName, CreateTelephonyBindingRequest telephonyBinding) {
-        // Generated convenience method for createBindingWithResponse
+    public Mono<TelephonyBinding> createTelephonyBinding(String agentName,
+        CreateTelephonyBindingRequest telephonyBinding) {
+        // Generated convenience method for createTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
+        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBinding.class));
     }
@@ -1688,9 +1694,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyBindingListItem> listBindings(String agentName, TelephonyProvider provider,
+    public PagedFlux<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
         TelephonyBindingStatus status, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listBindings
+        // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
             requestOptions.addQueryParam("provider", provider.toString(), false);
@@ -1710,7 +1716,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listBindings(agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyBindings(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1742,10 +1748,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyBindingListItem> listBindings(String agentName) {
-        // Generated convenience method for listBindings
+    public PagedFlux<TelephonyBindingListItem> listTelephonyBindings(String agentName) {
+        // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listBindings(agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyBindings(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1781,10 +1787,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyBinding> getBinding(String agentName, String bindingId) {
-        // Generated convenience method for getBindingWithResponse
+    public Mono<TelephonyBinding> getTelephonyBinding(String agentName, String bindingId) {
+        // Generated convenience method for getTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBindingWithResponse(agentName, bindingId, requestOptions).flatMap(FluxUtil::toMono)
+        return getTelephonyBindingWithResponse(agentName, bindingId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBinding.class));
     }
 
@@ -1808,16 +1814,16 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyBinding> updateBinding(String agentName, String bindingId, String ifMatch,
+    public Mono<TelephonyBinding> updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
         UpdateTelephonyBindingRequest body) {
-        // Generated convenience method for updateBindingWithResponse
+        // Generated convenience method for updateTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, true);
         BinaryData bodyInBinaryData = BinaryData.fromObject(body);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         bodyInBinaryData.getLength();
         JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, false);
-        return updateBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
+        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyBinding.class));
     }
@@ -1841,10 +1847,11 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteBinding(String agentName, String bindingId, String ifMatch) {
-        // Generated convenience method for deleteBindingWithResponse
+    public Mono<Void> deleteTelephonyBinding(String agentName, String bindingId, String ifMatch) {
+        // Generated convenience method for deleteTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteBindingWithResponse(agentName, bindingId, ifMatch, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteTelephonyBindingWithResponse(agentName, bindingId, ifMatch, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1877,10 +1884,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyCallSummary> listCalls(String agentName, TelephonyProvider provider,
+    public PagedFlux<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
         TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
         PageOrder order, String after, String before) {
-        // Generated convenience method for listCalls
+        // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
             requestOptions.addQueryParam("provider", provider.toString(), false);
@@ -1906,7 +1913,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listCalls(agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyCalls(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1938,10 +1945,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TelephonyCallSummary> listCalls(String agentName) {
-        // Generated convenience method for listCalls
+    public PagedFlux<TelephonyCallSummary> listTelephonyCalls(String agentName) {
+        // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listCalls(agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTelephonyCalls(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1977,10 +1984,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCallRecord> getCall(String agentName, String callId) {
-        // Generated convenience method for getCallWithResponse
+    public Mono<TelephonyCallRecord> getTelephonyCall(String agentName, String callId) {
+        // Generated convenience method for getTelephonyCallWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCallWithResponse(agentName, callId, requestOptions).flatMap(FluxUtil::toMono)
+        return getTelephonyCallWithResponse(agentName, callId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallRecord.class));
     }
 
@@ -2003,12 +2010,12 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCallRecord> transferCall(String agentName, String callId, String target) {
-        // Generated convenience method for transferCallWithResponse
+    public Mono<TelephonyCallRecord> transferTelephonyCall(String agentName, String callId, String target) {
+        // Generated convenience method for transferTelephonyCallWithResponse
         RequestOptions requestOptions = new RequestOptions();
         TransferTelephonyCallRequest transferTelephonyCallRequestObj = new TransferTelephonyCallRequest(target);
         BinaryData transferTelephonyCallRequest = BinaryData.fromObject(transferTelephonyCallRequestObj);
-        return transferCallWithResponse(agentName, callId, transferTelephonyCallRequest, requestOptions)
+        return transferTelephonyCallWithResponse(agentName, callId, transferTelephonyCallRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallRecord.class));
     }
@@ -2031,10 +2038,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCallRecord> endCall(String agentName, String callId) {
-        // Generated convenience method for endCallWithResponse
+    public Mono<TelephonyCallRecord> endTelephonyCall(String agentName, String callId) {
+        // Generated convenience method for endTelephonyCallWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return endCallWithResponse(agentName, callId, requestOptions).flatMap(FluxUtil::toMono)
+        return endTelephonyCallWithResponse(agentName, callId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallRecord.class));
     }
 
@@ -2057,10 +2064,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyTransferTargets> getTransferTargets(String agentName) {
-        // Generated convenience method for getTransferTargetsWithResponse
+    public Mono<TelephonyTransferTargets> getTelephonyTransferTargets(String agentName) {
+        // Generated convenience method for getTelephonyTransferTargetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTransferTargetsWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
+        return getTelephonyTransferTargetsWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyTransferTargets.class));
     }
 
@@ -2084,15 +2091,15 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyTransferTargets> replaceTransferTargets(String agentName, String ifMatch,
+    public Mono<TelephonyTransferTargets> replaceTelephonyTransferTargets(String agentName, String ifMatch,
         List<TelephonyTransferTarget> transferTargets) {
-        // Generated convenience method for replaceTransferTargetsWithResponse
+        // Generated convenience method for replaceTelephonyTransferTargetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReplaceTelephonyTransferTargetsRequest replaceTelephonyTransferTargetsRequestObj
             = new ReplaceTelephonyTransferTargetsRequest(transferTargets);
         BinaryData replaceTelephonyTransferTargetsRequest
             = BinaryData.fromObject(replaceTelephonyTransferTargetsRequestObj);
-        return replaceTransferTargetsWithResponse(agentName, ifMatch, replaceTelephonyTransferTargetsRequest,
+        return replaceTelephonyTransferTargetsWithResponse(agentName, ifMatch, replaceTelephonyTransferTargetsRequest,
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(TelephonyTransferTargets.class));
     }
@@ -2116,13 +2123,13 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCallJob> createCallJob(String agentName, String idempotencyKey,
+    public Mono<TelephonyCallJob> createTelephonyCallJob(String agentName, String idempotencyKey,
         CreateTelephonyCallJobRequest body) {
-        // Generated convenience method for createCallJobWithResponse
+        // Generated convenience method for createTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallJob.class));
+        return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallJob.class));
     }
 
     /**
@@ -2144,10 +2151,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCallJob> getCallJob(String agentName, String callJobId) {
-        // Generated convenience method for getCallJobWithResponse
+    public Mono<TelephonyCallJob> getTelephonyCallJob(String agentName, String callJobId) {
+        // Generated convenience method for getTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCallJobWithResponse(agentName, callJobId, requestOptions).flatMap(FluxUtil::toMono)
+        return getTelephonyCallJobWithResponse(agentName, callJobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallJob.class));
     }
 
@@ -2170,10 +2177,11 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCallJob> cancelCallJob(String agentName, String callJobId, String ifMatch) {
-        // Generated convenience method for cancelCallJobWithResponse
+    public Mono<TelephonyCallJob> cancelTelephonyCallJob(String agentName, String callJobId, String ifMatch) {
+        // Generated convenience method for cancelTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelTelephonyCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCallJob.class));
     }
 
@@ -2194,10 +2202,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> createCampaign(String agentName, CreateTelephonyCampaignRequest body) {
-        // Generated convenience method for createCampaignWithResponse
+    public Mono<TelephonyCampaign> createTelephonyCampaign(String agentName, CreateTelephonyCampaignRequest body) {
+        // Generated convenience method for createTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCampaignWithResponse(agentName, BinaryData.fromObject(body), requestOptions)
+        return createTelephonyCampaignWithResponse(agentName, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
@@ -2222,10 +2230,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> getCampaign(String agentName, String campaignId) {
-        // Generated convenience method for getCampaignWithResponse
+    public Mono<TelephonyCampaign> getTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for getTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
+        return getTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
 
@@ -2248,11 +2256,11 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginImportCampaignRecipients(String agentName,
-        String campaignId, String idempotencyKey, ImportTelephonyCampaignRecipientsRequest body) {
-        // Generated convenience method for beginImportCampaignRecipientsWithModel
+    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginImportTelephonyCampaignRecipients(
+        String agentName, String campaignId, String idempotencyKey, ImportTelephonyCampaignRecipientsRequest body) {
+        // Generated convenience method for beginImportTelephonyCampaignRecipientsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginImportCampaignRecipientsWithModelAsync(agentName, campaignId, idempotencyKey,
+        return serviceClient.beginImportTelephonyCampaignRecipientsWithModelAsync(agentName, campaignId, idempotencyKey,
             BinaryData.fromObject(body), requestOptions);
     }
 
@@ -2277,11 +2285,11 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaignRecipientImport> getCampaignRecipientImport(String agentName, String campaignId,
-        String importId) {
-        // Generated convenience method for getCampaignRecipientImportWithResponse
+    public Mono<TelephonyCampaignRecipientImport> getTelephonyCampaignRecipientImport(String agentName,
+        String campaignId, String importId) {
+        // Generated convenience method for getTelephonyCampaignRecipientImportWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCampaignRecipientImportWithResponse(agentName, campaignId, importId, requestOptions)
+        return getTelephonyCampaignRecipientImportWithResponse(agentName, campaignId, importId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaignRecipientImport.class));
     }
@@ -2303,11 +2311,11 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginValidateCampaign(String agentName,
+    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginValidateTelephonyCampaign(String agentName,
         String campaignId) {
-        // Generated convenience method for beginValidateCampaignWithModel
+        // Generated convenience method for beginValidateTelephonyCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginValidateCampaignWithModelAsync(agentName, campaignId, requestOptions);
+        return serviceClient.beginValidateTelephonyCampaignWithModelAsync(agentName, campaignId, requestOptions);
     }
 
     /**
@@ -2328,12 +2336,12 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginPublishCampaign(String agentName,
+    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginPublishTelephonyCampaign(String agentName,
         String campaignId, PublishTelephonyCampaignRequest body) {
-        // Generated convenience method for beginPublishCampaignWithModel
+        // Generated convenience method for beginPublishTelephonyCampaignWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginPublishCampaignWithModelAsync(agentName, campaignId, BinaryData.fromObject(body),
-            requestOptions);
+        return serviceClient.beginPublishTelephonyCampaignWithModelAsync(agentName, campaignId,
+            BinaryData.fromObject(body), requestOptions);
     }
 
     /**
@@ -2353,10 +2361,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> pauseCampaign(String agentName, String campaignId) {
-        // Generated convenience method for pauseCampaignWithResponse
+    public Mono<TelephonyCampaign> pauseTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for pauseTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return pauseCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
+        return pauseTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
 
@@ -2377,10 +2385,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> resumeCampaign(String agentName, String campaignId) {
-        // Generated convenience method for resumeCampaignWithResponse
+    public Mono<TelephonyCampaign> resumeTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for resumeTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return resumeCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
+        return resumeTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
 
@@ -2401,10 +2409,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyCampaign> cancelCampaign(String agentName, String campaignId) {
-        // Generated convenience method for cancelCampaignWithResponse
+    public Mono<TelephonyCampaign> cancelTelephonyCampaign(String agentName, String campaignId) {
+        // Generated convenience method for cancelTelephonyCampaignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyCampaign.class));
     }
 
@@ -2427,10 +2435,10 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TelephonyOperation> getOperation(String agentName, String operationId) {
-        // Generated convenience method for getOperationWithResponse
+    public Mono<TelephonyOperation> getTelephonyOperation(String agentName, String operationId) {
+        // Generated convenience method for getTelephonyOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(agentName, operationId, requestOptions).flatMap(FluxUtil::toMono)
+        return getTelephonyOperationWithResponse(agentName, operationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TelephonyOperation.class));
     }
 }

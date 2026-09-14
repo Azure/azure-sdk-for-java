@@ -92,7 +92,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createFromPrompt(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createAgentFromPrompt(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -103,7 +103,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createFromPromptSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createAgentFromPromptSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -351,11 +351,11 @@ public final class BetaAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createFromPromptWithResponseAsync(BinaryData body,
+    public Mono<Response<BinaryData>> createAgentFromPromptWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createFromPrompt(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createAgentFromPrompt(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
@@ -499,11 +499,11 @@ public final class BetaAgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createAgentFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createFromPromptSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, body, requestOptions, Context.NONE);
+        return service.createAgentFromPromptSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**

@@ -139,8 +139,8 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(agentName, requestOptions);
+    public PagedFlux<BinaryData> listAgentConversations(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationsAsync(agentName, requestOptions);
     }
 
     /**
@@ -215,9 +215,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String agentName, String conversationId,
+    public Mono<Response<BinaryData>> getAgentConversationWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(agentName, conversationId, requestOptions);
+        return this.serviceClient.getAgentConversationWithResponseAsync(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -237,9 +237,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String agentName, String conversationId,
+    public Mono<Response<Void>> deleteAgentConversationWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(agentName, conversationId, requestOptions);
+        return this.serviceClient.deleteAgentConversationWithResponseAsync(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -345,8 +345,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listResponses(String agentName, String conversationId, RequestOptions requestOptions) {
-        return this.serviceClient.listResponsesAsync(agentName, conversationId, requestOptions);
+    public PagedFlux<BinaryData> listAgentConversationResponses(String agentName, String conversationId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationResponsesAsync(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -435,9 +436,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResponseWithResponse(String agentName, String conversationId,
+    public Mono<Response<BinaryData>> getAgentConversationResponseWithResponse(String agentName, String conversationId,
         String responseId, RequestOptions requestOptions) {
-        return this.serviceClient.getResponseWithResponseAsync(agentName, conversationId, responseId, requestOptions);
+        return this.serviceClient.getAgentConversationResponseWithResponseAsync(agentName, conversationId, responseId,
+            requestOptions);
     }
 
     /**
@@ -489,9 +491,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listResponseItems(String agentName, String conversationId, String responseId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listResponseItemsAsync(agentName, conversationId, responseId, requestOptions);
+    public PagedFlux<BinaryData> listAgentConversationResponseItems(String agentName, String conversationId,
+        String responseId, RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationResponseItemsAsync(agentName, conversationId, responseId,
+            requestOptions);
     }
 
     /**
@@ -541,8 +544,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listItems(String agentName, String conversationId, RequestOptions requestOptions) {
-        return this.serviceClient.listItemsAsync(agentName, conversationId, requestOptions);
+    public PagedFlux<BinaryData> listAgentConversationItems(String agentName, String conversationId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationItemsAsync(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -578,9 +582,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getItemWithResponseAsync(agentName, conversationId, itemId, requestOptions);
+    public Mono<Response<BinaryData>> getAgentConversationItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationItemWithResponseAsync(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -630,9 +635,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAudioItemWithResponseAsync(agentName, conversationId, itemId, requestOptions);
+    public Mono<Response<BinaryData>> getAgentConversationAudioItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationAudioItemWithResponseAsync(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -663,9 +669,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
-        return this.serviceClient.downloadAudioItemWithResponseAsync(agentName, conversationId, itemId, requestOptions);
+    public Mono<Response<BinaryData>> downloadAgentConversationAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadAgentConversationAudioItemWithResponseAsync(agentName, conversationId, itemId,
+            requestOptions);
     }
 
     /**
@@ -709,10 +716,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getGeneratedAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
-        return this.serviceClient.getGeneratedAudioItemWithResponseAsync(agentName, conversationId, itemId,
-            requestOptions);
+    public Mono<Response<BinaryData>> getAgentConversationGeneratedAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.getAgentConversationGeneratedAudioItemWithResponseAsync(agentName, conversationId,
+            itemId, requestOptions);
     }
 
     /**
@@ -744,10 +751,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadGeneratedAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
-        return this.serviceClient.downloadGeneratedAudioItemWithResponseAsync(agentName, conversationId, itemId,
-            requestOptions);
+    public Mono<Response<BinaryData>> downloadAgentConversationGeneratedAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadAgentConversationGeneratedAudioItemWithResponseAsync(agentName,
+            conversationId, itemId, requestOptions);
     }
 
     /**
@@ -796,9 +803,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioWithResponse(String agentName, String conversationId,
+    public Mono<Response<BinaryData>> getAgentConversationAudioWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getAudioWithResponseAsync(agentName, conversationId, requestOptions);
+        return this.serviceClient.getAgentConversationAudioWithResponseAsync(agentName, conversationId, requestOptions);
     }
 
     /**
@@ -832,9 +839,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadAudioWithResponse(String agentName, String conversationId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.downloadAudioWithResponseAsync(agentName, conversationId, requestOptions);
+    public Mono<Response<BinaryData>> downloadAgentConversationAudioWithResponse(String agentName,
+        String conversationId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadAgentConversationAudioWithResponseAsync(agentName, conversationId,
+            requestOptions);
     }
 
     /**
@@ -865,9 +873,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VoiceConversation> list(String agentName, Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for list
+    public PagedFlux<VoiceConversation> listAgentConversations(String agentName, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -881,7 +889,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -914,10 +922,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VoiceConversation> list(String agentName) {
-        // Generated convenience method for list
+    public PagedFlux<VoiceConversation> listAgentConversations(String agentName) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -954,10 +962,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceConversation> get(String agentName, String conversationId) {
-        // Generated convenience method for getWithResponse
+    public Mono<VoiceConversation> getAgentConversation(String agentName, String conversationId) {
+        // Generated convenience method for getAgentConversationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(agentName, conversationId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentConversationWithResponse(agentName, conversationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VoiceConversation.class));
     }
 
@@ -979,10 +987,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String agentName, String conversationId) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteAgentConversation(String agentName, String conversationId) {
+        // Generated convenience method for deleteAgentConversationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(agentName, conversationId, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteAgentConversationWithResponse(agentName, conversationId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1014,9 +1022,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VoiceResponse> listResponses(String agentName, String conversationId, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listResponses
+    public PagedFlux<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1030,7 +1038,8 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listResponses(agentName, conversationId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = listAgentConversationResponses(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1064,10 +1073,11 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VoiceResponse> listResponses(String agentName, String conversationId) {
-        // Generated convenience method for listResponses
+    public PagedFlux<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId) {
+        // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listResponses(agentName, conversationId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = listAgentConversationResponses(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1104,10 +1114,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceResponse> getResponse(String agentName, String conversationId, String responseId) {
-        // Generated convenience method for getResponseWithResponse
+    public Mono<VoiceResponse> getAgentConversationResponse(String agentName, String conversationId,
+        String responseId) {
+        // Generated convenience method for getAgentConversationResponseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getResponseWithResponse(agentName, conversationId, responseId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentConversationResponseWithResponse(agentName, conversationId, responseId, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VoiceResponse.class));
     }
 
@@ -1142,9 +1154,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RealtimeConversationItem> listResponseItems(String agentName, String conversationId,
-        String responseId, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listResponseItems
+    public PagedFlux<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
+        String conversationId, String responseId, Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1159,7 +1171,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = listResponseItems(agentName, conversationId, responseId, requestOptions);
+            = listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1196,12 +1208,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RealtimeConversationItem> listResponseItems(String agentName, String conversationId,
-        String responseId) {
-        // Generated convenience method for listResponseItems
+    public PagedFlux<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
+        String conversationId, String responseId) {
+        // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse
-            = listResponseItems(agentName, conversationId, responseId, requestOptions);
+            = listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1246,9 +1258,9 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RealtimeConversationItem> listItems(String agentName, String conversationId, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listItems
+    public PagedFlux<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1262,7 +1274,7 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listItems(agentName, conversationId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversationItems(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1297,10 +1309,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RealtimeConversationItem> listItems(String agentName, String conversationId) {
-        // Generated convenience method for listItems
+    public PagedFlux<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId) {
+        // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listItems(agentName, conversationId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversationItems(agentName, conversationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1341,10 +1353,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RealtimeConversationItem> getItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for getItemWithResponse
+    public Mono<RealtimeConversationItem> getAgentConversationItem(String agentName, String conversationId,
+        String itemId) {
+        // Generated convenience method for getAgentConversationItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getItemWithResponse(agentName, conversationId, itemId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentConversationItemWithResponse(agentName, conversationId, itemId, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RealtimeConversationItem.class));
     }
 
@@ -1378,10 +1392,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceAudioItemResponse> getAudioItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for getAudioItemWithResponse
+    public Mono<VoiceAudioItemResponse> getAgentConversationAudioItem(String agentName, String conversationId,
+        String itemId) {
+        // Generated convenience method for getAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VoiceAudioItemResponse.class));
     }
 
@@ -1407,10 +1423,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadAudioItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for downloadAudioItemWithResponse
+    public Mono<BinaryData> downloadAgentConversationAudioItem(String agentName, String conversationId, String itemId) {
+        // Generated convenience method for downloadAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
+        return downloadAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -1437,11 +1453,11 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceGeneratedAudioItemResponse> getGeneratedAudioItem(String agentName, String conversationId,
-        String itemId) {
-        // Generated convenience method for getGeneratedAudioItemWithResponse
+    public Mono<VoiceGeneratedAudioItemResponse> getAgentConversationGeneratedAudioItem(String agentName,
+        String conversationId, String itemId) {
+        // Generated convenience method for getAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
+        return getAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VoiceGeneratedAudioItemResponse.class));
     }
@@ -1469,11 +1485,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadGeneratedAudioItem(String agentName, String conversationId, String itemId) {
-        // Generated convenience method for downloadGeneratedAudioItemWithResponse
+    public Mono<BinaryData> downloadAgentConversationGeneratedAudioItem(String agentName, String conversationId,
+        String itemId) {
+        // Generated convenience method for downloadAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return downloadAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1505,10 +1522,11 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceRecordingResponse> getAudio(String agentName, String conversationId) {
-        // Generated convenience method for getAudioWithResponse
+    public Mono<VoiceRecordingResponse> getAgentConversationAudio(String agentName, String conversationId) {
+        // Generated convenience method for getAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioWithResponse(agentName, conversationId, requestOptions).flatMap(FluxUtil::toMono)
+        return getAgentConversationAudioWithResponse(agentName, conversationId, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VoiceRecordingResponse.class));
     }
 
@@ -1537,9 +1555,10 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadAudio(String agentName, String conversationId) {
-        // Generated convenience method for downloadAudioWithResponse
+    public Mono<BinaryData> downloadAgentConversationAudio(String agentName, String conversationId) {
+        // Generated convenience method for downloadAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadAudioWithResponse(agentName, conversationId, requestOptions).flatMap(FluxUtil::toMono);
+        return downloadAgentConversationAudioWithResponse(agentName, conversationId, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 }

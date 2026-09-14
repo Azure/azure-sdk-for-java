@@ -55,12 +55,12 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.beta()
-            .buildBetaAgentTelephonyClient()
+            .buildBetaVoiceAgentsTelephonyClient()
             .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions());
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.beta()
-            .buildBetaAgentEndpointConversationsClient()
+            .buildBetaVoiceAgentsConversationsClient()
             .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
@@ -81,12 +81,12 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.beta()
-            .buildBetaAgentTelephonyClient()
+            .buildBetaVoiceAgentsTelephonyClient()
             .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions());
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.beta()
-            .buildBetaAgentEndpointConversationsClient()
+            .buildBetaVoiceAgentsConversationsClient()
             .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
     }
@@ -106,13 +106,13 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.beta()
-            .buildBetaAgentTelephonyAsyncClient()
+            .buildBetaVoiceAgentsTelephonyAsyncClient()
             .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions())
             .block();
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.beta()
-            .buildBetaAgentEndpointConversationsAsyncClient()
+            .buildBetaVoiceAgentsConversationsAsyncClient()
             .getAgentConversationWithResponse("agent", "conversation", new RequestOptions())
             .block();
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
@@ -124,7 +124,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         AgentsClientBuilder builder = createBuilder(httpClient);
 
         builder.beta()
-            .buildBetaAgentEndpointConversationsClient()
+            .buildBetaVoiceAgentsConversationsClient()
             .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
@@ -189,7 +189,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
 
         createBuilder(customPipeline).beta()
-            .buildBetaAgentTelephonyClient()
+            .buildBetaVoiceAgentsTelephonyClient()
             .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions());
 
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
@@ -197,7 +197,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
 
         createBuilder(customPipeline).beta()
-            .buildBetaAgentEndpointConversationsClient()
+            .buildBetaVoiceAgentsConversationsClient()
             .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
 
         assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));

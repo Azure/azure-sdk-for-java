@@ -83,7 +83,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listAgentConversations(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -93,39 +93,30 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @PathParam("conversation_id") String conversationId, @QueryParam("api-version") String apiVersion,
+        Response<BinaryData> listAgentConversationsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
-        @ExpectedResponses({ 204 })
+        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @PathParam("conversation_id") String conversationId, @QueryParam("api-version") String apiVersion,
+        Mono<Response<BinaryData>> getAgentConversation(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAgentConversationSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
@@ -134,9 +125,19 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("agent_name") String agentName,
-            @PathParam("conversation_id") String conversationId, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<Void>> deleteAgentConversation(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Delete("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteAgentConversationSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/endpoint/protocols/voice/conversations/{conversation_id}/responses")
         @ExpectedResponses({ 200 })
@@ -144,7 +145,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listResponses(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listAgentConversationResponses(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -155,7 +156,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listResponsesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listAgentConversationResponsesSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -166,7 +167,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getResponse(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getAgentConversationResponse(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("response_id") String responseId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -177,7 +178,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getResponseSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getAgentConversationResponseSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("response_id") String responseId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -188,7 +189,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listResponseItems(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listAgentConversationResponseItems(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("response_id") String responseId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -199,7 +200,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listResponseItemsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listAgentConversationResponseItemsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("response_id") String responseId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -210,7 +211,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listItems(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listAgentConversationItems(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -221,7 +222,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listItemsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listAgentConversationItemsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -232,7 +233,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getItem(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getAgentConversationItem(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -243,7 +244,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getItemSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getAgentConversationItemSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -254,7 +255,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioItem(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getAgentConversationAudioItem(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -265,7 +266,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioItemSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getAgentConversationAudioItemSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -276,7 +277,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> downloadAudioItem(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> downloadAgentConversationAudioItem(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -287,7 +288,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> downloadAudioItemSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> downloadAgentConversationAudioItemSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -298,7 +299,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getGeneratedAudioItem(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getAgentConversationGeneratedAudioItem(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -309,7 +310,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getGeneratedAudioItemSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getAgentConversationGeneratedAudioItemSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -320,7 +321,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> downloadGeneratedAudioItem(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> downloadAgentConversationGeneratedAudioItem(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -331,7 +332,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> downloadGeneratedAudioItemSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> downloadAgentConversationGeneratedAudioItemSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @PathParam("item_id") String itemId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -342,7 +343,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudio(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getAgentConversationAudio(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -353,7 +354,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getAgentConversationAudioSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -364,7 +365,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> downloadAudio(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> downloadAgentConversationAudio(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -375,7 +376,7 @@ public final class BetaVoiceAgentsConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> downloadAudioSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> downloadAgentConversationAudioSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("conversation_id") String conversationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -469,10 +470,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(String agentName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listAgentConversationsSinglePageAsync(String agentName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), agentName,
+            .withContext(context -> service.listAgentConversations(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -565,8 +567,8 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(String agentName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listSinglePageAsync(agentName, requestOptions));
+    public PagedFlux<BinaryData> listAgentConversationsAsync(String agentName, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listAgentConversationsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -656,9 +658,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(String agentName, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listAgentConversationsSinglePage(String agentName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(), agentName,
+        Response<BinaryData> res = service.listAgentConversationsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -751,8 +754,8 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(String agentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(agentName, requestOptions));
+    public PagedIterable<BinaryData> listAgentConversations(String agentName, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listAgentConversationsSinglePage(agentName, requestOptions));
     }
 
     /**
@@ -826,11 +829,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String agentName, String conversationId,
+    public Mono<Response<BinaryData>> getAgentConversationWithResponseAsync(String agentName, String conversationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), agentName, conversationId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAgentConversation(this.client.getEndpoint(), agentName,
+            conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -904,10 +907,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String agentName, String conversationId,
+    public Response<BinaryData> getAgentConversationWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), agentName, conversationId,
+        return service.getAgentConversationSync(this.client.getEndpoint(), agentName, conversationId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -927,10 +930,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String agentName, String conversationId,
+    public Mono<Response<Void>> deleteAgentConversationWithResponseAsync(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), agentName, conversationId,
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteAgentConversation(this.client.getEndpoint(), agentName,
+            conversationId, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -949,8 +952,9 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String agentName, String conversationId, RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getEndpoint(), agentName, conversationId,
+    public Response<Void> deleteAgentConversationWithResponse(String agentName, String conversationId,
+        RequestOptions requestOptions) {
+        return service.deleteAgentConversationSync(this.client.getEndpoint(), agentName, conversationId,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
@@ -1057,12 +1061,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listResponsesSinglePageAsync(String agentName, String conversationId,
-        RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listAgentConversationResponsesSinglePageAsync(String agentName,
+        String conversationId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listResponses(this.client.getEndpoint(), agentName, conversationId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listAgentConversationResponses(this.client.getEndpoint(), agentName,
+                conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -1169,9 +1173,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listResponsesAsync(String agentName, String conversationId,
+    public PagedFlux<BinaryData> listAgentConversationResponsesAsync(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listResponsesSinglePageAsync(agentName, conversationId, requestOptions));
+        return new PagedFlux<>(
+            () -> listAgentConversationResponsesSinglePageAsync(agentName, conversationId, requestOptions));
     }
 
     /**
@@ -1276,11 +1281,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listResponsesSinglePage(String agentName, String conversationId,
+    private PagedResponse<BinaryData> listAgentConversationResponsesSinglePage(String agentName, String conversationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listResponsesSync(this.client.getEndpoint(), agentName, conversationId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listAgentConversationResponsesSync(this.client.getEndpoint(), agentName,
+            conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -1387,9 +1392,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listResponses(String agentName, String conversationId,
+    public PagedIterable<BinaryData> listAgentConversationResponses(String agentName, String conversationId,
         RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listResponsesSinglePage(agentName, conversationId, requestOptions));
+        return new PagedIterable<>(
+            () -> listAgentConversationResponsesSinglePage(agentName, conversationId, requestOptions));
     }
 
     /**
@@ -1477,11 +1483,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      * `usage`, and status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResponseWithResponseAsync(String agentName, String conversationId,
-        String responseId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAgentConversationResponseWithResponseAsync(String agentName,
+        String conversationId, String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getResponse(this.client.getEndpoint(), agentName, conversationId,
-            responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getAgentConversationResponse(this.client.getEndpoint(), agentName, conversationId,
+                responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1569,11 +1576,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * `usage`, and status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResponseWithResponse(String agentName, String conversationId, String responseId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getAgentConversationResponseWithResponse(String agentName, String conversationId,
+        String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getResponseSync(this.client.getEndpoint(), agentName, conversationId, responseId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getAgentConversationResponseSync(this.client.getEndpoint(), agentName, conversationId,
+            responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1625,12 +1632,13 @@ public final class BetaVoiceAgentsConversationsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listResponseItemsSinglePageAsync(String agentName, String conversationId,
-        String responseId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listAgentConversationResponseItemsSinglePageAsync(String agentName,
+        String conversationId, String responseId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listResponseItems(this.client.getEndpoint(), agentName, conversationId,
-                responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listAgentConversationResponseItems(this.client.getEndpoint(), agentName,
+                conversationId, responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions,
+                context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -1683,19 +1691,239 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listResponseItemsAsync(String agentName, String conversationId, String responseId,
+    public PagedFlux<BinaryData> listAgentConversationResponseItemsAsync(String agentName, String conversationId,
+        String responseId, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listAgentConversationResponseItemsSinglePageAsync(agentName, conversationId,
+            responseId, requestOptions));
+    }
+
+    /**
+     * List items produced by a voice agent conversation response
+     * 
+     * Returns a paged collection of the output items produced by a specific response (the response's output
+     * projection). For the complete ordered conversation history — including user input and client-created
+     * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
+     * response was not persisted (`store = false`).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the response.
+     * @param responseId The id of the response whose output items are listed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listAgentConversationResponseItemsSinglePage(String agentName,
+        String conversationId, String responseId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res
+            = service.listAgentConversationResponseItemsSync(this.client.getEndpoint(), agentName, conversationId,
+                responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * List items produced by a voice agent conversation response
+     * 
+     * Returns a paged collection of the output items produced by a specific response (the response's output
+     * projection). For the complete ordered conversation history — including user input and client-created
+     * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
+     * response was not persisted (`store = false`).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the response.
+     * @param responseId The id of the response whose output items are listed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAgentConversationResponseItems(String agentName, String conversationId,
+        String responseId, RequestOptions requestOptions) {
+        return new PagedIterable<>(
+            () -> listAgentConversationResponseItemsSinglePage(agentName, conversationId, responseId, requestOptions));
+    }
+
+    /**
+     * List items in a voice agent conversation
+     * 
+     * Returns a paged collection of items — the complete ordered conversation history, including user input,
+     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
+     * conversation was not persisted (`store = false`).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation whose items are listed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listAgentConversationItemsSinglePageAsync(String agentName,
+        String conversationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listAgentConversationItems(this.client.getEndpoint(), agentName,
+                conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * List items in a voice agent conversation
+     * 
+     * Returns a paged collection of items — the complete ordered conversation history, including user input,
+     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
+     * conversation was not persisted (`store = false`).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation whose items are listed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listAgentConversationItemsAsync(String agentName, String conversationId,
         RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> listResponseItemsSinglePageAsync(agentName, conversationId, responseId, requestOptions));
+            () -> listAgentConversationItemsSinglePageAsync(agentName, conversationId, requestOptions));
     }
 
     /**
-     * List items produced by a voice agent conversation response
+     * List items in a voice agent conversation
      * 
-     * Returns a paged collection of the output items produced by a specific response (the response's output
-     * projection). For the complete ordered conversation history — including user input and client-created
-     * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
-     * response was not persisted (`store = false`).
+     * Returns a paged collection of items — the complete ordered conversation history, including user input,
+     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
+     * conversation was not persisted (`store = false`).
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1727,8 +1955,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation that contains the response.
-     * @param responseId The id of the response whose output items are listed.
+     * @param conversationId The id of the conversation whose items are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1737,22 +1964,21 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listResponseItemsSinglePage(String agentName, String conversationId,
-        String responseId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listAgentConversationItemsSinglePage(String agentName, String conversationId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listResponseItemsSync(this.client.getEndpoint(), agentName, conversationId,
-            responseId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listAgentConversationItemsSync(this.client.getEndpoint(), agentName,
+            conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
 
     /**
-     * List items produced by a voice agent conversation response
+     * List items in a voice agent conversation
      * 
-     * Returns a paged collection of the output items produced by a specific response (the response's output
-     * projection). For the complete ordered conversation history — including user input and client-created
-     * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
-     * response was not persisted (`store = false`).
+     * Returns a paged collection of items — the complete ordered conversation history, including user input,
+     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
+     * conversation was not persisted (`store = false`).
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1784,8 +2010,7 @@ public final class BetaVoiceAgentsConversationsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation that contains the response.
-     * @param responseId The id of the response whose output items are listed.
+     * @param conversationId The id of the conversation whose items are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1794,223 +2019,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listResponseItems(String agentName, String conversationId, String responseId,
+    public PagedIterable<BinaryData> listAgentConversationItems(String agentName, String conversationId,
         RequestOptions requestOptions) {
         return new PagedIterable<>(
-            () -> listResponseItemsSinglePage(agentName, conversationId, responseId, requestOptions));
-    }
-
-    /**
-     * List items in a voice agent conversation
-     * 
-     * Returns a paged collection of items — the complete ordered conversation history, including user input,
-     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
-     * conversation was not persisted (`store = false`).
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation whose items are listed.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listItemsSinglePageAsync(String agentName, String conversationId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listItems(this.client.getEndpoint(), agentName, conversationId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
-    }
-
-    /**
-     * List items in a voice agent conversation
-     * 
-     * Returns a paged collection of items — the complete ordered conversation history, including user input,
-     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
-     * conversation was not persisted (`store = false`).
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation whose items are listed.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listItemsAsync(String agentName, String conversationId,
-        RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listItemsSinglePageAsync(agentName, conversationId, requestOptions));
-    }
-
-    /**
-     * List items in a voice agent conversation
-     * 
-     * Returns a paged collection of items — the complete ordered conversation history, including user input,
-     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
-     * conversation was not persisted (`store = false`).
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation whose items are listed.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listItemsSinglePage(String agentName, String conversationId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listItemsSync(this.client.getEndpoint(), agentName, conversationId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
-    }
-
-    /**
-     * List items in a voice agent conversation
-     * 
-     * Returns a paged collection of items — the complete ordered conversation history, including user input,
-     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
-     * conversation was not persisted (`store = false`).
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation whose items are listed.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listItems(String agentName, String conversationId, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listItemsSinglePage(agentName, conversationId, requestOptions));
+            () -> listAgentConversationItemsSinglePage(agentName, conversationId, requestOptions));
     }
 
     /**
@@ -2045,11 +2057,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getItemWithResponseAsync(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAgentConversationItemWithResponseAsync(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getItem(this.client.getEndpoint(), agentName, conversationId,
-            itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAgentConversationItem(this.client.getEndpoint(), agentName,
+            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2084,10 +2096,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getAgentConversationItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
+        return service.getAgentConversationItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2137,11 +2149,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      * item, or its audio was not persisted along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioItemWithResponseAsync(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAgentConversationAudioItemWithResponseAsync(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAudioItem(this.client.getEndpoint(), agentName,
-            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getAgentConversationAudioItem(this.client.getEndpoint(), agentName,
+                conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2190,10 +2203,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * item, or its audio was not persisted along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getAgentConversationAudioItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
+        return service.getAgentConversationAudioItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2224,11 +2237,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadAudioItemWithResponseAsync(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadAgentConversationAudioItemWithResponseAsync(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
         final String accept = "audio/wav";
-        return FluxUtil.withContext(context -> service.downloadAudioItem(this.client.getEndpoint(), agentName,
-            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.downloadAgentConversationAudioItem(this.client.getEndpoint(), agentName,
+                conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2258,11 +2272,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadAudioItemWithResponse(String agentName, String conversationId, String itemId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> downloadAgentConversationAudioItemWithResponse(String agentName, String conversationId,
+        String itemId, RequestOptions requestOptions) {
         final String accept = "audio/wav";
-        return service.downloadAudioItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.downloadAgentConversationAudioItemSync(this.client.getEndpoint(), agentName, conversationId,
+            itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2305,11 +2319,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getGeneratedAudioItemWithResponseAsync(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAgentConversationGeneratedAudioItemWithResponseAsync(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getGeneratedAudioItem(this.client.getEndpoint(), agentName,
-            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getAgentConversationGeneratedAudioItem(this.client.getEndpoint(), agentName,
+                conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2351,11 +2366,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * Returns metadata for a conversation item's generated audio along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getGeneratedAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
+    public Response<BinaryData> getAgentConversationGeneratedAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getGeneratedAudioItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getAgentConversationGeneratedAudioItemSync(this.client.getEndpoint(), agentName, conversationId,
+            itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2386,11 +2401,12 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadGeneratedAudioItemWithResponseAsync(String agentName,
+    public Mono<Response<BinaryData>> downloadAgentConversationGeneratedAudioItemWithResponseAsync(String agentName,
         String conversationId, String itemId, RequestOptions requestOptions) {
         final String accept = "audio/wav";
-        return FluxUtil.withContext(context -> service.downloadGeneratedAudioItem(this.client.getEndpoint(), agentName,
-            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.downloadAgentConversationGeneratedAudioItem(this.client.getEndpoint(), agentName,
+                conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2421,11 +2437,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadGeneratedAudioItemWithResponse(String agentName, String conversationId,
-        String itemId, RequestOptions requestOptions) {
+    public Response<BinaryData> downloadAgentConversationGeneratedAudioItemWithResponse(String agentName,
+        String conversationId, String itemId, RequestOptions requestOptions) {
         final String accept = "audio/wav";
-        return service.downloadGeneratedAudioItemSync(this.client.getEndpoint(), agentName, conversationId, itemId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.downloadAgentConversationGeneratedAudioItemSync(this.client.getEndpoint(), agentName,
+            conversationId, itemId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2473,11 +2489,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * on the right) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioWithResponseAsync(String agentName, String conversationId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAgentConversationAudioWithResponseAsync(String agentName,
+        String conversationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAudio(this.client.getEndpoint(), agentName, conversationId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAgentConversationAudio(this.client.getEndpoint(), agentName,
+            conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2525,10 +2541,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * on the right) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioWithResponse(String agentName, String conversationId,
+    public Response<BinaryData> getAgentConversationAudioWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioSync(this.client.getEndpoint(), agentName, conversationId,
+        return service.getAgentConversationAudioSync(this.client.getEndpoint(), agentName, conversationId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2562,11 +2578,11 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadAudioWithResponseAsync(String agentName, String conversationId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadAgentConversationAudioWithResponseAsync(String agentName,
+        String conversationId, RequestOptions requestOptions) {
         final String accept = "audio/wav";
-        return FluxUtil.withContext(context -> service.downloadAudio(this.client.getEndpoint(), agentName,
-            conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.downloadAgentConversationAudio(this.client.getEndpoint(),
+            agentName, conversationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2599,10 +2615,10 @@ public final class BetaVoiceAgentsConversationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadAudioWithResponse(String agentName, String conversationId,
+    public Response<BinaryData> downloadAgentConversationAudioWithResponse(String agentName, String conversationId,
         RequestOptions requestOptions) {
         final String accept = "audio/wav";
-        return service.downloadAudioSync(this.client.getEndpoint(), agentName, conversationId,
+        return service.downloadAgentConversationAudioSync(this.client.getEndpoint(), agentName, conversationId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

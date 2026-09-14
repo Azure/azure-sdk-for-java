@@ -98,7 +98,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createBinding(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createTelephonyBinding(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData telephonyBinding, RequestOptions requestOptions, Context context);
@@ -109,7 +109,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createBindingSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createTelephonyBindingSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData telephonyBinding, RequestOptions requestOptions, Context context);
@@ -120,7 +120,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBindings(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listTelephonyBindings(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -130,7 +130,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBindingsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listTelephonyBindingsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -140,7 +140,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBinding(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyBinding(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("binding_id") String bindingId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -151,7 +151,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getBindingSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyBindingSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("binding_id") String bindingId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -162,7 +162,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateBinding(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> updateTelephonyBinding(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("binding_id") String bindingId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("If-Match") String ifMatch,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -174,7 +174,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateBindingSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> updateTelephonyBindingSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("binding_id") String bindingId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("If-Match") String ifMatch,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -186,7 +186,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteBinding(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteTelephonyBinding(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("binding_id") String bindingId,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
@@ -197,7 +197,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteBindingSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteTelephonyBindingSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("binding_id") String bindingId,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
@@ -208,7 +208,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCalls(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listTelephonyCalls(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -218,7 +218,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCallsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listTelephonyCallsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -228,7 +228,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCall(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyCall(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_id") String callId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -239,7 +239,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCallSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyCallSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_id") String callId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -250,7 +250,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> transferCall(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> transferTelephonyCall(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_id") String callId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -263,7 +263,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> transferCallSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> transferTelephonyCallSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_id") String callId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -276,7 +276,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> endCall(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> endTelephonyCall(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_id") String callId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -287,7 +287,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> endCallSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> endTelephonyCallSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_id") String callId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -298,7 +298,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTransferTargets(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyTransferTargets(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -308,7 +308,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTransferTargetsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyTransferTargetsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -318,7 +318,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> replaceTransferTargets(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceTelephonyTransferTargets(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("If-Match") String ifMatch,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -331,7 +331,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> replaceTransferTargetsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceTelephonyTransferTargetsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("If-Match") String ifMatch,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -344,7 +344,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createCallJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createTelephonyCallJob(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Idempotency-Key") String idempotencyKey,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -356,7 +356,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createCallJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Idempotency-Key") String idempotencyKey,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -368,7 +368,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCallJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyCallJob(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -379,7 +379,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCallJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -390,7 +390,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancelCallJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> cancelTelephonyCallJob(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -401,7 +401,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelCallJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> cancelTelephonyCallJobSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("call_job_id") String callJobId,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -412,7 +412,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
@@ -423,7 +423,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
@@ -434,7 +434,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -445,7 +445,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -456,7 +456,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> importCampaignRecipients(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> importTelephonyCampaignRecipients(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @HeaderParam("Idempotency-Key") String idempotencyKey, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -468,7 +468,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> importCampaignRecipientsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> importTelephonyCampaignRecipientsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @HeaderParam("Idempotency-Key") String idempotencyKey, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -480,7 +480,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCampaignRecipientImport(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyCampaignRecipientImport(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @PathParam("import_id") String importId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -491,7 +491,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCampaignRecipientImportSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyCampaignRecipientImportSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @PathParam("import_id") String importId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -502,7 +502,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> validateCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> validateTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -513,7 +513,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> validateCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> validateTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -524,7 +524,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> publishCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> publishTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -536,7 +536,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> publishCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> publishTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -548,7 +548,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> pauseCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> pauseTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -559,7 +559,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> pauseCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> pauseTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -570,7 +570,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> resumeCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> resumeTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -581,7 +581,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> resumeCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> resumeTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -592,7 +592,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancelCampaign(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> cancelTelephonyCampaign(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -603,7 +603,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelCampaignSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> cancelTelephonyCampaignSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("campaign_id") String campaignId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -614,7 +614,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOperation(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTelephonyOperation(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("operation_id") String operationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -625,7 +625,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOperationSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTelephonyOperationSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("operation_id") String operationId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -690,8 +690,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createBindingWithResponseAsync(String agentName, BinaryData telephonyBinding,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTelephonyBindingWithResponseAsync(String agentName,
+        BinaryData telephonyBinding, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -708,7 +708,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return FluxUtil.withContext(context -> service.createBinding(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.createTelephonyBinding(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), contentType, accept, telephonyBinding, requestOptionsLocal,
             context));
     }
@@ -771,7 +771,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a telephony binding owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createBindingWithResponse(String agentName, BinaryData telephonyBinding,
+    public Response<BinaryData> createTelephonyBindingWithResponse(String agentName, BinaryData telephonyBinding,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -789,7 +789,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return service.createBindingSync(this.client.getEndpoint(), agentName,
+        return service.createTelephonyBindingSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), contentType, accept, telephonyBinding, requestOptionsLocal,
             Context.NONE);
     }
@@ -848,11 +848,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBindingsSinglePageAsync(String agentName,
+    private Mono<PagedResponse<BinaryData>> listTelephonyBindingsSinglePageAsync(String agentName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBindings(this.client.getEndpoint(), agentName,
+            .withContext(context -> service.listTelephonyBindings(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -911,8 +911,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listBindingsAsync(String agentName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listBindingsSinglePageAsync(agentName, requestOptions));
+    public PagedFlux<BinaryData> listTelephonyBindingsAsync(String agentName, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listTelephonyBindingsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -968,9 +968,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listBindingsSinglePage(String agentName, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listTelephonyBindingsSinglePage(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listBindingsSync(this.client.getEndpoint(), agentName,
+        Response<BinaryData> res = service.listTelephonyBindingsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -1029,8 +1029,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listBindings(String agentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listBindingsSinglePage(agentName, requestOptions));
+    public PagedIterable<BinaryData> listTelephonyBindings(String agentName, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listTelephonyBindingsSinglePage(agentName, requestOptions));
     }
 
     /**
@@ -1073,11 +1073,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBindingWithResponseAsync(String agentName, String bindingId,
+    public Mono<Response<BinaryData>> getTelephonyBindingWithResponseAsync(String agentName, String bindingId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getBinding(this.client.getEndpoint(), agentName, bindingId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTelephonyBinding(this.client.getEndpoint(), agentName,
+            bindingId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1119,10 +1119,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * Retrieves a telephony binding owned by the voice agent named in the path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBindingWithResponse(String agentName, String bindingId,
+    public Response<BinaryData> getTelephonyBindingWithResponse(String agentName, String bindingId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getBindingSync(this.client.getEndpoint(), agentName, bindingId,
+        return service.getTelephonyBindingSync(this.client.getEndpoint(), agentName, bindingId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1180,12 +1180,13 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateBindingWithResponseAsync(String agentName, String bindingId, String ifMatch,
-        BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateTelephonyBindingWithResponseAsync(String agentName, String bindingId,
+        String ifMatch, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateBinding(this.client.getEndpoint(), agentName, bindingId,
-            contentType, ifMatch, this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.updateTelephonyBinding(this.client.getEndpoint(), agentName, bindingId, contentType,
+                ifMatch, this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -1241,11 +1242,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a telephony binding owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateBindingWithResponse(String agentName, String bindingId, String ifMatch,
+    public Response<BinaryData> updateTelephonyBindingWithResponse(String agentName, String bindingId, String ifMatch,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return service.updateBindingSync(this.client.getEndpoint(), agentName, bindingId, contentType, ifMatch,
+        return service.updateTelephonyBindingSync(this.client.getEndpoint(), agentName, bindingId, contentType, ifMatch,
             this.client.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
     }
 
@@ -1266,10 +1267,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteBindingWithResponseAsync(String agentName, String bindingId, String ifMatch,
-        RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.deleteBinding(this.client.getEndpoint(), agentName, bindingId,
-            ifMatch, this.client.getServiceVersion().getVersion(), requestOptions, context));
+    public Mono<Response<Void>> deleteTelephonyBindingWithResponseAsync(String agentName, String bindingId,
+        String ifMatch, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteTelephonyBinding(this.client.getEndpoint(), agentName,
+            bindingId, ifMatch, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -1289,9 +1290,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteBindingWithResponse(String agentName, String bindingId, String ifMatch,
+    public Response<Void> deleteTelephonyBindingWithResponse(String agentName, String bindingId, String ifMatch,
         RequestOptions requestOptions) {
-        return service.deleteBindingSync(this.client.getEndpoint(), agentName, bindingId, ifMatch,
+        return service.deleteTelephonyBindingSync(this.client.getEndpoint(), agentName, bindingId, ifMatch,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
@@ -1363,10 +1364,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listCallsSinglePageAsync(String agentName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listTelephonyCallsSinglePageAsync(String agentName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCalls(this.client.getEndpoint(), agentName,
+            .withContext(context -> service.listTelephonyCalls(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -1439,8 +1441,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listCallsAsync(String agentName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listCallsSinglePageAsync(agentName, requestOptions));
+    public PagedFlux<BinaryData> listTelephonyCallsAsync(String agentName, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listTelephonyCallsSinglePageAsync(agentName, requestOptions));
     }
 
     /**
@@ -1510,9 +1512,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listCallsSinglePage(String agentName, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listTelephonyCallsSinglePage(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listCallsSync(this.client.getEndpoint(), agentName,
+        Response<BinaryData> res = service.listTelephonyCallsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -1585,8 +1587,8 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCalls(String agentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listCallsSinglePage(agentName, requestOptions));
+    public PagedIterable<BinaryData> listTelephonyCalls(String agentName, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listTelephonyCallsSinglePage(agentName, requestOptions));
     }
 
     /**
@@ -1670,10 +1672,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCallWithResponseAsync(String agentName, String callId,
+    public Mono<Response<BinaryData>> getTelephonyCallWithResponseAsync(String agentName, String callId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCall(this.client.getEndpoint(), agentName, callId,
+        return FluxUtil.withContext(context -> service.getTelephonyCall(this.client.getEndpoint(), agentName, callId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -1757,9 +1759,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * Retrieves a durable inbound call record owned by the voice agent named in the path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCallWithResponse(String agentName, String callId, RequestOptions requestOptions) {
+    public Response<BinaryData> getTelephonyCallWithResponse(String agentName, String callId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCallSync(this.client.getEndpoint(), agentName, callId,
+        return service.getTelephonyCallSync(this.client.getEndpoint(), agentName, callId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1853,12 +1856,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> transferCallWithResponseAsync(String agentName, String callId,
+    public Mono<Response<BinaryData>> transferTelephonyCallWithResponseAsync(String agentName, String callId,
         BinaryData transferTelephonyCallRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.transferCall(this.client.getEndpoint(), agentName, callId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, transferTelephonyCallRequest,
+        return FluxUtil.withContext(context -> service.transferTelephonyCall(this.client.getEndpoint(), agentName,
+            callId, this.client.getServiceVersion().getVersion(), contentType, accept, transferTelephonyCallRequest,
             requestOptions, context));
     }
 
@@ -1951,11 +1954,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return detailed diagnostics for a durable inbound call to a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> transferCallWithResponse(String agentName, String callId,
+    public Response<BinaryData> transferTelephonyCallWithResponse(String agentName, String callId,
         BinaryData transferTelephonyCallRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.transferCallSync(this.client.getEndpoint(), agentName, callId,
+        return service.transferTelephonyCallSync(this.client.getEndpoint(), agentName, callId,
             this.client.getServiceVersion().getVersion(), contentType, accept, transferTelephonyCallRequest,
             requestOptions, Context.NONE);
     }
@@ -2039,10 +2042,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> endCallWithResponseAsync(String agentName, String callId,
+    public Mono<Response<BinaryData>> endTelephonyCallWithResponseAsync(String agentName, String callId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.endCall(this.client.getEndpoint(), agentName, callId,
+        return FluxUtil.withContext(context -> service.endTelephonyCall(this.client.getEndpoint(), agentName, callId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -2124,9 +2127,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return detailed diagnostics for a durable inbound call to a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> endCallWithResponse(String agentName, String callId, RequestOptions requestOptions) {
+    public Response<BinaryData> endTelephonyCallWithResponse(String agentName, String callId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.endCallSync(this.client.getEndpoint(), agentName, callId,
+        return service.endTelephonyCallSync(this.client.getEndpoint(), agentName, callId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2172,10 +2176,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTransferTargetsWithResponseAsync(String agentName,
+    public Mono<Response<BinaryData>> getTelephonyTransferTargetsWithResponseAsync(String agentName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTransferTargets(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.getTelephonyTransferTargets(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -2220,9 +2224,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * Returns all transfer targets configured for the voice agent named in the path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTransferTargetsWithResponse(String agentName, RequestOptions requestOptions) {
+    public Response<BinaryData> getTelephonyTransferTargetsWithResponse(String agentName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTransferTargetsSync(this.client.getEndpoint(), agentName,
+        return service.getTelephonyTransferTargetsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2287,12 +2292,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> replaceTransferTargetsWithResponseAsync(String agentName, String ifMatch,
+    public Mono<Response<BinaryData>> replaceTelephonyTransferTargetsWithResponseAsync(String agentName, String ifMatch,
         BinaryData replaceTelephonyTransferTargetsRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.replaceTransferTargets(this.client.getEndpoint(), agentName,
-            ifMatch, this.client.getServiceVersion().getVersion(), contentType, accept,
+        return FluxUtil.withContext(context -> service.replaceTelephonyTransferTargets(this.client.getEndpoint(),
+            agentName, ifMatch, this.client.getServiceVersion().getVersion(), contentType, accept,
             replaceTelephonyTransferTargetsRequest, requestOptions, context));
     }
 
@@ -2356,11 +2361,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the telephony transfer targets configured for one voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> replaceTransferTargetsWithResponse(String agentName, String ifMatch,
+    public Response<BinaryData> replaceTelephonyTransferTargetsWithResponse(String agentName, String ifMatch,
         BinaryData replaceTelephonyTransferTargetsRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.replaceTransferTargetsSync(this.client.getEndpoint(), agentName, ifMatch,
+        return service.replaceTelephonyTransferTargetsSync(this.client.getEndpoint(), agentName, ifMatch,
             this.client.getServiceVersion().getVersion(), contentType, accept, replaceTelephonyTransferTargetsRequest,
             requestOptions, Context.NONE);
     }
@@ -2461,12 +2466,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCallJobWithResponseAsync(String agentName, String idempotencyKey,
+    public Mono<Response<BinaryData>> createTelephonyCallJobWithResponseAsync(String agentName, String idempotencyKey,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createCallJob(this.client.getEndpoint(), agentName, idempotencyKey,
+            .withContext(context -> service.createTelephonyCallJob(this.client.getEndpoint(), agentName, idempotencyKey,
                 this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
@@ -2565,11 +2570,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a durable direct or campaign-created outbound call intent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCallJobWithResponse(String agentName, String idempotencyKey, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createTelephonyCallJobWithResponse(String agentName, String idempotencyKey,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createCallJobSync(this.client.getEndpoint(), agentName, idempotencyKey,
+        return service.createTelephonyCallJobSync(this.client.getEndpoint(), agentName, idempotencyKey,
             this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
@@ -2640,11 +2645,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCallJobWithResponseAsync(String agentName, String callJobId,
+    public Mono<Response<BinaryData>> getTelephonyCallJobWithResponseAsync(String agentName, String callJobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCallJob(this.client.getEndpoint(), agentName, callJobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTelephonyCallJob(this.client.getEndpoint(), agentName,
+            callJobId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2713,10 +2718,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * Retrieves a durable direct or campaign-created outbound call job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCallJobWithResponse(String agentName, String callJobId,
+    public Response<BinaryData> getTelephonyCallJobWithResponse(String agentName, String callJobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCallJobSync(this.client.getEndpoint(), agentName, callJobId,
+        return service.getTelephonyCallJobSync(this.client.getEndpoint(), agentName, callJobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2789,11 +2794,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelCallJobWithResponseAsync(String agentName, String callJobId, String ifMatch,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelTelephonyCallJobWithResponseAsync(String agentName, String callJobId,
+        String ifMatch, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelCallJob(this.client.getEndpoint(), agentName, callJobId,
-            ifMatch, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelTelephonyCallJob(this.client.getEndpoint(), agentName,
+            callJobId, ifMatch, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2864,10 +2869,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a durable direct or campaign-created outbound call intent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelCallJobWithResponse(String agentName, String callJobId, String ifMatch,
+    public Response<BinaryData> cancelTelephonyCallJobWithResponse(String agentName, String callJobId, String ifMatch,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelCallJobSync(this.client.getEndpoint(), agentName, callJobId, ifMatch,
+        return service.cancelTelephonyCallJobSync(this.client.getEndpoint(), agentName, callJobId, ifMatch,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2956,11 +2961,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCampaignWithResponseAsync(String agentName, BinaryData body,
+    public Mono<Response<BinaryData>> createTelephonyCampaignWithResponseAsync(String agentName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createCampaign(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.createTelephonyCampaign(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
@@ -3048,11 +3053,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCampaignWithResponse(String agentName, BinaryData body,
+    public Response<BinaryData> createTelephonyCampaignWithResponse(String agentName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createCampaignSync(this.client.getEndpoint(), agentName,
+        return service.createTelephonyCampaignSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
@@ -3115,11 +3120,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCampaignWithResponseAsync(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> getTelephonyCampaignWithResponseAsync(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCampaign(this.client.getEndpoint(), agentName, campaignId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTelephonyCampaign(this.client.getEndpoint(), agentName,
+            campaignId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3181,10 +3186,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> getTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCampaignSync(this.client.getEndpoint(), agentName, campaignId,
+        return service.getTelephonyCampaignSync(this.client.getEndpoint(), agentName, campaignId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -3245,13 +3250,13 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> importCampaignRecipientsWithResponseAsync(String agentName, String campaignId,
-        String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> importTelephonyCampaignRecipientsWithResponseAsync(String agentName,
+        String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.importCampaignRecipients(this.client.getEndpoint(), agentName,
-            campaignId, idempotencyKey, this.client.getServiceVersion().getVersion(), contentType, accept, body,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.importTelephonyCampaignRecipients(this.client.getEndpoint(),
+            agentName, campaignId, idempotencyKey, this.client.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, context));
     }
 
     /**
@@ -3310,12 +3315,13 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return an accepted outbound campaign operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> importCampaignRecipientsWithResponse(String agentName, String campaignId,
+    private Response<BinaryData> importTelephonyCampaignRecipientsWithResponse(String agentName, String campaignId,
         String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.importCampaignRecipientsSync(this.client.getEndpoint(), agentName, campaignId, idempotencyKey,
-            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
+        return service.importTelephonyCampaignRecipientsSync(this.client.getEndpoint(), agentName, campaignId,
+            idempotencyKey, this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3374,10 +3380,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link PollerFlux} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginImportCampaignRecipientsWithModelAsync(
-        String agentName, String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
+    public PollerFlux<TelephonyOperation, TelephonyOperationResource>
+        beginImportTelephonyCampaignRecipientsWithModelAsync(String agentName, String campaignId, String idempotencyKey,
+            BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.importCampaignRecipientsWithResponseAsync(agentName, campaignId, idempotencyKey, body,
+            () -> this.importTelephonyCampaignRecipientsWithResponseAsync(agentName, campaignId, idempotencyKey, body,
                 requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
@@ -3447,10 +3454,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginImportCampaignRecipientsWithModel(
+    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginImportTelephonyCampaignRecipientsWithModel(
         String agentName, String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.importCampaignRecipientsWithResponse(agentName, campaignId, idempotencyKey, body,
+            () -> this.importTelephonyCampaignRecipientsWithResponse(agentName, campaignId, idempotencyKey, body,
                 requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
@@ -3520,10 +3527,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link PollerFlux} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportCampaignRecipientsAsync(String agentName, String campaignId,
-        String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginImportTelephonyCampaignRecipientsAsync(String agentName,
+        String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.importCampaignRecipientsWithResponseAsync(agentName, campaignId, idempotencyKey, body,
+            () -> this.importTelephonyCampaignRecipientsWithResponseAsync(agentName, campaignId, idempotencyKey, body,
                 requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
@@ -3592,10 +3599,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginImportCampaignRecipients(String agentName, String campaignId,
-        String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginImportTelephonyCampaignRecipients(String agentName,
+        String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.importCampaignRecipientsWithResponse(agentName, campaignId, idempotencyKey, body,
+            () -> this.importTelephonyCampaignRecipientsWithResponse(agentName, campaignId, idempotencyKey, body,
                 requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
@@ -3661,11 +3668,12 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCampaignRecipientImportWithResponseAsync(String agentName, String campaignId,
-        String importId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTelephonyCampaignRecipientImportWithResponseAsync(String agentName,
+        String campaignId, String importId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCampaignRecipientImport(this.client.getEndpoint(), agentName,
-            campaignId, importId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getTelephonyCampaignRecipientImport(this.client.getEndpoint(), agentName,
+                campaignId, importId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3720,11 +3728,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * Retrieves the durable status and counters for a campaign recipient import along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCampaignRecipientImportWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> getTelephonyCampaignRecipientImportWithResponse(String agentName, String campaignId,
         String importId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCampaignRecipientImportSync(this.client.getEndpoint(), agentName, campaignId, importId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getTelephonyCampaignRecipientImportSync(this.client.getEndpoint(), agentName, campaignId,
+            importId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3758,10 +3766,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> validateCampaignWithResponseAsync(String agentName, String campaignId,
+    private Mono<Response<BinaryData>> validateTelephonyCampaignWithResponseAsync(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.validateCampaign(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.validateTelephonyCampaign(this.client.getEndpoint(), agentName,
             campaignId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -3795,10 +3803,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return an accepted outbound campaign operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> validateCampaignWithResponse(String agentName, String campaignId,
+    private Response<BinaryData> validateTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.validateCampaignSync(this.client.getEndpoint(), agentName, campaignId,
+        return service.validateTelephonyCampaignSync(this.client.getEndpoint(), agentName, campaignId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -3832,10 +3840,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link PollerFlux} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyOperation, TelephonyOperationResource>
-        beginValidateCampaignWithModelAsync(String agentName, String campaignId, RequestOptions requestOptions) {
+    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginValidateTelephonyCampaignWithModelAsync(
+        String agentName, String campaignId, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.validateCampaignWithResponseAsync(agentName, campaignId, requestOptions),
+            () -> this.validateTelephonyCampaignWithResponseAsync(agentName, campaignId, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -3878,10 +3886,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginValidateCampaignWithModel(String agentName,
-        String campaignId, RequestOptions requestOptions) {
+    public SyncPoller<TelephonyOperation, TelephonyOperationResource>
+        beginValidateTelephonyCampaignWithModel(String agentName, String campaignId, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.validateCampaignWithResponse(agentName, campaignId, requestOptions),
+            () -> this.validateTelephonyCampaignWithResponse(agentName, campaignId, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -3924,10 +3932,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link PollerFlux} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginValidateCampaignAsync(String agentName, String campaignId,
+    public PollerFlux<BinaryData, BinaryData> beginValidateTelephonyCampaignAsync(String agentName, String campaignId,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.validateCampaignWithResponseAsync(agentName, campaignId, requestOptions),
+            () -> this.validateTelephonyCampaignWithResponseAsync(agentName, campaignId, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -3969,10 +3977,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginValidateCampaign(String agentName, String campaignId,
+    public SyncPoller<BinaryData, BinaryData> beginValidateTelephonyCampaign(String agentName, String campaignId,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.validateCampaignWithResponse(agentName, campaignId, requestOptions),
+            () -> this.validateTelephonyCampaignWithResponse(agentName, campaignId, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -4026,12 +4034,13 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> publishCampaignWithResponseAsync(String agentName, String campaignId,
+    private Mono<Response<BinaryData>> publishTelephonyCampaignWithResponseAsync(String agentName, String campaignId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.publishCampaign(this.client.getEndpoint(), agentName, campaignId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.publishTelephonyCampaign(this.client.getEndpoint(), agentName, campaignId,
+                this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -4075,11 +4084,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return an accepted outbound campaign operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> publishCampaignWithResponse(String agentName, String campaignId, BinaryData body,
-        RequestOptions requestOptions) {
+    private Response<BinaryData> publishTelephonyCampaignWithResponse(String agentName, String campaignId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.publishCampaignSync(this.client.getEndpoint(), agentName, campaignId,
+        return service.publishTelephonyCampaignSync(this.client.getEndpoint(), agentName, campaignId,
             this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
@@ -4124,10 +4133,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link PollerFlux} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginPublishCampaignWithModelAsync(
+    public PollerFlux<TelephonyOperation, TelephonyOperationResource> beginPublishTelephonyCampaignWithModelAsync(
         String agentName, String campaignId, BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.publishCampaignWithResponseAsync(agentName, campaignId, body, requestOptions),
+            () -> this.publishTelephonyCampaignWithResponseAsync(agentName, campaignId, body, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -4181,10 +4190,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginPublishCampaignWithModel(String agentName,
-        String campaignId, BinaryData body, RequestOptions requestOptions) {
+    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginPublishTelephonyCampaignWithModel(
+        String agentName, String campaignId, BinaryData body, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.publishCampaignWithResponse(agentName, campaignId, body, requestOptions),
+            () -> this.publishTelephonyCampaignWithResponse(agentName, campaignId, body, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -4238,10 +4247,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link PollerFlux} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginPublishCampaignAsync(String agentName, String campaignId,
+    public PollerFlux<BinaryData, BinaryData> beginPublishTelephonyCampaignAsync(String agentName, String campaignId,
         BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.publishCampaignWithResponseAsync(agentName, campaignId, body, requestOptions),
+            () -> this.publishTelephonyCampaignWithResponseAsync(agentName, campaignId, body, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -4294,10 +4303,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPublishCampaign(String agentName, String campaignId, BinaryData body,
-        RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginPublishTelephonyCampaign(String agentName, String campaignId,
+        BinaryData body, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.publishCampaignWithResponse(agentName, campaignId, body, requestOptions),
+            () -> this.publishTelephonyCampaignWithResponse(agentName, campaignId, body, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -4366,11 +4375,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> pauseCampaignWithResponseAsync(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> pauseTelephonyCampaignWithResponseAsync(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.pauseCampaign(this.client.getEndpoint(), agentName, campaignId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.pauseTelephonyCampaign(this.client.getEndpoint(), agentName,
+            campaignId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4429,10 +4438,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> pauseCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> pauseTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.pauseCampaignSync(this.client.getEndpoint(), agentName, campaignId,
+        return service.pauseTelephonyCampaignSync(this.client.getEndpoint(), agentName, campaignId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -4493,11 +4502,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> resumeCampaignWithResponseAsync(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> resumeTelephonyCampaignWithResponseAsync(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.resumeCampaign(this.client.getEndpoint(), agentName, campaignId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.resumeTelephonyCampaign(this.client.getEndpoint(), agentName,
+            campaignId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4556,10 +4565,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> resumeCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> resumeTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.resumeCampaignSync(this.client.getEndpoint(), agentName, campaignId,
+        return service.resumeTelephonyCampaignSync(this.client.getEndpoint(), agentName, campaignId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -4620,11 +4629,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelCampaignWithResponseAsync(String agentName, String campaignId,
+    public Mono<Response<BinaryData>> cancelTelephonyCampaignWithResponseAsync(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelCampaign(this.client.getEndpoint(), agentName, campaignId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelTelephonyCampaign(this.client.getEndpoint(), agentName,
+            campaignId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4683,10 +4692,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelCampaignWithResponse(String agentName, String campaignId,
+    public Response<BinaryData> cancelTelephonyCampaignWithResponse(String agentName, String campaignId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelCampaignSync(this.client.getEndpoint(), agentName, campaignId,
+        return service.cancelTelephonyCampaignSync(this.client.getEndpoint(), agentName, campaignId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -4739,11 +4748,11 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponseAsync(String agentName, String operationId,
+    public Mono<Response<BinaryData>> getTelephonyOperationWithResponseAsync(String agentName, String operationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOperation(this.client.getEndpoint(), agentName, operationId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTelephonyOperation(this.client.getEndpoint(), agentName,
+            operationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4794,10 +4803,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * Retrieves an asynchronous outbound campaign operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String agentName, String operationId,
+    public Response<BinaryData> getTelephonyOperationWithResponse(String agentName, String operationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOperationSync(this.client.getEndpoint(), agentName, operationId,
+        return service.getTelephonyOperationSync(this.client.getEndpoint(), agentName, operationId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

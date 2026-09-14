@@ -921,8 +921,9 @@ public final class BetaAgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createFromPromptWithResponseAsync(body, requestOptions);
+    public Mono<Response<BinaryData>> createAgentFromPromptWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentFromPromptWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -942,10 +943,10 @@ public final class BetaAgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createFromPrompt(BinaryData body) {
-        // Generated convenience method for createFromPromptWithResponse
+    public Mono<AgentDetails> createAgentFromPrompt(BinaryData body) {
+        // Generated convenience method for createAgentFromPromptWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createFromPromptWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
+        return createAgentFromPromptWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 }
