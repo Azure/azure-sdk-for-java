@@ -4,11 +4,21 @@
 
 ### Features Added
 
+- Added synchronous and asynchronous OpenAI factory overloads accepting a native OpenAI options callback for URL, credential, headers, query parameters, and transport overrides.
+- Added `TelemetryClient` and `TelemetryAsyncClient` for retrieving and caching the project's Application Insights connection string.
+- Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
+
 ### Breaking Changes
 
 - Moved `maxSamples` from `DataGenerationJobOptions` to supported scenario-specific models. `SimulationSeedDataGenerationJobOptions` no longer accepts it, while `TracesDataGenerationJobOptions` now has a no-argument constructor and optional `Integer` value configured through `setMaxSamples(...)`.
 
 ### Bugs Fixed
+
+- Preserved UTF-8 characters split across reads when logging OpenAI SSE response bodies.
+- Validated dataset upload file names before making service requests.
+- Agent-scoped OpenAI clients now automatically send agent preview features and the configured API version, with explicit caller overrides preserved.
+- Preserved OpenAI credential and user-agent overrides through the default Azure HTTP bridge. User-supplied pipelines retain their authentication policies.
+- Preserved explicitly empty `Foundry-Features` headers.
 
 ### Other Changes
 

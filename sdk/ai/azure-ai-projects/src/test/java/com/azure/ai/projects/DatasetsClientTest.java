@@ -9,8 +9,10 @@ import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import java.io.FileNotFoundException;
@@ -23,6 +25,17 @@ import java.util.UUID;
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class DatasetsClientTest extends ClientTestBase {
+
+    @Test
+    @DoNotRecord
+    public void testCreateDatasetRejectsRootPath() {
+        DatasetsClient client = new AIProjectClientBuilder().endpoint("https://localhost")
+            .httpClient(request -> reactor.core.publisher.Mono.error(new AssertionError("Unexpected HTTP request")))
+            .buildDatasetsClient();
+        Path root = java.nio.file.Paths.get("").toAbsolutePath().getRoot();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> client.createDatasetWithFileWithResponse("dataset", "1", root, null, new RequestOptions()));
+    }
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

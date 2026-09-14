@@ -21,7 +21,6 @@ import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContentType
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentResponseCreateParams;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -83,20 +82,13 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
         this.options = options;
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options);
         String token = configuration.getCredential()
-            .getTokenSync(new TokenRequestContext().addScopes(VoiceAgentWebSocketUtils.TOKEN_SCOPE))
+            .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext(options))
             .getToken();
         this.httpClient = createHttpClient(configuration, options);
         Request.Builder request = new Request.Builder().url(websocketUri.toString())
-            .header("Authorization", "Bearer " + token)
-            .header("User-Agent", configuration.getUserAgent())
-            .header("Foundry-Features", VoiceAgentWebSocketUtils.PREVIEW_FEATURE)
             .header("Sec-WebSocket-Protocol", VoiceAgentWebSocketUtils.SUBPROTOCOL);
-        if (configuration.getHeaders() != null) {
-            for (HttpHeader header : configuration.getHeaders()) {
-                if (!VoiceAgentWebSocketUtils.isProtectedHeader(header.getName())) {
-                    request.header(header.getName(), header.getValue());
-                }
-            }
+        for (HttpHeader header : VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token)) {
+            request.header(header.getName(), header.getValue());
         }
         this.webSocket = httpClient.newWebSocket(request.build(), new Listener());
     }
@@ -373,11 +365,11 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
         }
     }
 
-    private void signal(EventSignal signal) {
+    private synchronized void signal(EventSignal signal) {
         if ((signal.event != null && events.size() >= VoiceAgentWebSocketUtils.INBOUND_CAPACITY)
             || !events.offer(signal)) {
             events.clear();
-            events.offer(EventSignal.error(new IllegalStateException("Voice-agent receive buffer overflow.")));
+            events.add(EventSignal.error(new IllegalStateException("Voice-agent receive buffer overflow.")));
             WebSocket current = webSocket;
             if (current != null) {
                 current.cancel();

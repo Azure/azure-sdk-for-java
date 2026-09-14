@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Added synchronous and asynchronous OpenAI factory overloads accepting a native OpenAI options callback for URL, credential, headers, query parameters, and transport overrides.
+- Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
+- Added realtime handshake options for session IDs, structured inputs, API versions, credential scopes, preview features, extra headers and query parameters, and same-host secure connection URL overrides.
+
 - Added preview `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
 - Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
 - Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
@@ -18,8 +22,18 @@
 
 ### Bugs Fixed
 
+- Preserved UTF-8 characters split across reads when logging OpenAI SSE response bodies.
+- Made synchronous voice-agent receive-buffer overflow signaling atomic across concurrent callbacks.
+- Rejected code-upload paths without a file name with an explicit argument error.
+- Agent-scoped OpenAI clients now automatically send agent preview features, including model router controls, and use an overridable API-version query parameter.
+- Preserved OpenAI credential and user-agent overrides through the default Azure HTTP bridge. User-supplied pipelines retain their authentication policies.
+
+- Added Java opt-in guidance to `403 preview_feature_required` errors when preview is disabled, preserving the service response and error details.
+- Preserved explicitly supplied empty `Foundry-Features` headers instead of replacing them with automatic preview opt-ins.
+
 ### Other Changes
 
+- Streamed replayable code-upload content when computing SHA-256 to avoid materializing the entire upload in memory.
 - Regenerated client from the updated TypeSpec specification.
 
 ## 2.5.0 (2026-09-09)

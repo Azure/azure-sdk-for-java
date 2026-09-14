@@ -121,6 +121,47 @@ OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 ```
 
+Agent-scoped OpenAI clients automatically opt in to agent preview features, independently of `allowPreview`.
+They use the project's configured API version. Customize OpenAI defaults with the options callback:
+
+```java
+OpenAIClient agentClient = builder.buildAgentScopedOpenAIClient("agent-name", options -> options
+    .replaceHeaders("User-Agent", "my-application/1.0")
+    .replaceQueryParams("api-version", "v1"));
+```
+
+The same callback is available on `buildOpenAIClient`, `buildOpenAIAsyncClient`, and
+`buildAgentScopedOpenAIAsyncClient`. Use `baseUrl`, `apiKey` or `credential`, and `httpClient` on the native
+OpenAI options to override those defaults. Use `replaceHeaders` and `replaceQueryParams` to replace existing
+values. Explicit `Foundry-Features` headers, including empty values and case-insensitive names, are preserved.
+Custom OpenAI transports bypass the Azure pipeline; custom Azure pipelines retain their own policies,
+including authentication policies that may replace an OpenAI credential override.
+
+### Application Insights configuration
+
+```java
+TelemetryClient telemetry = builder.buildTelemetryClient();
+String connectionString = telemetry.getApplicationInsightsConnectionString();
+
+TelemetryAsyncClient telemetryAsync = builder.buildTelemetryAsyncClient();
+Mono<String> connectionStringAsync = telemetryAsync.getApplicationInsightsConnectionString();
+```
+
+Each telemetry client caches successful lookups for its lifetime. Create a new client to refresh a rotated
+connection string. Missing connections raise `ResourceNotFoundException`; missing or invalid credentials
+raise `IllegalStateException`. Failed lookups are not cached. Treat the returned connection string as a secret.
+
+### HTTP logging
+
+Set `AZURE_AI_PROJECTS_CONSOLE_LOGGING=true` to default the builder's HTTP logging to `BODY_AND_HEADERS`.
+Explicit `HttpLogOptions` take precedence, including `HttpLogDetailLevel.NONE` to disable HTTP logging.
+Enable INFO output in your Java logging backend (or set `AZURE_LOG_LEVEL=information` for Azure Core's
+default logger). This option does not install console handlers or change other libraries' logging levels.
+The default OpenAI bridge logs `text/event-stream` response chunks only as the caller reads them;
+it does not pre-consume the stream. Other HTTP messages use Azure Core's logging and redaction rules.
+Custom transports and custom pipelines retain their own logging configuration. Body logs are not redacted
+and can contain prompts, responses, and other sensitive data; enable them only in a trusted environment.
+
 ### Preview operation groups and beta clients
 
 Several operation groups in the AI Projects client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.

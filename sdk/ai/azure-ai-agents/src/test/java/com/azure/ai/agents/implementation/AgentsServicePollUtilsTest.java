@@ -3,19 +3,89 @@
 
 package com.azure.ai.agents.implementation;
 
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.models.AgentOptimizationJob;
+import com.azure.ai.agents.models.AgentOptimizationJobResult;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AgentsServicePollUtilsTest {
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void optimizationPollerExposesJobIdAndFinalResult(boolean async) {
+        List<HttpRequest> requests = new ArrayList<>();
+        HttpClient httpClient = request -> {
+            requests.add(request);
+            boolean initial = request.getHttpMethod() == HttpMethod.POST;
+            String body = initial
+                ? "{\"id\":\"job-123\",\"status\":\"queued\"}"
+                : "{\"id\":\"job-123\",\"status\":\"succeeded\","
+                    + "\"result\":{\"baseline\":\"candidate-baseline\",\"best\":\"candidate-best\",\"candidates\":[]}}";
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json")
+                .set(HttpHeaderName.fromString("Operation-Location"),
+                    "https://localhost/api/projects/project/operations/job-123")
+                .set(HttpHeaderName.RETRY_AFTER, "0");
+            return Mono.just(new MockHttpResponse(request, initial ? 201 : 200, headers,
+                body.getBytes(StandardCharsets.UTF_8)));
+        };
+        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
+            .pipeline(new HttpPipelineBuilder().httpClient(httpClient).build())
+            .serviceVersion(AgentsServiceVersion.V1);
+
+        AgentOptimizationJobResult result;
+        if (async) {
+            AsyncPollResponse<AgentOptimizationJob, AgentOptimizationJobResult> response
+                = builder.beta().buildBetaAgentsAsyncClient().beginCreateOptimizationJob(new AgentOptimizationJob())
+                    .setPollInterval(Duration.ofMillis(1)).blockFirst(Duration.ofSeconds(5));
+            assertNotNull(response);
+            assertEquals("job-123", response.getValue().getId());
+            result = response.getFinalResult().block(Duration.ofSeconds(5));
+        } else {
+            SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult> poller
+                = builder.beta().buildBetaAgentsClient().beginCreateOptimizationJob(new AgentOptimizationJob())
+                    .setPollInterval(Duration.ofMillis(1));
+            assertEquals("job-123", poller.poll().getValue().getId());
+            result = poller.getFinalResult(Duration.ofSeconds(5));
+        }
+
+        assertNotNull(result);
+        assertEquals("candidate-baseline", result.getBaseline());
+        assertEquals("candidate-best", result.getBest());
+        assertEquals(1L, requests.stream().filter(request -> request.getHttpMethod() == HttpMethod.POST).count());
+        assertTrue(requests.stream().anyMatch(request -> request.getHttpMethod() == HttpMethod.GET));
+        requests.stream().filter(request -> request.getHttpMethod() == HttpMethod.GET).forEach(request -> {
+            assertEquals("/api/projects/project/operations/job-123", request.getUrl().getPath());
+            assertEquals("api-version=" + AgentsServiceVersion.V1.getVersion(), request.getUrl().getQuery());
+        });
+    }
 
     static Stream<Arguments> remapStatusCases() {
         return Stream.of(

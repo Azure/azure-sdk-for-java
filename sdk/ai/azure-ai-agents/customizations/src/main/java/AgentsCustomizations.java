@@ -2,12 +2,14 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
@@ -16,6 +18,7 @@ import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +38,9 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        libraryCustomization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast ->
+            customizeBuilder(ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."))));
         customizeVoicePreviewBuilders(libraryCustomization);
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
@@ -44,21 +50,68 @@ public class AgentsCustomizations extends Customization {
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
+    private static void customizeBuilder(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration pipelineMethod = builder.getMethodsByName("createHttpPipeline").stream()
+            .filter(method -> method.getParameters().isEmpty())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
+        if (builder.getMethodsBySignature("createHttpPipeline", "boolean").isEmpty()) {
+            MethodDeclaration overload = pipelineMethod.clone().addParameter("boolean", "authenticate");
+            overload.findAll(IfStmt.class).stream()
+                .filter(statement -> statement.getCondition().equals(StaticJavaParser.parseExpression("tokenCredential != null")))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated pipeline authentication condition was not found."))
+                .setCondition(StaticJavaParser.parseExpression("authenticate && tokenCredential != null"));
+            overload.findAll(VariableDeclarator.class).stream()
+                .filter(variable -> "localHttpLogOptions".equals(variable.getNameAsString()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated pipeline logging options were not found."))
+                .setInitializer(StaticJavaParser.parseExpression("resolveHttpLogOptions()"));
+            builder.addMember(overload);
+        }
+        if (builder.getMethodsBySignature("resolveHttpLogOptions").isEmpty()) {
+            builder.addMember(StaticJavaParser.parseBodyDeclaration(
+                "private HttpLogOptions resolveHttpLogOptions() {\n"
+                    + "    if (httpLogOptions != null) { return httpLogOptions; }\n"
+                    + "    Configuration buildConfiguration = configuration == null\n"
+                    + "        ? Configuration.getGlobalConfiguration() : configuration;\n"
+                    + "    HttpLogOptions options = new HttpLogOptions();\n"
+                    + "    if (\"true\".equalsIgnoreCase(buildConfiguration.get(\"AZURE_AI_PROJECTS_CONSOLE_LOGGING\"))) {\n"
+                    + "        options.setLogLevel(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS);\n"
+                    + "    }\n"
+                    + "    return options;\n"
+                    + "}"));
+        }
+        pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
+    }
+
     private void customizeVoicePreviewBuilders(LibraryCustomization customization) {
         customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
             ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
+            builder.getMethodsByName("buildInnerClient").stream()
+                .filter(method -> method.getParameters().isEmpty())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."))
+                .getBody().ifPresent(body -> {
+                    if (!body.toString().contains("createPreviewErrorPolicy")) {
+                        body.addStatement(2, StaticJavaParser.parseStatement(
+                            "localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline, "
+                                + "FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));"));
+                    }
+                });
             addServiceClient(builder, "BetaVoiceAgentWebSocketClient.class");
             addServiceClient(builder, "BetaVoiceAgentWebSocketAsyncClient.class");
-            ClassOrInterfaceDeclaration betaBuilder = builder.getMembers()
+            builder.getMembers()
                 .stream()
                 .filter(member -> member.isClassOrInterfaceDeclaration()
                     && "BetaAgentsClientBuilder".equals(member.asClassOrInterfaceDeclaration().getNameAsString()))
                 .map(member -> member.asClassOrInterfaceDeclaration())
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Generated BetaAgentsClientBuilder was not found."));
-            addServiceClient(betaBuilder, "BetaVoiceAgentWebSocketClient.class");
-            addServiceClient(betaBuilder, "BetaVoiceAgentWebSocketAsyncClient.class");
+                .ifPresent(betaBuilder -> {
+                    addServiceClient(betaBuilder, "BetaVoiceAgentWebSocketClient.class");
+                    addServiceClient(betaBuilder, "BetaVoiceAgentWebSocketAsyncClient.class");
+                });
             customizeAgentEndpointConversationBuildMethods(builder);
             customizeAgentTelephonyBuildMethods(builder);
             for (String methodName : new String[] { "buildBetaAgentEndpointConversationsAsyncClient",
@@ -473,8 +526,10 @@ public class AgentsCustomizations extends Customization {
                     clazz.getMethodsByName("fromJson")
                         .forEach(method -> method.findAll(AssignExpr.class).stream()
                             .filter(assignment -> assignment.getTarget().toString().endsWith(".role"))
-                            .forEach(assignment -> assignment.findAncestor(ExpressionStmt.class)
-                                .ifPresent(ExpressionStmt::remove)));
+                            .forEach(assignment -> assignment.stream(Node.TreeTraversal.PARENTS)
+                                .filter(ExpressionStmt.class::isInstance)
+                                .findFirst()
+                                .ifPresent(Node::remove)));
                 }));
         }
     }

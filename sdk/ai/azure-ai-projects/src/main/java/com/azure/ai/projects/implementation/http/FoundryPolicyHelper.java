@@ -76,7 +76,7 @@ public final class FoundryPolicyHelper {
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            if (CoreUtils.isNullOrEmpty(context.getHttpRequest().getHeaders().getValue(FOUNDRY_FEATURES))) {
+            if (context.getHttpRequest().getHeaders().get(FOUNDRY_FEATURES) == null) {
                 context.getHttpRequest().getHeaders().set(FOUNDRY_FEATURES, foundryFeatures);
             }
             return next.process();

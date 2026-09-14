@@ -191,7 +191,8 @@ public final class DatasetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createDatasetWithFileWithResponse(String name, String version, Path filePath,
         String connectionName, RequestOptions requestOptions) {
-        if (!Files.isRegularFile(filePath)) {
+        Path fileName = filePath.getFileName();
+        if (fileName == null || !Files.isRegularFile(filePath)) {
             throw LOGGER
                 .logThrowableAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
         }
@@ -204,9 +205,8 @@ public final class DatasetsClient {
                 .getValue()
                 .toObject(PendingUploadResponse.class);
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl())
-            .blobName(filePath.getFileName().toString())
-            .buildClient();
+        BlobClient blobClient
+            = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(fileName.toString()).buildClient();
         blobClient.upload(BinaryData.fromFile(filePath), true);
         return this.createOrUpdateDatasetVersionWithResponse(name, version,
             BinaryData.fromObject(new FileDatasetVersion().setDataUrl(blobClient.getBlobUrl())), requestOptions);

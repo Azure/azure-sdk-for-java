@@ -6,6 +6,11 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.UrlBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -46,21 +51,68 @@ final class VoiceAgentWebSocketUtils {
 
         String basePath = endpoint.getRawPath() == null ? "" : endpoint.getRawPath().replaceAll("/$", "");
         String path = basePath + "/agents/" + encode(agentName) + "/endpoint/protocols/voice";
-        StringBuilder query = new StringBuilder("api-version=").append(encode(configuration.getApiVersion()))
-            .append("&x-ms-client-sdk=")
-            .append(encode(configuration.getUserAgent()));
+        URI baseUri = URI.create(scheme + "://" + endpoint.getRawAuthority() + path);
+        if (options.getConnectionUrl() != null) {
+            baseUri = options.getConnectionUrl();
+            int endpointPort = endpoint.getPort() == -1 ? 443 : endpoint.getPort();
+            int overridePort = baseUri.getPort() == -1 ? 443 : baseUri.getPort();
+            if (!"wss".equalsIgnoreCase(baseUri.getScheme())
+                || baseUri.getHost() == null
+                || !baseUri.getHost().equalsIgnoreCase(endpoint.getHost())
+                || endpointPort != overridePort
+                || baseUri.getRawUserInfo() != null
+                || baseUri.getRawFragment() != null) {
+                throw new IllegalArgumentException(
+                    "Connection URL must be a wss URL on the project endpoint's host and port, without user information or a fragment.");
+            }
+        }
+        UrlBuilder url = UrlBuilder.parse(baseUri.toString());
+        url.setQueryParameter("api-version",
+            encode(options.getApiVersion() == null ? configuration.getApiVersion() : options.getApiVersion()));
+        url.setQueryParameter("x-ms-client-sdk", encode(configuration.getUserAgent()));
         VoiceAgentTransport transport = options.getTransport();
         if (transport != null) {
-            query.append("&transport=").append(encode(transport.toString()));
+            url.setQueryParameter("transport", encode(transport.toString()));
         }
         if (options.isStoreEnabled() != null) {
-            query.append("&store=").append(options.isStoreEnabled());
+            url.setQueryParameter("store", options.isStoreEnabled().toString());
         }
         if (options.getAgentVersionOverride() != null) {
-            query.append("&x-agent-version-override=").append(encode(options.getAgentVersionOverride()));
+            url.setQueryParameter("x-agent-version-override", encode(options.getAgentVersionOverride()));
         }
+        if (options.getAgentSessionId() != null) {
+            url.setQueryParameter("agent_session_id", encode(options.getAgentSessionId()));
+        }
+        options.getExtraQuery().forEach((name, value) -> url.setQueryParameter(encode(name), encode(value)));
+        return URI.create(url.toString());
+    }
 
-        return URI.create(scheme + "://" + endpoint.getRawAuthority() + path + "?" + query);
+    static TokenRequestContext createTokenRequestContext(VoiceAgentWebSocketConnectionOptions options) {
+        return options.getCredentialScopes() == null || options.getCredentialScopes().isEmpty()
+            ? new TokenRequestContext().addScopes(TOKEN_SCOPE)
+            : new TokenRequestContext().setScopes(options.getCredentialScopes());
+    }
+
+    static HttpHeaders buildHeaders(VoiceAgentWebSocketClientConfiguration configuration,
+        VoiceAgentWebSocketConnectionOptions options, String token) {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.USER_AGENT, configuration.getUserAgent());
+        if (configuration.getHeaders() != null) {
+            for (HttpHeader header : configuration.getHeaders()) {
+                if (!isProtectedHeader(header.getName())) {
+                    headers.set(HttpHeaderName.fromString(header.getName()), header.getValue());
+                }
+            }
+        }
+        headers.set(HttpHeaderName.fromString("Foundry-Features"), options.getFoundryFeatures());
+        if (options.getStructuredInputs() != null) {
+            headers.set(HttpHeaderName.fromString("x-ms-voice-structured-inputs"), options.getStructuredInputs());
+        }
+        options.getExtraHeaders().forEach((name, value) -> {
+            if (!isProtectedHeader(name) || "Foundry-Features".equalsIgnoreCase(name)) {
+                headers.set(HttpHeaderName.fromString(name), value);
+            }
+        });
+        return headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
     }
 
     private static String encode(String value) {

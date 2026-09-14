@@ -29,7 +29,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
@@ -120,8 +119,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
                 return Mono.error(new IllegalStateException("The voice-agent session has already been started."));
             }
 
-            TokenRequestContext tokenContext
-                = new TokenRequestContext().addScopes(VoiceAgentWebSocketUtils.TOKEN_SCOPE);
+            TokenRequestContext tokenContext = VoiceAgentWebSocketUtils.createTokenRequestContext(options);
             return configuration.getCredential().getToken(tokenContext).map(AccessToken::getToken).flatMap(token -> {
                 Disposable connection = openWebSocket(token).subscribe(unused -> {
                 }, this::terminateWithError, this::terminateNormally);
@@ -386,16 +384,9 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             .doOnConnected(connection -> connection.addHandlerLast("voiceAgentHandshakeResponseObserver",
                 new VoiceAgentWebSocketHandshakeHandler(this::terminateWithError)))
             .headers(headers -> {
-                if (configuration.getHeaders() != null) {
-                    for (HttpHeader header : configuration.getHeaders()) {
-                        if (!VoiceAgentWebSocketUtils.isProtectedHeader(header.getName())) {
-                            headers.set(header.getName(), header.getValue());
-                        }
-                    }
+                for (HttpHeader header : VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token)) {
+                    headers.set(header.getName(), header.getValue());
                 }
-                headers.set(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(), "Bearer " + token);
-                headers.set(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), configuration.getUserAgent());
-                headers.set("Foundry-Features", VoiceAgentWebSocketUtils.PREVIEW_FEATURE);
             });
         WebsocketClientSpec spec = WebsocketClientSpec.builder()
             .protocols(VoiceAgentWebSocketUtils.SUBPROTOCOL)
@@ -481,7 +472,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
         while (current != null && !(current instanceof WebSocketClientHandshakeException)) {
             current = current.getCause();
         }
-        if (!(current instanceof WebSocketClientHandshakeException)) {
+        if (current == null) {
             return error;
         }
         WebSocketClientHandshakeException handshakeError = (WebSocketClientHandshakeException) current;
