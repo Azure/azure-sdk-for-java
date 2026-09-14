@@ -39,17 +39,9 @@ extends:
                     fetchFilter: tree:0
                     fetchDepth: 0
                     fetchTags: false
+                    sparseCheckoutPatterns: /* !/*/ /eng /.config **/*.xml !sdk/**/test-recordings !sdk/**/session-records sdk/tools/linting-extensions
                     env:
                       AGENT_SOURCE_CHECKOUT_QUIET: 'true'
-                    sparseCheckoutPatterns: >-
-                      /*
-                      !/*/
-                      /eng
-                      /.config
-                      **/*.xml
-                      !sdk/**/test-recordings
-                      !sdk/**/session-records
-                      sdk/tools/linting-extensions
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'

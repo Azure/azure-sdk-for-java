@@ -24,9 +24,9 @@ steps:
       fetchFilter: tree:0
       fetchDepth: 0
       fetchTags: false
+      sparseCheckoutPatterns: $(SparseCheckoutPatterns)
       env:
         AGENT_SOURCE_CHECKOUT_QUIET: 'true'
-      sparseCheckoutPatterns: $(SparseCheckoutPatterns)
       condition: and(succeeded(), eq(variables['SparseCheckoutRequired'], 'true'))
 
     - task: PowerShell@2

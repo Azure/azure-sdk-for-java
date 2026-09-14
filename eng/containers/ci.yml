@@ -49,13 +49,9 @@ extends:
           fetchFilter: tree:0
           fetchDepth: 0
           fetchTags: false
+          sparseCheckoutPatterns: /* !/*/ /eng /.config
           env:
             AGENT_SOURCE_CHECKOUT_QUIET: 'true'
-          sparseCheckoutPatterns: >-
-            /*
-            !/*/
-            /eng
-            /.config
 
         - task: AzureCLI@2
           displayName: Login to $(containerRegistry)

@@ -28,18 +28,9 @@ jobs:
         fetchFilter: tree:0
         fetchDepth: 0
         fetchTags: false
+        sparseCheckoutPatterns: /* !/*/ /eng /.config sdk/${{ parameters.ServiceDirectory }} **/*.xml **/*.md !sdk/**/test-recordings !sdk/**/session-records
         env:
           AGENT_SOURCE_CHECKOUT_QUIET: 'true'
-        sparseCheckoutPatterns: >-
-          /*
-          !/*/
-          /eng
-          /.config
-          sdk/${{ parameters.ServiceDirectory }}
-          **/*.xml
-          **/*.md
-          !sdk/**/test-recordings
-          !sdk/**/session-records
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
