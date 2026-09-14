@@ -22,8 +22,9 @@ import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
 import javax.sound.sampled.AudioFormat;
@@ -31,11 +32,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -47,6 +49,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>To end the call, focus the terminal running the sample and press Enter. The sample then closes the WebSocket,
  * stops the microphone and speaker, reads the persisted conversation, and deletes the agent unless
  * {@code FOUNDRY_KEEP_VOICE_AGENT} is set to {@code true}.</p>
+ *
+ * <p>Disconnection or an audio failure also stops the call and releases the audio devices. Up to 60 seconds of PCM
+ * audio can wait for playback so that faster-than-realtime responses do not block WebSocket reception. Exceeding
+ * that limit ends the call rather than dropping speech or growing memory without a bound. This sample must be the
+ * only reader of standard input.</p>
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -115,70 +122,113 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
 
     private static Mono<Void> runConversation(VoiceAgentWebSocketSessionAsyncClient session,
         AtomicReference<String> conversationId) {
-        return Mono.using(() -> new AudioProcessor(session), processor -> {
-            processor.start();
-            AtomicBoolean responseActive = new AtomicBoolean();
-            Disposable receiver = session.receiveEvents().subscribe(event -> {
-                if (event instanceof RealtimeServerEventSessionCreated) {
-                    String id = ((RealtimeServerEventSessionCreated) event).getConversationId();
-                    if (id != null) {
-                        conversationId.set(id);
-                    }
-                } else if (event instanceof RealtimeServerEventInputAudioBufferSpeechStarted) {
-                    if (responseActive.get()) {
-                        processor.skipPendingAudio();
-                        session.cancelResponse().onErrorResume(error -> Mono.empty()).subscribe();
-                        System.out.println("(listening...)");
-                    }
-                } else if (event instanceof RealtimeServerEventConversationItemInputAudioTranscriptionCompleted) {
-                    System.out.println("You:  "
-                        + ((RealtimeServerEventConversationItemInputAudioTranscriptionCompleted) event)
-                            .getTranscript().trim());
-                } else if (event instanceof RealtimeServerEventResponseCreated) {
-                    responseActive.set(true);
-                } else if (event instanceof RealtimeServerEventResponseDone) {
-                    responseActive.set(false);
-                } else if (event instanceof RealtimeServerEventResponseAudioDelta) {
-                    processor.queueAudio(((RealtimeServerEventResponseAudioDelta) event).getDelta());
-                } else if (event instanceof RealtimeServerEventResponseAudioTranscriptDone) {
-                    System.out.println("Agent: "
-                        + ((RealtimeServerEventResponseAudioTranscriptDone) event).getTranscript());
-                } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
-                    RealtimeServerEventRealtimeServerEventError error
-                        = (RealtimeServerEventRealtimeServerEventError) event;
-                    System.out.println("Session error: " + error.getError().getMessage());
+        AudioProcessor processor = new AudioProcessor(session);
+        AtomicBoolean responseActive = new AtomicBoolean();
+        Mono<Void> receive = session.receiveEvents().concatMap(event -> {
+            if (event instanceof RealtimeServerEventSessionCreated) {
+                String id = ((RealtimeServerEventSessionCreated) event).getConversationId();
+                if (id != null) {
+                    conversationId.set(id);
                 }
-            }, error -> System.err.println("Realtime session ended: " + error.getMessage()));
-            System.out.println("Speak now; talk over the agent to interrupt it. Press Enter to end the session.");
-            return Mono.fromRunnable(() -> new Scanner(System.in).nextLine())
-                .subscribeOn(Schedulers.boundedElastic())
-                .doFinally(signal -> receiver.dispose())
-                .then();
-        }, AudioProcessor::close);
+            } else if (event instanceof RealtimeServerEventInputAudioBufferSpeechStarted) {
+                if (responseActive.get()) {
+                    processor.skipPendingAudio();
+                    System.out.println("(listening...)");
+                    return session.cancelResponse().timeout(SEND_TIMEOUT);
+                }
+            } else if (event instanceof RealtimeServerEventConversationItemInputAudioTranscriptionCompleted) {
+                System.out.println("You:  "
+                    + ((RealtimeServerEventConversationItemInputAudioTranscriptionCompleted) event)
+                        .getTranscript().trim());
+            } else if (event instanceof RealtimeServerEventResponseCreated) {
+                responseActive.set(true);
+            } else if (event instanceof RealtimeServerEventResponseDone) {
+                responseActive.set(false);
+            } else if (event instanceof RealtimeServerEventResponseAudioDelta) {
+                processor.queueAudio(((RealtimeServerEventResponseAudioDelta) event).getDelta());
+            } else if (event instanceof RealtimeServerEventResponseAudioTranscriptDone) {
+                System.out.println("Agent: "
+                    + ((RealtimeServerEventResponseAudioTranscriptDone) event).getTranscript());
+            } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
+                RealtimeServerEventRealtimeServerEventError error
+                    = (RealtimeServerEventRealtimeServerEventError) event;
+                System.out.println("Session error: " + error.getError().getMessage());
+            }
+            return Mono.<Void>empty();
+        }).then();
+        return runConversation(receive, processor, System.in);
     }
 
-    private static final class AudioProcessor implements AutoCloseable {
+    static Mono<Void> runConversation(Mono<Void> receive, AudioProcessor processor, InputStream input) {
+        return Mono.usingWhen(Mono.fromSupplier(() -> processor), audio -> {
+            System.out.println("Speak now; talk over the agent to interrupt it. Press Enter to end the session.");
+            return Mono.fromRunnable(processor::start)
+                .subscribeOn(Schedulers.boundedElastic())
+                .then(Mono.firstWithSignal(receive, processor.failure.asMono(), waitForEnter(input)));
+        }, VoiceAgentLiveAudioConversationAsyncSample::closeAudio,
+            (audio, error) -> closeAudio(audio), VoiceAgentLiveAudioConversationAsyncSample::closeAudio);
+    }
+
+    private static Mono<Void> closeAudio(AudioProcessor processor) {
+        return Mono.<Void>fromRunnable(processor::close).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    static Mono<Void> waitForEnter(InputStream input) {
+        return Flux.interval(Duration.ZERO, Duration.ofMillis(100), Schedulers.boundedElastic())
+            .handle((tick, sink) -> {
+                try {
+                    int available = input.available();
+                    for (int remaining = available; remaining > 0; remaining--) {
+                        int next = input.read();
+                        if (next == '\n' || next == '\r' || next == -1) {
+                            sink.complete();
+                            return;
+                        }
+                    }
+                } catch (IOException error) {
+                    sink.error(error);
+                }
+            }).then();
+    }
+
+    static final class AudioProcessor implements AutoCloseable {
         private static final int CHUNK_BYTES = 2400;
-        private static final int MAX_PLAYBACK_CHUNKS = 8;
+        static final int MAX_PLAYBACK_BYTES = VoiceAgentRealtimeSampleUtils.SAMPLE_RATE * 2 * 60;
         private static final byte[] STOP = new byte[0];
         private final VoiceAgentWebSocketSessionAsyncClient session;
         private final AudioFormat format = new AudioFormat(VoiceAgentRealtimeSampleUtils.SAMPLE_RATE, 16, 1, true, false);
-        private final BlockingQueue<byte[]> playback = new LinkedBlockingQueue<>(MAX_PLAYBACK_CHUNKS);
+        private final BlockingQueue<byte[]> playback = new LinkedBlockingQueue<>(MAX_PLAYBACK_BYTES / 2);
+        private int queuedPlaybackBytes;
         private final AtomicBoolean running = new AtomicBoolean();
+        private final Sinks.Empty<Void> failure = Sinks.empty();
+        private boolean closed;
         private TargetDataLine microphone;
         private SourceDataLine speaker;
         private Thread captureThread;
         private Thread playbackThread;
 
         AudioProcessor(VoiceAgentWebSocketSessionAsyncClient session) {
-            this.session = session;
+            this(session, null, null);
         }
 
-        void start() {
+        AudioProcessor(VoiceAgentWebSocketSessionAsyncClient session, TargetDataLine microphone, SourceDataLine speaker) {
+            this.session = session;
+            this.microphone = microphone;
+            this.speaker = speaker;
+        }
+
+        synchronized void start() {
+            if (closed) {
+                throw new IllegalStateException("Audio processor is already closed.");
+            }
             try {
-                microphone = AudioSystem.getTargetDataLine(format);
+                if (microphone == null) {
+                    microphone = AudioSystem.getTargetDataLine(format);
+                }
                 microphone.open(format, CHUNK_BYTES * 4);
-                speaker = AudioSystem.getSourceDataLine(format);
+                if (speaker == null) {
+                    speaker = AudioSystem.getSourceDataLine(format);
+                }
                 speaker.open(format);
                 microphone.start();
                 speaker.start();
@@ -198,18 +248,15 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
 
         private void capture() {
             byte[] buffer = new byte[CHUNK_BYTES];
-            while (running.get()) {
-                int read = microphone.read(buffer, 0, buffer.length);
-                if (read > 0) {
-                    try {
+            try {
+                while (running.get()) {
+                    int read = microphone.read(buffer, 0, buffer.length);
+                    if (read > 0 && running.get()) {
                         session.appendInputAudio(BinaryData.fromBytes(Arrays.copyOf(buffer, read))).block(SEND_TIMEOUT);
-                    } catch (RuntimeException error) {
-                        if (running.get()) {
-                            System.err.println("Microphone upload stopped: " + error.getMessage());
-                        }
-                        running.set(false);
                     }
                 }
+            } catch (RuntimeException error) {
+                fail(error);
             }
         }
 
@@ -220,50 +267,108 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
                     if (pcm == STOP) {
                         break;
                     }
+                    synchronized (playback) {
+                        queuedPlaybackBytes -= pcm.length;
+                    }
                     speaker.write(pcm, 0, pcm.length);
                 }
             } catch (InterruptedException error) {
                 Thread.currentThread().interrupt();
+                fail(error);
+            } catch (RuntimeException error) {
+                fail(error);
             }
         }
 
         void queueAudio(byte[] pcm) {
-            if (pcm != null && pcm.length > 0) {
-                try {
-                    playback.put(pcm);
-                } catch (InterruptedException error) {
-                    Thread.currentThread().interrupt();
+            if (pcm == null || pcm.length == 0) {
+                return;
+            }
+            if (pcm.length % 2 != 0) {
+                fail(new IllegalArgumentException("PCM16 audio must contain complete two-byte samples."));
+                return;
+            }
+            synchronized (playback) {
+                if (!running.get()) {
+                    return;
                 }
+                if (pcm.length <= MAX_PLAYBACK_BYTES - queuedPlaybackBytes && playback.offer(pcm)) {
+                    queuedPlaybackBytes += pcm.length;
+                    return;
+                }
+            }
+            fail(new IllegalStateException("Audio playback backlog exceeded 60 seconds."));
+        }
+
+        private void fail(Throwable error) {
+            if (running.compareAndSet(true, false)) {
+                failure.tryEmitError(error);
             }
         }
 
-        void skipPendingAudio() {
-            playback.clear();
+        synchronized void skipPendingAudio() {
+            clearPlayback();
             if (speaker != null) {
                 speaker.flush();
             }
         }
 
         @Override
-        public void close() {
+        public synchronized void close() {
+            if (closed) {
+                return;
+            }
+            closed = true;
             running.set(false);
-            playback.clear();
+            clearPlayback();
             playback.offer(STOP);
-            if (microphone != null) {
-                microphone.stop();
-                microphone.close();
-                microphone = null;
+            try {
+                closeLine(microphone);
+            } finally {
+                try {
+                    closeLine(speaker);
+                } finally {
+                    if (captureThread != null) {
+                        captureThread.interrupt();
+                    }
+                    if (playbackThread != null) {
+                        playbackThread.interrupt();
+                    }
+                    join(captureThread);
+                    join(playbackThread);
+                }
             }
-            if (speaker != null) {
-                speaker.stop();
-                speaker.close();
-                speaker = null;
+        }
+
+        private void clearPlayback() {
+            synchronized (playback) {
+                byte[] discarded;
+                while ((discarded = playback.poll()) != null) {
+                    queuedPlaybackBytes -= discarded.length;
+                }
             }
-            if (captureThread != null) {
-                captureThread.interrupt();
+        }
+
+        private static void closeLine(javax.sound.sampled.DataLine line) {
+            if (line != null) {
+                try {
+                    line.stop();
+                } finally {
+                    line.close();
+                }
             }
-            if (playbackThread != null) {
-                playbackThread.interrupt();
+        }
+
+        private static void join(Thread thread) {
+            if (thread != null && thread != Thread.currentThread()) {
+                try {
+                    thread.join(SEND_TIMEOUT.toMillis());
+                    if (thread.isAlive()) {
+                        System.err.println("Audio thread did not stop: " + thread.getName());
+                    }
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }

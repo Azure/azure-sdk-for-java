@@ -137,6 +137,16 @@ values. Explicit `Foundry-Features` headers, including empty values and case-ins
 Custom OpenAI transports bypass the Azure pipeline; custom Azure pipelines retain their own policies,
 including authentication policies that may replace an OpenAI credential override.
 
+### Asynchronous OpenAI authentication
+
+Native asynchronous OpenAI clients retrieve Azure tokens using `TokenCredential.getToken(...)` without blocking.
+Provide custom native transports through `buildOpenAIAsyncClient(options -> options.httpClient(transport))` or the
+agent-scoped factory callback. These callbacks retain asynchronous Azure authentication and honor explicit credential
+overrides. Replacing the transport afterward through the native client's `withOptions(...)` bypasses the authentication
+adapter; supply an explicit native credential as well, or rebuild through the factory callback instead.
+Cancelling a native OpenAI operation's future does not guarantee cancellation of pending Azure token retrieval;
+the native client's future decorators control cancellation propagation.
+
 ### Application Insights configuration
 
 ```java
@@ -161,6 +171,57 @@ The default OpenAI bridge logs `text/event-stream` response chunks only as the c
 it does not pre-consume the stream. Other HTTP messages use Azure Core's logging and redaction rules.
 Custom transports and custom pipelines retain their own logging configuration. Body logs are not redacted
 and can contain prompts, responses, and other sensitive data; enable them only in a trusted environment.
+
+SDK-created pipelines omit request and response bodies for multipart uploads, even with body logging enabled.
+This protection does not change logging policies in user-supplied pipelines or Blob clients configured through upload options.
+
+### Uploads and saved jobs
+
+`FileUploadOptions` supports filename regular-expression filtering for folders, Blob client configuration, and per-file
+upload configuration. Empty folders and filters matching no files fail before requesting storage. Single-file uploads
+ignore the filename filter. Uploads overwrite existing blobs by default; set Blob request conditions through the upload
+callback to change that behavior.
+
+`BetaModelsClient.createModel` and its asynchronous counterpart upload a file or folder using Azure Blob Storage,
+register the container, and optionally wait for the model to become available. They do not require AzCopy.
+
+```java readme-sample-local-model-upload
+FileUploadOptions files = new FileUploadOptions()
+    .setFilePattern(Pattern.compile("\\.(bin|json|safetensors)$"));
+ModelUploadOptions options = new ModelUploadOptions()
+    .setFileUploadOptions(files)
+    .setDescription("Local model weights")
+    .setTimeout(Duration.ofMinutes(5));
+ModelVersion model = builder.beta().buildBetaModelsClient()
+    .createModel("my-model", "1", Paths.get("model"), options);
+```
+
+Only HTTP 404 is treated as pending during registration polling. The wait timeout starts after registration is accepted;
+it does not cover file uploads. With `setWaitForCompletion(false)`, the returned model is the submitted metadata, not a
+confirmation that registration has completed.
+
+Save service job IDs to resume polling after restarting your application. Resumption uses GET requests and does not
+create another job. Configure the same project endpoint and credentials when rebuilding the client.
+
+```java readme-sample-resume-generation-job
+DataGenerationJobResult result = builder.beta().buildBetaDatasetsClient()
+    .resumeGenerationJob(savedJobId)
+    .getFinalResult(Duration.ofMinutes(5));
+```
+
+Evaluator generation and agent-insight runs also expose resume methods, with native asynchronous counterparts.
+Use the corresponding job cancellation API to cancel service work; stopping polling alone does not cancel a job.
+
+### Azure evaluation sources
+
+`AzureAIEvaluationDataSource` provides factories for CSV, target completions, response retrieval, benchmarks, red teams,
+and traces. Convert these sources to native OpenAI request types with `EvaluationsHelper.toDataSource`.
+
+```java readme-sample-azure-evaluation-source
+EvalCreateParams.DataSourceConfig schema = EvaluationsHelper.createDataSourceConfig("traces_preview");
+RunCreateParams.DataSource source = EvaluationsHelper.toDataSource(
+    AzureAIEvaluationDataSource.traces().setAgentName("my-agent").setLookbackHours(24).setMaxTraces(100));
+```
 
 ### Preview operation groups and beta clients
 

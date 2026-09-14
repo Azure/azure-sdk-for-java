@@ -129,6 +129,11 @@ OpenAI credential overrides. The default bridge delegates authentication to Open
 Entra credential unless overridden.
 
 Set `AZURE_AI_PROJECTS_CONSOLE_LOGGING=true` to default the builder's HTTP logging to `BODY_AND_HEADERS`.
+Native asynchronous OpenAI clients and `ResponsesAsyncClient` retrieve Azure tokens without blocking. Supply custom
+native OpenAI transports through the factory options callback to retain this authentication. Replacing the transport
+later through native `withOptions(...)` bypasses the authentication adapter and requires an explicit native credential.
+Cancelling a native OpenAI operation's future does not guarantee cancellation of pending Azure token retrieval;
+the native client's future decorators control cancellation propagation.
 Explicit `HttpLogOptions` take precedence, including `HttpLogDetailLevel.NONE` to disable HTTP logging.
 Enable INFO output in your Java logging backend (or set `AZURE_LOG_LEVEL=information` for Azure Core's
 default logger). This option does not install console handlers or change other libraries' logging levels.
@@ -994,7 +999,51 @@ BetaVoiceAgentWebSocketAsyncClient realtimeAsyncClient
 
 #### Send a synchronous text turn
 
+Connections require an `https://` or `wss://` project endpoint. Insecure endpoints and untrusted connection URL overrides
+are rejected before acquiring a token. This also applies to localhost; use certificate-verified TLS for local servers.
+
+Unknown server event types are returned as `RawRealtimeServerEvent`; `getRawEvent()` preserves the complete JSON object.
+Use `sendEvent(BinaryData)` to send raw JSON objects, including event types or fields not modeled by this SDK. Both
+clients accept UTF-8 JSON in text or binary WebSocket messages.
+
+Configure `VoiceAgentWebSocketConnectionOptions` before connecting and do not modify it while the session is active:
+
+- `setReceiveBufferCapacity` sets a bounded event queue (default 256, range 1-65536).
+- `setOverflowStrategy` defaults to `ERROR`, which closes an overflowing connection. `DROP_OLDEST` and `DROP_LATEST`
+    explicitly permit data loss and should only be used when the application can tolerate missing events.
+- `setMaxMessageSize` limits accepted message bytes (default 32 MiB). Oversized messages terminate the connection.
+    The sync transport checks size after receiving a complete message; this does not bound the transport's allocation.
+- Malformed JSON or invalid UTF-8 terminates reception by default. Set `setMalformedEventHandler` to report and skip
+    malformed events while continuing reception. This callback must not block; throwing from it terminates the session.
+- `setHttpClientConfiguration` customizes the sync OkHttp builder, including TLS trust and keepalive. Use
+    `setAsyncHttpClientConfiguration` for the async Reactor Netty transport. Authentication headers, subprotocol, redirects,
+    and handshake timeout remain SDK-controlled. Keep TLS certificate and hostname verification enabled.
+
+```java com.azure.ai.agents.realtime_forward_compatibility
+VoiceAgentWebSocketConnectionOptions options
+    = new VoiceAgentWebSocketConnectionOptions()
+        .setReceiveBufferCapacity(512)
+        .setMaxMessageSize(8 * 1024 * 1024)
+        .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
+try (VoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName, options)) {
+    session.sendEvent(BinaryData.fromString(
+        "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
+    for (RealtimeServerEvent event : session.receiveEvents()) {
+        if (event instanceof RawRealtimeServerEvent) {
+            BinaryData payload
+                = ((RawRealtimeServerEvent) event).getRawEvent();
+            System.out.println("Received an unrecognized event with " + payload.getLength() + " bytes.");
+        }
+    }
+}
+```
+
 Connect to the voice agent, add the user's text to the conversation, and request a response. Consume the typed server events until the response finishes. A session supports only one consumer of `receiveEvents()`.
+
+For bounded synchronous waits, use `receiveEvents(Duration)` with a positive per-event timeout. A timeout raises
+`IllegalStateException` with a `TimeoutException` cause, leaves the session open, and allows the same iterator to retry.
+Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a custom close frame. Close reasons must
+fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
 
 ```java
 try (VoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName)) {

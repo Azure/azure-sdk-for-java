@@ -3,6 +3,11 @@
 
 package com.azure.ai.projects;
 
+import com.azure.ai.projects.implementation.TokenUtils;
+import com.azure.ai.projects.implementation.http.HttpClientHelper;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -18,21 +23,170 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.openai.client.OpenAIClientAsync;
+import com.openai.core.ClientOptions;
+import com.openai.credential.BearerTokenCredential;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
-
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import reactor.core.publisher.Sinks;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FoundryFeaturesHeaderVerificationTest {
+    @Test
+    public void asyncAuthenticationPreservesLazyCredentialsAndRetryCount() {
+        RecordingHttpClient transport = new RecordingHttpClient(request -> new MockHttpResponse(request, 500,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+            "{}".getBytes(StandardCharsets.UTF_8)));
+        com.openai.core.http.HttpClient custom
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(transport).build());
+        AIProjectClientBuilder builder = createBuilder(transport);
+        OpenAIClientAsync client = builder.buildOpenAIAsyncClient(options -> options.httpClient(custom).maxRetries(1));
+        assertThrows(CompletionException.class, () -> client.models().list().join());
+        assertEquals(2, transport.requests.size());
+        AtomicInteger calls = new AtomicInteger();
+        OpenAIClientAsync overridden = builder.buildOpenAIAsyncClient(
+            options -> options.httpClient(custom).maxRetries(0).credential(BearerTokenCredential.create(() -> {
+                calls.incrementAndGet();
+                return "custom-token";
+            })));
+        assertEquals(0, calls.get());
+        assertThrows(CompletionException.class, () -> overridden.models().list().join());
+        assertTrue(calls.get() > 0);
+        assertEquals("Bearer custom-token",
+            transport.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+    }
+
+    @Test
+    public void cancellingAuthenticatedTransportCancelsTokenSubscription() {
+        AtomicBoolean cancelled = new AtomicBoolean();
+        RecordingHttpClient transport = newOpenAIRecordingHttpClient();
+        TokenUtils.AsyncAuthentication authentication = new TokenUtils.AsyncAuthentication(
+            context -> Mono.<AccessToken>never().doOnCancel(() -> cancelled.set(true)),
+            "https://ai.azure.com/.default");
+        ClientOptions.Builder options = ClientOptions.builder()
+            .credential(authentication.getCredential())
+            .httpClient(
+                HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(transport).build()));
+        com.openai.core.http.HttpClient authenticatedTransport = authentication.configure(options);
+        com.openai.core.http.HttpRequest request = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://localhost/models")
+            .putHeader("Authorization", "Bearer " + ((BearerTokenCredential) authentication.getCredential()).token())
+            .build();
+        CompletableFuture<?> result = authenticatedTransport.executeAsync(request);
+        assertTrue(result.cancel(true));
+        assertTrue(cancelled.get());
+        assertTrue(transport.requests.isEmpty());
+    }
+
+    @Test
+    public void asyncAuthenticationWaitsWithoutBlockingAndDoesNotSendOnFailure() {
+        Sinks.One<AccessToken> pending = Sinks.one();
+        RecordingHttpClient transport = newOpenAIRecordingHttpClient();
+        AIProjectClientBuilder builder = new AIProjectClientBuilder().endpoint("https://localhost/projects/test")
+            .httpClient(transport)
+            .credential(context -> pending.asMono());
+        OpenAIClientAsync client = builder.buildOpenAIAsyncClient();
+        CompletableFuture<?> result = assertTimeoutPreemptively(Duration.ofSeconds(2), () -> client.models().list());
+        assertFalse(result.isDone());
+        assertTrue(transport.requests.isEmpty());
+        pending.tryEmitValue(new AccessToken("delayed", OffsetDateTime.now().plusHours(1)));
+        result.join();
+        assertEquals("Bearer delayed", transport.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        int sent = transport.requests.size();
+        for (Mono<AccessToken> failure : Arrays
+            .asList(Mono.<AccessToken>error(new IllegalStateException("token failed")), Mono.<AccessToken>empty())) {
+            OpenAIClientAsync failingClient = builder.credential(context -> failure).buildOpenAIAsyncClient();
+            assertThrows(CompletionException.class, () -> failingClient.models().list().join());
+            assertEquals(sent, transport.requests.size());
+        }
+    }
+
+    @Test
+    public void asyncOpenAIAuthenticationNeverRequestsSynchronousTokens() {
+        RecordingHttpClient transport = newOpenAIRecordingHttpClient();
+        AtomicInteger requests = new AtomicInteger();
+        TokenCredential credential = new TokenCredential() {
+            @Override
+            public Mono<AccessToken> getToken(TokenRequestContext context) {
+                assertEquals(Collections.singletonList("https://ai.azure.com/.default"), context.getScopes());
+                return Mono.defer(() -> {
+                    requests.incrementAndGet();
+                    return Mono.just(new AccessToken("async-token", OffsetDateTime.now().plusHours(1)));
+                });
+            }
+
+            @Override
+            public AccessToken getTokenSync(TokenRequestContext context) {
+                throw new AssertionError("Async authentication must not call getTokenSync");
+            }
+        };
+        AIProjectClientBuilder builder = new AIProjectClientBuilder().endpoint("https://localhost/projects/test")
+            .credential(credential)
+            .httpClient(transport);
+        builder.buildOpenAIAsyncClient().models().list().join();
+        builder.buildAgentScopedOpenAIAsyncClient("agent").models().list().join();
+        com.openai.core.http.HttpClient custom
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(transport).build());
+        builder.buildOpenAIAsyncClient(options -> options.httpClient(custom)).models().list().join();
+        builder.buildAgentScopedOpenAIAsyncClient("agent", options -> options.httpClient(custom))
+            .models()
+            .list()
+            .join();
+        assertEquals(4, requests.get());
+        assertEquals("Bearer async-token",
+            transport.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        builder.buildOpenAIAsyncClient(options -> options.apiKey("override").httpClient(custom)).models().list().join();
+        assertEquals(4, requests.get());
+        assertEquals("Bearer override", transport.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void previewRequiredErrorPreservesResponse(boolean async) {
+        String body = "{\"error\":{\"code\":\"preview_feature_required\",\"message\":\"Preview required\"}}";
+        HttpClient httpClient = request -> Mono.just(
+            new MockHttpResponse(request, 403, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                body.getBytes(StandardCharsets.UTF_8)));
+        AIProjectClientBuilder builder = new AIProjectClientBuilder().endpoint("https://localhost/projects/test")
+            .pipeline(new HttpPipelineBuilder().httpClient(httpClient).build());
+        com.azure.core.exception.HttpResponseException error = org.junit.jupiter.api.Assertions
+            .assertThrows(com.azure.core.exception.HttpResponseException.class, () -> {
+                if (async) {
+                    builder.buildEvaluationRulesAsyncClient()
+                        .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"),
+                            new RequestOptions())
+                        .block(Duration.ofSeconds(5));
+                } else {
+                    builder.buildEvaluationRulesClient()
+                        .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"),
+                            new RequestOptions());
+                }
+            });
+        assertTrue(error.getMessage().contains("AIProjectClientBuilder.allowPreview(true)"));
+        assertEquals(body, error.getResponse().getBodyAsString().block());
+    }
+
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
     private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
@@ -283,7 +437,7 @@ public class FoundryFeaturesHeaderVerificationTest {
     public void openAIOverridesPreserveCredentialsHeadersAndQuery(boolean async) {
         RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
         AIProjectClientBuilder builder = createBuilder(httpClient);
-        java.util.function.Consumer<com.openai.core.ClientOptions.Builder> configure
+        java.util.function.Consumer<ClientOptions.Builder> configure
             = options -> options.baseUrl("https://localhost:8080/custom/openai")
                 .apiKey("test-api-key")
                 .replaceHeaders("User-Agent", "review-client/1.0")
@@ -313,18 +467,17 @@ public class FoundryFeaturesHeaderVerificationTest {
     @ValueSource(booleans = { false, true })
     public void customOpenAITransportRetainsAuthenticationAndAgentDefaults(boolean async) {
         RecordingHttpClient customTransport = newOpenAIRecordingHttpClient();
-        java.util.concurrent.atomic.AtomicInteger tokenRequests = new java.util.concurrent.atomic.AtomicInteger();
+        AtomicInteger tokenRequests = new AtomicInteger();
         AIProjectClientBuilder builder = new AIProjectClientBuilder().endpoint("https://localhost/api/projects/project")
             .clientOptions(new com.azure.core.util.ClientOptions().setApplicationId("review-app"))
             .httpClient(request -> Mono.error(new AssertionError("Default transport must not be used")))
             .credential(context -> {
-                assertEquals(java.util.Collections.singletonList("https://ai.azure.com/.default"), context.getScopes());
+                assertEquals(Collections.singletonList("https://ai.azure.com/.default"), context.getScopes());
                 tokenRequests.incrementAndGet();
-                return Mono.just(new com.azure.core.credential.AccessToken("test-token",
-                    java.time.OffsetDateTime.now().plusHours(1)));
+                return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
             });
-        com.openai.core.http.HttpClient transport = com.azure.ai.projects.implementation.http.HttpClientHelper
-            .mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(customTransport).build());
+        com.openai.core.http.HttpClient transport
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(customTransport).build());
         if (async) {
             builder.buildAgentScopedOpenAIAsyncClient("agent", options -> options.httpClient(transport))
                 .models()

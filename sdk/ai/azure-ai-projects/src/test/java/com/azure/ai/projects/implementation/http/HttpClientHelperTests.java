@@ -4,6 +4,7 @@
 package com.azure.ai.projects.implementation.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -11,10 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.openai.core.http.HttpRequestBody;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +21,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,6 +32,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class HttpClientHelperTests {
+
+    @Test
+    void multipartUploadsSkipBodyLoggerAndPreservePayload() {
+        com.azure.core.http.policy.HttpLogOptions options = new com.azure.core.http.policy.HttpLogOptions()
+            .setLogLevel(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS)
+            .setRequestLogger((logger, context) -> Mono.error(new AssertionError("Body logger invoked")));
+        byte[] payload = "private upload contents".getBytes(StandardCharsets.UTF_8);
+        HttpClient transport = request -> {
+            org.junit.jupiter.api.Assertions.assertArrayEquals(payload, request.getBodyAsBinaryData().toBytes());
+            assertEquals("Multipart/Form-Data; boundary=test",
+                request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            return Mono.just(new MockHttpResponse(request, 200, new byte[0]));
+        };
+        com.azure.core.http.HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(transport)
+            .policies(HttpClientHelper.createLoggingPolicy(options))
+            .build();
+        for (boolean async : new boolean[] { false, true }) {
+            HttpRequest request = new HttpRequest(com.azure.core.http.HttpMethod.POST, "https://localhost/upload")
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "Multipart/Form-Data; boundary=test")
+                .setBody(payload);
+            try (HttpResponse response
+                = async ? pipeline.send(request).block() : pipeline.sendSync(request, Context.NONE)) {
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+            }
+        }
+        assertEquals(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS, options.getLogLevel());
+    }
 
     @Test
     void responseBodyLoggingPreservesSplitUtf8() throws IOException {

@@ -118,12 +118,9 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
                 = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));
             Map<String, Object> pollResult = PollingUtils.deserializeResponseSync(latestResponseBody, serializer,
                 PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE);
-            if (pollResult != null && pollResult.get(propertyName) != null) {
-                return PollingUtils.deserializeResponseSync(BinaryData.fromObject(pollResult.get(propertyName)),
-                    serializer, resultType);
-            } else {
-                throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));
-            }
+            return PollingUtils.deserializeResponseSync(
+                AgentsServicePollUtils.getFinalResultBody(pollResult, propertyName, resultType), serializer,
+                resultType);
         } else {
             return super.getResult(pollingContext, resultType);
         }

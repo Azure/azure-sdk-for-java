@@ -4,6 +4,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaModelsImpl;
+import com.azure.ai.projects.implementation.FileUploadHelper;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
 import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateAsyncResponse;
@@ -11,6 +12,7 @@ import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.ModelCredentialInput;
 import com.azure.ai.projects.models.ModelPendingUploadInput;
 import com.azure.ai.projects.models.ModelPendingUploadResult;
+import com.azure.ai.projects.models.ModelUploadOptions;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.UpdateModelVersionInput;
 import com.azure.core.annotation.Generated;
@@ -25,6 +27,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobContainerClient;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
@@ -32,6 +42,64 @@ import com.azure.core.util.BinaryData;
 @ServiceClient(builder = AIProjectClientBuilder.class)
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaModelsClient {
+    private static final com.azure.core.util.logging.ClientLogger LOGGER
+        = new com.azure.core.util.logging.ClientLogger(BetaModelsClient.class);
+
+    /**
+     * Uploads a local file or folder, registers a model version, and optionally waits for it to become available.
+     * Only HTTP 404 is retried while waiting. Upload failures prevent registration.
+     * @param name model name.
+     * @param version model version.
+     * @param source local file or folder.
+     * @param options metadata, upload settings and wait settings; null uses defaults.
+     * @return the registered model, or the submitted model when waiting is disabled.
+    * @throws HttpResponseException if registration fails or a poll returns an error other than HTTP 404.
+    * @throws IllegalArgumentException if an upload path has no file name.
+    * @throws UnsupportedOperationException if the internal poller is cancelled.
+     */
+    public ModelVersion createModel(String name, String version, Path source, ModelUploadOptions options) {
+        ModelUploadOptions settings = options == null ? new ModelUploadOptions() : options;
+        List<Path> files = FileUploadHelper.getModelFiles(name, version, source, settings);
+        com.azure.ai.projects.models.BlobReference reference
+            = FileUploadHelper.getModelBlobReference(startModelPendingUploadWithResponse(name, version,
+                BinaryData.fromObject(new ModelPendingUploadInput().setConnectionName(settings.getConnectionName())),
+                new RequestOptions()).getValue());
+        BlobContainerClient container
+            = FileUploadHelper.createContainerBuilder(reference, settings.getFileUploadOptions()).buildClient();
+        boolean directory = Files.isDirectory(source);
+        for (Path file : files) {
+            Path fileName = file.getFileName();
+            if (fileName == null) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("The upload path must have a file name."));
+            }
+            String blobName = directory ? source.relativize(file).toString().replace('\\', '/') : fileName.toString();
+            container.getBlobClient(blobName)
+                .uploadWithResponse(FileUploadHelper.createUploadOptions(file, settings.getFileUploadOptions()), null,
+                    Context.NONE);
+        }
+        ModelVersion submitted = FileUploadHelper.createModelVersion(reference.getBlobUrl(), settings);
+        createModelVersionAsync(name, version, submitted);
+        if (!settings.isWaitForCompletion()) {
+            return submitted;
+        }
+        SyncPoller<ModelVersion, ModelVersion> poller = SyncPoller.createPoller(settings.getPollInterval(),
+            context -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, submitted), context -> {
+                try {
+                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        getModelVersion(name, version));
+                } catch (HttpResponseException exception) {
+                    if (exception.getResponse() == null || exception.getResponse().getStatusCode() != 404) {
+                        throw LOGGER.logExceptionAsError(exception);
+                    }
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, submitted);
+                }
+            }, (context, response) -> {
+                throw LOGGER
+                    .logExceptionAsError(new UnsupportedOperationException("Model registration cannot be cancelled."));
+            }, context -> context.getLatestResponse().getValue());
+        return poller.getFinalResult(settings.getTimeout());
+    }
 
     @Generated
     private final BetaModelsImpl serviceClient;

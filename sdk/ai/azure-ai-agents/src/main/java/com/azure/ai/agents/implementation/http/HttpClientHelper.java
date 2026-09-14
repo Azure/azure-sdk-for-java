@@ -22,7 +22,6 @@ import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
 import com.openai.errors.BadRequestException;
-import reactor.core.scheduler.Schedulers;
 import com.openai.errors.InternalServerException;
 import com.openai.errors.NotFoundException;
 import com.openai.errors.OpenAIException;
@@ -31,8 +30,6 @@ import com.openai.errors.RateLimitException;
 import com.openai.errors.UnauthorizedException;
 import com.openai.errors.UnexpectedStatusCodeException;
 import com.openai.errors.UnprocessableEntityException;
-import reactor.core.publisher.Mono;
-
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -40,6 +37,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * Utility entry point that adapts an Azure {@link com.azure.core.http.HttpClient} so it can be consumed by
@@ -52,6 +51,45 @@ public final class HttpClientHelper {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientHelper.class);
 
     private HttpClientHelper() {
+    }
+
+    /**
+     * Creates a logging policy that never logs multipart upload bodies.
+     * @param options caller logging settings, which are not modified.
+     * @return multipart-aware logging policy.
+     */
+    public static com.azure.core.http.policy.HttpPipelinePolicy
+        createLoggingPolicy(com.azure.core.http.policy.HttpLogOptions options) {
+        com.azure.core.http.policy.HttpLoggingPolicy normal = new com.azure.core.http.policy.HttpLoggingPolicy(options);
+        com.azure.core.http.policy.HttpLoggingPolicy headers
+            = new com.azure.core.http.policy.HttpLoggingPolicy(new com.azure.core.http.policy.HttpLogOptions()
+                .setLogLevel(options.getLogLevel().shouldLogHeaders()
+                    ? com.azure.core.http.policy.HttpLogDetailLevel.HEADERS
+                    : com.azure.core.http.policy.HttpLogDetailLevel.BASIC)
+                .setAllowedHeaderNames(options.getAllowedHeaderNames())
+                .setAllowedQueryParamNames(options.getAllowedQueryParamNames())
+                .disableRedactedHeaderLogging(options.isRedactedHeaderLoggingDisabled()));
+        return new com.azure.core.http.policy.HttpPipelinePolicy() {
+            private com.azure.core.http.policy.HttpLoggingPolicy
+                select(com.azure.core.http.HttpPipelineCallContext context) {
+                String contentType = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+                return options.getLogLevel().shouldLogBody()
+                    && contentType != null
+                    && contentType.toLowerCase(java.util.Locale.ROOT).startsWith("multipart/") ? headers : normal;
+            }
+
+            @Override
+            public Mono<com.azure.core.http.HttpResponse> process(com.azure.core.http.HttpPipelineCallContext context,
+                com.azure.core.http.HttpPipelineNextPolicy next) {
+                return select(context).process(context, next);
+            }
+
+            @Override
+            public com.azure.core.http.HttpResponse processSync(com.azure.core.http.HttpPipelineCallContext context,
+                com.azure.core.http.HttpPipelineNextSyncPolicy next) {
+                return select(context).processSync(context, next);
+            }
+        };
     }
 
     /**

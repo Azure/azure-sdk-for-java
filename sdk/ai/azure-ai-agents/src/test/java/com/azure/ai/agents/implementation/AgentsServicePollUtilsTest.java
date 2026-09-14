@@ -7,6 +7,9 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.models.AgentOptimizationJob;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
+import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
+import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
+import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -18,6 +21,13 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,18 +35,79 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AgentsServicePollUtilsTest {
+
+    static Stream<Arguments> memoryResultCases() {
+        return Stream.of(false, true)
+            .flatMap(async -> Stream
+                .of("", ",\"result\":null", ",\"result\":{\"memory_operations\":[],\"usage\":{\"total_tokens\":17}}")
+                .flatMap(result -> Stream.of("completed", "superseded")
+                    .flatMap(
+                        status -> Stream.of(false, true).map(resume -> Arguments.of(async, result, status, resume)))));
+    }
+
+    @ParameterizedTest
+    @MethodSource("memoryResultCases")
+    void memoryPollerHandlesEmptyResult(boolean async, String resultJson, String status, boolean resume) {
+        HttpClient httpClient = request -> {
+            if (resume) {
+                assertEquals(HttpMethod.GET, request.getHttpMethod());
+                assertTrue(request.getUrl().getPath().endsWith("/updates/update-123"));
+            }
+            boolean initial = request.getHttpMethod() == HttpMethod.POST;
+            String body = initial
+                ? "{\"update_id\":\"update-123\",\"status\":\"queued\"}"
+                : "{\"update_id\":\"update-123\",\"status\":\"" + status + "\"" + resultJson + "}";
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json")
+                .set(HttpHeaderName.fromString("Operation-Location"),
+                    "https://localhost/api/projects/project/memory_stores/store/updates/update-123")
+                .set(HttpHeaderName.RETRY_AFTER, "0");
+            return Mono.just(
+                new MockHttpResponse(request, initial ? 202 : 200, headers, body.getBytes(StandardCharsets.UTF_8)));
+        };
+        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
+            .pipeline(new HttpPipelineBuilder().httpClient(httpClient).build());
+        MemoryStoreUpdateCompletedResult result;
+        if (async) {
+            com.azure.ai.agents.BetaMemoryStoresAsyncClient client = builder.beta().buildBetaMemoryStoresAsyncClient();
+            AsyncPollResponse<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> response = (resume
+                ? client.resumeUpdateMemories("store", "update-123")
+                : client.beginUpdateMemories("store", "scope")).setPollInterval(Duration.ofMillis(1))
+                    .blockFirst(Duration.ofSeconds(5));
+            assertNotNull(response);
+            result = response.getFinalResult().block(Duration.ofSeconds(5));
+        } else {
+            com.azure.ai.agents.BetaMemoryStoresClient client = builder.beta().buildBetaMemoryStoresClient();
+            result = (resume
+                ? client.resumeUpdateMemories("store", "update-123")
+                : client.beginUpdateMemories("store", "scope")).setPollInterval(Duration.ofMillis(1))
+                    .getFinalResult(Duration.ofSeconds(5));
+        }
+        assertNotNull(result);
+        assertTrue(result.getMemoryOperations().isEmpty());
+        assertNotNull(result.getUsage());
+        assertEquals(resultJson.contains("17") ? 17 : 0, result.getUsage().getTotalTokens());
+        if (!resultJson.contains("17")) {
+            assertEquals(0, result.getUsage().getEmbeddingTokens());
+            assertEquals(0, result.getUsage().getInputTokens());
+            assertEquals(0, result.getUsage().getOutputTokens());
+            assertEquals(0, result.getUsage().getInputTokensDetails().getCachedTokensCount());
+            assertEquals(0, result.getUsage().getInputTokensDetails().getCacheWriteTokens());
+            assertEquals(0, result.getUsage().getOutputTokensDetails().getReasoningTokens());
+        }
+    }
+
+    @Test
+    void missingNonMemoryResultStillFails() {
+        assertThrows(AzureException.class, () -> AgentsServicePollUtils.getFinalResultBody(Collections.emptyMap(),
+            "result", TypeReference.createInstance(AgentOptimizationJobResult.class)));
+    }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
@@ -53,8 +124,8 @@ class AgentsServicePollUtilsTest {
                 .set(HttpHeaderName.fromString("Operation-Location"),
                     "https://localhost/api/projects/project/operations/job-123")
                 .set(HttpHeaderName.RETRY_AFTER, "0");
-            return Mono.just(new MockHttpResponse(request, initial ? 201 : 200, headers,
-                body.getBytes(StandardCharsets.UTF_8)));
+            return Mono.just(
+                new MockHttpResponse(request, initial ? 201 : 200, headers, body.getBytes(StandardCharsets.UTF_8)));
         };
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
             .pipeline(new HttpPipelineBuilder().httpClient(httpClient).build())
@@ -62,16 +133,19 @@ class AgentsServicePollUtilsTest {
 
         AgentOptimizationJobResult result;
         if (async) {
-            AsyncPollResponse<AgentOptimizationJob, AgentOptimizationJobResult> response
-                = builder.beta().buildBetaAgentsAsyncClient().beginCreateOptimizationJob(new AgentOptimizationJob())
-                    .setPollInterval(Duration.ofMillis(1)).blockFirst(Duration.ofSeconds(5));
+            AsyncPollResponse<AgentOptimizationJob, AgentOptimizationJobResult> response = builder.beta()
+                .buildBetaAgentsAsyncClient()
+                .beginCreateOptimizationJob(new AgentOptimizationJob())
+                .setPollInterval(Duration.ofMillis(1))
+                .blockFirst(Duration.ofSeconds(5));
             assertNotNull(response);
             assertEquals("job-123", response.getValue().getId());
             result = response.getFinalResult().block(Duration.ofSeconds(5));
         } else {
-            SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult> poller
-                = builder.beta().buildBetaAgentsClient().beginCreateOptimizationJob(new AgentOptimizationJob())
-                    .setPollInterval(Duration.ofMillis(1));
+            SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult> poller = builder.beta()
+                .buildBetaAgentsClient()
+                .beginCreateOptimizationJob(new AgentOptimizationJob())
+                .setPollInterval(Duration.ofMillis(1));
             assertEquals("job-123", poller.poll().getValue().getId());
             result = poller.getFinalResult(Duration.ofSeconds(5));
         }
@@ -93,8 +167,8 @@ class AgentsServicePollUtilsTest {
             Arguments.of("completed", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("Completed", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("COMPLETED", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
-            Arguments.of("superseded", LongRunningOperationStatus.USER_CANCELLED),
-            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED));
+            Arguments.of("superseded", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
+            Arguments.of("Superseded", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED));
     }
 
     @ParameterizedTest

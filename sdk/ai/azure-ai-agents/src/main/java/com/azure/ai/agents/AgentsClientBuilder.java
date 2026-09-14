@@ -28,9 +28,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -382,7 +381,7 @@ public final class AgentsClientBuilder
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        policies.add(HttpClientHelper.createLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
@@ -446,8 +445,13 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        TokenUtils.AsyncAuthentication authentication
+            = new TokenUtils.AsyncAuthentication(tokenCredential, DEFAULT_SCOPES);
+        return new ResponsesAsyncClient(
+            getOpenAIAsyncClientBuilder(null, authentication.getCredential()).build().withOptions(options -> {
+                options.httpClient(createOpenAIHttpClient(null));
+                authentication.configure(options);
+            }));
     }
 
     /**
@@ -508,18 +512,21 @@ public final class AgentsClientBuilder
      * @return an instance of OpenAIAsyncClient
      */
     public OpenAIClientAsync buildOpenAIAsyncClient() {
-        return getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, null));
+        return createOpenAIAsyncClient(null, options -> {
+        });
     }
 
     /**
      * Builds an asynchronous project-scoped OpenAI client with caller overrides.
      *
+    * Azure tokens are retrieved asynchronously before transport execution. Supply custom transports here;
+    * replacing the native transport later bypasses Azure authentication and requires an explicit native credential.
+    *
      * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
      * @return the configured asynchronous OpenAI client.
      */
     public OpenAIClientAsync buildOpenAIAsyncClient(Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        return buildOpenAIAsyncClient().withOptions(Objects.requireNonNull(configure, "'configure' cannot be null."));
+        return createOpenAIAsyncClient(null, Objects.requireNonNull(configure, "'configure' cannot be null."));
     }
 
     /**
@@ -534,21 +541,37 @@ public final class AgentsClientBuilder
         if (CoreUtils.isNullOrEmpty(agentName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
-        return getOpenAIAsyncClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, AGENT_PREVIEW_FEATURES));
+        return createOpenAIAsyncClient(agentName, options -> {
+        });
     }
 
     /**
      * Builds an asynchronous agent-scoped OpenAI client with preview headers and caller overrides.
      *
+    * Supply custom transports through this callback so asynchronous Azure authentication remains installed.
+    *
      * @param agentName the name of the agent. Must not be null or empty.
      * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
      * @return the configured asynchronous OpenAI client.
+    * @throws IllegalArgumentException if agentName is null or empty.
      */
     public OpenAIClientAsync buildAgentScopedOpenAIAsyncClient(String agentName,
         Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        return buildAgentScopedOpenAIAsyncClient(agentName)
-            .withOptions(Objects.requireNonNull(configure, "'configure' cannot be null."));
+        if (CoreUtils.isNullOrEmpty(agentName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
+        }
+        return createOpenAIAsyncClient(agentName, Objects.requireNonNull(configure, "'configure' cannot be null."));
+    }
+
+    private OpenAIClientAsync createOpenAIAsyncClient(String agentName,
+        Consumer<com.openai.core.ClientOptions.Builder> configure) {
+        TokenUtils.AsyncAuthentication authentication
+            = new TokenUtils.AsyncAuthentication(tokenCredential, DEFAULT_SCOPES);
+        return getOpenAIAsyncClientBuilder(agentName, authentication.getCredential()).build().withOptions(options -> {
+            configureOpenAIOptions(options, agentName == null ? null : AGENT_PREVIEW_FEATURES);
+            configure.accept(options);
+            authentication.configure(options);
+        });
     }
 
     private String getDefaultBaseUrl() {
@@ -580,10 +603,9 @@ public final class AgentsClientBuilder
         return builder;
     }
 
-    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
-        OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName,
+        com.openai.credential.Credential credential) {
+        OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder().credential(credential);
         builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());

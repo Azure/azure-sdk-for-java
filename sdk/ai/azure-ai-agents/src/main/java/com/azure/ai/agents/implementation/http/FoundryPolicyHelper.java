@@ -15,13 +15,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * Utility methods for adding AI Foundry-specific policies to Azure Core {@link HttpPipeline HttpPipelines}.
@@ -129,8 +128,7 @@ public final class FoundryPolicyHelper {
                 return null;
             }
             Object error = ((Map<?, ?>) value).get("error");
-            if (!(error instanceof Map)
-                || !"preview_feature_required".equals(((Map<?, ?>) error).get("code"))) {
+            if (!(error instanceof Map) || !"preview_feature_required".equals(((Map<?, ?>) error).get("code"))) {
                 return null;
             }
             String message = "Status code 403, \"" + new String(bytes, StandardCharsets.UTF_8)

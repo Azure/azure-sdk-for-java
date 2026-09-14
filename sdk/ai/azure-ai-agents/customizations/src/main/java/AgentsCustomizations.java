@@ -2,8 +2,8 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -11,8 +11,8 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
@@ -38,6 +38,26 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        com.azure.autorest.customization.Editor editor = libraryCustomization.getRawEditor();
+        new ArrayList<>(editor.getContents().keySet()).stream()
+            .filter(path -> path.endsWith("module-info.java"))
+            .forEach(path -> {
+                com.github.javaparser.ast.CompilationUnit module = StaticJavaParser.parse(editor.getFileContent(path));
+                for (String dependency : Arrays.asList("reactor.netty.http", "okhttp3")) {
+                    com.github.javaparser.ast.modules.ModuleRequiresDirective requirement = module
+                        .findAll(com.github.javaparser.ast.modules.ModuleRequiresDirective.class).stream()
+                        .filter(directive -> dependency.equals(directive.getNameAsString()))
+                        .findFirst().orElse(null);
+                    if (requirement == null) {
+                        module.getModule().orElseThrow(() -> new IllegalStateException("Missing module declaration."))
+                            .addDirective(new com.github.javaparser.ast.modules.ModuleRequiresDirective()
+                                .setName(dependency).setTransitive(true));
+                    } else {
+                        requirement.setTransitive(true);
+                    }
+                }
+                editor.replaceFile(path, module.toString());
+            });
         libraryCustomization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast ->
             customizeBuilder(ast.getClassByName("AgentsClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."))));
@@ -83,6 +103,12 @@ public class AgentsCustomizations extends Customization {
                     + "}"));
         }
         pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
+        builder.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
+            .filter(expression -> "HttpLoggingPolicy".equals(expression.getType().getNameAsString()))
+            .forEach(expression -> expression.replace(StaticJavaParser.parseExpression(
+                "com.azure.ai.agents.implementation.http.HttpClientHelper.createLoggingPolicy(localHttpLogOptions)")));
+        builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
+            "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
     }
 
     private void customizeVoicePreviewBuilders(LibraryCustomization customization) {
@@ -608,6 +634,28 @@ public class AgentsCustomizations extends Customization {
             } else {
                 pollMethods.get(0).setBody(StaticJavaParser.parseBlock(pollMethodBody));
             }
+            MethodDeclaration getResult = clazz.getMethodsByName("getResult").get(0);
+            String statusChecks = className.startsWith("Sync")
+                ? "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {"
+                    + " throw LOGGER.logExceptionAsError(new AzureException(\"Long running operation failed.\")); }"
+                    + "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {"
+                    + " throw LOGGER.logExceptionAsError(new AzureException(\"Long running operation cancelled.\")); }"
+                : "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {"
+                    + " return Mono.error(new AzureException(\"Long running operation failed.\")); }"
+                    + "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {"
+                    + " return Mono.error(new AzureException(\"Long running operation cancelled.\")); }";
+            String deserialize = className.startsWith("Sync")
+                ? "Map<String, Object> pollResult = PollingUtils.deserializeResponseSync(latestResponseBody, serializer,"
+                    + " PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE);"
+                    + "return PollingUtils.deserializeResponseSync(AgentsServicePollUtils.getFinalResultBody("
+                    + "pollResult, propertyName, resultType), serializer, resultType);"
+                : "return PollingUtils.deserializeResponse(latestResponseBody, serializer,"
+                    + " PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE).flatMap(value -> PollingUtils.deserializeResponse("
+                    + "AgentsServicePollUtils.getFinalResultBody(value, propertyName, resultType), serializer, resultType))"
+                    + ".switchIfEmpty(Mono.error(new AzureException(\"Cannot get final result\")));";
+            getResult.setBody(StaticJavaParser.parseBlock("{" + statusChecks + "if (propertyName != null) {"
+                + "BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));"
+                + deserialize + "} else { return super.getResult(pollingContext, resultType); }}"));
         });
     }
 

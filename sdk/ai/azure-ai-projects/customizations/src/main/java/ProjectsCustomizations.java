@@ -34,6 +34,16 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        com.azure.autorest.customization.Editor editor = libraryCustomization.getRawEditor();
+        new ArrayList<>(editor.getContents().keySet()).stream()
+            .filter(path -> path.endsWith("module-info.java"))
+            .forEach(path -> {
+                com.github.javaparser.ast.CompilationUnit module = StaticJavaParser.parse(editor.getFileContent(path));
+                module.findAll(com.github.javaparser.ast.modules.ModuleRequiresDirective.class).stream()
+                    .filter(requirement -> "com.azure.storage.blob".equals(requirement.getNameAsString()))
+                    .forEach(requirement -> requirement.setTransitive(true));
+                editor.replaceFile(path, module.toString());
+            });
         libraryCustomization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast ->
             customizeBuilder(ast.getClassByName("AIProjectClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."))));
@@ -75,6 +85,12 @@ public class ProjectsCustomizations extends Customization {
                     + "}"));
         }
         pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
+        builder.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
+            .filter(expression -> "HttpLoggingPolicy".equals(expression.getType().getNameAsString()))
+            .forEach(expression -> expression.replace(StaticJavaParser.parseExpression(
+                "com.azure.ai.projects.implementation.http.HttpClientHelper.createLoggingPolicy(localHttpLogOptions)")));
+        builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
+            "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
         NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
             .filter(AnnotationExpr::isNormalAnnotationExpr)
             .map(AnnotationExpr::asNormalAnnotationExpr)

@@ -33,13 +33,24 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakeException;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakeException;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import java.io.IOException;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -50,18 +61,6 @@ import reactor.netty.http.client.WebsocketClientSpec;
 import reactor.netty.http.websocket.WebsocketInbound;
 import reactor.netty.http.websocket.WebsocketOutbound;
 import reactor.netty.transport.ProxyProvider;
-import reactor.util.concurrent.Queues;
-
-import java.io.IOException;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An asynchronous bidirectional realtime session connected to a Foundry voice agent.
@@ -72,7 +71,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketSessionAsyncClient.class);
-    private static final int MAX_FRAME_SIZE = 32 * 1024 * 1024;
     private static final int MAX_OUTSTANDING_SENDS = 256;
 
     private final VoiceAgentWebSocketClientConfiguration configuration;
@@ -86,9 +84,8 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
     private final AtomicReference<Disposable> lifecycle = new AtomicReference<>();
     private final AtomicBoolean receiveClaimed = new AtomicBoolean();
     private final Semaphore sendPermits = new Semaphore(MAX_OUTSTANDING_SENDS);
-    private final Sinks.Many<RealtimeServerEvent> events = Sinks.many()
-        .unicast()
-        .onBackpressureBuffer(Queues.<RealtimeServerEvent>get(VoiceAgentWebSocketUtils.INBOUND_CAPACITY).get());
+    private final Queue<RealtimeServerEvent> eventQueue;
+    private final Sinks.Many<RealtimeServerEvent> events;
     private final Sinks.One<Void> ready = Sinks.one();
     private final Sinks.One<Void> closeSignal = Sinks.one();
     private final AtomicReference<Mono<Void>> closeOperation = new AtomicReference<>();
@@ -109,6 +106,8 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             throw new IllegalArgumentException("'agentName' cannot be empty.");
         }
         this.options = options == null ? new VoiceAgentWebSocketConnectionOptions() : options;
+        this.eventQueue = new ArrayBlockingQueue<>(this.options.getReceiveBufferCapacity());
+        this.events = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, this.options);
     }
@@ -202,6 +201,30 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
                     .error(new IllegalArgumentException("Failed to serialize the realtime client event.", error));
             }
 
+            return Mono.create(sink -> current.writeAndFlush(new TextWebSocketFrame(json)).addListener(result -> {
+                sendPermits.release();
+                if (result.isSuccess()) {
+                    sink.success();
+                } else {
+                    sink.error(result.cause());
+                }
+            }));
+        });
+    }
+
+    /**
+     * Sends a JSON object, including event types and fields unknown to this SDK.
+     * @param event the complete JSON event.
+     * @return completion after the frame is written, or an error for invalid JSON or a closed session.
+     */
+    public Mono<Void> sendEvent(BinaryData event) {
+        Objects.requireNonNull(event, "'event' cannot be null.");
+        return Mono.defer(() -> {
+            String json = VoiceAgentWebSocketUtils.validateEvent(event);
+            Channel current = requireOpenChannel();
+            if (!sendPermits.tryAcquire()) {
+                return Mono.error(new IllegalStateException("Too many voice-agent WebSocket sends are outstanding."));
+            }
             return Mono.create(sink -> current.writeAndFlush(new TextWebSocketFrame(json)).addListener(result -> {
                 sendPermits.release();
                 if (result.isSuccess()) {
@@ -339,6 +362,22 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      */
     @Override
     public Mono<Void> closeAsync() {
+        return closeAsync(1000, "");
+    }
+
+    /**
+     * Closes the session with an application-selected WebSocket close frame.
+     * The first requested close frame wins when close is called more than once.
+     * @param code a valid WebSocket close code.
+     * @param reason non-null reason of at most 123 UTF-8 bytes.
+     * @return a completion signal, or an error if the code or reason is invalid.
+     */
+    public Mono<Void> closeAsync(int code, String reason) {
+        try {
+            VoiceAgentWebSocketUtils.validateClose(code, reason);
+        } catch (IllegalArgumentException exception) {
+            return Mono.error(exception);
+        }
         Mono<Void> existing = closeOperation.get();
         if (existing != null) {
             return existing;
@@ -354,7 +393,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             state.set(State.CLOSING);
             WebsocketOutbound currentOutbound = outbound.get();
             Channel currentChannel = channel.get();
-            Mono<Void> graceful = currentOutbound == null ? Mono.empty() : currentOutbound.sendClose(1000, "");
+            Mono<Void> graceful = currentOutbound == null ? Mono.empty() : currentOutbound.sendClose(code, reason);
             Mono<Void> disposed = currentChannel == null ? Mono.empty() : Connection.from(currentChannel).onDispose();
             return graceful.then(disposed).timeout(options.getCloseTimeout()).onErrorResume(error -> {
                 if (currentChannel != null) {
@@ -379,7 +418,11 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
     }
 
     private Mono<Void> openWebSocket(String token) {
-        HttpClient client = configureProxy(httpClient).followRedirect(false)
+        HttpClient configured = options.getAsyncHttpClientConfiguration() == null
+            ? httpClient
+            : Objects.requireNonNull(options.getAsyncHttpClientConfiguration().apply(httpClient),
+                "Configured transport cannot be null.");
+        HttpClient client = configureProxy(configured).followRedirect(false)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, toConnectTimeoutMillis(options.getHandshakeTimeout()))
             .doOnConnected(connection -> connection.addHandlerLast("voiceAgentHandshakeResponseObserver",
                 new VoiceAgentWebSocketHandshakeHandler(this::terminateWithError)))
@@ -390,7 +433,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             });
         WebsocketClientSpec spec = WebsocketClientSpec.builder()
             .protocols(VoiceAgentWebSocketUtils.SUBPROTOCOL)
-            .maxFramePayloadLength(MAX_FRAME_SIZE)
+            .maxFramePayloadLength(options.getMaxMessageSize())
             .handlePing(false)
             .build();
 
@@ -420,7 +463,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
             closeReason = status.reasonText();
         }, error -> LOGGER.atVerbose().addKeyValue("error", error.getMessage()).log("Close status unavailable."));
 
-        Disposable receive = inbound.aggregateFrames(MAX_FRAME_SIZE)
+        Disposable receive = inbound.aggregateFrames(options.getMaxMessageSize())
             .receiveFrames()
             .subscribe(this::handleFrame, this::terminateWithError, this::terminateNormally);
         lifecycle.set(receive);
@@ -428,20 +471,42 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
     }
 
     private void handleFrame(WebSocketFrame frame) {
-        if (frame instanceof TextWebSocketFrame) {
+        if (frame instanceof TextWebSocketFrame || frame instanceof BinaryWebSocketFrame) {
             try {
+                byte[] bytes = new byte[frame.content().readableBytes()];
+                frame.content().getBytes(frame.content().readerIndex(), bytes);
                 RealtimeServerEvent event
-                    = RealtimeServerEvent.fromJson(JsonProviders.createReader(((TextWebSocketFrame) frame).text()));
+                    = VoiceAgentWebSocketUtils.deserializeEvent(VoiceAgentWebSocketUtils.decodeEvent(bytes));
                 Sinks.EmitResult result = events.tryEmitNext(event);
+                if (result == Sinks.EmitResult.FAIL_OVERFLOW || result == Sinks.EmitResult.FAIL_ZERO_SUBSCRIBER) {
+                    switch (options.getOverflowStrategy()) {
+                        case DROP_LATEST:
+                            return;
+
+                        case DROP_OLDEST:
+                            eventQueue.poll();
+                            result = events.tryEmitNext(event);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
                 if (result.isFailure()) {
                     terminateWithError(new IllegalStateException("Voice-agent event emission failed: " + result));
                 }
             } catch (IOException | RuntimeException error) {
-                closeWithProtocolError(1007, "Invalid JSON event", error);
+                Throwable failure = error;
+                if (options.getMalformedEventHandler() != null) {
+                    try {
+                        options.getMalformedEventHandler().accept(error);
+                        return;
+                    } catch (RuntimeException callbackError) {
+                        failure = callbackError;
+                    }
+                }
+                closeWithProtocolError(1007, "Invalid JSON event", failure);
             }
-        } else if (frame instanceof BinaryWebSocketFrame) {
-            closeWithProtocolError(1003, "Binary frames are not supported",
-                new IllegalArgumentException("The voice-agent protocol requires JSON text frames."));
         }
     }
 

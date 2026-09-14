@@ -30,18 +30,12 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import okhttp3.Credentials;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
-
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.URI;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Iterator;
@@ -51,8 +45,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import okhttp3.Credentials;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 /**
  * A synchronous bidirectional realtime session connected to a Foundry voice agent.
@@ -63,8 +65,8 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     private final URI websocketUri;
     private final VoiceAgentWebSocketConnectionOptions options;
     private final OkHttpClient httpClient;
-    private final BlockingQueue<EventSignal> events
-        = new ArrayBlockingQueue<>(VoiceAgentWebSocketUtils.INBOUND_CAPACITY + 1);
+    private final BlockingQueue<EventSignal> events;
+    private final int receiveBufferCapacity;
     private final CountDownLatch handshakeCompleted = new CountDownLatch(1);
     private final CountDownLatch closeCompleted = new CountDownLatch(1);
     private final AtomicReference<Throwable> connectionError = new AtomicReference<>();
@@ -80,6 +82,8 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     private VoiceAgentWebSocketSessionClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         this.options = options;
+        this.receiveBufferCapacity = options.getReceiveBufferCapacity();
+        this.events = new ArrayBlockingQueue<>(receiveBufferCapacity + 1);
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options);
         String token = configuration.getCredential()
             .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext(options))
@@ -150,11 +154,25 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
      * @return the server event stream.
      */
     public IterableStream<RealtimeServerEvent> receiveEvents() {
+        return receiveEvents(null);
+    }
+
+    /**
+     * Receives events with a timeout for each wait. A timeout leaves the session open and the iterator can be retried.
+     * @param timeout positive per-event timeout, or null to wait indefinitely.
+     * @return the single-consumer event stream.
+     * @throws IllegalArgumentException if timeout is zero or negative.
+     * @throws IllegalStateException if another receiver exists or a wait times out (with a TimeoutException cause).
+     */
+    public IterableStream<RealtimeServerEvent> receiveEvents(Duration timeout) {
+        if (timeout != null && (timeout.isZero() || timeout.isNegative())) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Receive timeout must be positive."));
+        }
         if (!receiveClaimed.compareAndSet(false, true)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one receiveEvents iterator is supported per session."));
         }
-        return IterableStream.of(() -> new EventIterator(events));
+        return IterableStream.of(() -> new EventIterator(events, timeout));
     }
 
     /**
@@ -174,6 +192,21 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Failed to serialize the realtime client event.", error));
         }
+        if (!webSocket.send(json)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("The voice-agent WebSocket send queue is full or closed."));
+        }
+    }
+
+    /**
+     * Sends a JSON object, including event types and fields unknown to this SDK.
+     * @param event the complete JSON event.
+     * @throws IllegalArgumentException if the event is not a JSON object.
+     * @throws IllegalStateException if the session cannot accept the event.
+     */
+    public void sendEvent(BinaryData event) {
+        String json = VoiceAgentWebSocketUtils.validateEvent(event);
+        ensureOpen();
         if (!webSocket.send(json)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("The voice-agent WebSocket send queue is full or closed."));
@@ -277,12 +310,23 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     /** Closes the session. */
     @Override
     public void close() {
+        close(1000, "");
+    }
+
+    /**
+     * Closes the session with an application-selected WebSocket close frame.
+     * @param code a valid WebSocket close code.
+     * @param reason non-null reason of at most 123 UTF-8 bytes.
+     * @throws IllegalArgumentException if the code or reason is invalid.
+     */
+    public void close(int code, String reason) {
+        VoiceAgentWebSocketUtils.validateClose(code, reason);
         if (!closed.compareAndSet(false, true)) {
             shutdownHttpClient();
             return;
         }
         open.set(false);
-        if (!webSocket.close(1000, "")) {
+        if (!webSocket.close(code, reason)) {
             webSocket.cancel();
             closeCompleted.countDown();
         }
@@ -366,8 +410,20 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     }
 
     private synchronized void signal(EventSignal signal) {
-        if ((signal.event != null && events.size() >= VoiceAgentWebSocketUtils.INBOUND_CAPACITY)
-            || !events.offer(signal)) {
+        if (signal.event != null && events.size() >= receiveBufferCapacity) {
+            switch (options.getOverflowStrategy()) {
+                case DROP_LATEST:
+                    return;
+
+                case DROP_OLDEST:
+                    events.poll();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        if ((signal.event != null && events.size() >= receiveBufferCapacity) || !events.offer(signal)) {
             events.clear();
             events.add(EventSignal.error(new IllegalStateException("Voice-agent receive buffer overflow.")));
             WebSocket current = webSocket;
@@ -389,10 +445,13 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
 
     private static OkHttpClient createHttpClient(VoiceAgentWebSocketClientConfiguration configuration,
         VoiceAgentWebSocketConnectionOptions options) {
-        OkHttpClient.Builder builder
-            = new OkHttpClient.Builder().connectTimeout(options.getHandshakeTimeout().toMillis(), TimeUnit.MILLISECONDS)
-                .readTimeout(0, TimeUnit.MILLISECONDS)
-                .followRedirects(false);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (options.getHttpClientConfiguration() != null) {
+            options.getHttpClientConfiguration().accept(builder);
+        }
+        builder.connectTimeout(options.getHandshakeTimeout().toMillis(), TimeUnit.MILLISECONDS)
+            .readTimeout(0, TimeUnit.MILLISECONDS)
+            .followRedirects(false);
         ProxyOptions proxyOptions = configuration.getProxyOptions();
         if (proxyOptions != null) {
             Proxy.Type proxyType = proxyOptions.getType() == ProxyOptions.Type.SOCKS4
@@ -418,20 +477,43 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
 
         @Override
         public void onMessage(WebSocket webSocket, String text) {
+            if (text.getBytes(StandardCharsets.UTF_8).length > options.getMaxMessageSize()) {
+                fail(new IllegalArgumentException("Voice-agent message exceeds the configured size limit."), null);
+                webSocket.close(1009, "Message too large");
+                return;
+            }
             try {
-                signal(EventSignal.event(RealtimeServerEvent.fromJson(JsonProviders.createReader(text))));
+                signal(EventSignal.event(VoiceAgentWebSocketUtils.deserializeEvent(text)));
             } catch (IOException | RuntimeException error) {
-                fail(new IllegalArgumentException("Invalid JSON event.", error), null);
-                webSocket.close(1007, "Invalid JSON event");
+                malformedEvent(webSocket, error);
             }
         }
 
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
-            IllegalArgumentException error
-                = new IllegalArgumentException("The voice-agent protocol requires JSON text frames.");
-            fail(error, null);
-            webSocket.close(1003, "Binary frames are not supported");
+            if (bytes.size() > options.getMaxMessageSize()) {
+                fail(new IllegalArgumentException("Voice-agent message exceeds the configured size limit."), null);
+                webSocket.close(1009, "Message too large");
+                return;
+            }
+            try {
+                onMessage(webSocket, VoiceAgentWebSocketUtils.decodeEvent(bytes.toByteArray()));
+            } catch (CharacterCodingException error) {
+                malformedEvent(webSocket, error);
+            }
+        }
+
+        private void malformedEvent(WebSocket webSocket, Throwable error) {
+            if (options.getMalformedEventHandler() != null) {
+                try {
+                    options.getMalformedEventHandler().accept(error);
+                    return;
+                } catch (RuntimeException callbackError) {
+                    error = callbackError;
+                }
+            }
+            fail(new IllegalArgumentException("Invalid JSON event.", error), null);
+            webSocket.close(1007, "Invalid JSON event");
         }
 
         @Override
@@ -485,17 +567,23 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
 
     private static final class EventIterator implements Iterator<RealtimeServerEvent> {
         private final BlockingQueue<EventSignal> events;
+        private final Duration timeout;
         private EventSignal next;
 
-        private EventIterator(BlockingQueue<EventSignal> events) {
+        private EventIterator(BlockingQueue<EventSignal> events, Duration timeout) {
             this.events = events;
+            this.timeout = timeout;
         }
 
         @Override
         public boolean hasNext() {
             if (next == null) {
                 try {
-                    next = events.take();
+                    next = timeout == null ? events.take() : events.poll(timeout.toNanos(), TimeUnit.NANOSECONDS);
+                    if (next == null) {
+                        throw new IllegalStateException("Timed out waiting for a voice-agent event.",
+                            new TimeoutException());
+                    }
                 } catch (InterruptedException error) {
                     Thread.currentThread().interrupt();
                     throw new IllegalStateException("Interrupted while waiting for a voice-agent event.", error);

@@ -47,6 +47,8 @@
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
+      --add-modules java.desktop
+      --add-reads com.azure.ai.agents=java.desktop
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>

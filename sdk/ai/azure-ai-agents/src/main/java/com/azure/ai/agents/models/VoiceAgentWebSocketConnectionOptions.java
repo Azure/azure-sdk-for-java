@@ -5,14 +5,19 @@ package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
-
-import java.time.Duration;
+import com.azure.core.util.logging.ClientLogger;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
+import okhttp3.OkHttpClient;
+import reactor.netty.http.client.HttpClient;
 
 /**
  * Options used when opening a realtime voice-agent WebSocket session.
@@ -20,6 +25,137 @@ import java.util.Map;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 @Fluent
 public final class VoiceAgentWebSocketConnectionOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketConnectionOptions.class);
+    private int receiveBufferCapacity = 256;
+    private int maxMessageSize = 32 * 1024 * 1024;
+    private VoiceAgentWebSocketOverflowStrategy overflowStrategy = VoiceAgentWebSocketOverflowStrategy.ERROR;
+    private Consumer<Throwable> malformedEventHandler;
+
+    /**
+     * Gets the maximum number of queued events.
+     * @return the capacity, default 256.
+     */
+    public int getReceiveBufferCapacity() {
+        return receiveBufferCapacity;
+    }
+
+    /**
+     * Sets the bounded receive queue capacity. Configure before connecting.
+     * @param capacity number of events, between 1 and 65536.
+     * @return this options instance.
+    * @throws IllegalArgumentException if capacity is outside the supported range.
+     */
+    public VoiceAgentWebSocketConnectionOptions setReceiveBufferCapacity(int capacity) {
+        if (capacity < 1 || capacity > 65536) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Receive capacity must be between 1 and 65536."));
+        }
+        this.receiveBufferCapacity = capacity;
+        return this;
+    }
+
+    /**
+     * Gets the maximum accepted JSON message size.
+     * @return the size in bytes, default 32 MiB.
+     */
+    public int getMaxMessageSize() {
+        return maxMessageSize;
+    }
+
+    /**
+     * Sets the maximum accepted JSON message size. Oversized messages terminate the connection.
+     * @param bytes positive size in bytes.
+     * @return this options instance.
+    * @throws IllegalArgumentException if bytes is not positive.
+     */
+    public VoiceAgentWebSocketConnectionOptions setMaxMessageSize(int bytes) {
+        if (bytes <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Message size must be positive."));
+        }
+        this.maxMessageSize = bytes;
+        return this;
+    }
+
+    /**
+     * Gets the receive queue overflow action.
+     * @return the strategy, default ERROR.
+     */
+    public VoiceAgentWebSocketOverflowStrategy getOverflowStrategy() {
+        return overflowStrategy;
+    }
+
+    /**
+     * Sets the receive queue overflow action. Drop strategies explicitly permit data loss.
+     * @param strategy the non-null strategy.
+     * @return this options instance.
+     */
+    public VoiceAgentWebSocketConnectionOptions setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy strategy) {
+        this.overflowStrategy = Objects.requireNonNull(strategy, "'strategy' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Gets the callback for skipping malformed events.
+     * @return the callback, or null to terminate on malformed events.
+     */
+    public Consumer<Throwable> getMalformedEventHandler() {
+        return malformedEventHandler;
+    }
+
+    /**
+     * Sets a callback that reports and skips malformed events without terminating reception.
+     * The callback runs on the receive thread and must not block. If it throws, the session terminates.
+     * This does not recover from transport errors or oversized messages.
+     * @param handler callback, or null to terminate on malformed events (the default).
+     * @return this options instance.
+     */
+    public VoiceAgentWebSocketConnectionOptions setMalformedEventHandler(Consumer<Throwable> handler) {
+        this.malformedEventHandler = handler;
+        return this;
+    }
+
+    private Consumer<OkHttpClient.Builder> httpClientConfiguration;
+    private UnaryOperator<HttpClient> asyncHttpClientConfiguration;
+
+    /**
+     * Sets synchronous transport customization, for example certificate trust or ping interval.
+     * Redirects and handshake timeouts remain SDK-controlled. Do not disable TLS hostname verification.
+     * @param configure callback applied to the per-session transport, or null for defaults.
+     * @return this options instance.
+     */
+    public VoiceAgentWebSocketConnectionOptions setHttpClientConfiguration(Consumer<OkHttpClient.Builder> configure) {
+        this.httpClientConfiguration = configure;
+        return this;
+    }
+
+    /**
+     * Gets synchronous transport customization.
+     * @return the callback, or null.
+     */
+    public Consumer<OkHttpClient.Builder> getHttpClientConfiguration() {
+        return httpClientConfiguration;
+    }
+
+    /**
+     * Sets asynchronous transport customization, for example certificate trust or channel handlers.
+     * Redirects, authentication, subprotocol and handshake timeouts remain SDK-controlled.
+     * Do not disable TLS hostname verification.
+     * @param configure callback returning a configured transport, or null for defaults.
+     * @return this options instance.
+     */
+    public VoiceAgentWebSocketConnectionOptions setAsyncHttpClientConfiguration(UnaryOperator<HttpClient> configure) {
+        this.asyncHttpClientConfiguration = configure;
+        return this;
+    }
+
+    /**
+     * Gets asynchronous transport customization.
+     * @return the callback, or null.
+     */
+    public UnaryOperator<HttpClient> getAsyncHttpClientConfiguration() {
+        return asyncHttpClientConfiguration;
+    }
+
     private VoiceAgentTransport transport = VoiceAgentTransport.WEBSOCKET;
     private Boolean store;
     private String agentVersionOverride;
@@ -127,7 +263,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
      * @return this options instance.
      */
     public VoiceAgentWebSocketConnectionOptions setFoundryFeatures(String foundryFeatures) {
-        this.foundryFeatures = java.util.Objects.requireNonNull(foundryFeatures, "'foundryFeatures' cannot be null.");
+        this.foundryFeatures = Objects.requireNonNull(foundryFeatures, "'foundryFeatures' cannot be null.");
         return this;
     }
 

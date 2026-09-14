@@ -4,10 +4,12 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
+import com.azure.ai.projects.implementation.FileUploadHelper;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
 import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
+import com.azure.ai.projects.models.FileUploadOptions;
 import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
@@ -27,18 +29,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
@@ -201,28 +198,64 @@ public final class DatasetsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createDatasetWithFileWithResponse(String name, String version, Path filePath,
         String connectionName, RequestOptions requestOptions) {
-        if (!Files.isRegularFile(filePath)) {
-            return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
-        }
-        PendingUploadRequest request = new PendingUploadRequest();
-        if (connectionName != null) {
-            request.setConnectionName(connectionName);
-        }
-        return this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class))
-            .flatMap(pendingUploadResponse -> {
-                String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-                BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri)
-                    .blobName(filePath.getFileName().toString())
-                    .buildAsyncClient();
-                return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
-            })
-            .flatMap(blobUrl -> {
-                FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
-                return this.createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
-                    requestOptions);
-            });
+        return createDatasetWithFileWithResponse(name, version, filePath, connectionName, null, requestOptions);
+    }
+
+    /**
+     * Uploads a file and registers a dataset using custom blob upload settings.
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param filePath the local file.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the upload options, or null for defaults.
+     * @return the created dataset asynchronously.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath,
+        String connectionName, FileUploadOptions uploadOptions) {
+        return createDatasetWithFileWithResponse(name, version, filePath, connectionName, uploadOptions,
+            new RequestOptions()).map(response -> response.getValue().toObject(FileDatasetVersion.class));
+    }
+
+    /**
+     * Uploads a file and registers a dataset using custom blob upload settings.
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param filePath the local file.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the upload options, or null for defaults.
+     * @param requestOptions project request options; blob options are configured separately.
+     * @return the dataset response asynchronously.
+     * @throws IllegalArgumentException if the path is not a regular file or upload credentials are missing.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createDatasetWithFileWithResponse(String name, String version, Path filePath,
+        String connectionName, FileUploadOptions uploadOptions, RequestOptions requestOptions) {
+        return Mono.defer(() -> {
+            if (filePath == null || filePath.getFileName() == null || !Files.isRegularFile(filePath)) {
+                return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
+            }
+            PendingUploadRequest request = new PendingUploadRequest();
+            if (connectionName != null) {
+                request.setConnectionName(connectionName);
+            }
+            return this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class))
+                .flatMap(pendingUploadResponse -> {
+                    BlobAsyncClient blobClient = FileUploadHelper
+                        .createContainerBuilder(pendingUploadResponse.getBlobReference(), uploadOptions)
+                        .buildAsyncClient()
+                        .getBlobAsyncClient(filePath.getFileName().toString());
+                    return blobClient.uploadWithResponse(FileUploadHelper.createUploadOptions(filePath, uploadOptions))
+                        .thenReturn(blobClient.getBlobUrl());
+                })
+                .flatMap(blobUrl -> {
+                    FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
+                    return this.createOrUpdateDatasetVersionWithResponse(name, version,
+                        BinaryData.fromObject(fileDataset), requestOptions);
+                });
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -300,41 +333,65 @@ public final class DatasetsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createDatasetWithFolderWithResponse(String name, String version, Path folderPath,
         String connectionName, RequestOptions requestOptions) {
-        if (!Files.isDirectory(folderPath)) {
-            return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
-        }
-        PendingUploadRequest request = new PendingUploadRequest();
-        if (connectionName != null) {
-            request.setConnectionName(connectionName);
-        }
-        return this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class))
-            .flatMap(pendingUploadResponse -> {
-                String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
-                String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-                BlobContainerAsyncClient containerClient
-                    = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
-                try {
-                    List<Path> files;
-                    try (Stream<Path> fileStream = Files.walk(folderPath)) {
-                        files = fileStream.filter(Files::isRegularFile).collect(Collectors.toList());
-                    }
-                    return Flux.fromIterable(files).flatMap(filePath -> {
-                        String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-                        return containerClient.getBlobAsyncClient(relativePath)
-                            .upload(BinaryData.fromFile(filePath), true);
-                    }).then(Mono.just(containerUrl));
-                } catch (IOException e) {
-                    return Mono.error(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
-                } catch (RuntimeException e) {
-                    return Mono.error(e);
+        return createDatasetWithFolderWithResponse(name, version, folderPath, connectionName, null, requestOptions);
+    }
+
+    /**
+     * Uploads matching files recursively and registers a folder dataset.
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param folderPath the local directory.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the filename filter and blob settings, or null for defaults.
+     * @return the created dataset asynchronously.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath,
+        String connectionName, FileUploadOptions uploadOptions) {
+        return createDatasetWithFolderWithResponse(name, version, folderPath, connectionName, uploadOptions,
+            new RequestOptions()).map(response -> response.getValue().toObject(FolderDatasetVersion.class));
+    }
+
+    /**
+     * Uploads matching files recursively and registers a folder dataset. Relative paths are preserved.
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param folderPath the local directory.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the filename filter and blob settings, or null for defaults.
+     * @param requestOptions project request options; blob options are configured separately.
+     * @return the dataset response asynchronously.
+     * @throws IllegalArgumentException if the folder contains no matching files or upload credentials are missing.
+     * @throws java.io.UncheckedIOException if the folder cannot be traversed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createDatasetWithFolderWithResponse(String name, String version, Path folderPath,
+        String connectionName, FileUploadOptions uploadOptions, RequestOptions requestOptions) {
+        return Mono.fromCallable(() -> FileUploadHelper.getFiles(folderPath, uploadOptions))
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(files -> {
+                PendingUploadRequest request = new PendingUploadRequest();
+                if (connectionName != null) {
+                    request.setConnectionName(connectionName);
                 }
-            })
-            .flatMap(containerUrl -> {
-                FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
-                return this.createOrUpdateDatasetVersionWithResponse(name, version,
-                    BinaryData.fromObject(folderDataset), requestOptions);
+                return this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class))
+                    .flatMap(pendingUploadResponse -> {
+                        BlobContainerAsyncClient containerClient = FileUploadHelper
+                            .createContainerBuilder(pendingUploadResponse.getBlobReference(), uploadOptions)
+                            .buildAsyncClient();
+                        return Flux.fromIterable(files).concatMap(filePath -> {
+                            String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                            return containerClient.getBlobAsyncClient(relativePath)
+                                .uploadWithResponse(FileUploadHelper.createUploadOptions(filePath, uploadOptions));
+                        }).then(Mono.just(containerClient.getBlobContainerUrl()));
+                    })
+                    .flatMap(containerUrl -> {
+                        FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
+                        return this.createOrUpdateDatasetVersionWithResponse(name, version,
+                            BinaryData.fromObject(folderDataset), requestOptions);
+                    });
             });
     }
 

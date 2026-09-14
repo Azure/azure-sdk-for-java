@@ -35,6 +35,17 @@ import com.azure.core.util.polling.SyncPoller;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaEvaluatorsClient {
 
+    /**
+     * Resumes an existing evaluator generation job without creating a new job.
+     * @param jobId saved job ID.
+     * @return the resumed poller. Use the job cancellation API to cancel.
+     */
+    public SyncPoller<EvaluatorGenerationJob, EvaluatorVersion> resumeEvaluatorGenerationJob(String jobId) {
+        return com.azure.ai.projects.implementation.ProjectsServicePollUtils.resume(
+            () -> getEvaluatorGenerationJobWithResponse(jobId, new RequestOptions()), EvaluatorGenerationJob.class,
+            EvaluatorVersion.class);
+    }
+
     @Generated
     private final BetaEvaluatorsImpl serviceClient;
 

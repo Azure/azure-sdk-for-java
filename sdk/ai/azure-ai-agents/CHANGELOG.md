@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Added raw JSON WebSocket sends, complete unknown-event payloads, UTF-8 binary JSON reception, transport customization,
+  configurable receive limits and overflow policies, and opt-in recovery from malformed events.
+- Added saved-job polling resumption for memory updates and agent optimization jobs.
+- Added custom WebSocket close codes and reasons, and per-event synchronous receive timeouts.
 - Added synchronous and asynchronous OpenAI factory overloads accepting a native OpenAI options callback for URL, credential, headers, query parameters, and transport overrides.
 - Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
 - Added realtime handshake options for session IDs, structured inputs, API versions, credential scopes, preview features, extra headers and query parameters, and same-host secure connection URL overrides.
@@ -15,6 +19,8 @@
 
 ### Breaking Changes
 
+- Voice-agent WebSocket connections now require secure endpoints, including localhost. Configure certificate trust for
+  local TLS servers through the transport callbacks. Synchronous sessions now enforce a 32 MiB default message limit.
 - Renamed `AgentTelephonyClient` and `AgentTelephonyAsyncClient` to `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`; use `AgentsClientBuilder.buildBetaAgentTelephonyClient()` or `buildBetaAgentTelephonyAsyncClient()`.
 - Moved telephony operations from `AgentsClient` and `AgentsAsyncClient` to `BetaAgentsClient` and `BetaAgentsAsyncClient`.
 - Moved `generateAgent` and `generateAgentWithResponse` from `AgentsClient` and `AgentsAsyncClient` to `BetaAgentsClient` and `BetaAgentsAsyncClient`.
@@ -22,6 +28,10 @@
 
 ### Bugs Fixed
 
+- Reject insecure voice-agent WebSocket URLs before token acquisition to prevent sending credentials over plaintext.
+- Native asynchronous OpenAI factories and `ResponsesAsyncClient` now retrieve Azure tokens asynchronously, including factory-supplied custom OpenAI transports.
+- Treated superseded memory updates as completed and supplied empty operations with zero usage when completed memory results are omitted or null.
+- Omitted multipart request and response bodies from SDK pipeline logging.
 - Preserved UTF-8 characters split across reads when logging OpenAI SSE response bodies.
 - Made synchronous voice-agent receive-buffer overflow signaling atomic across concurrent callbacks.
 - Rejected code-upload paths without a file name with an explicit argument error.

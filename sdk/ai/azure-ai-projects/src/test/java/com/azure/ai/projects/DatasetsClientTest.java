@@ -4,6 +4,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
+import com.azure.ai.projects.models.FileUploadOptions;
 import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
@@ -11,20 +12,45 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.LiveOnly;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class DatasetsClientTest extends ClientTestBase {
+
+    @DoNotRecord
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void testUploadRejectsEmptySelection(boolean async, @TempDir Path folder) throws IOException {
+        AIProjectClientBuilder builder = new AIProjectClientBuilder().endpoint("https://localhost")
+            .httpClient(request -> reactor.core.publisher.Mono.error(new AssertionError("Unexpected HTTP request")));
+        FileUploadOptions options = new FileUploadOptions().setFilePattern(java.util.regex.Pattern.compile("\\.json$"));
+        for (boolean populated : new boolean[] { false, true }) {
+            if (populated) {
+                Files.write(folder.resolve("excluded.txt"), new byte[] { 1 });
+            }
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                if (async) {
+                    builder.buildDatasetsAsyncClient()
+                        .createDatasetWithFolder("dataset", "1", folder, null, options)
+                        .block(java.time.Duration.ofSeconds(5));
+                } else {
+                    builder.buildDatasetsClient().createDatasetWithFolder("dataset", "1", folder, null, options);
+                }
+            });
+        }
+    }
 
     @Test
     @DoNotRecord
