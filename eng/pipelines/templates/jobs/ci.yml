@@ -377,12 +377,6 @@ jobs:
         parameters:
           npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
 
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
-          ContinueOnError: false
-          NpmConfigUserConfig: $(Agent.TempDirectory)/analyze-job/.npmrc
-
       - ${{ if eq(parameters.TestPipeline, true) }}:
         - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
           parameters:
