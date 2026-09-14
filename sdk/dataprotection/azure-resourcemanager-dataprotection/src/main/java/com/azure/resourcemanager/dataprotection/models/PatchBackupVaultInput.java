@@ -33,6 +33,11 @@ public final class PatchBackupVaultInput implements JsonSerializable<PatchBackup
     private FeatureSettings featureSettings;
 
     /*
+     * Cost Management Settings of the vault
+     */
+    private CostManagementSettings costManagementSettings;
+
+    /*
      * ResourceGuardOperationRequests on which LAC check will be performed
      */
     private List<String> resourceGuardOperationRequests;
@@ -104,6 +109,26 @@ public final class PatchBackupVaultInput implements JsonSerializable<PatchBackup
     }
 
     /**
+     * Get the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @return the costManagementSettings value.
+     */
+    public CostManagementSettings costManagementSettings() {
+        return this.costManagementSettings;
+    }
+
+    /**
+     * Set the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @param costManagementSettings the costManagementSettings value to set.
+     * @return the PatchBackupVaultInput object itself.
+     */
+    public PatchBackupVaultInput withCostManagementSettings(CostManagementSettings costManagementSettings) {
+        this.costManagementSettings = costManagementSettings;
+        return this;
+    }
+
+    /**
      * Get the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
      * performed.
      * 
@@ -134,6 +159,7 @@ public final class PatchBackupVaultInput implements JsonSerializable<PatchBackup
         jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
         jsonWriter.writeJsonField("securitySettings", this.securitySettings);
         jsonWriter.writeJsonField("featureSettings", this.featureSettings);
+        jsonWriter.writeJsonField("costManagementSettings", this.costManagementSettings);
         jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -160,6 +186,8 @@ public final class PatchBackupVaultInput implements JsonSerializable<PatchBackup
                     deserializedPatchBackupVaultInput.securitySettings = SecuritySettings.fromJson(reader);
                 } else if ("featureSettings".equals(fieldName)) {
                     deserializedPatchBackupVaultInput.featureSettings = FeatureSettings.fromJson(reader);
+                } else if ("costManagementSettings".equals(fieldName)) {
+                    deserializedPatchBackupVaultInput.costManagementSettings = CostManagementSettings.fromJson(reader);
                 } else if ("resourceGuardOperationRequests".equals(fieldName)) {
                     List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
                     deserializedPatchBackupVaultInput.resourceGuardOperationRequests = resourceGuardOperationRequests;

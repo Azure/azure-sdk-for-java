@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_Get.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_Get.json
      */
     /**
      * Sample code: AuthorizedApplications_Get.

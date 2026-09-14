@@ -26,7 +26,12 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value VoiceAgents=V1Preview.
      */
-    VOICE_AGENTS_V1_PREVIEW("VoiceAgents=V1Preview");
+    VOICE_AGENTS_V1_PREVIEW("VoiceAgents=V1Preview"),
+
+    /**
+     * Enum value DigitalWorker=V1Preview.
+     */
+    DIGITAL_WORKER_V1_PREVIEW("DigitalWorker=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

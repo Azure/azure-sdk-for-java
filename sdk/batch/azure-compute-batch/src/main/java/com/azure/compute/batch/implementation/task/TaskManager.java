@@ -3,7 +3,6 @@
 package com.azure.compute.batch.implementation.task;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -203,8 +202,8 @@ public class TaskManager {
      * @param taskList The list of tasks to be submitted.
      * @param taskCreateOptions Options for configuring the task creation.
      */
-    public static void createTasks(TaskSubmitter taskSubmitter, String jobId,
-        Collection<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions taskCreateOptions) {
+    public static void createTasks(TaskSubmitter taskSubmitter, String jobId, List<BatchTaskCreateParameters> taskList,
+        BatchTaskBulkCreateOptions taskCreateOptions) {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 

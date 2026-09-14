@@ -14,25 +14,28 @@ public final class ResourceManagementActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceManagementAction model = BinaryData.fromString(
-            "{\"resources\":[{\"resourceId\":\"hunlpirykycnd\",\"homeTenantId\":\"qi\",\"location\":\"reuykbbmnwagl\",\"status\":\"xoe\"},{\"resourceId\":\"onql\",\"homeTenantId\":\"wmyymvqdbpbhf\",\"location\":\"dve\",\"status\":\"rcssbzhddubbnq\"}]}")
+            "{\"resources\":[{\"resourceId\":\"f\",\"homeTenantId\":\"kpdxphlk\",\"location\":\"nmgzvyfijdkzuqnw\",\"status\":\"thuqolyahluq\"},{\"resourceId\":\"qulsutrjbhxykfhy\",\"homeTenantId\":\"zvqqugdrftbcvexr\",\"location\":\"quowtljvfwhrea\",\"status\":\"hyxvrqt\"},{\"resourceId\":\"bczsulmdgglmepjp\",\"homeTenantId\":\"eykgsangpszngaf\",\"location\":\"ylkvecjuj\",\"status\":\"goadyedmzr\"}]}")
             .toObject(ResourceManagementAction.class);
-        Assertions.assertEquals("hunlpirykycnd", model.resources().get(0).resourceId());
-        Assertions.assertEquals("qi", model.resources().get(0).homeTenantId());
-        Assertions.assertEquals("reuykbbmnwagl", model.resources().get(0).location());
+        Assertions.assertEquals("f", model.resources().get(0).resourceId());
+        Assertions.assertEquals("kpdxphlk", model.resources().get(0).homeTenantId());
+        Assertions.assertEquals("nmgzvyfijdkzuqnw", model.resources().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceManagementAction model = new ResourceManagementAction().withResources(Arrays.asList(
-            new ResourceManagementEntity().withResourceId("hunlpirykycnd")
-                .withHomeTenantId("qi")
-                .withLocation("reuykbbmnwagl"),
-            new ResourceManagementEntity().withResourceId("onql")
-                .withHomeTenantId("wmyymvqdbpbhf")
-                .withLocation("dve")));
+            new ResourceManagementEntity().withResourceId("f")
+                .withHomeTenantId("kpdxphlk")
+                .withLocation("nmgzvyfijdkzuqnw"),
+            new ResourceManagementEntity().withResourceId("qulsutrjbhxykfhy")
+                .withHomeTenantId("zvqqugdrftbcvexr")
+                .withLocation("quowtljvfwhrea"),
+            new ResourceManagementEntity().withResourceId("bczsulmdgglmepjp")
+                .withHomeTenantId("eykgsangpszngaf")
+                .withLocation("ylkvecjuj")));
         model = BinaryData.fromObject(model).toObject(ResourceManagementAction.class);
-        Assertions.assertEquals("hunlpirykycnd", model.resources().get(0).resourceId());
-        Assertions.assertEquals("qi", model.resources().get(0).homeTenantId());
-        Assertions.assertEquals("reuykbbmnwagl", model.resources().get(0).location());
+        Assertions.assertEquals("f", model.resources().get(0).resourceId());
+        Assertions.assertEquals("kpdxphlk", model.resources().get(0).homeTenantId());
+        Assertions.assertEquals("nmgzvyfijdkzuqnw", model.resources().get(0).location());
     }
 }

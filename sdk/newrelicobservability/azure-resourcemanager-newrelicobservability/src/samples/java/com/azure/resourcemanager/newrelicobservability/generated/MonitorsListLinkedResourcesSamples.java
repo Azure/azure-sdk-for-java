@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class MonitorsListLinkedResourcesSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/LinkedResources_List.json
+     * x-ms-original-file: 2026-06-01/LinkedResources_List.json
      */
     /**
      * Sample code: Monitors_ListLinkedResources.
