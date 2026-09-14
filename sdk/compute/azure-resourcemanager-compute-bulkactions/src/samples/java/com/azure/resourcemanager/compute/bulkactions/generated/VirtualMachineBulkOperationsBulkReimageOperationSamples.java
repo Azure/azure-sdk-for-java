@@ -9,7 +9,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.OSProfileProvisioningData;
 import com.azure.resourcemanager.compute.bulkactions.models.ReimagePayload;
 import com.azure.resourcemanager.compute.bulkactions.models.ReimageResourceOverride;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineReimageParameters;
@@ -20,7 +19,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkReimageOperationSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineBulkOperations_BulkReimage_Example.
@@ -31,9 +30,8 @@ public final class VirtualMachineBulkOperationsBulkReimageOperationSamples {
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.virtualMachineBulkOperations()
             .bulkReimageOperationWithResponse("rgBulkactions", "useast2euap", new ExecuteReimageRequest()
-                .withExecutionParameters(new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(2)
-                    .withRetryWindowInMinutes(19)
-                    .withOnFailureAction(ResourceOperationType.UNKNOWN)))
+                .withExecutionParameters(new ExecutionParameters()
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(2).withRetryWindowInMinutes(19)))
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")))
                 .withReimageParameters(new ReimagePayload()

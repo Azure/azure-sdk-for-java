@@ -13,45 +13,42 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Schedule properties for update (PATCH). All properties are optional so individual fields can be patched (merge
- * semantics); omitting a property preserves the current value.
+ * Schedule changes for a scheduled action. Omitted properties keep their current values.
  */
 @Fluent
 public final class ScheduledActionsScheduleUpdate implements JsonSerializable<ScheduledActionsScheduleUpdate> {
     /*
-     * The time the scheduled action is supposed to run on
+     * The local time of day when the scheduled action runs.
      */
     private String scheduledTime;
 
     /*
-     * The timezone the scheduled time is specified on
+     * The time zone used to interpret the scheduled time.
      */
     private String timeZone;
 
     /*
-     * The week days the scheduled action is supposed to run on. If empty, it means it will run on every week day.
+     * The days of the week when the action runs. An empty array means every day of the week.
      */
     private List<WeekDay> requestedWeekDays;
 
     /*
-     * The months the scheduled action is supposed to run on. If empty, it means it will run on every month.
+     * The months when the action runs. An empty array means every month.
      */
     private List<Month> requestedMonths;
 
     /*
-     * The days of the month the scheduled action is supposed to run on. If empty, it means it will run on every day of
-     * the month.
+     * The calendar days when the action runs. An empty array means every day of the month.
      */
     private List<Integer> requestedDaysOfTheMonth;
 
     /*
-     * The execution parameters the scheduled action is supposed to follow
+     * Settings that control operation execution and retries.
      */
     private ScheduledActionsExecutionParameters executionParameters;
 
     /*
-     * The type of deadline the scheduled action is supposed to follow for the schedule. If no value is passed, it will
-     * default to InitiateAt.
+     * How the scheduled time is interpreted. The default is `InitiateAt`.
      */
     private ScheduledActionsDeadlineType deadlineType;
 
@@ -62,7 +59,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the scheduledTime property: The time the scheduled action is supposed to run on.
+     * Get the scheduledTime property: The local time of day when the scheduled action runs.
      * 
      * @return the scheduledTime value.
      */
@@ -71,7 +68,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the scheduledTime property: The time the scheduled action is supposed to run on.
+     * Set the scheduledTime property: The local time of day when the scheduled action runs.
      * 
      * @param scheduledTime the scheduledTime value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
@@ -82,7 +79,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the timeZone property: The timezone the scheduled time is specified on.
+     * Get the timeZone property: The time zone used to interpret the scheduled time.
      * 
      * @return the timeZone value.
      */
@@ -91,7 +88,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the timeZone property: The timezone the scheduled time is specified on.
+     * Set the timeZone property: The time zone used to interpret the scheduled time.
      * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
@@ -102,8 +99,8 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the requestedWeekDays property: The week days the scheduled action is supposed to run on. If empty, it means
-     * it will run on every week day.
+     * Get the requestedWeekDays property: The days of the week when the action runs. An empty array means every day of
+     * the week.
      * 
      * @return the requestedWeekDays value.
      */
@@ -112,8 +109,8 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the requestedWeekDays property: The week days the scheduled action is supposed to run on. If empty, it means
-     * it will run on every week day.
+     * Set the requestedWeekDays property: The days of the week when the action runs. An empty array means every day of
+     * the week.
      * 
      * @param requestedWeekDays the requestedWeekDays value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
@@ -124,8 +121,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the requestedMonths property: The months the scheduled action is supposed to run on. If empty, it means it
-     * will run on every month.
+     * Get the requestedMonths property: The months when the action runs. An empty array means every month.
      * 
      * @return the requestedMonths value.
      */
@@ -134,8 +130,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the requestedMonths property: The months the scheduled action is supposed to run on. If empty, it means it
-     * will run on every month.
+     * Set the requestedMonths property: The months when the action runs. An empty array means every month.
      * 
      * @param requestedMonths the requestedMonths value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
@@ -146,8 +141,8 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the requestedDaysOfTheMonth property: The days of the month the scheduled action is supposed to run on. If
-     * empty, it means it will run on every day of the month.
+     * Get the requestedDaysOfTheMonth property: The calendar days when the action runs. An empty array means every day
+     * of the month.
      * 
      * @return the requestedDaysOfTheMonth value.
      */
@@ -156,8 +151,8 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the requestedDaysOfTheMonth property: The days of the month the scheduled action is supposed to run on. If
-     * empty, it means it will run on every day of the month.
+     * Set the requestedDaysOfTheMonth property: The calendar days when the action runs. An empty array means every day
+     * of the month.
      * 
      * @param requestedDaysOfTheMonth the requestedDaysOfTheMonth value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
@@ -168,7 +163,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the executionParameters property: The execution parameters the scheduled action is supposed to follow.
+     * Get the executionParameters property: Settings that control operation execution and retries.
      * 
      * @return the executionParameters value.
      */
@@ -177,7 +172,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the executionParameters property: The execution parameters the scheduled action is supposed to follow.
+     * Set the executionParameters property: Settings that control operation execution and retries.
      * 
      * @param executionParameters the executionParameters value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.
@@ -189,8 +184,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Get the deadlineType property: The type of deadline the scheduled action is supposed to follow for the schedule.
-     * If no value is passed, it will default to InitiateAt.
+     * Get the deadlineType property: How the scheduled time is interpreted. The default is `InitiateAt`.
      * 
      * @return the deadlineType value.
      */
@@ -199,8 +193,7 @@ public final class ScheduledActionsScheduleUpdate implements JsonSerializable<Sc
     }
 
     /**
-     * Set the deadlineType property: The type of deadline the scheduled action is supposed to follow for the schedule.
-     * If no value is passed, it will default to InitiateAt.
+     * Set the deadlineType property: How the scheduled time is interpreted. The default is `InitiateAt`.
      * 
      * @param deadlineType the deadlineType value to set.
      * @return the ScheduledActionsScheduleUpdate object itself.

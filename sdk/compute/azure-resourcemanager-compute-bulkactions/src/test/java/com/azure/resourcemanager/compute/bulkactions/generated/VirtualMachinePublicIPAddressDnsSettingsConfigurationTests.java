@@ -13,19 +13,19 @@ public final class VirtualMachinePublicIPAddressDnsSettingsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = BinaryData.fromString("{\"domainNameLabel\":\"zdmsyqtfi\",\"domainNameLabelScope\":\"NoReuse\"}")
+            = BinaryData.fromString("{\"domainNameLabel\":\"oa\",\"domainNameLabelScope\":\"SubscriptionReuse\"}")
                 .toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("zdmsyqtfi", model.domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.NO_REUSE, model.domainNameLabelScope());
+        Assertions.assertEquals("oa", model.domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.SUBSCRIPTION_REUSE, model.domainNameLabelScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("zdmsyqtfi")
-                .withDomainNameLabelScope(DomainNameLabelScopeTypes.NO_REUSE);
+            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("oa")
+                .withDomainNameLabelScope(DomainNameLabelScopeTypes.SUBSCRIPTION_REUSE);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("zdmsyqtfi", model.domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.NO_REUSE, model.domainNameLabelScope());
+        Assertions.assertEquals("oa", model.domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.SUBSCRIPTION_REUSE, model.domainNameLabelScope());
     }
 }
