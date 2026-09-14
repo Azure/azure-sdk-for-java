@@ -113,11 +113,23 @@ We adopted maven build model and strive to keep the project model intuitive enou
 If you need any help with any specific IDE or cannot get the build going in any environment - please open an issue.
 Here are few general topics, which we thought developers would need help with:
 
+### Running unit tests
+
+Tests use JUnit 5 Jupiter. From the repository root, run the following Maven command to compile all test sources and run
+only the unit tests that do not require Azure resources:
+
+```powershell
+mvn -f sdk\eventhubs\microsoft-azure-eventhubs\pom.xml "-Dspotless.apply.skip=true" "-Dtest=ConnStrBuilderTest,EventDataTest,EventDataOrderTest,RetryPolicyTest,WebSocketProxyConnectionHandlerTest,ProxyConfigurationTest,ReceivePumpTest" test
+```
+
+The remaining enabled tests are live integration tests, not playback tests. They inherit a configuration check that skips
+them when `AZURE_EVENTHUBS_CONNECTION_STRING` is unset. Do not run them against Azure unless you intend to use live resources.
+
 ### Running Integration tests
 
 Set the following two Environment variables to be able to run unit tests targeting Microsoft Azure EventHubs service:
 
-* EVENT_HUB_CONNECTION_STRING - the event hub connection string to which the tests should target. the format of the
+* AZURE_EVENTHUBS_CONNECTION_STRING - the event hub connection string to which the tests should target. the format of the
   connection string is:
   `Endpoint=----NAMESPACE_ENDPOINT------;EntityPath=----EVENTHUB_NAME----;SharedAccessKeyName=----KEY_NAME----;SharedAccessKey=----KEY_VALUE----`.
   [Here's how to create an Event Hub on Azure Portal and get the connection
@@ -128,5 +140,3 @@ Set the following two Environment variables to be able to run unit tests targeti
   `DefaultEndpointsProtocol=https;AccountName=---STORAGE_ACCOUNT_NAME---;AccountKey=---ACCOUNT_KEY---;EndpointSuffix=---ENPOINT_SUFFIX---`.
   For more details on this visit - [how to create an Azure Storage account connection
   string](https://learn.microsoft.com/azure/storage/common/storage-configure-connection-string#create-a-connection-string-for-an-azure-storage-account).
-
-

@@ -129,7 +129,6 @@ io.projectreactor:reactor-test;3.7.19
 io.github.hakky54:logcaptor;2.9.3
 com.squareup.okio:okio;3.18.1
 com.squareup.okio:okio-jvm;3.18.1
-junit:junit;4.13.2
 commons-cli:commons-cli;1.9.0
 org.assertj:assertj-core;3.27.7
 org.bouncycastle:bcprov-jdk18on;1.84
