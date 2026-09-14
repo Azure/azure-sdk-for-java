@@ -22,7 +22,7 @@ public final class VnetConnectionsListBySandboxGroupMockTests {
     @Test
     public void testListBySandboxGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"subnetId\":\"bvntnrgmqsorhce\"},\"id\":\"gnlykm\",\"name\":\"cpwzv\",\"type\":\"doksqdtiwlwxlbon\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"subnetId\":\"qdtiwlwxlb\"},\"id\":\"cq\",\"name\":\"azqicqchygtv\",\"type\":\"byjanep\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class VnetConnectionsListBySandboxGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VnetConnection> response
-            = manager.vnetConnections().listBySandboxGroup("ji", "ytssikiz", com.azure.core.util.Context.NONE);
+            = manager.vnetConnections().listBySandboxGroup("hcekxgnlykm", "cpwzv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bvntnrgmqsorhce", response.iterator().next().properties().subnetId());
+        Assertions.assertEquals("qdtiwlwxlb", response.iterator().next().properties().subnetId());
     }
 }

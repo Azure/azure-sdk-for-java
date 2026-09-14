@@ -22,7 +22,7 @@ public final class VnetConnectionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"InProgress\",\"subnetId\":\"vkbcknjolgjyyxp\"},\"id\":\"lszerqzevx\",\"name\":\"qe\",\"type\":\"ntxwaljglzob\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"subnetId\":\"zyqbhd\"},\"id\":\"fjrqpjiyr\",\"name\":\"jc\",\"type\":\"gaxwmzwdfkbnrzo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class VnetConnectionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VnetConnection response = manager.vnetConnections()
-            .define("xbyja")
-            .withExistingSandboxGroup("qba", "qicqchygt")
-            .withProperties(new VnetConnectionProperties().withSubnetId("dpkxyqvg"))
+            .define("hkxdxuwsaifmc")
+            .withExistingSandboxGroup("bdpkxyqvgx", "aodetv")
+            .withProperties(new VnetConnectionProperties().withSubnetId("zlehgcvkbcknjolg"))
             .create();
 
-        Assertions.assertEquals("vkbcknjolgjyyxp", response.properties().subnetId());
+        Assertions.assertEquals("zyqbhd", response.properties().subnetId());
     }
 }

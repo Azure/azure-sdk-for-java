@@ -27,8 +27,7 @@ public final class ContainerAppsSourceControlsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.containerAppsSourceControls()
-            .delete("dcduwjoedxn", "ucaifpaurwwgilf", "qqa", com.azure.core.util.Context.NONE);
+        manager.containerAppsSourceControls().delete("iw", "fmmp", "hzzwvywrgyngy", com.azure.core.util.Context.NONE);
 
     }
 }

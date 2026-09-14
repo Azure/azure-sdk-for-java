@@ -239,12 +239,12 @@ public interface SandboxGroup {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The resource-specific properties for this resource..
+             * Specifies the properties property: SandboxGroup properties that can be updated..
              * 
-             * @param properties The resource-specific properties for this resource.
+             * @param properties SandboxGroup properties that can be updated.
              * @return the next definition stage.
              */
-            Update withProperties(SandboxGroupProperties properties);
+            Update withProperties(SandboxGroupPatchProperties properties);
         }
     }
 

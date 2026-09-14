@@ -122,8 +122,8 @@ public interface SandboxGroupsClient {
      * share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String sandboxGroupName,
-        SandboxGroupPatch properties);
+    SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdate(String resourceGroupName,
+        String sandboxGroupName, SandboxGroupPatch properties);
 
     /**
      * Patches a SandboxGroup.
@@ -139,8 +139,8 @@ public interface SandboxGroupsClient {
      * share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String sandboxGroupName,
-        SandboxGroupPatch properties, Context context);
+    SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdate(String resourceGroupName,
+        String sandboxGroupName, SandboxGroupPatch properties, Context context);
 
     /**
      * Patches a SandboxGroup.
@@ -151,9 +151,10 @@ public interface SandboxGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties);
+    SandboxGroupInner update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties);
 
     /**
      * Patches a SandboxGroup.
@@ -165,9 +166,11 @@ public interface SandboxGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties, Context context);
+    SandboxGroupInner update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties,
+        Context context);
 
     /**
      * Delete a SandboxGroup.

@@ -20,7 +20,7 @@ public final class ContainerAppsFunctionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"invokeUrlTemplate\":\"vslxlh\",\"triggerType\":\"vkrmukmyjmkx\",\"language\":\"tcsloj\",\"isDisabled\":false,\"state\":\"Disabled\"},\"id\":\"qtoqxjhqxcsq\",\"name\":\"tkbtnqlrngl\",\"type\":\"mbiipsnawwlqk\"}";
+            = "{\"properties\":{\"invokeUrlTemplate\":\"lh\",\"triggerType\":\"vkrmukmyjmkx\",\"language\":\"tcsloj\",\"isDisabled\":false,\"state\":\"Disabled\"},\"id\":\"qtoqxjhqxcsq\",\"name\":\"tkbtnqlrngl\",\"type\":\"mbiipsnawwlqk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ContainerAppsFunctionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ContainerAppsFunction response = manager.containerAppsFunctions()
-            .getWithResponse("nmwynefxexl", "ciatxtjrrl", "mdskjhhxdlajfoxc", com.azure.core.util.Context.NONE)
+            .getWithResponse("kmdskjhhxd", "ajfoxc", "scv", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

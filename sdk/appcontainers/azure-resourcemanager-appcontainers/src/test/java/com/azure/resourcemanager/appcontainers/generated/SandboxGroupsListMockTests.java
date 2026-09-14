@@ -22,7 +22,7 @@ public final class SandboxGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"environmentId\":\"mtqjkqevadrmm\",\"defaultDomain\":\"uawvcmjzk\",\"provisioningState\":\"Canceled\"},\"location\":\"isczskoswo\",\"tags\":{\"sbamnppcc\":\"azugamxzkrrcoi\"},\"id\":\"kuztdsbezaxyfu\",\"name\":\"zxuizhyhnepkpe\",\"type\":\"iarxqiubxdukec\"}]}";
+            = "{\"value\":[{\"properties\":{\"environmentId\":\"otz\",\"defaultDomain\":\"d\",\"provisioningState\":\"Succeeded\"},\"location\":\"gryfqiuasig\",\"tags\":{\"rmtqjkqevadr\":\"socnequygdjboq\",\"z\":\"mwiuawvcm\",\"scz\":\"xiid\",\"rrcoi\":\"koswoqiqazugamxz\"},\"id\":\"sbamnppcc\",\"name\":\"kuztdsbezaxyfu\",\"type\":\"zxuizhyhnepkpe\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class SandboxGroupsListMockTests {
 
         PagedIterable<SandboxGroup> response = manager.sandboxGroups().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("isczskoswo", response.iterator().next().location());
-        Assertions.assertEquals("azugamxzkrrcoi", response.iterator().next().tags().get("sbamnppcc"));
-        Assertions.assertEquals("mtqjkqevadrmm", response.iterator().next().properties().environmentId());
+        Assertions.assertEquals("gryfqiuasig", response.iterator().next().location());
+        Assertions.assertEquals("socnequygdjboq", response.iterator().next().tags().get("rmtqjkqevadr"));
+        Assertions.assertEquals("otz", response.iterator().next().properties().environmentId());
     }
 }

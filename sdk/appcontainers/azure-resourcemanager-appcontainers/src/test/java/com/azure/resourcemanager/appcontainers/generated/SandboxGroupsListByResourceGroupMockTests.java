@@ -22,7 +22,7 @@ public final class SandboxGroupsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"environmentId\":\"dxlwyojbfqz\",\"defaultDomain\":\"fnjyix\",\"provisioningState\":\"Updating\"},\"location\":\"atqxmbjroumzzn\",\"tags\":{\"pusllywpv\":\"qjrhuzgfxonj\"},\"id\":\"iotzbpdbollgryfq\",\"name\":\"uasigr\",\"type\":\"wsocnequygdjbo\"}]}";
+            = "{\"value\":[{\"properties\":{\"environmentId\":\"nuyemlowuo\",\"defaultDomain\":\"lxlnwyrmo\",\"provisioningState\":\"Failed\"},\"location\":\"gmokzkltrfowt\",\"tags\":{\"jidhftu\":\"fmvlihcvjdrqc\",\"bfqz\":\"vhdxlwyo\",\"xmbjroum\":\"kfnjyixhafrat\",\"l\":\"znv\"},\"id\":\"jrhuzgf\",\"name\":\"on\",\"type\":\"tpusllywp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SandboxGroupsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SandboxGroup> response
-            = manager.sandboxGroups().listByResourceGroup("jidhftu", com.azure.core.util.Context.NONE);
+            = manager.sandboxGroups().listByResourceGroup("ds", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("atqxmbjroumzzn", response.iterator().next().location());
-        Assertions.assertEquals("qjrhuzgfxonj", response.iterator().next().tags().get("pusllywpv"));
-        Assertions.assertEquals("dxlwyojbfqz", response.iterator().next().properties().environmentId());
+        Assertions.assertEquals("gmokzkltrfowt", response.iterator().next().location());
+        Assertions.assertEquals("fmvlihcvjdrqc", response.iterator().next().tags().get("jidhftu"));
+        Assertions.assertEquals("nuyemlowuo", response.iterator().next().properties().environmentId());
     }
 }

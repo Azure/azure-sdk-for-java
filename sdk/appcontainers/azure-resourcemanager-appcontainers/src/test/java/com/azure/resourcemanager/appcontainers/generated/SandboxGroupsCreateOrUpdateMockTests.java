@@ -24,7 +24,7 @@ public final class SandboxGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"environmentId\":\"nxzcm\",\"defaultDomain\":\"ngxno\",\"provisioningState\":\"Succeeded\"},\"location\":\"disnj\",\"tags\":{\"mydidwhepfw\":\"d\",\"dbckyo\":\"tjfdoesxxhmw\",\"jzrbhtmeplv\":\"kxkxhnegk\"},\"id\":\"kaobrl\",\"name\":\"pgsn\",\"type\":\"agnchjhgemuowaky\"}";
+            = "{\"properties\":{\"environmentId\":\"nwtpcpahprz\",\"defaultDomain\":\"xhmtfhocnxzc\",\"provisioningState\":\"Succeeded\"},\"location\":\"gxnoqrxtdis\",\"tags\":{\"ydidwhepfwwtjf\":\"vhdl\",\"sxxh\":\"o\",\"kxhnegknj\":\"wcdbckyoik\"},\"id\":\"rbhtmeplvukaobr\",\"name\":\"bpgsnbagnc\",\"type\":\"jhgem\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class SandboxGroupsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SandboxGroup response = manager.sandboxGroups()
-            .define("hctmmkosz")
-            .withRegion("lbnld")
-            .withExistingResourceGroup("xdazv")
-            .withTags(mapOf("ezyquw", "bh", "brruyuuatv", "sqxutr"))
-            .withProperties(new SandboxGroupProperties().withEnvironmentId("lnsntrpc"))
+            .define("xdazv")
+            .withRegion("btfmhklbnldpvcbh")
+            .withExistingResourceGroup("iarxqiubxdukec")
+            .withTags(mapOf("wusqx", "yq"))
+            .withProperties(new SandboxGroupProperties().withEnvironmentId("tmmkosz"))
             .create();
 
-        Assertions.assertEquals("disnj", response.location());
-        Assertions.assertEquals("d", response.tags().get("mydidwhepfw"));
-        Assertions.assertEquals("nxzcm", response.properties().environmentId());
+        Assertions.assertEquals("gxnoqrxtdis", response.location());
+        Assertions.assertEquals("vhdl", response.tags().get("ydidwhepfwwtjf"));
+        Assertions.assertEquals("nwtpcpahprz", response.properties().environmentId());
     }
 
     // Use "Map.of" if available

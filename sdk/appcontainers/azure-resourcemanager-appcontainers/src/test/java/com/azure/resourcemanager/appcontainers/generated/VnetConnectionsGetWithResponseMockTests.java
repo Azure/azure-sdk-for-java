@@ -21,7 +21,7 @@ public final class VnetConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"subnetId\":\"soljome\"},\"id\":\"fycnlb\",\"name\":\"gjco\",\"type\":\"kk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"subnetId\":\"jomevtfycnlb\"},\"id\":\"jcodkkgjiiytssi\",\"name\":\"izbcufqbvntnr\",\"type\":\"mqso\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class VnetConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VnetConnection response = manager.vnetConnections()
-            .getWithResponse("a", "hjym", "cgqtag", com.azure.core.util.Context.NONE)
+            .getWithResponse("owa", "ywalhjymxcg", "tagdrc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("soljome", response.properties().subnetId());
+        Assertions.assertEquals("jomevtfycnlb", response.properties().subnetId());
     }
 }

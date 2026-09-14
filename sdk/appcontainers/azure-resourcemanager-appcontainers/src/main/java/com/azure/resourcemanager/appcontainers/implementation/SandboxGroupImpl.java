@@ -9,6 +9,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.SandboxGroupInner;
 import com.azure.resourcemanager.appcontainers.models.SandboxGroup;
+import com.azure.resourcemanager.appcontainers.models.SandboxGroupPatch;
+import com.azure.resourcemanager.appcontainers.models.SandboxGroupPatchProperties;
 import com.azure.resourcemanager.appcontainers.models.SandboxGroupProperties;
 import java.util.Collections;
 import java.util.Map;
@@ -75,6 +77,8 @@ public final class SandboxGroupImpl implements SandboxGroup, SandboxGroup.Defini
 
     private String sandboxGroupName;
 
+    private SandboxGroupPatch updateProperties;
+
     public SandboxGroupImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -101,20 +105,21 @@ public final class SandboxGroupImpl implements SandboxGroup, SandboxGroup.Defini
     }
 
     public SandboxGroupImpl update() {
+        this.updateProperties = new SandboxGroupPatch();
         return this;
     }
 
     public SandboxGroup apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSandboxGroups()
-            .createOrUpdate(resourceGroupName, sandboxGroupName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, sandboxGroupName, updateProperties, Context.NONE);
         return this;
     }
 
     public SandboxGroup apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSandboxGroups()
-            .createOrUpdate(resourceGroupName, sandboxGroupName, this.innerModel(), context);
+            .update(resourceGroupName, sandboxGroupName, updateProperties, context);
         return this;
     }
 
@@ -153,12 +158,26 @@ public final class SandboxGroupImpl implements SandboxGroup, SandboxGroup.Defini
     }
 
     public SandboxGroupImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public SandboxGroupImpl withProperties(SandboxGroupProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public SandboxGroupImpl withProperties(SandboxGroupPatchProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

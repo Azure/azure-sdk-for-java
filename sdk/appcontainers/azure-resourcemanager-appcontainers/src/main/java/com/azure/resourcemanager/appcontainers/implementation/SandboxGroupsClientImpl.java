@@ -556,12 +556,12 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      * share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String sandboxGroupName,
-        SandboxGroupPatch properties) {
+    private PollerFlux<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdateAsync(String resourceGroupName,
+        String sandboxGroupName, SandboxGroupPatch properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, sandboxGroupName, properties);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<SandboxGroupInner, SandboxGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SandboxGroupInner.class, SandboxGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -577,10 +577,11 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      * share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String sandboxGroupName,
-        SandboxGroupPatch properties) {
+    public SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdate(String resourceGroupName,
+        String sandboxGroupName, SandboxGroupPatch properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, sandboxGroupName, properties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<SandboxGroupInner, SandboxGroupInner>getLroResult(response, SandboxGroupInner.class,
+            SandboxGroupInner.class, Context.NONE);
     }
 
     /**
@@ -597,10 +598,11 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      * share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String sandboxGroupName,
-        SandboxGroupPatch properties, Context context) {
+    public SyncPoller<PollResult<SandboxGroupInner>, SandboxGroupInner> beginUpdate(String resourceGroupName,
+        String sandboxGroupName, SandboxGroupPatch properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, sandboxGroupName, properties, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<SandboxGroupInner, SandboxGroupInner>getLroResult(response, SandboxGroupInner.class,
+            SandboxGroupInner.class, context);
     }
 
     /**
@@ -616,7 +618,8 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties) {
+    private Mono<SandboxGroupInner> updateAsync(String resourceGroupName, String sandboxGroupName,
+        SandboxGroupPatch properties) {
         return beginUpdateAsync(resourceGroupName, sandboxGroupName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -630,10 +633,11 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties) {
-        beginUpdate(resourceGroupName, sandboxGroupName, properties).getFinalResult();
+    public SandboxGroupInner update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties) {
+        return beginUpdate(resourceGroupName, sandboxGroupName, properties).getFinalResult();
     }
 
     /**
@@ -646,11 +650,12 @@ public final class SandboxGroupsClientImpl implements SandboxGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties,
+    public SandboxGroupInner update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties,
         Context context) {
-        beginUpdate(resourceGroupName, sandboxGroupName, properties, context).getFinalResult();
+        return beginUpdate(resourceGroupName, sandboxGroupName, properties, context).getFinalResult();
     }
 
     /**

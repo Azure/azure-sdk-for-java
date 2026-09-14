@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.SandboxGroupsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.SandboxGroupInner;
 import com.azure.resourcemanager.appcontainers.models.SandboxGroup;
-import com.azure.resourcemanager.appcontainers.models.SandboxGroupPatch;
 import com.azure.resourcemanager.appcontainers.models.SandboxGroups;
 
 public final class SandboxGroupsImpl implements SandboxGroups {
@@ -43,15 +42,6 @@ public final class SandboxGroupsImpl implements SandboxGroups {
         } else {
             return null;
         }
-    }
-
-    public void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties) {
-        this.serviceClient().update(resourceGroupName, sandboxGroupName, properties);
-    }
-
-    public void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties,
-        Context context) {
-        this.serviceClient().update(resourceGroupName, sandboxGroupName, properties, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String sandboxGroupName) {

@@ -5975,7 +5975,7 @@ public final class SandboxGroupsListByResourceGroupSamples {
 ### SandboxGroups_Update
 
 ```java
-import com.azure.resourcemanager.appcontainers.models.SandboxGroupPatch;
+import com.azure.resourcemanager.appcontainers.models.SandboxGroup;
 import com.azure.resourcemanager.appcontainers.models.SandboxGroupPatchProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -5993,11 +5993,14 @@ public final class SandboxGroupsUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void updateASandboxGroup(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.sandboxGroups()
-            .update("examplerg", "testgroup", new SandboxGroupPatch().withTags(mapOf("environment", "test"))
-                .withProperties(new SandboxGroupPatchProperties().withEnvironmentId(
-                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/exampleenv")),
-                com.azure.core.util.Context.NONE);
+        SandboxGroup resource = manager.sandboxGroups()
+            .getByResourceGroupWithResponse("examplerg", "testgroup", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("environment", "test"))
+            .withProperties(new SandboxGroupPatchProperties().withEnvironmentId(
+                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/exampleenv"))
+            .apply();
     }
 
     // Use "Map.of" if available

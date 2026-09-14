@@ -39,31 +39,6 @@ public interface SandboxGroups {
     SandboxGroup getByResourceGroup(String resourceGroupName, String sandboxGroupName);
 
     /**
-     * Patches a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties);
-
-    /**
-     * Patches a SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(String resourceGroupName, String sandboxGroupName, SandboxGroupPatch properties, Context context);
-
-    /**
      * Delete a SandboxGroup.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
