@@ -1,14 +1,8 @@
 # Release History
 
-## 2.61.0-beta.1 (Unreleased)
+## 2.61.0 (2026-09-14)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2025-12-03, ComputeSku: 2021-07-01.
 
 ## 2.60.0 (2026-08-12)
 
