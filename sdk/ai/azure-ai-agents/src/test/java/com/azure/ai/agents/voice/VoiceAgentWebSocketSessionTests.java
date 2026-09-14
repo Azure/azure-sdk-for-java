@@ -1,11 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketClient;
+import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
+import com.azure.ai.agents.models.RealtimeClientEventResponseCreate;
+import com.azure.ai.agents.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentServerEventWarning;
 import com.azure.ai.agents.models.VoiceAgentTransport;
@@ -14,7 +20,6 @@ import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -26,6 +31,8 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.ContinuationWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import java.io.File;
@@ -43,6 +50,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -62,7 +70,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.Http11SslContextSpec;
-import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.server.HttpServer;
 import reactor.netty.http.server.WebsocketServerSpec;
 import reactor.test.StepVerifier;
@@ -77,6 +84,171 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentWebSocketSessionTests {
     private DisposableServer server;
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void handshakeOverridesPreserveQueryAndSingleUserAgent(boolean async) {
+        AtomicReference<String> requestUri = new AtomicReference<>();
+        AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
+        server = tlsServer().host("localhost").port(0).handle((request, response) -> {
+            requestUri.set(request.uri());
+            headers.set(request.requestHeaders().copy());
+            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then(),
+                WebsocketServerSpec.builder().protocols("realtime").build());
+        }).bindNow();
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project/")
+                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+                .configuration(Configuration.NONE);
+        for (String userAgentHeader : new String[] { "", "User-Agent", "user-agent" }) {
+            Map<String, String> extra = new LinkedHashMap<>();
+            extra.put("X-Custom", "custom-value");
+            extra.put("Authorization", "must-not-override-token");
+            extra.put("Sec-WebSocket-Protocol", "other");
+            VoiceAgentWebSocketConnectionOptions options
+                = tlsOptions().setExtraQuery(Collections.singletonMap("foo", "bar value"));
+            if (!userAgentHeader.isEmpty()) {
+                extra.put(userAgentHeader, "custom-user-agent");
+                options.setConnectionUrl(URI.create("wss://localhost:" + server.port() + "/custom?sig=abc"));
+            }
+            options.setExtraHeaders(extra);
+            if (async) {
+                VoiceAgentWebSocketSessionAsyncClient session = builder.buildBetaVoiceAgentWebSocketAsyncClient()
+                    .connect("agent name", options)
+                    .block(Duration.ofSeconds(5));
+                session.closeAsync().block(Duration.ofSeconds(5));
+                assertFalse(session.isOpen());
+            } else {
+                VoiceAgentWebSocketSessionClient session
+                    = builder.buildBetaVoiceAgentWebSocketClient().connect("agent name", options);
+                session.close();
+                assertFalse(session.isOpen());
+            }
+            assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
+            assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
+            assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+            assertEquals("custom-value", headers.get().get("X-Custom"));
+            assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
+            String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
+            String uri = decode(requestUri.get());
+            assertTrue(uri.contains("api-version=v1"));
+            assertTrue(uri.contains("foo=bar value"));
+            assertEquals(1, requestUri.get().chars().filter(character -> character == '?').count());
+            if (userAgentHeader.isEmpty()) {
+                assertTrue(userAgent.startsWith("azsdk-java-azure-ai-agents/"), userAgent);
+                assertTrue(uri.contains("x-ms-client-sdk=" + userAgent));
+                assertTrue(uri.startsWith("/api/projects/project/agents/agent name/endpoint/protocols/voice?"));
+            } else {
+                assertEquals("custom-user-agent", userAgent);
+                assertTrue(uri.startsWith("/custom?"));
+                assertTrue(uri.contains("sig=abc"));
+                assertTrue(uri.contains("x-ms-client-sdk=azsdk-java-azure-ai-agents/"), uri);
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void typedStringAndMappingSendsRejectInvalidJson(boolean async) {
+        List<String> messages = new CopyOnWriteArrayList<>();
+        server = startServer(messages, new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(),
+            new AtomicReference<>(), new AtomicReference<>(), false);
+        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+        String raw = "{\"type\": \"response.create\"}";
+        BinaryData mapping = BinaryData.fromObject(Collections.singletonMap("type", "response.cancel"));
+        if (async) {
+            VoiceAgentWebSocketSessionAsyncClient session = builder.buildBetaVoiceAgentWebSocketAsyncClient()
+                .connect("agent", tlsOptions())
+                .block(Duration.ofSeconds(5));
+            try {
+                StepVerifier.create(session.sendEvent(BinaryData.fromString("not valid json")))
+                    .expectError(IllegalArgumentException.class)
+                    .verify(Duration.ofSeconds(5));
+                session.sendEvent(new RealtimeClientEventResponseCreate())
+                    .then(session.sendEvent(BinaryData.fromString(raw)))
+                    .then(session.sendEvent(mapping))
+                    .block(Duration.ofSeconds(5));
+                StepVerifier.create(session.receiveEvents().take(3)).expectNextCount(3).verifyComplete();
+            } finally {
+                session.close();
+            }
+        } else {
+            try (VoiceAgentWebSocketSessionClient session
+                = builder.buildBetaVoiceAgentWebSocketClient().connect("agent", tlsOptions())) {
+                assertThrows(IllegalArgumentException.class,
+                    () -> session.sendEvent(BinaryData.fromString("not valid json")));
+                session.sendEvent(new RealtimeClientEventResponseCreate());
+                session.sendEvent(BinaryData.fromString(raw));
+                session.sendEvent(mapping);
+                Iterator<RealtimeServerEvent> events = session.receiveEvents(Duration.ofSeconds(5)).iterator();
+                for (int index = 0; index < 3; index++) {
+                    assertWarningEvent(events.next());
+                }
+            }
+        }
+        assertEquals(3, messages.size());
+        assertEquals("response.create", BinaryData.fromString(messages.get(0)).toObject(Map.class).get("type"));
+        assertEquals(raw, messages.get(1));
+        assertEquals(mapping.toObject(Map.class), BinaryData.fromString(messages.get(2)).toObject(Map.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void pingPongFramesAreNotApplicationEvents(boolean async) {
+        Flux<WebSocketFrame> frames = Flux.defer(() -> Flux.just(new PingWebSocketFrame(), new PongWebSocketFrame(),
+            new TextWebSocketFrame("{\"type\":\"session.created\",\"session\":{}}"),
+            new TextWebSocketFrame("{\"type\":\"future.event\",\"foo\":\"bar\"}")));
+        server = tlsServer().host("localhost")
+            .port(0)
+            .handle((request, response) -> response.sendWebsocket(
+                (inbound, outbound) -> outbound.sendObject(frames).then(inbound.receive().then()),
+                WebsocketServerSpec.builder().protocols("realtime").build()))
+            .bindNow();
+        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+        List<RealtimeServerEvent> events = new ArrayList<>();
+        if (async) {
+            VoiceAgentWebSocketSessionAsyncClient session = builder.buildBetaVoiceAgentWebSocketAsyncClient()
+                .connect("agent", tlsOptions())
+                .block(Duration.ofSeconds(5));
+            try {
+                events.addAll(session.receiveEvents().take(2).collectList().block(Duration.ofSeconds(5)));
+            } finally {
+                session.close();
+            }
+        } else {
+            try (VoiceAgentWebSocketSessionClient session
+                = builder.buildBetaVoiceAgentWebSocketClient().connect("agent", tlsOptions())) {
+                Iterator<RealtimeServerEvent> iterator = session.receiveEvents(Duration.ofSeconds(5)).iterator();
+                events.add(iterator.next());
+                events.add(iterator.next());
+            }
+        }
+        assertEquals(2, events.size());
+        assertInstanceOf(RealtimeServerEventSessionCreated.class, events.get(0));
+        RawRealtimeServerEvent unknown = assertInstanceOf(RawRealtimeServerEvent.class, events.get(1));
+        assertEquals("bar", unknown.getRawEvent().toObject(Map.class).get("foo"));
+    }
+
+    @Test
+    public void explicitDefaultPortOverrideIsTrustedBeforeAuthentication() {
+        AtomicInteger tokens = new AtomicInteger();
+        IllegalStateException tokenError = new IllegalStateException("Stop before network access.");
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint("https://example.com/api/projects/project").credential(request -> {
+                tokens.incrementAndGet();
+                return Mono.error(tokenError);
+            });
+        VoiceAgentWebSocketConnectionOptions options
+            = new VoiceAgentWebSocketConnectionOptions().setConnectionUrl(URI.create("wss://example.com:443/custom"));
+        assertEquals(tokenError, assertThrows(IllegalStateException.class,
+            () -> builder.buildBetaVoiceAgentWebSocketClient().connect("agent", options)));
+        StepVerifier.create(builder.buildBetaVoiceAgentWebSocketAsyncClient().connect("agent", options))
+            .expectErrorSatisfies(error -> assertEquals(tokenError, error))
+            .verify(Duration.ofSeconds(5));
+        assertEquals(2, tokens.get());
+    }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
@@ -199,8 +371,16 @@ public class VoiceAgentWebSocketSessionTests {
         RawRealtimeServerEvent event = new RawRealtimeServerEvent(payload);
         RawRealtimeServerEvent copy = BinaryData.fromObject(event).toObject(RawRealtimeServerEvent.class);
         assertEquals(payload.toObject(Map.class), copy.getRawEvent().toObject(Map.class));
-        assertInstanceOf(RawRealtimeServerEvent.class,
-            VoiceAgentWebSocketUtils.deserializeEvent("{\"type\":42,\"value\":1}"));
+        server = oneShotWebSocketServer("{\"type\":42,\"value\":1}");
+        VoiceAgentWebSocketSessionAsyncClient session
+            = createAsyncClient(server.port()).connect("agent", tlsOptions()).block(Duration.ofSeconds(5));
+        try {
+            StepVerifier.create(session.receiveEvents())
+                .assertNext(received -> assertInstanceOf(RawRealtimeServerEvent.class, received))
+                .verifyComplete();
+        } finally {
+            session.close();
+        }
         VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnectionOptions();
         assertThrows(IllegalArgumentException.class, () -> options.setReceiveBufferCapacity(0));
         assertThrows(IllegalArgumentException.class, () -> options.setReceiveBufferCapacity(65537));
@@ -708,18 +888,15 @@ public class VoiceAgentWebSocketSessionTests {
                 websocketSpec))
             .bindNow();
 
-        Http11SslContextSpec clientSsl
-            = Http11SslContextSpec.forClient().configure(builder -> builder.trustManager(certificate));
-        HttpClient httpClient = HttpClient.create().secure(ssl -> ssl.sslContext(clientSsl));
         TokenCredential credential
             = request -> Mono.just(new AccessToken("tls-token", OffsetDateTime.now().plusHours(1)));
-        VoiceAgentWebSocketClientConfiguration configuration = new VoiceAgentWebSocketClientConfiguration(
-            URI.create("https://localhost:" + server.port() + "/api/projects/project"), credential, "v1",
-            "azure-ai-agents-test", new HttpHeaders(), null);
         VoiceAgentWebSocketSessionAsyncClient session
-            = new VoiceAgentWebSocketSessionAsyncClient(configuration, "secure-agent", tlsOptions(), httpClient);
+            = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
+                .credential(credential)
+                .buildBetaVoiceAgentWebSocketAsyncClient()
+                .connect("secure-agent", tlsOptions())
+                .block(Duration.ofSeconds(5));
 
-        session.connect().block();
         assertEquals("wss", session.getEndpoint().getScheme());
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
         session.close();
