@@ -7,12 +7,6 @@
   <!-- Incorrect flagging, already checked by if-else -->
   <Match>
     <Class name="com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Incorrect flagging, already checked by if-else -->
-  <Match>
-    <Class name="com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration"/>
-    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,NP_NULL_PARAM_DEREF"/>
   </Match>
 </FindBugsFilter>
