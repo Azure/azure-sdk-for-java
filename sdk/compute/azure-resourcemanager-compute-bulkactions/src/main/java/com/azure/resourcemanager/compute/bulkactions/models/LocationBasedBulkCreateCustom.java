@@ -222,8 +222,8 @@ public interface LocationBasedBulkCreateCustom {
     /**
      * The template for LocationBasedBulkCreateCustom update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithZones,
-        UpdateStages.WithIdentity, UpdateStages.WithPlan {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity, UpdateStages.WithPlan {
         /**
          * Executes the update request.
          * 
@@ -268,19 +268,6 @@ public interface LocationBasedBulkCreateCustom {
              * @return the next definition stage.
              */
             Update withProperties(BulkCreateCustomProperties properties);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreateCustom update allowing to specify zones.
-         */
-        interface WithZones {
-            /**
-             * Specifies the zones property: Zones in which the BulkCreateCustom is available.
-             * 
-             * @param zones Zones in which the BulkCreateCustom is available.
-             * @return the next definition stage.
-             */
-            Update withZones(List<String> zones);
         }
 
         /**

@@ -26,8 +26,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
 import com.azure.resourcemanager.compute.bulkactions.implementation.BulkCreateCustomsImpl;
+import com.azure.resourcemanager.compute.bulkactions.implementation.BulkCreatesImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.ComputeBulkActionsManagementClientBuilder;
-import com.azure.resourcemanager.compute.bulkactions.implementation.LaunchBulkInstancesOperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.OccurrenceExtensionsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.OccurrencesImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.OperationsImpl;
@@ -36,7 +36,7 @@ import com.azure.resourcemanager.compute.bulkactions.implementation.ScheduledAct
 import com.azure.resourcemanager.compute.bulkactions.implementation.ScheduledActionsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.VirtualMachineBulkOperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustoms;
-import com.azure.resourcemanager.compute.bulkactions.models.LaunchBulkInstancesOperations;
+import com.azure.resourcemanager.compute.bulkactions.models.BulkCreates;
 import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceExtensions;
 import com.azure.resourcemanager.compute.bulkactions.models.Occurrences;
 import com.azure.resourcemanager.compute.bulkactions.models.Operations;
@@ -60,9 +60,9 @@ public final class ComputeBulkActionsManager {
 
     private VirtualMachineBulkOperations virtualMachineBulkOperations;
 
-    private LaunchBulkInstancesOperations launchBulkInstancesOperations;
-
     private BulkCreateCustoms bulkCreateCustoms;
+
+    private BulkCreates bulkCreates;
 
     private ScheduledActions scheduledActions;
 
@@ -315,20 +315,6 @@ public final class ComputeBulkActionsManager {
     }
 
     /**
-     * Gets the resource collection API of LaunchBulkInstancesOperations. It manages
-     * LocationBasedLaunchBulkInstancesOperation.
-     * 
-     * @return Resource collection API of LaunchBulkInstancesOperations.
-     */
-    public LaunchBulkInstancesOperations launchBulkInstancesOperations() {
-        if (this.launchBulkInstancesOperations == null) {
-            this.launchBulkInstancesOperations
-                = new LaunchBulkInstancesOperationsImpl(clientObject.getLaunchBulkInstancesOperations(), this);
-        }
-        return launchBulkInstancesOperations;
-    }
-
-    /**
      * Gets the resource collection API of BulkCreateCustoms. It manages LocationBasedBulkCreateCustom.
      * 
      * @return Resource collection API of BulkCreateCustoms.
@@ -338,6 +324,18 @@ public final class ComputeBulkActionsManager {
             this.bulkCreateCustoms = new BulkCreateCustomsImpl(clientObject.getBulkCreateCustoms(), this);
         }
         return bulkCreateCustoms;
+    }
+
+    /**
+     * Gets the resource collection API of BulkCreates. It manages LocationBasedBulkCreate.
+     * 
+     * @return Resource collection API of BulkCreates.
+     */
+    public BulkCreates bulkCreates() {
+        if (this.bulkCreates == null) {
+            this.bulkCreates = new BulkCreatesImpl(clientObject.getBulkCreates(), this);
+        }
+        return bulkCreates;
     }
 
     /**
