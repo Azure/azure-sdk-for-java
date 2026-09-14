@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -790,58 +791,64 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
 
                 return Mono.error(dce);
-            }).doFinally(signalType -> {
+            }).transformDeferred(response -> {
+                AtomicBoolean completed = new AtomicBoolean();
+                return response
+                    .doOnNext(result -> completed.set(true))
+                    .doOnError(error -> completed.set(true))
+                    .doFinally(signalType -> {
 
-                if (signalType != SignalType.CANCEL) {
-                    return;
-                }
-
-                if (httpRequest.reactorNettyRequestRecord() != null) {
-
-                    OperationCancelledException oce = new OperationCancelledException("", httpRequest.uri());
-
-                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
-
-                    RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
-                    long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
-
-                    GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
-
-                    request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
-
-                    // Always set the request URI so endpoint is captured in diagnostics on cancellation.
-                    // The endpoint is known at request-send time and should not be lost on cancellation.
-                    cosmosExceptionAccessor()
-                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
-
-                    if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
-
-                        CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
-                            request.requestContext.getCrossRegionAvailabilityContext();
-
-                        if (availabilityStrategyContextForReq.getAvailabilityStrategyContext() != null
-                            && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()
-                            && (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled()
-                                || availabilityStrategyContextForReq.getFeedOperationContextForCircuitBreaker() != null)) {
-
-                            BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
-
-                            cosmosExceptionAccessor()
-                                .setFaultInjectionRuleId(
-                                    oce,
-                                    request.faultInjectionRequestContext
-                                        .getFaultInjectionRuleId(transportRequestId));
-
-                            cosmosExceptionAccessor()
-                                .setFaultInjectionEvaluationResults(
-                                    oce,
-                                    request.faultInjectionRequestContext
-                                        .getFaultInjectionRuleEvaluationResults(transportRequestId));
-
-                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                        if (signalType != SignalType.CANCEL || completed.get()) {
+                            return;
                         }
-                    }
-                }
+
+                        if (httpRequest.reactorNettyRequestRecord() != null) {
+
+                            OperationCancelledException oce = new OperationCancelledException("", httpRequest.uri());
+
+                            ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
+                            RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                            long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
+
+                            GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
+
+                            request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                            // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                            // The endpoint is known at request-send time and should not be lost on cancellation.
+                            cosmosExceptionAccessor()
+                                .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
+
+                            if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
+
+                                CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
+                                    request.requestContext.getCrossRegionAvailabilityContext();
+
+                                if (availabilityStrategyContextForReq.getAvailabilityStrategyContext() != null
+                                    && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()
+                                    && (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled()
+                                        || availabilityStrategyContextForReq.getFeedOperationContextForCircuitBreaker() != null)) {
+
+                                    BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                                    cosmosExceptionAccessor()
+                                        .setFaultInjectionRuleId(
+                                            oce,
+                                            request.faultInjectionRequestContext
+                                                .getFaultInjectionRuleId(transportRequestId));
+
+                                    cosmosExceptionAccessor()
+                                        .setFaultInjectionEvaluationResults(
+                                            oce,
+                                            request.faultInjectionRequestContext
+                                                .getFaultInjectionRuleEvaluationResults(transportRequestId));
+
+                                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                                }
+                            }
+                        }
+                    });
             });
     }
 

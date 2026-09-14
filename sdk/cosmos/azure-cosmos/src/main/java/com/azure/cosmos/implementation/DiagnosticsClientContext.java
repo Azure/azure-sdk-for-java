@@ -65,7 +65,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
                 generator.writeStringField("isPpafEnabled", clientConfig.isPerPartitionAutomaticFailoverEnabledAsString);
-                generator.writeBooleanField("isCrossRegionalHedgingDisabledByAccount",
+                generator.writeBooleanField("isHedgingDisabledByAccount",
                     "true".equals(clientConfig.isPerPartitionAutomaticFailoverEnabledAsString)
                         && clientConfig.crossRegionalHedgingDisabledByAccount != null
                         && clientConfig.crossRegionalHedgingDisabledByAccount.get());

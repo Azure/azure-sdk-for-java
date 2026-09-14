@@ -38,6 +38,8 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -91,6 +93,58 @@ public class RxGatewayStoreModelTest {
             .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
         assertThat(statistics.getGatewayStatisticsList()).hasSize(expectRecorded ? 1 : 0);
         assertThat(statistics.getContactedRegionNames()).hasSize(expectRecorded ? 1 : 0);
+    }
+
+    @DataProvider(name = "completedFeedResponses")
+    public Object[][] completedFeedResponses() {
+        return new Object[][] {
+            {OperationType.Query, 200},
+            {OperationType.ReadFeed, 200},
+            {OperationType.ReadFeed, 304}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "completedFeedResponses")
+    public void completedFeedCancellationDoesNotRecordTimeout(OperationType operation, int statusCode) throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        GlobalEndpointManager endpoints = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.when(endpoints.getRegionName(Mockito.any(URI.class), Mockito.any(OperationType.class), Mockito.anyBoolean()))
+            .thenReturn("east us");
+        RxGatewayStoreModel store = new RxGatewayStoreModel(clientContext, Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION, QueryCompatibilityMode.Default, new UserAgentContainer(), endpoints,
+            Mockito.mock(HttpClient.class), null, null);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(clientContext,
+            operation, "/dbs/db/colls/coll/docs", ResourceType.Document);
+        request.requestContext.cosmosDiagnostics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+            .create(clientContext, 1.0);
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(URI.create("https://account-eastus.documents.azure.com"));
+        request.requestContext.setCrossRegionAvailabilityContext(new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+            new FeedOperationContextForCircuitBreaker(Collections.emptyMap(), false, "collection"), null,
+            new AvailabilityStrategyContext(false, false), new AtomicBoolean(),
+            new PerPartitionCircuitBreakerInfoHolder(), new PerPartitionAutomaticFailoverInfoHolder()));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "https://account-eastus.documents.azure.com/dbs/db/colls/coll/docs", 443);
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override public int statusCode() { return statusCode; }
+            @Override public String headerValue(String name) { return null; }
+            @Override public HttpHeaders headers() { return new HttpHeaders(); }
+            @Override public Mono<ByteBuf> body() { return Mono.empty(); }
+            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
+        }.withRequest(httpRequest);
+        Method converter = RxGatewayStoreModel.class.getDeclaredMethod("toDocumentServiceResponse", Mono.class,
+            RxDocumentServiceRequest.class, HttpRequest.class);
+        converter.setAccessible(true);
+        Mono<RxDocumentServiceResponse> response = (Mono<RxDocumentServiceResponse>) converter.invoke(
+            store, Mono.just(httpResponse), request, httpRequest);
+        CountDownLatch terminated = new CountDownLatch(1);
+        StepVerifier.create(response.doFinally(signal -> terminated.countDown()).flux().take(1))
+            .assertNext(result -> assertThat(result.getStatusCode()).isEqualTo(statusCode))
+            .verifyComplete();
+        assertThat(terminated.await(5, TimeUnit.SECONDS)).isTrue();
+        ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
+        assertThat(statistics.getGatewayStatisticsList()).hasSize(1);
+        assertThat(statistics.getGatewayStatisticsList().get(0).getStatusCode()).isEqualTo(statusCode);
+        assertThat(request.requestContext.cancelledGatewayRequestTimelineContexts).isEmpty();
     }
 
     @DataProvider(name = "sessionTokenConfigProvider")

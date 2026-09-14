@@ -604,7 +604,7 @@ public class RxDocumentClientImplTest {
                 "connectionMode",
                 "numberOfClients",
                 "isPpafEnabled",
-                "isCrossRegionalHedgingDisabledByAccount",
+                "isHedgingDisabledByAccount",
                 "isFalseProgSessionTokenMergeEnabled",
                 "excrgns",
                 "clientEndpoints",
@@ -708,7 +708,7 @@ public class RxDocumentClientImplTest {
                     }
                     ObjectNode clientCfg = serializeClientConfig(client);
                     assertThat(clientCfg.get("isPpafEnabled").asBoolean()).isTrue();
-                    assertThat(clientCfg.get("isCrossRegionalHedgingDisabledByAccount").asBoolean())
+                    assertThat(clientCfg.get("isHedgingDisabledByAccount").asBoolean())
                         .isEqualTo(Boolean.TRUE.equals(disabled));
                     assertThat(clientCfg.get("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
                     assertThat(client.getGlobalPartitionEndpointManagerForCircuitBreaker().getCircuitBreakerConfig())
@@ -720,7 +720,7 @@ public class RxDocumentClientImplTest {
 
                 account.set(hedgingAccount(false, true));
                 endpointManager.refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
-                assertThat(serializeClientConfig(client).get("isCrossRegionalHedgingDisabledByAccount").asBoolean()).isFalse();
+                assertThat(serializeClientConfig(client).get("isHedgingDisabledByAccount").asBoolean()).isFalse();
                 assertThat((List<?>) applicableRegions.invoke(client, policy, ResourceType.Document,
                     OperationType.Read, false, Collections.emptyList())).hasSize(2);
             } finally {
@@ -829,7 +829,7 @@ public class RxDocumentClientImplTest {
                     assertThat(ppcb.getUnavailableRegionsForPartitionKeyRange(lastRequest.get(), collectionId, partition)).isEmpty();
                 }
                 ObjectNode clientCfg = serializeClientConfig(client);
-                assertThat(clientCfg.get("isCrossRegionalHedgingDisabledByAccount").asBoolean()).isEqualTo(disabled);
+                assertThat(clientCfg.get("isHedgingDisabledByAccount").asBoolean()).isEqualTo(disabled);
                 assertThat(clientCfg.get("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
             } finally {
                 client.close();
