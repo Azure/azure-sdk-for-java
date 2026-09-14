@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceExtensionP
 import java.io.IOException;
 
 /**
- * The scheduled action extension.
+ * A scheduled action occurrence associated with a specific compute resource.
  */
 @Immutable
 public final class OccurrenceExtensionResourceInner extends ProxyResource {
