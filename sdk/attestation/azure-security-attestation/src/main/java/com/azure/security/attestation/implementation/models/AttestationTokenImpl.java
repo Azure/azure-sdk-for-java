@@ -448,10 +448,15 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     /**
-     * Get a list of possible signers for this attestation token. If the "signers" parameter
-     * is supplied, pick from that list, otherwise consult the JWS header for possible signers.
-     * @param signers - possible list of candidate signers.
-     * @return A list of possible signers for this token.
+     * Get the list of candidate signers to validate this attestation token against.
+     * <p>
+     * Candidate signers are taken only from the caller-supplied {@code signers} list: when the token carries a
+     * Key ID, the signer whose Key ID matches is selected; otherwise the entire supplied list is used. This method
+     * does not fall back to key material embedded in the token itself (the JWS {@code x5c} / {@code jwk} header),
+     * so when no signers are supplied it throws rather than validating the token against its own embedded key.
+     * @param signers - the caller-supplied list of candidate signers.
+     * @return A non-empty list of candidate signers for this token.
+     * @throws RuntimeException if no candidate signers are available.
      */
     private List<AttestationSigner> getCandidateSigners(List<AttestationSigner> signers) {
         List<AttestationSigner> candidates = new ArrayList<>();
