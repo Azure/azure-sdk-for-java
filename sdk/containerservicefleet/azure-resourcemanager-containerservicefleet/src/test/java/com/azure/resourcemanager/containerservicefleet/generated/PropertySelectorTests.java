@@ -15,31 +15,31 @@ public final class PropertySelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PropertySelector model = BinaryData.fromString(
-            "{\"matchExpressions\":[{\"name\":\"lpbuxwgipwhonowk\",\"operator\":\"Lt\",\"values\":[\"wankixzbi\",\"jeputtmrywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"]},{\"name\":\"lsicohoqqnwv\",\"operator\":\"Ne\",\"values\":[\"avwhheunm\"]},{\"name\":\"qhgyxzkonocukok\",\"operator\":\"Ne\",\"values\":[\"xuconu\",\"szfkbe\"]},{\"name\":\"pewr\",\"operator\":\"Eq\",\"values\":[\"wv\",\"jektcxsenh\",\"lrsf\",\"rzpwvlqdqgbiq\"]}]}")
+            "{\"matchExpressions\":[{\"name\":\"yn\",\"operator\":\"Ne\",\"values\":[\"dybyxczfclhaa\",\"dbabp\",\"lwrq\"]},{\"name\":\"fkts\",\"operator\":\"Ne\",\"values\":[\"ucoc\",\"nyyazttbtwwrqpue\",\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\"]},{\"name\":\"zyoxaepdkzjan\",\"operator\":\"Lt\",\"values\":[\"rhdwbavxbniw\",\"jswztsdbpg\",\"xytxhpzxbz\",\"fzab\"]},{\"name\":\"lcuhxwtctyqiklb\",\"operator\":\"Le\",\"values\":[\"plwzbhvgyugu\",\"svmkfssxquk\"]}]}")
             .toObject(PropertySelector.class);
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.matchExpressions().get(0).name());
-        Assertions.assertEquals(PropertySelectorOperator.LT, model.matchExpressions().get(0).operator());
-        Assertions.assertEquals("wankixzbi", model.matchExpressions().get(0).values().get(0));
+        Assertions.assertEquals("yn", model.matchExpressions().get(0).name());
+        Assertions.assertEquals(PropertySelectorOperator.NE, model.matchExpressions().get(0).operator());
+        Assertions.assertEquals("dybyxczfclhaa", model.matchExpressions().get(0).values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PropertySelector model = new PropertySelector().withMatchExpressions(Arrays.asList(
-            new PropertySelectorRequirement().withName("lpbuxwgipwhonowk")
+            new PropertySelectorRequirement().withName("yn")
+                .withOperator(PropertySelectorOperator.NE)
+                .withValues(Arrays.asList("dybyxczfclhaa", "dbabp", "lwrq")),
+            new PropertySelectorRequirement().withName("fkts")
+                .withOperator(PropertySelectorOperator.NE)
+                .withValues(Arrays.asList("ucoc", "nyyazttbtwwrqpue", "ckzywbiexzfeyue", "xibxujwbhqwalm")),
+            new PropertySelectorRequirement().withName("zyoxaepdkzjan")
                 .withOperator(PropertySelectorOperator.LT)
-                .withValues(Arrays.asList("wankixzbi", "jeputtmrywn", "zoqftiyqzrnkcqvy", "lwh")),
-            new PropertySelectorRequirement().withName("lsicohoqqnwv")
-                .withOperator(PropertySelectorOperator.NE)
-                .withValues(Arrays.asList("avwhheunm")),
-            new PropertySelectorRequirement().withName("qhgyxzkonocukok")
-                .withOperator(PropertySelectorOperator.NE)
-                .withValues(Arrays.asList("xuconu", "szfkbe")),
-            new PropertySelectorRequirement().withName("pewr")
-                .withOperator(PropertySelectorOperator.EQ)
-                .withValues(Arrays.asList("wv", "jektcxsenh", "lrsf", "rzpwvlqdqgbiq"))));
+                .withValues(Arrays.asList("rhdwbavxbniw", "jswztsdbpg", "xytxhpzxbz", "fzab")),
+            new PropertySelectorRequirement().withName("lcuhxwtctyqiklb")
+                .withOperator(PropertySelectorOperator.LE)
+                .withValues(Arrays.asList("plwzbhvgyugu", "svmkfssxquk"))));
         model = BinaryData.fromObject(model).toObject(PropertySelector.class);
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.matchExpressions().get(0).name());
-        Assertions.assertEquals(PropertySelectorOperator.LT, model.matchExpressions().get(0).operator());
-        Assertions.assertEquals("wankixzbi", model.matchExpressions().get(0).values().get(0));
+        Assertions.assertEquals("yn", model.matchExpressions().get(0).name());
+        Assertions.assertEquals(PropertySelectorOperator.NE, model.matchExpressions().get(0).operator());
+        Assertions.assertEquals("dybyxczfclhaa", model.matchExpressions().get(0).values().get(0));
     }
 }
