@@ -10,16 +10,6 @@
     }
   },
   {
-    "extension": "revapi.java.filter.annotated",
-    "configuration": {
-      "exclude": [
-        "@com.azure.ai.projects.implementation.utils.Beta",
-        "@com.azure.ai.agents.implementation.utils.Beta"
-
-      ]
-    }
-  },
-  {
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
@@ -2191,6 +2181,23 @@
           "justification": "Breaking change in beta operation: EvaluationRulesClient/EvaluationRulesAsyncClient are retained; only the overload of createOrUpdateEvaluationRule that took FoundryFeaturesOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
         }
       ]
+    }
+  },
+  {
+    "extension": "revapi.filter",
+    "configuration": {
+      "elements": {
+        "exclude": [
+          {
+            "matcher": "java",
+            "match": "@com.azure.ai.projects.implementation.utils.Beta(**) ^*;"
+          },
+          {
+            "matcher": "java",
+            "match": "@com.azure.ai.agents.implementation.utils.Beta(**) ^*;"
+          }
+        ]
+      }
     }
   }
 ]
