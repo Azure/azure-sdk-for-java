@@ -50,6 +50,13 @@
   </scm>
 
   <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <!-- Keep generated project classes outside Surefire's test classpath. -->
+        <targetPath>${project.build.directory}/archetype-tests</targetPath>
+      </testResource>
+    </testResources>
     <extensions>
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
@@ -301,4 +308,38 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>archetype-integration-tests</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-archetype-plugin</artifactId>
+            <configuration>
+              <skip>${skipTests}</skip>
+              <testProjectsDirectory>${project.build.directory}/archetype-tests/projects</testProjectsDirectory>
+              <postBuildHookScript>../verify.groovy</postBuildHookScript>
+              <properties>
+                <failIfNoTests>true</failIfNoTests>
+              </properties>
+            </configuration>
+            <executions>
+              <execution>
+                <id>test-generated-projects</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
