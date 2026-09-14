@@ -109,6 +109,15 @@ public final class ManagedIdentityCredential implements TokenCredential {
                         + ". To use system-assigned managed identity, remove the configured client ID on "
                         + "the ManagedIdentityCredentialBuilder.", CredentialUnavailableException::new);
             }
+
+            if (ManagedIdentitySourceType.SERVICE_FABRIC.equals(managedIdentitySourceType)) {
+                throw LOGGER.throwableAtError()
+                    .log("ManagedIdentityCredential authentication unavailable. "
+                        + "Specifying a client ID, resource ID, or object ID is not supported by the Service Fabric "
+                        + "managed identity environment. The managed identity configuration is determined by the "
+                        + "Service Fabric cluster resource configuration. See https://aka.ms/servicefabricmi for more "
+                        + "information.", CredentialUnavailableException::new);
+            }
         }
 
         try {

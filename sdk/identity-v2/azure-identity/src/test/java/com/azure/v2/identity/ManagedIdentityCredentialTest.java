@@ -127,4 +127,23 @@ public class ManagedIdentityCredentialTest {
                 exception.getMessage().contains("User-assigned managed identity is not supported in CLOUD_SHELL"));
         }
     }
+
+    @Test
+    public void testServiceFabricUserAssigned() {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
+
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class)) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.SERVICE_FABRIC);
+
+            // test
+            ManagedIdentityCredential credential
+                = new ManagedIdentityCredentialBuilder().configuration(configuration).resourceId(RESOURCE_ID).build();
+            CredentialUnavailableException exception
+                = Assertions.assertThrows(CredentialUnavailableException.class, () -> credential.getToken(request));
+            Assertions.assertTrue(exception.getMessage().contains("Service Fabric managed identity environment"));
+        }
+    }
 }
