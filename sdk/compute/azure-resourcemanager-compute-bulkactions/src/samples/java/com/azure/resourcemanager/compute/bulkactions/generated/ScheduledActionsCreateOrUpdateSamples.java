@@ -8,13 +8,9 @@ import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsSchedule;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
@@ -27,14 +23,14 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_CreateOrUpdate_MaximumSet.
+     * Sample code: Create or update a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsCreateOrUpdateMaximumSet(
+    public static void createOrUpdateAScheduledAction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .define("myScheduledAction")
@@ -44,23 +40,18 @@ public final class ScheduledActionsCreateOrUpdateSamples {
             .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
                 .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
-                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:55.286Z"))
+                .withEndTime(OffsetDateTime.parse("2026-04-17T00:23:55.281Z"))
                 .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
                     .withTimeZone("America/Los_Angeles")
-                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
-                    .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                    .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                        .withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(
-                            new ScheduledActionsRetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
-                    .withDeadlineType(ScheduledActionsDeadlineType.UNKNOWN))
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.ALL))
+                    .withRequestedMonths(Arrays.asList(Month.ALL))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(1, 15)))
                 .withNotificationSettings(
                     Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))
-                .withDisabled(true))
+                .withDisabled(false))
             .create();
     }
 

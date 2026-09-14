@@ -14,18 +14,17 @@ public final class L3NetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3NetworkPatchParameters model = BinaryData
-            .fromString(
-                "{\"tags\":{\"dqazkmtgguwpijra\":\"scjavftju\",\"f\":\"civmmg\",\"uvyinzqodfvpgs\":\"fiwrxgkn\"}}")
+            .fromString("{\"tags\":{\"gzrcxfailcfxwmdb\":\"sirudhzmmesckdlp\",\"lnacgcc\":\"xdfgsftufqobr\"}}")
             .toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("scjavftju", model.tags().get("dqazkmtgguwpijra"));
+        Assertions.assertEquals("sirudhzmmesckdlp", model.tags().get("gzrcxfailcfxwmdb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3NetworkPatchParameters model = new L3NetworkPatchParameters()
-            .withTags(mapOf("dqazkmtgguwpijra", "scjavftju", "f", "civmmg", "uvyinzqodfvpgs", "fiwrxgkn"));
+            .withTags(mapOf("gzrcxfailcfxwmdb", "sirudhzmmesckdlp", "lnacgcc", "xdfgsftufqobr"));
         model = BinaryData.fromObject(model).toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("scjavftju", model.tags().get("dqazkmtgguwpijra"));
+        Assertions.assertEquals("sirudhzmmesckdlp", model.tags().get("gzrcxfailcfxwmdb"));
     }
 
     // Use "Map.of" if available

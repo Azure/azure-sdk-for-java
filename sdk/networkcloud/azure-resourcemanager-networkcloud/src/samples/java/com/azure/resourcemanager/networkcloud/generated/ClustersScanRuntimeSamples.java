@@ -12,7 +12,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterScanRuntimeParameter
  */
 public final class ClustersScanRuntimeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ScanRuntime.json
+     * x-ms-original-file: 2026-07-01/Clusters_ScanRuntime.json
      */
     /**
      * Sample code: Execute a runtime protection scan on the cluster.
