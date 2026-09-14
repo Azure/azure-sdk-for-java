@@ -4,6 +4,7 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -478,6 +479,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * The managed runtime and agent loop used to execute this prompt agent.
      */
     @Generated
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
     private AgentHarness harness;
 
     /*
@@ -485,6 +487,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * version is created.
      */
     @Generated
+    @Beta(warningText = "Preview API. Skills=V1Preview")
     private List<SkillReference> skills;
 
     /**
@@ -493,6 +496,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the harness value.
      */
     @Generated
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
     public AgentHarness getHarness() {
         return this.harness;
     }
@@ -504,6 +508,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the PromptAgentDefinition object itself.
      */
     @Generated
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
     public PromptAgentDefinition setHarness(AgentHarness harness) {
         this.harness = harness;
         return this;
@@ -516,6 +521,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the skills value.
      */
     @Generated
+    @Beta(warningText = "Preview API. Skills=V1Preview")
     public List<SkillReference> getSkills() {
         return this.skills;
     }
@@ -528,6 +534,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the PromptAgentDefinition object itself.
      */
     @Generated
+    @Beta(warningText = "Preview API. Skills=V1Preview")
     public PromptAgentDefinition setSkills(List<SkillReference> skills) {
         this.skills = skills;
         return this;
