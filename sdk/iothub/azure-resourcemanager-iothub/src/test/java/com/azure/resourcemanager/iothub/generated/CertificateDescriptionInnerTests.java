@@ -13,20 +13,22 @@ public final class CertificateDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateDescriptionInner model = BinaryData.fromString(
-            "{\"properties\":{\"subject\":\"wqapnedgfbcvk\",\"expiry\":\"Mon, 31 May 2021 02:02:01 GMT\",\"thumbprint\":\"pkeqdcvdrhvoo\",\"isVerified\":true,\"created\":\"Tue, 02 Nov 2021 01:53:07 GMT\",\"updated\":\"Mon, 29 Mar 2021 00:37:52 GMT\",\"certificate\":\"dopcjwvnh\",\"policyResourceId\":\"d\"},\"etag\":\"gx\",\"id\":\"rslpmutwuoeg\",\"name\":\"pkhjwni\",\"type\":\"qsluicp\"}")
+            "{\"properties\":{\"subject\":\"mfnjh\",\"expiry\":\"Mon, 05 Apr 2021 14:46:39 GMT\",\"thumbprint\":\"mszkkfo\",\"isVerified\":true,\"created\":\"Mon, 21 Jun 2021 22:48:50 GMT\",\"updated\":\"Mon, 31 May 2021 03:25:20 GMT\",\"certificate\":\"kf\",\"certificateAuthorityResourceId\":\"wneaiv\"},\"etag\":\"czelpcirel\",\"id\":\"eae\",\"name\":\"wabfatkl\",\"type\":\"dxbjhwuaanozj\"}")
             .toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
-        Assertions.assertEquals("dopcjwvnh", model.properties().certificate());
-        Assertions.assertEquals("d", model.properties().policyResourceId());
+        Assertions.assertEquals("kf", model.properties().certificate());
+        Assertions.assertEquals("wneaiv", model.properties().certificateAuthorityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateDescriptionInner model = new CertificateDescriptionInner().withProperties(
-            new CertificateProperties().withIsVerified(true).withCertificate("dopcjwvnh").withPolicyResourceId("d"));
+        CertificateDescriptionInner model
+            = new CertificateDescriptionInner().withProperties(new CertificateProperties().withIsVerified(true)
+                .withCertificate("kf")
+                .withCertificateAuthorityResourceId("wneaiv"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
-        Assertions.assertEquals("dopcjwvnh", model.properties().certificate());
-        Assertions.assertEquals("d", model.properties().policyResourceId());
+        Assertions.assertEquals("kf", model.properties().certificate());
+        Assertions.assertEquals("wneaiv", model.properties().certificateAuthorityResourceId());
     }
 }

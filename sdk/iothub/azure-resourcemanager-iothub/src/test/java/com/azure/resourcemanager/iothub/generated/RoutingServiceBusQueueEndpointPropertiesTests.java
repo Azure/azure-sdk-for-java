@@ -7,6 +7,7 @@ package com.azure.resourcemanager.iothub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.AuthenticationType;
 import com.azure.resourcemanager.iothub.models.ManagedIdentity;
+import com.azure.resourcemanager.iothub.models.MessagePayloadFormat;
 import com.azure.resourcemanager.iothub.models.RoutingServiceBusQueueEndpointProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,40 +15,43 @@ public final class RoutingServiceBusQueueEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingServiceBusQueueEndpointProperties model = BinaryData.fromString(
-            "{\"id\":\"czvyifq\",\"connectionString\":\"kdvjsll\",\"endpointUri\":\"vvdfwatkpnpul\",\"entityPath\":\"xbczwtruwiqz\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"ovm\"},\"name\":\"okacspk\",\"subscriptionId\":\"hzdobpxjmflbvvnc\",\"resourceGroup\":\"kcciwwzjuqkhr\"}")
+            "{\"id\":\"qhgyxzkonocukok\",\"connectionString\":\"axuconuq\",\"endpointUri\":\"fkbey\",\"entityPath\":\"wrmjmwvvjektc\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"wlrsffrzpwv\"},\"name\":\"qdqgbi\",\"subscriptionId\":\"lihkaetcktvfc\",\"resourceGroup\":\"fsnkymuctq\",\"messagePayloadFormat\":\"None\"}")
             .toObject(RoutingServiceBusQueueEndpointProperties.class);
-        Assertions.assertEquals("czvyifq", model.id());
-        Assertions.assertEquals("kdvjsll", model.connectionString());
-        Assertions.assertEquals("vvdfwatkpnpul", model.endpointUri());
-        Assertions.assertEquals("xbczwtruwiqz", model.entityPath());
+        Assertions.assertEquals("qhgyxzkonocukok", model.id());
+        Assertions.assertEquals("axuconuq", model.connectionString());
+        Assertions.assertEquals("fkbey", model.endpointUri());
+        Assertions.assertEquals("wrmjmwvvjektc", model.entityPath());
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("ovm", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("okacspk", model.name());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.subscriptionId());
-        Assertions.assertEquals("kcciwwzjuqkhr", model.resourceGroup());
+        Assertions.assertEquals("wlrsffrzpwv", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qdqgbi", model.name());
+        Assertions.assertEquals("lihkaetcktvfc", model.subscriptionId());
+        Assertions.assertEquals("fsnkymuctq", model.resourceGroup());
+        Assertions.assertEquals(MessagePayloadFormat.NONE, model.messagePayloadFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingServiceBusQueueEndpointProperties model
-            = new RoutingServiceBusQueueEndpointProperties().withId("czvyifq")
-                .withConnectionString("kdvjsll")
-                .withEndpointUri("vvdfwatkpnpul")
-                .withEntityPath("xbczwtruwiqz")
+            = new RoutingServiceBusQueueEndpointProperties().withId("qhgyxzkonocukok")
+                .withConnectionString("axuconuq")
+                .withEndpointUri("fkbey")
+                .withEntityPath("wrmjmwvvjektc")
                 .withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ovm"))
-                .withName("okacspk")
-                .withSubscriptionId("hzdobpxjmflbvvnc")
-                .withResourceGroup("kcciwwzjuqkhr");
+                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("wlrsffrzpwv"))
+                .withName("qdqgbi")
+                .withSubscriptionId("lihkaetcktvfc")
+                .withResourceGroup("fsnkymuctq")
+                .withMessagePayloadFormat(MessagePayloadFormat.NONE);
         model = BinaryData.fromObject(model).toObject(RoutingServiceBusQueueEndpointProperties.class);
-        Assertions.assertEquals("czvyifq", model.id());
-        Assertions.assertEquals("kdvjsll", model.connectionString());
-        Assertions.assertEquals("vvdfwatkpnpul", model.endpointUri());
-        Assertions.assertEquals("xbczwtruwiqz", model.entityPath());
+        Assertions.assertEquals("qhgyxzkonocukok", model.id());
+        Assertions.assertEquals("axuconuq", model.connectionString());
+        Assertions.assertEquals("fkbey", model.endpointUri());
+        Assertions.assertEquals("wrmjmwvvjektc", model.entityPath());
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("ovm", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("okacspk", model.name());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.subscriptionId());
-        Assertions.assertEquals("kcciwwzjuqkhr", model.resourceGroup());
+        Assertions.assertEquals("wlrsffrzpwv", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qdqgbi", model.name());
+        Assertions.assertEquals("lihkaetcktvfc", model.subscriptionId());
+        Assertions.assertEquals("fsnkymuctq", model.resourceGroup());
+        Assertions.assertEquals(MessagePayloadFormat.NONE, model.messagePayloadFormat());
     }
 }

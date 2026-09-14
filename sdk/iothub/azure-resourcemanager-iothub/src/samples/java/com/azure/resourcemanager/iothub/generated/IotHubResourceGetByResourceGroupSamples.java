@@ -9,7 +9,33 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class IotHubResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/iothub_get.json
+     * x-ms-original-file: 2026-10-01-preview/Get_IotHub_With_DeviceRegistry.json
+     */
+    /**
+     * Sample code: Get_IotHub_With_DeviceRegistry.
+     * 
+     * @param manager Entry point to IotHubManager.
+     */
+    public static void getIotHubWithDeviceRegistry(com.azure.resourcemanager.iothub.IotHubManager manager) {
+        manager.iotHubResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "testHub", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/Get_IotHub_With_DeviceRegistry_Linking_Error.json
+     */
+    /**
+     * Sample code: Get_IotHub_With_DeviceRegistry_Linking_Error.
+     * 
+     * @param manager Entry point to IotHubManager.
+     */
+    public static void getIotHubWithDeviceRegistryLinkingError(com.azure.resourcemanager.iothub.IotHubManager manager) {
+        manager.iotHubResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "testHub", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/iothub_get.json
      */
     /**
      * Sample code: IotHubResource_Get.

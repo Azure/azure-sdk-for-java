@@ -11,8 +11,7 @@ public final class IotHubQuotaMetricInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubQuotaMetricInfoInner model = BinaryData
-            .fromString(
-                "{\"name\":\"kpycgklwndnhjd\",\"currentValue\":6262896986376184012,\"maxValue\":4384812183587717732}")
+            .fromString("{\"name\":\"jhxxjyn\",\"currentValue\":6645046241079336375,\"maxValue\":928666861316069352}")
             .toObject(IotHubQuotaMetricInfoInner.class);
     }
 }

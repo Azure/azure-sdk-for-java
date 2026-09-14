@@ -14,36 +14,36 @@ public final class ImportDevicesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportDevicesRequest model = BinaryData.fromString(
-            "{\"inputBlobContainerUri\":\"jmygtdsslswtmwer\",\"outputBlobContainerUri\":\"ofz\",\"inputBlobName\":\"qsemwabne\",\"outputBlobName\":\"hhszh\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"wiwubm\"},\"includeConfigurations\":true,\"configurationsBlobName\":\"sldnkwwtppjflcxo\"}")
+            "{\"inputBlobContainerUri\":\"smocmbq\",\"outputBlobContainerUri\":\"qvmkcxo\",\"inputBlobName\":\"pvhelxprg\",\"outputBlobName\":\"atddc\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"ejrjxgciqibrho\"},\"includeConfigurations\":true,\"configurationsBlobName\":\"qrhzoymibmrqyib\"}")
             .toObject(ImportDevicesRequest.class);
-        Assertions.assertEquals("jmygtdsslswtmwer", model.inputBlobContainerUri());
-        Assertions.assertEquals("ofz", model.outputBlobContainerUri());
-        Assertions.assertEquals("qsemwabne", model.inputBlobName());
-        Assertions.assertEquals("hhszh", model.outputBlobName());
+        Assertions.assertEquals("smocmbq", model.inputBlobContainerUri());
+        Assertions.assertEquals("qvmkcxo", model.outputBlobContainerUri());
+        Assertions.assertEquals("pvhelxprg", model.inputBlobName());
+        Assertions.assertEquals("atddc", model.outputBlobName());
         Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
-        Assertions.assertEquals("wiwubm", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("ejrjxgciqibrho", model.identity().userAssignedIdentity());
         Assertions.assertTrue(model.includeConfigurations());
-        Assertions.assertEquals("sldnkwwtppjflcxo", model.configurationsBlobName());
+        Assertions.assertEquals("qrhzoymibmrqyib", model.configurationsBlobName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportDevicesRequest model = new ImportDevicesRequest().withInputBlobContainerUri("jmygtdsslswtmwer")
-            .withOutputBlobContainerUri("ofz")
-            .withInputBlobName("qsemwabne")
-            .withOutputBlobName("hhszh")
+        ImportDevicesRequest model = new ImportDevicesRequest().withInputBlobContainerUri("smocmbq")
+            .withOutputBlobContainerUri("qvmkcxo")
+            .withInputBlobName("pvhelxprg")
+            .withOutputBlobName("atddc")
             .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
-            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("wiwubm"))
+            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ejrjxgciqibrho"))
             .withIncludeConfigurations(true)
-            .withConfigurationsBlobName("sldnkwwtppjflcxo");
+            .withConfigurationsBlobName("qrhzoymibmrqyib");
         model = BinaryData.fromObject(model).toObject(ImportDevicesRequest.class);
-        Assertions.assertEquals("jmygtdsslswtmwer", model.inputBlobContainerUri());
-        Assertions.assertEquals("ofz", model.outputBlobContainerUri());
-        Assertions.assertEquals("qsemwabne", model.inputBlobName());
-        Assertions.assertEquals("hhszh", model.outputBlobName());
+        Assertions.assertEquals("smocmbq", model.inputBlobContainerUri());
+        Assertions.assertEquals("qvmkcxo", model.outputBlobContainerUri());
+        Assertions.assertEquals("pvhelxprg", model.inputBlobName());
+        Assertions.assertEquals("atddc", model.outputBlobName());
         Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
-        Assertions.assertEquals("wiwubm", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("ejrjxgciqibrho", model.identity().userAssignedIdentity());
         Assertions.assertTrue(model.includeConfigurations());
-        Assertions.assertEquals("sldnkwwtppjflcxo", model.configurationsBlobName());
+        Assertions.assertEquals("qrhzoymibmrqyib", model.configurationsBlobName());
     }
 }
