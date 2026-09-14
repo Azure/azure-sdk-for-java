@@ -160,11 +160,25 @@ files live next to the SDK's `pom.xml`:
 |------|---------|
 | `eng/lintingconfigs/checkstyle/{clientcore,track2,vnext}/checkstyle.xml` | Shared CheckStyle rules |
 | `eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml` | Per-module suppressions |
-| `eng/lintingconfigs/spotbugs/spotbugs-exclude.xml` | SpotBugs exclusion filters |
 | `eng/lintingconfigs/revapi/{clientcore,track2}/revapi.json` | Shared RevApi policy and cross-SDK exceptions |
 | `sdk/<service>/<artifact>/checkstyle-suppressions.xml` | SDK-local Checkstyle suppressions |
 | `sdk/<service>/<artifact>/revapi-suppressions.json` | SDK-local RevApi exceptions |
 | `sdk/<service>/<artifact>/spotbugs-exclude.xml` | SDK-local SpotBugs exclusion filters |
+
+### Adding a SpotBugs Suppression
+
+Keep all applicable exclusions in `spotbugs-exclude.xml` next to the SDK's `pom.xml`,
+preserving each rule's class, method, field, and bug constraints and its justification.
+There is no global SpotBugs exclusion file.
+
+The client SDK parents and the legacy `azure-data-sdk-parent` automatically load
+this file when it exists. SDKs without exclusions need no file or POM override.
+Standalone tools configure their local filter directly.
+
+Only add exclusions applicable to the owning SDK; do not copy another SDK's rules.
+Remove obsolete rules whose classes or packages no longer exist. The suppression
+generator writes the same SDK-local filename. Compare findings before and after
+changing filters to confirm that effective suppression coverage is preserved.
 
 ### Adding a CheckStyle Suppression
 

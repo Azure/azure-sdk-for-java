@@ -173,8 +173,8 @@
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
-    <!-- This property configures where the Spotbugs exclusion file can be found. -->
-    <spotbugs.excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <!-- This property configures the optional SDK-local Spotbugs exclusion file. -->
+    <spotbugs.excludeFilterFile/>
 
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>

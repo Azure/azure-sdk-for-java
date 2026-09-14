@@ -65,6 +65,8 @@
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+
+    <spotbugs.excludeFilterFile/>
   </properties>
 
   <build>
@@ -134,7 +136,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
 
           <!-- TODO soon - enable this failure mode -->
           <failOnError>false</failOnError>
@@ -284,7 +286,7 @@
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-            <excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
+            <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
 
             <!-- TODO soon - enable this failure mode -->
             <failOnError>false</failOnError>
@@ -581,6 +583,17 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>local-spotbugs-exclude</id>
+      <activation>
+        <file>
+          <exists>spotbugs-exclude.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+      </properties>
     </profile>
   </profiles>
 </project>

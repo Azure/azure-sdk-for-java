@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+
+  <!-- Known issue in autorest where it will generate a variable with a value of null.
+  https://github.com/Azure/autorest.java/issues/324 -->
+  <Match>
+    <Class name="~com\.(microsoft\.)?azure\.(.+)Impl"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
+  </Match>
+
+  <!-- Exclude NM_CLASS_NOT_EXCEPTION for all resource manager due to it is just naming -->
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*"/>
+    <Bug pattern="NM_CLASS_NOT_EXCEPTION"/>
+  </Match>
+
+  <!-- Exclude for Resource Manager generated code -->
+  <!-- NP_LOAD_OF_KNOWN_NULL_VALUE - Known issue in autorest of setting parameters when calling REST API -->
+  <!-- SIC_INNER_SHOULD_BE_STATIC_ANON - Known issue in autorest of inner Enumeration for InputStream response -->
+  <!-- UPM_UNCALLED_PRIVATE_METHOD - Known issue in autorest to generate method that might not be called -->
+  <!-- SKIPPED_CLASS_TOO_BIG - Nothing we can do about this -->
+  <!-- PZLA_PREFER_ZERO_LENGTH_ARRAYS - byte array will return null by generator -->
+  <Match>
+    <Or>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent\.([^.]+)Client"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent(\.[^.]+)*"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl([^.]*)"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <Match>
+    <And>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)Impl"/>
+      <Or>
+        <Method name="manager"/>
+        <Method name="serviceClient"/>
+      </Or>
+    </And>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+</FindBugsFilter>
