@@ -267,13 +267,13 @@ class;com.azure.ai.agents.models.VoiceAgentTurnDetectionType;Preview API. VoiceA
 class;com.azure.ai.agents.models.VoiceAgentWebSocketMessage;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAudioCodec;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAudioContainerFormat;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceAudioItemResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAudioRole;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceConversation;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceConversationEngine;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceConversationStatus;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceGeneratedItemAudioResponse;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.VoiceGeneratedAudioItemResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceHostedAgentConversationEngine;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceItemAudioResponse;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceModelType;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceOutputModality;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceRecordingChannelLayout;Preview API. VoiceAgents=V1Preview;
