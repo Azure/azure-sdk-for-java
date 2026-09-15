@@ -166,9 +166,6 @@
 # ServiceLabel: %azure-spring
 
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                                          @g2vinay @vcolin7 @Azure/azure-java-sdk
-
-# PRLabel: %Azure.Identity
 /sdk/identity/                                                     @Azure/azure-sdk-write-identity @g2vinay @vcolin7 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @g2vinay @vcolin7

@@ -5,10 +5,12 @@ package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +36,10 @@ public class WebSocketsSendLargeMessageTest extends ApiTestBase {
     }
 
     @Test
-    public void sendMsgLargerThan1024K() throws EventHubException {
-        sendLargeMessageTest.sendMsgLargerThan1024K();
+    public void sendMsgLargerThan1024K() {
+        Assertions.assertThrows(
+            PayloadSizeExceededException.class,
+            () -> sendLargeMessageTest.sendMsgLargerThan1024K());
     }
 
     @Test
