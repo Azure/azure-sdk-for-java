@@ -157,6 +157,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.HostName.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.PropertyHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.SystemInformation.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AuthenticatedEndpointPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeatHttpPipelinePolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsClientImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />

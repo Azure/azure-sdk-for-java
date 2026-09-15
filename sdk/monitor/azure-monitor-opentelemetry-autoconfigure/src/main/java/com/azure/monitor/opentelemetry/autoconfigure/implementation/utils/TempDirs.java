@@ -8,9 +8,23 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.util.annotation.Nullable;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.AclEntry;
+import java.nio.file.attribute.AclEntryFlag;
+import java.nio.file.attribute.AclEntryPermission;
+import java.nio.file.attribute.AclEntryType;
+import java.nio.file.attribute.AclFileAttributeView;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public class TempDirs {
 
@@ -19,29 +33,17 @@ public class TempDirs {
 
     @Nullable
     public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        tempDir = maybeAddUserSubDir(tempDir);
+        File sharedTempDir = new File(System.getProperty("java.io.tmpdir"));
+        File tempDir = maybeAddUserSubDir(sharedTempDir);
         tempDir = new File(tempDir, "applicationinsights");
 
-        if (!tempDir.mkdirs() && !tempDir.exists()) {
+        try {
+            createSecureDirectories(sharedTempDir.toPath(), tempDir.toPath());
+        } catch (IOException | UnsupportedOperationException e) {
             logger.info(
-                "Unable to create directory: {}. {}. If this is unexpected, please check"
-                    + " that the process has the necessary permissions to create the directory.",
-                tempDir.getAbsolutePath(), message);
-            return null;
-        }
-        if (!tempDir.canRead()) {
-            logger.info(
-                "Missing read permissions on directory: {}. {}. If this is unexpected, please check"
-                    + " that the process has the necessary permissions to read from the directory.",
-                tempDir.getAbsolutePath(), message);
-            return null;
-        }
-        if (!tempDir.canWrite()) {
-            logger.info(
-                "Missing write permissions on directory: {}. {}. If this is unexpected, please check"
-                    + " that the process has the necessary permissions to write to the directory.",
-                tempDir.getAbsolutePath(), message);
+                "Unable to securely create directory: {}. {}. If this is unexpected, please check"
+                    + " that the directory is owned by the current user and is not a symbolic link.",
+                tempDir.getAbsolutePath(), message, e);
             return null;
         }
         return tempDir;
@@ -49,16 +51,95 @@ public class TempDirs {
 
     public static File getSubDir(File parent, String name) {
         File dir = new File(parent, name);
-        if (!dir.mkdirs() && !dir.exists()) {
-            throw new IllegalArgumentException("Unable to create directory: " + dir);
-        }
-        if (!dir.canRead()) {
-            throw new IllegalArgumentException("Missing read permission to subdirectory: " + dir);
-        }
-        if (!dir.canWrite()) {
-            throw new IllegalArgumentException("Missing write permission to subdirectory: " + dir);
+        try {
+            createSecureDirectory(dir.toPath());
+        } catch (IOException | UnsupportedOperationException e) {
+            throw new IllegalArgumentException("Unable to securely create directory: " + dir, e);
         }
         return dir;
+    }
+
+    static void createSecureDirectories(Path sharedTempDirectory, Path directory) throws IOException {
+        Path normalizedSharedTempDirectory = sharedTempDirectory.toAbsolutePath().normalize();
+        Path normalizedDirectory = directory.toAbsolutePath().normalize();
+        if (!normalizedDirectory.startsWith(normalizedSharedTempDirectory)
+            || normalizedDirectory.equals(normalizedSharedTempDirectory)
+            || Files.isSymbolicLink(normalizedSharedTempDirectory)
+            || !Files.isDirectory(normalizedSharedTempDirectory, LinkOption.NOFOLLOW_LINKS)) {
+            throw new IOException("Invalid temporary directory path: " + directory);
+        }
+
+        Path current = normalizedSharedTempDirectory;
+        for (Path component : normalizedSharedTempDirectory.relativize(normalizedDirectory)) {
+            current = current.resolve(component);
+            createSecureDirectory(current);
+        }
+    }
+
+    static void createSecureDirectory(Path directory) throws IOException {
+        Path parent = directory.getParent();
+        if (parent == null || Files.isSymbolicLink(parent) || !Files.isDirectory(parent, LinkOption.NOFOLLOW_LINKS)) {
+            throw new IOException("Directory parent is missing, invalid, or a symbolic link: " + parent);
+        }
+
+        boolean posix = Files.getFileStore(parent).supportsFileAttributeView("posix");
+        Path ownerProbe = posix
+            ? Files.createTempFile(parent, ".applicationinsights-owner-", ".tmp",
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------")))
+            : Files.createTempFile(parent, ".applicationinsights-owner-", ".tmp");
+        UserPrincipal currentOwner;
+        try {
+            currentOwner = Files.getOwner(ownerProbe, LinkOption.NOFOLLOW_LINKS);
+        } finally {
+            Files.deleteIfExists(ownerProbe);
+        }
+
+        boolean created = false;
+        try {
+            if (posix) {
+                Files.createDirectory(directory,
+                    PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------")));
+            } else {
+                Files.createDirectory(directory);
+            }
+            created = true;
+        } catch (FileAlreadyExistsException ignored) {
+            // Validated below without following links.
+        }
+
+        if (Files.isSymbolicLink(directory) || !Files.isDirectory(directory, LinkOption.NOFOLLOW_LINKS)) {
+            throw new IOException("Directory is invalid or a symbolic link: " + directory);
+        }
+        UserPrincipal owner = Files.getOwner(directory, LinkOption.NOFOLLOW_LINKS);
+        if (!owner.equals(currentOwner)) {
+            throw new IOException("Directory is not owned by the current user: " + directory);
+        }
+
+        if (posix) {
+            Files.setPosixFilePermissions(directory, PosixFilePermissions.fromString("rwx------"));
+        } else {
+            restrictAclToOwner(directory, owner);
+        }
+
+        if (!created && !Files.isReadable(directory)) {
+            throw new IOException("Directory is not readable: " + directory);
+        }
+    }
+
+    private static void restrictAclToOwner(Path directory, UserPrincipal owner) throws IOException {
+        AclFileAttributeView aclView
+            = Files.getFileAttributeView(directory, AclFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        if (aclView == null) {
+            throw new UnsupportedOperationException("File system does not support POSIX permissions or ACLs");
+        }
+        Set<AclEntryPermission> permissions = EnumSet.allOf(AclEntryPermission.class);
+        AclEntry ownerEntry = AclEntry.newBuilder()
+            .setType(AclEntryType.ALLOW)
+            .setPrincipal(owner)
+            .setPermissions(permissions)
+            .setFlags(AclEntryFlag.DIRECTORY_INHERIT, AclEntryFlag.FILE_INHERIT)
+            .build();
+        aclView.setAcl(Collections.singletonList(ownerEntry));
     }
 
     /**
