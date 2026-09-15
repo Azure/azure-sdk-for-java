@@ -113,12 +113,11 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
             return Mono.error(new AzureException("Long running operation failed."));
-        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+        }
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
             return Mono.error(new AzureException("Long running operation cancelled."));
         }
         if (propertyName != null) {
-            // take the last poll response body from PollingContext,
-            // and de-serialize the <propertyName> property as final result
             BinaryData latestResponseBody
                 = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));
             return PollingUtils

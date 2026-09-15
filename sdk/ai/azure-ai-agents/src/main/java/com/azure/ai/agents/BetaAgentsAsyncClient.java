@@ -41,6 +41,7 @@ public final class BetaAgentsAsyncClient {
 
     /**
      * Resumes an existing optimization job. Use the cancellation API to cancel the job.
+     *
      * @param jobId saved optimization job ID.
      * @return the resumed poller.
      */

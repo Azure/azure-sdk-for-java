@@ -57,6 +57,7 @@ public final class BetaMemoryStoresAsyncClient {
 
     /**
      * Resumes polling an existing memory update without creating another update.
+     *
      * @param name memory store name.
      * @param updateId saved update ID from a previous poll response.
      * @return a poller exposing update metadata and the completed result.

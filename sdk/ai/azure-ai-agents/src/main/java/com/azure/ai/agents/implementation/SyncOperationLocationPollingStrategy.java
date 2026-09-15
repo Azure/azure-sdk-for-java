@@ -108,12 +108,11 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
     public U getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
             throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
-        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+        }
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
             throw LOGGER.logExceptionAsError(new AzureException("Long running operation cancelled."));
         }
         if (propertyName != null) {
-            // take the last poll response body from PollingContext,
-            // and de-serialize the <propertyName> property as final result
             BinaryData latestResponseBody
                 = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));
             Map<String, Object> pollResult = PollingUtils.deserializeResponseSync(latestResponseBody, serializer,

@@ -9,13 +9,11 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
-import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -35,26 +33,6 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        com.azure.autorest.customization.Editor editor = libraryCustomization.getRawEditor();
-        new ArrayList<>(editor.getContents().keySet()).stream()
-            .filter(path -> path.endsWith("module-info.java"))
-            .forEach(path -> {
-                com.github.javaparser.ast.CompilationUnit module = StaticJavaParser.parse(editor.getFileContent(path));
-                for (String dependency : Arrays.asList("reactor.netty.http", "okhttp3")) {
-                    com.github.javaparser.ast.modules.ModuleRequiresDirective requirement = module
-                        .findAll(com.github.javaparser.ast.modules.ModuleRequiresDirective.class).stream()
-                        .filter(directive -> dependency.equals(directive.getNameAsString()))
-                        .findFirst().orElse(null);
-                    if (requirement == null) {
-                        module.getModule().orElseThrow(() -> new IllegalStateException("Missing module declaration."))
-                            .addDirective(new com.github.javaparser.ast.modules.ModuleRequiresDirective()
-                                .setName(dependency).setTransitive(true));
-                    } else {
-                        requirement.setTransitive(true);
-                    }
-                }
-                editor.replaceFile(path, module.toString());
-            });
         libraryCustomization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast ->
             customizeBuilder(ast.getClassByName("AgentsClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."))));
@@ -82,38 +60,7 @@ public class AgentsCustomizations extends Customization {
             .filter(method -> method.getParameters().isEmpty())
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
-        if (builder.getMethodsBySignature("createHttpPipeline", "boolean").isEmpty()) {
-            MethodDeclaration overload = pipelineMethod.clone().addParameter("boolean", "authenticate");
-            overload.findAll(IfStmt.class).stream()
-                .filter(statement -> statement.getCondition().equals(StaticJavaParser.parseExpression("tokenCredential != null")))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Generated pipeline authentication condition was not found."))
-                .setCondition(StaticJavaParser.parseExpression("authenticate && tokenCredential != null"));
-            overload.findAll(VariableDeclarator.class).stream()
-                .filter(variable -> "localHttpLogOptions".equals(variable.getNameAsString()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Generated pipeline logging options were not found."))
-                .setInitializer(StaticJavaParser.parseExpression("resolveHttpLogOptions()"));
-            builder.addMember(overload);
-        }
-        if (builder.getMethodsBySignature("resolveHttpLogOptions").isEmpty()) {
-            builder.addMember(StaticJavaParser.parseBodyDeclaration(
-                "private HttpLogOptions resolveHttpLogOptions() {\n"
-                    + "    if (httpLogOptions != null) { return httpLogOptions; }\n"
-                    + "    Configuration buildConfiguration = configuration == null\n"
-                    + "        ? Configuration.getGlobalConfiguration() : configuration;\n"
-                    + "    HttpLogOptions options = new HttpLogOptions();\n"
-                    + "    if (\"true\".equalsIgnoreCase(buildConfiguration.get(\"AZURE_AI_PROJECTS_CONSOLE_LOGGING\"))) {\n"
-                    + "        options.setLogLevel(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS);\n"
-                    + "    }\n"
-                    + "    return options;\n"
-                    + "}"));
-        }
         pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
-        builder.findAll(com.github.javaparser.ast.expr.ObjectCreationExpr.class).stream()
-            .filter(expression -> "HttpLoggingPolicy".equals(expression.getType().getNameAsString()))
-            .forEach(expression -> expression.replace(StaticJavaParser.parseExpression(
-                "com.azure.ai.agents.implementation.http.HttpClientHelper.createLoggingPolicy(localHttpLogOptions)")));
         builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
             "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
     }
