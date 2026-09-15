@@ -50,6 +50,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
 
     /**
      * Resumes an existing agent insight run without starting another run.
+     *
      * @param monitorId monitor ID.
      * @param runId saved run ID.
      * @return the resumed poller. Use the run cancellation API to cancel.

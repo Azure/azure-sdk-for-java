@@ -32,6 +32,7 @@ public final class BetaDatasetsClient {
 
     /**
      * Resumes an existing data generation job without creating a new job.
+     *
      * @param jobId saved job ID.
      * @return the resumed poller. Use the job cancellation API to cancel.
      */

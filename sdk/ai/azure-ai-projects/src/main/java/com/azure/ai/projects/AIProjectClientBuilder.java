@@ -57,8 +57,6 @@ import java.util.function.Consumer;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        TelemetryClient.class,
-        TelemetryAsyncClient.class,
         BetaAgentInsightMonitorsClient.class,
         BetaModelsClient.class,
         BetaRedTeamsClient.class,
@@ -88,7 +86,9 @@ import java.util.function.Consumer;
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
         DeploymentsAsyncClient.class,
-        EvaluationRulesAsyncClient.class })
+        EvaluationRulesAsyncClient.class,
+        TelemetryClient.class,
+        TelemetryAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -636,9 +636,9 @@ public final class AIProjectClientBuilder
     /**
      * Builds an asynchronous project-scoped OpenAI client with caller overrides.
      *
-    * Azure tokens are retrieved asynchronously before transport execution. Supply custom transports here;
-    * replacing the native transport later bypasses Azure authentication and requires an explicit native credential.
-    *
+     * Azure tokens are retrieved asynchronously before transport execution. Supply custom transports here;
+     * replacing the native transport later bypasses Azure authentication and requires an explicit native credential.
+     *
      * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
      * @return the configured asynchronous OpenAI client.
      */
@@ -665,12 +665,12 @@ public final class AIProjectClientBuilder
     /**
      * Builds an asynchronous agent-scoped OpenAI client with preview headers and caller overrides.
      *
-    * Supply custom transports through this callback so asynchronous Azure authentication remains installed.
-    *
+     * Supply custom transports through this callback so asynchronous Azure authentication remains installed.
+     *
      * @param agentName the name of the agent. Must not be null or empty.
      * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
      * @return the configured asynchronous OpenAI client.
-    * @throws IllegalArgumentException if agentName is null or empty.
+     * @throws IllegalArgumentException if agentName is null or empty.
      */
     public OpenAIClientAsync buildAgentScopedOpenAIAsyncClient(String agentName,
         Consumer<com.openai.core.ClientOptions.Builder> configure) {

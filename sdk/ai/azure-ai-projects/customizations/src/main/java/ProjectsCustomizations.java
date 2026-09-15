@@ -33,16 +33,6 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        com.azure.autorest.customization.Editor editor = libraryCustomization.getRawEditor();
-        new ArrayList<>(editor.getContents().keySet()).stream()
-            .filter(path -> path.endsWith("module-info.java"))
-            .forEach(path -> {
-                com.github.javaparser.ast.CompilationUnit module = StaticJavaParser.parse(editor.getFileContent(path));
-                module.findAll(com.github.javaparser.ast.modules.ModuleRequiresDirective.class).stream()
-                    .filter(requirement -> "com.azure.storage.blob".equals(requirement.getNameAsString()))
-                    .forEach(requirement -> requirement.setTransitive(true));
-                editor.replaceFile(path, module.toString());
-            });
         libraryCustomization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast ->
             customizeBuilder(ast.getClassByName("AIProjectClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."))));

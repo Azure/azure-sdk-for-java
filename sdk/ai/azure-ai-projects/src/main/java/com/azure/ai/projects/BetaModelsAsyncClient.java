@@ -51,6 +51,7 @@ public final class BetaModelsAsyncClient {
     /**
      * Uploads a local file or folder and registers a model using native asynchronous storage and service calls.
      * Only HTTP 404 is retried while waiting. Upload failures prevent registration.
+     *
      * @param name model name.
      * @param version model version.
      * @param source local file or folder.

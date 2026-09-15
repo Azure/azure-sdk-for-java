@@ -203,6 +203,7 @@ public final class DatasetsAsyncClient {
 
     /**
      * Uploads a file and registers a dataset using custom blob upload settings.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param filePath the local file.
@@ -219,6 +220,7 @@ public final class DatasetsAsyncClient {
 
     /**
      * Uploads a file and registers a dataset using custom blob upload settings.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param filePath the local file.
@@ -338,6 +340,7 @@ public final class DatasetsAsyncClient {
 
     /**
      * Uploads matching files recursively and registers a folder dataset.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param folderPath the local directory.
@@ -354,6 +357,7 @@ public final class DatasetsAsyncClient {
 
     /**
      * Uploads matching files recursively and registers a folder dataset. Relative paths are preserved.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param folderPath the local directory.

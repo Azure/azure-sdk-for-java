@@ -43,6 +43,7 @@ public final class BetaEvaluatorsAsyncClient {
 
     /**
      * Resumes an existing evaluator generation job without creating a new job.
+     *
      * @param jobId saved job ID.
      * @return the resumed poller. Use the job cancellation API to cancel.
      */

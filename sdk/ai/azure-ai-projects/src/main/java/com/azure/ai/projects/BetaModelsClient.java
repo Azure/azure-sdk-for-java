@@ -42,20 +42,22 @@ import java.util.List;
 @ServiceClient(builder = AIProjectClientBuilder.class)
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaModelsClient {
+
     private static final com.azure.core.util.logging.ClientLogger LOGGER
         = new com.azure.core.util.logging.ClientLogger(BetaModelsClient.class);
 
     /**
      * Uploads a local file or folder, registers a model version, and optionally waits for it to become available.
      * Only HTTP 404 is retried while waiting. Upload failures prevent registration.
+     *
      * @param name model name.
      * @param version model version.
      * @param source local file or folder.
      * @param options metadata, upload settings and wait settings; null uses defaults.
      * @return the registered model, or the submitted model when waiting is disabled.
-    * @throws HttpResponseException if registration fails or a poll returns an error other than HTTP 404.
-    * @throws IllegalArgumentException if an upload path has no file name.
-    * @throws UnsupportedOperationException if the internal poller is cancelled.
+     * @throws HttpResponseException if registration fails or a poll returns an error other than HTTP 404.
+     * @throws IllegalArgumentException if an upload path has no file name.
+     * @throws UnsupportedOperationException if the internal poller is cancelled.
      */
     public ModelVersion createModel(String name, String version, Path source, ModelUploadOptions options) {
         ModelUploadOptions settings = options == null ? new ModelUploadOptions() : options;

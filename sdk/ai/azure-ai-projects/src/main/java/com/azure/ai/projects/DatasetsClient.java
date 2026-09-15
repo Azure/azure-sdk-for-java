@@ -195,6 +195,7 @@ public final class DatasetsClient {
 
     /**
      * Uploads a file and registers a dataset using custom blob upload settings.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param filePath the local file.
@@ -211,6 +212,7 @@ public final class DatasetsClient {
 
     /**
      * Uploads a file and registers a dataset using custom blob upload settings.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param filePath the local file.
@@ -327,6 +329,7 @@ public final class DatasetsClient {
 
     /**
      * Uploads matching files recursively and registers a folder dataset.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param folderPath the local directory.
@@ -343,6 +346,7 @@ public final class DatasetsClient {
 
     /**
      * Uploads matching files recursively and registers a folder dataset. Relative paths are preserved.
+     *
      * @param name the dataset name.
      * @param version the dataset version.
      * @param folderPath the local directory.
