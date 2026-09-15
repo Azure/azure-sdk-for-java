@@ -1,14 +1,2645 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.0.0 (2026-08-19)
 
-### Features Added
+- Azure Resource Manager Machine Learning client library for Java. This package contains Microsoft Azure SDK for Machine Learning Management SDK. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FqdnEndpointsProperties` was removed
 
-### Other Changes
+#### `models.OperationListResult` was removed
+
+#### `models.DatabricksComputeSecretsProperties` was removed
+
+#### `models.DatabricksSchema` was removed
+
+#### `models.ComputeInstanceSchema` was removed
+
+#### `models.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult` was removed
+
+#### `models.DataVersionBaseResourceArmPaginatedResult` was removed
+
+#### `models.ServerlessEndpointTrackedResourceArmPaginatedResult` was removed
+
+#### `models.DataContainerResourceArmPaginatedResult` was removed
+
+#### `models.FeaturestoreEntityContainerResourceArmPaginatedResult` was removed
+
+#### `models.ImageClassificationBase` was removed
+
+#### `models.FeatureResourceArmPaginatedResult` was removed
+
+#### `models.MarketplaceSubscriptionResourceArmPaginatedResult` was removed
+
+#### `models.DataLakeAnalyticsSchema` was removed
+
+#### `models.ModelVersionResourceArmPaginatedResult` was removed
+
+#### `models.AssetJobOutput` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.AmlComputeNodesInformation` was removed
+
+#### `models.ListWorkspaceQuotas` was removed
+
+#### `models.PaginatedComputeResourcesList` was removed
+
+#### `models.ScheduleResourceArmPaginatedResult` was removed
+
+#### `models.UserCreatedAcrAccount` was removed
+
+#### `models.FeaturestoreEntityVersionResourceArmPaginatedResult` was removed
+
+#### `models.DatastoreResourceArmPaginatedResult` was removed
+
+#### `models.ListAmlUserFeatureResult` was removed
+
+#### `models.ComponentContainerResourceArmPaginatedResult` was removed
+
+#### `models.ComputeResourceSchema` was removed
+
+#### `models.EncryptionKeyVaultProperties` was removed
+
+#### `models.NlpVertical` was removed
+
+#### `models.ValueFormat` was removed
+
+#### `models.OutboundRuleListResult` was removed
+
+#### `models.SkuResourceArmPaginatedResult` was removed
+
+#### `models.JobBaseResourceArmPaginatedResult` was removed
+
+#### `models.CodeContainerResourceArmPaginatedResult` was removed
+
+#### `models.ListUsagesResult` was removed
+
+#### `models.ComponentVersionResourceArmPaginatedResult` was removed
+
+#### `models.PublicNetworkAccessType` was removed
+
+#### `models.EnvironmentVersionResourceArmPaginatedResult` was removed
+
+#### `models.VirtualMachineSecretsSchema` was removed
+
+#### `models.BatchEndpointTrackedResourceArmPaginatedResult` was removed
+
+#### `models.OnlineDeploymentTrackedResourceArmPaginatedResult` was removed
+
+#### `models.ImageVertical` was removed
+
+#### `models.KubernetesSchema` was removed
+
+#### `models.AksSchema` was removed
+
+#### `models.AssetJobInput` was removed
+
+#### `models.TableVertical` was removed
+
+#### `models.ImageObjectDetectionBase` was removed
+
+#### `models.UserCreatedStorageAccount` was removed
+
+#### `models.WorkspaceListResult` was removed
+
+#### `models.RegistryTrackedResourceArmPaginatedResult` was removed
+
+#### `models.EndpointServiceConnectionStatus` was removed
+
+#### `models.ModelContainerResourceArmPaginatedResult` was removed
+
+#### `models.AmlComputeSchema` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.CodeVersionResourceArmPaginatedResult` was removed
+
+#### `models.HDInsightSchema` was removed
+
+#### `models.BatchDeploymentTrackedResourceArmPaginatedResult` was removed
+
+#### `models.AksComputeSecretsProperties` was removed
+
+#### `models.FeaturesetContainerResourceArmPaginatedResult` was removed
+
+#### `models.OnlineEndpointTrackedResourceArmPaginatedResult` was removed
+
+#### `models.FeaturesetVersionResourceArmPaginatedResult` was removed
+
+#### `models.VirtualMachineSchema` was removed
+
+#### `models.EnvironmentContainerResourceArmPaginatedResult` was removed
+
+#### `models.AzureDatastore` was removed
+
+#### `models.DataVersionBase$DefinitionStages` was modified
+
+* `withExistingData(java.lang.String,java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.SystemCreatedStorageAccount` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnoseRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NlpVerticalLimitSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AutoScaleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NoneDatastoreCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.EstimatedVMPrice` was modified
+
+* `EstimatedVMPrice()` was changed to private access
+* `withVmTier(models.VMTier)` was removed
+* `withRetailPrice(double)` was removed
+* `validate()` was removed
+* `withOsType(models.VMPriceOSType)` was removed
+
+#### `models.ScaleSettingsInformation` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionPropertiesV2` was modified
+
+* `value()` was removed
+* `withValue(java.lang.String)` was removed
+* `valueFormat()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `validate()` was removed
+
+#### `models.BanditPolicy` was modified
+
+* `validate()` was removed
+* `withSlackAmount(java.lang.Float)` was removed
+* `java.lang.Float slackFactor()` -> `java.lang.Double slackFactor()`
+* `java.lang.Float slackAmount()` -> `java.lang.Double slackAmount()`
+* `withSlackFactor(java.lang.Float)` was removed
+
+#### `models.JobResourceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ImageClassificationMultilabel` was modified
+
+* `validate()` was removed
+
+#### `models.BuildContext` was modified
+
+* `validate()` was removed
+
+#### `models.CronTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseArtifact` was modified
+
+* `validate()` was removed
+
+#### `models.MLFlowModelJobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobDatastore` was modified
+
+* `isDefault()` was removed
+* `validate()` was removed
+
+#### `models.AssetContainer` was modified
+
+* `validate()` was removed
+
+#### `models.KubernetesProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionAccessKey` was modified
+
+* `validate()` was removed
+
+#### `models.DestinationAsset` was modified
+
+* `validate()` was removed
+
+#### `models.ImageModelSettingsObjectDetection` was modified
+
+* `java.lang.Float boxScoreThreshold()` -> `java.lang.Double boxScoreThreshold()`
+* `withTilePredictionsNmsThreshold(java.lang.Float)` was removed
+* `withWarmupCosineLRCycles(java.lang.Float)` was removed
+* `withLearningRate(java.lang.Float)` was removed
+* `validate()` was removed
+* `withWeightDecay(java.lang.Float)` was removed
+* `withBeta1(java.lang.Float)` was removed
+* `withTileOverlapRatio(java.lang.Float)` was removed
+* `withBeta2(java.lang.Float)` was removed
+* `withStepLRGamma(java.lang.Float)` was removed
+* `java.lang.Float nmsIouThreshold()` -> `java.lang.Double nmsIouThreshold()`
+* `java.lang.Float tileOverlapRatio()` -> `java.lang.Double tileOverlapRatio()`
+* `java.lang.Float tilePredictionsNmsThreshold()` -> `java.lang.Double tilePredictionsNmsThreshold()`
+* `withNmsIouThreshold(java.lang.Float)` was removed
+* `java.lang.Float validationIouThreshold()` -> `java.lang.Double validationIouThreshold()`
+* `withValidationIouThreshold(java.lang.Float)` was removed
+* `withBoxScoreThreshold(java.lang.Float)` was removed
+* `withMomentum(java.lang.Float)` was removed
+
+#### `models.ManagedIdentityCredential` was modified
+
+* `ManagedIdentityCredential()` was changed to private access
+* `withUserManagedIdentityPrincipalId(java.lang.String)` was removed
+* `withUserManagedIdentityResourceId(java.lang.String)` was removed
+* `withManagedIdentityType(java.lang.String)` was removed
+* `withUserManagedIdentityClientId(java.lang.String)` was removed
+* `withUserManagedIdentityTenantId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.AmlToken` was modified
+
+* `validate()` was removed
+
+#### `models.ServerlessComputeSettings` was modified
+
+* `validate()` was removed
+
+#### `models.MonitoringFeatureFilterBase` was modified
+
+* `validate()` was removed
+
+#### `models.SweepJobLimits` was modified
+
+* `validate()` was removed
+
+#### `models.DataDriftMonitoringSignal` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorNotificationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceHubConfig` was modified
+
+* `validate()` was removed
+
+#### `models.SynapseSpark` was modified
+
+* `provisioningState()` was removed
+* `isAttachedCompute()` was removed
+* `provisioningErrors()` was removed
+* `createdOn()` was removed
+* `validate()` was removed
+* `modifiedOn()` was removed
+
+#### `models.ScheduleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FqdnEndpoints` was modified
+
+* `FqdnEndpoints()` was changed to private access
+* `properties()` was removed
+* `withProperties(models.FqdnEndpointsProperties)` was removed
+* `validate()` was removed
+
+#### `models.DefaultScaleSettings` was modified
+
+* `validate()` was removed
+
+#### `models.FeaturesetVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ImageSweepSettings` was modified
+
+* `validate()` was removed
+
+#### `models.PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SystemService` was modified
+
+* `SystemService()` was changed to private access
+* `validate()` was removed
+
+#### `models.OnlineRequestSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DataVersionBaseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MaterializationComputeResource` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedComputeIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.AcrDetails` was modified
+
+* `validate()` was removed
+* `userCreatedAcrAccount()` was removed
+* `withUserCreatedAcrAccount(models.UserCreatedAcrAccount)` was removed
+
+#### `models.CodeConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ImageInstanceSegmentation` was modified
+
+* `validate()` was removed
+
+#### `models.ForecastHorizon` was modified
+
+* `validate()` was removed
+
+#### `models.TmpfsOptions` was modified
+
+* `validate()` was removed
+
+#### `models.DockerCredential` was modified
+
+* `DockerCredential()` was changed to private access
+* `validate()` was removed
+* `withPassword(java.lang.String)` was removed
+* `withUsername(java.lang.String)` was removed
+
+#### `models.BatchDeploymentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CategoricalPredictionDriftMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.Aks` was modified
+
+* `createdOn()` was removed
+* `modifiedOn()` was removed
+* `validate()` was removed
+* `provisioningState()` was removed
+* `provisioningErrors()` was removed
+* `isAttachedCompute()` was removed
+
+#### `models.CustomMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.MarketplaceSubscriptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SparkJobScalaEntry` was modified
+
+* `validate()` was removed
+
+#### `models.PartialMinimalTrackedResourceWithSku` was modified
+
+* `validate()` was removed
+
+#### `models.TargetRollingWindowSize` was modified
+
+* `validate()` was removed
+
+#### `models.DataLakeAnalytics` was modified
+
+* `modifiedOn()` was removed
+* `provisioningState()` was removed
+* `provisioningErrors()` was removed
+* `validate()` was removed
+* `isAttachedCompute()` was removed
+* `createdOn()` was removed
+
+#### `models.AutoTargetRollingWindowSize` was modified
+
+* `validate()` was removed
+
+#### `models.SparkJobEntry` was modified
+
+* `validate()` was removed
+
+#### `models.ClassificationTrainingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PartialBatchDeployment` was modified
+
+* `validate()` was removed
+
+#### `models.Image` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorComputeConfigurationBase` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeStartStopSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceName` was modified
+
+* `ResourceName()` was changed to private access
+* `validate()` was removed
+
+#### `models.VirtualMachineSecrets` was modified
+
+* `VirtualMachineSecrets()` was changed to private access
+* `validate()` was removed
+* `withAdministratorAccount(models.VirtualMachineSshCredentials)` was removed
+
+#### `models.PrivateEndpointConnection$Definition` was modified
+
+* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
+
+#### `models.AutoPauseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceCreatedBy` was modified
+
+* `ComputeInstanceCreatedBy()` was changed to private access
+* `validate()` was removed
+
+#### `models.ModelVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BatchEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionApiKey` was modified
+
+* `validate()` was removed
+
+#### `models.Collection` was modified
+
+* `validate()` was removed
+
+#### `models.OnlineDeploymentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TruncationSelectionPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrivateEndpointResource` was modified
+
+* `validate()` was removed
+
+#### `models.SystemCreatedAcrAccount` was modified
+
+* `validate()` was removed
+
+#### `models.BatchRetrySettings` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorDefinition` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineSshCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionUsernamePassword` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionPersonalAccessToken` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaBaseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MarketplacePlan` was modified
+
+* `MarketplacePlan()` was changed to private access
+* `validate()` was removed
+
+#### `models.CodeContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OneLakeDatastore` was modified
+
+* `isDefault()` was removed
+* `validate()` was removed
+
+#### `models.AmlComputeNodeInformation` was modified
+
+* `AmlComputeNodeInformation()` was changed to private access
+* `validate()` was removed
+
+#### `models.FeatureImportanceSettings` was modified
+
+* `validate()` was removed
+
+#### `models.FeaturesetSpecification` was modified
+
+* `validate()` was removed
+
+#### `models.ModelContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TableVerticalFeaturizationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDevOpsWebhook` was modified
+
+* `validate()` was removed
+
+#### `models.DataDriftMetricThresholdBase` was modified
+
+* `validate()` was removed
+
+#### `models.MonitoringSignalBase` was modified
+
+* `validate()` was removed
+
+#### `models.EarlyTerminationPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.AutoNCrossValidations` was modified
+
+* `validate()` was removed
+
+#### `models.InferenceContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Docker` was modified
+
+* `validate()` was removed
+
+#### `models.NumericalPredictionDriftMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.JobLimits` was modified
+
+* `validate()` was removed
+
+#### `models.TargetLags` was modified
+
+* `validate()` was removed
+
+#### `models.ArmResourceId` was modified
+
+* `validate()` was removed
+
+#### `models.ServicePrincipalAuthTypeWorkspaceConnectionProperties` was modified
+
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `createdByWorkspaceArmId()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `group()` was removed
+
+#### `models.BatchEndpointDefaults` was modified
+
+* `validate()` was removed
+
+#### `models.ImageModelDistributionSettingsClassification` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptsToExecute` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointOutboundRule` was modified
+
+* `validate()` was removed
+
+#### `models.Nodes` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeGen1Datastore` was modified
+
+* `validate()` was removed
+* `isDefault()` was removed
+
+#### `models.BindOptions` was modified
+
+* `validate()` was removed
+
+#### `models.Workspaces` was modified
+
+* `list(java.lang.String,com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Kubernetes` was modified
+
+* `modifiedOn()` was removed
+* `isAttachedCompute()` was removed
+* `provisioningErrors()` was removed
+* `createdOn()` was removed
+* `provisioningState()` was removed
+* `validate()` was removed
+
+#### `models.AllFeatures` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedOnlineDeployment` was modified
+
+* `validate()` was removed
+* `provisioningState()` was removed
+
+#### `models.NodeStateCounts` was modified
+
+* `NodeStateCounts()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DataReferenceCredential` was modified
+
+* `validate()` was removed
+
+#### `models.AssignedUser` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PredictionDriftMonitoringSignal` was modified
+
+* `validate()` was removed
+
+#### `models.AksSchemaProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OAuth2AuthTypeWorkspaceConnectionProperties` was modified
+
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `createdByWorkspaceArmId()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `group()` was removed
+
+#### `models.FeatureProperties` was modified
+
+* `FeatureProperties()` was changed to private access
+* `withTags(java.util.Map)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withFeatureName(java.lang.String)` was removed
+* `withProperties(java.util.Map)` was removed
+* `withDataType(models.FeatureDataType)` was removed
+* `validate()` was removed
+
+#### `models.CustomModelJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.CodeVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DataQualityMonitoringSignal` was modified
+
+* `validate()` was removed
+
+#### `models.Objective` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.RegistryPartialManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.UriFolderDataVersion` was modified
+
+* `validate()` was removed
+
+#### `models.TopNFeaturesByAttribution` was modified
+
+* `validate()` was removed
+
+#### `models.DataPathAssetReference` was modified
+
+* `validate()` was removed
+
+#### `models.SynapseSparkProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Datastores` was modified
+
+* `listSecretsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.StackEnsembleSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceDataDisk` was modified
+
+* `ComputeInstanceDataDisk()` was changed to private access
+* `withStorageAccountType(models.StorageAccountType)` was removed
+* `withLun(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withCaching(models.Caching)` was removed
+* `withDiskSizeGB(java.lang.Integer)` was removed
+
+#### `models.RegistryPrivateEndpointConnection` was modified
+
+* `validate()` was removed
+
+#### `models.GetBlobReferenceSasRequestDto` was modified
+
+* `validate()` was removed
+
+#### `models.TargetUtilizationScaleSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceApplication` was modified
+
+* `ComputeInstanceApplication()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withEndpointUri(java.lang.String)` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was removed
+* `java.lang.String type()` -> `java.lang.String type()`
+* `validate()` was removed
+* `java.util.Map tags()` -> `java.util.Map tags()`
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+* `withSku(models.Sku)` was removed
+* `withTags(java.util.Map)` was removed
+* `java.util.List requiredMembers()` -> `java.util.List requiredMembers()`
+* `java.lang.String groupId()` -> `java.lang.String groupId()`
+* `java.lang.String location()` -> `java.lang.String location()`
+* `models.Sku sku()` -> `models.Sku sku()`
+* `com.azure.core.management.SystemData systemData()` -> `com.azure.core.management.SystemData systemData()`
+* `java.lang.String id()` -> `java.lang.String id()`
+* `java.lang.String name()` -> `java.lang.String name()`
+* `withLocation(java.lang.String)` was removed
+* `java.util.List requiredZoneNames()` -> `java.util.List requiredZoneNames()`
+* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+* `withRequiredZoneNames(java.util.List)` was removed
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+
+#### `models.PipelineJob` was modified
+
+* `status()` was removed
+* `validate()` was removed
+
+#### `models.Password` was modified
+
+* `Password()` was changed to private access
+* `validate()` was removed
+
+#### `models.ColumnTransformer` was modified
+
+* `validate()` was removed
+
+#### `models.TrainingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.RecurrenceSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.StorageAccountDetails` was modified
+
+* `withUserCreatedStorageAccount(models.UserCreatedStorageAccount)` was removed
+* `userCreatedStorageAccount()` was removed
+* `validate()` was removed
+
+#### `models.PartialMinimalTrackedResource` was modified
+
+* `validate()` was removed
+
+#### `models.RegistryRegionArmDetails` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionKeyVaultUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.CustomTargetLags` was modified
+
+* `validate()` was removed
+
+#### `models.DistributionConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.StaticInputData` was modified
+
+* `validate()` was removed
+
+#### `models.Seasonality` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Classification` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachine` was modified
+
+* `modifiedOn()` was removed
+* `createdOn()` was removed
+* `isAttachedCompute()` was removed
+* `validate()` was removed
+* `provisioningState()` was removed
+* `provisioningErrors()` was removed
+
+#### `models.RegressionTrainingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VolumeOptions` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateWorkspaceQuotas` was modified
+
+* `UpdateWorkspaceQuotas()` was changed to private access
+* `withStatus(models.Status)` was removed
+* `validate()` was removed
+* `withLimit(java.lang.Long)` was removed
+
+#### `models.AmlCompute` was modified
+
+* `provisioningErrors()` was removed
+* `modifiedOn()` was removed
+* `isAttachedCompute()` was removed
+* `provisioningState()` was removed
+* `createdOn()` was removed
+* `validate()` was removed
+
+#### `models.AzureDataLakeGen2Datastore` was modified
+
+* `validate()` was removed
+* `isDefault()` was removed
+
+#### `models.MonitoringTarget` was modified
+
+* `validate()` was removed
+
+#### `models.ImageModelSettingsClassification` was modified
+
+* `withWeightDecay(java.lang.Float)` was removed
+* `withBeta2(java.lang.Float)` was removed
+* `withMomentum(java.lang.Float)` was removed
+* `withBeta1(java.lang.Float)` was removed
+* `withLearningRate(java.lang.Float)` was removed
+* `withWarmupCosineLRCycles(java.lang.Float)` was removed
+* `withStepLRGamma(java.lang.Float)` was removed
+* `validate()` was removed
+
+#### `models.QueueSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AccountKeyDatastoreCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerResourceRequirements` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceConnectivityEndpoints` was modified
+
+* `ComputeInstanceConnectivityEndpoints()` was changed to private access
+* `validate()` was removed
+
+#### `models.Databricks` was modified
+
+* `modifiedOn()` was removed
+* `validate()` was removed
+* `provisioningErrors()` was removed
+* `createdOn()` was removed
+* `isAttachedCompute()` was removed
+* `provisioningState()` was removed
+
+#### `models.PrivateEndpointConnection$Update` was modified
+
+* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
+
+#### `models.FeatureAttributionMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.UriFileDataVersion` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeRecurrenceSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorServerlessSparkCompute` was modified
+
+* `validate()` was removed
+
+#### `models.ApiKeyAuthWorkspaceConnectionProperties` was modified
+
+* `withValueFormat(models.ValueFormat)` was removed
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `group()` was removed
+* `createdByWorkspaceArmId()` was removed
+
+#### `models.UriFileJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstance` was modified
+
+* `createdOn()` was removed
+* `isAttachedCompute()` was removed
+* `modifiedOn()` was removed
+* `provisioningErrors()` was removed
+* `provisioningState()` was removed
+* `validate()` was removed
+
+#### `models.AnonymousAccessCredential` was modified
+
+* `AnonymousAccessCredential()` was changed to private access
+* `validate()` was removed
+
+#### `models.SkuCapacity` was modified
+
+* `SkuCapacity()` was changed to private access
+* `withMaximum(java.lang.Integer)` was removed
+* `withDefaultProperty(java.lang.Integer)` was removed
+* `withMinimum(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withScaleType(models.SkuScaleType)` was removed
+
+#### `models.WorkspaceConnections` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ComponentContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AmlComputeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Route` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceContainer` was modified
+
+* `ComputeInstanceContainer()` was changed to private access
+* `withAutosave(models.Autosave)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withEnvironment(models.ComputeInstanceEnvironmentInfo)` was removed
+* `withGpu(java.lang.String)` was removed
+* `withNetwork(models.Network)` was removed
+
+#### `models.UriFileJobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.MaterializationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.Recurrence` was modified
+
+* `validate()` was removed
+
+#### `models.LiteralJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.TableVerticalLimitSettings` was modified
+
+* `validate()` was removed
+
+#### `models.UriFolderJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.TrialComponent` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionServicePrincipal` was modified
+
+* `validate()` was removed
+
+#### `models.MedianStoppingPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.Webhook` was modified
+
+* `validate()` was removed
+
+#### `models.Datastore` was modified
+
+* `listSecretsWithResponse(com.azure.core.util.Context)` was removed
+
+#### `models.NoneAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `group()` was removed
+* `createdByWorkspaceArmId()` was removed
+
+#### `models.NotebookPreparationError` was modified
+
+* `NotebookPreparationError()` was changed to private access
+* `validate()` was removed
+* `withStatusCode(java.lang.Integer)` was removed
+* `withErrorMessage(java.lang.String)` was removed
+
+#### `models.PrivateEndpointDestination` was modified
+
+* `validate()` was removed
+
+#### `models.ScaleSettings` was modified
+
+* `validate()` was removed
+
+#### `models.PartialManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.Regression` was modified
+
+* `validate()` was removed
+
+#### `models.OneLakeArtifact` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ServerlessEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `MachineLearningManager` was modified
+
+* `fluent.AzureMachineLearningWorkspaces serviceClient()` -> `fluent.MachineLearningManagementClient serviceClient()`
+
+#### `models.ImageMetadata` was modified
+
+* `ImageMetadata()` was changed to private access
+* `withLatestImageVersion(java.lang.String)` was removed
+* `withCurrentImageVersion(java.lang.String)` was removed
+* `withIsLatestOsImageVersion(java.lang.Boolean)` was removed
+* `validate()` was removed
+
+#### `models.ScheduleActionBase` was modified
+
+* `validate()` was removed
+
+#### `models.MLTableData` was modified
+
+* `validate()` was removed
+
+#### `models.Forecasting` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateDatastoreSecrets` was modified
+
+* `validate()` was removed
+
+#### `models.CustomKeysWorkspaceConnectionProperties` was modified
+
+* `group()` was removed
+* `validate()` was removed
+* `createdByWorkspaceArmId()` was removed
+* `withValue(java.lang.String)` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+
+#### `models.CertificateDatastoreCredentials` was modified
+
+* `withClientId(java.util.UUID)` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `withTenantId(java.util.UUID)` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+
+#### `models.CustomKeys` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureStoreSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineSchemaProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UsernamePasswordAuthTypeWorkspaceConnectionProperties` was modified
+
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `createdByWorkspaceArmId()` was removed
+* `group()` was removed
+
+#### `models.AccountKeyAuthTypeWorkspaceConnectionProperties` was modified
+
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `group()` was removed
+* `createdByWorkspaceArmId()` was removed
+
+#### `models.ServiceManagedResourcesSettings` was modified
+
+* `validate()` was removed
+
+#### `models.GridSamplingAlgorithm` was modified
+
+* `validate()` was removed
+
+#### `models.IdentityForCmk` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFileDatastore` was modified
+
+* `validate()` was removed
+* `isDefault()` was removed
+
+#### `models.ManagedNetworkProvisionOptions` was modified
+
+* `validate()` was removed
+
+#### `models.SparkJob` was modified
+
+* `status()` was removed
+* `validate()` was removed
+
+#### `models.WorkspaceUpdateParameters` was modified
+
+* `WorkspaceUpdateParameters()` was removed
+* `java.lang.String description()` -> `java.lang.String description()`
+* `withDescription(java.lang.String)` was removed
+* `java.lang.String primaryUserAssignedIdentity()` -> `java.lang.String primaryUserAssignedIdentity()`
+* `withImageBuildCompute(java.lang.String)` was removed
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
+* `withEnableDataIsolation(java.lang.Boolean)` was removed
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `withApplicationInsights(java.lang.String)` was removed
+* `withManagedNetwork(fluent.models.ManagedNetworkSettingsInner)` was removed
+* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+* `models.EncryptionUpdateProperties encryption()` -> `models.EncryptionUpdateProperties encryption()`
+* `withContainerRegistry(java.lang.String)` was removed
+* `java.lang.String applicationInsights()` -> `java.lang.String applicationInsights()`
+* `validate()` was removed
+* `java.util.Map tags()` -> `java.util.Map tags()`
+* `models.ServiceManagedResourcesSettings serviceManagedResourcesSettings()` -> `models.ServiceManagedResourcesSettings serviceManagedResourcesSettings()`
+* `models.Sku sku()` -> `models.Sku sku()`
+* `withFeatureStoreSettings(models.FeatureStoreSettings)` was removed
+* `java.lang.String containerRegistry()` -> `java.lang.String containerRegistry()`
+* `withFriendlyName(java.lang.String)` was removed
+* `withServiceManagedResourcesSettings(models.ServiceManagedResourcesSettings)` was removed
+* `fluent.models.ManagedNetworkSettingsInner managedNetwork()` -> `models.ManagedNetworkSettings managedNetwork()`
+* `withV1LegacyMode(java.lang.Boolean)` was removed
+* `java.lang.Boolean enableDataIsolation()` -> `java.lang.Boolean enableDataIsolation()`
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+* `java.lang.String friendlyName()` -> `java.lang.String friendlyName()`
+* `withPrimaryUserAssignedIdentity(java.lang.String)` was removed
+* `withServerlessComputeSettings(models.ServerlessComputeSettings)` was removed
+* `java.lang.Boolean v1LegacyMode()` -> `java.lang.Boolean v1LegacyMode()`
+* `models.ServerlessComputeSettings serverlessComputeSettings()` -> `models.ServerlessComputeSettings serverlessComputeSettings()`
+* `models.PublicNetworkAccess publicNetworkAccess()` -> `models.PublicNetworkAccess publicNetworkAccess()`
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.String imageBuildCompute()` -> `java.lang.String imageBuildCompute()`
+* `withEncryption(models.EncryptionUpdateProperties)` was removed
+* `withTags(java.util.Map)` was removed
+* `models.FeatureStoreSettings featureStoreSettings()` -> `models.FeatureStoreSettings featureStoreSettings()`
+* `withSku(models.Sku)` was removed
+
+#### `models.ComputeRuntimeDto` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureWindow` was modified
+
+* `validate()` was removed
+
+#### `models.Cron` was modified
+
+* `validate()` was removed
+
+#### `models.NlpVerticalFeaturizationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineImage` was modified
+
+* `validate()` was removed
+
+#### `models.UriFolderJobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.Compute` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureSubset` was modified
+
+* `validate()` was removed
+
+#### `models.PendingUploadRequestDto` was modified
+
+* `validate()` was removed
+
+#### `models.OutputPathAssetReference` was modified
+
+* `validate()` was removed
+
+#### `models.DataCollector` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerBase` was modified
+
+* `validate()` was removed
+
+#### `models.AssetBase` was modified
+
+* `validate()` was removed
+
+#### `models.InstanceTypeSchemaResources` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionAccountKey` was modified
+
+* `validate()` was removed
+
+#### `models.MonitoringInputDataBase` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptReference` was modified
+
+* `validate()` was removed
+
+#### `models.MLTableJobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.AutoMLVertical` was modified
+
+* `validate()` was removed
+
+#### `models.Mpi` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnoseResponseResultValue` was modified
+
+* `DiagnoseResponseResultValue()` was changed to private access
+* `withApplicationInsightsResults(java.util.List)` was removed
+* `withContainerRegistryResults(java.util.List)` was removed
+* `withDnsResolutionResults(java.util.List)` was removed
+* `withKeyVaultResults(java.util.List)` was removed
+* `validate()` was removed
+* `withResourceLockResults(java.util.List)` was removed
+* `withStorageAccountResults(java.util.List)` was removed
+* `withUserDefinedRouteResults(java.util.List)` was removed
+* `withOtherResults(java.util.List)` was removed
+* `withNetworkSecurityRuleResults(java.util.List)` was removed
+
+#### `models.SasDatastoreCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.AccessKeyAuthTypeWorkspaceConnectionProperties` was modified
+
+* `group()` was removed
+* `withValue(java.lang.String)` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `validate()` was removed
+* `createdByWorkspaceArmId()` was removed
+
+#### `models.AksNetworkingConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.CategoricalDataQualityMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.DatabricksComputeSecrets` was modified
+
+* `DatabricksComputeSecrets()` was changed to private access
+* `validate()` was removed
+* `withDatabricksAccessToken(java.lang.String)` was removed
+
+#### `models.ImageModelDistributionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CustomService` was modified
+
+* `validate()` was removed
+
+#### `models.AadAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withValueFormat(models.ValueFormat)` was removed
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `group()` was removed
+* `createdByWorkspaceArmId()` was removed
+
+#### `models.BlobReferenceForConsumptionDto` was modified
+
+* `BlobReferenceForConsumptionDto()` was changed to private access
+* `withBlobUri(java.lang.String)` was removed
+* `withStorageAccountArmId(java.lang.String)` was removed
+* `validate()` was removed
+* `withCredential(models.PendingUploadCredentialDto)` was removed
+
+#### `models.VolumeDefinition` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnoseResult` was modified
+
+* `DiagnoseResult()` was changed to private access
+* `validate()` was removed
+
+#### `models.TritonModelJobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionSharedAccessSignature` was modified
+
+* `validate()` was removed
+
+#### `models.DatastoreCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.ProbeSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceBase` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
+
+#### `models.EstimatedVMPrices` was modified
+
+* `EstimatedVMPrices()` was changed to private access
+* `withUnitOfMeasure(models.UnitOfMeasure)` was removed
+* `validate()` was removed
+* `withValues(java.util.List)` was removed
+* `withBillingCurrency(models.BillingCurrency)` was removed
+
+#### `models.ServerlessInferenceEndpoint` was modified
+
+* `ServerlessInferenceEndpoint()` was changed to private access
+* `validate()` was removed
+* `withUri(java.lang.String)` was removed
+
+#### `models.TextClassificationMultilabel` was modified
+
+* `validate()` was removed
+
+#### `models.FeaturesetVersionBackfillRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbSettings` was modified
+
+* `validate()` was removed
+
+#### `models.IdAssetReference` was modified
+
+* `validate()` was removed
+
+#### `models.AksComputeSecrets` was modified
+
+* `AksComputeSecrets()` was changed to private access
+* `withImagePullSecretName(java.lang.String)` was removed
+* `withAdminKubeConfig(java.lang.String)` was removed
+* `validate()` was removed
+* `withUserKubeConfig(java.lang.String)` was removed
+
+#### `models.PersonalComputeInstanceSettings` was modified
+
+* `validate()` was removed
+
+#### `models.OutboundRule` was modified
+
+* `validate()` was removed
+
+#### `models.CommandJobLimits` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineSize` was modified
+
+* `VirtualMachineSize()` was changed to private access
+* `validate()` was removed
+* `withSupportedComputeTypes(java.util.List)` was removed
+* `withEstimatedVMPrices(models.EstimatedVMPrices)` was removed
+
+#### `models.ModelSettings` was modified
+
+* `validate()` was removed
+
+#### `models.Endpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ImageClassification` was modified
+
+* `validate()` was removed
+
+#### `models.MonitoringThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.DatabricksProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RollingInputData` was modified
+
+* `validate()` was removed
+
+#### `models.SasDatastoreSecrets` was modified
+
+* `validate()` was removed
+
+#### `models.SharedPrivateLinkResource` was modified
+
+* `validate()` was removed
+
+#### `models.TritonModelJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerResourceSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CustomModelJobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.FlavorData` was modified
+
+* `validate()` was removed
+
+#### `models.DatastoreProperties` was modified
+
+* `validate()` was removed
+
+#### `models.IndexColumn` was modified
+
+* `validate()` was removed
+
+#### `models.CategoricalDataDriftMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.BayesianSamplingAlgorithm` was modified
+
+* `validate()` was removed
+
+#### `models.NumericalDataQualityMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentResourceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.PredictionDriftMetricThresholdBase` was modified
+
+* `validate()` was removed
+
+#### `models.CustomNCrossValidations` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceEnvironmentInfo` was modified
+
+* `ComputeInstanceEnvironmentInfo()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.GetBlobReferenceForConsumptionDto` was modified
+
+* `GetBlobReferenceForConsumptionDto()` was changed to private access
+* `withStorageAccountArmId(java.lang.String)` was removed
+* `withBlobUri(java.lang.String)` was removed
+* `validate()` was removed
+* `withCredential(models.DataReferenceCredential)` was removed
+
+#### `models.SkuSetting` was modified
+
+* `SkuSetting()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withTier(models.SkuTier)` was removed
+* `validate()` was removed
+
+#### `models.MonitorEmailNotificationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceSshSettings` was modified
+
+* `validate()` was removed
+
+#### `models.RegenerateEndpointKeysRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResources` was modified
+
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.PrivateLinkResourceListResult list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
+
+#### `models.TensorFlow` was modified
+
+* `validate()` was removed
+
+#### `models.SasCredential` was modified
+
+* `SasCredential()` was changed to private access
+* `withSasUri(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.NotificationSetting` was modified
+
+* `validate()` was removed
+
+#### `models.SasAuthTypeWorkspaceConnectionProperties` was modified
+
+* `validate()` was removed
+* `createdByWorkspaceArmId()` was removed
+* `group()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.BatchDeploymentConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.SasCredentialDto` was modified
+
+* `SasCredentialDto()` was changed to private access
+* `validate()` was removed
+* `withSasUri(java.lang.String)` was removed
+
+#### `models.ServiceTagOutboundRule` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentLogsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TextNer` was modified
+
+* `validate()` was removed
+
+#### `models.FqdnEndpoint` was modified
+
+* `FqdnEndpoint()` was changed to private access
+* `withDomainName(java.lang.String)` was removed
+* `validate()` was removed
+* `withEndpointDetails(java.util.List)` was removed
+
+#### `models.MLTableJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.AutoForecastHorizon` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentVariable` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceConnectionOAuth2` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+* `withClientId(java.util.UUID)` was removed
+
+#### `models.PartialRegistryPartialTrackedResource` was modified
+
+* `validate()` was removed
+
+#### `models.PartialMinimalTrackedResourceWithSkuAndIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.FeaturestoreEntityContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionProperty` was modified
+
+* `validate()` was removed
+* `withKeyVaultProperties(models.EncryptionKeyVaultProperties)` was removed
+* `models.EncryptionKeyVaultProperties keyVaultProperties()` -> `models.KeyVaultProperties keyVaultProperties()`
+
+#### `models.FeaturestoreEntityVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CommandJob` was modified
+
+* `validate()` was removed
+* `status()` was removed
+
+#### `models.NumericalDataDriftMetricThreshold` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceVersion` was modified
+
+* `ComputeInstanceVersion()` was changed to private access
+* `validate()` was removed
+* `withRuntime(java.lang.String)` was removed
+
+#### `models.IdentityConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentityAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `group()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `createdByWorkspaceArmId()` was removed
+
+#### `models.RegistryListCredentialsResult` was modified
+
+* `RegistryListCredentialsResult()` was changed to private access
+* `withPasswords(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.FeaturizationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ServicePrincipalDatastoreCredentials` was modified
+
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `withClientId(java.util.UUID)` was removed
+* `withTenantId(java.util.UUID)` was removed
+
+#### `models.ServiceTagDestination` was modified
+
+* `validate()` was removed
+
+#### `models.RequestLogging` was modified
+
+* `validate()` was removed
+
+#### `models.SslConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnoseWorkspaceParameters` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointDeploymentPropertiesBase` was modified
+
+* `validate()` was removed
+
+#### `models.DataFactory` was modified
+
+* `validate()` was removed
+* `isAttachedCompute()` was removed
+* `provisioningErrors()` was removed
+* `createdOn()` was removed
+* `modifiedOn()` was removed
+* `provisioningState()` was removed
+
+#### `models.CustomTargetRollingWindowSize` was modified
+
+* `validate()` was removed
+
+#### `models.ImageObjectDetection` was modified
+
+* `validate()` was removed
+
+#### `models.FeaturesetContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.InstanceTypeSchema` was modified
+
+* `validate()` was removed
+
+#### `models.UserIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ImageModelSettings` was modified
+
+* `java.lang.Float warmupCosineLRCycles()` -> `java.lang.Double warmupCosineLRCycles()`
+* `withBeta1(java.lang.Float)` was removed
+* `withBeta2(java.lang.Float)` was removed
+* `java.lang.Float momentum()` -> `java.lang.Double momentum()`
+* `withMomentum(java.lang.Float)` was removed
+* `java.lang.Float stepLRGamma()` -> `java.lang.Double stepLRGamma()`
+* `withStepLRGamma(java.lang.Float)` was removed
+* `java.lang.Float learningRate()` -> `java.lang.Double learningRate()`
+* `java.lang.Float beta1()` -> `java.lang.Double beta1()`
+* `validate()` was removed
+* `withLearningRate(java.lang.Float)` was removed
+* `withWeightDecay(java.lang.Float)` was removed
+* `java.lang.Float beta2()` -> `java.lang.Double beta2()`
+* `java.lang.Float weightDecay()` -> `java.lang.Double weightDecay()`
+* `withWarmupCosineLRCycles(java.lang.Float)` was removed
+
+#### `models.CustomMonitoringSignal` was modified
+
+* `validate()` was removed
+
+#### `models.UserAccountCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.JobOutput` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointScheduleAction` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentity` was modified
+
+* `java.util.UUID objectId()` -> `java.lang.String objectId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `withObjectId(java.util.UUID)` was removed
+* `withClientId(java.util.UUID)` was removed
+* `validate()` was removed
+
+#### `models.CreateMonitorAction` was modified
+
+* `validate()` was removed
+
+#### `models.SetupScripts` was modified
+
+* `validate()` was removed
+
+#### `models.MLFlowModelJobInput` was modified
+
+* `validate()` was removed
+
+#### `models.CustomForecastHorizon` was modified
+
+* `validate()` was removed
+
+#### `models.AssetReferenceBase` was modified
+
+* `validate()` was removed
+
+#### `models.DataQualityMetricThresholdBase` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SparkResourceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `validate()` was removed
+
+#### `models.SparkJobPythonEntry` was modified
+
+* `validate()` was removed
+
+#### `models.SweepJob` was modified
+
+* `status()` was removed
+* `validate()` was removed
+
+#### `models.AutoSeasonality` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `models.PrivateEndpoint privateEndpoint()` -> `models.WorkspacePrivateEndpointResource privateEndpoint()`
+
+#### `models.NCrossValidations` was modified
+
+* `validate()` was removed
+
+#### `models.DataVersionBase$Definition` was modified
+
+* `withExistingData(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.ScheduleBase` was modified
+
+* `validate()` was removed
+
+#### `models.ImageModelDistributionSettingsObjectDetection` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceDataMount` was modified
+
+* `ComputeInstanceDataMount()` was changed to private access
+* `withMountState(models.MountState)` was removed
+* `withSource(java.lang.String)` was removed
+* `withError(java.lang.String)` was removed
+* `withMountedOn(java.time.OffsetDateTime)` was removed
+* `withCreatedBy(java.lang.String)` was removed
+* `withSourceType(models.SourceType)` was removed
+* `withMountPath(java.lang.String)` was removed
+* `withMountName(java.lang.String)` was removed
+* `validate()` was removed
+* `withMountAction(models.MountAction)` was removed
+
+#### `models.ForecastingTrainingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.TextClassification` was modified
+
+* `validate()` was removed
+
+#### `models.PartialSku` was modified
+
+* `validate()` was removed
+
+#### `models.AutoTargetLags` was modified
+
+* `validate()` was removed
+
+#### `models.ImageLimitSettings` was modified
+
+* `validate()` was removed
+
+#### `models.OnlineScaleSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DataContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PartialMinimalTrackedResourceWithIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.AutoMLJob` was modified
+
+* `validate()` was removed
+* `status()` was removed
+
+#### `models.AmlTokenComputeIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.RandomSamplingAlgorithm` was modified
+
+* `validate()` was removed
+
+#### `models.JobInput` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureAttributionDriftMonitoringSignal` was modified
+
+* `validate()` was removed
+
+#### `models.JobScheduleAction` was modified
+
+* `validate()` was removed
+
+#### `models.JobService` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsight` was modified
+
+* `isAttachedCompute()` was removed
+* `validate()` was removed
+* `provisioningState()` was removed
+* `createdOn()` was removed
+* `provisioningErrors()` was removed
+* `modifiedOn()` was removed
+
+#### `models.KubernetesOnlineDeployment` was modified
+
+* `provisioningState()` was removed
+* `validate()` was removed
+
+#### `models.AccountKeyDatastoreSecrets` was modified
+
+* `validate()` was removed
+
+#### `models.ServicePrincipalDatastoreSecrets` was modified
+
+* `validate()` was removed
+
+#### `models.OnlineEndpointProperties` was modified
+
+* `validate()` was removed
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was removed
+* `models.PublicNetworkAccessType publicNetworkAccess()` -> `models.PublicNetworkAccess publicNetworkAccess()`
+
+#### `models.CustomSeasonality` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceId` was modified
+
+* `validate()` was removed
+
+#### `models.AllNodes` was modified
+
+* `validate()` was removed
+
+#### `models.RecurrenceTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.FqdnEndpointDetail` was modified
+
+* `FqdnEndpointDetail()` was changed to private access
+* `validate()` was removed
+* `withPort(java.lang.Integer)` was removed
+
+#### `models.MonitorComputeIdentityBase` was modified
+
+* `validate()` was removed
+
+#### `models.ContentSafety` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeInstanceLastOperation` was modified
+
+* `ComputeInstanceLastOperation()` was changed to private access
+* `validate()` was removed
+* `withOperationName(models.OperationName)` was removed
+* `withOperationStatus(models.OperationStatus)` was removed
+* `withOperationTrigger(models.OperationTrigger)` was removed
+* `withOperationTime(java.time.OffsetDateTime)` was removed
+
+#### `models.ForecastingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.BatchPipelineComponentDeploymentConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.JobBaseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PyTorch` was modified
+
+* `validate()` was removed
+
+#### `models.PendingUploadCredentialDto` was modified
+
+* `validate()` was removed
+
+#### `models.RegistryPrivateLinkServiceConnectionState` was modified
+
+* `withStatus(models.EndpointServiceConnectionStatus)` was removed
+* `models.EndpointServiceConnectionStatus status()` -> `models.PrivateEndpointServiceConnectionStatus status()`
+* `validate()` was removed
+
+#### `models.FixedInputData` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+
+#### `models.DataLakeAnalyticsSchemaProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ComponentVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FqdnOutboundRule` was modified
+
+* `validate()` was removed
+
+#### `models.SamplingAlgorithm` was modified
+
+* `validate()` was removed
+
+#### `models.PatAuthTypeWorkspaceConnectionProperties` was modified
+
+* `group()` was removed
+* `createdByWorkspaceArmId()` was removed
+* `withValue(java.lang.String)` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `validate()` was removed
+
+#### `models.ComputeSchedules` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ManagedPERequirement` was added
+
+* `models.ManagedNetworkKind` was added
+
+* `models.WorkspaceConnectionPropertiesV2BasicResource$Update` was added
+
+* `models.CapabilityHost$Update` was added
+
+* `models.CapabilityHosts` was added
+
+* `models.CapabilityHost$UpdateStages` was added
+
+* `models.ManagedResourceGroupSettings` was added
+
+* `models.CapabilityHost$DefinitionStages` was added
+
+* `models.ManagedResourceGroupAssignedIdentities` was added
+
+* `models.MountMode` was added
+
+* `models.CapabilityHost` was added
+
+* `models.FqdnEndpointsPropertyBag` was added
+
+* `models.CapabilityHostKind` was added
+
+* `models.WorkspaceConnectionUpdateParameter` was added
+
+* `models.SystemDatastoresAuthMode` was added
+
+* `models.FirewallSku` was added
+
+* `models.JupyterKernelConfig` was added
+
+* `models.CapabilityHost$Definition` was added
+
+* `models.KeyVaultProperties` was added
+
+* `models.OsPatchingStatus` was added
+
+* `models.PatchStatus` was added
+
+* `models.DatasetReference` was added
+
+* `models.CapabilityHostProperties` was added
+
+* `models.WorkspacePrivateEndpointResource` was added
+
+* `models.ManagedPEStatus` was added
+
+* `models.SecretExpiry` was added
+
+* `models.CapabilityHostProvisioningState` was added
+
+* `models.WorkspaceConnectionPropertiesV2BasicResource$UpdateStages` was added
+
+#### `models.Registry$Definition` was modified
+
+* `withManagedResourceGroupSettings(models.ManagedResourceGroupSettings)` was added
+
+#### `models.DiagnoseRequestProperties` was modified
+
+* `withRequiredResourceProviders(java.util.Map)` was added
+* `requiredResourceProviders()` was added
+
+#### `models.ConnectionCategory` was modified
+
+* `DATABRICKS` was added
+* `AZURE_STORAGE_ACCOUNT` was added
+* `POWER_PLATFORM_ENVIRONMENT` was added
+* `REMOTE_TOOL` was added
+* `SHAREPOINT` was added
+* `APP_INSIGHTS` was added
+* `MICROSOFT_FABRIC` was added
+* `PINECONE` was added
+* `GROUNDING_WITH_CUSTOM_SEARCH` was added
+* `API_MANAGEMENT` was added
+* `MODEL_GATEWAY` was added
+* `AZURE_CONTAINER_APP_ENVIRONMENT` was added
+* `MANAGED_ONLINE_ENDPOINT` was added
+* `REMOTE_A2A` was added
+* `APP_CONFIG` was added
+* `GROUNDING_WITH_BING_SEARCH` was added
+* `AZURE_KEY_VAULT` was added
+* `ELASTICSEARCH` was added
+
+#### `models.WorkspaceConnectionPropertiesV2` was modified
+
+* `withError(java.lang.String)` was added
+* `error()` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `peStatus()` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `peRequirement()` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `useWorkspaceManagedIdentity()` was added
+
+#### `models.BanditPolicy` was modified
+
+* `withSlackFactor(java.lang.Double)` was added
+* `withSlackAmount(java.lang.Double)` was added
+
+#### `models.JobResourceConfiguration` was modified
+
+* `dockerArgsList()` was added
+* `withDockerArgsList(java.util.List)` was added
+
+#### `models.MLFlowModelJobOutput` was modified
+
+* `assetName()` was added
+* `withAssetName(java.lang.String)` was added
+
+#### `models.ImageModelSettingsObjectDetection` was modified
+
+* `withBeta1(java.lang.Double)` was added
+* `withBeta2(java.lang.Double)` was added
+* `withTileOverlapRatio(java.lang.Double)` was added
+* `withBoxScoreThreshold(java.lang.Double)` was added
+* `withStepLRGamma(java.lang.Double)` was added
+* `withWarmupCosineLRCycles(java.lang.Double)` was added
+* `withLearningRate(java.lang.Double)` was added
+* `withValidationIouThreshold(java.lang.Double)` was added
+* `withNmsIouThreshold(java.lang.Double)` was added
+* `withMomentum(java.lang.Double)` was added
+* `withWeightDecay(java.lang.Double)` was added
+* `withTilePredictionsNmsThreshold(java.lang.Double)` was added
+
+#### `models.ComputeInstanceState` was modified
+
+* `RESIZING` was added
+
+#### `models.FqdnEndpoints` was modified
+
+* `category()` was added
+* `endpoints()` was added
+
+#### `models.Registry` was modified
+
+* `managedResourceGroupSettings()` was added
+
+#### `models.Workspace$Update` was modified
+
+* `withSystemDatastoresAuthMode(models.SystemDatastoresAuthMode)` was added
+
+#### `models.Image` was modified
+
+* `withVersion(java.lang.String)` was added
+* `version()` was added
+
+#### `models.PrivateEndpointConnection$Definition` was modified
+
+* `withPrivateEndpoint(models.WorkspacePrivateEndpointResource)` was added
+
+#### `models.ModelVersionProperties` was modified
+
+* `withDatasets(java.util.List)` was added
+* `datasets()` was added
+
+#### `models.OnlineDeploymentProperties` was modified
+
+* `withStartupProbe(models.ProbeSettings)` was added
+* `startupProbe()` was added
+
+#### `models.InferenceContainerProperties` was modified
+
+* `startupRoute()` was added
+* `withStartupRoute(models.Route)` was added
+
+#### `models.OperationStatus` was modified
+
+* `RESIZE_FAILED` was added
+
+#### `models.OperationName` was modified
+
+* `RESIZE` was added
+
+#### `models.ServicePrincipalAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withError(java.lang.String)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+
+#### `models.PrivateEndpointOutboundRule` was modified
+
+* `withFqdns(java.util.List)` was added
+* `fqdns()` was added
+
+#### `models.Workspaces` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ManagedOnlineDeployment` was modified
+
+* `withStartupProbe(models.ProbeSettings)` was added
+
+#### `models.ConnectionAuthType` was modified
+
+* `AGENTIC_IDENTITY_TOKEN` was added
+* `PROJECT_MANAGED_IDENTITY` was added
+* `AGENTIC_USER` was added
+* `AGENT_USER_IMPERSONATION` was added
+* `USER_ENTRA_TOKEN` was added
+* `ACCOUNT_MANAGED_IDENTITY` was added
+* `DELEGATED_SAS` was added
+
+#### `models.OAuth2AuthTypeWorkspaceConnectionProperties` was modified
+
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withProvisionNetworkNow(java.lang.Boolean)` was added
+* `withEnableServiceSideCmkEncryption(java.lang.Boolean)` was added
+* `withSystemDatastoresAuthMode(models.SystemDatastoresAuthMode)` was added
+
+#### `models.Datastores` was modified
+
+* `listSecretsWithResponse(java.lang.String,java.lang.String,java.lang.String,models.SecretExpiry,com.azure.core.util.Context)` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `innerModel()` was added
+
+#### `models.ImageModelSettingsClassification` was modified
+
+* `withLearningRate(java.lang.Double)` was added
+* `withWeightDecay(java.lang.Double)` was added
+* `withMomentum(java.lang.Double)` was added
+* `withWarmupCosineLRCycles(java.lang.Double)` was added
+* `withStepLRGamma(java.lang.Double)` was added
+* `withBeta2(java.lang.Double)` was added
+* `withBeta1(java.lang.Double)` was added
+
+#### `models.PrivateEndpointConnection$Update` was modified
+
+* `withPrivateEndpoint(models.WorkspacePrivateEndpointResource)` was added
+
+#### `models.ApiKeyAuthWorkspaceConnectionProperties` was modified
+
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withError(java.lang.String)` was added
+
+#### `models.WorkspaceConnections` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+
+#### `models.ManagedNetworkSettings` was modified
+
+* `managedNetworkKind()` was added
+* `enableNetworkMonitor()` was added
+* `firewallPublicIpAddress()` was added
+* `firewallSku()` was added
+
+#### `models.Workspace` was modified
+
+* `systemDatastoresAuthMode()` was added
+* `enableServiceSideCmkEncryption()` was added
+* `provisionNetworkNow()` was added
+
+#### `models.UriFileJobOutput` was modified
+
+* `withAssetName(java.lang.String)` was added
+* `assetName()` was added
+
+#### `models.Datastore` was modified
+
+* `listSecretsWithResponse(models.SecretExpiry,com.azure.core.util.Context)` was added
+
+#### `models.NoneAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withError(java.lang.String)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+
+#### `MachineLearningManager` was modified
+
+* `capabilityHosts()` was added
+
+#### `models.ImageMetadata` was modified
+
+* `osPatchingStatus()` was added
+
+#### `models.CustomKeysWorkspaceConnectionProperties` was modified
+
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withError(java.lang.String)` was added
+
+#### `models.CertificateDatastoreCredentials` was modified
+
+* `withTenantId(java.lang.String)` was added
+* `withClientId(java.lang.String)` was added
+
+#### `models.UsernamePasswordAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+
+#### `models.AccountKeyAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+
+#### `models.WorkspacePropertiesUpdateParameters` was modified
+
+* `systemDatastoresAuthMode()` was added
+
+#### `models.WorkspaceUpdateParameters` was modified
+
+* `innerModel()` was added
+* `systemDatastoresAuthMode()` was added
+
+#### `models.UriFolderJobOutput` was modified
+
+* `withAssetName(java.lang.String)` was added
+* `assetName()` was added
+
+#### `models.RuleStatus` was modified
+
+* `FAILED` was added
+* `DELETING` was added
+* `PROVISIONING` was added
+
+#### `models.MLTableJobOutput` was modified
+
+* `assetName()` was added
+* `withAssetName(java.lang.String)` was added
+
+#### `models.AccessKeyAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withError(java.lang.String)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+
+#### `models.CustomService` was modified
+
+* `kernel()` was added
+* `withKernel(models.JupyterKernelConfig)` was added
+
+#### `models.AadAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withError(java.lang.String)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+
+#### `models.TritonModelJobOutput` was modified
+
+* `withAssetName(java.lang.String)` was added
+* `assetName()` was added
+
+#### `models.WorkspaceConnectionPropertiesV2BasicResource` was modified
+
+* `update()` was added
+* `resourceGroupName()` was added
+
+#### `models.WorkspaceProperties` was modified
+
+* `provisionNetworkNow()` was added
+* `systemDatastoresAuthMode()` was added
+* `enableServiceSideCmkEncryption()` was added
+
+#### `models.OutboundRule` was modified
+
+* `parentRuleNames()` was added
+* `errorInformation()` was added
+
+#### `models.CustomModelJobOutput` was modified
+
+* `assetName()` was added
+* `withAssetName(java.lang.String)` was added
+
+#### `models.PrivateLinkResources` was modified
+
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SasAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withError(java.lang.String)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+
+#### `models.WorkspaceConnectionOAuth2` was modified
+
+* `withClientId(java.lang.String)` was added
+
+#### `models.EncryptionProperty` was modified
+
+* `withCosmosDbResourceId(java.lang.String)` was added
+* `withKeyVaultProperties(models.KeyVaultProperties)` was added
+* `storageAccountResourceId()` was added
+* `searchAccountResourceId()` was added
+* `withStorageAccountResourceId(java.lang.String)` was added
+* `cosmosDbResourceId()` was added
+* `withSearchAccountResourceId(java.lang.String)` was added
+
+#### `models.ManagedIdentityAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+
+#### `models.ServicePrincipalDatastoreCredentials` was modified
+
+* `withClientId(java.lang.String)` was added
+* `withTenantId(java.lang.String)` was added
+
+#### `models.ServiceTagDestination` was modified
+
+* `withAddressPrefixes(java.util.List)` was added
+
+#### `models.NotebookResourceInfo` was modified
+
+* `isPrivateLinkEnabled()` was added
+
+#### `models.ImageModelSettings` was modified
+
+* `withWeightDecay(java.lang.Double)` was added
+* `withBeta1(java.lang.Double)` was added
+* `withWarmupCosineLRCycles(java.lang.Double)` was added
+* `withMomentum(java.lang.Double)` was added
+* `withLearningRate(java.lang.Double)` was added
+* `withStepLRGamma(java.lang.Double)` was added
+* `withBeta2(java.lang.Double)` was added
+
+#### `models.ManagedIdentity` was modified
+
+* `withClientId(java.lang.String)` was added
+* `withObjectId(java.lang.String)` was added
+
+#### `models.ComputeInstanceProperties` was modified
+
+* `withIdleTimeBeforeShutdown(java.lang.String)` was added
+* `idleTimeBeforeShutdown()` was added
+* `withEnableSSO(java.lang.Boolean)` was added
+* `enableSSO()` was added
+
+#### `models.ServerlessInferenceEndpointAuthMode` was modified
+
+* `KEY_AND_AAD` was added
+* `AAD` was added
+
+#### `models.DataVersionBase$Definition` was modified
+
+* `withExistingDatum(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.ComputeInstanceDataMount` was modified
+
+* `mountMode()` was added
+
+#### `models.KubernetesOnlineDeployment` was modified
+
+* `withStartupProbe(models.ProbeSettings)` was added
+
+#### `models.OnlineEndpointProperties` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.RegistryPrivateLinkServiceConnectionState` was modified
+
+* `withStatus(models.PrivateEndpointServiceConnectionStatus)` was added
+
+#### `models.PatAuthTypeWorkspaceConnectionProperties` was modified
+
+* `withError(java.lang.String)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 
 ## 1.1.0 (2024-08-22)
 
