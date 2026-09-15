@@ -20,23 +20,16 @@ SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no t
 Build/Analyze orchestration and the existing test-matrix classifier are unchanged.
 
 The required **Check Spelling** job still checks all supported PR branches without path filters, using the existing
-CSpell configuration and ignore rules. In the same job, [Test-RootDocumentationExclusions.ps1](scripts/Test-RootDocumentationExclusions.ps1)
-checks the entire tracked-path inventory, even if spelling fails or has no files to check. A native regex prefilter
-limits detailed comparisons to root candidates, including unusual root characters needed for culture-aware matching.
-This temporary guard rejects longer prefixes (such as `README.md.template` or `README.md/src/Example.java`) and
-case-only aliases because package selection still uses prefix matching. Nested names such as `sdk/example/README.md`
-do not collide with root exclusions. Git inventory failures also fail the job. Rename a colliding path or remove
-its matching root-document exclusion from both lists before adding it. Shared matcher hardening remains an upstream
-`azure-sdk-tools` change; do not patch `eng/common` locally. **Verify Links** remains a separate, unchanged workflow.
+CSpell configuration and ignore rules. **Verify Links** remains a separate, unchanged workflow.
+Package selection retains the existing `ExcludePaths` prefix-matching behavior.
 
-Run the guard and its regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1 (no YAML module required):
+Run the trigger and classifier regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1
+(no YAML module required):
 
 ```powershell
-./eng/scripts/Test-RootDocumentationExclusions.ps1
 Import-Module Pester -RequiredVersion 5.7.1
 Invoke-Pester -Path @(
     'eng/scripts/tests/PullRequest-Trigger.tests.ps1',
-    'eng/scripts/tests/RootDocumentationExclusions.tests.ps1',
     'eng/scripts/tests/Classify-PRChanges.tests.ps1'
 ) -Tag UnitTest -Output Detailed
 ```

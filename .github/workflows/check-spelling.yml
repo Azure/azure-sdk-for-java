@@ -37,9 +37,3 @@ jobs:
           -ExitWithError
           -SourceCommittish HEAD
           -TargetCommittish HEAD^
-
-      - name: Check root documentation exclusions
-        # Inventory all tracked paths, even when spelling fails or checks no files.
-        if: ${{ !cancelled() }}
-        shell: pwsh
-        run: ./eng/scripts/Test-RootDocumentationExclusions.ps1

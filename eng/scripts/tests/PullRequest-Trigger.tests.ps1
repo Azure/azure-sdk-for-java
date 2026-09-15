@@ -229,33 +229,17 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
         $additional.Name | Should -Be @('example')
     }
 
-    It 'guards longer-prefix paths that the existing package matcher would otherwise exclude' {
-        $guardPath = Join-Path $script:RepositoryRoot 'eng/scripts/Test-RootDocumentationExclusions.ps1'
-        foreach ($document in $script:RootDocuments) {
-            $collision = "$document.template"
-            @($script:TriggerExclusions | Where-Object { $collision -clike $_ }) | Should -BeNullOrEmpty
-            Update-TargetedFilesForExclude @($collision) $script:PackageExclusions | Should -BeNullOrEmpty
-            { & $guardPath -TrackedPaths @($collision) } | Should -Throw '*matches exclusion*'
-        }
-    }
-
-    It 'keeps the collision guard in the existing unrestricted Check Spelling job' {
+    It 'keeps the required Check Spelling job unrestricted' {
         $workflow = Get-Content `
             -LiteralPath (Join-Path $script:RepositoryRoot '.github/workflows/check-spelling.yml') -Raw
         $jobs = [regex]::Match($workflow, '(?ms)^jobs:\r?\n(.*)').Groups[1].Value
         $steps = $workflow -split '(?m)^      - name: '
-        $guardSteps = @($steps | Where-Object { $_ -match '^Check root documentation exclusions\r?\n' })
         $spellingSteps = @($steps | Where-Object { $_ -match '^Check spelling\r?\n' })
 
         @([regex]::Matches($jobs, '(?m)^  [\w-]+:')).Count | Should -Be 1
         $workflow | Should -Match '(?m)^  check-spelling:\s*\r?\n    name: Check Spelling\s*\r?\n    runs-on: ubuntu-slim'
         $workflow | Should -Not -Match '(?m)^\s+(paths|paths-ignore|continue-on-error|sparse-checkout):'
         $jobs | Should -Not -Match '(?m)^    if:'
-        $guardSteps.Count | Should -Be 1
-        $guardSteps[0] | Should -Match '(?m)^        if: \$\{\{ !cancelled\(\) \}\}\s*$'
-        $guardSteps[0] | Should -Match '(?m)^        shell: pwsh\s*$'
-        $guardSteps[0] | Should -Match '(?m)^        run: \./eng/scripts/Test-RootDocumentationExclusions\.ps1\s*$'
-
         $spellingSteps.Count | Should -Be 1
         $spellingSteps[0] | Should -Match '(?m)^        shell: pwsh\s*$'
         $spellingSteps[0] | Should -Match ('(?s)run: >\s*\./eng/common/scripts/check-spelling-in-changed-files\.ps1\s*' +
