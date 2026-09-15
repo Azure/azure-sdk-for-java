@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class MonitoredSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01/MonitoredSubscriptions_Get.json
+     * x-ms-original-file: 2026-03-15-preview/MonitoredSubscriptions_Get.json
      */
     /**
      * Sample code: Monitors_GetMonitoredSubscriptions.
