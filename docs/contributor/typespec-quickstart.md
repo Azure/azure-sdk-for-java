@@ -116,6 +116,12 @@ See [TypeSpec Java Customization](https://github.com/Azure/azure-sdk-for-java/bl
 
 - Edit `ReadmeSamples.java` between `// BEGIN: ...` / `// END: ...` markers.
 - Build the project → the codesnippet plugin auto-injects them into `README.md`.
+- For pageable operations, Java convenience methods don't take `maxPageSize` as a direct method
+  argument. Set the preferred page size on the returned pageable result instead:
+  `PagedIterable.iterableByPage(int preferredPageSize)` for sync clients or
+  `PagedFlux.byPage(int preferredPageSize)` for async clients. Generated samples or tests that pass
+  `maxpagesize` or `maxPageSize` directly to the client method are incorrect and should be adjusted
+  to use the returned `PagedIterable` or `PagedFlux` page-iteration API.
 
 See [JavaDoc and Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md).
 
