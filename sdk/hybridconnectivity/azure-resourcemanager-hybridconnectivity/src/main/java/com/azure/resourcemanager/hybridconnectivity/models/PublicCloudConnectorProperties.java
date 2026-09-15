@@ -22,6 +22,11 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
     private AwsCloudProfile awsCloudProfile;
 
     /*
+     * Cloud profile for GCP.
+     */
+    private GcpCloudProfile gcpCloudProfile;
+
+    /*
      * Host cloud the public cloud connector.
      */
     private HostType hostType;
@@ -59,6 +64,26 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      */
     public PublicCloudConnectorProperties withAwsCloudProfile(AwsCloudProfile awsCloudProfile) {
         this.awsCloudProfile = awsCloudProfile;
+        return this;
+    }
+
+    /**
+     * Get the gcpCloudProfile property: Cloud profile for GCP.
+     * 
+     * @return the gcpCloudProfile value.
+     */
+    public GcpCloudProfile gcpCloudProfile() {
+        return this.gcpCloudProfile;
+    }
+
+    /**
+     * Set the gcpCloudProfile property: Cloud profile for GCP.
+     * 
+     * @param gcpCloudProfile the gcpCloudProfile value to set.
+     * @return the PublicCloudConnectorProperties object itself.
+     */
+    public PublicCloudConnectorProperties withGcpCloudProfile(GcpCloudProfile gcpCloudProfile) {
+        this.gcpCloudProfile = gcpCloudProfile;
         return this;
     }
 
@@ -106,8 +131,9 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("awsCloudProfile", this.awsCloudProfile);
         jsonWriter.writeStringField("hostType", this.hostType == null ? null : this.hostType.toString());
+        jsonWriter.writeJsonField("awsCloudProfile", this.awsCloudProfile);
+        jsonWriter.writeJsonField("gcpCloudProfile", this.gcpCloudProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,10 +154,12 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("awsCloudProfile".equals(fieldName)) {
-                    deserializedPublicCloudConnectorProperties.awsCloudProfile = AwsCloudProfile.fromJson(reader);
-                } else if ("hostType".equals(fieldName)) {
+                if ("hostType".equals(fieldName)) {
                     deserializedPublicCloudConnectorProperties.hostType = HostType.fromString(reader.getString());
+                } else if ("awsCloudProfile".equals(fieldName)) {
+                    deserializedPublicCloudConnectorProperties.awsCloudProfile = AwsCloudProfile.fromJson(reader);
+                } else if ("gcpCloudProfile".equals(fieldName)) {
+                    deserializedPublicCloudConnectorProperties.gcpCloudProfile = GcpCloudProfile.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPublicCloudConnectorProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
