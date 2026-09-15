@@ -71,8 +71,8 @@ public final class RealtimeSessionCreateRequestGAAudioOutput
      *
      * @return the voice value.
      */
-    @Generated
-    public BinaryData getVoice() {
+    BinaryData getVoice() {
+        // AI Tooling: union type
         return this.voice;
     }
 
@@ -82,8 +82,8 @@ public final class RealtimeSessionCreateRequestGAAudioOutput
      * @param voice the voice value to set.
      * @return the RealtimeSessionCreateRequestGAAudioOutput object itself.
      */
-    @Generated
-    public RealtimeSessionCreateRequestGAAudioOutput setVoice(BinaryData voice) {
+    RealtimeSessionCreateRequestGAAudioOutput setVoice(BinaryData voice) {
+        // AI Tooling: union type
         this.voice = voice;
         return this;
     }
@@ -157,5 +157,64 @@ public final class RealtimeSessionCreateRequestGAAudioOutput
             }
             return deserializedRealtimeSessionCreateRequestGAAudioOutput;
         });
+    }
+
+    /**
+     * Set the voice property: The built-in or custom voice used for audio output.
+     *
+     * @param voice the {@link VoiceIdsShared} built-in voice to set.
+     * @return the RealtimeSessionCreateRequestGAAudioOutput object itself.
+     */
+    public RealtimeSessionCreateRequestGAAudioOutput setVoice(VoiceIdsShared voice) {
+        // AI Tooling: union type
+        this.voice = voice == null ? null : BinaryData.fromString(voice.toString());
+        return this;
+    }
+
+    /**
+     * Set the voice property: The built-in or custom voice used for audio output.
+     *
+     * @param voice the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set.
+     * @return the RealtimeSessionCreateRequestGAAudioOutput object itself.
+     */
+    public RealtimeSessionCreateRequestGAAudioOutput setVoice(RealtimeSessionCreateRequestGAAudioOutputVoice voice) {
+        // AI Tooling: union type
+        this.voice = voice == null ? null : BinaryData.fromObject(voice);
+        return this;
+    }
+
+    /**
+     * Get the voice property: The built-in or custom voice used for audio output.
+     *
+     * @return the voice value as a {@link RealtimeSessionCreateRequestGAAudioOutputVoice}, or {@code null} when it is
+     * not set or holds another variant.
+     */
+    public RealtimeSessionCreateRequestGAAudioOutputVoice getVoiceAsRealtimeSessionCreateRequestGAAudioOutputVoice() {
+        // AI Tooling: union type
+        if (this.voice == null) {
+            return null;
+        }
+        String json = this.voice.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.voice.toObject(RealtimeSessionCreateRequestGAAudioOutputVoice.class);
+    }
+
+    /**
+     * Get the voice property: The built-in or custom voice used for audio output.
+     *
+     * @return the voice value as a {@link VoiceIdsShared}, or {@code null} when it is not set or holds another variant.
+     */
+    public VoiceIdsShared getVoiceAsVoiceIdsShared() {
+        // AI Tooling: union type
+        if (this.voice == null) {
+            return null;
+        }
+        String json = this.voice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return VoiceIdsShared.fromString(this.voice.toObject(String.class));
     }
 }

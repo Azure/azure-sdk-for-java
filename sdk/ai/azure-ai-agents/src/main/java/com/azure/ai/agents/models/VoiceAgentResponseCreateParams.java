@@ -13,6 +13,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ToolChoiceFunction;
+import com.openai.models.responses.ToolChoiceMcp;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -186,8 +189,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
+    BinaryData getToolChoice() {
+        // AI Tooling: union type
         return this.toolChoice;
     }
 
@@ -198,8 +201,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @param toolChoice the toolChoice value to set.
      * @return the VoiceAgentResponseCreateParams object itself.
      */
-    @Generated
-    public VoiceAgentResponseCreateParams setToolChoice(BinaryData toolChoice) {
+    VoiceAgentResponseCreateParams setToolChoice(BinaryData toolChoice) {
+        // AI Tooling: union type
         this.toolChoice = toolChoice;
         return this;
     }
@@ -258,8 +261,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      *
      * @return the maxOutputTokens value.
      */
-    @Generated
-    public BinaryData getMaxOutputTokens() {
+    BinaryData getMaxOutputTokens() {
+        // AI Tooling: union type
         return this.maxOutputTokens;
     }
 
@@ -272,8 +275,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the VoiceAgentResponseCreateParams object itself.
      */
-    @Generated
-    public VoiceAgentResponseCreateParams setMaxOutputTokens(BinaryData maxOutputTokens) {
+    VoiceAgentResponseCreateParams setMaxOutputTokens(BinaryData maxOutputTokens) {
+        // AI Tooling: union type
         this.maxOutputTokens = maxOutputTokens;
         return this;
     }
@@ -544,5 +547,162 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
             }
             return deserializedVoiceAgentResponseCreateParams;
         });
+    }
+
+    /**
+     * Set the toolChoice property: How the model chooses tools.
+     *
+     * @param toolChoice the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED}).
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    public VoiceAgentResponseCreateParams setToolChoice(ToolChoiceOptions toolChoice) {
+        // AI Tooling: union type
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromString(toolChoice.toString());
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property to a specific function tool: How the model chooses tools.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    public VoiceAgentResponseCreateParams setToolChoice(ToolChoiceFunction toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: How the model chooses tools.
+     *
+     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isFunction()) {
+            return null;
+        }
+        return choice.asFunction();
+    }
+
+    /**
+     * Set the toolChoice property to a specific MCP tool: How the model chooses tools.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    public VoiceAgentResponseCreateParams setToolChoice(ToolChoiceMcp toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: How the model chooses tools.
+     *
+     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isMcp()) {
+            return null;
+        }
+        return choice.asMcp();
+    }
+
+    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!json.startsWith("{")) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ResponseCreateParams.ToolChoice.class);
+    }
+
+    /**
+     * Set the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
+     *
+     * @param maxOutputTokens the maximum number of output tokens to set.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    public VoiceAgentResponseCreateParams setMaxOutputTokens(long maxOutputTokens) {
+        // AI Tooling: union type
+        this.maxOutputTokens = BinaryData.fromObject(maxOutputTokens);
+        return this;
+    }
+
+    /**
+     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
+     *
+     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
+     */
+    public Long getMaxOutputTokensAsLong() {
+        // AI Tooling: union type
+        if (this.maxOutputTokens == null) {
+            return null;
+        }
+        String json = this.maxOutputTokens.toString().trim();
+        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
+            return null;
+        }
+        return this.maxOutputTokens.toObject(Long.class);
+    }
+
+    /**
+     * Set the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
+     *
+     * @param maxOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    public VoiceAgentResponseCreateParams setMaxOutputTokens(String maxOutputTokens) {
+        // AI Tooling: union type
+        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
+        return this;
+    }
+
+    /**
+     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response.
+     *
+     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public String getMaxOutputTokensAsString() {
+        // AI Tooling: union type
+        if (this.maxOutputTokens == null) {
+            return null;
+        }
+        String json = this.maxOutputTokens.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.maxOutputTokens.toObject(String.class);
+    }
+
+    /**
+     * Get the toolChoice property: How the model chooses tools.
+     *
+     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
+     * variant.
+     */
+    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
+        // AI Tooling: union type
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return ToolChoiceOptions.fromString(this.toolChoice.toObject(String.class));
     }
 }
