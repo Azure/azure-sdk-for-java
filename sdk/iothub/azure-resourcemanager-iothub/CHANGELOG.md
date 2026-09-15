@@ -1,14 +1,106 @@
 # Release History
 
-## 1.4.0-beta.4 (Unreleased)
+## 1.4.0-beta.4 (2026-09-14)
 
-### Features Added
+- Azure Resource Manager IotHub client library for Java. This package contains Microsoft Azure SDK for IotHub Management SDK. Use this API to manage the IoT hubs in your Azure subscription. Package api-version 2026-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.DeviceRegistry` was modified
 
-### Other Changes
+* `DeviceRegistry()` was changed to private access
+* `identityResourceId()` was removed
+* `withNamespaceResourceId(java.lang.String)` was removed
+* `withIdentityResourceId(java.lang.String)` was removed
+
+#### `models.IotHubProperties` was modified
+
+* `withDeviceRegistry(models.DeviceRegistry)` was removed
+
+#### `models.CertificatePropertiesWithNonce` was modified
+
+* `policyResourceId()` was removed
+
+#### `models.CertificateProperties` was modified
+
+* `policyResourceId()` was removed
+* `withPolicyResourceId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.MessagePayloadFormat` was added
+
+* `models.ConnectionProfile` was added
+
+* `models.TopicGroup` was added
+
+* `models.DeviceRegistryLinkingProperties` was added
+
+* `models.DeviceRegistryIdentityType` was added
+
+* `models.DeviceRegistryIdentity` was added
+
+* `models.MqttV5Settings` was added
+
+* `models.DeviceRegistryLinkingState` was added
+
+#### `models.DeviceRegistry` was modified
+
+* `dataPlaneHostName()` was added
+* `namespaceUuid()` was added
+* `linkingProperties()` was added
+* `identity()` was added
+
+#### `models.IotHubProperties` was modified
+
+* `withConnectionProfile(models.ConnectionProfile)` was added
+* `withMqttV5Settings(models.MqttV5Settings)` was added
+* `mqttV5Settings()` was added
+* `connectionProfile()` was added
+
+#### `models.CertificatePropertiesWithNonce` was modified
+
+* `certificateAuthorityResourceId()` was added
+
+#### `models.RoutingServiceBusQueueEndpointProperties` was modified
+
+* `withMessagePayloadFormat(models.MessagePayloadFormat)` was added
+* `messagePayloadFormat()` was added
+
+#### `models.RoutingStorageContainerProperties` was modified
+
+* `withMessagePayloadFormat(models.MessagePayloadFormat)` was added
+* `messagePayloadFormat()` was added
+
+#### `models.RouteProperties` was modified
+
+* `withDataSchema(java.lang.String)` was added
+* `dataSchema()` was added
+
+#### `models.CertificateProperties` was modified
+
+* `certificateAuthorityResourceId()` was added
+* `withCertificateAuthorityResourceId(java.lang.String)` was added
+
+#### `models.RoutingCosmosDBSqlApiProperties` was modified
+
+* `messagePayloadFormat()` was added
+* `withMessagePayloadFormat(models.MessagePayloadFormat)` was added
+
+#### `models.RoutingEventStreamProperties` was modified
+
+* `messagePayloadFormat()` was added
+* `withMessagePayloadFormat(models.MessagePayloadFormat)` was added
+
+#### `models.RoutingEventHubProperties` was modified
+
+* `withMessagePayloadFormat(models.MessagePayloadFormat)` was added
+* `messagePayloadFormat()` was added
+
+#### `models.RoutingServiceBusTopicEndpointProperties` was modified
+
+* `messagePayloadFormat()` was added
+* `withMessagePayloadFormat(models.MessagePayloadFormat)` was added
 
 ## 1.4.0-beta.3 (2026-07-21)
 

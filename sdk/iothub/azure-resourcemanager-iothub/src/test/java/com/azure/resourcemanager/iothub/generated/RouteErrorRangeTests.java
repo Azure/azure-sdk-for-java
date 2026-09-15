@@ -12,11 +12,11 @@ public final class RouteErrorRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteErrorRange model = BinaryData.fromString(
-            "{\"start\":{\"line\":1832906038,\"column\":2109510262},\"end\":{\"line\":857733914,\"column\":967262152}}")
+            "{\"start\":{\"line\":1083170526,\"column\":1371154692},\"end\":{\"line\":2111065372,\"column\":2059012872}}")
             .toObject(RouteErrorRange.class);
-        Assertions.assertEquals(1832906038, model.start().line());
-        Assertions.assertEquals(2109510262, model.start().column());
-        Assertions.assertEquals(857733914, model.end().line());
-        Assertions.assertEquals(967262152, model.end().column());
+        Assertions.assertEquals(1083170526, model.start().line());
+        Assertions.assertEquals(1371154692, model.start().column());
+        Assertions.assertEquals(2111065372, model.end().line());
+        Assertions.assertEquals(2059012872, model.end().column());
     }
 }

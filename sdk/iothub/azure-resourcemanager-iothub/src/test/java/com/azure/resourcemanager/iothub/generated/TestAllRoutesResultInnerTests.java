@@ -13,12 +13,13 @@ public final class TestAllRoutesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesResultInner model = BinaryData.fromString(
-            "{\"routes\":[{\"properties\":{\"name\":\"bnxknalaulppg\",\"source\":\"MqttBrokerMessages\",\"condition\":\"pnapnyiropuh\",\"endpointNames\":[\"gvpgy\",\"gqgitxmedjvcsl\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"wwncwzzhxgk\",\"source\":\"DeviceLifecycleEvents\",\"condition\":\"gucnapkte\",\"endpointNames\":[\"llwptfdy\",\"pfqbuaceopzf\",\"rhhuaopppcqeqx\"],\"isEnabled\":true}}]}")
+            "{\"routes\":[{\"properties\":{\"name\":\"qqkdltfzxmhhvhgu\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"dkwobdagx\",\"dataSchema\":\"bqdxbx\",\"endpointNames\":[\"kbogqxndlkzgx\",\"uriplbpodxunkb\",\"bxmubyynt\",\"lrb\"],\"isEnabled\":true}}]}")
             .toObject(TestAllRoutesResultInner.class);
-        Assertions.assertEquals("bnxknalaulppg", model.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.routes().get(0).properties().source());
-        Assertions.assertEquals("pnapnyiropuh", model.routes().get(0).properties().condition());
-        Assertions.assertEquals("gvpgy", model.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertFalse(model.routes().get(0).properties().isEnabled());
+        Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.routes().get(0).properties().source());
+        Assertions.assertEquals("dkwobdagx", model.routes().get(0).properties().condition());
+        Assertions.assertEquals("bqdxbx", model.routes().get(0).properties().dataSchema());
+        Assertions.assertEquals("kbogqxndlkzgx", model.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertTrue(model.routes().get(0).properties().isEnabled());
     }
 }
