@@ -16,37 +16,34 @@ public final class RecoveryGroupCustomRunbookActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupCustomRunbookAction model = BinaryData.fromString(
-            "{\"type\":\"CustomRunbook\",\"actionResourceId\":\"hibnuqqkpika\",\"parameters\":{\"gnbuy\":\"vtq\",\"fsiarbutr\":\"hijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"bnlankxmyskpb\"},\"name\":\"enbtkcxywny\",\"description\":\"rsyn\",\"timeoutInMinutes\":1857239406}")
+            "{\"type\":\"CustomRunbook\",\"actionResourceId\":\"hcbkhajde\",\"parameters\":{\"hagalpbuxwgipwh\":\"md\"},\"associatedIdentity\":{\"type\":\"None\",\"userAssignedIdentity\":\"kgshwa\"},\"name\":\"kix\",\"description\":\"injep\",\"timeoutInMinutes\":895884461}")
             .toObject(RecoveryGroupCustomRunbookAction.class);
-        Assertions.assertEquals("enbtkcxywny", model.name());
-        Assertions.assertEquals("rsyn", model.description());
-        Assertions.assertEquals(1857239406, model.timeoutInMinutes());
-        Assertions.assertEquals("hibnuqqkpika", model.actionResourceId());
-        Assertions.assertEquals("vtq", model.parameters().get("gnbuy"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            model.associatedIdentity().type());
-        Assertions.assertEquals("bnlankxmyskpb", model.associatedIdentity().userAssignedIdentity());
+        Assertions.assertEquals("kix", model.name());
+        Assertions.assertEquals("injep", model.description());
+        Assertions.assertEquals(895884461, model.timeoutInMinutes());
+        Assertions.assertEquals("hcbkhajde", model.actionResourceId());
+        Assertions.assertEquals("md", model.parameters().get("hagalpbuxwgipwh"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.associatedIdentity().type());
+        Assertions.assertEquals("kgshwa", model.associatedIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryGroupCustomRunbookAction model = new RecoveryGroupCustomRunbookAction().withName("enbtkcxywny")
-            .withDescription("rsyn")
-            .withTimeoutInMinutes(1857239406)
-            .withActionResourceId("hibnuqqkpika")
-            .withParameters(mapOf("gnbuy", "vtq", "fsiarbutr", "hijggme", "jrunmpxtt", "vpnazzm"))
+        RecoveryGroupCustomRunbookAction model = new RecoveryGroupCustomRunbookAction().withName("kix")
+            .withDescription("injep")
+            .withTimeoutInMinutes(895884461)
+            .withActionResourceId("hcbkhajde")
+            .withParameters(mapOf("hagalpbuxwgipwh", "md"))
             .withAssociatedIdentity(
-                new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentity("bnlankxmyskpb"));
+                new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE).withUserAssignedIdentity("kgshwa"));
         model = BinaryData.fromObject(model).toObject(RecoveryGroupCustomRunbookAction.class);
-        Assertions.assertEquals("enbtkcxywny", model.name());
-        Assertions.assertEquals("rsyn", model.description());
-        Assertions.assertEquals(1857239406, model.timeoutInMinutes());
-        Assertions.assertEquals("hibnuqqkpika", model.actionResourceId());
-        Assertions.assertEquals("vtq", model.parameters().get("gnbuy"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            model.associatedIdentity().type());
-        Assertions.assertEquals("bnlankxmyskpb", model.associatedIdentity().userAssignedIdentity());
+        Assertions.assertEquals("kix", model.name());
+        Assertions.assertEquals("injep", model.description());
+        Assertions.assertEquals(895884461, model.timeoutInMinutes());
+        Assertions.assertEquals("hcbkhajde", model.actionResourceId());
+        Assertions.assertEquals("md", model.parameters().get("hagalpbuxwgipwh"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.associatedIdentity().type());
+        Assertions.assertEquals("kgshwa", model.associatedIdentity().userAssignedIdentity());
     }
 
     // Use "Map.of" if available

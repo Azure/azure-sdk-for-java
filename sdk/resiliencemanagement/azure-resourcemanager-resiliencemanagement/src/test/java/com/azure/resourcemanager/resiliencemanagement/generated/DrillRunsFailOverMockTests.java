@@ -36,15 +36,15 @@ public final class DrillRunsFailOverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .failOver("mqyjgy", "zulo", "saeuzanhsfnhsenw", "hpzfngqj",
+            .failOver("dhftukvhdxlwy", "jbfqzdk", "njyixh", "fratqxmbjroumzz",
                 new DrillRunFailoverRequest().withAutoFailover(AutoFailover.DISABLE)
-                    .withFailoverProperties(
-                        new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
-                            .withFailoverRequestProperties(new FailoverRequestProperties()
-                                .withSourceLocations(Arrays.asList("tujwjju", "wbeqrkuor", "tssruqnmdvhazc"))
-                                .withSelectedResourceIds(Arrays.asList("tiq"))
-                                .withExecutionConfigurations(
-                                    new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED)))),
+                    .withFailoverProperties(new FailoverRequest()
+                        .withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
+                        .withFailoverRequestProperties(new FailoverRequestProperties()
+                            .withSourceLocations(Arrays.asList("jrhuzgf", "on", "tpusllywp"))
+                            .withSelectedResourceIds(Arrays.asList("otz", "pdbollg", "yfqiuasig", "owsocnequygdjbo"))
+                            .withExecutionConfigurations(
+                                new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED)))),
                 com.azure.core.util.Context.NONE);
 
     }

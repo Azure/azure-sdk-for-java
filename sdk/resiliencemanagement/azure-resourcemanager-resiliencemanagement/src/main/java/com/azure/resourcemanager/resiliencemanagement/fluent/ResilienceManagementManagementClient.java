@@ -68,13 +68,6 @@ public interface ResilienceManagementManagementClient {
     GoalAssignmentsClient getGoalAssignments();
 
     /**
-     * Gets the GoalTemplatesClient object to access its operations.
-     * 
-     * @return the GoalTemplatesClient object.
-     */
-    GoalTemplatesClient getGoalTemplates();
-
-    /**
      * Gets the GoalResourcesClient object to access its operations.
      * 
      * @return the GoalResourcesClient object.

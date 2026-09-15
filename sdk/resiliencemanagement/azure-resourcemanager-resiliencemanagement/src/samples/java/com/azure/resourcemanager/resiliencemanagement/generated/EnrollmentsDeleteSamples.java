@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class EnrollmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Enrollments_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Enrollments_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_Delete_MaximumSet.

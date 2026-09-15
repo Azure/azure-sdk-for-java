@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resiliencemanagement.models.ReplicationMode;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceProtectionSolutionSettings;
+import org.junit.jupiter.api.Assertions;
 
 public final class ResourceProtectionSolutionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProtectionSolutionSettings model = BinaryData.fromString(
-            "{\"protectionSolutionType\":\"CrossZoneVMRecovery\",\"protectionStatus\":\"Unknown\",\"resourceId\":\"ud\",\"activeLocation\":\"dvxzbncblylpst\",\"activeLocations\":[\"hxsrzdzucersc\"],\"activePhysicalZones\":[\"nevf\"],\"recoveryLocations\":[\"mygtdssls\",\"tmweriofzpyq\",\"emwabnet\",\"hhszh\"],\"replicationRole\":\"Replica\",\"primaryResource\":\"vwiwubmwmbesld\",\"replicaResources\":[\"wtppjflcxogaoko\",\"z\"],\"isAutoFailover\":true,\"failoverState\":\"FailedOverCommitPending\",\"testFailoverState\":\"None\"}")
+            "{\"protectionSolutionType\":\"AzureSiteRecovery\",\"replicationMode\":\"ActiveActive\",\"protectionStatus\":\"HighlyAvailable\",\"resourceId\":\"fsubcgjbirxbpy\",\"activeLocation\":\"rfbjf\",\"activeLocations\":[\"ssotftpv\"],\"activePhysicalZones\":[\"exilzznfqqnvwpmq\",\"aruoujmkcjhwqyt\",\"r\",\"bnw\"],\"recoveryLocations\":[\"gdrjervnaenqpe\",\"indoygmifthnzd\",\"dslgnayqigynduh\",\"vhqlkthumaqo\"],\"replicationRole\":\"Primary\",\"primaryResource\":\"cdui\",\"replicaResources\":[\"gccymvaolpssl\",\"lfmmdnbbglzpswi\",\"d\",\"cwyhzdxssa\"],\"isAutoFailover\":true,\"failoverState\":\"FailedOver\",\"testFailoverState\":\"TestFailoverCleanupPending\"}")
             .toObject(ResourceProtectionSolutionSettings.class);
+        Assertions.assertEquals(ReplicationMode.ACTIVE_ACTIVE, model.replicationMode());
     }
 }

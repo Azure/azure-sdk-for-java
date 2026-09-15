@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomFaultDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomFaultDetails model = BinaryData.fromString("{\"faultName\":\"vcimpev\",\"scriptResourceId\":\"gmblrri\"}")
-            .toObject(CustomFaultDetails.class);
-        Assertions.assertEquals("vcimpev", model.faultName());
-        Assertions.assertEquals("gmblrri", model.scriptResourceId());
+        CustomFaultDetails model
+            = BinaryData.fromString("{\"faultName\":\"ktwkuziyc\",\"scriptResourceId\":\"levufuztcktyhj\"}")
+                .toObject(CustomFaultDetails.class);
+        Assertions.assertEquals("ktwkuziyc", model.faultName());
+        Assertions.assertEquals("levufuztcktyhj", model.scriptResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomFaultDetails model = new CustomFaultDetails().withFaultName("vcimpev").withScriptResourceId("gmblrri");
+        CustomFaultDetails model
+            = new CustomFaultDetails().withFaultName("ktwkuziyc").withScriptResourceId("levufuztcktyhj");
         model = BinaryData.fromObject(model).toObject(CustomFaultDetails.class);
-        Assertions.assertEquals("vcimpev", model.faultName());
-        Assertions.assertEquals("gmblrri", model.scriptResourceId());
+        Assertions.assertEquals("ktwkuziyc", model.faultName());
+        Assertions.assertEquals("levufuztcktyhj", model.scriptResourceId());
     }
 }

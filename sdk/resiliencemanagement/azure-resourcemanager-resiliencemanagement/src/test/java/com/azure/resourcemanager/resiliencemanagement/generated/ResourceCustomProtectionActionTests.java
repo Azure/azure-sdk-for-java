@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceCustomProtectionActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceCustomProtectionAction model = BinaryData.fromString("{\"resourceId\":\"lkzgxhuriplbp\"}")
-            .toObject(ResourceCustomProtectionAction.class);
-        Assertions.assertEquals("lkzgxhuriplbp", model.resourceId());
+        ResourceCustomProtectionAction model
+            = BinaryData.fromString("{\"resourceId\":\"hhszh\"}").toObject(ResourceCustomProtectionAction.class);
+        Assertions.assertEquals("hhszh", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCustomProtectionAction model = new ResourceCustomProtectionAction().withResourceId("lkzgxhuriplbp");
+        ResourceCustomProtectionAction model = new ResourceCustomProtectionAction().withResourceId("hhszh");
         model = BinaryData.fromObject(model).toObject(ResourceCustomProtectionAction.class);
-        Assertions.assertEquals("lkzgxhuriplbp", model.resourceId());
+        Assertions.assertEquals("hhszh", model.resourceId());
     }
 }

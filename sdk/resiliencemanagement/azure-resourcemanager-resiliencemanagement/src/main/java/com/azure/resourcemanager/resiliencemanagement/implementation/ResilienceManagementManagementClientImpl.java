@@ -33,7 +33,6 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.DrillsClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.EnrollmentsClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.GoalAssignmentsClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.GoalResourcesClient;
-import com.azure.resourcemanager.resiliencemanagement.fluent.GoalTemplatesClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.OperationStatusClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.OperationsClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.RecoveryJobResourcesClient;
@@ -182,20 +181,6 @@ public final class ResilienceManagementManagementClientImpl implements Resilienc
      */
     public GoalAssignmentsClient getGoalAssignments() {
         return this.goalAssignments;
-    }
-
-    /**
-     * The GoalTemplatesClient object to access its operations.
-     */
-    private final GoalTemplatesClient goalTemplates;
-
-    /**
-     * Gets the GoalTemplatesClient object to access its operations.
-     * 
-     * @return the GoalTemplatesClient object.
-     */
-    public GoalTemplatesClient getGoalTemplates() {
-        return this.goalTemplates;
     }
 
     /**
@@ -397,11 +382,10 @@ public final class ResilienceManagementManagementClientImpl implements Resilienc
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-01-preview";
+        this.apiVersion = "2026-09-30-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.goalAssignments = new GoalAssignmentsClientImpl(this);
-        this.goalTemplates = new GoalTemplatesClientImpl(this);
         this.goalResources = new GoalResourcesClientImpl(this);
         this.recoveryPlans = new RecoveryPlansClientImpl(this);
         this.recoveryPlanActions = new RecoveryPlanActionsClientImpl(this);

@@ -15,17 +15,17 @@ public final class GoalsDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoalsData model = BinaryData.fromString(
-            "{\"templateId\":\"um\",\"assignmentId\":\"qwazlnqnmcjngzq\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT4H\",\"regionalRecoveryPointObjectiveStatus\":\"Healthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryTimeActualInMinutes\":\"PT15M\",\"regionalRecoveryTimeObjectiveStatus\":\"NotEvaluated\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"Required\"}")
+            "{\"templateId\":\"hajqglcfh\",\"assignmentId\":\"l\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT1H\",\"regionalRecoveryPointObjectiveStatus\":\"Healthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT1H\",\"regionalRecoveryTimeActualInMinutes\":\"PT24H\",\"regionalRecoveryTimeObjectiveStatus\":\"Unhealthy\",\"requireHighAvailability\":\"Required\",\"requireDisasterRecovery\":\"NotRequired\"}")
             .toObject(GoalsData.class);
-        Assertions.assertEquals("um", model.templateId());
-        Assertions.assertEquals("qwazlnqnmcjngzq", model.assignmentId());
-        Assertions.assertEquals(IsoDuration.PT24H, model.regionalRecoveryPointObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT4H, model.regionalRecoveryPointEstimatedInMinutes());
+        Assertions.assertEquals("hajqglcfh", model.templateId());
+        Assertions.assertEquals("l", model.assignmentId());
+        Assertions.assertEquals(IsoDuration.PT4H, model.regionalRecoveryPointObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT1H, model.regionalRecoveryPointEstimatedInMinutes());
         Assertions.assertEquals(ResilienceHealthStatus.HEALTHY, model.regionalRecoveryPointObjectiveStatus());
-        Assertions.assertEquals(IsoDuration.PT15M, model.regionalRecoveryTimeObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT15M, model.regionalRecoveryTimeActualInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.NOT_EVALUATED, model.regionalRecoveryTimeObjectiveStatus());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED, model.requireHighAvailability());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED, model.requireDisasterRecovery());
+        Assertions.assertEquals(IsoDuration.PT1H, model.regionalRecoveryTimeObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT24H, model.regionalRecoveryTimeActualInMinutes());
+        Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY, model.regionalRecoveryTimeObjectiveStatus());
+        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED, model.requireHighAvailability());
+        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED, model.requireDisasterRecovery());
     }
 }

@@ -13,14 +13,14 @@ public final class MarkAsCompleteRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarkAsCompleteRequest model
-            = BinaryData.fromString("{\"drillRunStage\":\"Reprotect\"}").toObject(MarkAsCompleteRequest.class);
-        Assertions.assertEquals(DrillRunSubtasks.REPROTECT, model.drillRunStage());
+            = BinaryData.fromString("{\"drillRunStage\":\"FailoverReverse\"}").toObject(MarkAsCompleteRequest.class);
+        Assertions.assertEquals(DrillRunSubtasks.FAILOVER_REVERSE, model.drillRunStage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarkAsCompleteRequest model = new MarkAsCompleteRequest().withDrillRunStage(DrillRunSubtasks.REPROTECT);
+        MarkAsCompleteRequest model = new MarkAsCompleteRequest().withDrillRunStage(DrillRunSubtasks.FAILOVER_REVERSE);
         model = BinaryData.fromObject(model).toObject(MarkAsCompleteRequest.class);
-        Assertions.assertEquals(DrillRunSubtasks.REPROTECT, model.drillRunStage());
+        Assertions.assertEquals(DrillRunSubtasks.FAILOVER_REVERSE, model.drillRunStage());
     }
 }

@@ -21,11 +21,6 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
      */
     private String serviceLevelIndicatorResourceId;
 
-    /*
-     * The arm id of the service level object resource
-     */
-    private String serviceLevelObjectiveResourceId;
-
     /**
      * Creates an instance of ServiceLevelResource class.
      */
@@ -53,33 +48,12 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
     }
 
     /**
-     * Get the serviceLevelObjectiveResourceId property: The arm id of the service level object resource.
-     * 
-     * @return the serviceLevelObjectiveResourceId value.
-     */
-    public String serviceLevelObjectiveResourceId() {
-        return this.serviceLevelObjectiveResourceId;
-    }
-
-    /**
-     * Set the serviceLevelObjectiveResourceId property: The arm id of the service level object resource.
-     * 
-     * @param serviceLevelObjectiveResourceId the serviceLevelObjectiveResourceId value to set.
-     * @return the ServiceLevelResource object itself.
-     */
-    public ServiceLevelResource withServiceLevelObjectiveResourceId(String serviceLevelObjectiveResourceId) {
-        this.serviceLevelObjectiveResourceId = serviceLevelObjectiveResourceId;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("serviceLevelIndicatorResourceId", this.serviceLevelIndicatorResourceId);
-        jsonWriter.writeStringField("serviceLevelObjectiveResourceId", this.serviceLevelObjectiveResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,8 +75,6 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
 
                 if ("serviceLevelIndicatorResourceId".equals(fieldName)) {
                     deserializedServiceLevelResource.serviceLevelIndicatorResourceId = reader.getString();
-                } else if ("serviceLevelObjectiveResourceId".equals(fieldName)) {
-                    deserializedServiceLevelResource.serviceLevelObjectiveResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

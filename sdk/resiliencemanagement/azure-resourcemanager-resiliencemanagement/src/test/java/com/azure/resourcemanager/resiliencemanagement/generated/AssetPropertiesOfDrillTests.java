@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetPropertiesOfDrillTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetPropertiesOfDrill model = BinaryData
-            .fromString("{\"subscription\":\"vvt\",\"region\":\"seinqfiuf\",\"resourceGroup\":\"knpirgnepttwq\"}")
-            .toObject(AssetPropertiesOfDrill.class);
-        Assertions.assertEquals("vvt", model.subscription());
-        Assertions.assertEquals("seinqfiuf", model.region());
-        Assertions.assertEquals("knpirgnepttwq", model.resourceGroup());
+        AssetPropertiesOfDrill model
+            = BinaryData.fromString("{\"subscription\":\"vygdyft\",\"region\":\"mrtwna\",\"resourceGroup\":\"slbi\"}")
+                .toObject(AssetPropertiesOfDrill.class);
+        Assertions.assertEquals("vygdyft", model.subscription());
+        Assertions.assertEquals("mrtwna", model.region());
+        Assertions.assertEquals("slbi", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetPropertiesOfDrill model = new AssetPropertiesOfDrill().withSubscription("vvt")
-            .withRegion("seinqfiuf")
-            .withResourceGroup("knpirgnepttwq");
+        AssetPropertiesOfDrill model
+            = new AssetPropertiesOfDrill().withSubscription("vygdyft").withRegion("mrtwna").withResourceGroup("slbi");
         model = BinaryData.fromObject(model).toObject(AssetPropertiesOfDrill.class);
-        Assertions.assertEquals("vvt", model.subscription());
-        Assertions.assertEquals("seinqfiuf", model.region());
-        Assertions.assertEquals("knpirgnepttwq", model.resourceGroup());
+        Assertions.assertEquals("vygdyft", model.subscription());
+        Assertions.assertEquals("mrtwna", model.region());
+        Assertions.assertEquals("slbi", model.resourceGroup());
     }
 }

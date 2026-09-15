@@ -12,20 +12,20 @@ public final class FaultDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultDetails model = BinaryData
-            .fromString("{\"faultUrn\":\"p\",\"faultName\":\"ipwoqonmacjek\",\"targetResourceId\":\"izsh\"}")
+            .fromString("{\"faultUrn\":\"kdmflvestmjlx\",\"faultName\":\"ril\",\"targetResourceId\":\"zapeewchpx\"}")
             .toObject(FaultDetails.class);
-        Assertions.assertEquals("p", model.faultUrn());
-        Assertions.assertEquals("ipwoqonmacjek", model.faultName());
-        Assertions.assertEquals("izsh", model.targetResourceId());
+        Assertions.assertEquals("kdmflvestmjlx", model.faultUrn());
+        Assertions.assertEquals("ril", model.faultName());
+        Assertions.assertEquals("zapeewchpx", model.targetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FaultDetails model
-            = new FaultDetails().withFaultUrn("p").withFaultName("ipwoqonmacjek").withTargetResourceId("izsh");
+            = new FaultDetails().withFaultUrn("kdmflvestmjlx").withFaultName("ril").withTargetResourceId("zapeewchpx");
         model = BinaryData.fromObject(model).toObject(FaultDetails.class);
-        Assertions.assertEquals("p", model.faultUrn());
-        Assertions.assertEquals("ipwoqonmacjek", model.faultName());
-        Assertions.assertEquals("izsh", model.targetResourceId());
+        Assertions.assertEquals("kdmflvestmjlx", model.faultUrn());
+        Assertions.assertEquals("ril", model.faultName());
+        Assertions.assertEquals("zapeewchpx", model.targetResourceId());
     }
 }

@@ -16,18 +16,18 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"yyazttbt\",\"tenantId\":\"rq\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"qwalmuzyoxaepd\":{\"principalId\":\"kzywbiex\",\"clientId\":\"eyueaxibxujwb\"},\"zt\":{\"principalId\":\"jancu\",\"clientId\":\"hdwbavxbniwdjs\"},\"xbzpfzab\":{\"principalId\":\"bpg\",\"clientId\":\"ytxhp\"}}}")
+            "{\"principalId\":\"vwhheunmmqhgyx\",\"tenantId\":\"onocukok\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"enhwlrs\":{\"principalId\":\"conuqszfkbeype\",\"clientId\":\"mjmwvvjektcx\"},\"vf\":{\"principalId\":\"rzpwvlqdqgbiq\",\"clientId\":\"ihkaetcktvfc\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("qwalmuzyoxaepd", new UserAssignedIdentity(), "zt",
-                new UserAssignedIdentity(), "xbzpfzab", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity()
+            .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("enhwlrs", new UserAssignedIdentity(), "vf", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

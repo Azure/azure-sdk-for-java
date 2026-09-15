@@ -16,6 +16,8 @@ import com.azure.resourcemanager.resiliencemanagement.models.FailoverRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.FailoverRequestProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.resiliencemanagement.models.QualificationState;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewStatus;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewType;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceInclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceProtectionSolutionType;
 import com.azure.resourcemanager.resiliencemanagement.models.UserConsent;
@@ -31,7 +33,7 @@ public final class RecoveryPlanActionsValidateForFailoverMockTests {
     @Test
     public void testValidateForFailover() throws Exception {
         String responseStr
-            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"jgl\",\"provisioningState\":\"Deleting\",\"resourceId\":\"yzlwh\",\"resourceLocation\":\"emhooclutnpq\",\"resourcePhysicalZones\":[\"czj\",\"mmyky\"],\"inclusionState\":\"Included\",\"needsAttention\":false,\"attentionReasons\":[\"srrryejylmbkzu\",\"nigrfihotjewl\",\"xuzzjgnrefq\",\"hqo\"],\"protectionStatus\":\"NotProtected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":true},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"AzureSiteRecovery\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"fb\",\"associatedIdentity\":{\"type\":\"UserAssigned\"},\"errorDetails\":{}},\"id\":\"dqtvhcsp\",\"name\":\"daqaxsi\",\"type\":\"ietgbebjfu\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"ichdlpn\",\"pubntnbatz\",\"iqsowsaaelc\",\"ttcjuhplrvkmjc\"]}}]}";
+            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"jzoywjxhp\",\"provisioningState\":\"Updating\",\"resourceId\":\"ntacn\",\"resourceLocation\":\"w\",\"resourcePhysicalZones\":[\"tuevrh\",\"ljyoogwx\",\"nsduugwbsre\"],\"inclusionState\":\"Excluded\",\"inclusionDisabledReasons\":[\"ResourceActiveActiveProtection\",\"ResourceHighlyAvailable\",\"ResourceActiveActiveProtection\"],\"needsAttention\":false,\"attentionReasons\":[\"vhhtklnvnaf\",\"vkyfedevjbosl\",\"qxypokkhminq\"],\"protectionStatus\":\"Protected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"CustomRunbook\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"xxewu\",\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"errorDetails\":{}},\"id\":\"db\",\"name\":\"h\",\"type\":\"qdtvqecrqctmxx\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"mflhuytxzvtznapx\",\"annovvoxczytpr\",\"nwvroevytlyokrr\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"xv\",\"status\":\"NotApplicable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"sbcrymodizrxklo\",\"status\":\"Unavailable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"nazpmk\",\"status\":\"Unavailable\"}]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"vevfxz\",\"provisioningState\":\"NeedsAttention\",\"resourceId\":\"bzxliohrdddtfgxq\",\"resourceLocation\":\"wpcbbnzqcy\",\"resourcePhysicalZones\":[\"p\",\"ofyuicd\",\"zb\"],\"inclusionState\":\"Included\",\"inclusionDisabledReasons\":[\"ResourceActiveActiveProtection\",\"ResourceActiveActiveProtection\",\"ResourceHighlyAvailable\",\"ResourceActiveActiveProtection\"],\"needsAttention\":false,\"attentionReasons\":[\"mhmwffpl\"],\"protectionStatus\":\"Unknown\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":false},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"CustomRunbook\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"vwe\",\"associatedIdentity\":{\"type\":\"None\"},\"errorDetails\":{}},\"id\":\"yukphaimmoiroq\",\"name\":\"oshbragapyy\",\"type\":\"mfsvbpav\"},\"operationQualificationDetails\":{\"qualificationState\":\"Excluded\",\"notQualifiedReasons\":[\"ppdbwnupgahxkum\",\"sjcaacfdmmcpugm\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"pvufhbze\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"hoqhnl\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"bldxeaclgscho\",\"status\":\"Flagged\"}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,33 +42,34 @@ public final class RecoveryPlanActionsValidateForFailoverMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ValidateForRecoveryOperationBaseResponse response = manager.recoveryPlanActions()
-            .validateForFailover("bvopwndyqle", "llklmtk", "lowkxxpvb",
-                new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
-                    .withFailoverRequestProperties(
-                        new FailoverRequestProperties().withSourceLocations(Arrays.asList("mzsyzfhotl", "ikcyyc"))
-                            .withSelectedResourceIds(Arrays.asList("sjlpjrtwszhv", "uic", "hvtrrmhwrbfdpyf"))
+        ValidateForRecoveryOperationBaseResponse response
+            = manager.recoveryPlanActions()
+                .validateForFailover("rohkpigqfusu", "kzmkwklsnoxaxmqe", "alhhjnhgwydyynfs",
+                    new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
+                        .withFailoverRequestProperties(new FailoverRequestProperties()
+                            .withSourceLocations(Arrays.asList("bvqt"))
+                            .withSelectedResourceIds(Arrays.asList("rfdl", "ukhpyrneizjcp", "ogkhnmgbr", "uxddbhfh"))
                             .withExecutionConfigurations(
                                 new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED))),
-                com.azure.core.util.Context.NONE);
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jgl",
+        Assertions.assertEquals("jzoywjxhp",
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .recoveryResourceUniqueId());
-        Assertions.assertEquals(ResourceInclusionState.INCLUDED,
+        Assertions.assertEquals(ResourceInclusionState.EXCLUDED,
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().inclusionState());
-        Assertions.assertEquals(ResourceProtectionSolutionType.AZURE_SITE_RECOVERY,
+        Assertions.assertEquals(ResourceProtectionSolutionType.CUSTOM_RUNBOOK,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .selectedProtectionSolutionType());
-        Assertions.assertEquals("fb",
+        Assertions.assertEquals("xxewu",
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().recoveryGroupId());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
@@ -75,11 +78,32 @@ public final class RecoveryPlanActionsValidateForFailoverMockTests {
                 .type());
         Assertions.assertEquals(QualificationState.QUALIFIED,
             response.recoveryResourceQualifications().get(0).operationQualificationDetails().qualificationState());
-        Assertions.assertEquals("ichdlpn",
+        Assertions.assertEquals("mflhuytxzvtznapx",
             response.recoveryResourceQualifications()
                 .get(0)
                 .operationQualificationDetails()
                 .notQualifiedReasons()
                 .get(0));
+        Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .feasibilityType());
+        Assertions.assertEquals("xv",
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .resourceType());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.NOT_APPLICABLE,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .status());
     }
 }

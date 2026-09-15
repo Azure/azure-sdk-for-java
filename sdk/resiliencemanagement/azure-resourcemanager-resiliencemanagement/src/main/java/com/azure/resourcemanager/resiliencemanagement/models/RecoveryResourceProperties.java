@@ -52,6 +52,11 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
     private ResourceInclusionState inclusionState;
 
     /*
+     * Reasons why inclusion of the resource in a recovery plan is disabled.
+     */
+    private List<ResourceInclusionDisabledReason> inclusionDisabledReasons;
+
+    /*
      * Indicating if resource needs user attention and action, details will be found in attentionReasons
      */
     private Boolean needsAttention;
@@ -183,6 +188,15 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
     public RecoveryResourceProperties withInclusionState(ResourceInclusionState inclusionState) {
         this.inclusionState = inclusionState;
         return this;
+    }
+
+    /**
+     * Get the inclusionDisabledReasons property: Reasons why inclusion of the resource in a recovery plan is disabled.
+     * 
+     * @return the inclusionDisabledReasons value.
+     */
+    public List<ResourceInclusionDisabledReason> inclusionDisabledReasons() {
+        return this.inclusionDisabledReasons;
     }
 
     /**
@@ -367,6 +381,10 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
                 } else if ("inclusionState".equals(fieldName)) {
                     deserializedRecoveryResourceProperties.inclusionState
                         = ResourceInclusionState.fromString(reader.getString());
+                } else if ("inclusionDisabledReasons".equals(fieldName)) {
+                    List<ResourceInclusionDisabledReason> inclusionDisabledReasons
+                        = reader.readArray(reader1 -> ResourceInclusionDisabledReason.fromString(reader1.getString()));
+                    deserializedRecoveryResourceProperties.inclusionDisabledReasons = inclusionDisabledReasons;
                 } else if ("needsAttention".equals(fieldName)) {
                     deserializedRecoveryResourceProperties.needsAttention = reader.getNullable(JsonReader::getBoolean);
                 } else if ("attentionReasons".equals(fieldName)) {

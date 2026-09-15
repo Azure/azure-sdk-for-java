@@ -16,30 +16,31 @@ public final class UnifiedResilienceItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnifiedResilienceItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"goals\":{\"templateId\":\"echndbnwieholew\",\"assignmentId\":\"wiuub\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT1H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT4H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryTimeActualInMinutes\":\"PT24H\",\"regionalRecoveryTimeObjectiveStatus\":\"Healthy\",\"requireHighAvailability\":\"Required\",\"requireDisasterRecovery\":\"NotRequired\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":6967216731529043041,\"notEnabledResourceCount\":2279583300989195582,\"notEvaluatedResourceCount\":7955523517409024967,\"evaluationDateTime\":\"2021-11-03T09:57:06Z\"}},\"lastModifiedTime\":\"2021-03-18T22:57:41Z\"},\"id\":\"og\",\"name\":\"qnobp\",\"type\":\"dcdab\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"goals\":{\"templateId\":\"kmfx\",\"assignmentId\":\"pjwogqqno\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT4H\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryTimeActualInMinutes\":\"PT24H\",\"regionalRecoveryTimeObjectiveStatus\":\"Healthy\",\"requireHighAvailability\":\"Required\",\"requireDisasterRecovery\":\"Required\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":8313394416637011338,\"notEnabledResourceCount\":5559566767637280772,\"notEvaluatedResourceCount\":6950782705334382897,\"evaluationDateTime\":\"2021-11-10T08:55:59Z\"}},\"lastModifiedTime\":\"2021-07-20T07:23:19Z\"},\"id\":\"yexaoguy\",\"name\":\"i\",\"type\":\"ids\"}")
             .toObject(UnifiedResilienceItemInner.class);
-        Assertions.assertEquals("echndbnwieholew", model.properties().goals().templateId());
-        Assertions.assertEquals("wiuub", model.properties().goals().assignmentId());
-        Assertions.assertEquals(IsoDuration.PT1H, model.properties().goals().regionalRecoveryPointObjectiveInMinutes());
+        Assertions.assertEquals("kmfx", model.properties().goals().templateId());
+        Assertions.assertEquals("pjwogqqno", model.properties().goals().assignmentId());
+        Assertions.assertEquals(IsoDuration.PT24H,
+            model.properties().goals().regionalRecoveryPointObjectiveInMinutes());
         Assertions.assertEquals(IsoDuration.PT4H, model.properties().goals().regionalRecoveryPointEstimatedInMinutes());
         Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY,
             model.properties().goals().regionalRecoveryPointObjectiveStatus());
-        Assertions.assertEquals(IsoDuration.PT15M, model.properties().goals().regionalRecoveryTimeObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT24H, model.properties().goals().regionalRecoveryTimeObjectiveInMinutes());
         Assertions.assertEquals(IsoDuration.PT24H, model.properties().goals().regionalRecoveryTimeActualInMinutes());
         Assertions.assertEquals(ResilienceHealthStatus.HEALTHY,
             model.properties().goals().regionalRecoveryTimeObjectiveStatus());
         Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED,
             model.properties().goals().requireHighAvailability());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED,
+        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED,
             model.properties().goals().requireDisasterRecovery());
-        Assertions.assertEquals(6967216731529043041L,
+        Assertions.assertEquals(8313394416637011338L,
             model.properties().recommendations().highAvailability().enabledResourceCount());
-        Assertions.assertEquals(2279583300989195582L,
+        Assertions.assertEquals(5559566767637280772L,
             model.properties().recommendations().highAvailability().notEnabledResourceCount());
-        Assertions.assertEquals(7955523517409024967L,
+        Assertions.assertEquals(6950782705334382897L,
             model.properties().recommendations().highAvailability().notEvaluatedResourceCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T09:57:06Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T08:55:59Z"),
             model.properties().recommendations().highAvailability().evaluationDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T22:57:41Z"), model.properties().lastModifiedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T07:23:19Z"), model.properties().lastModifiedTime());
     }
 }

@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSiteRecoveryTestFailoverParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSiteRecoveryTestFailoverParams model = BinaryData.fromString("{\"networkResourceId\":\"ohdneuel\"}")
+        ResourceSiteRecoveryTestFailoverParams model = BinaryData.fromString("{\"networkResourceId\":\"odxun\"}")
             .toObject(ResourceSiteRecoveryTestFailoverParams.class);
-        Assertions.assertEquals("ohdneuel", model.networkResourceId());
+        Assertions.assertEquals("odxun", model.networkResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceSiteRecoveryTestFailoverParams model
-            = new ResourceSiteRecoveryTestFailoverParams().withNetworkResourceId("ohdneuel");
+            = new ResourceSiteRecoveryTestFailoverParams().withNetworkResourceId("odxun");
         model = BinaryData.fromObject(model).toObject(ResourceSiteRecoveryTestFailoverParams.class);
-        Assertions.assertEquals("ohdneuel", model.networkResourceId());
+        Assertions.assertEquals("odxun", model.networkResourceId());
     }
 }
