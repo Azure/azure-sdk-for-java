@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.ListRegionsSuccessResponse;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
+import com.azure.resourcemanager.confluent.models.SaaSData;
 import com.azure.resourcemanager.confluent.models.UserDetail;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -187,6 +189,23 @@ public final class OrganizationResourceImpl
 
     public ListRegionsSuccessResponse listRegions(ListAccessRequestModel body) {
         return serviceManager.organizations().listRegions(resourceGroupName, organizationName, body);
+    }
+
+    public OrganizationResource linkSaaS(SaaSData body) {
+        return serviceManager.organizations().linkSaaS(resourceGroupName, organizationName, body);
+    }
+
+    public OrganizationResource linkSaaS(SaaSData body, Context context) {
+        return serviceManager.organizations().linkSaaS(resourceGroupName, organizationName, body, context);
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context) {
+        return serviceManager.organizations()
+            .latestLinkedSaaSWithResponse(resourceGroupName, organizationName, context);
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS() {
+        return serviceManager.organizations().latestLinkedSaaS(resourceGroupName, organizationName);
     }
 
     public OrganizationResourceImpl withRegion(Region location) {

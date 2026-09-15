@@ -12,43 +12,43 @@ public final class AccessListClusterSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessListClusterSuccessResponseInner model = BinaryData.fromString(
-            "{\"kind\":\"l\",\"metadata\":{\"first\":\"hoftr\",\"last\":\"equi\",\"prev\":\"xicslfao\",\"next\":\"piyylhalnswhccsp\",\"total_size\":896458989},\"data\":[{\"kind\":\"itqscywuggwoluhc\",\"id\":\"wem\",\"metadata\":{\"self\":\"rsbrgzdwm\",\"resource_name\":\"eypqwdxggicccn\",\"created_at\":\"huexmk\",\"updated_at\":\"lstvlzywe\",\"deleted_at\":\"zrncsdt\"},\"display_name\":\"u\",\"spec\":{\"display_name\":\"pbsfgytgu\",\"availability\":\"feadcygq\",\"cloud\":\"yhejhzisxgfp\",\"zone\":\"olppvksrpqvujz\",\"region\":\"ehtwdwrft\",\"kafka_bootstrap_endpoint\":\"iby\",\"http_endpoint\":\"dl\",\"api_endpoint\":\"shfwpracstwity\",\"config\":{\"kind\":\"vxccedcp\"},\"environment\":{\"id\":\"yodnwzxltj\",\"environment\":\"nhltiugcxn\",\"related\":\"vwxqibyqunyo\",\"resource_name\":\"wlmdjrkv\"},\"network\":{\"id\":\"vfvpdbodaciz\",\"environment\":\"q\",\"related\":\"krribdeibqi\",\"resource_name\":\"kghv\"},\"byok\":{\"id\":\"zwmk\",\"related\":\"fajpjorwk\",\"resource_name\":\"yhgbijtjivfx\"}},\"status\":{\"phase\":\"ab\",\"cku\":804108375}},{\"kind\":\"stawfsdjpvkv\",\"id\":\"jxbkzbzkdvn\",\"metadata\":{\"self\":\"budurgkakmo\",\"resource_name\":\"hjjklff\",\"created_at\":\"ouw\",\"updated_at\":\"gzrf\",\"deleted_at\":\"eyebizikayuhql\"},\"display_name\":\"bs\",\"spec\":{\"display_name\":\"qwrvtldgmfp\",\"availability\":\"mpipaslthaqfxs\",\"cloud\":\"wutwbdsre\",\"zone\":\"drhneuyow\",\"region\":\"d\",\"kafka_bootstrap_endpoint\":\"t\",\"http_endpoint\":\"ib\",\"api_endpoint\":\"cgpik\",\"config\":{\"kind\":\"mejzanlfzxia\"},\"environment\":{\"id\":\"bzonok\",\"environment\":\"rjqc\",\"related\":\"gzpfrla\",\"resource_name\":\"zrnw\"},\"network\":{\"id\":\"ndfpwpj\",\"environment\":\"wbtlhflsjcdh\",\"related\":\"fjvfbgofeljagr\",\"resource_name\":\"qhl\"},\"byok\":{\"id\":\"iiiojnalghf\",\"related\":\"tvsexsowuel\",\"resource_name\":\"hhahhxvrhmzkwpjg\"}},\"status\":{\"phase\":\"pughftqsxh\",\"cku\":59449335}},{\"kind\":\"xukndxdigr\",\"id\":\"uufzdmsyqtfihw\",\"metadata\":{\"self\":\"tzingamvpph\",\"resource_name\":\"zqzudph\",\"created_at\":\"mvdk\",\"updated_at\":\"ynwcvtbv\",\"deleted_at\":\"yhmtnvyqiat\"},\"display_name\":\"wp\",\"spec\":{\"display_name\":\"wzcjaesgvvsccy\",\"availability\":\"g\",\"cloud\":\"fhwygzlvdnkfxus\",\"zone\":\"dwzrmuh\",\"region\":\"fcqdpsq\",\"kafka_bootstrap_endpoint\":\"vpsvuoymgcce\",\"http_endpoint\":\"ezrypql\",\"api_endpoint\":\"eokerqwkyhkobopg\",\"config\":{\"kind\":\"k\"},\"environment\":{\"id\":\"pbqpcrfkbwccsn\",\"environment\":\"cdwxlpq\",\"related\":\"ftnkhtj\",\"resource_name\":\"i\"},\"network\":{\"id\":\"fq\",\"environment\":\"mtdh\",\"related\":\"dvypgikdgsz\",\"resource_name\":\"kbir\"},\"byok\":{\"id\":\"zh\",\"related\":\"kj\",\"resource_name\":\"rvqqaatj\"}},\"status\":{\"phase\":\"vgoup\",\"cku\":1624473251}}]}")
+            "{\"kind\":\"ss\",\"metadata\":{\"first\":\"twbdsrezpdrhn\",\"last\":\"yowqkdwytisibir\",\"prev\":\"pikpz\",\"next\":\"ejzanlfz\",\"total_size\":386879497},\"data\":[{\"kind\":\"bzonok\",\"id\":\"rjqc\",\"metadata\":{\"self\":\"zpfrla\",\"resource_name\":\"zrnw\",\"created_at\":\"indfpwpjyl\",\"updated_at\":\"tlhflsjcdhszf\",\"deleted_at\":\"fbgofeljagrqmqh\"},\"display_name\":\"vriiio\",\"spec\":{\"display_name\":\"lg\",\"availability\":\"kvtvsexso\",\"cloud\":\"el\",\"zone\":\"hhahhxvrhmzkwpjg\",\"region\":\"spughftqsxhq\",\"kafka_bootstrap_endpoint\":\"j\",\"http_endpoint\":\"kndxdigrjgu\",\"api_endpoint\":\"zdmsyqtfi\",\"config\":{\"kind\":\"botzingamvppho\"},\"environment\":{\"id\":\"zudphqamvdkfw\",\"environment\":\"wcvtbvkayhmtnvyq\",\"related\":\"tkzwpcnpwzc\",\"resource_name\":\"esgvvsccyaj\"},\"network\":{\"id\":\"fhwygzlvdnkfxus\",\"environment\":\"dwzrmuh\",\"related\":\"fcqdpsq\",\"resource_name\":\"vpsvuoymgcce\"},\"byok\":{\"id\":\"zrypqlmfeokerqw\",\"related\":\"hkobopgxedk\",\"resource_name\":\"epbqpcrfkbw\"}},\"status\":{\"phase\":\"njv\",\"cku\":922836414}},{\"kind\":\"lpqekf\",\"id\":\"khtj\",\"metadata\":{\"self\":\"ngwfqatm\",\"resource_name\":\"htmdvy\",\"created_at\":\"ikdgszywkbir\",\"updated_at\":\"uzhlhkjoqrv\",\"deleted_at\":\"aatjinrvgoupmfi\"},\"display_name\":\"fggjioolvr\",\"spec\":{\"display_name\":\"v\",\"availability\":\"k\",\"cloud\":\"lqwjygvjayvblm\",\"zone\":\"k\",\"region\":\"hbxvvyhgsopbyrqu\",\"kafka_bootstrap_endpoint\":\"g\",\"http_endpoint\":\"vwz\",\"api_endpoint\":\"nhlmctlpdng\",\"config\":{\"kind\":\"gbmhrixkwmyi\"},\"environment\":{\"id\":\"veg\",\"environment\":\"bpnaixexccbdre\",\"related\":\"hcexdrrvqa\",\"resource_name\":\"kghtpwijnh\"},\"network\":{\"id\":\"vfycxzb\",\"environment\":\"oowvrv\",\"related\":\"gjqppy\",\"resource_name\":\"tronzmyhgfi\"},\"byok\":{\"id\":\"xkmcwaekrrjre\",\"related\":\"xt\",\"resource_name\":\"umh\"}},\"status\":{\"phase\":\"ikkx\",\"cku\":271512941}}]}")
             .toObject(AccessListClusterSuccessResponseInner.class);
-        Assertions.assertEquals("l", model.kind());
-        Assertions.assertEquals("hoftr", model.metadata().first());
-        Assertions.assertEquals("equi", model.metadata().last());
-        Assertions.assertEquals("xicslfao", model.metadata().prev());
-        Assertions.assertEquals("piyylhalnswhccsp", model.metadata().next());
-        Assertions.assertEquals(896458989, model.metadata().totalSize());
-        Assertions.assertEquals("itqscywuggwoluhc", model.data().get(0).kind());
-        Assertions.assertEquals("wem", model.data().get(0).id());
-        Assertions.assertEquals("rsbrgzdwm", model.data().get(0).metadata().self());
-        Assertions.assertEquals("eypqwdxggicccn", model.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("huexmk", model.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("lstvlzywe", model.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("zrncsdt", model.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("u", model.data().get(0).displayName());
-        Assertions.assertEquals("pbsfgytgu", model.data().get(0).spec().displayName());
-        Assertions.assertEquals("feadcygq", model.data().get(0).spec().availability());
-        Assertions.assertEquals("yhejhzisxgfp", model.data().get(0).spec().cloud());
-        Assertions.assertEquals("olppvksrpqvujz", model.data().get(0).spec().zone());
-        Assertions.assertEquals("ehtwdwrft", model.data().get(0).spec().region());
-        Assertions.assertEquals("iby", model.data().get(0).spec().kafkaBootstrapEndpoint());
-        Assertions.assertEquals("dl", model.data().get(0).spec().httpEndpoint());
-        Assertions.assertEquals("shfwpracstwity", model.data().get(0).spec().apiEndpoint());
-        Assertions.assertEquals("vxccedcp", model.data().get(0).spec().config().kind());
-        Assertions.assertEquals("yodnwzxltj", model.data().get(0).spec().environment().id());
-        Assertions.assertEquals("nhltiugcxn", model.data().get(0).spec().environment().environment());
-        Assertions.assertEquals("vwxqibyqunyo", model.data().get(0).spec().environment().related());
-        Assertions.assertEquals("wlmdjrkv", model.data().get(0).spec().environment().resourceName());
-        Assertions.assertEquals("vfvpdbodaciz", model.data().get(0).spec().network().id());
-        Assertions.assertEquals("q", model.data().get(0).spec().network().environment());
-        Assertions.assertEquals("krribdeibqi", model.data().get(0).spec().network().related());
-        Assertions.assertEquals("kghv", model.data().get(0).spec().network().resourceName());
-        Assertions.assertEquals("zwmk", model.data().get(0).spec().byok().id());
-        Assertions.assertEquals("fajpjorwk", model.data().get(0).spec().byok().related());
-        Assertions.assertEquals("yhgbijtjivfx", model.data().get(0).spec().byok().resourceName());
-        Assertions.assertEquals("ab", model.data().get(0).status().phase());
-        Assertions.assertEquals(804108375, model.data().get(0).status().cku());
+        Assertions.assertEquals("ss", model.kind());
+        Assertions.assertEquals("twbdsrezpdrhn", model.metadata().first());
+        Assertions.assertEquals("yowqkdwytisibir", model.metadata().last());
+        Assertions.assertEquals("pikpz", model.metadata().prev());
+        Assertions.assertEquals("ejzanlfz", model.metadata().next());
+        Assertions.assertEquals(386879497, model.metadata().totalSize());
+        Assertions.assertEquals("bzonok", model.data().get(0).kind());
+        Assertions.assertEquals("rjqc", model.data().get(0).id());
+        Assertions.assertEquals("zpfrla", model.data().get(0).metadata().self());
+        Assertions.assertEquals("zrnw", model.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("indfpwpjyl", model.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("tlhflsjcdhszf", model.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("fbgofeljagrqmqh", model.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("vriiio", model.data().get(0).displayName());
+        Assertions.assertEquals("lg", model.data().get(0).spec().displayName());
+        Assertions.assertEquals("kvtvsexso", model.data().get(0).spec().availability());
+        Assertions.assertEquals("el", model.data().get(0).spec().cloud());
+        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.data().get(0).spec().zone());
+        Assertions.assertEquals("spughftqsxhq", model.data().get(0).spec().region());
+        Assertions.assertEquals("j", model.data().get(0).spec().kafkaBootstrapEndpoint());
+        Assertions.assertEquals("kndxdigrjgu", model.data().get(0).spec().httpEndpoint());
+        Assertions.assertEquals("zdmsyqtfi", model.data().get(0).spec().apiEndpoint());
+        Assertions.assertEquals("botzingamvppho", model.data().get(0).spec().config().kind());
+        Assertions.assertEquals("zudphqamvdkfw", model.data().get(0).spec().environment().id());
+        Assertions.assertEquals("wcvtbvkayhmtnvyq", model.data().get(0).spec().environment().environment());
+        Assertions.assertEquals("tkzwpcnpwzc", model.data().get(0).spec().environment().related());
+        Assertions.assertEquals("esgvvsccyaj", model.data().get(0).spec().environment().resourceName());
+        Assertions.assertEquals("fhwygzlvdnkfxus", model.data().get(0).spec().network().id());
+        Assertions.assertEquals("dwzrmuh", model.data().get(0).spec().network().environment());
+        Assertions.assertEquals("fcqdpsq", model.data().get(0).spec().network().related());
+        Assertions.assertEquals("vpsvuoymgcce", model.data().get(0).spec().network().resourceName());
+        Assertions.assertEquals("zrypqlmfeokerqw", model.data().get(0).spec().byok().id());
+        Assertions.assertEquals("hkobopgxedk", model.data().get(0).spec().byok().related());
+        Assertions.assertEquals("epbqpcrfkbw", model.data().get(0).spec().byok().resourceName());
+        Assertions.assertEquals("njv", model.data().get(0).status().phase());
+        Assertions.assertEquals(922836414, model.data().get(0).status().cku());
     }
 }

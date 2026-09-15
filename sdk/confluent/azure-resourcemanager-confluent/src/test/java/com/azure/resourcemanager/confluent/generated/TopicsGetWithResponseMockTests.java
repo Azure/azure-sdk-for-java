@@ -21,7 +21,7 @@ public final class TopicsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"kind\":\"scbbxig\",\"topicId\":\"xiidloped\",\"metadata\":{\"self\":\"pyqy\",\"resourceName\":\"xubmdnafcbqw\"},\"partitions\":{\"related\":\"jelaqacigele\"},\"configs\":{\"related\":\"bvqvwzkjopwbeo\"},\"inputConfigs\":[{\"name\":\"wzdqybxceakxcpts\",\"value\":\"fyiaseqch\"},{\"name\":\"ttzrazisgyki\",\"value\":\"mvanbwzo\"},{\"name\":\"nrxxbsojklin\",\"value\":\"dptysprqs\"},{\"name\":\"zxojpslsv\",\"value\":\"pli\"}],\"partitionsReassignments\":{\"related\":\"qwoyxqvapco\"},\"partitionsCount\":\"oucqpqojx\",\"replicationFactor\":\"zrzdcgd\"},\"id\":\"enribc\",\"name\":\"wetzqddtjwfljh\",\"type\":\"namtuatmzw\"}";
+            = "{\"properties\":{\"kind\":\"cjrmmua\",\"topicId\":\"ibvjogjonmcy\",\"metadata\":{\"self\":\"y\",\"resourceName\":\"amwineofvfkakp\"},\"partitions\":{\"related\":\"t\"},\"configs\":{\"related\":\"boclzhzjknyuxgv\"},\"inputConfigs\":[{\"name\":\"nrup\",\"value\":\"amrdixtrekidswys\"}],\"partitionsReassignments\":{\"related\":\"uffgllukkutvlx\"},\"partitionsCount\":\"pqhvmblcouqehbhb\",\"replicationFactor\":\"sziryrandoyp\"},\"id\":\"ltoormkfqlwxldyk\",\"name\":\"lsygaol\",\"type\":\"jpnnbmjksibjgsj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,19 +31,20 @@ public final class TopicsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TopicRecord response = manager.topics()
-            .getWithResponse("k", "hltnjadhqoawjq", "yueayfbpcmsp", "byrrueqth", "mg", com.azure.core.util.Context.NONE)
+            .getWithResponse("pzealbmqkyojw", "vf", "mbtsuahxsg", "jcmmzrrscub", "wsdrnpxqwodif",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("scbbxig", response.kind());
-        Assertions.assertEquals("xiidloped", response.topicId());
-        Assertions.assertEquals("pyqy", response.metadata().self());
-        Assertions.assertEquals("xubmdnafcbqw", response.metadata().resourceName());
-        Assertions.assertEquals("jelaqacigele", response.partitions().related());
-        Assertions.assertEquals("bvqvwzkjopwbeo", response.configs().related());
-        Assertions.assertEquals("wzdqybxceakxcpts", response.inputConfigs().get(0).name());
-        Assertions.assertEquals("fyiaseqch", response.inputConfigs().get(0).value());
-        Assertions.assertEquals("qwoyxqvapco", response.partitionsReassignments().related());
-        Assertions.assertEquals("oucqpqojx", response.partitionsCount());
-        Assertions.assertEquals("zrzdcgd", response.replicationFactor());
+        Assertions.assertEquals("cjrmmua", response.kind());
+        Assertions.assertEquals("ibvjogjonmcy", response.topicId());
+        Assertions.assertEquals("y", response.metadata().self());
+        Assertions.assertEquals("amwineofvfkakp", response.metadata().resourceName());
+        Assertions.assertEquals("t", response.partitions().related());
+        Assertions.assertEquals("boclzhzjknyuxgv", response.configs().related());
+        Assertions.assertEquals("nrup", response.inputConfigs().get(0).name());
+        Assertions.assertEquals("amrdixtrekidswys", response.inputConfigs().get(0).value());
+        Assertions.assertEquals("uffgllukkutvlx", response.partitionsReassignments().related());
+        Assertions.assertEquals("pqhvmblcouqehbhb", response.partitionsCount());
+        Assertions.assertEquals("sziryrandoyp", response.replicationFactor());
     }
 }
