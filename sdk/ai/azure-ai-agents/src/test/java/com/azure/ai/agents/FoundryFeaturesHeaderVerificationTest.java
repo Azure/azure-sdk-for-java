@@ -79,9 +79,6 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
-
         // Beta clients temporarily add their required Foundry-Features policy while their pipeline is being built.
         // The policy must not remain on the reusable builder, otherwise a later GA client built from the same builder
         // would silently inherit a beta opt-in header despite allowPreview defaulting to false for GA clients.

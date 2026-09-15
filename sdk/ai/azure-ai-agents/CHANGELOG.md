@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,9 +10,56 @@
 
 ### Other Changes
 
+## 2.5.0 (2026-09-09)
+
+### Features Added
+
+- Added Microsoft 365 agent publishing. `AgentsClient` / `AgentsAsyncClient` gained `publishAgentToMicrosoft365`,
+  `getMicrosoft365AppPackage`, and `getMicrosoft365PublishDefaults` (plus `WithResponse` methods), backed by new
+  `PublishAgentToMicrosoft365Options`, `GetMicrosoft365AppPackageOptions`, `Microsoft365PublishResult`,
+  `Microsoft365PublishDefaults`, `Microsoft365PublishScope`, and `Microsoft365PermissionScopes` models.
+  `AgentEndpointConfig.getPublishApprovalStatus()` exposes the Microsoft 365 store review status through the new
+  `PublishApprovalStatus` enum.
+- Added the `CreateAgentVersionOptions` model for configuring agent-version metadata, description, blueprint reference,
+  digital-worker type, and draft status.
+- Added preview support for Microsoft 365 digital workers (formerly "autopilot") through `DigitalWorkerType`,
+  `AgentDetails.getDigitalWorkerType()`, `CreateAgentVersionInput.setDigitalWorkerType(...)`, and the
+  `publishAsAutopilot` option on the Microsoft 365 publish and app-package options.
+- Added activity-protocol access boundaries through `ActivityProtocolAccessBoundary`,
+  `ActivityProtocolConfiguration.getAccessBoundaries()`, and the Microsoft 365 publish and app-package options. These
+  boundaries scope developer, manager, allowlisted-user, and tenant access to one-on-one and group conversations.
+- Added preview Model Router details through `AzureCreateResponseDetails.getModelSelectionDetails()` and the new
+  `ModelSelectionDetails`, `ModelRouterDetails`, `ModelRouterMode`, `RoutingTraceEntry`, `ModelRouterAttempt`,
+  `ModelRouterAttemptResult`, and `ModelRouterAttemptError` models.
+- Added `WebIqPreviewTool` and `WebIqPreviewToolboxTool` for connecting an agent to a WebIQ MCP server.
+- Added `ShellToolboxTool` for running shell commands in an automatically provisioned or existing container, with
+  environment and network configuration provided by `ToolboxShellEnvironment`,
+  `ToolboxShellContainerAutoEnvironment`, `ToolboxShellContainerReferenceEnvironment`, and
+  `ToolboxShellNetworkPolicy`.
+- Added `WebSearchTool.setExternalWebAccess(...)` and `WebSearchToolboxTool.setExternalWebAccess(...)` to control
+  whether web search can fetch live external content.
+- Added hosted-agent session defaults through `SessionConfiguration` and
+  `HostedAgentDefinition.setSessionConfiguration(...)`, including configuration of the session idle timeout.
+
+### Breaking Changes
+
+- Updated preview agent-optimization APIs:
+  - Renamed `AgentOptimizationEvaluatorRef` to `AgentOptimizationEvaluatorReference`; the
+    `AgentOptimizationJobInputs` constructor and `getEvaluators()` now use the renamed type.
+  - Renamed `AgentOptimizationDatasetItem.getDesiredNumTurns()` / `setDesiredNumTurns(...)` to
+    `getDesiredNumberTurns()` / `setDesiredNumberTurns(...)`.
+  - Replaced `AgentOptimizationJobProgress.getElapsedSeconds()`, which returned `double`, with `getElapsed()`, which
+    returns `java.time.Duration`.
+
+### Other Changes
+
+- Updated the OpenAI TypeSpec model dependency to 1.26.0.
 - Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
 - Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
   advanced memory-store workflows, and agent optimization.
+- Added a sample demonstrating a prompt agent invoking `ShellToolboxTool` through a toolbox's versioned MCP endpoint.
+- Fixed basic agent and conversation samples by removing an obsolete preview service-version override, using a valid
+  hyphenated agent name consistently, and serializing conversation metadata timestamps as strings.
 - Improved the Fabric IQ sync and async samples with configurable agent names, readable response and annotation
   output, and reliable asynchronous cleanup.
 

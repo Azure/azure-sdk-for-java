@@ -12,29 +12,29 @@ public final class VMGalleryApplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMGalleryApplication model = BinaryData.fromString(
-            "{\"tags\":\"bxvvyhg\",\"order\":610233368,\"packageReferenceId\":\"byrqufeg\",\"configurationReference\":\"vwz\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false}")
+            "{\"tags\":\"tpuqujmq\",\"order\":1609409452,\"packageReferenceId\":\"fbtndoaong\",\"configurationReference\":\"cn\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false}")
             .toObject(VMGalleryApplication.class);
-        Assertions.assertEquals("bxvvyhg", model.tags());
-        Assertions.assertEquals(610233368, model.order());
-        Assertions.assertEquals("byrqufeg", model.packageReferenceId());
-        Assertions.assertEquals("vwz", model.configurationReference());
+        Assertions.assertEquals("tpuqujmq", model.tags());
+        Assertions.assertEquals(1609409452, model.order());
+        Assertions.assertEquals("fbtndoaong", model.packageReferenceId());
+        Assertions.assertEquals("cn", model.configurationReference());
         Assertions.assertTrue(model.treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMGalleryApplication model = new VMGalleryApplication().withTags("bxvvyhg")
-            .withOrder(610233368)
-            .withPackageReferenceId("byrqufeg")
-            .withConfigurationReference("vwz")
+        VMGalleryApplication model = new VMGalleryApplication().withTags("tpuqujmq")
+            .withOrder(1609409452)
+            .withPackageReferenceId("fbtndoaong")
+            .withConfigurationReference("cn")
             .withTreatFailureAsDeploymentFailure(true)
             .withEnableAutomaticUpgrade(false);
         model = BinaryData.fromObject(model).toObject(VMGalleryApplication.class);
-        Assertions.assertEquals("bxvvyhg", model.tags());
-        Assertions.assertEquals(610233368, model.order());
-        Assertions.assertEquals("byrqufeg", model.packageReferenceId());
-        Assertions.assertEquals("vwz", model.configurationReference());
+        Assertions.assertEquals("tpuqujmq", model.tags());
+        Assertions.assertEquals(1609409452, model.order());
+        Assertions.assertEquals("fbtndoaong", model.packageReferenceId());
+        Assertions.assertEquals("cn", model.configurationReference());
         Assertions.assertTrue(model.treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.enableAutomaticUpgrade());
     }

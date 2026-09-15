@@ -80,6 +80,8 @@ public class BackupDatasourceParameters implements JsonSerializable<BackupDataso
                     return BlobBackupDatasourceParametersForAutoProtection.fromJson(readerToUse.reset());
                 } else if ("AdlsBlobBackupDatasourceParametersForAutoProtection".equals(discriminatorValue)) {
                     return AdlsBlobBackupDatasourceParametersForAutoProtection.fromJson(readerToUse.reset());
+                } else if ("GenericBackupDatasourceParameters".equals(discriminatorValue)) {
+                    return GenericBackupDatasourceParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

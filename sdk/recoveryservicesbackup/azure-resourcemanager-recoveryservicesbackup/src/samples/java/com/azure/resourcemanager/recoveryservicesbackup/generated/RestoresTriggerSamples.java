@@ -28,7 +28,7 @@ import java.util.Arrays;
  */
 public final class RestoresTriggerSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails and per disk
@@ -81,7 +81,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreWithRehydrationRequest.
@@ -120,7 +120,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
+     * x-ms-original-file: 2026-08-01/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
      */
     /**
      * Sample code: Restore Azure File Share to Original Location with User Assigned Managed Identity.
@@ -146,7 +146,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest.
@@ -184,7 +184,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption_SingleEntry.json
+     * 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption_SingleEntry.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails and Data Disk
@@ -229,7 +229,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
+     * x-ms-original-file: 2026-08-01/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
      */
     /**
      * Sample code: Restore Azure File Share to Original Location with Managed Identity.
@@ -253,7 +253,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreWithRehydrationRequest.
@@ -285,7 +285,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails.
@@ -322,7 +322,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest.
@@ -359,7 +359,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * 2026-08-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest with IdentityBasedRestoreDetails.
@@ -390,7 +390,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Restore with Resource Guard Enabled.

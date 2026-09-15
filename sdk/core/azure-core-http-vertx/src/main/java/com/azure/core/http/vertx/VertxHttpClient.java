@@ -26,6 +26,7 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +50,10 @@ import java.util.concurrent.TimeUnit;
  */
 class VertxHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClient.class);
+
+    // How long to wait for an interim 100 Continue before sending the body anyway, matching the defaults used by
+    // other HTTP stacks. RFC 9110 requires a client not to wait indefinitely.
+    private static final Duration EXPECT_CONTINUE_TIMEOUT = Duration.ofSeconds(1);
 
     final io.vertx.core.http.HttpClient client;
     final HttpClientOptions buildOptions;
@@ -183,25 +189,88 @@ class VertxHttpClient implements HttpClient {
 
         if (body == null) {
             vertxRequest.send().onFailure(promise::fail);
+            return;
+        }
+
+        if (expectsContinue(azureRequest.getHeaders().getValue(HttpHeaderName.EXPECT))) {
+            // Send the headers and hold the body until the service accepts the expectation. If it answers with a
+            // final status instead, that response completes the request and the body is never written.
+            AtomicBoolean bodyWritten = new AtomicBoolean();
+            Runnable writeOnce = () -> {
+                if (bodyWritten.compareAndSet(false, true)) {
+                    writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, true);
+                }
+            };
+
+            // A service may ignore the expectation entirely and wait for the body, so the request cannot depend on
+            // the interim response arriving. RFC 9110 allows the content to be sent after a short wait.
+            io.vertx.core.Context vertxContext = Vertx.currentContext();
+            Long fallbackTimerId = vertxContext == null
+                ? null
+                : vertxContext.owner().setTimer(EXPECT_CONTINUE_TIMEOUT.toMillis(), ignored -> writeOnce.run());
+            Runnable cancelFallback = () -> {
+                if (fallbackTimerId != null && vertxContext != null) {
+                    vertxContext.owner().cancelTimer(fallbackTimerId);
+                }
+            };
+
+            // Once the exchange is terminal, for example the service rejected the headers outright or sending them
+            // failed, there is nothing left to send. Claim the write so neither the fallback nor a late interim
+            // response can subscribe the body onto a finished request.
+            promise.future().onComplete(ignored -> {
+                cancelFallback.run();
+                bodyWritten.set(true);
+            });
+
+            vertxRequest.continueHandler(ignored -> {
+                cancelFallback.run();
+                writeOnce.run();
+            });
+            vertxRequest.sendHead().onFailure(promise::fail);
         } else {
-            BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-            if (bodyContent instanceof ByteArrayContent
-                || bodyContent instanceof ByteBufferContent
-                || bodyContent instanceof StringContent
-                || bodyContent instanceof SerializableContent) {
-                // This cannot produce a NullPointerException for the BinaryDataContent types that trigger this as they
-                // are in-memory and have a length.
-                long contentLength = bodyContent.getLength();
-                vertxRequest.send(Buffer.buffer(bodyContent.toBytes()))
-                    .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
-                    .onFailure(promise::fail);
-            } else {
-                // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-                azureRequest.getBody()
-                    .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler,
-                        vertxRequest::drainHandler, vertxRequest::write, vertxRequest::writeQueueFull,
-                        vertxRequest::reset, vertxRequest::end, promise, progressReporter, contextView));
+            writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, false);
+        }
+    }
+
+    /*
+     * Expect is a comma separated list of expectations and values may carry surrounding whitespace, so the header
+     * cannot be compared as a whole.
+     */
+    private static boolean expectsContinue(String expectHeader) {
+        if (expectHeader == null) {
+            return false;
+        }
+
+        for (String expectation : expectHeader.split(",")) {
+            if ("100-continue".equalsIgnoreCase(expectation.trim())) {
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    private void writeBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, BinaryData body, boolean headAlreadySent) {
+        BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+        if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof ByteBufferContent
+            || bodyContent instanceof StringContent
+            || bodyContent instanceof SerializableContent) {
+            // This cannot produce a NullPointerException for the BinaryDataContent types that trigger this as they
+            // are in-memory and have a length.
+            long contentLength = bodyContent.getLength();
+            Buffer buffer = Buffer.buffer(bodyContent.toBytes());
+            // Once the head has been sent the body must be written onto the open request rather than sent as a
+            // whole new request.
+            Future<Void> written = headAlreadySent ? vertxRequest.end(buffer) : vertxRequest.send(buffer).mapEmpty();
+            written.onSuccess(ignored -> reportProgress(contentLength, progressReporter)).onFailure(promise::fail);
+        } else {
+            // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
+            azureRequest.getBody()
+                .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler, vertxRequest::drainHandler,
+                    vertxRequest::write, vertxRequest::writeQueueFull, vertxRequest::reset, vertxRequest::end, promise,
+                    progressReporter, contextView));
         }
     }
 

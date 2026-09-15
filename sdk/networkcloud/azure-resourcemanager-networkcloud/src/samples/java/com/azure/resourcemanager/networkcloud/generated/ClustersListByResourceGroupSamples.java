@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/Clusters_ListByResourceGroup.json
      */
     /**
      * Sample code: List clusters for resource group.

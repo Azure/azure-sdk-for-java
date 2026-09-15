@@ -14,21 +14,21 @@ public final class TieringPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TieringPolicy model
-            = BinaryData.fromString("{\"tieringMode\":\"DoNotTier\",\"duration\":1495139625,\"durationType\":\"Days\"}")
+            = BinaryData.fromString("{\"tieringMode\":\"Invalid\",\"duration\":369373593,\"durationType\":\"Months\"}")
                 .toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
-        Assertions.assertEquals(1495139625, model.duration());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
+        Assertions.assertEquals(TieringMode.INVALID, model.tieringMode());
+        Assertions.assertEquals(369373593, model.duration());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER)
-            .withDuration(1495139625)
-            .withDurationType(RetentionDurationType.DAYS);
+        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.INVALID)
+            .withDuration(369373593)
+            .withDurationType(RetentionDurationType.MONTHS);
         model = BinaryData.fromObject(model).toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
-        Assertions.assertEquals(1495139625, model.duration());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
+        Assertions.assertEquals(TieringMode.INVALID, model.tieringMode());
+        Assertions.assertEquals(369373593, model.duration());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.durationType());
     }
 }
