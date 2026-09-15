@@ -5,7 +5,7 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Feature opt-in keys for agent definition operations supporting hosted or workflow agents.
+ * Feature opt-in keys for agent definition operations supporting conditional preview features.
  */
 public enum AgentDefinitionOptInKeys {
     /**
@@ -31,7 +31,17 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value DigitalWorker=V1Preview.
      */
-    DIGITAL_WORKER_V1_PREVIEW("DigitalWorker=V1Preview");
+    DIGITAL_WORKER_V1_PREVIEW("DigitalWorker=V1Preview"),
+
+    /**
+     * Enum value GitHubCopilot=V1Preview.
+     */
+    GITHUB_COPILOT_V1_PREVIEW("GitHubCopilot=V1Preview"),
+
+    /**
+     * Enum value Skills=V1Preview.
+     */
+    SKILLS_V1_PREVIEW("Skills=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.
