@@ -17,7 +17,7 @@ steps:
       Condition: ${{ parameters.Condition }}
   - task: PowerShell@2
     displayName: Link verification check
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})
     inputs:
       pwsh: true
       workingDirectory: '${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}'

@@ -6,7 +6,7 @@ parameters:
 steps:
   - task: Powershell@2
     displayName: 'Install Azure SDK Tools CLI'
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})
     inputs:
       targetType: 'inline'
       script: |
