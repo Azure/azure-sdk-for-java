@@ -32,7 +32,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Cu
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorHelper;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AuthenticatedEndpointPolicy;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TempDirs;
@@ -112,8 +111,9 @@ class AzureMonitorExporterBuilder {
         CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener
             = customerSdkStats != null ? new CustomerSdkStatsTelemetryPipelineListener(customerSdkStats) : null;
         // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
-        this.builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
-            tempDir, LocalStorageStats.noop(), customerSdkStatsListener);
+        this.builtTelemetryItemExporter
+            = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir,
+                LocalStorageStats.noop(), customerSdkStatsListener, getConnectionString().getIngestionEndpointUrl());
         if (LiveMetrics.isEnabled(configProperties)) {
             this.quickPulse = createQuickPulse(resource);
         }
@@ -228,7 +228,6 @@ class AzureMonitorExporterBuilder {
             .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
         policies.add(new CookiePolicy());
         if (exporterOptions.credential != null) {
-            policies.add(new AuthenticatedEndpointPolicy(getConnectionString().getIngestionEndpointUrl()));
             policies.add(new BearerTokenAuthenticationPolicy(exporterOptions.credential,
                 getConnectionString().getAadAudienceWithScope()));
         }
