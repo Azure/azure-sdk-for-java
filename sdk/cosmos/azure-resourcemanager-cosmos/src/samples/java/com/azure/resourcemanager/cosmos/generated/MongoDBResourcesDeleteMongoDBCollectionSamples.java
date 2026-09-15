@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBCollectionDelete.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBCollectionDelete.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionDelete.

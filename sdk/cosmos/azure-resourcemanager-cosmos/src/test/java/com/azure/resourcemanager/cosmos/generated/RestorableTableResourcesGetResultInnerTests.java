@@ -11,7 +11,7 @@ public final class RestorableTableResourcesGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableTableResourcesGetResultInner model
-            = BinaryData.fromString("{\"id\":\"imwdcsklkqnqvki\",\"name\":\"mbzmecuy\",\"type\":\"wimbzayspzvr\"}")
+            = BinaryData.fromString("{\"id\":\"ffavdhpiwr\",\"name\":\"wkgjwb\",\"type\":\"dwfbwxy\"}")
                 .toObject(RestorableTableResourcesGetResultInner.class);
     }
 }

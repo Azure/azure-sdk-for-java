@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class FleetspaceCreateSamples {
     /*
-     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetspaceCreate.json
+     * x-ms-original-file: 2026-04-01-preview/fleet/CosmosDBFleetspaceCreate.json
      */
     /**
      * Sample code: CosmosDB Fleetspace Create.

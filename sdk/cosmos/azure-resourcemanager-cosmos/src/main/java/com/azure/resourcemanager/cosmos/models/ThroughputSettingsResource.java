@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Cosmos DB resource throughput object. Either throughput is required or autoscaleSettings is required, but not both.
@@ -47,6 +48,11 @@ public class ThroughputSettingsResource implements JsonSerializable<ThroughputSe
      * The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
      */
     private String softAllowedMaximumThroughput;
+
+    /*
+     * Array of throughput bucket limits to be applied to the Cosmos DB container
+     */
+    private List<ThroughputBucketResource> throughputBuckets;
 
     /**
      * Creates an instance of ThroughputSettingsResource class.
@@ -183,6 +189,26 @@ public class ThroughputSettingsResource implements JsonSerializable<ThroughputSe
     }
 
     /**
+     * Get the throughputBuckets property: Array of throughput bucket limits to be applied to the Cosmos DB container.
+     * 
+     * @return the throughputBuckets value.
+     */
+    public List<ThroughputBucketResource> throughputBuckets() {
+        return this.throughputBuckets;
+    }
+
+    /**
+     * Set the throughputBuckets property: Array of throughput bucket limits to be applied to the Cosmos DB container.
+     * 
+     * @param throughputBuckets the throughputBuckets value to set.
+     * @return the ThroughputSettingsResource object itself.
+     */
+    public ThroughputSettingsResource withThroughputBuckets(List<ThroughputBucketResource> throughputBuckets) {
+        this.throughputBuckets = throughputBuckets;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -190,6 +216,9 @@ public class ThroughputSettingsResource implements JsonSerializable<ThroughputSe
     public void validate() {
         if (autoscaleSettings() != null) {
             autoscaleSettings().validate();
+        }
+        if (throughputBuckets() != null) {
+            throughputBuckets().forEach(e -> e.validate());
         }
     }
 
@@ -201,6 +230,8 @@ public class ThroughputSettingsResource implements JsonSerializable<ThroughputSe
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("throughput", this.throughput);
         jsonWriter.writeJsonField("autoscaleSettings", this.autoscaleSettings);
+        jsonWriter.writeArrayField("throughputBuckets", this.throughputBuckets,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -232,6 +263,10 @@ public class ThroughputSettingsResource implements JsonSerializable<ThroughputSe
                     deserializedThroughputSettingsResource.instantMaximumThroughput = reader.getString();
                 } else if ("softAllowedMaximumThroughput".equals(fieldName)) {
                     deserializedThroughputSettingsResource.softAllowedMaximumThroughput = reader.getString();
+                } else if ("throughputBuckets".equals(fieldName)) {
+                    List<ThroughputBucketResource> throughputBuckets
+                        = reader.readArray(reader1 -> ThroughputBucketResource.fromJson(reader1));
+                    deserializedThroughputSettingsResource.throughputBuckets = throughputBuckets;
                 } else {
                     reader.skipChildren();
                 }

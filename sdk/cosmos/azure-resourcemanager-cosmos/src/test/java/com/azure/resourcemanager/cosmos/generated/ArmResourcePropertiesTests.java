@@ -17,24 +17,26 @@ public final class ArmResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmResourceProperties model = BinaryData.fromString(
-            "{\"id\":\"xczfcl\",\"name\":\"axdbabph\",\"type\":\"rqlfktsthsucocmn\",\"location\":\"azt\",\"tags\":{\"uedck\":\"wwrq\",\"bxu\":\"ywbiexzfeyueax\"},\"identity\":{\"principalId\":\"hqwa\",\"tenantId\":\"uzyoxaep\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ytxhp\":{\"principalId\":\"cuxrhdwbavx\",\"clientId\":\"iwdjswztsdbpgn\"},\"wtctyqi\":{\"principalId\":\"bzpfzab\",\"clientId\":\"cuh\"}}}}")
+            "{\"id\":\"xzpuzycisp\",\"name\":\"zahmgkbrpyydhibn\",\"type\":\"qkpikadrgvtqagnb\",\"location\":\"nhijggmebfsi\",\"tags\":{\"pnazzm\":\"utrc\"},\"identity\":{\"principalId\":\"unmpxttd\",\"tenantId\":\"rbnlankxmyskp\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"haaxdbabphl\":{\"principalId\":\"kcxywnyt\",\"clientId\":\"synlqidybyxczfc\"},\"uedck\":{\"principalId\":\"qlfktsths\",\"clientId\":\"ocmnyyazttbtwwrq\"},\"hqwa\":{\"principalId\":\"wbiexzfey\",\"clientId\":\"axibxujw\"},\"d\":{\"principalId\":\"uzyoxaep\",\"clientId\":\"zjancuxr\"}}}}")
             .toObject(ArmResourceProperties.class);
-        Assertions.assertEquals("azt", model.location());
-        Assertions.assertEquals("wwrq", model.tags().get("uedck"));
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("nhijggmebfsi", model.location());
+        Assertions.assertEquals("utrc", model.tags().get("pnazzm"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmResourceProperties model = new ArmResourceProperties().withLocation("azt")
-            .withTags(mapOf("uedck", "wwrq", "bxu", "ywbiexzfeyueax"))
-            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ytxhp", new ManagedServiceIdentityUserAssignedIdentities(),
-                    "wtctyqi", new ManagedServiceIdentityUserAssignedIdentities())));
+        ArmResourceProperties model = new ArmResourceProperties().withLocation("nhijggmebfsi")
+            .withTags(mapOf("pnazzm", "utrc"))
+            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("haaxdbabphl", new ManagedServiceIdentityUserAssignedIdentities(),
+                    "uedck", new ManagedServiceIdentityUserAssignedIdentities(), "hqwa",
+                    new ManagedServiceIdentityUserAssignedIdentities(), "d",
+                    new ManagedServiceIdentityUserAssignedIdentities())));
         model = BinaryData.fromObject(model).toObject(ArmResourceProperties.class);
-        Assertions.assertEquals("azt", model.location());
-        Assertions.assertEquals("wwrq", model.tags().get("uedck"));
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("nhijggmebfsi", model.location());
+        Assertions.assertEquals("utrc", model.tags().get("pnazzm"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

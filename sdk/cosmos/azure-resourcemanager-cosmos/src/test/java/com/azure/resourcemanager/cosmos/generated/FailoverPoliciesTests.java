@@ -14,20 +14,20 @@ public final class FailoverPoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FailoverPolicies model = BinaryData.fromString(
-            "{\"failoverPolicies\":[{\"id\":\"nzbtbhj\",\"locationName\":\"lkfg\",\"failoverPriority\":1036395530},{\"id\":\"euel\",\"locationName\":\"hsd\",\"failoverPriority\":58245942},{\"id\":\"zfikd\",\"locationName\":\"wq\",\"failoverPriority\":180318621}]}")
+            "{\"failoverPolicies\":[{\"id\":\"sub\",\"locationName\":\"jbi\",\"failoverPriority\":532379819},{\"id\":\"ybsrfbjfdtwss\",\"locationName\":\"ftpvjzbexil\",\"failoverPriority\":1948356330},{\"id\":\"qqnvwpmq\",\"locationName\":\"ruoujmk\",\"failoverPriority\":1426920839}]}")
             .toObject(FailoverPolicies.class);
-        Assertions.assertEquals("lkfg", model.failoverPolicies().get(0).locationName());
-        Assertions.assertEquals(1036395530, model.failoverPolicies().get(0).failoverPriority());
+        Assertions.assertEquals("jbi", model.failoverPolicies().get(0).locationName());
+        Assertions.assertEquals(532379819, model.failoverPolicies().get(0).failoverPriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FailoverPolicies model = new FailoverPolicies().withFailoverPolicies(
-            Arrays.asList(new FailoverPolicy().withLocationName("lkfg").withFailoverPriority(1036395530),
-                new FailoverPolicy().withLocationName("hsd").withFailoverPriority(58245942),
-                new FailoverPolicy().withLocationName("wq").withFailoverPriority(180318621)));
+            Arrays.asList(new FailoverPolicy().withLocationName("jbi").withFailoverPriority(532379819),
+                new FailoverPolicy().withLocationName("ftpvjzbexil").withFailoverPriority(1948356330),
+                new FailoverPolicy().withLocationName("ruoujmk").withFailoverPriority(1426920839)));
         model = BinaryData.fromObject(model).toObject(FailoverPolicies.class);
-        Assertions.assertEquals("lkfg", model.failoverPolicies().get(0).locationName());
-        Assertions.assertEquals(1036395530, model.failoverPolicies().get(0).failoverPriority());
+        Assertions.assertEquals("jbi", model.failoverPolicies().get(0).locationName());
+        Assertions.assertEquals(532379819, model.failoverPolicies().get(0).failoverPriority());
     }
 }

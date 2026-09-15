@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class TableResourcesListTablesSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBTableList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBTableList.json
      */
     /**
      * Sample code: CosmosDBTableList.

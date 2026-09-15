@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesMigrateSqlDatabaseToManualThroughputSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseMigrateToManualThroughput.

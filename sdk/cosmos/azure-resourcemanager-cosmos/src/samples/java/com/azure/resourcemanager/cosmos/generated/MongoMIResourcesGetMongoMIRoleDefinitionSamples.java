@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoMIResourcesGetMongoMIRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleDefinitionGet.json
+     * x-ms-original-file: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionGet.json
      */
     /**
      * Sample code: CosmosDBMongoMIRoleDefinitionGet.

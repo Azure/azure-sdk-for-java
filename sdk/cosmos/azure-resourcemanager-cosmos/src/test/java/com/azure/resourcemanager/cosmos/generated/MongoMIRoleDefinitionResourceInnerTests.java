@@ -15,42 +15,43 @@ public final class MongoMIRoleDefinitionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoMIRoleDefinitionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"ctr\",\"roleName\":\"dsxebuhsxrz\",\"type\":\"CustomRole\",\"assignableScopes\":[\"al\",\"yckhefrbhseue\"],\"permissions\":[{\"id\":\"xebjl\",\"dataActions\":[\"aytujraxdtpryjm\",\"tnsewou\",\"ly\",\"s\"],\"notDataActions\":[\"ljurkeposehqqylm\",\"ctwjwdsdlzm\",\"xerxxxoteehk\",\"owgomvvhxowp\"]},{\"id\":\"apnpxraqawbmp\",\"dataActions\":[\"eylqlocvvujexayg\"],\"notDataActions\":[\"kgjn\",\"zpaslavxjfiuo\",\"pieidzlvssqy\",\"jopackyhydv\"]},{\"id\":\"mfngpmillxgjsci\",\"dataActions\":[\"soriobijeiydyeu\",\"nhbokayrgwybrio\",\"dweoftnorwaigsi\"],\"notDataActions\":[\"qkmv\",\"a\",\"xvzfffhtjnwos\"]},{\"id\":\"fjxtvlxxzqfc\",\"dataActions\":[\"iomxeezw\",\"hjmbji\",\"egmxdbsohc\"],\"notDataActions\":[\"yvdkgdetszw\",\"anzbjekwuyckyvn\",\"nsm\"]}]},\"id\":\"fiwjbctvbp\",\"name\":\"ujqjtotdxp\",\"type\":\"scsl\"}")
+            "{\"properties\":{\"id\":\"grh\",\"roleName\":\"tslgsazuqznghx\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"jsdkpvnrvzwpffxs\"],\"permissions\":[{\"id\":\"tmveho\",\"dataActions\":[\"yuvbgtzqzqweu\",\"dybnairvhpqsvb\",\"eoge\",\"trcnqnvnc\"],\"notDataActions\":[\"csjvjnkoiznzsqbi\",\"aaugic\"]},{\"id\":\"jtmvwrmjxyvuo\",\"dataActions\":[\"czbassqfyylwpp\",\"ygkbzb\"],\"notDataActions\":[\"sybxhqvov\",\"pmhttuvsqjsrvjnq\",\"aqg\",\"qbfkceincnrecjbi\"]},{\"id\":\"evsfgdrmnsz\",\"dataActions\":[\"mjsqsvzvm\",\"t\",\"wghndaevhgs\"],\"notDataActions\":[\"vgseuf\"]},{\"id\":\"v\",\"dataActions\":[\"uz\",\"ilmciwu\"],\"notDataActions\":[\"ekypyovljl\",\"zdlbybpaxhpz\",\"s\",\"v\"]}]},\"id\":\"wbh\",\"name\":\"nzgesfhs\",\"type\":\"ag\"}")
             .toObject(MongoMIRoleDefinitionResourceInner.class);
-        Assertions.assertEquals("ctr", model.idPropertiesId());
-        Assertions.assertEquals("dsxebuhsxrz", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.typePropertiesType());
-        Assertions.assertEquals("al", model.assignableScopes().get(0));
-        Assertions.assertEquals("xebjl", model.permissions().get(0).id());
-        Assertions.assertEquals("aytujraxdtpryjm", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("ljurkeposehqqylm", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("grh", model.idPropertiesId());
+        Assertions.assertEquals("tslgsazuqznghx", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.typePropertiesType());
+        Assertions.assertEquals("jsdkpvnrvzwpffxs", model.assignableScopes().get(0));
+        Assertions.assertEquals("tmveho", model.permissions().get(0).id());
+        Assertions.assertEquals("yuvbgtzqzqweu", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("csjvjnkoiznzsqbi", model.permissions().get(0).notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoMIRoleDefinitionResourceInner model = new MongoMIRoleDefinitionResourceInner().withIdPropertiesId("ctr")
-            .withRoleName("dsxebuhsxrz")
-            .withTypePropertiesType(RoleDefinitionType.CUSTOM_ROLE)
-            .withAssignableScopes(Arrays.asList("al", "yckhefrbhseue"))
-            .withPermissions(Arrays.asList(new Permission().withId("xebjl")
-                .withDataActions(Arrays.asList("aytujraxdtpryjm", "tnsewou", "ly", "s"))
-                .withNotDataActions(Arrays.asList("ljurkeposehqqylm", "ctwjwdsdlzm", "xerxxxoteehk", "owgomvvhxowp")),
-                new Permission().withId("apnpxraqawbmp")
-                    .withDataActions(Arrays.asList("eylqlocvvujexayg"))
-                    .withNotDataActions(Arrays.asList("kgjn", "zpaslavxjfiuo", "pieidzlvssqy", "jopackyhydv")),
-                new Permission().withId("mfngpmillxgjsci")
-                    .withDataActions(Arrays.asList("soriobijeiydyeu", "nhbokayrgwybrio", "dweoftnorwaigsi"))
-                    .withNotDataActions(Arrays.asList("qkmv", "a", "xvzfffhtjnwos")),
-                new Permission().withId("fjxtvlxxzqfc")
-                    .withDataActions(Arrays.asList("iomxeezw", "hjmbji", "egmxdbsohc"))
-                    .withNotDataActions(Arrays.asList("yvdkgdetszw", "anzbjekwuyckyvn", "nsm"))));
+        MongoMIRoleDefinitionResourceInner model = new MongoMIRoleDefinitionResourceInner().withIdPropertiesId("grh")
+            .withRoleName("tslgsazuqznghx")
+            .withTypePropertiesType(RoleDefinitionType.BUILT_IN_ROLE)
+            .withAssignableScopes(Arrays.asList("jsdkpvnrvzwpffxs"))
+            .withPermissions(Arrays.asList(
+                new Permission().withId("tmveho")
+                    .withDataActions(Arrays.asList("yuvbgtzqzqweu", "dybnairvhpqsvb", "eoge", "trcnqnvnc"))
+                    .withNotDataActions(Arrays.asList("csjvjnkoiznzsqbi", "aaugic")),
+                new Permission().withId("jtmvwrmjxyvuo")
+                    .withDataActions(Arrays.asList("czbassqfyylwpp", "ygkbzb"))
+                    .withNotDataActions(Arrays.asList("sybxhqvov", "pmhttuvsqjsrvjnq", "aqg", "qbfkceincnrecjbi")),
+                new Permission().withId("evsfgdrmnsz")
+                    .withDataActions(Arrays.asList("mjsqsvzvm", "t", "wghndaevhgs"))
+                    .withNotDataActions(Arrays.asList("vgseuf")),
+                new Permission().withId("v")
+                    .withDataActions(Arrays.asList("uz", "ilmciwu"))
+                    .withNotDataActions(Arrays.asList("ekypyovljl", "zdlbybpaxhpz", "s", "v"))));
         model = BinaryData.fromObject(model).toObject(MongoMIRoleDefinitionResourceInner.class);
-        Assertions.assertEquals("ctr", model.idPropertiesId());
-        Assertions.assertEquals("dsxebuhsxrz", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.typePropertiesType());
-        Assertions.assertEquals("al", model.assignableScopes().get(0));
-        Assertions.assertEquals("xebjl", model.permissions().get(0).id());
-        Assertions.assertEquals("aytujraxdtpryjm", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("ljurkeposehqqylm", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("grh", model.idPropertiesId());
+        Assertions.assertEquals("tslgsazuqznghx", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.typePropertiesType());
+        Assertions.assertEquals("jsdkpvnrvzwpffxs", model.assignableScopes().get(0));
+        Assertions.assertEquals("tmveho", model.permissions().get(0).id());
+        Assertions.assertEquals("yuvbgtzqzqweu", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("csjvjnkoiznzsqbi", model.permissions().get(0).notDataActions().get(0));
     }
 }

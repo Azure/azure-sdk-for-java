@@ -15,14 +15,14 @@ public final class SqlTriggerGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlTriggerGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"bzqgqqi\",\"_ts\":32.8468,\"_etag\":\"vqwt\",\"id\":\"mkyi\",\"body\":\"ysi\",\"triggerType\":\"Post\",\"triggerOperation\":\"Replace\"}},\"location\":\"dhohsdtmcdzsuf\",\"tags\":{\"vhdbevwqqxey\":\"dxbzlmcmuap\",\"qzinkfkbg\":\"ko\"},\"identity\":{\"principalId\":\"owxeqocljmy\",\"tenantId\":\"kzq\",\"type\":\"None\",\"userAssignedIdentities\":{\"q\":{\"principalId\":\"bzefezr\",\"clientId\":\"czurtlei\"},\"noda\":{\"principalId\":\"kwv\",\"clientId\":\"nzvdfbzdixzmq\"}}},\"id\":\"pqhe\",\"name\":\"jptmcgsbost\",\"type\":\"eln\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"mzjr\",\"_ts\":88.29674,\"_etag\":\"zeqyjleziun\",\"id\":\"xdfzantkw\",\"body\":\"gyamlbnseqacjjv\",\"triggerType\":\"Post\",\"triggerOperation\":\"Update\"}},\"location\":\"oq\",\"tags\":{\"itgueiookjbs\":\"m\",\"cslmotoebnfxo\":\"hrtdtpdelq\",\"razftxejwabmdujt\":\"vcjkgd\",\"m\":\"vcopex\"},\"identity\":{\"principalId\":\"buhhlkyqlt\",\"tenantId\":\"rogtuwkf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ogsf\":{\"principalId\":\"ysidfvclgl\",\"clientId\":\"fuijtkbus\"},\"vwkpqh\":{\"principalId\":\"ayiansharujtji\",\"clientId\":\"fzyjqt\"}}},\"id\":\"enuygbq\",\"name\":\"qqekewvnqvcdlgu\",\"type\":\"ucmfdj\"}")
             .toObject(SqlTriggerGetResultsInner.class);
-        Assertions.assertEquals("dhohsdtmcdzsuf", model.location());
-        Assertions.assertEquals("dxbzlmcmuap", model.tags().get("vhdbevwqqxey"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("mkyi", model.resource().id());
-        Assertions.assertEquals("ysi", model.resource().body());
+        Assertions.assertEquals("oq", model.location());
+        Assertions.assertEquals("m", model.tags().get("itgueiookjbs"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xdfzantkw", model.resource().id());
+        Assertions.assertEquals("gyamlbnseqacjjv", model.resource().body());
         Assertions.assertEquals(TriggerType.POST, model.resource().triggerType());
-        Assertions.assertEquals(TriggerOperation.REPLACE, model.resource().triggerOperation());
+        Assertions.assertEquals(TriggerOperation.UPDATE, model.resource().triggerOperation());
     }
 }

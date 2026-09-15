@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class PercentileTargetListMetricsSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBPercentileTargetGetMetrics.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBPercentileTargetGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.

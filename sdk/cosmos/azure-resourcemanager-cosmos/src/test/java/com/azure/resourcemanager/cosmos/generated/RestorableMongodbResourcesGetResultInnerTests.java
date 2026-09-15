@@ -12,9 +12,9 @@ public final class RestorableMongodbResourcesGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableMongodbResourcesGetResultInner model = BinaryData.fromString(
-            "{\"id\":\"lsk\",\"name\":\"ddida\",\"type\":\"llrqmtlpbyxro\",\"databaseName\":\"uyqyp\",\"collectionNames\":[\"noiicsu\",\"yhbrjjta\",\"xrdsjrholuqwg\"]}")
+            "{\"id\":\"nopm\",\"name\":\"ds\",\"type\":\"o\",\"databaseName\":\"lyo\",\"collectionNames\":[\"fbkmvldzmxojzsv\",\"aigbq\"]}")
             .toObject(RestorableMongodbResourcesGetResultInner.class);
-        Assertions.assertEquals("uyqyp", model.databaseName());
-        Assertions.assertEquals("noiicsu", model.collectionNames().get(0));
+        Assertions.assertEquals("lyo", model.databaseName());
+        Assertions.assertEquals("fbkmvldzmxojzsv", model.collectionNames().get(0));
     }
 }

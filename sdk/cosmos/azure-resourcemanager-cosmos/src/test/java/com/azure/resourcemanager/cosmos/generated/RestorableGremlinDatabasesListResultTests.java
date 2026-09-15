@@ -12,8 +12,8 @@ public final class RestorableGremlinDatabasesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableGremlinDatabasesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resource\":{\"_rid\":\"odpjwyblvtb\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"byidaelqpvekmkwj\",\"canUndeleteReason\":\"o\",\"eventTimestamp\":\"oggdusxursui\",\"ownerId\":\"xcjkcoqwczsy\",\"ownerResourceId\":\"rizfwihvaang\"}},\"id\":\"nhjrfdmfd\",\"name\":\"b\",\"type\":\"xxjfwtgdfkkauig\"},{\"properties\":{\"resource\":{\"_rid\":\"fmczfedyueps\",\"operationType\":\"Create\",\"canUndelete\":\"ida\",\"canUndeleteReason\":\"vy\",\"eventTimestamp\":\"ocfkumcfjxoky\",\"ownerId\":\"syasvfnkwmygjjek\",\"ownerResourceId\":\"nfdrugjqyck\"}},\"id\":\"xkrdtul\",\"name\":\"cjdk\",\"type\":\"tcsubmzoo\"},{\"properties\":{\"resource\":{\"_rid\":\"bch\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"whdyslbklglm\",\"canUndeleteReason\":\"kkwayqshwyqxri\",\"eventTimestamp\":\"tb\",\"ownerId\":\"q\",\"ownerResourceId\":\"kgxqwqueuuylztpz\"}},\"id\":\"zevjykofve\",\"name\":\"fkhkqtwqlep\",\"type\":\"zkca\"}],\"nextLink\":\"wz\"}")
+            "{\"value\":[{\"properties\":{\"resource\":{\"_rid\":\"th\",\"operationType\":\"Delete\",\"canUndelete\":\"bpergwlck\",\"canUndeleteReason\":\"bamyqsokkn\",\"eventTimestamp\":\"gz\",\"ownerId\":\"dizcrj\",\"ownerResourceId\":\"iujz\"}},\"id\":\"sexgkrswksykkbxk\",\"name\":\"b\",\"type\":\"lmnwzoknvuqddlgg\"},{\"properties\":{\"resource\":{\"_rid\":\"lgzubak\",\"operationType\":\"Create\",\"canUndelete\":\"ggcmfnsffetp\",\"canUndeleteReason\":\"ixwewzlscgsmep\",\"eventTimestamp\":\"vxgv\",\"ownerId\":\"dbthhxmoevv\",\"ownerResourceId\":\"eepfh\"}},\"id\":\"nn\",\"name\":\"xqhpjhuboh\",\"type\":\"zgaybvr\"}],\"nextLink\":\"og\"}")
             .toObject(RestorableGremlinDatabasesListResult.class);
-        Assertions.assertEquals("wz", model.nextLink());
+        Assertions.assertEquals("og", model.nextLink());
     }
 }

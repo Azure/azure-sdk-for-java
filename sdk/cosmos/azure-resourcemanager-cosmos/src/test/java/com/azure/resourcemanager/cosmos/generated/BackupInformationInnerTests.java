@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupInformationInner model
-            = BinaryData.fromString("{\"continuousBackupInformation\":{\"latestRestorableTimestamp\":\"gxdbeesmie\"}}")
-                .toObject(BackupInformationInner.class);
-        Assertions.assertEquals("gxdbeesmie", model.continuousBackupInformation().latestRestorableTimestamp());
+        BackupInformationInner model = BinaryData
+            .fromString("{\"continuousBackupInformation\":{\"latestRestorableTimestamp\":\"piljhahzvech\"}}")
+            .toObject(BackupInformationInner.class);
+        Assertions.assertEquals("piljhahzvech", model.continuousBackupInformation().latestRestorableTimestamp());
     }
 }

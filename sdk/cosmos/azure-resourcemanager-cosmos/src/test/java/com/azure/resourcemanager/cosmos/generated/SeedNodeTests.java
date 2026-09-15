@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SeedNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SeedNode model = BinaryData.fromString("{\"ipAddress\":\"ekewnazeaj\"}").toObject(SeedNode.class);
-        Assertions.assertEquals("ekewnazeaj", model.ipAddress());
+        SeedNode model = BinaryData.fromString("{\"ipAddress\":\"zstifgufyj\"}").toObject(SeedNode.class);
+        Assertions.assertEquals("zstifgufyj", model.ipAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SeedNode model = new SeedNode().withIpAddress("ekewnazeaj");
+        SeedNode model = new SeedNode().withIpAddress("zstifgufyj");
         model = BinaryData.fromObject(model).toObject(SeedNode.class);
-        Assertions.assertEquals("ekewnazeaj", model.ipAddress());
+        Assertions.assertEquals("zstifgufyj", model.ipAddress());
     }
 }

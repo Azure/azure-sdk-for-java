@@ -14,13 +14,13 @@ public final class RestorableSqlDatabaseGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableSqlDatabaseGetResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"qcbpokstsinv\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"jyhdrxb\",\"canUndeleteReason\":\"vcehqw\",\"eventTimestamp\":\"txnmxgnmguz\",\"ownerId\":\"wvor\",\"ownerResourceId\":\"lkjnbkb\",\"database\":{\"_rid\":\"ltqstqkqsygxiyn\",\"_ts\":71.25525,\"_etag\":\"agz\",\"_colls\":\"eubanlxunpqcc\",\"_users\":\"iawzlzklaslgac\",\"_self\":\"uxlrarwpe\",\"id\":\"saudoejtighsx\",\"restoreParameters\":{\"restoreSource\":\"tnkqbala\",\"restoreTimestampInUtc\":\"2021-02-11T19:42:24Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}}},\"id\":\"mehjnhjioti\",\"name\":\"bbcngkeg\",\"type\":\"y\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"xhfwlfxzfwuge\",\"operationType\":\"Replace\",\"canUndelete\":\"necexkgrvfps\",\"canUndeleteReason\":\"m\",\"eventTimestamp\":\"sytqpdzfyxcnwawo\",\"ownerId\":\"gzb\",\"ownerResourceId\":\"qfbifo\",\"database\":{\"_rid\":\"xdwdrpazqjkrfm\",\"_ts\":85.73021,\"_etag\":\"fcuuugtjigpg\",\"_colls\":\"iawohfmhn\",\"_users\":\"mecjjkmqenhaidzr\",\"_self\":\"sgloi\",\"id\":\"vslvivqsuvwten\",\"restoreParameters\":{\"restoreSource\":\"i\",\"restoreTimestampInUtc\":\"2021-04-25T21:12:03Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"}}},\"id\":\"qxukuicj\",\"name\":\"teki\",\"type\":\"anduew\"}")
             .toObject(RestorableSqlDatabaseGetResultInner.class);
-        Assertions.assertEquals("saudoejtighsx", model.resource().database().id());
-        Assertions.assertEquals("tnkqbala", model.resource().database().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T19:42:24Z"),
+        Assertions.assertEquals("vslvivqsuvwten", model.resource().database().id());
+        Assertions.assertEquals("i", model.resource().database().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T21:12:03Z"),
             model.resource().database().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.resource().database().restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.resource().database().createMode());
+        Assertions.assertTrue(model.resource().database().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.resource().database().createMode());
     }
 }
