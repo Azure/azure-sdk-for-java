@@ -192,6 +192,7 @@
     <module>sdk/networkfunction</module>
     <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
+    <module>sdk/nodecustomization</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
     <module>sdk/onlineexperimentation</module>
