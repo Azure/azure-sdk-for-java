@@ -4,6 +4,7 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -296,6 +297,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
         jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("harness", this.harness);
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -322,6 +325,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
             BinaryData toolChoice = null;
             PromptAgentDefinitionTextOptions text = null;
             Map<String, StructuredInputDefinition> structuredInputs = null;
+            AgentHarness harness = null;
+            List<SkillReference> skills = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -351,6 +356,10 @@ public final class PromptAgentDefinition extends AgentDefinition {
                     text = PromptAgentDefinitionTextOptions.fromJson(reader);
                 } else if ("structured_inputs".equals(fieldName)) {
                     structuredInputs = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
+                } else if ("harness".equals(fieldName)) {
+                    harness = AgentHarness.fromJson(reader);
+                } else if ("skills".equals(fieldName)) {
+                    skills = reader.readArray(reader1 -> SkillReference.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -366,6 +375,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
             deserializedPromptAgentDefinition.toolChoice = toolChoice;
             deserializedPromptAgentDefinition.text = text;
             deserializedPromptAgentDefinition.structuredInputs = structuredInputs;
+            deserializedPromptAgentDefinition.harness = harness;
+            deserializedPromptAgentDefinition.skills = skills;
             return deserializedPromptAgentDefinition;
         });
     }
@@ -461,6 +472,71 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public PromptAgentDefinition setReasoning(Reasoning reasoning) {
         // AI Tooling: openai-java de-dup
         this.reasoning = reasoning;
+        return this;
+    }
+
+    /*
+     * The managed runtime and agent loop used to execute this prompt agent.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+    private AgentHarness harness;
+
+    /*
+     * The Foundry skills available to this prompt agent. An omitted skill version is resolved and pinned when the agent
+     * version is created.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Skills=V1Preview")
+    private List<SkillReference> skills;
+
+    /**
+     * Get the harness property: The managed runtime and agent loop used to execute this prompt agent.
+     *
+     * @return the harness value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+    public AgentHarness getHarness() {
+        return this.harness;
+    }
+
+    /**
+     * Set the harness property: The managed runtime and agent loop used to execute this prompt agent.
+     *
+     * @param harness the harness value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
+    public PromptAgentDefinition setHarness(AgentHarness harness) {
+        this.harness = harness;
+        return this;
+    }
+
+    /**
+     * Get the skills property: The Foundry skills available to this prompt agent. An omitted skill version is resolved
+     * and pinned when the agent version is created.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Skills=V1Preview")
+    public List<SkillReference> getSkills() {
+        return this.skills;
+    }
+
+    /**
+     * Set the skills property: The Foundry skills available to this prompt agent. An omitted skill version is resolved
+     * and pinned when the agent version is created.
+     *
+     * @param skills the skills value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. Skills=V1Preview")
+    public PromptAgentDefinition setSkills(List<SkillReference> skills) {
+        this.skills = skills;
         return this;
     }
 }

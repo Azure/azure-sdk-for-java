@@ -61,7 +61,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Initializes an instance of BetaAgentsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     BetaAgentsImpl(AgentsClientImpl client) {
@@ -72,7 +72,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -86,6 +86,28 @@ public final class BetaAgentsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AgentsClientBetaAgents")
     public interface BetaAgentsService {
+        @Post("/agents:generate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createAgentFromPrompt(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents:generate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createAgentFromPromptSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
         @Post("/agent_optimization_jobs")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -190,8 +212,303 @@ public final class BetaAgentsImpl {
     }
 
     /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createAgentFromPromptWithResponseAsync(BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createAgentFromPrompt(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Generate an agent
+     *
+     * Generates and creates an agent from kind-specific high-level inputs.
+     * The generated definition remains fully editable through the standard agent versioning operations.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *             }
+     *             draft: Boolean (Optional)
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *                 access_boundaries (Optional): [
+     *                     String(read.1on1.developers/read.1on1.manager/read.1on1.allowlisted/read.1on1.tenant/write.1on1.developers/write.1on1.manager/write.1on1.allowlisted/write.1on1.tenant/read.group.developers/read.group.allowlisted/read.group.manager-invited/read.group.manager-present/read.group.tenant/write.group.developers/write.group.allowlisted/write.group.manager-invited/write.group.manager-present/write.group.tenant) (Optional)
+     *                 ]
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
+     *             }
+     *         ]
+     *         publish_approval_status: String(not_published/pending/approved/rejected/no_approval_needed) (Optional)
+     *     }
+     *     digital_worker_type: String(m365) (Optional)
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param body The kind-specific inputs for generating and creating an agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAgentFromPromptWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createAgentFromPromptSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
+    }
+
+    /**
      * Create an agent optimization job
-     * 
+     *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -202,7 +519,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -284,9 +601,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -368,7 +685,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -390,7 +707,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     * 
+     *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -401,7 +718,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -483,9 +800,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -567,7 +884,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -587,7 +904,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     * 
+     *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -598,7 +915,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -680,9 +997,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -764,7 +1081,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -793,7 +1110,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     * 
+     *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -804,7 +1121,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -886,9 +1203,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -970,7 +1287,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -999,7 +1316,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     * 
+     *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1010,7 +1327,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1092,9 +1409,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1176,7 +1493,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1204,7 +1521,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     * 
+     *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1215,7 +1532,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1297,9 +1614,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1381,7 +1698,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1409,10 +1726,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Get an agent optimization job
-     * 
+     *
      * Retrieves an optimization job by its identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1494,14 +1811,14 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
      * </table>
-     * 
+     *
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1509,7 +1826,7 @@ public final class BetaAgentsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent optimization job
-     * 
+     *
      * Retrieves an optimization job by its identifier along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -1522,10 +1839,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Get an agent optimization job
-     * 
+     *
      * Retrieves an optimization job by its identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1607,14 +1924,14 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
      * </table>
-     * 
+     *
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1622,7 +1939,7 @@ public final class BetaAgentsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent optimization job
-     * 
+     *
      * Retrieves an optimization job by its identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1634,7 +1951,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     * 
+     *
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1660,7 +1977,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1695,7 +2012,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1716,7 +2033,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     * 
+     *
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1742,7 +2059,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1777,7 +2094,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1792,7 +2109,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     * 
+     *
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1818,7 +2135,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1853,7 +2170,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1872,7 +2189,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     * 
+     *
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1898,7 +2215,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1933,7 +2250,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1948,10 +2265,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Cancel an agent optimization job
-     * 
+     *
      * Requests cancellation of a running or queued job and returns an error if the job is already in a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2033,7 +2350,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2054,10 +2371,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Cancel an agent optimization job
-     * 
+     *
      * Requests cancellation of a running or queued job and returns an error if the job is already in a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2139,7 +2456,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2158,9 +2475,9 @@ public final class BetaAgentsImpl {
 
     /**
      * Delete an agent optimization job
-     * 
+     *
      * Deletes the job and its candidate artifacts, canceling the job first if it is non-terminal.
-     * 
+     *
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2177,9 +2494,9 @@ public final class BetaAgentsImpl {
 
     /**
      * Delete an agent optimization job
-     * 
+     *
      * Deletes the job and its candidate artifacts, canceling the job first if it is non-terminal.
-     * 
+     *
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

@@ -3,6 +3,7 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -408,8 +409,10 @@ public class AgentsCustomizations extends Customization {
                     clazz.getMethodsByName("fromJson")
                         .forEach(method -> method.findAll(AssignExpr.class).stream()
                             .filter(assignment -> assignment.getTarget().toString().endsWith(".role"))
-                            .forEach(assignment -> assignment.findAncestor(ExpressionStmt.class)
-                                .ifPresent(ExpressionStmt::remove)));
+                            .forEach(assignment -> assignment.stream(Node.TreeTraversal.PARENTS)
+                                .filter(ExpressionStmt.class::isInstance)
+                                .findFirst()
+                                .ifPresent(Node::remove)));
                 }));
         }
     }
@@ -432,13 +435,43 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void modifyPollingStrategies(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.implementation", "OperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"))));
+        customizePollingStrategy(customization, "OperationLocationPollingStrategy",
+            "{ return AgentsServicePollUtils.poll(pollingStrategyOptions, serializer, endpoint, pollingContext, pollResponseType); }");
+        customizePollingStrategy(customization, "SyncOperationLocationPollingStrategy",
+            "{ return AgentsServicePollUtils.pollSync(pollingStrategyOptions, serializer, endpoint, pollingContext, pollResponseType); }");
+    }
 
-        customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+    private static void customizePollingStrategy(LibraryCustomization customization, String className,
+        String pollMethodBody) {
+        customization.getClass("com.azure.ai.agents.implementation", className).customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + " was not found."));
+            if (!clazz.getFieldByName("pollingStrategyOptions").isPresent()) {
+                clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                    "private final PollingStrategyOptions pollingStrategyOptions;"));
+            }
+
+            com.github.javaparser.ast.stmt.BlockStmt constructorBody = clazz.getConstructors().stream()
+                .filter(constructor -> constructor.getParameters().size() == 2)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(className + " two-parameter constructor was not found."))
+                .getBody();
+            String optionsAssignment = "this.pollingStrategyOptions = pollingStrategyOptions;";
+            if (constructorBody.getStatements().stream()
+                .noneMatch(statement -> optionsAssignment.equals(statement.toString()))) {
+                constructorBody.addStatement(1, StaticJavaParser.parseStatement(optionsAssignment));
+            }
+
+            List<MethodDeclaration> pollMethods = clazz.getMethodsByName("poll");
+            if (pollMethods.isEmpty()) {
+                String returnType = className.startsWith("Sync") ? "PollResponse<T>" : "Mono<PollResponse<T>>";
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public " + returnType
+                    + " poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) "
+                    + pollMethodBody));
+            } else {
+                pollMethods.get(0).setBody(StaticJavaParser.parseBlock(pollMethodBody));
+            }
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
