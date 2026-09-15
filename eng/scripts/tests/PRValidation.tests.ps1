@@ -5,6 +5,7 @@ BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '..' '..' '..')).Path
     $script:Scripts = Join-Path $script:RepositoryRoot 'eng' 'scripts'
     . (Join-Path $script:Scripts 'helpers' 'PR-Validation-Helpers.ps1')
+    . (Join-Path $script:Scripts 'helpers' 'PR-ChangeLog-Routing.ps1')
     $script:PowerShell = (Get-Command pwsh -CommandType Application | Select-Object -First 1).Source
     $script:PreviousModulePath = $env:PSModulePath
     $script:PreviousYamlModulePaths = @(Get-Module -Name powershell-yaml | ForEach-Object Path)
@@ -133,6 +134,108 @@ $($artifacts -join "`n")
 
         return Invoke-PRValidationProcess -FilePath $script:PowerShell -WorkingDirectory $WorkingDirectory `
             -Arguments (@('-NoLogo', '-NoProfile', '-NonInteractive', '-File', $Path) + $Arguments)
+    }
+
+    function Initialize-RoutingFixture {
+        param($Fixture = (New-ValidationFixture))
+
+        Set-ValidationFixtureFile $Fixture.Root 'README.md' 'Reviewed root documentation.'
+        Set-ValidationFixtureFile $Fixture.Root 'docs/old.md' 'Reviewed documentation to remove.'
+        Invoke-PRValidationGit $Fixture.Root @('init', '--quiet') | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('config', 'user.name', 'Fixture') | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('config', 'user.email', 'fixture@example.invalid') | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('add', '--all', '--', '.', ':!validation') | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('commit', '--quiet', '-m', 'Fixture base') | Out-Null
+        $Fixture.Base = (Invoke-PRValidationGit $Fixture.Root @('rev-parse', 'HEAD')).Trim()
+        Invoke-PRValidationGit $Fixture.Root @('checkout', '--quiet', '-b', 'changes') | Out-Null
+        return $Fixture
+    }
+
+    function Complete-RoutingFixture {
+        param(
+            $Fixture,
+            [string[]]$Changed = @('sdk/fixture/azure-fixture-alpha/CHANGELOG.md'),
+            [string[]]$Deleted = @()
+        )
+
+        foreach ($path in $Changed) {
+            $fullPath = Join-Path $Fixture.Root $path
+            $text = if (Test-Path -LiteralPath $fullPath -PathType Leaf) { Get-Content -LiteralPath $fullPath -Raw } else { 'New fixture content.' }
+            Set-ValidationFixtureFile $Fixture.Root $path ($text + "`n")
+        }
+        foreach ($path in $Deleted) {
+            Remove-Item -LiteralPath (Join-Path $Fixture.Root $path)
+        }
+        Invoke-PRValidationGit $Fixture.Root @('add', '--all', '--', '.', ':!validation') | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('commit', '--quiet', '-m', 'Fixture changes') | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('checkout', '--quiet', '-b', 'target', $Fixture.Base) | Out-Null
+        Invoke-PRValidationGit $Fixture.Root @('merge', '--quiet', '--no-ff', 'changes', '-m', 'Synthetic PR merge') | Out-Null
+        $Fixture.Snapshot = Get-PRValidationSnapshot $Fixture.Root
+        $Fixture.Validation = Invoke-FixtureChangelogs $Fixture $Fixture.Snapshot.ChangedFiles $Fixture.Snapshot.DeletedFiles
+        $Fixture.DiffPath = Join-Path $Fixture.Output 'azure-diff.json'
+        $Fixture.Snapshot | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath $Fixture.DiffPath
+        return $Fixture
+    }
+
+    function Get-FixtureRouting {
+        param($Fixture)
+
+        return Get-PRChangeLogOnlyEligibility -Snapshot $Fixture.Snapshot -RepositoryRoot $Fixture.Root `
+            -PackageInfoDirectory (Join-Path $Fixture.Output 'PackageInfo') -DependencyDirectory $script:ModuleCache
+    }
+
+    function New-CoveredRoutingContext {
+        return @{
+            TeamProject = 'public'
+            CollectionUri = 'https://dev.azure.com/azure-sdk/'
+            RepositoryName = 'Azure/azure-sdk-for-java'
+            RepositoryProvider = 'GitHub'
+            RepositoryUri = 'https://github.com/Azure/azure-sdk-for-java'
+            Reason = 'PullRequest'
+            SourceBranch = 'refs/pull/123/merge'
+            TargetBranch = 'main'
+        }
+    }
+
+    function Invoke-FixtureClassifier {
+        param($Fixture, [switch]$Force, [string]$SourceVersion = $Fixture.Snapshot.SourceCommit)
+
+        $env:BUILD_SOURCEVERSION = $SourceVersion
+        $routingDirectory = Join-Path $Fixture.Output 'routing'
+        New-Item -ItemType Directory -Path $routingDirectory -Force | Out-Null
+        if (-not (Test-Path -LiteralPath (Join-Path $routingDirectory 'modules'))) {
+            Copy-Item -LiteralPath $script:Modules -Destination (Join-Path $routingDirectory 'modules') -Recurse
+        }
+        $arguments = @{
+            DiffPath = $Fixture.DiffPath
+            PackageInfoDirectory = Join-Path $Fixture.Output 'PackageInfo'
+            ValidationDirectory = $routingDirectory
+            RepositoryRoot = $Fixture.Root
+            UseCombinedPRValidation = $true
+            ServiceDirectory = 'auto'
+            SdkType = 'client'
+            ForceFullValidation = $Force.IsPresent
+            PassThru = $true
+        }
+        $output = & (Join-Path $script:Scripts 'Classify-PRChanges.ps1') @arguments 6>&1
+        $classifications = @($output | Where-Object { $_.PSObject.Properties['RunBuild'] })
+        if ($classifications.Count -ne 1) { throw 'Expected exactly one classifier result.' }
+        return @{
+            Result = $classifications[0]
+            Log = ($output | Where-Object { $_ -is [System.Management.Automation.InformationRecord] }) -join "`n"
+        }
+    }
+
+    function Get-ValidationTemplateReference {
+        param($Node, [string]$Template)
+
+        if ($Node -is [System.Collections.IDictionary]) {
+            if ($Node['template'] -ceq $Template) { $Node }
+            foreach ($value in $Node.Values) { Get-ValidationTemplateReference $value $Template }
+        }
+        elseif ($Node -is [System.Collections.IList]) {
+            foreach ($value in $Node) { Get-ValidationTemplateReference $value $Template }
+        }
     }
 
     function New-SuccessfulStepOutcomes {
@@ -517,6 +620,619 @@ Describe 'Shared Java package selection and changelog validation' -Tag 'UnitTest
     }
 }
 
+Describe 'Package-root changelog routing eligibility' -Tag 'UnitTest' {
+    It 'proves an existing package changelog edit using real Java discovery and both Git revisions' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeTrue -Because $result.Reason
+        $result.RequiresFullValidation | Should -BeFalse
+        $result.PackageChangeLogs | Should -Be @('sdk/fixture/azure-fixture-alpha/CHANGELOG.md')
+        $fixture.Validation.Packages[0].Name | Should -Be 'azure-fixture-alpha'
+        $fixture.Snapshot.SourceCommit | Should -Not -Be $fixture.Snapshot.TargetCommit
+        Test-Path (Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json') | Should -BeTrue
+    }
+
+    It 'accepts multiple supported changelogs with reviewed root/docs text and a deleted document' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @(
+            'sdk/fixture/azure-fixture-alpha/CHANGELOG.md',
+            'sdk/fixture/azure-fixture-beta/CHANGELOG.md',
+            'README.md', 'docs/new guide.md', 'docs/notes.txt'
+        ) @('docs/old.md')
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeTrue -Because $result.Reason
+        $result.PackageChangeLogs.Count | Should -Be 2
+        $fixture.Snapshot.DeletedFiles | Should -Be @('docs/old.md')
+    }
+
+    It 'retains Java for a changelog mixed with <Path>' -TestCases @(
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/pom.xml' },
+        @{ Path = 'sdk/fixture/azure-fixture-new/pom.xml' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/README.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/src/main/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/src/test/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/src/test-shared/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/resources/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/test-resources/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/swagger/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/codegen/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/typespec/CHANGELOG.md' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/tsp-location.yaml' },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/tspconfig.yaml' },
+        @{ Path = 'sdk/fixture/eng/CHANGELOG.md' },
+        @{ Path = 'eng/scripts/CHANGELOG.md' },
+        @{ Path = 'docs/scripts/CHANGELOG.md' },
+        @{ Path = 'docs/SRC/main/CHANGELOG.md' },
+        @{ Path = 'docs/diagram.png' },
+        @{ Path = 'unknown.md' },
+        @{ Path = 'README.md.template' }
+    ) {
+        param($Path)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @(
+            'sdk/fixture/azure-fixture-alpha/CHANGELOG.md', $Path
+        )
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.RequiresFullValidation | Should -BeTrue
+        $result.Reason | Should -Match 'Not an exact supported'
+    }
+
+    It 'does not use a passing fallback/template validation as proof for an unmapped changelog' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @('sdk/unmapped/unknown/CHANGELOG.md')
+        $fixture.Validation.Status | Should -Be 'Passed'
+        $fixture.Validation.Packages[0].Name | Should -Be 'azure-fixture-template'
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.RequiresFullValidation | Should -BeTrue
+        $result.Reason | Should -Match 'one directly selected package'
+    }
+
+    It 'keeps Java for a valid newly declared package even when its changelog validation passes' {
+        $fixture = Initialize-RoutingFixture
+        Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-new/pom.xml' @'
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <groupId>com.azure</groupId><artifactId>azure-fixture-new</artifactId><version>1.2.3</version>
+</project>
+'@
+        Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-new/CHANGELOG.md' "# Release History`n`n## 1.2.3 (Unreleased)"
+        $ci = Join-Path $fixture.Root 'sdk/fixture/ci.yml'
+        (Get-Content $ci -Raw) + "`n      - name: azure-fixture-new`n        groupId: com.azure" | Set-Content $ci
+        $fixture = Complete-RoutingFixture $fixture @(
+            'sdk/fixture/azure-fixture-new/pom.xml', 'sdk/fixture/azure-fixture-new/CHANGELOG.md', 'sdk/fixture/ci.yml'
+        )
+        $fixture.Validation.Status | Should -Be 'Passed' -Because ($fixture.Validation.Messages -join "`n")
+        $fixture.Validation.Packages.Name | Should -Contain 'azure-fixture-new'
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.RequiresFullValidation | Should -BeTrue
+    }
+
+    It 'requires an applicable check rather than treating skipVerifyChangeLog as bypass permission' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @('sdk/fixture/azure-fixture-skip/CHANGELOG.md')
+        $fixture.Validation.Packages[0].Status | Should -Be 'Skipped'
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.Reason | Should -Match 'skipVerifyChangeLog'
+    }
+
+    It 'accepts an explicit false skipVerifyChangeLog flag' {
+        $fixture = New-ValidationFixture
+        $ci = Join-Path $fixture.Root 'sdk/fixture/ci.yml'
+        (Get-Content $ci -Raw).Replace('skipVerifyChangeLog: true', 'skipVerifyChangeLog: false') | Set-Content $ci
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture $fixture) @('sdk/fixture/azure-fixture-skip/CHANGELOG.md')
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeTrue -Because $result.Reason
+        $fixture.Validation.Packages[0].Status | Should -Be 'Passed'
+    }
+
+    It 'routes invalid changelog content to the required check, which still fails' {
+        $fixture = Initialize-RoutingFixture
+        Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' "# Release History`n`n## 0.0.1 (Unreleased)"
+        $fixture = Complete-RoutingFixture $fixture
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeTrue -Because $result.Reason
+        $fixture.Validation.Status | Should -Be 'Failed'
+        $fixture.Snapshot | ConvertTo-Json -Depth 30 | Set-Content (Join-Path $fixture.Output 'diff.json')
+        $check = Invoke-ValidationScript (Join-Path $script:Scripts 'Invoke-PRValidation.ps1') @(
+            '-Check', 'Changelogs', '-RepositoryRoot', $fixture.Root, '-OutputDirectory', $fixture.Output
+        )
+        $check.ExitCode | Should -Be 1
+        (Get-Content (Join-Path $fixture.Output 'changelogs.json') -Raw | ConvertFrom-Json).Status | Should -Be 'Failed'
+    }
+
+    It 'rejects empty or malformed complete snapshots' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        foreach ($case in @('empty', 'missing-deletions', 'missing-source', 'scalar-paths', 'traversal', 'duplicate')) {
+            $snapshot = $fixture.Snapshot | ConvertTo-Json -Depth 30 | ConvertFrom-Json -AsHashtable
+            switch ($case) {
+                'empty' { $snapshot.ChangedFiles = @(); $snapshot.DeletedFiles = @() }
+                'missing-deletions' { $snapshot.Remove('DeletedFiles') }
+                'missing-source' { $snapshot.Remove('SourceCommit') }
+                'scalar-paths' { $snapshot.ChangedFiles = 'README.md' }
+                'traversal' { $snapshot.ChangedFiles = @('../CHANGELOG.md') }
+                'duplicate' { $snapshot.ChangedFiles += $snapshot.ChangedFiles }
+            }
+            $result = Get-PRChangeLogOnlyEligibility $snapshot $fixture.Root `
+                (Join-Path $fixture.Output 'PackageInfo') $script:ModuleCache
+            $result.Eligible | Should -BeFalse -Because $case
+            $result.RequiresFullValidation | Should -BeTrue -Because $case
+        }
+    }
+
+    It 'rejects missing, empty, corrupt, or duplicate original PackageInfo: <Case>' -TestCases @(
+        @{ Case = 'missing' }, @{ Case = 'empty' }, @{ Case = 'corrupt' }, @{ Case = 'not-object' }, @{ Case = 'duplicate' }
+    ) {
+        param($Case)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $directory = Join-Path $fixture.Output 'PackageInfo'
+        $path = Join-Path $directory 'azure-fixture-alpha.json'
+        switch ($Case) {
+            'missing' { Remove-Item -LiteralPath $directory -Recurse }
+            'empty' { Remove-Item -LiteralPath $path }
+            'corrupt' { Set-Content -LiteralPath $path -Value '{' }
+            'not-object' { Set-Content -LiteralPath $path -Value '[]' }
+            'duplicate' { Copy-Item -LiteralPath $path -Destination (Join-Path $directory 'duplicate.json') }
+        }
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.RequiresFullValidation | Should -BeTrue
+        $result.Reason | Should -Not -BeNullOrEmpty
+    }
+
+    It 'rejects invalid selected metadata for <Property>' -TestCases @(
+        @{ Property = 'Name'; Value = '' },
+        @{ Property = 'Group'; Value = 'com.unknown' },
+        @{ Property = 'Version'; Value = '9.9.9' },
+        @{ Property = 'ArtifactName'; Value = 'other' },
+        @{ Property = 'DirectoryPath'; Value = '../azure-fixture-alpha' },
+        @{ Property = 'DirectoryPath'; Value = 'sdk/fixture/nested/azure-fixture-alpha' },
+        @{ Property = 'ServiceDirectory'; Value = 'fixture/azure-fixture-alpha' },
+        @{ Property = 'ChangeLogPath'; Value = 'sdk/fixture/azure-fixture-alpha/src/main/CHANGELOG.md' },
+        @{ Property = 'ChangeLogPath'; Value = '' },
+        @{ Property = 'SdkType'; Value = 'data' },
+        @{ Property = 'SdkType'; Value = 'spring' },
+        @{ Property = 'SdkType'; Value = 'unknown' },
+        @{ Property = 'IsNewSdk'; Value = $false },
+        @{ Property = 'IsNewSdk'; Value = 'true' },
+        @{ Property = 'IncludedForValidation'; Value = $true },
+        @{ Property = 'IncludedForValidation'; Value = 'false' },
+        @{ Property = 'ArtifactDetails'; Value = @{} },
+        @{ Property = 'ArtifactDetails'; Value = @{ name = 'other'; groupId = 'com.azure' } },
+        @{ Property = 'ArtifactDetails'; Value = @{ name = 'azure-fixture-alpha'; groupId = 'com.other' } },
+        @{ Property = 'ArtifactDetails'; Value = @{ name = 'azure-fixture-alpha'; groupId = 'com.azure'; skipVerifyChangeLog = 'false' } }
+    ) {
+        param($Property, $Value)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $path = Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json'
+        $metadata = Get-Content $path -Raw | ConvertFrom-Json -AsHashtable
+        $metadata[$Property] = $Value
+        $metadata | ConvertTo-Json -Depth 30 | Set-Content $path
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.RequiresFullValidation | Should -BeTrue
+    }
+
+    It 'rechecks real CI/POM metadata rather than trusting stale PackageInfo: <Case>' -TestCases @(
+        @{ Case = 'missing-pom' }, @{ Case = 'malformed-pom' }, @{ Case = 'changed-version' },
+        @{ Case = 'missing-ci' }, @{ Case = 'malformed-ci' }, @{ Case = 'removed-artifact' }
+    ) {
+        param($Case)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $pom = Join-Path $fixture.Root 'sdk/fixture/azure-fixture-alpha/pom.xml'
+        $ci = Join-Path $fixture.Root 'sdk/fixture/ci.yml'
+        switch ($Case) {
+            'missing-pom' { Remove-Item -LiteralPath $pom }
+            'malformed-pom' { Set-Content -LiteralPath $pom -Value '<project>' }
+            'changed-version' { (Get-Content $pom -Raw).Replace('1.2.3', '1.2.4') | Set-Content $pom }
+            'missing-ci' { Remove-Item -LiteralPath $ci }
+            'malformed-ci' { Set-Content -LiteralPath $ci -Value 'extends: [' }
+            'removed-artifact' { (Get-Content $ci -Raw).Replace('name: azure-fixture-alpha', 'name: absent') | Set-Content $ci }
+        }
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.RequiresFullValidation | Should -BeTrue
+    }
+
+    It 'rejects a package that is excluded from unified validation even with valid saved metadata' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $pipeline = Join-Path $fixture.Root 'eng/pipelines/pullrequest.yml'
+        (Get-Content $pipeline -Raw).Replace('sdk/excluded/', 'sdk/fixture/') | Set-Content $pipeline
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.Reason | Should -Match 'excluded from unified'
+    }
+
+    It 'rejects deleted and renamed package changelogs with both sides retained' {
+        $fixture = Initialize-RoutingFixture
+        Invoke-PRValidationGit $fixture.Root @('mv', 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md', 'docs/renamed.md') | Out-Null
+        $fixture = Complete-RoutingFixture $fixture @()
+        $fixture.Snapshot.ChangedFiles | Should -Be @('docs/renamed.md')
+        $fixture.Snapshot.DeletedFiles | Should -Be @('sdk/fixture/azure-fixture-alpha/CHANGELOG.md')
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.Reason | Should -Match 'Deleted or renamed'
+    }
+
+    It 'rejects a newly added package changelog even when the existing POM maps correctly' {
+        $fixture = New-ValidationFixture
+        Remove-Item -LiteralPath (Join-Path $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md')
+        $fixture = Initialize-RoutingFixture $fixture
+        Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' "# Release History`n`n## 1.2.3 (Unreleased)"
+        $fixture = Complete-RoutingFixture $fixture
+        $fixture.Validation.Status | Should -Be 'Passed'
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.Reason | Should -Match 'existing regular file'
+    }
+
+    It 'rejects a changelog missing from the checkout despite saved metadata and a valid diff' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        Remove-Item -LiteralPath (Join-Path $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md')
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.Reason | Should -Match 'missing from the checkout'
+    }
+
+    It 'rejects non-regular package and companion files in Git without depending on Windows symlink privileges: <Path>' -TestCases @(
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' }, @{ Path = 'docs/link.md' }
+    ) {
+        param($Path)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @(
+            'sdk/fixture/azure-fixture-alpha/CHANGELOG.md', 'docs/link.md'
+        )
+        $blob = (Invoke-PRValidationGit $fixture.Root @('hash-object', '-w', '--', $Path)).Trim()
+        Invoke-PRValidationGit $fixture.Root @('update-index', '--cacheinfo', '120000', $blob, $Path) | Out-Null
+        $tree = (Invoke-PRValidationGit $fixture.Root @('write-tree')).Trim()
+        $fixture.Snapshot.SourceCommit = (Invoke-PRValidationGit $fixture.Root @(
+            'commit-tree', $tree, '-p', $fixture.Snapshot.SourceCommit, '-m', 'Type-change fixture'
+        )).Trim()
+        $result = Get-FixtureRouting $fixture
+        $result.Eligible | Should -BeFalse
+        $result.Reason | Should -Match 'existing regular file'
+    }
+}
+
+Describe 'Combined changelog pipeline coverage' -Tag 'UnitTest' {
+    It 'covers only explicitly opted-in public unified main PRs' {
+        $context = New-CoveredRoutingContext
+        (Get-PRChangeLogCoverage $true 'auto' 'client' $context).Covered | Should -BeTrue
+        (Get-PRChangeLogCoverage $false 'auto' 'client' $context).Covered | Should -BeFalse
+        (Get-PRChangeLogCoverage $true 'auto' 'client' @{}).Covered | Should -BeFalse
+        $context.TargetBranch = 'refs/heads/main'
+        (Get-PRChangeLogCoverage $true 'auto' 'client' $context).Covered | Should -BeTrue
+    }
+
+    It 'retains coverage boundaries for <Property>=<Value>' -TestCases @(
+        @{ Property = 'TeamProject'; Value = 'internal' },
+        @{ Property = 'CollectionUri'; Value = 'https://dev.azure.com/other/' },
+        @{ Property = 'RepositoryName'; Value = 'Azure/azure-sdk-for-java-pr' },
+        @{ Property = 'RepositoryName'; Value = 'mirror/azure-sdk-for-java' },
+        @{ Property = 'RepositoryProvider'; Value = 'TfsGit' },
+        @{ Property = 'RepositoryUri'; Value = 'https://github.com/Azure/azure-sdk-for-java-pr' },
+        @{ Property = 'Reason'; Value = 'Manual' }, @{ Property = 'Reason'; Value = 'Schedule' },
+        @{ Property = 'Reason'; Value = 'IndividualCI' }, @{ Property = 'Reason'; Value = 'BuildCompletion' },
+        @{ Property = 'TargetBranch'; Value = 'feature/test' }, @{ Property = 'TargetBranch'; Value = 'release/test' },
+        @{ Property = 'TargetBranch'; Value = 'hotfix/test' }, @{ Property = 'TargetBranch'; Value = '' },
+        @{ Property = 'SourceBranch'; Value = 'refs/heads/main' }, @{ Property = 'SourceBranch'; Value = 'refs/pull/1/head' }
+    ) {
+        param($Property, $Value)
+        $context = New-CoveredRoutingContext
+        $context[$Property] = $Value
+        $result = Get-PRChangeLogCoverage $true 'auto' 'client' $context
+        $result.Covered | Should -BeFalse
+        $result.Reason | Should -Not -BeNullOrEmpty
+    }
+
+    It 'does not cover service-specific pipelines or other SDK types: <Service>/<Type>' -TestCases @(
+        @{ Service = 'core'; Type = 'client' }, @{ Service = 'cosmos'; Type = 'client' },
+        @{ Service = 'spring'; Type = 'client' }, @{ Service = 'template'; Type = 'client' },
+        @{ Service = 'auto'; Type = 'data' }, @{ Service = 'auto'; Type = 'mgmt' },
+        @{ Service = 'auto'; Type = '' }
+    ) {
+        param($Service, $Type)
+        (Get-PRChangeLogCoverage $true $Service $Type (New-CoveredRoutingContext)).Covered | Should -BeFalse
+    }
+}
+
+Describe 'Preflight changelog routing integration' -Tag 'UnitTest' {
+    BeforeAll {
+        $script:RoutingEnvironment = @{
+            TeamProject = 'SYSTEM_TEAMPROJECT'; CollectionUri = 'SYSTEM_COLLECTIONURI'
+            RepositoryName = 'BUILD_REPOSITORY_NAME'; RepositoryProvider = 'BUILD_REPOSITORY_PROVIDER'
+            RepositoryUri = 'BUILD_REPOSITORY_URI'; Reason = 'BUILD_REASON'
+            SourceBranch = 'BUILD_SOURCEBRANCH'; TargetBranch = 'SYSTEM_PULLREQUEST_TARGETBRANCH'
+        }
+    }
+    BeforeEach {
+        $previousEnvironment = @{}
+        foreach ($name in @($script:RoutingEnvironment.Values) + @('BUILD_SOURCEVERSION', 'FORCE_FULL_VALIDATION')) {
+            $previousEnvironment[$name] = [Environment]::GetEnvironmentVariable($name)
+            [Environment]::SetEnvironmentVariable($name, $null)
+        }
+        $context = New-CoveredRoutingContext
+        foreach ($key in $script:RoutingEnvironment.Keys) {
+            [Environment]::SetEnvironmentVariable($script:RoutingEnvironment[$key], $context[$key])
+        }
+    }
+    AfterEach {
+        foreach ($name in $previousEnvironment.Keys) {
+            [Environment]::SetEnvironmentVariable($name, $previousEnvironment[$name])
+        }
+    }
+
+    It 'emits the job gates before clearing PackageInfo and preserves independent diagnostic metadata' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $invocation = Invoke-FixtureClassifier $fixture
+        $result = $invocation.Result
+        $result.ChangeLogOnly | Should -BeTrue -Because $invocation.Log
+        $result.RunBuild | Should -BeFalse
+        $result.RunAnalyze | Should -BeFalse
+        $result.RunTests | Should -BeFalse
+        $result.SkipBuildChangeLogValidation | Should -BeTrue
+        foreach ($name in @('RunBuild', 'RunAnalyze', 'RunTests')) {
+            $invocation.Log | Should -Match "##vso\[task.setvariable variable=$name;isOutput=true\]false"
+        }
+        $invocation.Log | Should -Match '##vso\[task.setvariable variable=SkipBuildChangeLogValidation;isOutput=true\]true'
+        $invocation.Log | Should -Match '##vso\[build.addbuildtag\]JavaTestsSuppressed'
+        @(Get-ChildItem (Join-Path $fixture.Output 'PackageInfo') -Filter '*.json').Count | Should -Be 0
+        $saved = Get-Content (Join-Path $fixture.Output 'routing/PackageInfo/azure-fixture-alpha.json') -Raw | ConvertFrom-Json
+        $saved.ArtifactDetails.name | Should -Be 'azure-fixture-alpha'
+        $snapshot = Read-PRValidationSnapshot (Join-Path $fixture.Output 'routing/diff.json')
+        $snapshot.SourceCommit | Should -Be $fixture.Snapshot.SourceCommit
+        $snapshot.TargetCommit | Should -Be $fixture.Snapshot.TargetCommit
+        $report = Get-Content (Join-Path $fixture.Output 'routing/routing.json') -Raw | ConvertFrom-Json
+        $report.Eligible | Should -BeTrue
+        $report.DurationSeconds | Should -BeGreaterThan 0
+
+        $matrix = Join-Path $fixture.Output 'matrix.json'
+        '[{"Name":"Java_ci_test_base","Path":"eng/pipelines/templates/stages/platform-matrix.json","Selection":"sparse","NonSparseParameters":"Agent","GenerateVMJobs":true}]' |
+            Set-Content -LiteralPath $matrix
+        foreach ($pool in @('Linux', 'Windows', 'Mac')) {
+            $matrixOutput = & (Join-Path $script:RepositoryRoot 'eng/common/scripts/job-matrix/Create-PrJobMatrix.ps1') `
+                -PackagePropertiesFolder (Join-Path $fixture.Output 'PackageInfo') -PRMatrixFile $matrix `
+                -PRMatrixSetting ArtifactPackageNames -PRMatrixKey Name -PackagesPerPRJob 50 `
+                -Filters "Pool=.*$pool.*Pool$" -CI:$false
+            ($matrixOutput -join '').Trim() | Should -Be '{}'
+        }
+    }
+
+    It 'ForceFullValidation restores both Java jobs, tests, and the Build changelog check: <Value>' -TestCases @(
+        @{ Value = 'switch' }, @{ Value = 'true' }, @{ Value = '1' }, @{ Value = 'yes' }
+    ) {
+        param($Value)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        if ($Value -ne 'switch') { $env:FORCE_FULL_VALIDATION = $Value }
+        $invocation = Invoke-FixtureClassifier $fixture -Force:($Value -eq 'switch')
+        $result = $invocation.Result
+        $result.RunBuild | Should -BeTrue
+        $result.RunAnalyze | Should -BeTrue
+        $result.RunTests | Should -BeTrue
+        $result.SkipBuildChangeLogValidation | Should -BeFalse
+        $result.ChangeLogOnly | Should -BeFalse
+        Test-Path (Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json') | Should -BeTrue
+        $invocation.Log | Should -Not -Match 'build.addbuildtag'
+    }
+
+    It 'non-main targets retain the existing test-only classifier and Build changelog check: <Target>' -TestCases @(
+        @{ Target = 'feature/test' }, @{ Target = 'release/test' }, @{ Target = 'hotfix/test' }
+    ) {
+        param($Target)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $env:SYSTEM_PULLREQUEST_TARGETBRANCH = $Target
+        $result = (Invoke-FixtureClassifier $fixture).Result
+        $result.RunBuild | Should -BeTrue
+        $result.RunAnalyze | Should -BeTrue
+        $result.RunTests | Should -BeFalse
+        $result.SkipBuildChangeLogValidation | Should -BeFalse
+        $result.ChangeLogOnly | Should -BeFalse
+    }
+
+    It 'requires Java for mixed package README changes and does not clear the original metadata' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @(
+            'sdk/fixture/azure-fixture-alpha/CHANGELOG.md', 'sdk/fixture/azure-fixture-alpha/README.md'
+        )
+        $invocation = Invoke-FixtureClassifier $fixture
+        $invocation.Result.RunBuild | Should -BeTrue
+        $invocation.Result.RunAnalyze | Should -BeTrue
+        $invocation.Result.RunTests | Should -BeTrue
+        $invocation.Result.ChangeLogOnly | Should -BeFalse
+        Test-Path (Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json') | Should -BeTrue
+    }
+
+    It 'removes the covered duplicate check independently of the path shortcut on functional PRs' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @('sdk/fixture/azure-fixture-alpha/src/main/java/Example.java')
+        $invocation = Invoke-FixtureClassifier $fixture
+        $invocation.Result.RunBuild | Should -BeTrue
+        $invocation.Result.RunAnalyze | Should -BeTrue
+        $invocation.Result.RunTests | Should -BeTrue
+        $invocation.Result.SkipBuildChangeLogValidation | Should -BeTrue
+        $invocation.Result.ChangeLogOnly | Should -BeFalse
+    }
+
+    It 'keeps the previous root-document-only test suppression without authorizing a new job bypass' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @('README.md')
+        $directory = Join-Path $fixture.Output 'PackageInfo'
+        New-Item -ItemType Directory -Path $directory -Force | Out-Null
+        Set-Content (Join-Path $directory 'template.json') -Value '{}'
+        $result = (Invoke-FixtureClassifier $fixture).Result
+        $result.RunBuild | Should -BeTrue
+        $result.RunAnalyze | Should -BeTrue
+        $result.RunTests | Should -BeFalse
+        $result.ChangeLogOnly | Should -BeFalse
+    }
+
+    It 'uses the complete snapshot rather than a legacy rename diff that omitted a deleted source path' {
+        $fixture = New-ValidationFixture
+        Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-alpha/src/main/old.txt' 'Old functional input'
+        $fixture = Initialize-RoutingFixture $fixture
+        Remove-Item -LiteralPath (Join-Path $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md')
+        Invoke-PRValidationGit $fixture.Root @(
+            'mv', 'sdk/fixture/azure-fixture-alpha/src/main/old.txt', 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md'
+        ) | Out-Null
+        $fixture = Complete-RoutingFixture $fixture @()
+        @{ ChangedFiles = @('sdk/fixture/azure-fixture-alpha/CHANGELOG.md'); DeletedFiles = @() } |
+            ConvertTo-Json | Set-Content -LiteralPath $fixture.DiffPath
+        $result = (Invoke-FixtureClassifier $fixture).Result
+        $result.Paths.Path | Should -Contain 'sdk/fixture/azure-fixture-alpha/src/main/old.txt'
+        $result.RunBuild | Should -BeTrue
+        $result.RunAnalyze | Should -BeTrue
+        $result.RunTests | Should -BeTrue
+    }
+
+    It 'keeps every Java worker when original metadata is empty or corrupt: <Case>' -TestCases @(
+        @{ Case = 'empty' }, @{ Case = 'corrupt' }
+    ) {
+        param($Case)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $path = Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json'
+        if ($Case -eq 'empty') { Remove-Item -LiteralPath $path } else { Set-Content -LiteralPath $path -Value '{' }
+        $invocation = Invoke-FixtureClassifier $fixture
+        $invocation.Result.RunBuild | Should -BeTrue
+        $invocation.Result.RunAnalyze | Should -BeTrue
+        $invocation.Result.RunTests | Should -BeTrue
+        $invocation.Result.ChangeLogOnly | Should -BeFalse
+        $invocation.Log | Should -Not -Match 'build.addbuildtag'
+    }
+
+    It 'retains all checks when the original diff or checked-out merge identity is unavailable: <Case>' -TestCases @(
+        @{ Case = 'missing-diff' }, @{ Case = 'wrong-source-version' }, @{ Case = 'not-a-merge' }
+    ) {
+        param($Case)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $source = $fixture.Snapshot.SourceCommit
+        switch ($Case) {
+            'missing-diff' { Remove-Item -LiteralPath $fixture.DiffPath }
+            'wrong-source-version' { $source = '0' * 40 }
+            'not-a-merge' { Invoke-PRValidationGit $fixture.Root @('checkout', '--quiet', '--detach', $fixture.Base) | Out-Null }
+        }
+        $result = (Invoke-FixtureClassifier $fixture -SourceVersion $source).Result
+        $result.RunBuild | Should -BeTrue
+        $result.RunAnalyze | Should -BeTrue
+        $result.RunTests | Should -BeTrue
+        $result.SkipBuildChangeLogValidation | Should -BeFalse
+        Test-Path (Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json') | Should -BeTrue
+    }
+
+    It 'fails the preflight process rather than emitting skip outputs for an unreadable original diff' {
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        Set-Content -LiteralPath $fixture.DiffPath -Value '{'
+        $env:BUILD_SOURCEVERSION = $fixture.Snapshot.SourceCommit
+        $process = Invoke-ValidationScript (Join-Path $script:Scripts 'Classify-PRChanges.ps1') @(
+            '-DiffPath', $fixture.DiffPath, '-PackageInfoDirectory', (Join-Path $fixture.Output 'PackageInfo'),
+            '-RepositoryRoot', $fixture.Root, '-UseCombinedPRValidation', '-ServiceDirectory', 'auto', '-SdkType', 'client'
+        )
+        $process.ExitCode | Should -Not -Be 0
+        $process.Output | Should -Not -Match 'variable=Run(Build|Analyze|Tests);isOutput=true\]false'
+        Test-Path (Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json') | Should -BeTrue
+    }
+}
+
+Describe 'Azure changelog routing job graph' -Tag 'UnitTest' {
+    BeforeAll {
+        Initialize-ValidationTestModule
+        $script:CiJobs = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/templates/jobs/ci.yml') -Raw)
+        $script:CiStage = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/templates/stages/archetype-sdk-client.yml') -Raw)
+        $script:RoutingKey = '${{ if parameters.UseCombinedPRValidation }}'
+        $script:BuildJob = @($script:CiJobs.jobs | Where-Object { $_['job'] -eq 'Build' })[0]
+        $script:AnalyzeJob = @($script:CiJobs.jobs | Where-Object { $_['job'] -eq 'Analyze' })[0]
+        $script:MatrixReference = @(Get-ValidationTemplateReference $script:CiJobs '/eng/common/pipelines/templates/jobs/generate-job-matrix.yml')[0]
+    }
+
+    It 'opts in only from the unified entry point and scopes dependencies without a runtime-only template variable' {
+        $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
+        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeTrue
+        ($script:CiStage.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
+        ($script:CiJobs.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
+        $call = @(Get-ValidationTemplateReference $script:CiStage '/eng/pipelines/templates/jobs/ci.yml')[0]
+        $call.parameters.UseCombinedPRValidation | Should -Be '${{ and(parameters.UseCombinedPRValidation, eq(parameters.ServiceDirectory, ''auto''), eq(parameters.SDKType, ''client''), not(parameters.TestPipeline), eq(variables[''Build.Reason''], ''PullRequest''), eq(variables[''System.TeamProject''], ''public''), eq(variables[''Build.Repository.Name''], ''Azure/azure-sdk-for-java''), in(variables[''System.CollectionUri''], ''https://dev.azure.com/azure-sdk/'', ''https://azure-sdk.visualstudio.com/'')) }}'
+        $call.parameters.UseCombinedPRValidation | Should -Not -Match 'TargetBranch'
+        $cosmos = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/templates/stages/cosmos-sdk-client.yml') -Raw)
+        $cosmosCall = @(Get-ValidationTemplateReference $cosmos '/eng/pipelines/templates/jobs/ci.yml')[0]
+        $cosmosCall.parameters.ContainsKey('UseCombinedPRValidation') | Should -BeFalse
+    }
+
+    It 'adds no job and only makes opted-in Build and Analyze wait on existing preflight' {
+        $script:CiJobs.jobs.Count | Should -Be 3
+        foreach ($job in @($script:BuildJob, $script:AnalyzeJob)) {
+            $job.ContainsKey('dependsOn') | Should -BeFalse
+            $job[$script:RoutingKey].dependsOn | Should -Be 'generate_job_matrix'
+        }
+        $script:MatrixReference.parameters.ContainsKey('DependsOn') | Should -BeFalse
+        $script:MatrixReference.parameters.ContainsKey('GenerateJobName') | Should -BeFalse
+        $shared = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/common/pipelines/templates/jobs/generate-job-matrix.yml') -Raw)
+        ($shared.parameters | Where-Object name -EQ 'GenerateJobName').default | Should -Be 'generate_job_matrix'
+        ($shared.parameters | Where-Object name -EQ 'DependsOn').default | Should -BeNullOrEmpty
+        $script:AnalyzeJob['${{ else }}'].condition | Should -Be 'and(succeeded(), ne(variables[''Skip.Analyze''], ''true''))'
+    }
+
+    It 'uses success-guarded negative gates so missing/unknown outputs run jobs and preflight failure cannot pass' {
+        $script:BuildJob[$script:RoutingKey].condition |
+            Should -Be 'and(succeeded(), ne(dependencies.generate_job_matrix.outputs[''classify_changes.RunBuild''], ''false''))'
+        $script:AnalyzeJob[$script:RoutingKey].condition |
+            Should -Be 'and(succeeded(), ne(variables[''Skip.Analyze''], ''true''), ne(dependencies.generate_job_matrix.outputs[''classify_changes.RunAnalyze''], ''false''))'
+        $script:BuildJob.variables[$script:RoutingKey].SkipBuildChangeLogValidation |
+            Should -Be '$[ dependencies.generate_job_matrix.outputs[''classify_changes.SkipBuildChangeLogValidation''] ]'
+        foreach ($job in @($script:BuildJob, $script:AnalyzeJob)) {
+            $job.ContainsKey('continueOnError') | Should -BeFalse
+            $job[$script:RoutingKey].condition | Should -Not -Match 'always\(|succeededOrFailed\('
+        }
+    }
+
+    It 'runs eligibility in the existing classifier step after metadata generation and before clearing it' {
+        $steps = $script:MatrixReference.parameters['${{ if eq(parameters.ServiceDirectory, ''auto'') }}'].PreGenerationSteps
+        $steps[1].template | Should -Be '/eng/common/pipelines/templates/steps/save-package-properties.yml'
+        $classifier = $steps[2]['${{ if eq(variables[''Build.Reason''], ''PullRequest'') }}'][0]
+        $classifier.name | Should -Be 'classify_changes'
+        $classifier.inputs.filePath | Should -Be 'eng/scripts/Classify-PRChanges.ps1'
+        $classifier.inputs.arguments | Should -Match ([regex]::Escape('-UseCombinedPRValidation:$${{ parameters.UseCombinedPRValidation }}'))
+        $classifier.inputs.arguments | Should -Match ([regex]::Escape("-PackageInfoDirectory '`$(Build.ArtifactStagingDirectory)/PackageInfo'"))
+        $classifier.env.FORCE_FULL_VALIDATION | Should -Be '$(ForceFullValidation)'
+        $source = Get-Content (Join-Path $script:Scripts 'Classify-PRChanges.ps1') -Raw
+        $source.IndexOf('Get-PRChangeLogOnlyEligibility -Snapshot') | Should -BeLessThan $source.IndexOf('Remove-Item -LiteralPath $packageInfoFile.FullName')
+        $source | Should -Match 'Get-PRValidationSnapshot -RepositoryRoot'
+        $source | Should -Match 'snapshot.SourceCommit -cne \$env:BUILD_SOURCEVERSION'
+    }
+
+    It 'retains the matrix checkout source and full commit history needed by the merge-parent helper' {
+        $checkout = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/common/pipelines/templates/steps/sparse-checkout.yml') -Raw)
+        ($checkout.parameters | Where-Object name -EQ 'Repositories').default[0].Commitish | Should -Be '$(Build.SourceVersion)'
+        $inline = @($checkout.steps | Where-Object { $_['task'] -eq 'PowerShell@2' })[0].inputs.script
+        $inline | Should -Match 'git clone --no-checkout --filter=tree:0'
+        $inline | Should -Not -Match '--depth'
+        $inline | Should -Match 'checkout \$commitish --'
+    }
+
+    It 'changes only the covered Build wrapper condition and keeps all explicit release checks' {
+        $verify = @(Get-ValidationTemplateReference $script:BuildJob '/eng/common/pipelines/templates/steps/verify-changelogs.yml')
+        $verify.Count | Should -Be 1
+        $verify[0].parameters[$script:RoutingKey].Condition |
+            Should -Be 'and(succeeded(), ne(variables[''SkipBuildChangeLogValidation''], ''true''))'
+        $verify[0].parameters.ContainsKey('Condition') | Should -BeFalse
+        $verify[0].parameters.ContainsKey('ForRelease') | Should -BeFalse
+        $wrapper = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/common/pipelines/templates/steps/verify-changelogs.yml') -Raw)
+        ($wrapper.parameters | Where-Object name -EQ 'Condition').default | Should -Be 'succeeded()'
+        ($wrapper.parameters | Where-Object name -EQ 'ForRelease').default | Should -BeFalse
+        foreach ($name in @('archetype-java-release-batch', 'archetype-java-auto-release-batch', 'archetype-sdk-client-patch')) {
+            $path = Join-Path $script:RepositoryRoot "eng/pipelines/templates/stages/$name.yml"
+            $release = ConvertFrom-Yaml (Get-Content $path -Raw)
+            $checks = @(Get-ValidationTemplateReference $release '/eng/common/pipelines/templates/steps/verify-changelogs.yml')
+            $checks.Count | Should -Be 1
+            $checks[0].parameters.ForRelease | Should -BeTrue
+            $checks[0].parameters.ContainsKey($script:RoutingKey) | Should -BeFalse
+            Get-Content $path -Raw | Should -Not -Match 'UseCombinedPRValidation|SkipBuildChangeLogValidation'
+        }
+    }
+
+    It 'keeps Analyze Node, npm authentication, TypeSpec, Maven, and lint validation' {
+        $steps = $script:AnalyzeJob.steps
+        @($steps | Where-Object { $_['task'] -eq 'UseNode@1' })[0].inputs.version | Should -Be '22.x'
+        @(Get-ValidationTemplateReference $steps '/eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml').Count | Should -Be 1
+        $codegen = @($steps | Where-Object { $_['displayName'] -eq 'Verify TypeSpec Code Generation' })[0]
+        $codegen.env.npm_config_userconfig | Should -Be '$(Agent.TempDirectory)/analyze-job/.npmrc'
+        @(Get-ValidationTemplateReference $steps '/eng/pipelines/templates/steps/run-and-validate-linting.yml').Count | Should -Be 1
+        @($script:BuildJob.steps | Where-Object { $_['task'] -eq 'Maven@4' }).Count | Should -Be 1
+    }
+}
+
 Describe 'Combined documentation workflow and final result contracts' -Tag 'UnitTest' {
     BeforeAll {
         Initialize-ValidationTestModule
@@ -751,6 +1467,41 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
 }
 
 Describe 'Representative repository metadata parity' -Tag 'IntegrationTest' {
+    It 'routes genuine edits using copied repository core, communication, and management metadata without compiling Java' {
+        $fixture = New-ValidationFixture
+        foreach ($service in @('core', 'communication', 'advisor')) {
+            $directory = Join-Path $script:RepositoryRoot 'sdk' $service
+            foreach ($file in (Get-ChildItem -LiteralPath $directory -File -Recurse -Depth 1)) {
+                if ($file.Name -notlike 'ci*.yml' -and $file.Name -notin @('pom.xml', 'CHANGELOG.md', 'tsp-location.yaml')) {
+                    continue
+                }
+                $relative = [System.IO.Path]::GetRelativePath($script:RepositoryRoot, $file.FullName)
+                $destination = Join-Path $fixture.Root $relative
+                New-Item -ItemType Directory -Path (Split-Path $destination -Parent) -Force | Out-Null
+                Copy-Item -LiteralPath $file.FullName -Destination $destination
+            }
+        }
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture $fixture) @(
+            'sdk/core/azure-core/CHANGELOG.md',
+            'sdk/communication/azure-communication-identity/CHANGELOG.md',
+            'sdk/advisor/azure-resourcemanager-advisor/CHANGELOG.md'
+        )
+        $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+        $result = Get-FixtureRouting $fixture
+        $stopwatch.Stop()
+        Write-Host "Real core/communication/management changelog eligibility: $($stopwatch.Elapsed.TotalMilliseconds.ToString('F1')) ms."
+        $result.Eligible | Should -BeTrue -Because $result.Reason
+        $result.PackageChangeLogs.Count | Should -Be 3
+        $fixture.Validation.Packages.Name | Should -Contain 'azure-core'
+        $fixture.Validation.Packages.Name | Should -Contain 'azure-communication-identity'
+        $fixture.Validation.Packages.Name | Should -Contain 'azure-resourcemanager-advisor'
+        $existing = Invoke-ValidationScript (Join-Path $fixture.Root 'eng/common/scripts/Verify-ChangeLogs.ps1') @(
+            '-PackagePropertiesFolder', (Join-Path $fixture.Output 'PackageInfo')
+        ) $fixture.Root
+        $existing.ExitCode | Should -Be 0 -Because ($existing.Output + $existing.Error)
+        $fixture.Validation.Status | Should -Be 'Passed' -Because ($fixture.Validation.Messages -join "`n")
+    }
+
     It 'selects real core and communication packages and agrees with the unchanged Build validator' {
         Initialize-ValidationTestModule
         $output = Join-Path $TestDrive 'real-package-parity'

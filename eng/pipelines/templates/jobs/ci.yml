@@ -11,6 +11,9 @@ parameters:
   - name: TestPipeline
     type: boolean
     default: false
+  - name: UseCombinedPRValidation
+    type: boolean
+    default: false
   - name: Artifacts
     type: object
     default: []
@@ -67,6 +70,9 @@ parameters:
 
 jobs:
   - job: 'Build'
+    ${{ if parameters.UseCombinedPRValidation }}:
+      dependsOn: generate_job_matrix
+      condition: and(succeeded(), ne(dependencies.generate_job_matrix.outputs['classify_changes.RunBuild'], 'false'))
     # This timeout is being set high because some tasks in the pullrequest pipeline
     # run longer depending on the number of libraries being affected. For example,
     # a version increment for core or identity, AKA something that has a lot of
@@ -82,6 +88,8 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+      ${{ if parameters.UseCombinedPRValidation }}:
+        SkipBuildChangeLogValidation: $[ dependencies.generate_job_matrix.outputs['classify_changes.SkipBuildChangeLogValidation'] ]
 
     # Only run CG and codeql on internal build job
     ${{ if eq(variables['System.TeamProject'], 'internal') }}:
@@ -207,6 +215,8 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
           parameters:
             PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+            ${{ if parameters.UseCombinedPRValidation }}:
+              Condition: and(succeeded(), ne(variables['SkipBuildChangeLogValidation'], 'true'))
 
       - task: PipAuthenticate@1
         displayName: 'Pip Authenticate to Azure Artifacts'
@@ -304,7 +314,11 @@ jobs:
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
   - job: 'Analyze'
-    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+    ${{ if parameters.UseCombinedPRValidation }}:
+      dependsOn: generate_job_matrix
+      condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'), ne(dependencies.generate_job_matrix.outputs['classify_changes.RunAnalyze'], 'false'))
+    ${{ else }}:
+      condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     pool:
       name: $(LINUXPOOL)
@@ -494,10 +508,10 @@ jobs:
               ServiceDirectory: ${{parameters.ServiceDirectory}}
               ExcludePaths: ${{parameters.ExcludePaths}}
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            # Phase 1 keeps Build and Analyze enabled so their unique validation is preserved.
-            # Clearing only this job's PackageInfo folder produces an empty test matrix.
+            # The opted-in public pipeline proves changelog ownership before clearing PackageInfo.
+            # Other scopes retain their existing test-only classification.
             - task: PowerShell@2
-              displayName: Classify PR changes for Java test matrix
+              displayName: Classify PR changes for Java validation
               name: classify_changes
               inputs:
                 pwsh: true
@@ -505,7 +519,11 @@ jobs:
                 arguments: >
                   -DiffPath '$(Build.ArtifactStagingDirectory)/diff/diff.json'
                   -PackageInfoDirectory '$(Build.ArtifactStagingDirectory)/PackageInfo'
-              # Define ForceFullValidation=true on the pipeline to disable test suppression
+                  -UseCombinedPRValidation:$${{ parameters.UseCombinedPRValidation }}
+                  -ServiceDirectory '${{ parameters.ServiceDirectory }}'
+                  -SdkType '${{ parameters.SDKType }}'
+                  -ValidationDirectory '$(Build.ArtifactStagingDirectory)/pr-validation'
+              # Define ForceFullValidation=true on the pipeline to disable all Java suppression
               # without requiring a code change.
               env:
                 FORCE_FULL_VALIDATION: $(ForceFullValidation)

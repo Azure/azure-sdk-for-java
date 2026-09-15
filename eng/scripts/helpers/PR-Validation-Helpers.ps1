@@ -455,7 +455,7 @@ function Invoke-PRChangeLogValidation {
         else {
             'Passed'
         }
-        $result.Messages += "Validated unified PR selection (SDKType $SdkType): $($result.Packages.Count) package result(s). Azure Build verification remains enabled."
+        $result.Messages += "Validated unified PR selection (SDKType $SdkType): $($result.Packages.Count) package result(s)."
         return $result
     }
     catch {
