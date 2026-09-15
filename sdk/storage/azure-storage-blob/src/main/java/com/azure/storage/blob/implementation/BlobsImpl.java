@@ -80,14 +80,14 @@ public final class BlobsImpl {
         @Get("/")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        Mono<StreamResponse> download(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<StreamResponse> download(@HostParam("url") String url, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
 
         @Get("/")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        StreamResponse downloadSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        StreamResponse downloadSync(@HostParam("url") String url, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
 
         @Head("/")
         @ExpectedResponses({ 200 })
@@ -548,10 +548,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> downloadWithResponseInternalAsync(RequestOptions requestOptions) {
-        final String accept = "application/octet-stream";
+        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.download(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
+            .withContext(context -> service.download(this.client.getUrl(), accept,
+                this.client.getServiceVersion().getVersion(), requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -698,9 +698,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StreamResponse downloadWithResponseInternal(RequestOptions requestOptions) {
-        final String accept = "application/octet-stream";
+        final String accept = "application/xml";
         try {
-            return service.downloadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            return service.downloadSync(this.client.getUrl(), accept, this.client.getServiceVersion().getVersion(),
                 requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -3921,7 +3921,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> queryWithResponseInternalAsync(BinaryData queryRequest, RequestOptions requestOptions) {
         final String contentType = "application/xml";
-        final String accept = "application/octet-stream";
+        final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.query(this.client.getUrl(), contentType,
                 this.client.getServiceVersion().getVersion(), accept, queryRequest, requestOptions, context))
@@ -4079,7 +4079,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StreamResponse queryWithResponseInternal(BinaryData queryRequest, RequestOptions requestOptions) {
         final String contentType = "application/xml";
-        final String accept = "application/octet-stream";
+        final String accept = "application/xml";
         try {
             return service.querySync(this.client.getUrl(), contentType, this.client.getServiceVersion().getVersion(),
                 accept, queryRequest, requestOptions, Context.NONE);

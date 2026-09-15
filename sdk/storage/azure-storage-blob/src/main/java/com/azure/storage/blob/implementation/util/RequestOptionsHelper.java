@@ -91,7 +91,7 @@ public final class RequestOptionsHelper {
      */
     public static RequestOptions containerRequestOptions(Context context, String baseUrl, String containerName) {
         RequestOptions requestOptions = requestOptions(context);
-        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, containerName));
+        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, Utility.urlEncode(containerName)));
         return requestOptions;
     }
 
@@ -107,7 +107,8 @@ public final class RequestOptionsHelper {
     public static RequestOptions blobRequestOptions(Context context, String baseUrl, String containerName,
         String blobName) {
         RequestOptions requestOptions = requestOptions(context);
-        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, containerName + "/" + blobName));
+        scopeRequestToResourcePath(requestOptions,
+            resourcePath(baseUrl, Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName)));
         return requestOptions;
     }
 
@@ -129,18 +130,20 @@ public final class RequestOptionsHelper {
      * The generated protocol methods target the account-scoped service URL; this appends the resource path to the
      * request URL while preserving the route's query parameters.
      * <p>
-     * The path is run through {@link Utility#encodeUrlPath(String)} because blob names, unlike queue names, may
-     * contain path separators and characters that must be percent-encoded on the wire.
+     * The path arrives already encoded, one component at a time, exactly as {@code BlobAsyncClientBase.getBlobUrl()}
+     * builds it: the separator between container and blob stays literal while each component is percent-encoded.
+     * Encoding the assembled path instead would turn that separator into {@code %2F} and address a blob whose name
+     * contains a slash rather than a blob inside the container.
      *
      * @param requestOptions The {@link RequestOptions} to scope.
-     * @param resourcePath The resource path to set on the request URL.
+     * @param resourcePath The already-encoded resource path to set on the request URL.
      */
     public static void scopeRequestToResourcePath(RequestOptions requestOptions, String resourcePath) {
         requestOptions.addRequestCallback(request -> {
             UrlBuilder urlBuilder = UrlBuilder.parse(request.getUrl());
             urlBuilder.setPath(resourcePath);
             try {
-                request.setUrl(new URL(Utility.encodeUrlPath(urlBuilder.toString())));
+                request.setUrl(new URL(urlBuilder.toString()));
             } catch (MalformedURLException e) {
                 throw new IllegalStateException(e);
             }
