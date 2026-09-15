@@ -975,8 +975,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * deletion outcome is unknown.
      *
      * @return The result containing the total number of messages deleted by the service.
-      * @throws IllegalStateException if the receiver is already disposed.
-      * @throws ServiceBusException if any request fails.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if any request fails.
      */
     public Mono<PurgeMessagesResult> purgeMessages() {
         return purgeMessages(new PurgeMessagesOptions());
@@ -991,9 +991,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @param options Options that configure the purge operation.
      * @return The result containing the total number of messages deleted by the service.
-      * @throws NullPointerException if {@code options} is null.
-      * @throws IllegalStateException if the receiver is already disposed.
-      * @throws ServiceBusException if any request fails.
+     * @throws NullPointerException if {@code options} is null.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if any request fails.
      */
     public Mono<PurgeMessagesResult> purgeMessages(PurgeMessagesOptions options) {
         if (isDisposed.get()) {
@@ -1008,19 +1008,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final int maxMessagesPerBatch = options.getMaxMessagesPerBatch();
         return Mono.defer(() -> {
             final OffsetDateTime cutoff = configuredCutoff == null ? OffsetDateTime.now() : configuredCutoff;
-            return purgeMessages(cutoff, maxMessagesPerBatch, 0);
+            return deleteMessages(maxMessagesPerBatch, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff))
+                .repeat()
+                .takeUntil(result -> result.getDeletedCount() == 0)
+                .reduce(0L, (totalDeleted, result) -> Math.addExact(totalDeleted, result.getDeletedCount()))
+                .map(PurgeMessagesResult::new);
         });
-    }
-
-    private Mono<PurgeMessagesResult> purgeMessages(OffsetDateTime cutoff, int maxMessagesPerBatch, long deletedCount) {
-        return deleteMessages(maxMessagesPerBatch, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff))
-            .flatMap(result -> {
-                if (result.getDeletedCount() == 0) {
-                    return Mono.just(new PurgeMessagesResult(deletedCount));
-                }
-                return purgeMessages(cutoff, maxMessagesPerBatch,
-                    Math.addExact(deletedCount, result.getDeletedCount()));
-            });
     }
 
     /**

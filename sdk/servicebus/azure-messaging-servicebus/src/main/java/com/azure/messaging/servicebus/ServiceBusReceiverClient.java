@@ -357,13 +357,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param maxMessages The maximum number of messages to delete. The service limit is 500 for Basic and Standard and
      * 4,000 for Premium. Currently, batch delete is not supported when partitioning is enabled.
-    * @param options Options that configure the delete operation.
-    * @return The result containing the number of messages actually deleted by the service.
+     * @param options Options that configure the delete operation.
+     * @return The result containing the number of messages actually deleted by the service.
      * @throws NullPointerException if {@code options} is null.
      * @throws IllegalArgumentException if {@code maxMessages} is not positive.
      * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if the request fails.
-    */
+     */
     public DeleteMessagesResult deleteMessages(int maxMessages, DeleteMessagesOptions options) {
         return asyncClient.deleteMessages(maxMessages, options).block(operationTimeout);
     }
@@ -373,11 +373,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * newer messages remain. Large messages can produce smaller batches, which purge continues processing. Currently,
      * purge is not supported when partitioning is enabled. If an error, cancellation, or timeout occurs after dispatch,
      * the purge can be partial and its exact deletion outcome is unknown.
-    *
-    * @return The result containing the total number of messages deleted by the service.
-    * @throws IllegalStateException if the receiver is already disposed.
-    * @throws ServiceBusException if any request fails.
-    */
+     *
+     * @return The result containing the total number of messages deleted by the service.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if any request fails.
+     */
     public PurgeMessagesResult purgeMessages() {
         return asyncClient.purgeMessages().block(operationTimeout);
     }
@@ -387,13 +387,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * messages remain. Large messages can produce smaller batches, which purge continues processing. Currently, purge
      * is not supported when partitioning is enabled. If an error, cancellation, or timeout occurs after dispatch, the
      * purge can be partial and its exact deletion outcome is unknown.
-    *
-    * @param options Options that configure the purge operation.
-    * @return The result containing the total number of messages deleted by the service.
-    * @throws NullPointerException if {@code options} is null.
-    * @throws IllegalStateException if the receiver is already disposed.
-    * @throws ServiceBusException if any request fails.
-    */
+     *
+     * @param options Options that configure the purge operation.
+     * @return The result containing the total number of messages deleted by the service.
+     * @throws NullPointerException if {@code options} is null.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if any request fails.
+     */
     public PurgeMessagesResult purgeMessages(PurgeMessagesOptions options) {
         return asyncClient.purgeMessages(options).block(operationTimeout);
     }

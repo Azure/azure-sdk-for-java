@@ -87,6 +87,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -1682,7 +1683,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @ParameterizedTest
     @ValueSource(ints = { -1, 0 })
-    void deleteMessagesRejectsCountOutsideServiceRange(int maxMessages) {
+    void deleteMessagesRejectsNonPositiveCount(int maxMessages) {
         StepVerifier.create(receiver.deleteMessages(maxMessages))
             .expectError(IllegalArgumentException.class)
             .verify(DEFAULT_TIMEOUT);
@@ -1706,6 +1707,22 @@ class ServiceBusReceiverAsyncClientTest {
         verify(managementNode, times(3)).deleteMessages(eq(500), cutoffCaptor.capture(), isNull(), isNull());
         assertEquals(3, cutoffCaptor.getAllValues().size());
         assertTrue(cutoffCaptor.getAllValues().stream().allMatch(cutoffCaptor.getValue()::equals));
+    }
+
+    @Test
+    void purgeMessagesHandlesManySynchronousBatchesWithoutRecursion() {
+        final int positiveBatches = 10_000;
+        final AtomicInteger requests = new AtomicInteger();
+        when(managementNode.deleteMessages(eq(500), any(OffsetDateTime.class), isNull(), isNull())).thenAnswer(
+            ignored -> Mono.just(new DeleteMessagesResult(requests.getAndIncrement() < positiveBatches ? 1 : 0)));
+
+        StepVerifier.create(receiver.purgeMessages())
+            .assertNext(result -> assertEquals(positiveBatches, result.getDeletedCount()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(managementNode, times(positiveBatches + 1)).deleteMessages(eq(500), any(OffsetDateTime.class), isNull(),
+            isNull());
     }
 
     @Test
