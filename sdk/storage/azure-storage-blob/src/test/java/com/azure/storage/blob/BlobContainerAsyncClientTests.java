@@ -75,6 +75,9 @@ public class BlobContainerAsyncClientTests {
                 new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.AUTO),
                 arrowAcceptHeader),
             Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW),
+                arrowAcceptHeader),
+            Arguments.of(
                 new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
                 "application/xml"));
     }
