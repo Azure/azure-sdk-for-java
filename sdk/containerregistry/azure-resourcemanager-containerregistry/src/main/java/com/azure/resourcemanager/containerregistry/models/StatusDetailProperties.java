@@ -43,6 +43,16 @@ public final class StatusDetailProperties implements JsonSerializable<StatusDeta
      */
     private String correlationId;
 
+    /*
+     * The total disk space in gibibytes (Gib, base-2).
+     */
+    private Double totalGib;
+
+    /*
+     * The available disk space in gibibytes (Gib, base-2).
+     */
+    private Double availableGib;
+
     /**
      * Creates an instance of StatusDetailProperties class.
      */
@@ -95,6 +105,24 @@ public final class StatusDetailProperties implements JsonSerializable<StatusDeta
     }
 
     /**
+     * Get the totalGib property: The total disk space in gibibytes (Gib, base-2).
+     * 
+     * @return the totalGib value.
+     */
+    public Double totalGib() {
+        return this.totalGib;
+    }
+
+    /**
+     * Get the availableGib property: The available disk space in gibibytes (Gib, base-2).
+     * 
+     * @return the availableGib value.
+     */
+    public Double availableGib() {
+        return this.availableGib;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -137,6 +165,10 @@ public final class StatusDetailProperties implements JsonSerializable<StatusDeta
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("correlationId".equals(fieldName)) {
                     deserializedStatusDetailProperties.correlationId = reader.getString();
+                } else if ("totalGib".equals(fieldName)) {
+                    deserializedStatusDetailProperties.totalGib = reader.getNullable(JsonReader::getDouble);
+                } else if ("availableGib".equals(fieldName)) {
+                    deserializedStatusDetailProperties.availableGib = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

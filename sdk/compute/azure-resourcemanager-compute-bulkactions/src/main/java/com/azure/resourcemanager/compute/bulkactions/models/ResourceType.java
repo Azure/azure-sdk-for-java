@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of resource being targeted.
+ * The type of compute resource targeted by the scheduled action.
  */
 public final class ResourceType extends ExpandableStringEnum<ResourceType> {
     /**
-     * Resources defined are Virtual Machines.
+     * Azure virtual machines.
      */
     public static final ResourceType VIRTUAL_MACHINE = fromString("VirtualMachine");
 
     /**
-     * Resources defined are Virtual Machines Scale Sets.
+     * Azure Virtual Machine Scale Sets.
      */
     public static final ResourceType VIRTUAL_MACHINE_SCALE_SET = fromString("VirtualMachineScaleSet");
 

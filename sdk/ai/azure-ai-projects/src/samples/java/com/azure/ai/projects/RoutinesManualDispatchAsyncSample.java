@@ -52,7 +52,7 @@ public class RoutinesManualDispatchAsyncSample {
         Mono<Void> workflow = routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Timer routine dispatched before its scheduled fire time.", true, triggers, action))
+                "Timer routine dispatched before its scheduled fire time.", true, triggers, action, null))
             .flatMap(created -> {
                 System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
                 return routinesAsyncClient.dispatchRoutine(created.getName(),

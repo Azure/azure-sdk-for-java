@@ -23,7 +23,7 @@ public final class AssociationsInterfacesListByTrafficControllerMockTests {
     @Test
     public void testListByTrafficController() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wflzlfbxzpuzy\"},\"provisioningState\":\"Canceled\"},\"location\":\"nqzahmgkbrpyyd\",\"tags\":{\"agnb\":\"nuqqkpikadrgvt\",\"fsiarbutr\":\"ynhijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"}]}";
+            = "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"skzbb\"},\"provisioningState\":\"Provisioning\"},\"location\":\"mv\",\"tags\":{\"zuhkfpbsjyof\":\"gpw\",\"us\":\"xl\"},\"id\":\"ttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class AssociationsInterfacesListByTrafficControllerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Association> response = manager.associationsInterfaces()
-            .listByTrafficController("ec", "godebfqkkrbmpu", com.azure.core.util.Context.NONE);
+            .listByTrafficController("hnnpr", "xipeilpjzuaejx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nqzahmgkbrpyyd", response.iterator().next().location());
-        Assertions.assertEquals("nuqqkpikadrgvt", response.iterator().next().tags().get("agnb"));
+        Assertions.assertEquals("mv", response.iterator().next().location());
+        Assertions.assertEquals("gpw", response.iterator().next().tags().get("zuhkfpbsjyof"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.iterator().next().properties().associationType());
-        Assertions.assertEquals("wflzlfbxzpuzy", response.iterator().next().properties().subnet().id());
+        Assertions.assertEquals("skzbb", response.iterator().next().properties().subnet().id());
     }
 }
