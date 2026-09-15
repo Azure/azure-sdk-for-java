@@ -3,11 +3,15 @@
 
 package com.azure.ai.agents.models;
 
+import com.openai.models.realtime.RealtimeFunctionTool;
+import com.openai.models.realtime.RealtimeToolsConfigUnion;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,6 +33,37 @@ public class RealtimeSessionCreateRequestGASerializationTests {
             = roundTrip(new RealtimeSessionCreateRequestGA().setTracing(tracing));
         assertEquals("workflow", modelResult.getTracingAsRealtimeSessionCreateRequestGATracing().getWorkflowName());
         assertNull(modelResult.getTracingAsString());
+    }
+
+    @Test
+    public void toolsVariantsRoundTrip() throws IOException {
+        RealtimeFunctionTool function
+            = RealtimeFunctionTool.builder().name("lookup").type(RealtimeFunctionTool.Type.FUNCTION).build();
+        RealtimeToolsConfigUnion.Mcp mcp
+            = RealtimeToolsConfigUnion.Mcp.builder().serverLabel("server").serverUrl("https://example.com/mcp").build();
+
+        RealtimeSessionCreateRequestGA result = roundTrip(new RealtimeSessionCreateRequestGA().setToolsAsOpenAITools(
+            Arrays.asList(RealtimeToolsConfigUnion.ofFunction(function), RealtimeToolsConfigUnion.ofMcp(mcp))));
+
+        List<RealtimeToolsConfigUnion> tools = result.getToolsAsOpenAITools();
+        assertEquals(2, tools.size());
+        assertTrue(tools.get(0).isFunction());
+        assertEquals("lookup", tools.get(0).asFunction().name().orElse(null));
+        assertTrue(tools.get(1).isMcp());
+        assertEquals("server", tools.get(1).asMcp().serverLabel());
+    }
+
+    @Test
+    public void deserializesToolsVariants() throws IOException {
+        RealtimeSessionCreateRequestGA result = UnionTypeSerializationTestUtils.deserialize(
+            "{\"type\":\"realtime\",\"tools\":[{\"type\":\"function\",\"name\":\"lookup\"},"
+                + "{\"type\":\"mcp\",\"server_label\":\"server\",\"server_url\":\"https://example.com/mcp\"}]}",
+            RealtimeSessionCreateRequestGA::fromJson);
+
+        List<RealtimeToolsConfigUnion> tools = result.getToolsAsOpenAITools();
+        assertEquals(2, tools.size());
+        assertTrue(tools.get(0).isFunction());
+        assertTrue(tools.get(1).isMcp());
     }
 
     @Test
@@ -104,6 +139,7 @@ public class RealtimeSessionCreateRequestGASerializationTests {
             RealtimeSessionCreateRequestGA::fromJson);
         assertNull(result.getTracingAsString());
         assertNull(result.getTracingAsRealtimeSessionCreateRequestGATracing());
+        assertNull(result.getToolsAsOpenAITools());
         assertNull(result.getToolChoiceAsToolChoiceOptions());
         assertNull(result.getToolChoiceAsToolChoiceFunction());
         assertNull(result.getToolChoiceAsToolChoiceMcp());
@@ -114,11 +150,13 @@ public class RealtimeSessionCreateRequestGASerializationTests {
 
         String serialized
             = UnionTypeSerializationTestUtils.serialize(new RealtimeSessionCreateRequestGA().setTracing((String) null)
+                .setToolsAsOpenAITools(null)
                 .setToolChoice((ToolChoiceOptions) null)
                 .setMaxOutputTokens((String) null)
                 .setTruncation((String) null));
         assertNotNull(serialized);
         assertTrue(!serialized.contains("\"tracing\"")
+            && !serialized.contains("\"tools\"")
             && !serialized.contains("\"tool_choice\"")
             && !serialized.contains("\"max_output_tokens\"")
             && !serialized.contains("\"truncation\""));

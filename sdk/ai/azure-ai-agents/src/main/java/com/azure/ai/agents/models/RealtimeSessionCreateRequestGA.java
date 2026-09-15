@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
+import com.openai.models.realtime.RealtimeToolsConfigUnion;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponsePrompt;
 import com.openai.models.responses.ToolChoiceFunction;
@@ -318,8 +319,8 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      *
      * @return the tools value.
      */
-    @Generated
-    public List<BinaryData> getTools() {
+    List<BinaryData> getTools() {
+        // AI Tooling: union type
         return this.tools;
     }
 
@@ -329,9 +330,35 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @param tools the tools value to set.
      * @return the RealtimeSessionCreateRequestGA object itself.
      */
-    @Generated
-    public RealtimeSessionCreateRequestGA setTools(List<BinaryData> tools) {
+    RealtimeSessionCreateRequestGA setTools(List<BinaryData> tools) {
+        // AI Tooling: union type
         this.tools = tools;
+        return this;
+    }
+
+    /**
+     * Get the tools property as a list of openai-java {@link RealtimeToolsConfigUnion} values: Tools available to the
+     * model.
+     *
+     * @return the tools value as a list of openai-java union values.
+     */
+    public List<RealtimeToolsConfigUnion> getToolsAsOpenAITools() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        return OpenAIJsonHelper.fromBinaryDataList(this.tools, RealtimeToolsConfigUnion.class);
+    }
+
+    /**
+     * Set the tools property using a list of openai-java {@link RealtimeToolsConfigUnion} values: Tools available to
+     * the model.
+     *
+     * @param tools the list of openai-java union values to set.
+     * @return the RealtimeSessionCreateRequestGA object itself.
+     */
+    public RealtimeSessionCreateRequestGA setToolsAsOpenAITools(List<RealtimeToolsConfigUnion> tools) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.tools = OpenAIJsonHelper.toBinaryDataList(tools);
         return this;
     }
 

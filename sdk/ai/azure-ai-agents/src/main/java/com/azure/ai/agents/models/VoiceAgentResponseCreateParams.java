@@ -13,6 +13,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
+import com.openai.models.realtime.RealtimeResponseCreateParams;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
@@ -166,8 +167,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      *
      * @return the tools value.
      */
-    @Generated
-    public List<BinaryData> getTools() {
+    List<BinaryData> getTools() {
+        // AI Tooling: union type
         return this.tools;
     }
 
@@ -177,9 +178,35 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @param tools the tools value to set.
      * @return the VoiceAgentResponseCreateParams object itself.
      */
-    @Generated
-    public VoiceAgentResponseCreateParams setTools(List<BinaryData> tools) {
+    VoiceAgentResponseCreateParams setTools(List<BinaryData> tools) {
+        // AI Tooling: union type
         this.tools = tools;
+        return this;
+    }
+
+    /**
+     * Get the tools property as a list of openai-java {@link RealtimeResponseCreateParams.Tool} values: Tools available
+     * to the model.
+     *
+     * @return the tools value as a list of openai-java union values.
+     */
+    public List<RealtimeResponseCreateParams.Tool> getToolsAsOpenAITools() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        return OpenAIJsonHelper.fromBinaryDataList(this.tools, RealtimeResponseCreateParams.Tool.class);
+    }
+
+    /**
+     * Set the tools property using a list of openai-java {@link RealtimeResponseCreateParams.Tool} values: Tools
+     * available to the model.
+     *
+     * @param tools the list of openai-java union values to set.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    public VoiceAgentResponseCreateParams setToolsAsOpenAITools(List<RealtimeResponseCreateParams.Tool> tools) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.tools = OpenAIJsonHelper.toBinaryDataList(tools);
         return this;
     }
 
