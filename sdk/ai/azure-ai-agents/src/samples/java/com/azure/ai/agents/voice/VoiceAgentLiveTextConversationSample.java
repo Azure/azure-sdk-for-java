@@ -57,7 +57,7 @@ public class VoiceAgentLiveTextConversationSample {
         AgentsClient agents = builder.buildAgentsClient();
         BetaAgentsClient betaAgents = builder.beta().buildBetaAgentsClient();
         BetaVoiceAgentWebSocketClient realtime = builder.buildBetaVoiceAgentWebSocketClient();
-        BetaAgentEndpointConversationsClient conversations = builder.buildBetaAgentEndpointConversationsClient();
+        BetaAgentEndpointConversationsClient conversations = builder.beta().buildBetaAgentEndpointConversationsClient();
 
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");

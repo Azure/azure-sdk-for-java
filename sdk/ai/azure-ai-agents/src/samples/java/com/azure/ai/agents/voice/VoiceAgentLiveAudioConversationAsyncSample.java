@@ -83,7 +83,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
         BetaAgentsAsyncClient betaAgents = builder.beta().buildBetaAgentsAsyncClient();
         BetaVoiceAgentWebSocketAsyncClient realtime = builder.buildBetaVoiceAgentWebSocketAsyncClient();
         BetaAgentEndpointConversationsAsyncClient conversations
-            = builder.buildBetaAgentEndpointConversationsAsyncClient();
+            = builder.beta().buildBetaAgentEndpointConversationsAsyncClient();
 
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");

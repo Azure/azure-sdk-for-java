@@ -92,7 +92,7 @@ public class VoiceAgentConversationsTests {
             .credential(new DefaultAzureCredentialBuilder().build())
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaAgentEndpointConversationsClient conversations = builder.buildBetaAgentEndpointConversationsClient();
+        BetaAgentEndpointConversationsClient conversations = builder.beta().buildBetaAgentEndpointConversationsClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -208,6 +208,7 @@ public class VoiceAgentConversationsTests {
             .credential(new MockTokenCredential())
             .httpClient(transport)
             .allowPreview(true)
+            .beta()
             .buildBetaAgentEndpointConversationsClient();
     }
 

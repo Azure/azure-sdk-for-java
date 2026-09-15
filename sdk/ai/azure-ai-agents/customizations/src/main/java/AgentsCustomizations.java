@@ -144,8 +144,17 @@ public class AgentsCustomizations extends Customization {
                 "buildBetaAgentEndpointConversationsClient", "buildBetaAgentTelephonyAsyncClient",
                 "buildBetaAgentTelephonyClient" }) {
                 getSingleMethod(builder, methodName)
-                    .addAnnotation(betaAnnotation("This method is in preview and may change in future releases."));
+                    .setModifier(Modifier.Keyword.PUBLIC, false)
+                    .setModifier(Modifier.Keyword.PRIVATE, true);
             }
+            builder.getAnnotationByName("ServiceClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated ServiceClientBuilder annotation was not found."))
+                .asNormalAnnotationExpr().getPairs().stream()
+                .filter(pair -> "serviceClients".equals(pair.getNameAsString()))
+                .forEach(pair -> pair.getValue().asArrayInitializerExpr().getValues().removeIf(value ->
+                    Arrays.asList("BetaAgentTelephonyClient.class", "BetaAgentTelephonyAsyncClient.class",
+                        "BetaAgentEndpointConversationsClient.class", "BetaAgentEndpointConversationsAsyncClient.class")
+                        .contains(value.toString())));
         });
     }
 

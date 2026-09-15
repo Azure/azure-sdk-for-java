@@ -137,15 +137,19 @@ public class VoiceAgentTelephonyTests {
         transport.notFound(HttpMethod.GET, path + "/content", null);
         AgentsClientBuilder builder = builder(transport);
         assertNotFound(() -> call(async,
-            () -> builder.buildBetaAgentEndpointConversationsClient()
+            () -> builder.beta()
+                .buildBetaAgentEndpointConversationsClient()
                 .getAgentConversationItemGeneratedAudio(AGENT, MISSING, MISSING),
-            () -> builder.buildBetaAgentEndpointConversationsAsyncClient()
+            () -> builder.beta()
+                .buildBetaAgentEndpointConversationsAsyncClient()
                 .getAgentConversationItemGeneratedAudio(AGENT, MISSING, MISSING)),
             true);
         assertNotFound(() -> call(async,
-            () -> builder.buildBetaAgentEndpointConversationsClient()
+            () -> builder.beta()
+                .buildBetaAgentEndpointConversationsClient()
                 .getAgentConversationItemGeneratedAudioContent(AGENT, MISSING, MISSING),
-            () -> builder.buildBetaAgentEndpointConversationsAsyncClient()
+            () -> builder.beta()
+                .buildBetaAgentEndpointConversationsAsyncClient()
                 .getAgentConversationItemGeneratedAudioContent(AGENT, MISSING, MISSING)),
             false);
         transport.assertComplete();
@@ -158,8 +162,8 @@ public class VoiceAgentTelephonyTests {
         transport.notFound(HttpMethod.GET, ROOT + "/call_jobs/" + MISSING, null);
         transport.notFound(HttpMethod.POST, ROOT + "/call_jobs/" + MISSING + ":cancel", null);
         AgentsClientBuilder builder = builder(transport);
-        BetaAgentTelephonyClient syncClient = builder.buildBetaAgentTelephonyClient();
-        BetaAgentTelephonyAsyncClient asyncClient = builder.buildBetaAgentTelephonyAsyncClient();
+        BetaAgentTelephonyClient syncClient = builder.beta().buildBetaAgentTelephonyClient();
+        BetaAgentTelephonyAsyncClient asyncClient = builder.beta().buildBetaAgentTelephonyAsyncClient();
         assertNotFound(() -> call(async, () -> syncClient.getTelephonyCallJob(AGENT, MISSING),
             () -> asyncClient.getTelephonyCallJob(AGENT, MISSING)), true);
         assertNotFound(() -> call(async, () -> syncClient.cancelTelephonyCallJob(AGENT, MISSING, null),
@@ -178,8 +182,8 @@ public class VoiceAgentTelephonyTests {
         transport.notFound(HttpMethod.POST, path + ":resume", null);
         transport.notFound(HttpMethod.GET, path + "/recipient_imports/" + MISSING, null);
         AgentsClientBuilder builder = builder(transport);
-        BetaAgentTelephonyClient syncClient = builder.buildBetaAgentTelephonyClient();
-        BetaAgentTelephonyAsyncClient asyncClient = builder.buildBetaAgentTelephonyAsyncClient();
+        BetaAgentTelephonyClient syncClient = builder.beta().buildBetaAgentTelephonyClient();
+        BetaAgentTelephonyAsyncClient asyncClient = builder.beta().buildBetaAgentTelephonyAsyncClient();
         assertNotFound(() -> call(async, () -> syncClient.getTelephonyCampaign(AGENT, MISSING),
             () -> asyncClient.getTelephonyCampaign(AGENT, MISSING)), true);
         assertNotFound(() -> call(async, () -> syncClient.cancelTelephonyCampaign(AGENT, MISSING),
@@ -199,10 +203,9 @@ public class VoiceAgentTelephonyTests {
         ScriptedTransport transport = new ScriptedTransport(async);
         transport.notFound(HttpMethod.GET, ROOT + "/operations/" + MISSING, null);
         AgentsClientBuilder builder = builder(transport);
-        assertNotFound(
-            () -> call(async, () -> builder.buildBetaAgentTelephonyClient().getTelephonyOperation(AGENT, MISSING),
-                () -> builder.buildBetaAgentTelephonyAsyncClient().getTelephonyOperation(AGENT, MISSING)),
-            true);
+        assertNotFound(() -> call(async,
+            () -> builder.beta().buildBetaAgentTelephonyClient().getTelephonyOperation(AGENT, MISSING),
+            () -> builder.beta().buildBetaAgentTelephonyAsyncClient().getTelephonyOperation(AGENT, MISSING)), true);
         transport.assertComplete();
     }
 

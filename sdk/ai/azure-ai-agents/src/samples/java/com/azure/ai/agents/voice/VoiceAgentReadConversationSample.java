@@ -34,6 +34,7 @@ public class VoiceAgentReadConversationSample {
         BetaAgentEndpointConversationsClient conversations = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
+            .beta()
             .buildBetaAgentEndpointConversationsClient();
 
         VoiceConversation conversation = conversations.getAgentConversation(agentName, conversationId);

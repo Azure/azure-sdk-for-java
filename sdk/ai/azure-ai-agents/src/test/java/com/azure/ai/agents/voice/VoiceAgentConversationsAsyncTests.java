@@ -90,7 +90,7 @@ public class VoiceAgentConversationsAsyncTests {
             .allowPreview(true);
         AgentsAsyncClient agents = builder.buildAgentsAsyncClient();
         BetaAgentEndpointConversationsAsyncClient conversations
-            = builder.buildBetaAgentEndpointConversationsAsyncClient();
+            = builder.beta().buildBetaAgentEndpointConversationsAsyncClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -205,6 +205,7 @@ public class VoiceAgentConversationsAsyncTests {
             .credential(new MockTokenCredential())
             .httpClient(transport)
             .allowPreview(true)
+            .beta()
             .buildBetaAgentEndpointConversationsAsyncClient();
     }
 
