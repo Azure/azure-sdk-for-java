@@ -179,6 +179,11 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
      */
     private Integer computeCount;
 
+    /*
+     * Indicates user preferences for the various diagnostic collection options for the Base DB.
+     */
+    private DataCollectionOptions dataCollectionOptions;
+
     /**
      * Creates an instance of DbSystemBaseProperties class.
      */
@@ -819,6 +824,28 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
     }
 
     /**
+     * Get the dataCollectionOptions property: Indicates user preferences for the various diagnostic collection options
+     * for the Base DB.
+     * 
+     * @return the dataCollectionOptions value.
+     */
+    public DataCollectionOptions dataCollectionOptions() {
+        return this.dataCollectionOptions;
+    }
+
+    /**
+     * Set the dataCollectionOptions property: Indicates user preferences for the various diagnostic collection options
+     * for the Base DB.
+     * 
+     * @param dataCollectionOptions the dataCollectionOptions value to set.
+     * @return the DbSystemBaseProperties object itself.
+     */
+    public DbSystemBaseProperties withDataCollectionOptions(DataCollectionOptions dataCollectionOptions) {
+        this.dataCollectionOptions = dataCollectionOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -846,6 +873,7 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
         jsonWriter.writeStringField("timeZone", this.timeZone);
         jsonWriter.writeStringField("computeModel", this.computeModel == null ? null : this.computeModel.toString());
         jsonWriter.writeNumberField("computeCount", this.computeCount);
+        jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -957,6 +985,8 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
                     deserializedDbSystemBaseProperties.computeModel = ComputeModel.fromString(reader.getString());
                 } else if ("computeCount".equals(fieldName)) {
                     deserializedDbSystemBaseProperties.computeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("dataCollectionOptions".equals(fieldName)) {
+                    deserializedDbSystemBaseProperties.dataCollectionOptions = DataCollectionOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

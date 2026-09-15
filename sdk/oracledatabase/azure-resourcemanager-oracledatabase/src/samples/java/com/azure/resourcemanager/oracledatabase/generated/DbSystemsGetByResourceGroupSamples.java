@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DbSystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/DbSystems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/DbSystems_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DbSystems_Get_MaximumSet.
