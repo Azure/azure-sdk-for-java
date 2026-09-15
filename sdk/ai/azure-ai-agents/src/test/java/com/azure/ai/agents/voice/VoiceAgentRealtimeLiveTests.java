@@ -89,7 +89,7 @@ public class VoiceAgentRealtimeLiveTests {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition(scenario)));
             created = true;
             try (VoiceAgentWebSocketSessionClient session
-                = builder.buildBetaVoiceAgentWebSocketClient().connect(agentName)) {
+                = builder.beta().buildBetaVoiceAgentWebSocketClient().connect(agentName)) {
                 Turn turn = new Turn(scenario);
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(EVENT_TIMEOUT).iterator();
                 turn.accept(events.next()).forEach(session::sendEvent);
@@ -119,7 +119,7 @@ public class VoiceAgentRealtimeLiveTests {
                 .block(EVENT_TIMEOUT);
             created = true;
             Turn turn = new Turn(scenario);
-            Mono.usingWhen(builder.buildBetaVoiceAgentWebSocketAsyncClient().connect(agentName),
+            Mono.usingWhen(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().connect(agentName),
                 session -> session.receiveEvents()
                     .timeout(EVENT_TIMEOUT)
                     .concatMap(event -> Flux.fromIterable(turn.accept(event))

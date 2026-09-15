@@ -201,9 +201,11 @@ public class VoiceAgentTelephonyTests {
         ScriptedTransport transport = new ScriptedTransport(async);
         transport.notFound(HttpMethod.GET, ROOT + "/operations/" + MISSING, null);
         AgentsClientBuilder builder = builder(transport);
-        assertNotFound(() -> call(async,
-            () -> builder.beta().buildBetaVoiceAgentsTelephonyClient().getTelephonyOperation(AGENT, MISSING),
-            () -> builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient().getTelephonyOperation(AGENT, MISSING)), true);
+        assertNotFound(
+            () -> call(async,
+                () -> builder.beta().buildBetaVoiceAgentsTelephonyClient().getTelephonyOperation(AGENT, MISSING),
+                () -> builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient().getTelephonyOperation(AGENT, MISSING)),
+            true);
         transport.assertComplete();
     }
 

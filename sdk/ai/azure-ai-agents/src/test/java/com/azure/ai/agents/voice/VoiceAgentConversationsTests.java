@@ -107,7 +107,7 @@ public class VoiceAgentConversationsTests {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
             created = true;
             try (VoiceAgentWebSocketSessionClient session
-                = builder.buildBetaVoiceAgentWebSocketClient().connect(agentName)) {
+                = builder.beta().buildBetaVoiceAgentWebSocketClient().connect(agentName)) {
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
                 assertTrue(events.hasNext(), "Expected session.created.");
                 RealtimeServerEvent first = events.next();

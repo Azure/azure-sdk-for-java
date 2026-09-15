@@ -64,7 +64,7 @@ public class VoiceAgentLiveFunctionToolSample {
             .endpoint(endpoint)
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentWebSocketClient realtime = builder.buildBetaVoiceAgentWebSocketClient();
+        BetaVoiceAgentWebSocketClient realtime = builder.beta().buildBetaVoiceAgentWebSocketClient();
 
         Map<String, Object> cityProperty = new LinkedHashMap<>();
         cityProperty.put("type", "string");

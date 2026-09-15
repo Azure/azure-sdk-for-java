@@ -81,7 +81,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
             .allowPreview(true);
         AgentsAsyncClient agents = builder.buildAgentsAsyncClient();
         BetaAgentsAsyncClient betaAgents = builder.beta().buildBetaAgentsAsyncClient();
-        BetaVoiceAgentWebSocketAsyncClient realtime = builder.buildBetaVoiceAgentWebSocketAsyncClient();
+        BetaVoiceAgentWebSocketAsyncClient realtime = builder.beta().buildBetaVoiceAgentWebSocketAsyncClient();
         BetaVoiceAgentsConversationsAsyncClient conversations
             = builder.beta().buildBetaVoiceAgentsConversationsAsyncClient();
 

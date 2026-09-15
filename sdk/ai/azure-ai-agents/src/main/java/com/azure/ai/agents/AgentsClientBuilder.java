@@ -955,8 +955,7 @@ public final class AgentsClientBuilder
      *
      * @return an asynchronous voice-agent WebSocket client.
      */
-    @Beta
-    public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
+    private BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
         return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
     }
 
@@ -965,8 +964,7 @@ public final class AgentsClientBuilder
      *
      * @return a synchronous voice-agent WebSocket client.
      */
-    @Beta
-    public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
+    private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
         return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
     }
 }
