@@ -18,4 +18,8 @@
 
   <name>Microsoft Azure Web PubSub Chat client customization for Java</name>
   <description>This package contains client customization for Microsoft Azure Web PubSub Chat.</description>
+
+  <properties>
+    <relative.path.to.eng.folder>../../../../</relative.path.to.eng.folder>
+  </properties>
 </project>
