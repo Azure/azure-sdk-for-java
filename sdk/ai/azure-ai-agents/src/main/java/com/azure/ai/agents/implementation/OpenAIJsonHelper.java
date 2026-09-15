@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 public final class OpenAIJsonHelper {
 
+    private static final ObjectMapper OPENAI_MODEL_MAPPER = ObjectMappers.jsonMapper();
+
     private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
         .rebuild()
         .configure(MapperFeature.AUTO_DETECT_FIELDS, true)
@@ -110,7 +112,7 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            String json = MAPPER.writeValueAsString(openAIObject);
+            String json = OPENAI_MODEL_MAPPER.writeValueAsString(openAIObject);
             try (JsonReader reader = JsonProviders.createReader(new StringReader(json))) {
                 reader.nextToken();
                 return BinaryData.fromObject(reader.readUntyped());
@@ -148,7 +150,7 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            return MAPPER.readValue(data.toString(), type);
+            return OPENAI_MODEL_MAPPER.readValue(data.toString(), type);
         } catch (IOException e) {
             throw new RuntimeException("Failed to deserialize BinaryData to OpenAI type", e);
         }
