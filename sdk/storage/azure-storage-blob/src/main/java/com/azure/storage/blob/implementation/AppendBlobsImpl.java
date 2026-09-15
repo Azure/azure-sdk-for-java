@@ -25,6 +25,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Mono;
 
 /**
@@ -70,30 +72,21 @@ public final class AppendBlobsImpl {
     public interface AppendBlobsService {
         @Put("/")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
             @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
             @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> appendBlock(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") BinaryData body,
@@ -101,10 +94,7 @@ public final class AppendBlobsImpl {
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> appendBlockSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") BinaryData body,
@@ -112,10 +102,7 @@ public final class AppendBlobsImpl {
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> appendBlockFromUrl(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("Content-Length") long contentLength,
@@ -123,10 +110,7 @@ public final class AppendBlobsImpl {
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> appendBlockFromUrlSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("Content-Length") long contentLength,
@@ -134,19 +118,13 @@ public final class AppendBlobsImpl {
 
         @Put("?comp=seal")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> seal(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=seal")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> sealSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
@@ -245,8 +223,10 @@ public final class AppendBlobsImpl {
         final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "AppendBlob";
-        return FluxUtil.withContext(context -> service.create(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, contentLength, blobType, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, contentLength, blobType, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -343,8 +323,12 @@ public final class AppendBlobsImpl {
         final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "AppendBlob";
-        return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            contentLength, blobType, requestOptions, Context.NONE);
+        try {
+            return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                contentLength, blobType, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -453,9 +437,11 @@ public final class AppendBlobsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         final String contentType = "application/octet-stream";
-        return FluxUtil.withContext(
-            context -> service.appendBlock(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-                contentType, contentLength, body, requestOptions, context));
+        return FluxUtil
+            .withContext(
+                context -> service.appendBlock(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    accept, contentType, contentLength, body, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -564,8 +550,12 @@ public final class AppendBlobsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         final String contentType = "application/octet-stream";
-        return service.appendBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            contentType, contentLength, body, requestOptions, Context.NONE);
+        try {
+            return service.appendBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                contentType, contentLength, body, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -681,7 +671,8 @@ public final class AppendBlobsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.appendBlockFromUrl(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, sourceUrl, contentLength, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, sourceUrl, contentLength, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -796,8 +787,12 @@ public final class AppendBlobsImpl {
     public Response<Void> appendBlockFromUrlWithResponseInternal(String sourceUrl, long contentLength,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.appendBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-            accept, sourceUrl, contentLength, requestOptions, Context.NONE);
+        try {
+            return service.appendBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, sourceUrl, contentLength, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -858,8 +853,10 @@ public final class AppendBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sealWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.seal(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.seal(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -920,7 +917,11 @@ public final class AppendBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sealWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.sealSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        try {
+            return service.sealSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }

@@ -26,6 +26,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Mono;
 
 /**
@@ -71,10 +73,7 @@ public final class PageBlobsImpl {
     public interface PageBlobsService {
         @Put("/")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
             @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
@@ -82,10 +81,7 @@ public final class PageBlobsImpl {
 
         @Put("/")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
             @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
@@ -93,10 +89,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> uploadPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") long contentLength, @HeaderParam("Range") String range,
@@ -105,10 +98,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") long contentLength, @HeaderParam("Range") String range,
@@ -117,10 +107,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> clearPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
             @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
@@ -128,10 +115,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> clearPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
             @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
@@ -139,10 +123,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> uploadPagesFromUrl(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("x-ms-source-range") String sourceRange,
@@ -151,10 +132,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadPagesFromUrlSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("x-ms-source-range") String sourceRange,
@@ -163,70 +141,49 @@ public final class PageBlobsImpl {
 
         @Get("?comp=pagelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BinaryData>> getPageRanges(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("?comp=pagelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<BinaryData> getPageRangesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("?comp=pagelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BinaryData>> getPageRangesDiff(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("?comp=pagelist")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<BinaryData> getPageRangesDiffSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> resize(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> resizeSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> setSequenceNumber(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-sequence-number-action") String sequenceNumberAction, RequestOptions requestOptions,
@@ -234,10 +191,7 @@ public final class PageBlobsImpl {
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> setSequenceNumberSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-sequence-number-action") String sequenceNumberAction, RequestOptions requestOptions,
@@ -245,20 +199,14 @@ public final class PageBlobsImpl {
 
         @Put("?comp=incrementalcopy")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> copyIncremental(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String copySource, RequestOptions requestOptions, Context context);
 
         @Put("?comp=incrementalcopy")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> copyIncrementalSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("x-ms-copy-source") String copySource,
             RequestOptions requestOptions, Context context);
@@ -365,7 +313,8 @@ public final class PageBlobsImpl {
         final String blobType = "PageBlob";
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, size, contentLength, blobType, requestOptions, context));
+                accept, size, contentLength, blobType, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -467,8 +416,12 @@ public final class PageBlobsImpl {
         final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "PageBlob";
-        return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, size,
-            contentLength, blobType, requestOptions, Context.NONE);
+        try {
+            return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, size,
+                contentLength, blobType, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -576,9 +529,11 @@ public final class PageBlobsImpl {
         final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         final String pageWrite = "update";
-        return FluxUtil.withContext(
-            context -> service.uploadPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-                contentType, contentLength, range, pageWrite, body, requestOptions, context));
+        return FluxUtil
+            .withContext(
+                context -> service.uploadPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    accept, contentType, contentLength, range, pageWrite, body, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -686,8 +641,12 @@ public final class PageBlobsImpl {
         final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         final String pageWrite = "update";
-        return service.uploadPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            contentType, contentLength, range, pageWrite, body, requestOptions, Context.NONE);
+        try {
+            return service.uploadPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                contentType, contentLength, range, pageWrite, body, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -771,9 +730,11 @@ public final class PageBlobsImpl {
         final String accept = "application/xml";
         final int contentLength = 0;
         final String pageWrite = "clear";
-        return FluxUtil.withContext(
-            context -> service.clearPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-                contentLength, range, pageWrite, requestOptions, context));
+        return FluxUtil
+            .withContext(
+                context -> service.clearPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    accept, contentLength, range, pageWrite, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -857,8 +818,12 @@ public final class PageBlobsImpl {
         final String accept = "application/xml";
         final int contentLength = 0;
         final String pageWrite = "clear";
-        return service.clearPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            contentLength, range, pageWrite, requestOptions, Context.NONE);
+        try {
+            return service.clearPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                contentLength, range, pageWrite, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -970,9 +935,11 @@ public final class PageBlobsImpl {
         long contentLength, String range, RequestOptions requestOptions) {
         final String accept = "application/xml";
         final String pageWrite = "update";
-        return FluxUtil.withContext(
-            context -> service.uploadPagesFromUrl(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.uploadPagesFromUrl(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), accept, sourceUrl, sourceRange, contentLength, range,
+                pageWrite, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1084,8 +1051,12 @@ public final class PageBlobsImpl {
         long contentLength, String range, RequestOptions requestOptions) {
         final String accept = "application/xml";
         final String pageWrite = "update";
-        return service.uploadPagesFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-            accept, sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, Context.NONE);
+        try {
+            return service.uploadPagesFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1174,8 +1145,10 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPageRangesWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getPageRanges(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getPageRanges(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1264,8 +1237,12 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPageRangesWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.getPageRangesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        try {
+            return service.getPageRangesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1358,8 +1335,10 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPageRangesDiffWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getPageRangesDiff(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getPageRangesDiff(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1452,8 +1431,12 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPageRangesDiffWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.getPageRangesDiffSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        try {
+            return service.getPageRangesDiffSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1522,8 +1505,10 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resizeWithResponseInternalAsync(long size, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.resize(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, size, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.resize(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, size, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1592,8 +1577,12 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resizeWithResponseInternal(long size, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.resizeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, size,
-            requestOptions, Context.NONE);
+        try {
+            return service.resizeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, size,
+                requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1659,8 +1648,10 @@ public final class PageBlobsImpl {
     public Mono<Response<Void>> setSequenceNumberWithResponseInternalAsync(String sequenceNumberAction,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.setSequenceNumber(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, sequenceNumberAction, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.setSequenceNumber(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), accept, sequenceNumberAction, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1726,8 +1717,12 @@ public final class PageBlobsImpl {
     public Response<Void> setSequenceNumberWithResponseInternal(String sequenceNumberAction,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.setSequenceNumberSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            sequenceNumberAction, requestOptions, Context.NONE);
+        try {
+            return service.setSequenceNumberSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, sequenceNumberAction, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1790,8 +1785,10 @@ public final class PageBlobsImpl {
     public Mono<Response<Void>> copyIncrementalWithResponseInternalAsync(String copySource,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.copyIncremental(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), accept, copySource, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.copyIncremental(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), accept, copySource, requestOptions, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1853,7 +1850,11 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> copyIncrementalWithResponseInternal(String copySource, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.copyIncrementalSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-            copySource, requestOptions, Context.NONE);
+        try {
+            return service.copyIncrementalSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, copySource, requestOptions, Context.NONE);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }

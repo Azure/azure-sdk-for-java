@@ -41,6 +41,8 @@ import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.BlobSignedIdentifiers;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -1239,7 +1241,8 @@ public final class BlobContainerAsyncClient {
                             .collect(Collectors.toList());
 
                         return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(), null);
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
+                            new ContainersListBlobFlatSegmentApacheArrowHeaders(response.getHeaders()));
                     } else {
                         // XML fallback
                         try {
@@ -1476,7 +1479,8 @@ public final class BlobContainerAsyncClient {
                             .collect(Collectors.toList());
 
                         return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(), null);
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
+                            new ContainersListBlobHierarchySegmentApacheArrowHeaders(response.getHeaders()));
                     } else {
                         // XML fallback
                         try {

@@ -24,6 +24,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.BlobContainerClientInternal;
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobHierarchyListSegment;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.BlobSignedIdentifiers;
 import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
@@ -1093,7 +1095,8 @@ public final class BlobContainerClient {
                             .collect(Collectors.toList());
 
                         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), value, arrowResult.getNextMarker(), null);
+                            response.getHeaders(), value, arrowResult.getNextMarker(),
+                            new ContainersListBlobFlatSegmentApacheArrowHeaders(response.getHeaders()));
                     } else {
                         // XML fallback — service returned XML instead of Arrow
                         try {
@@ -1293,7 +1296,8 @@ public final class BlobContainerClient {
                         .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, arrowResult.getNextMarker(), null);
+                        response.getHeaders(), value, arrowResult.getNextMarker(),
+                        new ContainersListBlobHierarchySegmentApacheArrowHeaders(response.getHeaders()));
                 } else {
                     // XML fallback — service returned XML instead of Arrow
                     try {

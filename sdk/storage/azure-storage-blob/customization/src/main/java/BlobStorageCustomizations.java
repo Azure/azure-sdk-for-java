@@ -69,7 +69,6 @@ public class BlobStorageCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
-        logGeneratedPublicClients(editor, logger);
         relocateConvenienceClientsToImplementation(editor, logger);
         removeGeneratedFiles(editor, logger);
         fixXmlSerializerRedundantCast(editor, logger);
@@ -89,10 +88,7 @@ public class BlobStorageCustomizations extends Customization {
         addContentTypeHeaderProperty(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         restoreObjectReplicationHeaderCollection(editor, logger);
         removeMultipartBatchConvenience(customization, editor, logger);
-        // Follow-up stages (ported from the queue customization) build on this removal pass:
-        //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
-        //   - updateImplToMapInternalException (BlobStorageExceptionInternal -> BlobStorageException)
-        // Each is added once its stage is reconciled against the RevApi/compile report.
+        mapInternalStorageException(editor, logger);
     }
 
     private static void removeGeneratedFiles(Editor editor, Logger logger) {
@@ -406,6 +402,62 @@ public class BlobStorageCustomizations extends Customization {
             clazz.getMethodsByName("setNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
         }));
         logger.info("Restored the package-private next marker accessors on PageList.");
+    }
+
+    // Every error response from Blob Storage is an XML StorageError. The emitter maps status codes onto generic
+    // azure-core exceptions instead (401 -> ClientAuthenticationException, 404 -> ResourceNotFoundException,
+    // 409 -> ResourceModifiedException, anything else -> HttpResponseException), so BlobStorageException -- the
+    // exception the whole public API documents and every caller catches -- would never be thrown again, and the XML
+    // error body would not be deserialized. Collapse the per-status annotations onto BlobStorageExceptionInternal,
+    // which does deserialize the body, and map it to the public BlobStorageException on the way out.
+    private static final List<String> OP_GROUP_IMPLS = Arrays.asList("ServicesImpl", "ContainersImpl", "BlobsImpl",
+        "BlockBlobsImpl", "PageBlobsImpl", "AppendBlobsImpl");
+
+    private static void mapInternalStorageException(Editor editor, Logger logger) {
+        for (String className : OP_GROUP_IMPLS) {
+            String path = PKG_ROOT + "implementation/" + className + ".java";
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                logger.info("{} not present; skipping the exception mapping.", className);
+                continue;
+            }
+
+            // Drop the three per-status annotations, then repoint the catch-all at the internal storage exception.
+            // Matched one at a time: the customization sees the emitter's output before it is formatted, so the
+            // whitespace between them is not fixed.
+            String updated = content
+                .replaceAll("@UnexpectedResponseExceptionType\\(value = ClientAuthenticationException\\.class,"
+                    + "\\s*code = \\{\\s*401\\s*\\}\\)\\s*", "")
+                .replaceAll("@UnexpectedResponseExceptionType\\(value = ResourceNotFoundException\\.class,"
+                    + "\\s*code = \\{\\s*404\\s*\\}\\)\\s*", "")
+                .replaceAll("@UnexpectedResponseExceptionType\\(value = ResourceModifiedException\\.class,"
+                    + "\\s*code = \\{\\s*409\\s*\\}\\)\\s*", "")
+                .replace("@UnexpectedResponseExceptionType(HttpResponseException.class)",
+                    "@UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)");
+            if (updated.equals(content)) {
+                throw new IllegalStateException(
+                    "No per-status exception annotations found in " + className + "; the emitter output changed.");
+            }
+
+            // Async: each protocol method ends in a single `return FluxUtil.withContext(...);` statement.
+            updated = updated.replaceAll("(return FluxUtil\\.withContext\\([^;]*?)\\);(\\s*)\\}",
+                "$1)$2    .onErrorMap(BlobStorageExceptionInternal.class, "
+                    + "ModelHelper::mapToBlobStorageException);$2}");
+
+            // Sync: each protocol method ends in a single `return service.<op>Sync(...);` statement.
+            updated = updated.replaceAll("(?m)^(\\s*)(return service\\.\\w+Sync\\([^;]*?\\);)(\\s*)\\}",
+                "$1try {\n$1    $2\n$1\\} catch (BlobStorageExceptionInternal internalException) {\n"
+                    + "$1    throw ModelHelper.mapToBlobStorageException(internalException);\n$1\\}$3}");
+
+            updated = addImport(updated,
+                "import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;");
+            updated = addImport(updated, "import com.azure.storage.blob.implementation.util.ModelHelper;");
+            updated = removeImportIfUnused(updated, "com.azure.core.exception.ClientAuthenticationException");
+            updated = removeImportIfUnused(updated, "com.azure.core.exception.ResourceNotFoundException");
+            updated = removeImportIfUnused(updated, "com.azure.core.exception.ResourceModifiedException");
+            editor.replaceFile(path, updated);
+            logger.info("Mapped the internal storage exception to BlobStorageException in {}.", className);
+        }
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {
@@ -957,24 +1009,6 @@ public class BlobStorageCustomizations extends Customization {
         "AppendBlobClient", "AppendBlobAsyncClient",
         "BlockBlobClient", "BlockBlobAsyncClient",
         "PageBlobClient", "PageBlobAsyncClient");
-
-    // Logs every generated client sitting in the public package, so the relocate/remove lists can be reconciled
-    // against what the emitter actually produced rather than an assumed list.
-    private static void logGeneratedPublicClients(Editor editor, Logger logger) {
-        for (String path : new ArrayList<>(editor.getContents().keySet())) {
-            if (!path.startsWith(PKG_ROOT) || !path.endsWith("Client.java")) {
-                continue;
-            }
-            String rest = path.substring(PKG_ROOT.length());
-            if (rest.contains("/")) {
-                continue;
-            }
-            String content = editor.getContents().get(path);
-            if (content != null && content.contains("Code generated by")) {
-                logger.info("Generated public-package client present: {}", rest);
-            }
-        }
-    }
 
     private static void relocateConvenienceClientsToImplementation(Editor editor, Logger logger) {
         for (String className : CONVENIENCE_CLIENTS_TO_RELOCATE) {
