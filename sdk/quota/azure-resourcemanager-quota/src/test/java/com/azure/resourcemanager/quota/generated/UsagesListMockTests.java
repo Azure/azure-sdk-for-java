@@ -23,7 +23,7 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"usages\":{\"value\":542586349,\"usagesType\":\"Individual\"},\"unit\":\"szzcmrvexztv\",\"name\":{\"value\":\"gsfraoyzkoow\",\"localizedValue\":\"mnguxawqaldsyu\"},\"resourceType\":\"imerqfobwyznk\",\"quotaPeriod\":\"kutwpf\",\"isQuotaApplicable\":false,\"properties\":\"datam\"},\"id\":\"skdsnfdsdoakg\",\"name\":\"dlmkkzevdl\",\"type\":\"ewpusdsttwvogvb\"}]}";
+            = "{\"value\":[{\"properties\":{\"usages\":{\"value\":635512255,\"usagesType\":\"Individual\"},\"unit\":\"mldgxobfirc\",\"name\":{\"value\":\"kciayzri\",\"localizedValue\":\"hya\"},\"resourceType\":\"vjlboxqvk\",\"quotaPeriod\":\"mxho\",\"isQuotaApplicable\":true,\"properties\":\"\\\"datahdwdi\\\"\"},\"id\":\"mbnraauzzp\",\"name\":\"jazysdzhezwwvaiq\",\"type\":\"uvvfonkp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,12 @@ public final class UsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<CurrentUsagesBase> response = manager.usages().list("toego", com.azure.core.util.Context.NONE);
+        PagedIterable<CurrentUsagesBase> response
+            = manager.usages().list("laecxndticok", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(542586349, response.iterator().next().properties().usages().value());
+        Assertions.assertEquals(635512255, response.iterator().next().properties().usages().value());
         Assertions.assertEquals(UsagesTypes.INDIVIDUAL, response.iterator().next().properties().usages().usagesType());
-        Assertions.assertEquals("gsfraoyzkoow", response.iterator().next().properties().name().value());
-        Assertions.assertEquals("imerqfobwyznk", response.iterator().next().properties().resourceType());
+        Assertions.assertEquals("kciayzri", response.iterator().next().properties().name().value());
+        Assertions.assertEquals("vjlboxqvk", response.iterator().next().properties().resourceType());
     }
 }
