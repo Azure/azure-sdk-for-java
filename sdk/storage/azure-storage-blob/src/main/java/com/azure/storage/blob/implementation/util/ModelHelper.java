@@ -690,6 +690,34 @@ public final class ModelHelper {
     }
 
     /**
+     * Copies list blobs options.
+     *
+     * @param options the listing options to copy, or {@code null}.
+     * @return the copied options.
+     */
+    public static ListBlobsOptions copyListBlobsOptions(ListBlobsOptions options) {
+        if (options == null) {
+            return new ListBlobsOptions();
+        }
+        return new ListBlobsOptions().setMaxResultsPerPage(options.getMaxResultsPerPage())
+            .setPrefix(options.getPrefix())
+            .setStartFrom(options.getStartFrom())
+            .setEndBefore(options.getEndBefore())
+            .setDetails(options.getDetails())
+            .setStorageResponseSerializationFormat(options.getStorageResponseSerializationFormat());
+    }
+
+    /**
+     * Replaces the requested serialization format with the concrete wire format.
+     *
+     * @param options the listing options to update.
+     */
+    public static void applyDefaultsToListBlobsOptions(ListBlobsOptions options) {
+        options.setStorageResponseSerializationFormat(
+            resolveSerializationFormat(options.getStorageResponseSerializationFormat()));
+    }
+
+    /**
      * Validates that {@code endBefore}, when specified, is used with the Apache Arrow response format.
      *
      * @param options the listing options to validate.

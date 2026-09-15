@@ -1035,19 +1035,8 @@ public final class BlobContainerClient {
     public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken, Duration timeout) {
         ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, PagedResponse<BlobItem>> retriever = (nextMarker, pageSize) -> {
-            ListBlobsOptions finalOptions = new ListBlobsOptions();
-            if (options != null) {
-                finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
-                    .setPrefix(options.getPrefix())
-                    .setStartFrom(options.getStartFrom())
-                    .setDetails(options.getDetails());
-
-                if (options.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
-                    finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-                        .setEndBefore(options.getEndBefore());
-                }
-
-            }
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
             Otherwise, prefer the new value.
@@ -1230,18 +1219,8 @@ public final class BlobContainerClient {
     public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, PagedResponse<BlobItem>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions = new ListBlobsOptions();
-            if (options != null) {
-                finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
-                    .setPrefix(options.getPrefix())
-                    .setDetails(options.getDetails())
-                    .setStartFrom(options.getStartFrom());
-                if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
-                    == StorageResponseSerializationFormat.ARROW) {
-                    finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-                        .setEndBefore(options.getEndBefore());
-                }
-            }
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
             Otherwise, prefer the new value.
@@ -1263,8 +1242,7 @@ public final class BlobContainerClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
-            == StorageResponseSerializationFormat.ARROW) {
+        if (options.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
             Callable<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream>> operation
                 = () -> azureBlobStorage.getContainers()
                     .listBlobHierarchySegmentApacheArrowWithResponse(containerName, delimiter, options.getPrefix(),
