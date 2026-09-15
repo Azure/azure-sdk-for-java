@@ -4,6 +4,8 @@
 
 #### Features Added
 
+* Added `COMPUTE_SERVICE_UNAVAILABLE` (503/0) and `COMPUTE_INTERNAL_SERVER_ERROR` (500/102) fault injection errors, including support for `METADATA_REQUEST_ADDRESS_REFRESH`.
+
 #### Breaking Changes
 
 #### Bugs Fixed
