@@ -6,7 +6,6 @@ module com.azure.core.test {
     requires transitive com.azure.v2.core;
 
     requires org.junit.jupiter.api;
-    requires org.junit.jupiter.engine;
     requires org.junit.jupiter.params;
     requires org.junit.platform.commons;
     requires java.management;

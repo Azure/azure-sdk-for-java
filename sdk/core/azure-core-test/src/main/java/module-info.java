@@ -9,7 +9,6 @@ module com.azure.core.test {
     requires transitive com.azure.core.http.vertx;
 
     requires org.junit.jupiter.api;
-    requires org.junit.jupiter.engine;
     requires org.junit.jupiter.params;
     requires org.junit.platform.commons;
     requires java.management;
