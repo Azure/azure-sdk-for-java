@@ -381,6 +381,7 @@ public final class BlobsQueryHeaders {
             }
         });
         this.metadata = metadataHeaderCollection;
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**
@@ -1105,6 +1106,32 @@ public final class BlobsQueryHeaders {
     @Generated
     public BlobsQueryHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
+        return this;
+    }
+
+    /**
+     * The Content-Type property.
+     */
+    private String contentType;
+
+    /**
+     * Get the contentType property: The Content-Type property.
+     *
+     * @return the contentType value.
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: The Content-Type property.
+     *
+     * @param contentType the contentType value to set.
+     * @return the BlobsQueryHeaders object itself.
+     */
+    @Generated
+    public BlobsQueryHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }

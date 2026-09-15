@@ -81,6 +81,7 @@ public class BlobStorageCustomizations extends Customization {
         removeBufferedStreamingConvenienceMethods(customization.getPackage(IMPL_PACKAGE), logger);
         restoreFluentModels(customization, logger);
         restoreHeaderSetters(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
+        addContentTypeHeaderProperty(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         // Follow-up stages (ported from the queue customization) build on this removal pass:
         //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
         //   - updateImplToMapInternalException (BlobStorageExceptionInternal -> BlobStorageException)
@@ -126,6 +127,46 @@ public class BlobStorageCustomizations extends Customization {
     // (HttpHeaders) constructor that restoreFluentModels replaces with a no-arg one.
     private static final List<String> HEADER_MODELS_TO_MAKE_SETTABLE
         = Arrays.asList("BlobsDownloadHeaders", "BlobsQueryHeaders");
+
+    // The spec does declare Content-Type on these responses, but TypeSpec treats it as the response's content-type
+    // metadata rather than a header (hence the content-type-ignored suppressions on the operation templates), so
+    // the emitter leaves it out of the header model. getContentType()/setContentType() are public API on the
+    // shipped BlobDownloadHeaders and BlobQueryHeaders, so add the property back and populate it from the raw
+    // headers the class is already built from.
+    private static void addContentTypeHeaderProperty(PackageCustomization implModels, Logger logger) {
+        for (String className : HEADER_MODELS_TO_MAKE_SETTABLE) {
+            if (implModels.getClass(className) == null) {
+                logger.info("Header model {} not present; skipping the Content-Type property.", className);
+                continue;
+            }
+            implModels.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+                if (!clazz.getFieldByName("contentType").isPresent()) {
+                    clazz.addField("String", "contentType", Modifier.Keyword.PRIVATE)
+                        .setJavadocComment("The Content-Type property.");
+                }
+                clazz.getConstructors()
+                    .stream()
+                    .filter(ctor -> ctor.getParameters().size() == 1
+                        && "HttpHeaders".equals(ctor.getParameter(0).getType().asString()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "No (HttpHeaders) constructor on " + className + " to populate Content-Type from."))
+                    .getBody()
+                    .addStatement(StaticJavaParser
+                        .parseStatement("this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);"));
+                if (clazz.getMethodsByName("getContentType").isEmpty()) {
+                    MethodDeclaration getter = clazz.addMethod("getContentType", Modifier.Keyword.PUBLIC);
+                    getter.setType("String");
+                    getter.setJavadocComment(new Javadoc(
+                        JavadocDescription.parseText("Get the contentType property: The Content-Type property."))
+                            .addBlockTag("return", "the contentType value."));
+                    getter.setBody(StaticJavaParser.parseBlock("{ return this.contentType; }"));
+                }
+                addFluentSetters(clazz);
+            }));
+            logger.info("Added the Content-Type property to {}.", className);
+        }
+    }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {
         for (String className : HEADER_MODELS_TO_MAKE_SETTABLE) {

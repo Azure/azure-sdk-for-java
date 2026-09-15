@@ -75,7 +75,7 @@ public final class BlobDownloadHeaders {
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
-        return internalHeaders.getXMsMeta();
+        return internalHeaders.getMetadata();
     }
 
     /**
@@ -85,7 +85,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setMetadata(Map<String, String> metadata) {
-        internalHeaders.setXMsMeta(metadata);
+        internalHeaders.setMetadata(metadata);
         return this;
     }
 

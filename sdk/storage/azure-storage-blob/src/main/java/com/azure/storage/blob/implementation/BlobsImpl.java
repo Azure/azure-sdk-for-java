@@ -596,7 +596,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
      * identifier for the request.</td></tr>
      * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
-     * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
+     * <tr><td>x-ms-or</td><td>Map&lt;String, String&gt;</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
      * <tr><td>x-ms-or-policy-id</td><td>String</td><td>The object replication policy ID.</td></tr>
@@ -744,7 +744,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
      * identifier for the request.</td></tr>
      * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
-     * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
+     * <tr><td>x-ms-or</td><td>Map&lt;String, String&gt;</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
      * <tr><td>x-ms-or-policy-id</td><td>String</td><td>The object replication policy ID.</td></tr>
@@ -873,7 +873,7 @@ public final class BlobsImpl {
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Content-Type</td><td>String</td><td>Content-type.</td></tr>
      * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
-     * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
+     * <tr><td>x-ms-or</td><td>Map&lt;String, String&gt;</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
      * <tr><td>x-ms-or-policy-id</td><td>String</td><td>The object replication policy ID.</td></tr>
@@ -1003,7 +1003,7 @@ public final class BlobsImpl {
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Content-Type</td><td>String</td><td>Content-type.</td></tr>
      * <tr><td>x-ms-meta</td><td>Map&lt;String, String&gt;</td><td>The metadata headers.</td></tr>
-     * <tr><td>x-ms-or</td><td>String</td><td>The object replication status headers.</td></tr>
+     * <tr><td>x-ms-or</td><td>Map&lt;String, String&gt;</td><td>The object replication status headers.</td></tr>
      * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The date-time that the resource was last modified.</td></tr>
      * <tr><td>x-ms-creation-time</td><td>OffsetDateTime</td><td>The date-time the blob was created.</td></tr>
      * <tr><td>x-ms-or-policy-id</td><td>String</td><td>The object replication policy ID.</td></tr>

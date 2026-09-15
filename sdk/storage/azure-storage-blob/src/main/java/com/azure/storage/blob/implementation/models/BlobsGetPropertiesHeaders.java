@@ -10,6 +10,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobType;
@@ -18,6 +20,8 @@ import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.RehydratePriority;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -45,7 +49,7 @@ public final class BlobsGetPropertiesHeaders {
      * The x-ms-or property.
      */
     @Generated
-    private final String objectReplicationRules;
+    private final Map<String, String> objectReplicationRules;
 
     /*
      * The Last-Modified property.
@@ -419,7 +423,18 @@ public final class BlobsGetPropertiesHeaders {
      */
     public BlobsGetPropertiesHeaders(HttpHeaders rawHeaders) {
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-        this.objectReplicationRules = rawHeaders.getValue(X_MS_OR);
+        String objectReplicationRules = rawHeaders.getValue(X_MS_OR);
+        try {
+            if (objectReplicationRules != null) {
+                this.objectReplicationRules = JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserializeHeader(rawHeaders.get("x-ms-or"), new TypeReference<Map<String, String>>() {
+                    }.getJavaType());
+            } else {
+                this.objectReplicationRules = null;
+            }
+        } catch (IOException ex) {
+            throw LOGGER.atError().log(new UncheckedIOException(ex));
+        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
@@ -640,7 +655,7 @@ public final class BlobsGetPropertiesHeaders {
      * @return the objectReplicationRules value.
      */
     @Generated
-    public String getObjectReplicationRules() {
+    public Map<String, String> getObjectReplicationRules() {
         return this.objectReplicationRules;
     }
 
@@ -1137,4 +1152,6 @@ public final class BlobsGetPropertiesHeaders {
     public String getClientRequestId() {
         return this.clientRequestId;
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobsGetPropertiesHeaders.class);
 }
