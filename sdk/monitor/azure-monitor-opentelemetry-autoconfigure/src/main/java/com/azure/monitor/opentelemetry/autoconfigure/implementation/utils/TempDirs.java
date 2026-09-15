@@ -63,10 +63,13 @@ public class TempDirs {
         Path normalizedSharedTempDirectory = sharedTempDirectory.toAbsolutePath().normalize();
         Path normalizedDirectory = directory.toAbsolutePath().normalize();
         if (!normalizedDirectory.startsWith(normalizedSharedTempDirectory)
-            || normalizedDirectory.equals(normalizedSharedTempDirectory)
-            || Files.isSymbolicLink(normalizedSharedTempDirectory)
-            || !Files.isDirectory(normalizedSharedTempDirectory, LinkOption.NOFOLLOW_LINKS)) {
+            || normalizedDirectory.equals(normalizedSharedTempDirectory)) {
             throw new IOException("Invalid temporary directory path: " + directory);
+        }
+        if (!Files.isDirectory(normalizedSharedTempDirectory, LinkOption.NOFOLLOW_LINKS)
+            || containsSymbolicLink(normalizedSharedTempDirectory)) {
+            throw new IOException(
+                "Shared temporary directory is invalid or contains a symbolic link: " + normalizedSharedTempDirectory);
         }
 
         Path current = normalizedSharedTempDirectory;
@@ -78,7 +81,7 @@ public class TempDirs {
 
     static void createSecureDirectory(Path directory) throws IOException {
         Path parent = directory.getParent();
-        if (parent == null || Files.isSymbolicLink(parent) || !Files.isDirectory(parent, LinkOption.NOFOLLOW_LINKS)) {
+        if (parent == null || !Files.isDirectory(parent, LinkOption.NOFOLLOW_LINKS) || containsSymbolicLink(parent)) {
             throw new IOException("Directory parent is missing, invalid, or a symbolic link: " + parent);
         }
 
@@ -140,6 +143,27 @@ public class TempDirs {
             .setFlags(AclEntryFlag.DIRECTORY_INHERIT, AclEntryFlag.FILE_INHERIT)
             .build();
         aclView.setAcl(Collections.singletonList(ownerEntry));
+    }
+
+    // Files.isSymbolicLink(path, NOFOLLOW_LINKS) only inspects path's final component; an
+    // intermediate component (e.g. a multi-segment java.io.tmpdir) could itself be a symlink, so
+    // every ancestor is checked individually here.
+    private static boolean containsSymbolicLink(Path path) {
+        Path root = path.getRoot();
+        if (root == null) {
+            return true;
+        }
+        Path current = root;
+        if (Files.isSymbolicLink(current)) {
+            return true;
+        }
+        for (Path component : path) {
+            current = current.resolve(component);
+            if (Files.isSymbolicLink(current)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

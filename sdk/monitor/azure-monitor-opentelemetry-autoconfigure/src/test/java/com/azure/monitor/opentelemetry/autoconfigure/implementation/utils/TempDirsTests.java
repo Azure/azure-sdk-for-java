@@ -52,4 +52,21 @@ class TempDirsTests {
             .isInstanceOf(IOException.class)
             .hasMessageContaining("symbolic link");
     }
+
+    @Test
+    void shouldRejectSymbolicLinkAboveSharedTempDirectory() throws IOException {
+        assumeTrue(Files.getFileStore(tempDir).supportsFileAttributeView("posix"));
+        // sharedTempDirectory itself (java.io.tmpdir) is not a symlink, but an ancestor of it is -
+        // Files.isDirectory(path, NOFOLLOW_LINKS) alone would not catch this, since NOFOLLOW_LINKS
+        // only affects the final path component.
+        Path attackerControlled = Files.createDirectory(tempDir.resolve("attacker-controlled"));
+        Path sub = Files.createDirectory(attackerControlled.resolve("sub"));
+        Path link = tempDir.resolve("link");
+        Files.createSymbolicLink(link, attackerControlled);
+        Path sharedTempDirectoryViaLink = link.resolve("sub");
+
+        assertThatThrownBy(() -> TempDirs.createSecureDirectories(sharedTempDirectoryViaLink,
+            sharedTempDirectoryViaLink.resolve("applicationinsights"))).isInstanceOf(IOException.class)
+                .hasMessageContaining("symbolic link");
+    }
 }
