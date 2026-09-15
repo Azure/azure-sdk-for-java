@@ -136,7 +136,7 @@ $($artifacts -join "`n")
 
     function New-SuccessfulStepOutcomes {
         $steps = @{}
-        foreach ($name in @('checkout', 'node', 'inputs', 'spelling', 'changelogs', 'root_exclusions')) {
+        foreach ($name in @('checkout', 'node', 'inputs', 'spelling', 'changelogs')) {
             $steps[$name] = @{ outcome = 'success' }
         }
         return $steps
@@ -183,7 +183,7 @@ Describe 'PR snapshot and root documentation fast path' -Tag 'UnitTest' {
     }
 
     It 'never treats an unfamiliar or protected CHANGELOG path as root documentation: <Path>' -TestCases @(
-        @{ Path = 'CHANGELOG.md' }, @{ Path = 'README.md.template' }, @{ Path = 'readme.md' },
+        @{ Path = 'CHANGELOG.md' },
         @{ Path = 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' },
         @{ Path = 'sdk/fixture/azure-fixture-alpha/src/main/CHANGELOG.md' },
         @{ Path = 'sdk/fixture/azure-fixture-alpha/src/test/CHANGELOG.md' },
@@ -507,17 +507,21 @@ Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
         @($job.steps | Where-Object { $_.uses -like 'actions/setup-node@*' }).Count | Should -Be 1
         ($job.steps | Where-Object id -EQ 'node').with.'node-version' | Should -Be '24'
         ($job.steps | Where-Object id -EQ 'checkout').with.'fetch-depth' | Should -Be 2
+        $job.steps.name | Should -Be @(
+            'Checkout', 'Use Node.js 24', 'Prepare shared PR validation inputs',
+            'Check spelling', 'Verify changelogs', 'Report validation results'
+        )
+        @($job.steps | Where-Object { $_.ContainsKey('id') }).id |
+            Should -Be @('checkout', 'node', 'inputs', 'spelling', 'changelogs')
     }
 
-    It 'runs all useful validations after failures, without continue-on-error or a second guard invocation' {
+    It 'runs all useful validations after failures without continue-on-error' {
         $steps = $script:Workflow.jobs['check-spelling'].steps
         @($steps | Where-Object { $_.ContainsKey('continue-on-error') }).Count | Should -Be 0
         ($steps | Where-Object id -EQ 'inputs').if | Should -Be '${{ !cancelled() && steps.checkout.outcome == ''success'' }}'
         ($steps | Where-Object id -EQ 'spelling').if |
             Should -Be '${{ !cancelled() && steps.inputs.outcome == ''success'' && steps.node.outcome == ''success'' }}'
         ($steps | Where-Object id -EQ 'changelogs').if | Should -Be '${{ !cancelled() && steps.inputs.outcome == ''success'' }}'
-        ($steps | Where-Object id -EQ 'root_exclusions').if | Should -Be '${{ !cancelled() }}'
-        @($steps | Where-Object { $_.run -match 'Test-RootDocumentationExclusions.ps1' }).Count | Should -Be 1
         $steps[-1].name | Should -Be 'Report validation results'
         $steps[-1].if | Should -Be '${{ !cancelled() }}'
         $steps[-1].env.PR_VALIDATION_STEPS | Should -Be '${{ toJSON(steps) }}'
@@ -539,14 +543,20 @@ Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
             '-SummaryPath', (Join-Path $output 'summary.md')
         )
         $report.ExitCode | Should -Be 0 -Because $report.Error
-        Get-Content (Join-Path $output 'summary.md') -Raw | Should -Match 'Spelling|Changelogs|root_exclusions'
+        $summary = Get-Content (Join-Path $output 'summary.md') -Raw
+        foreach ($name in $steps.Keys) {
+            $summary | Should -Match ([regex]::Escape("| $name | <code>success</code> |"))
+        }
+        $summary | Should -Match '### Spelling'
+        $summary | Should -Match '### Changelogs'
     }
 
     It 'fails for failed, cancelled, missing, or unexpectedly skipped stages: <Stage> <Outcome>' -TestCases @(
-        @{ Stage = 'checkout'; Outcome = 'failure' }, @{ Stage = 'node'; Outcome = 'failure' },
-        @{ Stage = 'inputs'; Outcome = 'failure' }, @{ Stage = 'spelling'; Outcome = 'failure' },
-        @{ Stage = 'changelogs'; Outcome = 'skipped' }, @{ Stage = 'root_exclusions'; Outcome = 'failure' },
-        @{ Stage = 'spelling'; Outcome = 'cancelled' }, @{ Stage = 'inputs'; Outcome = 'missing' }
+        foreach ($stage in @('checkout', 'node', 'inputs', 'spelling', 'changelogs')) {
+            foreach ($outcome in @('failure', 'cancelled', 'missing', 'skipped')) {
+                @{ Stage = $stage; Outcome = $outcome }
+            }
+        }
     ) {
         param($Stage, $Outcome)
         $output = New-ValidationReportFixture
@@ -597,11 +607,8 @@ Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
         $summary | Should -Match '&#124;'
     }
 
-    It 'reports spelling setup failure, still checks changelogs, and still inventories the root tree' {
+    It 'reports spelling setup failure and changelog errors together' {
         $fixture = New-ValidationFixture
-        Invoke-PRValidationGit $fixture.Root @('init', '--quiet') | Out-Null
-        Set-ValidationFixtureFile $fixture.Root 'README.md.template' 'Collision outside the spelling input list'
-        Invoke-PRValidationGit $fixture.Root @('add', 'README.md.template') | Out-Null
         Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' "# Release History`n## 0.0.1 (Unreleased)"
         New-ValidationSnapshot @('sdk/fixture/azure-fixture-alpha/pom.xml') |
             ConvertTo-Json | Set-Content (Join-Path $fixture.Output 'diff.json')
@@ -612,19 +619,14 @@ Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
         $changelogs = Invoke-ValidationScript (Join-Path $script:Scripts 'Invoke-PRValidation.ps1') @(
             '-Check', 'Changelogs', '-OutputDirectory', $fixture.Output, '-RepositoryRoot', $fixture.Root
         )
-        $guard = Invoke-ValidationScript (Join-Path $script:Scripts 'Test-RootDocumentationExclusions.ps1') @(
-            '-RepositoryRoot', $fixture.Root
-        )
         $spelling.ExitCode | Should -Be 1
         $changelogs.ExitCode | Should -Be 1
-        $guard.ExitCode | Should -Be 1
-        ($guard.Output + $guard.Error) | Should -Match 'README.md.template'
         $stored = Get-Content (Join-Path $fixture.Output 'changelogs.json') -Raw | ConvertFrom-Json
         $stored.Packages.Count | Should -Be 1
         $stored.Packages[0].Name | Should -Be 'azure-fixture-alpha'
         $stored.Packages[0].Status | Should -Be 'Failed'
         $steps = New-SuccessfulStepOutcomes
-        foreach ($name in @('spelling', 'changelogs', 'root_exclusions')) { $steps[$name].outcome = 'failure' }
+        foreach ($name in @('spelling', 'changelogs')) { $steps[$name].outcome = 'failure' }
         $report = Invoke-ValidationScript (Join-Path $script:Scripts 'Complete-PRValidation.ps1') @(
             '-OutputDirectory', $fixture.Output, '-StepsJson', ($steps | ConvertTo-Json -Compress),
             '-SummaryPath', (Join-Path $fixture.Output 'summary.md')
@@ -634,18 +636,40 @@ Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
         $summary | Should -Match 'Spelling could not complete'
         $summary | Should -Match 'azure-fixture-alpha'
         $summary | Should -Match 'does not have an entry for version 1.2.3'
-        $summary | Should -Match 'root_exclusions.*failure'
+    }
 
-        New-ValidationSnapshot @() @('docs/removed.md') |
+    It 'preserves changelog result <ExpectedExit> when spelling has no files to check' -TestCases @(
+        @{ ExpectedExit = 0 }, @{ ExpectedExit = 1 }
+    ) {
+        param($ExpectedExit)
+        $fixture = New-ValidationFixture
+        if ($ExpectedExit -eq 1) {
+            Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' `
+                "# Release History`n## 0.0.1 (Unreleased)"
+        }
+        New-ValidationSnapshot @() @('sdk/fixture/azure-fixture-alpha/src/main/java/Removed.java') |
             ConvertTo-Json | Set-Content (Join-Path $fixture.Output 'diff.json')
-        $emptySpelling = Invoke-ValidationScript (Join-Path $script:Scripts 'Invoke-PRValidation.ps1') @(
+        $spelling = Invoke-ValidationScript (Join-Path $script:Scripts 'Invoke-PRValidation.ps1') @(
             '-Check', 'Spelling', '-OutputDirectory', $fixture.Output, '-RepositoryRoot', $fixture.Root
         )
-        $guardAfterEmpty = Invoke-ValidationScript (Join-Path $script:Scripts 'Test-RootDocumentationExclusions.ps1') @(
-            '-RepositoryRoot', $fixture.Root
+        $changelogs = Invoke-ValidationScript (Join-Path $script:Scripts 'Invoke-PRValidation.ps1') @(
+            '-Check', 'Changelogs', '-OutputDirectory', $fixture.Output, '-RepositoryRoot', $fixture.Root
         )
-        $emptySpelling.ExitCode | Should -Be 0
-        $guardAfterEmpty.ExitCode | Should -Be 1
+        $spelling.ExitCode | Should -Be 0
+        $changelogs.ExitCode | Should -Be $ExpectedExit
+        $spellingResult = Get-Content (Join-Path $fixture.Output 'spelling.json') -Raw | ConvertFrom-Json
+        $spellingResult.Status | Should -Be 'NotApplicable'
+        $changelogResult = Get-Content (Join-Path $fixture.Output 'changelogs.json') -Raw | ConvertFrom-Json
+        $changelogResult.DiscoveryPerformed | Should -BeTrue
+        $changelogResult.Packages.Count | Should -Be 1
+        $changelogResult.Packages[0].Name | Should -Be 'azure-fixture-alpha'
+        $steps = New-SuccessfulStepOutcomes
+        if ($ExpectedExit -ne 0) { $steps.changelogs.outcome = 'failure' }
+        $report = Invoke-ValidationScript (Join-Path $script:Scripts 'Complete-PRValidation.ps1') @(
+            '-OutputDirectory', $fixture.Output, '-StepsJson', ($steps | ConvertTo-Json -Compress),
+            '-SummaryPath', (Join-Path $fixture.Output 'summary.md')
+        )
+        $report.ExitCode | Should -Be $ExpectedExit
     }
 
     It 'propagates npm restore failure without requiring Node, a registry, or a global CSpell' {

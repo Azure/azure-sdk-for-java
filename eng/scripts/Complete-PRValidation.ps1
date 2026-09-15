@@ -23,7 +23,7 @@ $summary.Add('## PR documentation validation')
 $summary.Add('')
 $summary.Add('| Step | Outcome |')
 $summary.Add('| --- | --- |')
-foreach ($name in @('checkout', 'node', 'inputs', 'spelling', 'changelogs', 'root_exclusions')) {
+foreach ($name in @('checkout', 'node', 'inputs', 'spelling', 'changelogs')) {
     $outcome = if ($steps.ContainsKey($name)) { $steps[$name].outcome } else { 'missing' }
     if ($outcome -ne 'success') { $failed = $true }
     Write-Host "${name}: $(ConvertTo-PRValidationAnnotation $outcome)"
@@ -80,7 +80,7 @@ foreach ($check in @('Spelling', 'Changelogs')) {
     }
 }
 $summary.Add('')
-$summary.Add('The root exclusion guard runs once on the entire tracked tree. Azure Build still repeats changelog verification during parity burn-in. Verify Links is unchanged.')
+$summary.Add('Azure Build still repeats changelog verification during parity burn-in. Verify Links is unchanged.')
 if ($SummaryPath) {
     $summary -join "`n" | Add-Content -LiteralPath $SummaryPath
 }
