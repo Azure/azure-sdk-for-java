@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.19` to `3.8.7`.
+
 ## 1.59.1 (2026-08-27)
 
 ### Bugs Fixed

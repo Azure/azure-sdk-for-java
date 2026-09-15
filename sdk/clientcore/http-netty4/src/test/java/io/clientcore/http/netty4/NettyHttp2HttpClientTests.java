@@ -17,12 +17,21 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttp2HttpClientTests extends HttpClientTests {
@@ -91,6 +100,33 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
 
         try (Response<BinaryData> response = getHttpClient().send(request)) {
             assertArrayEquals(expectedBytes, response.getValue().toBytes());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "gzip", "deflate" })
+    public void decompressesResponse(String contentEncoding) throws IOException {
+        byte[] expected = "Compressed HTTP/2 response".getBytes(StandardCharsets.UTF_8);
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream();
+        try (OutputStream compressor = "gzip".equals(contentEncoding)
+            ? new GZIPOutputStream(compressed)
+            : new DeflaterOutputStream(compressed)) {
+            compressor.write(expected);
+        }
+        byte[] compressedBytes = compressed.toByteArray();
+        LocalTestServer compressedServer
+            = new LocalTestServer(HttpProtocolVersion.HTTP_2, true, (request, response, requestBody) -> {
+                response.setHeader("Content-Encoding", contentEncoding);
+                response.setContentLength(compressedBytes.length);
+                response.getOutputStream().write(compressedBytes);
+            });
+        compressedServer.start();
+        try (Response<BinaryData> response = getHttpClient()
+            .send(new HttpRequest().setMethod(HttpMethod.GET).setUri(compressedServer.getHttpsUri()))) {
+            assertEquals(200, response.getStatusCode());
+            assertArrayEquals(expected, response.getValue().toBytes());
+        } finally {
+            compressedServer.stop();
         }
     }
 }

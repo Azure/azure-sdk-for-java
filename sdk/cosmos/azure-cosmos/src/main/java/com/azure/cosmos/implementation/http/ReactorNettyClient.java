@@ -6,6 +6,8 @@ import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
@@ -16,6 +18,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
+import io.netty.util.internal.SystemPropertyUtil;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -51,6 +54,8 @@ public class ReactorNettyClient implements HttpClient {
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
+    private static final ByteBufAllocator DEFAULT_ALLOCATOR = SystemPropertyUtil.contains("io.netty.allocator.type")
+        ? ByteBufAllocator.DEFAULT : PooledByteBufAllocator.DEFAULT;
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
 
@@ -134,6 +139,7 @@ public class ReactorNettyClient implements HttpClient {
                         configs.getSslContext(
                             httpClientConfig.isServerCertValidationDisabled(),
                             false)))
+                .option(ChannelOption.ALLOCATOR, DEFAULT_ALLOCATOR)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
                 .httpResponseDecoder(httpResponseDecoderSpec ->
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())

@@ -14,7 +14,7 @@
 
 #### Dependency Updates
 
-- Upgraded `netty-codec-http` from `4.1.135.Final` to version `4.1.136.Final`.
+- Migrated `netty-codec-http` to `4.2.17.Final` and updated WebSocket event loops for Netty 4.2.
 
 ## 1.1.10 (2026-08-18)
 

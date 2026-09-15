@@ -12,15 +12,22 @@ import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.IoEventLoopGroup;
+import io.netty.channel.IoHandler;
+import io.netty.channel.IoHandlerFactory;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import io.netty.util.internal.SystemPropertyUtil;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -36,35 +43,35 @@ public class NettyHttpClientBuilder {
 
     private static final String EPOLL = "io.netty.channel.epoll.Epoll";
     private static final String EPOLL_CHANNEL = "io.netty.channel.epoll.EpollSocketChannel";
-    private static final String EPOLL_EVENT_LOOP_GROUP = "io.netty.channel.epoll.EpollEventLoopGroup";
+    private static final String EPOLL_IO_HANDLER = "io.netty.channel.epoll.EpollIoHandler";
     private static final boolean IS_EPOLL_AVAILABLE;
     private static final Class<? extends SocketChannel> EPOLL_CHANNEL_CLASS;
-    private static final Class<?> EPOLL_EVENT_LOOP_GROUP_CLASS;
-    private static final MethodHandle EPOLL_EVENT_LOOP_GROUP_CREATOR;
+    private static final Class<? extends IoHandler> EPOLL_IO_HANDLER_CLASS;
+    private static final MethodHandle EPOLL_IO_HANDLER_FACTORY_CREATOR;
 
     private static final String KQUEUE = "io.netty.channel.kqueue.KQueue";
     private static final String KQUEUE_CHANNEL = "io.netty.channel.kqueue.KQueueSocketChannel";
-    private static final String KQUEUE_EVENT_LOOP_GROUP = "io.netty.channel.kqueue.KQueueEventLoopGroup";
+    private static final String KQUEUE_IO_HANDLER = "io.netty.channel.kqueue.KQueueIoHandler";
     private static final boolean IS_KQUEUE_AVAILABLE;
     private static final Class<? extends SocketChannel> KQUEUE_CHANNEL_CLASS;
-    private static final Class<?> KQUEUE_EVENT_LOOP_GROUP_CLASS;
-    private static final MethodHandle KQUEUE_EVENT_LOOP_GROUP_CREATOR;
+    private static final Class<? extends IoHandler> KQUEUE_IO_HANDLER_CLASS;
+    private static final MethodHandle KQUEUE_IO_HANDLER_FACTORY_CREATOR;
 
     static {
         // Inspect the class path to determine is native transports are available.
         // If they are, this will determine runtime behaviors.
         boolean isEpollAvailable;
         Class<? extends SocketChannel> epollChannelClass;
-        Class<?> epollEventLoopGroupClass;
-        MethodHandle epollEventLoopGroupCreator;
+        Class<? extends IoHandler> epollIoHandlerClass;
+        MethodHandle epollIoHandlerFactoryCreator;
         try {
             Class<?> epollClass = Class.forName(EPOLL);
             isEpollAvailable = (boolean) epollClass.getDeclaredMethod("isAvailable").invoke(null);
 
             epollChannelClass = getChannelClass(EPOLL_CHANNEL);
-            epollEventLoopGroupClass = Class.forName(EPOLL_EVENT_LOOP_GROUP);
-            epollEventLoopGroupCreator = MethodHandles.publicLookup()
-                .unreflectConstructor(epollEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
+            epollIoHandlerClass = Class.forName(EPOLL_IO_HANDLER).asSubclass(IoHandler.class);
+            epollIoHandlerFactoryCreator
+                = MethodHandles.publicLookup().unreflect(epollIoHandlerClass.getDeclaredMethod("newFactory"));
             LOGGER.atVerbose()
                 .addKeyValue("epollAvailable", isEpollAvailable)
                 .log("Lookup for Epoll completed without error.");
@@ -77,27 +84,27 @@ public class NettyHttpClientBuilder {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isEpollAvailable = false;
             epollChannelClass = null;
-            epollEventLoopGroupClass = null;
-            epollEventLoopGroupCreator = null;
+            epollIoHandlerClass = null;
+            epollIoHandlerFactoryCreator = null;
         }
 
         IS_EPOLL_AVAILABLE = isEpollAvailable;
         EPOLL_CHANNEL_CLASS = epollChannelClass;
-        EPOLL_EVENT_LOOP_GROUP_CLASS = epollEventLoopGroupClass;
-        EPOLL_EVENT_LOOP_GROUP_CREATOR = epollEventLoopGroupCreator;
+        EPOLL_IO_HANDLER_CLASS = epollIoHandlerClass;
+        EPOLL_IO_HANDLER_FACTORY_CREATOR = epollIoHandlerFactoryCreator;
 
         boolean isKqueueAvailable;
         Class<? extends SocketChannel> kqueueChannelClass;
-        Class<?> kqueueEventLoopGroupClass;
-        MethodHandle kqueueEventLoopGroupCreator;
+        Class<? extends IoHandler> kqueueIoHandlerClass;
+        MethodHandle kqueueIoHandlerFactoryCreator;
         try {
             Class<?> kqueueClass = Class.forName(KQUEUE);
             isKqueueAvailable = (boolean) kqueueClass.getDeclaredMethod("isAvailable").invoke(null);
 
             kqueueChannelClass = getChannelClass(KQUEUE_CHANNEL);
-            kqueueEventLoopGroupClass = Class.forName(KQUEUE_EVENT_LOOP_GROUP);
-            kqueueEventLoopGroupCreator = MethodHandles.publicLookup()
-                .unreflectConstructor(kqueueEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
+            kqueueIoHandlerClass = Class.forName(KQUEUE_IO_HANDLER).asSubclass(IoHandler.class);
+            kqueueIoHandlerFactoryCreator
+                = MethodHandles.publicLookup().unreflect(kqueueIoHandlerClass.getDeclaredMethod("newFactory"));
             LOGGER.atVerbose()
                 .addKeyValue("kqueueAvailable", isKqueueAvailable)
                 .log("Lookup for KQueue completed without error.");
@@ -110,14 +117,14 @@ public class NettyHttpClientBuilder {
             LOGGER.atVerbose().log("KQueue is unavailable and won't be used.");
             isKqueueAvailable = false;
             kqueueChannelClass = null;
-            kqueueEventLoopGroupClass = null;
-            kqueueEventLoopGroupCreator = null;
+            kqueueIoHandlerClass = null;
+            kqueueIoHandlerFactoryCreator = null;
         }
 
         IS_KQUEUE_AVAILABLE = isKqueueAvailable;
         KQUEUE_CHANNEL_CLASS = kqueueChannelClass;
-        KQUEUE_EVENT_LOOP_GROUP_CLASS = kqueueEventLoopGroupClass;
-        KQUEUE_EVENT_LOOP_GROUP_CREATOR = kqueueEventLoopGroupCreator;
+        KQUEUE_IO_HANDLER_CLASS = kqueueIoHandlerClass;
+        KQUEUE_IO_HANDLER_FACTORY_CREATOR = kqueueIoHandlerFactoryCreator;
     }
 
     @SuppressWarnings("unchecked")
@@ -154,10 +161,10 @@ public class NettyHttpClientBuilder {
      * Sets the event loop group for the Netty client.
      * <p>
      * By default, if no {@code eventLoopGroup} is configured and no native transports are available (Epoll KQueue)
-     * {@link NioEventLoopGroup} will be used.
+     * a {@link MultiThreadIoEventLoopGroup} using {@link NioIoHandler} will be used.
      * <p>
-     * If native transports are available, the {@link EventLoopGroup} implementation for the native transport will be
-     * chosen over {@link NioEventLoopGroup}.
+     * If native transports are available, the {@link IoHandlerFactory} for the native transport will be
+     * chosen over {@link NioIoHandler}.
      *
      * @param eventLoopGroup The event loop group.
      * @return The updated builder.
@@ -377,9 +384,9 @@ public class NettyHttpClientBuilder {
      */
     public HttpClient build() {
         EventLoopGroup group = getEventLoopGroupToUse(this.eventLoopGroup, this.channelClass, IS_EPOLL_AVAILABLE,
-            EPOLL_EVENT_LOOP_GROUP_CREATOR, IS_KQUEUE_AVAILABLE, KQUEUE_EVENT_LOOP_GROUP_CREATOR);
+            EPOLL_IO_HANDLER_FACTORY_CREATOR, IS_KQUEUE_AVAILABLE, KQUEUE_IO_HANDLER_FACTORY_CREATOR);
         Class<? extends Channel> channelClass
-            = getChannelClass(this.channelClass, group.getClass(), IS_EPOLL_AVAILABLE, IS_KQUEUE_AVAILABLE);
+            = getChannelClass(this.channelClass, group, IS_EPOLL_AVAILABLE, IS_KQUEUE_AVAILABLE);
 
         // Leave breadcrumbs about the NettyHttpClient configuration, in case troubleshooting is needed.
         LoggingEvent loggingEvent = LOGGER.atVerbose()
@@ -401,6 +408,11 @@ public class NettyHttpClientBuilder {
         Bootstrap bootstrap = new Bootstrap().group(group)
             .channel(channelClass)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
+        // Preserve the pooled default from Netty 4.1 while honoring an explicitly configured Netty allocator.
+        bootstrap.option(ChannelOption.ALLOCATOR,
+            SystemPropertyUtil.contains("io.netty.allocator.type")
+                ? ByteBufAllocator.DEFAULT
+                : PooledByteBufAllocator.DEFAULT);
         // Disable auto-read as we want to control when and how data is read from the channel.
         bootstrap.option(ChannelOption.AUTO_READ, false);
         // Enable TCP keep-alive to proactively detect and clean up stale connections in the pool. This helps evict
@@ -455,47 +467,52 @@ public class NettyHttpClientBuilder {
 
     static EventLoopGroup getEventLoopGroupToUse(EventLoopGroup configuredGroup,
         Class<? extends SocketChannel> configuredChannelClass, boolean isEpollAvailable,
-        MethodHandle epollEventLoopGroupCreator, boolean isKqueueAvailable, MethodHandle kqueueEventLoopGroupCreator) {
+        MethodHandle epollIoHandlerFactoryCreator, boolean isKqueueAvailable,
+        MethodHandle kqueueIoHandlerFactoryCreator) {
         if (configuredGroup != null) {
             return configuredGroup;
         }
 
         ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client", true);
 
-        // Use EpollEventLoopGroup if Epoll is available and 'channelClass' wasn't configured or was configured to
+        // Use Epoll if available and 'channelClass' wasn't configured or was configured to
         // EpollSocketChannel.
         if (isEpollAvailable && (configuredChannelClass == null || configuredChannelClass == EPOLL_CHANNEL_CLASS)) {
             try {
-                return (EventLoopGroup) epollEventLoopGroupCreator.invoke(threadFactory);
+                return new MultiThreadIoEventLoopGroup(threadFactory,
+                    (IoHandlerFactory) epollIoHandlerFactoryCreator.invoke());
             } catch (Throwable ex) {
-                LOGGER.atVerbose().setThrowable(ex).log("Failed to create an EpollEventLoopGroup.");
+                LOGGER.atVerbose().setThrowable(ex).log("Failed to create an Epoll event loop group.");
             }
         }
 
-        // Use KQueueEventLoopGroup if KQueue is available and 'channelClass' wasn't configured or was configured to
+        // Use KQueue if available and 'channelClass' wasn't configured or was configured to
         // KQueueSocketChannel.
         if (isKqueueAvailable && (configuredChannelClass == null || configuredChannelClass == KQUEUE_CHANNEL_CLASS)) {
             try {
-                return (EventLoopGroup) kqueueEventLoopGroupCreator.invoke(threadFactory);
+                return new MultiThreadIoEventLoopGroup(threadFactory,
+                    (IoHandlerFactory) kqueueIoHandlerFactoryCreator.invoke());
             } catch (Throwable ex) {
-                LOGGER.atVerbose().setThrowable(ex).log("Failed to create a KQueueEventLoopGroup.");
+                LOGGER.atVerbose().setThrowable(ex).log("Failed to create a KQueue event loop group.");
             }
         }
 
-        // Fallback to NioEventLoopGroup.
-        return new NioEventLoopGroup(threadFactory);
+        // Fall back to NIO.
+        return new MultiThreadIoEventLoopGroup(threadFactory, NioIoHandler.newFactory());
     }
 
     static Class<? extends SocketChannel> getChannelClass(Class<? extends SocketChannel> configuredChannelClass,
-        Class<? extends EventLoopGroup> configuredGroupClass, boolean isEpollAvailable, boolean isKqueueAvailable) {
+        EventLoopGroup configuredGroup, boolean isEpollAvailable, boolean isKqueueAvailable) {
         if (configuredChannelClass != null) {
             // If the Channel class was manually set, use it.
             return configuredChannelClass;
-        } else if (isEpollAvailable && configuredGroupClass == EPOLL_EVENT_LOOP_GROUP_CLASS) {
-            // If Epoll is available and the EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
+        } else if (isEpollAvailable
+            && configuredGroup instanceof IoEventLoopGroup
+            && ((IoEventLoopGroup) configuredGroup).isIoType(EPOLL_IO_HANDLER_CLASS)) {
             return EPOLL_CHANNEL_CLASS;
-        } else if (isKqueueAvailable && configuredGroupClass == KQUEUE_EVENT_LOOP_GROUP_CLASS) {
-            // If KQueue is available and the EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
+        } else if (isKqueueAvailable
+            && configuredGroup instanceof IoEventLoopGroup
+            && ((IoEventLoopGroup) configuredGroup).isIoType(KQUEUE_IO_HANDLER_CLASS)) {
             return KQUEUE_CHANNEL_CLASS;
         } else {
             // Fallback to NioSocketChannel.
