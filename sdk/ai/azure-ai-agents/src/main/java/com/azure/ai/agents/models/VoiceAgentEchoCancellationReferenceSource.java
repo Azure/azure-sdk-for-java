@@ -4,9 +4,12 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.ai.agents.implementation.utils.Beta;
+
 /**
  * The source of reference audio used for echo cancellation.
  */
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public enum VoiceAgentEchoCancellationReferenceSource {
     /**
      * Enum value server.

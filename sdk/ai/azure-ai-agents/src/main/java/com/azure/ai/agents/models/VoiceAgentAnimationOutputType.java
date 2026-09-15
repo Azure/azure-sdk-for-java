@@ -4,9 +4,12 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.ai.agents.implementation.utils.Beta;
+
 /**
  * An animation output produced by a voice-agent session.
  */
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public enum VoiceAgentAnimationOutputType {
     /**
      * Enum value blendshapes.
