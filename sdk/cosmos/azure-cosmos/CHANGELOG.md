@@ -9,6 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed query-metrics parsing so malformed attributes such as `=` and `metric` now throw `IllegalArgumentException` instead of `NullPointerException`.
 
 #### Other Changes
 
