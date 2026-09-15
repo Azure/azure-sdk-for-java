@@ -168,6 +168,20 @@
           </rules>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <pipelineConfiguration>
+            <filters>
+              <include combine.children="append">
+                <item>revapi.filter</item>
+              </include>
+            </filters>
+          </pipelineConfiguration>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
