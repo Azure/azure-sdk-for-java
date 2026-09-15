@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
 
 /**
  * TypeSpec customization for azure-storage-blob.
@@ -77,6 +76,7 @@ public class BlobStorageCustomizations extends Customization {
         fixUrlAcronymHeaderNames(editor, logger);
         customizeQueryFormat(editor, logger);
         retypeStreamingResponses(editor, logger);
+        retypeArrowListingResponses(editor, logger);
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         removeBufferedStreamingConvenienceMethods(customization.getPackage(IMPL_PACKAGE), logger);
         restoreFluentModels(customization, logger);
@@ -202,7 +202,7 @@ public class BlobStorageCustomizations extends Customization {
                 continue;
             }
             String updated = content.replaceAll(OBJECT_REPLICATION_JSON_BLOCK,
-                Matcher.quoteReplacement(OBJECT_REPLICATION_PREFIX_SCAN));
+                OBJECT_REPLICATION_PREFIX_SCAN);
             if (updated.equals(content)) {
                 throw new IllegalStateException(
                     "Object replication header block not found in " + className + "; the emitter output changed.");
@@ -561,7 +561,7 @@ public class BlobStorageCustomizations extends Customization {
     // what the retype exists to avoid. Nothing calls them -- the hand-written clients always go through the
     // WithResponse overloads -- so drop them rather than reintroducing a buffered path.
     private static final List<String> STREAMING_CLIENTS = Arrays.asList("BlobAsyncClientInternal",
-        "BlobClientInternal");
+        "BlobClientInternal", "BlobContainerAsyncClientInternal", "BlobContainerClientInternal");
 
     private static void removeBufferedStreamingConvenienceMethods(PackageCustomization implementation, Logger logger) {
         for (String className : STREAMING_CLIENTS) {
@@ -573,8 +573,12 @@ public class BlobStorageCustomizations extends Customization {
                 int removed = 0;
                 for (MethodDeclaration method : new ArrayList<>(clazz.getMethods())) {
                     String name = method.getNameAsString();
-                    if (("download".equals(name) || "query".equals(name))
-                        && method.getType().asString().contains("BinaryData")) {
+                    boolean isStreamingBody = "download".equals(name)
+                        || "query".equals(name)
+                        || name.endsWith("ApacheArrow");
+                    if (isStreamingBody
+                        && (method.getType().asString().contains("BinaryData")
+                            || method.getType().asString().contains("String"))) {
                         method.remove();
                         removed++;
                     }
@@ -600,6 +604,57 @@ public class BlobStorageCustomizations extends Customization {
     private static final String SYNC_QUERY_WRAPPER = "Response<BinaryData> protocolMethodResponse\\s*=\\s*"
         + "queryWithResponseInternal\\(BinaryData\\.fromObject\\(queryRequest, XML_SERIALIZER\\), requestOptions\\);"
         + "\\s*return new ResponseBase<>\\([^;]*;";
+
+    // The two Apache Arrow listings return an Arrow byte stream (the spec says `@body body: bytes` and the accept
+    // header is application/vnd.apache.arrow.stream). The emitter types the convenience body as String and fills it
+    // by XML-deserializing the payload, which is not a shape the response can take; the hand-written container
+    // clients read it with FluxUtil.collectBytesInByteBufferStream. Same treatment as download and query.
+    private static final String ARROW_ASYNC_WRAPPER = "return (listBlob\\w*ApacheArrowWithResponseInternal)"
+        + "\\(([^;]*?)\\)\\s*\\.map\\(protocolMethodResponse -> new ResponseBase<>\\([^;]*;";
+
+    private static final String ARROW_SYNC_WRAPPER = "Response<BinaryData> protocolMethodResponse\\s*=\\s*"
+        + "(listBlob\\w*ApacheArrowWithResponseInternal)\\(([^;]*?)\\);\\s*"
+        + "return new ResponseBase<>\\([^;]*;";
+
+    private static void retypeArrowListingResponses(Editor editor, Logger logger) {
+        retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/ContainersImpl.java", new String[][] {
+            { "Mono<Response<BinaryData>> listBlobFlatSegmentApacheArrow(@HostParam",
+                "Mono<StreamResponse> listBlobFlatSegmentApacheArrow(@HostParam" },
+            { "Response<BinaryData> listBlobFlatSegmentApacheArrowSync(@HostParam",
+                "StreamResponse listBlobFlatSegmentApacheArrowSync(@HostParam" },
+            { "Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrow(@HostParam",
+                "Mono<StreamResponse> listBlobHierarchySegmentApacheArrow(@HostParam" },
+            { "Response<BinaryData> listBlobHierarchySegmentApacheArrowSync(@HostParam",
+                "StreamResponse listBlobHierarchySegmentApacheArrowSync(@HostParam" },
+            { "public Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponseInternal(",
+                "public StreamResponse listBlobFlatSegmentApacheArrowWithResponseInternal(" },
+            { "public Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponseInternal(",
+                "public StreamResponse listBlobHierarchySegmentApacheArrowWithResponseInternal(" } },
+            new String[][] { { "public Mono<Response<BinaryData>>\\s+(listBlob\\w*ApacheArrowWithResponseInternalAsync\\()",
+                "public Mono<StreamResponse> $1" } });
+
+        retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/BlobContainerAsyncClientInternal.java",
+            new String[][] {
+                { "Mono<Response<BinaryData>> listBlobFlatSegmentApacheArrowWithResponseInternal(",
+                    "Mono<StreamResponse> listBlobFlatSegmentApacheArrowWithResponseInternal(" },
+                { "Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrowWithResponseInternal(",
+                    "Mono<StreamResponse> listBlobHierarchySegmentApacheArrowWithResponseInternal(" },
+                { "Mono<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, String>>",
+                    "Mono<StreamResponse>" },
+                { "Mono<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, String>>",
+                    "Mono<StreamResponse>" } },
+            new String[][] { { ARROW_ASYNC_WRAPPER, "return $1($2);" } });
+
+        retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/BlobContainerClientInternal.java",
+            new String[][] {
+                { "Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponseInternal(",
+                    "StreamResponse listBlobFlatSegmentApacheArrowWithResponseInternal(" },
+                { "Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponseInternal(",
+                    "StreamResponse listBlobHierarchySegmentApacheArrowWithResponseInternal(" },
+                { "ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, String>", "StreamResponse" },
+                { "ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, String>", "StreamResponse" } },
+            new String[][] { { ARROW_SYNC_WRAPPER, "return $1($2);" } });
+    }
 
     private static void retypeStreamingResponses(Editor editor, Logger logger) {
         retypeStreamingResponses(editor, logger, PKG_ROOT + "implementation/BlobsImpl.java", new String[][] {
@@ -662,7 +717,8 @@ public class BlobStorageCustomizations extends Customization {
             updated = updated.replace(replacement[0], replacement[1]);
         }
         for (String[] pattern : patterns) {
-            String replaced = updated.replaceAll(pattern[0], Matcher.quoteReplacement(pattern[1]));
+            // Replacements may reference capture groups, so they are not quoted.
+            String replaced = updated.replaceAll(pattern[0], pattern[1]);
             if (replaced.equals(updated)) {
                 throw new IllegalStateException(
                     "Streaming retype pattern matched nothing in " + path + ": " + pattern[0]);

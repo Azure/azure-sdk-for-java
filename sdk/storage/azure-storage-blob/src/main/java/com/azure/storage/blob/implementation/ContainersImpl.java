@@ -26,6 +26,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -387,7 +388,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBlobFlatSegmentApacheArrow(@HostParam("url") String url,
+        Mono<StreamResponse> listBlobFlatSegmentApacheArrow(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -397,7 +398,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBlobFlatSegmentApacheArrowSync(@HostParam("url") String url,
+        StreamResponse listBlobFlatSegmentApacheArrowSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -427,7 +428,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrow(@HostParam("url") String url,
+        Mono<StreamResponse> listBlobHierarchySegmentApacheArrow(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("accept") String accept,
             @QueryParam("delimiter") String delimiter, RequestOptions requestOptions, Context context);
 
@@ -437,7 +438,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBlobHierarchySegmentApacheArrowSync(@HostParam("url") String url,
+        StreamResponse listBlobHierarchySegmentApacheArrowSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("accept") String accept,
             @QueryParam("delimiter") String delimiter, RequestOptions requestOptions, Context context);
 
@@ -2580,8 +2581,7 @@ public final class ContainersImpl {
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>>
-        listBlobFlatSegmentApacheArrowWithResponseInternalAsync(RequestOptions requestOptions) {
+    public Mono<StreamResponse> listBlobFlatSegmentApacheArrowWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.apache.arrow.stream,application/xml";
         return FluxUtil.withContext(context -> service.listBlobFlatSegmentApacheArrow(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -2644,7 +2644,7 @@ public final class ContainersImpl {
      * @return represent a byte array along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBlobFlatSegmentApacheArrowWithResponseInternal(RequestOptions requestOptions) {
+    public StreamResponse listBlobFlatSegmentApacheArrowWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/vnd.apache.arrow.stream,application/xml";
         return service.listBlobFlatSegmentApacheArrowSync(this.client.getUrl(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
@@ -3012,7 +3012,7 @@ public final class ContainersImpl {
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrowWithResponseInternalAsync(String delimiter,
+    public Mono<StreamResponse> listBlobHierarchySegmentApacheArrowWithResponseInternalAsync(String delimiter,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.apache.arrow.stream,application/xml";
         return FluxUtil.withContext(context -> service.listBlobHierarchySegmentApacheArrow(this.client.getUrl(),
@@ -3080,7 +3080,7 @@ public final class ContainersImpl {
      * @return represent a byte array along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBlobHierarchySegmentApacheArrowWithResponseInternal(String delimiter,
+    public StreamResponse listBlobHierarchySegmentApacheArrowWithResponseInternal(String delimiter,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.apache.arrow.stream,application/xml";
         return service.listBlobHierarchySegmentApacheArrowSync(this.client.getUrl(),

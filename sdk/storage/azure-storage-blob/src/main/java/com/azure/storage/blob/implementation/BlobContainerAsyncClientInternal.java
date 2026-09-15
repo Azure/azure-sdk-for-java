@@ -14,6 +14,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -28,9 +29,7 @@ import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
-import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
-import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseHeaders;
 import com.azure.storage.blob.implementation.models.ContainersRenameHeaders;
@@ -1145,7 +1144,7 @@ public final class BlobContainerAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listBlobFlatSegmentApacheArrowWithResponseInternal(RequestOptions requestOptions) {
+    Mono<StreamResponse> listBlobFlatSegmentApacheArrowWithResponseInternal(RequestOptions requestOptions) {
         return this.serviceClient.listBlobFlatSegmentApacheArrowWithResponseInternalAsync(requestOptions);
     }
 
@@ -1361,7 +1360,7 @@ public final class BlobContainerAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listBlobHierarchySegmentApacheArrowWithResponseInternal(String delimiter,
+    Mono<StreamResponse> listBlobHierarchySegmentApacheArrowWithResponseInternal(String delimiter,
         RequestOptions requestOptions) {
         return this.serviceClient.listBlobHierarchySegmentApacheArrowWithResponseInternalAsync(delimiter,
             requestOptions);
@@ -3038,10 +3037,9 @@ public final class BlobContainerAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, String>>
-        listBlobFlatSegmentApacheArrowWithResponse(String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
-            RequestOptions requestOptions) {
+    public Mono<StreamResponse> listBlobFlatSegmentApacheArrowWithResponse(String prefix, String marker,
+        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+        RequestOptions requestOptions) {
         // Generated convenience method for listBlobFlatSegmentApacheArrowWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (prefix != null) {
@@ -3069,88 +3067,7 @@ public final class BlobContainerAsyncClientInternal {
         if (endBefore != null) {
             requestOptions.addQueryParam("endBefore", endBefore, false);
         }
-        return listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(String.class, XML_SERIALIZER),
-                new ContainersListBlobFlatSegmentApacheArrowHeaders(protocolMethodResponse.getHeaders())));
-    }
-
-    /**
-     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client.
-     *
-     * @param prefix Filters the results to return only resources whose name begins with the specified prefix.
-     * @param marker An opaque string value that identifies the portion of the result set to return with this operation.
-     * @param maxresults Specifies the maximum number of resources to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items.
-     * @param include Specify to include additional, optional information.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; for recursive list, multiple entity levels are supported. (Inclusive).
-     * @param endBefore Filters the results to return only names that are ordered before this value. Currently only
-     * applies to Apache Arrow scenario.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> listBlobFlatSegmentApacheArrow(String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore) {
-        // Generated convenience method for listBlobFlatSegmentApacheArrowWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (prefix != null) {
-            requestOptions.addQueryParam("prefix", prefix, false);
-        }
-        if (marker != null) {
-            requestOptions.addQueryParam("marker", marker, false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (include != null) {
-            requestOptions.addQueryParam("include",
-                include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
-        }
-        if (startFrom != null) {
-            requestOptions.addQueryParam("startFrom", startFrom, false);
-        }
-        if (endBefore != null) {
-            requestOptions.addQueryParam("endBefore", endBefore, false);
-        }
-        return listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(String.class, XML_SERIALIZER));
-    }
-
-    /**
-     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> listBlobFlatSegmentApacheArrow() {
-        // Generated convenience method for listBlobFlatSegmentApacheArrowWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        return listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(String.class, XML_SERIALIZER));
+        return listBlobFlatSegmentApacheArrowWithResponseInternal(requestOptions);
     }
 
     /**
@@ -3329,10 +3246,9 @@ public final class BlobContainerAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, String>>
-        listBlobHierarchySegmentApacheArrowWithResponse(String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
-            RequestOptions requestOptions) {
+    public Mono<StreamResponse> listBlobHierarchySegmentApacheArrowWithResponse(String delimiter, String prefix,
+        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom,
+        String endBefore, RequestOptions requestOptions) {
         // Generated convenience method for listBlobHierarchySegmentApacheArrowWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (prefix != null) {
@@ -3360,99 +3276,7 @@ public final class BlobContainerAsyncClientInternal {
         if (endBefore != null) {
             requestOptions.addQueryParam("endBefore", endBefore, false);
         }
-        return listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions)
-            .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
-                protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(String.class, XML_SERIALIZER),
-                new ContainersListBlobHierarchySegmentApacheArrowHeaders(protocolMethodResponse.getHeaders())));
-    }
-
-    /**
-     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client. A delimiter can
-     * be used to traverse a virtual hierarchy of blobs as though it were a file system.
-     *
-     * @param delimiter If specified, the operation returns a BlobPrefix element that acts as a placeholder for all
-     * blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter
-     * may be a single character or a string.
-     * @param prefix Filters the results to return only resources whose name begins with the specified prefix.
-     * @param marker An opaque string value that identifies the portion of the result set to return with this operation.
-     * @param maxresults Specifies the maximum number of resources to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items.
-     * @param include Specify to include additional, optional information.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; for recursive list, multiple entity levels are supported. (Inclusive).
-     * @param endBefore Filters the results to return only names that are ordered before this value. Currently only
-     * applies to Apache Arrow scenario.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> listBlobHierarchySegmentApacheArrow(String delimiter, String prefix, String marker,
-        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore) {
-        // Generated convenience method for listBlobHierarchySegmentApacheArrowWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (prefix != null) {
-            requestOptions.addQueryParam("prefix", prefix, false);
-        }
-        if (marker != null) {
-            requestOptions.addQueryParam("marker", marker, false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (include != null) {
-            requestOptions.addQueryParam("include",
-                include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
-        }
-        if (startFrom != null) {
-            requestOptions.addQueryParam("startFrom", startFrom, false);
-        }
-        if (endBefore != null) {
-            requestOptions.addQueryParam("endBefore", endBefore, false);
-        }
-        return listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(String.class, XML_SERIALIZER));
-    }
-
-    /**
-     * Returns a list of the blobs in Apache Arrow format as raw data, to be deserialized by the client. A delimiter can
-     * be used to traverse a virtual hierarchy of blobs as though it were a file system.
-     *
-     * @param delimiter If specified, the operation returns a BlobPrefix element that acts as a placeholder for all
-     * blobs whose names begin with the same substring up to the appearance of the delimiter character. The delimiter
-     * may be a single character or a string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> listBlobHierarchySegmentApacheArrow(String delimiter) {
-        // Generated convenience method for listBlobHierarchySegmentApacheArrowWithResponseInternal
-        RequestOptions requestOptions = new RequestOptions();
-        return listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(String.class, XML_SERIALIZER));
+        return listBlobHierarchySegmentApacheArrowWithResponseInternal(delimiter, requestOptions);
     }
 
     /**
