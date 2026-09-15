@@ -1124,52 +1124,55 @@ public final class ShareAsyncClientInternal {
         Long shareProvisionedBandwidthMibps, Boolean enableSmbDirectoryLease, RequestOptions requestOptions) {
         // Generated convenience method for createWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (quota != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-quota"), String.valueOf(quota));
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-share-quota"), String.valueOf(quota));
         }
         if (accessTier != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), accessTier.toString());
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-access-tier"), accessTier.toString());
         }
         if (enabledProtocols != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enabled-protocols"), enabledProtocols);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-enabled-protocols"), enabledProtocols);
         }
         if (rootSquash != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-root-squash"), rootSquash.toString());
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-root-squash"), rootSquash.toString());
         }
         if (enableSnapshotVirtualDirectoryAccess != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access"),
                 String.valueOf(enableSnapshotVirtualDirectoryAccess));
         }
         if (paidBurstingEnabled != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-paid-bursting-enabled"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-share-paid-bursting-enabled"),
                 String.valueOf(paidBurstingEnabled));
         }
         if (paidBurstingMaxIops != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-paid-bursting-max-iops"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-share-paid-bursting-max-iops"),
                 String.valueOf(paidBurstingMaxIops));
         }
         if (paidBurstingMaxBandwidthMibps != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-paid-bursting-max-bandwidth-mibps"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-share-paid-bursting-max-bandwidth-mibps"),
                 String.valueOf(paidBurstingMaxBandwidthMibps));
         }
         if (shareProvisionedIops != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-provisioned-iops"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-share-provisioned-iops"),
                 String.valueOf(shareProvisionedIops));
         }
         if (shareProvisionedBandwidthMibps != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps"),
                 String.valueOf(shareProvisionedBandwidthMibps));
         }
         if (enableSmbDirectoryLease != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-smb-directory-lease"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-enable-smb-directory-lease"),
                 String.valueOf(enableSmbDirectoryLease));
         }
         return createWithResponseInternal(requestOptions)
@@ -1218,9 +1221,11 @@ public final class ShareAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (quota != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-share-quota"), String.valueOf(quota));
@@ -1962,13 +1967,16 @@ public final class ShareAsyncClientInternal {
         Map<String, String> metadata, RequestOptions requestOptions) {
         // Generated convenience method for createSnapshotWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         return createSnapshotWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new SimpleResponse<>(protocolMethodResponse,
@@ -1997,9 +2005,11 @@ public final class ShareAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         return createSnapshotWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new SharesCreateSnapshotHeaders(protocolMethodResponse.getHeaders()));
@@ -2399,16 +2409,19 @@ public final class ShareAsyncClientInternal {
         Map<String, String> metadata, String leaseId, RequestOptions requestOptions) {
         // Generated convenience method for setMetadataWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         return setMetadataWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -2439,9 +2452,11 @@ public final class ShareAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);

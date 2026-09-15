@@ -1663,84 +1663,89 @@ public final class ShareFileAsyncClientInternal {
         RequestOptions requestOptions) {
         // Generated convenience method for createWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (fileContentType != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-type"), fileContentType);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-content-type"), fileContentType);
         }
         if (fileContentEncoding != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-encoding"), fileContentEncoding);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-content-encoding"), fileContentEncoding);
         }
         if (fileContentLanguage != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-language"), fileContentLanguage);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-content-language"), fileContentLanguage);
         }
         if (fileCacheControl != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-cache-control"), fileCacheControl);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-cache-control"), fileCacheControl);
         }
         if (fileContentMD5 != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-md5"), String.valueOf(fileContentMD5));
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-content-md5"),
+                String.valueOf(fileContentMD5));
         }
         if (fileContentDisposition != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-disposition"), fileContentDisposition);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-content-disposition"),
+                fileContentDisposition);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (filePermission != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
         }
         if (filePermissionKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
         }
         if (fileAttributes != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-attributes"), fileAttributes);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-attributes"), fileAttributes);
         }
         if (fileCreationTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
         }
         if (fileLastWriteTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
         }
         if (fileChangeTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-change-time"), fileChangeTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-change-time"), fileChangeTime);
         }
         if (filePermissionFormat != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-format"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-format"),
                 filePermissionFormat.toString());
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (owner != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-owner"), owner);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-owner"), owner);
         }
         if (group != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-group"), group);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-group"), group);
         }
         if (fileMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-mode"), fileMode);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-mode"), fileMode);
         }
         if (nfsFileType != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-file-type"), nfsFileType.toString());
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-file-type"), nfsFileType.toString());
         }
         if (contentMD5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(contentMD5));
+            requestOptionsLocal.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(contentMD5));
         }
         if (filePropertySemantics != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-property-semantics"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-property-semantics"),
                 filePropertySemantics.toString());
         }
         if (contentLength != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+            requestOptionsLocal.setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
         }
         if (structuredBodyType != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-structured-body"), structuredBodyType);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-structured-body"), structuredBodyType);
         }
         if (structuredContentLength != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-structured-content-length"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-structured-content-length"),
                 String.valueOf(structuredContentLength));
         }
         if (optionalBody != null) {
@@ -1833,9 +1838,11 @@ public final class ShareFileAsyncClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-disposition"), fileContentDisposition);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (filePermission != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
@@ -2451,16 +2458,19 @@ public final class ShareFileAsyncClientInternal {
         Map<String, String> metadata, String leaseId, RequestOptions requestOptions) {
         // Generated convenience method for setMetadataWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         return setMetadataWithResponseInternal(requestOptions)
             .map(protocolMethodResponse -> new SimpleResponse<>(protocolMethodResponse,
@@ -2490,9 +2500,11 @@ public final class ShareFileAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -3460,66 +3472,69 @@ public final class ShareFileAsyncClientInternal {
         ModeCopyMode fileModeCopyMode, OwnerCopyMode fileOwnerCopyMode, RequestOptions requestOptions) {
         // Generated convenience method for startCopyWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (filePermission != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
         }
         if (filePermissionFormat != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-format"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-format"),
                 filePermissionFormat.toString());
         }
         if (filePermissionKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
         }
         if (filePermissionCopyMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-copy-mode"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-copy-mode"),
                 filePermissionCopyMode.toString());
         }
         if (ignoreReadOnly != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-copy-ignore-readonly"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-copy-ignore-readonly"),
                 String.valueOf(ignoreReadOnly));
         }
         if (fileAttributes != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-attributes"), fileAttributes);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-attributes"), fileAttributes);
         }
         if (fileCreationTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
         }
         if (fileLastWriteTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
         }
         if (fileChangeTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-change-time"), fileChangeTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-change-time"), fileChangeTime);
         }
         if (setArchiveAttribute != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-copy-set-archive"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-copy-set-archive"),
                 String.valueOf(setArchiveAttribute));
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (owner != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-owner"), owner);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-owner"), owner);
         }
         if (group != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-group"), group);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-group"), group);
         }
         if (fileMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-mode"), fileMode);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-mode"), fileMode);
         }
         if (fileModeCopyMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-mode-copy-mode"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-mode-copy-mode"),
                 fileModeCopyMode.toString());
         }
         if (fileOwnerCopyMode != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-owner-copy-mode"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-owner-copy-mode"),
                 fileOwnerCopyMode.toString());
         }
         return startCopyWithResponseInternal(copySource, requestOptions)
@@ -3573,9 +3588,11 @@ public final class ShareFileAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (filePermission != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
@@ -3971,52 +3988,55 @@ public final class ShareFileAsyncClientInternal {
         Map<String, String> metadata, String fileContentType, RequestOptions requestOptions) {
         // Generated convenience method for renameWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (replaceIfExists != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-rename-replace-if-exists"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-rename-replace-if-exists"),
                 String.valueOf(replaceIfExists));
         }
         if (ignoreReadOnly != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-rename-ignore-readonly"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-rename-ignore-readonly"),
                 String.valueOf(ignoreReadOnly));
         }
         if (sourceLeaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-lease-id"), sourceLeaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-source-lease-id"), sourceLeaseId);
         }
         if (destinationLeaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-destination-lease-id"), destinationLeaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-destination-lease-id"), destinationLeaseId);
         }
         if (fileAttributes != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-attributes"), fileAttributes);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-attributes"), fileAttributes);
         }
         if (fileCreationTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
         }
         if (fileLastWriteTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
         }
         if (fileChangeTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-change-time"), fileChangeTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-change-time"), fileChangeTime);
         }
         if (filePermission != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission"), filePermission);
         }
         if (filePermissionFormat != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-format"),
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-format"),
                 filePermissionFormat.toString());
         }
         if (filePermissionKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (fileContentType != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-type"), fileContentType);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-content-type"), fileContentType);
         }
         return renameWithResponseInternal(renameSource, requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
@@ -4102,9 +4122,11 @@ public final class ShareFileAsyncClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-permission-key"), filePermissionKey);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (fileContentType != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-type"), fileContentType);
@@ -4160,28 +4182,31 @@ public final class ShareFileAsyncClientInternal {
         String leaseId, String owner, String group, RequestOptions requestOptions) {
         // Generated convenience method for createSymbolicLinkWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal = requestOptions;
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (fileCreationTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);
         }
         if (fileLastWriteTime != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-file-last-write-time"), fileLastWriteTime);
         }
         if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
         }
         if (owner != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-owner"), owner);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-owner"), owner);
         }
         if (group != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-group"), group);
+            requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-group"), group);
         }
         return createSymbolicLinkWithResponseInternal(linkText, requestOptions)
             .map(protocolMethodResponse -> new SimpleResponse<>(protocolMethodResponse,
@@ -4218,9 +4243,11 @@ public final class ShareFileAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
+            metadata.forEach((key, value) -> {
+                if (key != null && value != null) {
+                    requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + key), value);
+                }
+            });
         }
         if (fileCreationTime != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-file-creation-time"), fileCreationTime);

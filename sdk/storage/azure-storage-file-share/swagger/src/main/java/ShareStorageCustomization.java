@@ -88,13 +88,7 @@ public class ShareStorageCustomization extends Customization {
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
 
-        exposeRawListSharesSegment(customization, logger);
-
-        exposeRawListHandles(customization, logger);
-
         addProxyReuseForResourceScoping(customization, logger);
-
-        fixMetadataHeaderSerialization(customization, logger);
 
         fixXmlSerializerRedundantCast(customization, logger);
 
@@ -103,12 +97,6 @@ public class ShareStorageCustomization extends Customization {
         restoreFluentModels(customization, logger);
 
         renameDownloadHeaderMethods(customization, logger);
-
-        customization.getClass("com.azure.storage.file.share.models", "ShareTokenIntent")
-            .customizeAst(ast -> ast.getClassByName("ShareTokenIntent").ifPresent(clazz -> clazz.setJavadocComment(
-                "The request intent specifies requests that are intended for backup/admin type operations, meaning "
-                    + "that all file/directory ACLs are bypassed and full permissions are granted. User must also have "
-                    + "required RBAC permission.")));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
     }
@@ -369,39 +357,6 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
-     * Corrects the metadata request-header serialization in the relocated {@code Share*Internal} convenience clients.
-     * The emitter writes the {@code Record<string>} metadata as a single {@code x-ms-meta} header via
-     * {@code String.valueOf(metadata)} (Java {@code Map.toString()}), instead of the per-entry
-     * {@code x-ms-meta-<name>: <value>} headers the service expects. This rewrites each occurrence to emit one header
-     * per map entry, preserving the behavior of the retired AutoRest client. Remove once the emitter honors the
-     * {@code collectionHeaderPrefix}/{@code x-ms-meta-} client option for Java.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void fixMetadataHeaderSerialization(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-        String implRoot = PKG_ROOT + "implementation/";
-        String[] internalClients = { "ShareAsyncClientInternal", "ShareClientInternal",
-            "ShareDirectoryAsyncClientInternal", "ShareDirectoryClientInternal", "ShareFileAsyncClientInternal",
-            "ShareFileClientInternal" };
-        String broken
-            = "requestOptions.setHeader(HttpHeaderName.fromString(\"x-ms-meta\"), String.valueOf(metadata));";
-        String fixed = "for (Map.Entry<String, String> entry : metadata.entrySet()) {\n"
-            + "                requestOptions.setHeader(HttpHeaderName.fromString(\"x-ms-meta-\" + entry.getKey()),\n"
-            + "                    entry.getValue());\n"
-            + "            }";
-        for (String name : internalClients) {
-            String path = implRoot + name + ".java";
-            String content = editor.getFileContent(path);
-            if (content.contains(broken)) {
-                editor.replaceFile(path, content.replace(broken, fixed));
-                logger.info("Fixed metadata header serialization in {}", name);
-            }
-        }
-    }
-
-    /**
      * Relaxes the javac "redundant cast" lint for the single {@code (Class<T>)} cast the emitter generates in
      * {@code XmlSerializer.deserialize}. The current azure-core {@code TypeReference#getJavaClass()} already returns
      * {@code Class<T>}, so the cast is redundant and fails the {@code -Werror} build; this adds {@code "cast"} to the
@@ -421,78 +376,6 @@ public class ShareStorageCustomization extends Customization {
                                 new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast"))))));
                 logger.info("Suppressed redundant-cast warning on XmlSerializer.deserialize");
             }));
-    }
-
-    /**
-     * Exposes raw {@code Response<BinaryData>} accessors for the List Shares Segment operation. The generated
-     * {@code listSharesSegmentSinglePage} paging helpers deserialize only the per-item {@code ShareItemInternal}
-     * elements and discard the {@code NextMarker} from the XML envelope, but the hand-written
-     * {@code ShareServiceClient#listShares} manages continuation itself. These methods return the full response body so
-     * the client can deserialize {@code ListSharesResponse} (items + {@code NextMarker}).
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void exposeRawListSharesSegment(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.storage.file.share.implementation", "ServicesImpl")
-            .customizeAst(ast -> ast.getClassByName("ServicesImpl").ifPresent(clazz -> {
-                if (!clazz.getMethodsByName("listSharesSegmentWithResponse").isEmpty()) {
-                    return;
-                }
-                // Bodies are intentionally left without ShareStorageExceptionInternal mapping;
-                // updateImplToMapInternalException (run later) wraps every class-returning method exactly once.
-                clazz.addMember(StaticJavaParser.parseMethodDeclaration(
-                    "public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {\n"
-                        + "    final String accept = \"application/xml\";\n"
-                        + "    return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
-                        + "        this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);\n"
-                        + "}"));
-                clazz.addMember(StaticJavaParser.parseMethodDeclaration(
-                    "public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {\n"
-                        + "    final String accept = \"application/xml\";\n"
-                        + "    return FluxUtil.withContext(context -> service.listSharesSegment(this.client.getUrl(),\n"
-                        + "        this.client.getServiceVersion().getVersion(), this.client.getFileRequestIntent(), accept,\n"
-                        + "        requestOptions, context));\n"
-                        + "}"));
-                logger.info("Exposed raw listSharesSegmentWithResponse methods in ServicesImpl");
-            }));
-    }
-
-    /**
-     * Exposes raw {@code Response<BinaryData>} accessors for the Directory List Handles operation. Like
-     * {@code listSharesSegment}, the generated paging helpers discard the {@code NextMarker} from the XML envelope,
-     * but the hand-written {@code ShareDirectoryClient#listHandles} manages continuation itself, so these methods
-     * return the full response body for the client to deserialize {@code ListHandlesResponse}.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void exposeRawListHandles(LibraryCustomization customization, Logger logger) {
-        for (String implName : Arrays.asList("DirectoriesImpl", "FilesImpl")) {
-            customization.getClass("com.azure.storage.file.share.implementation", implName)
-                .customizeAst(ast -> ast.getClassByName(implName).ifPresent(clazz -> {
-                    if (!clazz.getMethodsByName("listHandlesWithResponse").isEmpty()) {
-                        return;
-                    }
-                    // Bodies are intentionally left without ShareStorageExceptionInternal mapping;
-                    // updateImplToMapInternalException (run later) wraps every class-returning method exactly once.
-                    clazz.addMember(StaticJavaParser.parseMethodDeclaration(
-                        "public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {\n"
-                            + "    final String accept = \"application/xml\";\n"
-                            + "    return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
-                            + "        this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,\n"
-                            + "        Context.NONE);\n"
-                            + "}"));
-                    clazz.addMember(StaticJavaParser.parseMethodDeclaration(
-                        "public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {\n"
-                            + "    final String accept = \"application/xml\";\n"
-                            + "    return FluxUtil.withContext(context -> service.listHandles(this.client.getUrl(),\n"
-                            + "        this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),\n"
-                            + "        this.client.getFileRequestIntent(), accept, requestOptions, context));\n"
-                            + "}"));
-                    logger.info("Exposed raw listHandlesWithResponse methods in {}", implName);
-                }));
-        }
     }
 
     /**

@@ -870,23 +870,4 @@ public final class ServicesImpl {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
-
-    public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {
-        try {
-            final String accept = "application/xml";
-            return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToShareStorageException(internalException);
-        }
-    }
-
-    public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(
-                context -> service.listSharesSegment(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
 }

@@ -1639,24 +1639,4 @@ public final class DirectoriesImpl {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
-
-    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
-        try {
-            final String accept = "application/xml";
-            return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
-                Context.NONE);
-        } catch (ShareStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToShareStorageException(internalException);
-        }
-    }
-
-    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.listHandles(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
 }
