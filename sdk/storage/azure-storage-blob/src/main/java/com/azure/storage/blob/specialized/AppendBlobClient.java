@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -18,10 +19,12 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.AppendBlobClientInternal;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -135,6 +138,14 @@ public final class AppendBlobClient extends BlobClientBase {
         super(asyncClient, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
             customerProvidedKey, encryptionScope, versionId);
         this.appendBlobAsyncClient = asyncClient;
+        this.appendBlobClientInternal = new AppendBlobClientInternal(this.azureBlobStorage.getAppendBlobs());
+    }
+
+    private final AppendBlobClientInternal appendBlobClientInternal;
+
+    private RequestOptions appendBlobRequestOptions(Context context) {
+        return RequestOptionsHelper.blobRequestOptions(context, this.azureBlobStorage.getUrl(), getContainerName(),
+            getBlobName());
     }
 
     /**
@@ -355,20 +366,29 @@ public final class AppendBlobClient extends BlobClientBase {
         BlobImmutabilityPolicy immutabilityPolicy = finalOptions.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy()
             : finalOptions.getImmutabilityPolicy();
-        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = () -> this.azureBlobStorage.getAppendBlobs()
-            .createWithResponse(containerName, blobName, 0, null, finalOptions.getMetadata(),
-                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                ModelHelper.tagsToString(finalOptions.getTags()), immutabilityPolicy.getExpiryTime(),
-                immutabilityPolicy.getPolicyMode(), finalOptions.hasLegalHold(), finalOptions.getHeaders(),
-                getCustomerProvidedKey(), encryptionScope, finalContext);
+        BlobHttpHeaders createHeaders
+            = finalOptions.getHeaders() == null ? new BlobHttpHeaders() : finalOptions.getHeaders();
+        CpkInfo createCpk = getCustomerProvidedKey();
+        RequestOptions createOptions = appendBlobRequestOptions(finalContext);
+        ModelHelper.addMetadataHeaders(createOptions, finalOptions.getMetadata());
+
+        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation
+            = () -> this.appendBlobClientInternal.createWithResponse(null, null, createHeaders.getContentType(),
+                createHeaders.getContentEncoding(), createHeaders.getContentLanguage(),
+                createHeaders.getContentMd5(), createHeaders.getCacheControl(), requestConditions.getLeaseId(),
+                createHeaders.getContentDisposition(), createCpk == null ? null : createCpk.getEncryptionKey(),
+                createCpk == null ? null : createCpk.getEncryptionKeySha256(),
+                createCpk == null ? null : createCpk.getEncryptionAlgorithm(),
+                encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
+                requestConditions.getTagsConditions(), ModelHelper.tagsToString(finalOptions.getTags()),
+                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), finalOptions.hasLegalHold(),
+                requestConditions, createOptions);
         ResponseBase<AppendBlobsCreateHeaders, Void> response
             = sendRequest(operation, timeout, BlobStorageException.class);
         AppendBlobsCreateHeaders hd = response.getDeserializedHeaders();
-        AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), null, null,
-            hd.getXMsVersionId());
+        AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
+            hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null,
+            hd.getVersionId());
         return new SimpleResponse<>(response, item);
     }
 
@@ -710,11 +730,9 @@ public final class AppendBlobClient extends BlobClientBase {
             : finalOptions.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getAppendBlobs()
-            .sealNoCustomHeadersWithResponse(containerName, blobName, null, null, requestConditions.getLeaseId(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getAppendPosition(), finalContext);
+        Callable<Response<Void>> operation
+            = () -> this.appendBlobClientInternal.sealWithResponse(null, requestConditions.getLeaseId(),
+                requestConditions.getAppendPosition(), requestConditions, appendBlobRequestOptions(finalContext));
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
