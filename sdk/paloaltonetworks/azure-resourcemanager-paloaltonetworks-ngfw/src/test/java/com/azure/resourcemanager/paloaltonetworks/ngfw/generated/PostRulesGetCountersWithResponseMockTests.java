@@ -21,7 +21,7 @@ public final class PostRulesGetCountersWithResponseMockTests {
     @Test
     public void testGetCountersWithResponse() throws Exception {
         String responseStr
-            = "{\"priority\":\"sgl\",\"ruleStackName\":\"czezkhhlt\",\"ruleListName\":\"adhqoa\",\"firewallName\":\"qoyueayfbpcmsplb\",\"ruleName\":\"rrueqthwmg\",\"hitCount\":249669652,\"appSeen\":{\"count\":472451577,\"appSeenList\":[{\"title\":\"bxigdhxiidlo\",\"category\":\"edbw\",\"subCategory\":\"pyqy\",\"risk\":\"bxubmdna\",\"tag\":\"cbq\",\"technology\":\"remj\",\"standardPorts\":\"laqacigele\"}]},\"timestamp\":\"2021-10-21T16:22:49Z\",\"requestTimestamp\":\"2021-03-27T19:33:47Z\",\"lastUpdatedTimestamp\":\"2021-08-29T06:27:54Z\"}";
+            = "{\"priority\":\"ravjuq\",\"ruleStackName\":\"rxmrgchbapx\",\"ruleListName\":\"y\",\"firewallName\":\"j\",\"ruleName\":\"bajbuscgduusi\",\"hitCount\":1944673013,\"appSeen\":{\"count\":601344175,\"appSeenList\":[{\"title\":\"vpmclujyxkyxlz\",\"category\":\"sjgkzzltafh\",\"subCategory\":\"zffovwmbjl\",\"risk\":\"qsczpgvdwnapfdqw\",\"tag\":\"wf\",\"technology\":\"ptnuwjtkschgc\",\"standardPorts\":\"qyhleseyq\"},{\"title\":\"hvyeldotj\",\"category\":\"dkwisw\",\"subCategory\":\"kukjtasb\",\"risk\":\"wispkxk\",\"tag\":\"txfkndlqvt\",\"technology\":\"knvgmmbugtywat\",\"standardPorts\":\"qaqkuea\"},{\"title\":\"groeshoyg\",\"category\":\"cbyfqxkf\",\"subCategory\":\"oytehqpuvjm\",\"risk\":\"qm\",\"tag\":\"dwckygroe\",\"technology\":\"n\",\"standardPorts\":\"dljdjuskb\"}]},\"timestamp\":\"2021-09-03T14:10:55Z\",\"requestTimestamp\":\"2021-01-25T11:53:40Z\",\"lastUpdatedTimestamp\":\"2021-06-16T12:12:37Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,25 +31,25 @@ public final class PostRulesGetCountersWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RuleCounter response = manager.postRules()
-            .getCountersWithResponse("hspnxwqagnepz", "aklsbsbq", "qagwwrxaomz", com.azure.core.util.Context.NONE)
+            .getCountersWithResponse("chocokulehur", "lrqff", "weyurkphyjd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sgl", response.priority());
-        Assertions.assertEquals("czezkhhlt", response.ruleStackName());
-        Assertions.assertEquals("adhqoa", response.ruleListName());
-        Assertions.assertEquals("qoyueayfbpcmsplb", response.firewallName());
-        Assertions.assertEquals("rrueqthwmg", response.ruleName());
-        Assertions.assertEquals(249669652, response.hitCount());
-        Assertions.assertEquals(472451577, response.appSeen().count());
-        Assertions.assertEquals("bxigdhxiidlo", response.appSeen().appSeenList().get(0).title());
-        Assertions.assertEquals("edbw", response.appSeen().appSeenList().get(0).category());
-        Assertions.assertEquals("pyqy", response.appSeen().appSeenList().get(0).subCategory());
-        Assertions.assertEquals("bxubmdna", response.appSeen().appSeenList().get(0).risk());
-        Assertions.assertEquals("cbq", response.appSeen().appSeenList().get(0).tag());
-        Assertions.assertEquals("remj", response.appSeen().appSeenList().get(0).technology());
-        Assertions.assertEquals("laqacigele", response.appSeen().appSeenList().get(0).standardPorts());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T16:22:49Z"), response.timestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T19:33:47Z"), response.requestTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T06:27:54Z"), response.lastUpdatedTimestamp());
+        Assertions.assertEquals("ravjuq", response.priority());
+        Assertions.assertEquals("rxmrgchbapx", response.ruleStackName());
+        Assertions.assertEquals("y", response.ruleListName());
+        Assertions.assertEquals("j", response.firewallName());
+        Assertions.assertEquals("bajbuscgduusi", response.ruleName());
+        Assertions.assertEquals(1944673013, response.hitCount());
+        Assertions.assertEquals(601344175, response.appSeen().count());
+        Assertions.assertEquals("vpmclujyxkyxlz", response.appSeen().appSeenList().get(0).title());
+        Assertions.assertEquals("sjgkzzltafh", response.appSeen().appSeenList().get(0).category());
+        Assertions.assertEquals("zffovwmbjl", response.appSeen().appSeenList().get(0).subCategory());
+        Assertions.assertEquals("qsczpgvdwnapfdqw", response.appSeen().appSeenList().get(0).risk());
+        Assertions.assertEquals("wf", response.appSeen().appSeenList().get(0).tag());
+        Assertions.assertEquals("ptnuwjtkschgc", response.appSeen().appSeenList().get(0).technology());
+        Assertions.assertEquals("qyhleseyq", response.appSeen().appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T14:10:55Z"), response.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T11:53:40Z"), response.requestTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T12:12:37Z"), response.lastUpdatedTimestamp());
     }
 }

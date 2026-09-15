@@ -10,7 +10,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberStatusSamples {
     /*
      * x-ms-original-file:
-     * 2025-10-08/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.json
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.
@@ -25,7 +25,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberSta
 
     /*
      * x-ms-original-file:
-     * 2025-10-08/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.json
+     * 2026-07-29-preview/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.

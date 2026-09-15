@@ -13,20 +13,20 @@ public final class EndpointConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointConfiguration model = BinaryData
-            .fromString("{\"port\":\"heyd\",\"address\":{\"resourceId\":\"dshmkxmaehvbbx\",\"address\":\"iplt\"}}")
+            .fromString("{\"port\":\"rydxtqm\",\"address\":{\"resourceId\":\"ox\",\"address\":\"ggufhyaomtb\"}}")
             .toObject(EndpointConfiguration.class);
-        Assertions.assertEquals("heyd", model.port());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.address().resourceId());
-        Assertions.assertEquals("iplt", model.address().address());
+        Assertions.assertEquals("rydxtqm", model.port());
+        Assertions.assertEquals("ox", model.address().resourceId());
+        Assertions.assertEquals("ggufhyaomtb", model.address().address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointConfiguration model = new EndpointConfiguration().withPort("heyd")
-            .withAddress(new IpAddress().withResourceId("dshmkxmaehvbbx").withAddress("iplt"));
+        EndpointConfiguration model = new EndpointConfiguration().withPort("rydxtqm")
+            .withAddress(new IpAddress().withResourceId("ox").withAddress("ggufhyaomtb"));
         model = BinaryData.fromObject(model).toObject(EndpointConfiguration.class);
-        Assertions.assertEquals("heyd", model.port());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.address().resourceId());
-        Assertions.assertEquals("iplt", model.address().address());
+        Assertions.assertEquals("rydxtqm", model.port());
+        Assertions.assertEquals("ox", model.address().resourceId());
+        Assertions.assertEquals("ggufhyaomtb", model.address().address());
     }
 }

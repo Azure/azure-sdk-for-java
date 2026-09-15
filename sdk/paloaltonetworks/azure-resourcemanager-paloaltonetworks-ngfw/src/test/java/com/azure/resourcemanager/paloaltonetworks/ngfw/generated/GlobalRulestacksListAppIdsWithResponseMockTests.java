@@ -21,7 +21,7 @@ public final class GlobalRulestacksListAppIdsWithResponseMockTests {
     @Test
     public void testListAppIdsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"],\"nextLink\":\"iqxf\"}";
+            = "{\"value\":[\"oe\",\"swankltytmh\",\"roznnhdrlktgj\",\"sggux\"],\"nextLink\":\"mlwywaeeczg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class GlobalRulestacksListAppIdsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListAppIdResponse response = manager.globalRulestacks()
-            .listAppIdsWithResponse("xejw", "bmdujtmvcopexc", "jurbuhhlkyqltqsr", "gtuwkff", 369277903,
+            .listAppIdsWithResponse("wka", "ve", "yfdvlvhbwrnfxtgd", "pqthehnmnaoya", 428574071,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tsysi", response.value().get(0));
-        Assertions.assertEquals("iqxf", response.nextLink());
+        Assertions.assertEquals("oe", response.value().get(0));
+        Assertions.assertEquals("mlwywaeeczg", response.nextLink());
     }
 }

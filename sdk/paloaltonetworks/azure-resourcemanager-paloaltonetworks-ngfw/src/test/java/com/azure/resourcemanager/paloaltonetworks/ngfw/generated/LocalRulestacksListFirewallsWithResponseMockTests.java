@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class LocalRulestacksListFirewallsWithResponseMockTests {
     @Test
     public void testListFirewallsWithResponse() throws Exception {
-        String responseStr = "{\"value\":[\"eebgvopemtuoqu\"],\"nextLink\":\"yegq\"}";
+        String responseStr
+            = "{\"value\":[\"atolekscbc\",\"nanqimwbzxpdcldp\",\"awnsnlaimou\",\"w\"],\"nextLink\":\"qmudmfcoibic\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +31,10 @@ public final class LocalRulestacksListFirewallsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListFirewallsResponse response = manager.localRulestacks()
-            .listFirewallsWithResponse("yjfqipubyznc", "k", com.azure.core.util.Context.NONE)
+            .listFirewallsWithResponse("waokbavlytta", "knwfrkebsmhpdujd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eebgvopemtuoqu", response.value().get(0));
-        Assertions.assertEquals("yegq", response.nextLink());
+        Assertions.assertEquals("atolekscbc", response.value().get(0));
+        Assertions.assertEquals("qmudmfcoibic", response.nextLink());
     }
 }

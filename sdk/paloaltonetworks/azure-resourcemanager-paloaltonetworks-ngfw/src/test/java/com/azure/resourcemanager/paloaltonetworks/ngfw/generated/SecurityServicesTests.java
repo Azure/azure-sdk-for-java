@@ -12,36 +12,36 @@ public final class SecurityServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityServices model = BinaryData.fromString(
-            "{\"vulnerabilityProfile\":\"fxqeof\",\"antiSpywareProfile\":\"e\",\"antiVirusProfile\":\"hqjbasvmsmj\",\"urlFilteringProfile\":\"lngsntnbybkzgcwr\",\"fileBlockingProfile\":\"lxxwrljdouskc\",\"dnsSubscription\":\"kocrcjdkwtnhx\",\"outboundUnTrustCertificate\":\"jbiksqrglssai\",\"outboundTrustCertificate\":\"p\"}")
+            "{\"vulnerabilityProfile\":\"hzrvqd\",\"antiSpywareProfile\":\"bhj\",\"antiVirusProfile\":\"igeho\",\"urlFilteringProfile\":\"bowsk\",\"fileBlockingProfile\":\"yktz\",\"dnsSubscription\":\"u\",\"outboundUnTrustCertificate\":\"wgqyw\",\"outboundTrustCertificate\":\"drvyn\"}")
             .toObject(SecurityServices.class);
-        Assertions.assertEquals("fxqeof", model.vulnerabilityProfile());
-        Assertions.assertEquals("e", model.antiSpywareProfile());
-        Assertions.assertEquals("hqjbasvmsmj", model.antiVirusProfile());
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.urlFilteringProfile());
-        Assertions.assertEquals("lxxwrljdouskc", model.fileBlockingProfile());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.dnsSubscription());
-        Assertions.assertEquals("jbiksqrglssai", model.outboundUnTrustCertificate());
-        Assertions.assertEquals("p", model.outboundTrustCertificate());
+        Assertions.assertEquals("hzrvqd", model.vulnerabilityProfile());
+        Assertions.assertEquals("bhj", model.antiSpywareProfile());
+        Assertions.assertEquals("igeho", model.antiVirusProfile());
+        Assertions.assertEquals("bowsk", model.urlFilteringProfile());
+        Assertions.assertEquals("yktz", model.fileBlockingProfile());
+        Assertions.assertEquals("u", model.dnsSubscription());
+        Assertions.assertEquals("wgqyw", model.outboundUnTrustCertificate());
+        Assertions.assertEquals("drvyn", model.outboundTrustCertificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityServices model = new SecurityServices().withVulnerabilityProfile("fxqeof")
-            .withAntiSpywareProfile("e")
-            .withAntiVirusProfile("hqjbasvmsmj")
-            .withUrlFilteringProfile("lngsntnbybkzgcwr")
-            .withFileBlockingProfile("lxxwrljdouskc")
-            .withDnsSubscription("kocrcjdkwtnhx")
-            .withOutboundUnTrustCertificate("jbiksqrglssai")
-            .withOutboundTrustCertificate("p");
+        SecurityServices model = new SecurityServices().withVulnerabilityProfile("hzrvqd")
+            .withAntiSpywareProfile("bhj")
+            .withAntiVirusProfile("igeho")
+            .withUrlFilteringProfile("bowsk")
+            .withFileBlockingProfile("yktz")
+            .withDnsSubscription("u")
+            .withOutboundUnTrustCertificate("wgqyw")
+            .withOutboundTrustCertificate("drvyn");
         model = BinaryData.fromObject(model).toObject(SecurityServices.class);
-        Assertions.assertEquals("fxqeof", model.vulnerabilityProfile());
-        Assertions.assertEquals("e", model.antiSpywareProfile());
-        Assertions.assertEquals("hqjbasvmsmj", model.antiVirusProfile());
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.urlFilteringProfile());
-        Assertions.assertEquals("lxxwrljdouskc", model.fileBlockingProfile());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.dnsSubscription());
-        Assertions.assertEquals("jbiksqrglssai", model.outboundUnTrustCertificate());
-        Assertions.assertEquals("p", model.outboundTrustCertificate());
+        Assertions.assertEquals("hzrvqd", model.vulnerabilityProfile());
+        Assertions.assertEquals("bhj", model.antiSpywareProfile());
+        Assertions.assertEquals("igeho", model.antiVirusProfile());
+        Assertions.assertEquals("bowsk", model.urlFilteringProfile());
+        Assertions.assertEquals("yktz", model.fileBlockingProfile());
+        Assertions.assertEquals("u", model.dnsSubscription());
+        Assertions.assertEquals("wgqyw", model.outboundUnTrustCertificate());
+        Assertions.assertEquals("drvyn", model.outboundTrustCertificate());
     }
 }

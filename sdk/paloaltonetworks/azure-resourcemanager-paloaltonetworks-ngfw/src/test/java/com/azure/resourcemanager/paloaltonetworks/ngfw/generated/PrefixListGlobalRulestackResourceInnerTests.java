@@ -13,25 +13,25 @@ public final class PrefixListGlobalRulestackResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrefixListGlobalRulestackResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"ffimrzrtuzqogsex\",\"prefixList\":[\"vfdnwnwmewzsyyce\",\"zsoibjudpfrxtr\",\"hzv\"],\"etag\":\"tdwkqbrq\",\"auditComment\":\"paxh\",\"provisioningState\":\"Creating\"},\"id\":\"livpdt\",\"name\":\"irqtdqoa\",\"type\":\"oruzfgsquyfxrxx\"}")
+            "{\"properties\":{\"description\":\"osjswsr\",\"prefixList\":[\"lyzrpzbchckqqzqi\",\"xiy\",\"uiizynke\",\"yatrwy\"],\"etag\":\"mibzyhwitsmypyyn\",\"auditComment\":\"dpumnzgmw\",\"provisioningState\":\"NotSpecified\"},\"id\":\"biknsorgjhxbld\",\"name\":\"lwwrl\",\"type\":\"dmtnc\"}")
             .toObject(PrefixListGlobalRulestackResourceInner.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.description());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.prefixList().get(0));
-        Assertions.assertEquals("tdwkqbrq", model.etag());
-        Assertions.assertEquals("paxh", model.auditComment());
+        Assertions.assertEquals("osjswsr", model.description());
+        Assertions.assertEquals("lyzrpzbchckqqzqi", model.prefixList().get(0));
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.etag());
+        Assertions.assertEquals("dpumnzgmw", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrefixListGlobalRulestackResourceInner model
-            = new PrefixListGlobalRulestackResourceInner().withDescription("ffimrzrtuzqogsex")
-                .withPrefixList(Arrays.asList("vfdnwnwmewzsyyce", "zsoibjudpfrxtr", "hzv"))
-                .withEtag("tdwkqbrq")
-                .withAuditComment("paxh");
+            = new PrefixListGlobalRulestackResourceInner().withDescription("osjswsr")
+                .withPrefixList(Arrays.asList("lyzrpzbchckqqzqi", "xiy", "uiizynke", "yatrwy"))
+                .withEtag("mibzyhwitsmypyyn")
+                .withAuditComment("dpumnzgmw");
         model = BinaryData.fromObject(model).toObject(PrefixListGlobalRulestackResourceInner.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.description());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.prefixList().get(0));
-        Assertions.assertEquals("tdwkqbrq", model.etag());
-        Assertions.assertEquals("paxh", model.auditComment());
+        Assertions.assertEquals("osjswsr", model.description());
+        Assertions.assertEquals("lyzrpzbchckqqzqi", model.prefixList().get(0));
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.etag());
+        Assertions.assertEquals("dpumnzgmw", model.auditComment());
     }
 }

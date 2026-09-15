@@ -14,20 +14,21 @@ public final class PlanDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanData model = BinaryData.fromString(
-            "{\"usageType\":\"PAYG\",\"billingCycle\":\"WEEKLY\",\"planId\":\"baxk\",\"effectiveDate\":\"2021-11-06T21:21:21Z\"}")
+            "{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planId\":\"vgrvkffo\",\"effectiveDate\":\"2021-07-28T08:23:03Z\"}")
             .toObject(PlanData.class);
         Assertions.assertEquals(UsageType.PAYG, model.usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());
-        Assertions.assertEquals("baxk", model.planId());
+        Assertions.assertEquals(BillingCycle.MONTHLY, model.billingCycle());
+        Assertions.assertEquals("vgrvkffo", model.planId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanData model
-            = new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.WEEKLY).withPlanId("baxk");
+        PlanData model = new PlanData().withUsageType(UsageType.PAYG)
+            .withBillingCycle(BillingCycle.MONTHLY)
+            .withPlanId("vgrvkffo");
         model = BinaryData.fromObject(model).toObject(PlanData.class);
         Assertions.assertEquals(UsageType.PAYG, model.usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());
-        Assertions.assertEquals("baxk", model.planId());
+        Assertions.assertEquals(BillingCycle.MONTHLY, model.billingCycle());
+        Assertions.assertEquals("vgrvkffo", model.planId());
     }
 }
