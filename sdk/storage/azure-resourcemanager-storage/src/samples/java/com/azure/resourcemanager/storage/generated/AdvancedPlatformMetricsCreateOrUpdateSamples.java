@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2026-04-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
+     * 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers - Create advanced platform metrics rule
@@ -41,7 +41,7 @@ public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-04-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
+     * 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList - Create advanced platform metrics rule
@@ -66,7 +66,7 @@ public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-04-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
+     * 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix - Create advanced platform metrics rule
