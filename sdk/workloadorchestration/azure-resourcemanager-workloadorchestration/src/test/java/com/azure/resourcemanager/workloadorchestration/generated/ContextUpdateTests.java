@@ -19,33 +19,35 @@ public final class ContextUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContextUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"lbyvictctbrxkjzw\":\"zb\",\"kgozxwop\":\"gxffmshkwf\",\"yg\":\"bydpizqaclnapxb\"},\"properties\":{\"capabilities\":[{\"name\":\"knfsmfcttuxuuyil\",\"description\":\"lq\",\"state\":\"active\"}],\"hierarchies\":[{\"name\":\"rehmr\",\"description\":\"jhvsujztczyt\"},{\"name\":\"jtwhauunf\",\"description\":\"rnjlet\"},{\"name\":\"xsmrpddouifamow\",\"description\":\"z\"},{\"name\":\"yn\",\"description\":\"nlqwzdvpiwhx\"}]}}")
+            "{\"tags\":{\"ubdpkxyqvgxi\":\"cqchygtvxbyjane\",\"tvo\":\"od\",\"s\":\"kxdxuwsaifmcwn\"},\"properties\":{\"capabilities\":[{\"name\":\"hg\",\"description\":\"vkbcknjolgjyyxp\",\"state\":\"inactive\"},{\"name\":\"szerqzevxoqei\",\"description\":\"txwaljglzo\",\"state\":\"inactive\"},{\"name\":\"waafrqulh\",\"description\":\"zyqbhd\",\"state\":\"inactive\"}],\"hierarchies\":[{\"name\":\"qpjiyrqjcr\",\"description\":\"a\"},{\"name\":\"wmzwdfkbnrzorpdl\",\"description\":\"bqc\"}]}}")
             .toObject(ContextUpdate.class);
-        Assertions.assertEquals("zb", model.tags().get("lbyvictctbrxkjzw"));
-        Assertions.assertEquals("knfsmfcttuxuuyil", model.properties().capabilities().get(0).name());
-        Assertions.assertEquals("lq", model.properties().capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().capabilities().get(0).state());
-        Assertions.assertEquals("rehmr", model.properties().hierarchies().get(0).name());
-        Assertions.assertEquals("jhvsujztczyt", model.properties().hierarchies().get(0).description());
+        Assertions.assertEquals("cqchygtvxbyjane", model.tags().get("ubdpkxyqvgxi"));
+        Assertions.assertEquals("hg", model.properties().capabilities().get(0).name());
+        Assertions.assertEquals("vkbcknjolgjyyxp", model.properties().capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().capabilities().get(0).state());
+        Assertions.assertEquals("qpjiyrqjcr", model.properties().hierarchies().get(0).name());
+        Assertions.assertEquals("a", model.properties().hierarchies().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContextUpdate model = new ContextUpdate()
-            .withTags(mapOf("lbyvictctbrxkjzw", "zb", "kgozxwop", "gxffmshkwf", "yg", "bydpizqaclnapxb"))
+            .withTags(mapOf("ubdpkxyqvgxi", "cqchygtvxbyjane", "tvo", "od", "s", "kxdxuwsaifmcwn"))
             .withProperties(new ContextUpdateProperties().withCapabilities(Arrays.asList(
-                new Capability().withName("knfsmfcttuxuuyil").withDescription("lq").withState(ResourceState.ACTIVE)))
-                .withHierarchies(Arrays.asList(new Hierarchy().withName("rehmr").withDescription("jhvsujztczyt"),
-                    new Hierarchy().withName("jtwhauunf").withDescription("rnjlet"),
-                    new Hierarchy().withName("xsmrpddouifamow").withDescription("z"),
-                    new Hierarchy().withName("yn").withDescription("nlqwzdvpiwhx"))));
+                new Capability().withName("hg").withDescription("vkbcknjolgjyyxp").withState(ResourceState.INACTIVE),
+                new Capability().withName("szerqzevxoqei")
+                    .withDescription("txwaljglzo")
+                    .withState(ResourceState.INACTIVE),
+                new Capability().withName("waafrqulh").withDescription("zyqbhd").withState(ResourceState.INACTIVE)))
+                .withHierarchies(Arrays.asList(new Hierarchy().withName("qpjiyrqjcr").withDescription("a"),
+                    new Hierarchy().withName("wmzwdfkbnrzorpdl").withDescription("bqc"))));
         model = BinaryData.fromObject(model).toObject(ContextUpdate.class);
-        Assertions.assertEquals("zb", model.tags().get("lbyvictctbrxkjzw"));
-        Assertions.assertEquals("knfsmfcttuxuuyil", model.properties().capabilities().get(0).name());
-        Assertions.assertEquals("lq", model.properties().capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().capabilities().get(0).state());
-        Assertions.assertEquals("rehmr", model.properties().hierarchies().get(0).name());
-        Assertions.assertEquals("jhvsujztczyt", model.properties().hierarchies().get(0).description());
+        Assertions.assertEquals("cqchygtvxbyjane", model.tags().get("ubdpkxyqvgxi"));
+        Assertions.assertEquals("hg", model.properties().capabilities().get(0).name());
+        Assertions.assertEquals("vkbcknjolgjyyxp", model.properties().capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().capabilities().get(0).state());
+        Assertions.assertEquals("qpjiyrqjcr", model.properties().hierarchies().get(0).name());
+        Assertions.assertEquals("a", model.properties().hierarchies().get(0).description());
     }
 
     // Use "Map.of" if available

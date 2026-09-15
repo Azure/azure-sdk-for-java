@@ -24,7 +24,7 @@ public final class InstancesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionVersionId\":\"ddacbcbgydlqidy\",\"targetId\":\"mhmpty\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"bnrqq\"},\"solutionScope\":\"ztpb\",\"status\":{\"lastModified\":\"2021-08-20T03:01:03Z\",\"deployed\":602199119,\"expectedRunningJobId\":462746510,\"runningJobId\":222029368,\"status\":\"lswbnf\",\"statusDetails\":\"epl\",\"generation\":571315048,\"targetStatuses\":[{\"name\":\"f\",\"status\":\"gl\",\"componentStatuses\":[{}]}]},\"deploymentTimestampEpoch\":7089584992073086055,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"hsbrcary\",\"type\":\"CustomLocation\"},\"eTag\":\"j\",\"id\":\"voaqajuvehzptdmk\",\"name\":\"rbhmpfulubef\",\"type\":\"ybpmf\"}";
+            = "{\"properties\":{\"solutionVersionId\":\"faxzsvbxxyjissk\",\"targetId\":\"bqoclflioewyhx\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"rkdpsqeqfb\"},\"solutionScope\":\"mdsesbrujbjpp\",\"status\":{\"lastModified\":\"2021-06-15T19:42:09Z\",\"deployed\":1902312754,\"expectedRunningJobId\":539846856,\"runningJobId\":1698799010,\"status\":\"hieatnejr\",\"statusDetails\":\"inzqplgtkiho\",\"generation\":1252752660,\"targetStatuses\":[{\"name\":\"zfffjilzfbpnt\",\"status\":\"kensckh\",\"componentStatuses\":[{},{}]},{\"name\":\"rmoyfxxkwykuq\",\"status\":\"dxlykhkggapvdgt\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"rscdxrnrnjrcuf\",\"status\":\"gacnrgfdtncmsp\",\"componentStatuses\":[{},{}]}]},\"deploymentTimestampEpoch\":2644136852145064072,\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"kqiq\",\"type\":\"CustomLocation\"},\"eTag\":\"v\",\"id\":\"qcs\",\"name\":\"kqj\",\"type\":\"xptueip\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,18 @@ public final class InstancesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Instance response
-            = manager.instances().getWithResponse("rra", "eek", "s", "eh", com.azure.core.util.Context.NONE).getValue();
+        Instance response = manager.instances()
+            .getWithResponse("dyzoutxfptofhg", "uywezygvadg", "aqwvkgjpytpmpvdn", "gehlufbortbnu",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("ddacbcbgydlqidy", response.properties().solutionVersionId());
-        Assertions.assertEquals("mhmpty", response.properties().targetId());
+        Assertions.assertEquals("faxzsvbxxyjissk", response.properties().solutionVersionId());
+        Assertions.assertEquals("bqoclflioewyhx", response.properties().targetId());
         Assertions.assertEquals(ActiveState.INACTIVE, response.properties().activeState());
-        Assertions.assertEquals(ReconciliationState.INACTIVE, response.properties().reconciliationPolicy().state());
-        Assertions.assertEquals("bnrqq", response.properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("ztpb", response.properties().solutionScope());
-        Assertions.assertEquals("hsbrcary", response.extendedLocation().name());
+        Assertions.assertEquals(ReconciliationState.ACTIVE, response.properties().reconciliationPolicy().state());
+        Assertions.assertEquals("rkdpsqeqfb", response.properties().reconciliationPolicy().interval());
+        Assertions.assertEquals("mdsesbrujbjpp", response.properties().solutionScope());
+        Assertions.assertEquals("kqiq", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

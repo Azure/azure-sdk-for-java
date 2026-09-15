@@ -20,7 +20,7 @@ public final class DynamicSchemasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurationType\":\"Shared\",\"configurationModel\":\"Application\",\"provisioningState\":\"Failed\"},\"eTag\":\"vcjkgd\",\"id\":\"azftxejwabmdujtm\",\"name\":\"cope\",\"type\":\"c\"}";
+            = "{\"properties\":{\"displayName\":\"mv\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Common\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"ujxcxxqn\",\"id\":\"qjkedwqurc\",\"name\":\"ojmrvvxwjongzse\",\"type\":\"qqrsil\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DynamicSchemasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DynamicSchema response = manager.dynamicSchemas()
-            .getWithResponse("tg", "eiookjbsah", "tdtpdelqacslmo", com.azure.core.util.Context.NONE)
+            .getWithResponse("ccnaov", "owazhpabacom", "yotgkwsxnsrqorc", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

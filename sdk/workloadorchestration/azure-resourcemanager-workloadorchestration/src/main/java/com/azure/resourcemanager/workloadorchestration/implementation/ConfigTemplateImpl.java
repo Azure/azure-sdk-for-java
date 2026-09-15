@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateProp
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersion;
+import com.azure.resourcemanager.workloadorchestration.models.HierarchySelector;
 import com.azure.resourcemanager.workloadorchestration.models.RemoveVersionResponse;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.util.Collections;
@@ -157,6 +158,22 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
             .getByResourceGroupWithResponse(resourceGroupName, configTemplateName, context)
             .getValue();
         return this;
+    }
+
+    public void linkToHierarchies(HierarchySelector body) {
+        serviceManager.configTemplates().linkToHierarchies(resourceGroupName, configTemplateName, body);
+    }
+
+    public void linkToHierarchies(HierarchySelector body, Context context) {
+        serviceManager.configTemplates().linkToHierarchies(resourceGroupName, configTemplateName, body, context);
+    }
+
+    public void unLinkFromHierarchies(HierarchySelector body) {
+        serviceManager.configTemplates().unLinkFromHierarchies(resourceGroupName, configTemplateName, body);
+    }
+
+    public void unLinkFromHierarchies(HierarchySelector body, Context context) {
+        serviceManager.configTemplates().unLinkFromHierarchies(resourceGroupName, configTemplateName, body, context);
     }
 
     public ConfigTemplateVersion createVersion(ConfigTemplateVersionWithUpdateTypeInner body) {

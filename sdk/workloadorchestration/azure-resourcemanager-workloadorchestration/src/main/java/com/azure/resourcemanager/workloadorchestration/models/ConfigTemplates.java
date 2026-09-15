@@ -40,6 +40,58 @@ public interface ConfigTemplates {
     ConfigTemplate getByResourceGroup(String resourceGroupName, String configTemplateName);
 
     /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body);
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context);
+
+    /**
      * Create or update a Config Template Version Resource with the specified UpdateType.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

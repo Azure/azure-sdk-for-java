@@ -10,16 +10,74 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The updatable properties of the Solution.
  */
 @Immutable
 public final class SolutionUpdateProperties implements JsonSerializable<SolutionUpdateProperties> {
+    /*
+     * Solution template Id
+     */
+    private String solutionTemplateId;
+
+    /*
+     * Display name of the solution
+     */
+    private String displayName;
+
+    /*
+     * List of latest revisions for available solution template versions
+     */
+    private List<AvailableSolutionTemplateVersion> availableSolutionTemplateVersions;
+
+    /*
+     * Provisioning state of resource
+     */
+    private ProvisioningState provisioningState;
+
     /**
      * Creates an instance of SolutionUpdateProperties class.
      */
     public SolutionUpdateProperties() {
+    }
+
+    /**
+     * Get the solutionTemplateId property: Solution template Id.
+     * 
+     * @return the solutionTemplateId value.
+     */
+    public String solutionTemplateId() {
+        return this.solutionTemplateId;
+    }
+
+    /**
+     * Get the displayName property: Display name of the solution.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Get the availableSolutionTemplateVersions property: List of latest revisions for available solution template
+     * versions.
+     * 
+     * @return the availableSolutionTemplateVersions value.
+     */
+    public List<AvailableSolutionTemplateVersion> availableSolutionTemplateVersions() {
+        return this.availableSolutionTemplateVersions;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -46,7 +104,21 @@ public final class SolutionUpdateProperties implements JsonSerializable<Solution
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                reader.skipChildren();
+                if ("solutionTemplateId".equals(fieldName)) {
+                    deserializedSolutionUpdateProperties.solutionTemplateId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSolutionUpdateProperties.displayName = reader.getString();
+                } else if ("availableSolutionTemplateVersions".equals(fieldName)) {
+                    List<AvailableSolutionTemplateVersion> availableSolutionTemplateVersions
+                        = reader.readArray(reader1 -> AvailableSolutionTemplateVersion.fromJson(reader1));
+                    deserializedSolutionUpdateProperties.availableSolutionTemplateVersions
+                        = availableSolutionTemplateVersions;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSolutionUpdateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
             }
 
             return deserializedSolutionUpdateProperties;

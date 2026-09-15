@@ -32,6 +32,11 @@ public final class BulkPublishSolutionParameter implements JsonSerializable<Bulk
      */
     private List<SolutionDependencyParameter> solutionDependencies;
 
+    /*
+     * Configuration of solution
+     */
+    private String solutionConfiguration;
+
     /**
      * Creates an instance of BulkPublishSolutionParameter class.
      */
@@ -100,6 +105,26 @@ public final class BulkPublishSolutionParameter implements JsonSerializable<Bulk
     }
 
     /**
+     * Get the solutionConfiguration property: Configuration of solution.
+     * 
+     * @return the solutionConfiguration value.
+     */
+    public String solutionConfiguration() {
+        return this.solutionConfiguration;
+    }
+
+    /**
+     * Set the solutionConfiguration property: Configuration of solution.
+     * 
+     * @param solutionConfiguration the solutionConfiguration value to set.
+     * @return the BulkPublishSolutionParameter object itself.
+     */
+    public BulkPublishSolutionParameter withSolutionConfiguration(String solutionConfiguration) {
+        this.solutionConfiguration = solutionConfiguration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +134,7 @@ public final class BulkPublishSolutionParameter implements JsonSerializable<Bulk
         jsonWriter.writeStringField("solutionInstanceName", this.solutionInstanceName);
         jsonWriter.writeArrayField("solutionDependencies", this.solutionDependencies,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("solutionConfiguration", this.solutionConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +164,8 @@ public final class BulkPublishSolutionParameter implements JsonSerializable<Bulk
                     List<SolutionDependencyParameter> solutionDependencies
                         = reader.readArray(reader1 -> SolutionDependencyParameter.fromJson(reader1));
                     deserializedBulkPublishSolutionParameter.solutionDependencies = solutionDependencies;
+                } else if ("solutionConfiguration".equals(fieldName)) {
+                    deserializedBulkPublishSolutionParameter.solutionConfiguration = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

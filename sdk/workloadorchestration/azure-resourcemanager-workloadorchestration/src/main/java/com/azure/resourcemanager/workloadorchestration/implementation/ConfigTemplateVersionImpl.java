@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.workloadorchestration.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersionProperties;
 
-public final class ConfigTemplateVersionImpl implements ConfigTemplateVersion {
+public final class ConfigTemplateVersionImpl
+    implements ConfigTemplateVersion, ConfigTemplateVersion.Definition, ConfigTemplateVersion.Update {
     private ConfigTemplateVersionInner innerObject;
 
     private final com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager;
-
-    ConfigTemplateVersionImpl(ConfigTemplateVersionInner innerObject,
-        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -44,11 +40,102 @@ public final class ConfigTemplateVersionImpl implements ConfigTemplateVersion {
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConfigTemplateVersionInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String configTemplateName;
+
+    private String configTemplateVersionName;
+
+    public ConfigTemplateVersionImpl withExistingConfigTemplate(String resourceGroupName, String configTemplateName) {
+        this.resourceGroupName = resourceGroupName;
+        this.configTemplateName = configTemplateName;
+        return this;
+    }
+
+    public ConfigTemplateVersion create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigTemplateVersions()
+            .createOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, this.innerModel(),
+                Context.NONE);
+        return this;
+    }
+
+    public ConfigTemplateVersion create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigTemplateVersions()
+            .createOrUpdate(resourceGroupName, configTemplateName, configTemplateVersionName, this.innerModel(),
+                context);
+        return this;
+    }
+
+    ConfigTemplateVersionImpl(String name,
+        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
+        this.innerObject = new ConfigTemplateVersionInner();
+        this.serviceManager = serviceManager;
+        this.configTemplateVersionName = name;
+    }
+
+    public ConfigTemplateVersionImpl update() {
+        return this;
+    }
+
+    public ConfigTemplateVersion apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigTemplateVersions()
+            .updateWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public ConfigTemplateVersion apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigTemplateVersions()
+            .updateWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, this.innerModel(),
+                context)
+            .getValue();
+        return this;
+    }
+
+    ConfigTemplateVersionImpl(ConfigTemplateVersionInner innerObject,
+        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.configTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configTemplates");
+        this.configTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+    }
+
+    public ConfigTemplateVersion refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigTemplateVersions()
+            .getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public ConfigTemplateVersion refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigTemplateVersions()
+            .getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, context)
+            .getValue();
+        return this;
+    }
+
+    public ConfigTemplateVersionImpl withProperties(ConfigTemplateVersionProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }

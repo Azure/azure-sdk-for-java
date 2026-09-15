@@ -13,10 +13,9 @@ public final class SolutionTemplateVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurations\":\"sfgytguslfead\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"hejhzisx\",\"id\":\"pelol\",\"name\":\"pv\",\"type\":\"srp\"},{\"properties\":{\"configurations\":\"ujzra\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"ftswibyrcdlbhsh\",\"id\":\"p\",\"name\":\"acstwityk\",\"type\":\"evxccedcp\"},{\"properties\":{\"configurations\":\"dyodnwzxltj\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ugcxnavvwxq\",\"id\":\"y\",\"name\":\"unyowxwl\",\"type\":\"djrkvfgbvfvpd\"}],\"nextLink\":\"daciz\"}")
+            "{\"value\":[{\"properties\":{\"configurations\":\"\\\"datanxpmyyefrpmpdnq\\\"\",\"specification\":{\"ao\":\"\\\"dataka\\\"\",\"npqfrtqlkzmeg\":\"\\\"datavmm\\\"\",\"zyqdrfegcealzx\":\"\\\"dataitgvkx\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"ValidatedWithoutSchema\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"oyqhlwig\",\"id\":\"vbkbxgomf\",\"name\":\"juwasqvdaeyyguxa\",\"type\":\"jsqzhzbezk\"},{\"properties\":{\"configurations\":\"\\\"datasidxasicdd\\\"\",\"specification\":{\"ah\":\"\\\"datavjskgfmoc\\\"\",\"kzyb\":\"\\\"dataqgatjeaahhvjhhn\\\"\",\"yxkyxvx\":\"\\\"datajjidjk\\\"\",\"lxunsmjbnkppxy\":\"\\\"datavblbjednljlageua\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"ValidatedWithoutSchema\",\"provisioningState\":\"Deleting\"},\"eTag\":\"izzgwkln\",\"id\":\"mffeycxcktpi\",\"name\":\"merteeammxqiek\",\"type\":\"kzddrtkgdojbmxva\"}],\"nextLink\":\"efdeesve\"}")
             .toObject(SolutionTemplateVersionListResult.class);
-        Assertions.assertEquals("sfgytguslfead", model.value().get(0).properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.value().get(0).properties().orchestratorType());
-        Assertions.assertEquals("daciz", model.nextLink());
+        Assertions.assertEquals("efdeesve", model.nextLink());
     }
 }

@@ -21,7 +21,7 @@ public final class DynamicSchemasListBySchemaMockTests {
     @Test
     public void testListBySchema() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurationType\":\"Shared\",\"configurationModel\":\"Common\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"fvcl\",\"id\":\"xnfuijtkbusqogs\",\"name\":\"ikayiansharuj\",\"type\":\"ji\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"gv\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Common\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ctejrthcfjzhxly\",\"id\":\"qjros\",\"name\":\"vrjeqmtzzbeqrztr\",\"type\":\"alx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DynamicSchemasListBySchemaMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DynamicSchema> response
-            = manager.dynamicSchemas().listBySchema("jurbuhhlkyqltqsr", "gtuwkff", com.azure.core.util.Context.NONE);
+            = manager.dynamicSchemas().listBySchema("chskxxka", "sbvr", com.azure.core.util.Context.NONE);
 
     }
 }
