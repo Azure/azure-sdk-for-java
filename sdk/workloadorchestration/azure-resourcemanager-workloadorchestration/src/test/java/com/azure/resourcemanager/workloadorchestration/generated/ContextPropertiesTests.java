@@ -16,26 +16,26 @@ public final class ContextPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContextProperties model = BinaryData.fromString(
-            "{\"capabilities\":[{\"name\":\"ggqowey\",\"description\":\"rdhlis\",\"state\":\"active\"}],\"hierarchies\":[{\"name\":\"lqqmpiz\",\"description\":\"uwnpqxpxiwfcng\"}],\"provisioningState\":\"Succeeded\"}")
+            "{\"uniqueIdentifier\":\"iiy\",\"capabilities\":[{\"name\":\"sik\",\"description\":\"z\",\"state\":\"inactive\"}],\"hierarchies\":[{\"name\":\"q\",\"description\":\"vntnrgmqso\"}],\"provisioningState\":\"Failed\"}")
             .toObject(ContextProperties.class);
-        Assertions.assertEquals("ggqowey", model.capabilities().get(0).name());
-        Assertions.assertEquals("rdhlis", model.capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.capabilities().get(0).state());
-        Assertions.assertEquals("lqqmpiz", model.hierarchies().get(0).name());
-        Assertions.assertEquals("uwnpqxpxiwfcng", model.hierarchies().get(0).description());
+        Assertions.assertEquals("sik", model.capabilities().get(0).name());
+        Assertions.assertEquals("z", model.capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.capabilities().get(0).state());
+        Assertions.assertEquals("q", model.hierarchies().get(0).name());
+        Assertions.assertEquals("vntnrgmqso", model.hierarchies().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContextProperties model = new ContextProperties()
-            .withCapabilities(Arrays
-                .asList(new Capability().withName("ggqowey").withDescription("rdhlis").withState(ResourceState.ACTIVE)))
-            .withHierarchies(Arrays.asList(new Hierarchy().withName("lqqmpiz").withDescription("uwnpqxpxiwfcng")));
+            .withCapabilities(
+                Arrays.asList(new Capability().withName("sik").withDescription("z").withState(ResourceState.INACTIVE)))
+            .withHierarchies(Arrays.asList(new Hierarchy().withName("q").withDescription("vntnrgmqso")));
         model = BinaryData.fromObject(model).toObject(ContextProperties.class);
-        Assertions.assertEquals("ggqowey", model.capabilities().get(0).name());
-        Assertions.assertEquals("rdhlis", model.capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.capabilities().get(0).state());
-        Assertions.assertEquals("lqqmpiz", model.hierarchies().get(0).name());
-        Assertions.assertEquals("uwnpqxpxiwfcng", model.hierarchies().get(0).description());
+        Assertions.assertEquals("sik", model.capabilities().get(0).name());
+        Assertions.assertEquals("z", model.capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.capabilities().get(0).state());
+        Assertions.assertEquals("q", model.hierarchies().get(0).name());
+        Assertions.assertEquals("vntnrgmqso", model.hierarchies().get(0).description());
     }
 }

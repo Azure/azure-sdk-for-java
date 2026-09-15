@@ -13,6 +13,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.SolutionTemplateVe
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.BulkDeploySolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.BulkPublishSolutionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.BulkReviewSolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersions;
 
@@ -46,6 +47,15 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
         } else {
             return null;
         }
+    }
+
+    public void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName) {
+        this.serviceClient().delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName);
+    }
+
+    public void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
     }
 
     public PagedIterable<SolutionTemplateVersion> listBySolutionTemplate(String resourceGroupName,
@@ -86,11 +96,104 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
             .bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
     }
 
+    public void bulkReviewSolution(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, BulkReviewSolutionParameter body) {
+        this.serviceClient()
+            .bulkReviewSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body);
+    }
+
+    public void bulkReviewSolution(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, BulkReviewSolutionParameter body, Context context) {
+        this.serviceClient()
+            .bulkReviewSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
+    }
+
+    public SolutionTemplateVersion getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
+        if (solutionTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
+        }
+        String solutionTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (solutionTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, Context.NONE)
+            .getValue();
+    }
+
+    public Response<SolutionTemplateVersion> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
+        if (solutionTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
+        }
+        String solutionTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (solutionTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
+        if (solutionTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
+        }
+        String solutionTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (solutionTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        this.delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "solutionTemplates");
+        if (solutionTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutionTemplates'.", id)));
+        }
+        String solutionTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (solutionTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        this.delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
+    }
+
     private SolutionTemplateVersionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    public SolutionTemplateVersionImpl define(String name) {
+        return new SolutionTemplateVersionImpl(name, this.manager());
     }
 }

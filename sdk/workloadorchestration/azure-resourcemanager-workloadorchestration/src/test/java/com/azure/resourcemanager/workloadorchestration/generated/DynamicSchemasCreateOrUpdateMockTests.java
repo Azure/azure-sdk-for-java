@@ -21,7 +21,7 @@ public final class DynamicSchemasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurationType\":\"Shared\",\"configurationModel\":\"Application\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"acgxmfcsse\",\"id\":\"htvs\",\"name\":\"xhlw\",\"type\":\"tsjgqrsx\"}";
+            = "{\"properties\":{\"displayName\":\"quwzp\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Common\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"erwk\",\"id\":\"pjxljtxb\",\"name\":\"sqtbxxniu\",\"type\":\"sdzhgbdgzpagsec\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class DynamicSchemasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DynamicSchema response = manager.dynamicSchemas()
-            .define("ttvwkpqh")
-            .withExistingSchema("xfz", "j")
+            .define("rsnrhp")
+            .withExistingSchema("d", "absr")
             .withProperties(new DynamicSchemaProperties())
             .create();
 

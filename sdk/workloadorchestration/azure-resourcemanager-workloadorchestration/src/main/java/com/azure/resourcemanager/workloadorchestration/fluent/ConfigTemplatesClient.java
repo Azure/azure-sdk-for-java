@@ -16,6 +16,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersionResponseInner;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.HierarchySelector;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
 /**
@@ -141,6 +142,124 @@ public interface ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigTemplateInner update(String resourceGroupName, String configTemplateName, ConfigTemplateUpdate properties);
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginLinkToHierarchies(String resourceGroupName, String configTemplateName,
+        HierarchySelector body);
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginLinkToHierarchies(String resourceGroupName, String configTemplateName,
+        HierarchySelector body, Context context);
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body);
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUnLinkFromHierarchies(String resourceGroupName, String configTemplateName,
+        HierarchySelector body);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUnLinkFromHierarchies(String resourceGroupName, String configTemplateName,
+        HierarchySelector body, Context context);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body);
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context);
 
     /**
      * Create or update a Config Template Version Resource with the specified UpdateType.

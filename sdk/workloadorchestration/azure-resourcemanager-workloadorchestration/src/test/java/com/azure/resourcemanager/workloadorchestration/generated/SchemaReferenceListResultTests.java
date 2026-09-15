@@ -12,9 +12,9 @@ public final class SchemaReferenceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaReferenceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"schemaId\":\"gaowpulpqblylsyx\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"sjervti\",\"id\":\"xsdszuempsb\",\"name\":\"kfzbeyvpnqicvi\",\"type\":\"v\"},{\"properties\":{\"schemaId\":\"jxdxrbuukz\",\"provisioningState\":\"Failed\"},\"eTag\":\"yhmlwpaztzp\",\"id\":\"ncckw\",\"name\":\"fz\",\"type\":\"whxxbuyqax\"}],\"nextLink\":\"eqz\"}")
+            "{\"value\":[{\"properties\":{\"schemaId\":\"ytp\",\"provisioningState\":\"Failed\"},\"eTag\":\"vzvfvaawzqadfl\",\"id\":\"ur\",\"name\":\"glae\",\"type\":\"xndticokpvzmlqtm\"}],\"nextLink\":\"gxobfirclnp\"}")
             .toObject(SchemaReferenceListResult.class);
-        Assertions.assertEquals("gaowpulpqblylsyx", model.value().get(0).properties().schemaId());
-        Assertions.assertEquals("eqz", model.nextLink());
+        Assertions.assertEquals("ytp", model.value().get(0).properties().schemaId());
+        Assertions.assertEquals("gxobfirclnp", model.nextLink());
     }
 }

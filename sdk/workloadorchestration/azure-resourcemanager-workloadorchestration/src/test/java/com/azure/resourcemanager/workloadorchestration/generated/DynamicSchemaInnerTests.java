@@ -12,7 +12,7 @@ public final class DynamicSchemaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurationType\":\"Shared\",\"configurationModel\":\"Application\",\"provisioningState\":\"Initialized\"},\"eTag\":\"xpyb\",\"id\":\"m\",\"name\":\"hmtzopbsphrup\",\"type\":\"dgs\"}")
+            "{\"properties\":{\"displayName\":\"hq\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Application\",\"provisioningState\":\"Initialized\"},\"eTag\":\"czmehmtzopbsp\",\"id\":\"upi\",\"name\":\"gsybbejhp\",\"type\":\"oycmsxaobhdxbmt\"}")
             .toObject(DynamicSchemaInner.class);
     }
 

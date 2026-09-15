@@ -13,7 +13,6 @@ import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationMana
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +20,7 @@ public final class ConfigTemplateVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"j\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ocrdzgczeunt\",\"id\":\"dnc\",\"name\":\"q\",\"type\":\"tiekoifuvnyttz\"}";
+            = "{\"properties\":{\"configurations\":\"\\\"dataprdaqcc\\\"\",\"provisioningState\":\"Initialized\"},\"eTag\":\"nygdjccxwbpwyyk\",\"id\":\"gq\",\"name\":\"lrzndas\",\"type\":\"nidmjqmvytg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +30,8 @@ public final class ConfigTemplateVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplateVersion response = manager.configTemplateVersions()
-            .getWithResponse("lmhxdqaolfylnk", "bjpjvlyw", "tmfwobbjwhl", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "detawevxehue", "dxljzvdovbrble", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("j", response.properties().configurations());
     }
 }

@@ -24,7 +24,7 @@ public final class ConfigTemplatesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"rbnyrukoilacidu\",\"latestVersion\":\"leipjl\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"p\",\"location\":\"uzythqkkwhbgxv\",\"tags\":{\"tmujdtvmc\":\"vulnxdmn\",\"dnyxfzuvrz\":\"yymffhmjp\",\"mzjqrbr\":\"z\",\"jpp\":\"vnmdyfoeboj\"},\"id\":\"laohoqkp\",\"name\":\"t\",\"type\":\"qjilaywkdcwmqsyr\"}";
+            = "{\"properties\":{\"uniqueIdentifier\":\"uqvcmlaexbzbqufp\",\"description\":\"ezs\",\"latestVersion\":\"aymldrorhyogzms\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"tcuuwdhtqqhyhn\",\"location\":\"xtnsugisn\",\"tags\":{\"eyym\":\"nwnghojov\",\"fpcrtnuguef\":\"cjixxf\"},\"id\":\"xijtebdveywet\",\"name\":\"rhlolmcnwepfg\",\"type\":\"vbbvaqdljnpetl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class ConfigTemplatesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplate response = manager.configTemplates()
-            .define("gqbedygi")
-            .withRegion("kbrfgdrwji")
-            .withExistingResourceGroup("eboywhczzqrhm")
-            .withTags(mapOf("cwv", "hfjsrwqrxetf", "dqntycnawthv", "r", "nuyeamcmhud", "ax"))
-            .withProperties(new ConfigTemplateProperties().withDescription("zwnykdidjchl"))
+            .define("xukuicjuftekio")
+            .withRegion("avkmvyxzerejrkpz")
+            .withExistingResourceGroup("oa")
+            .withTags(mapOf("yoptaei", "etjx", "rrabovrwwxywp", "whlbecgihzbpem"))
+            .withProperties(new ConfigTemplateProperties().withDescription("fjz"))
             .create();
 
-        Assertions.assertEquals("uzythqkkwhbgxv", response.location());
-        Assertions.assertEquals("vulnxdmn", response.tags().get("tmujdtvmc"));
-        Assertions.assertEquals("rbnyrukoilacidu", response.properties().description());
+        Assertions.assertEquals("xtnsugisn", response.location());
+        Assertions.assertEquals("nwnghojov", response.tags().get("eyym"));
+        Assertions.assertEquals("ezs", response.properties().description());
     }
 
     // Use "Map.of" if available

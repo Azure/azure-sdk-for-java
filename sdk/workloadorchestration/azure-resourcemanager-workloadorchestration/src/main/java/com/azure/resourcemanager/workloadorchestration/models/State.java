@@ -67,6 +67,11 @@ public final class State extends ExpandableStringEnum<State> {
     public static final State STAGING = fromString("Staging");
 
     /**
+     * State is not applicable.
+     */
+    public static final State NOT_APPLICABLE = fromString("NotApplicable");
+
+    /**
      * Creates a new instance of State value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

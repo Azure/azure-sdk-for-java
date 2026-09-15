@@ -222,6 +222,14 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
         return serviceManager.targets().updateExternalValidationStatus(resourceGroupName, targetName, body, context);
     }
 
+    public SolutionVersion unstageSolutionVersion(SolutionVersionParameter body) {
+        return serviceManager.targets().unstageSolutionVersion(resourceGroupName, targetName, body);
+    }
+
+    public SolutionVersion unstageSolutionVersion(SolutionVersionParameter body, Context context) {
+        return serviceManager.targets().unstageSolutionVersion(resourceGroupName, targetName, body, context);
+    }
+
     public TargetImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;

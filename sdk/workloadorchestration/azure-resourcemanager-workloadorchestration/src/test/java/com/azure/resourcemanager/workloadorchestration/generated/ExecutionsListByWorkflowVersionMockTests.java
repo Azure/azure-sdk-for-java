@@ -23,7 +23,7 @@ public final class ExecutionsListByWorkflowVersionMockTests {
     @Test
     public void testListByWorkflowVersion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"workflowVersionId\":\"ev\",\"specification\":{},\"status\":{\"updateTime\":\"2021-03-02T22:20:35Z\",\"status\":1201304569,\"statusMessage\":\"slpuxgcbdsva\",\"stageHistory\":[{\"status\":763116826,\"statusMessage\":\"trkxgpazwu\",\"stage\":\"yqvnjobfe\",\"nextstage\":\"ldiuhzzgqlm\",\"errorMessage\":\"ewzgiud\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"nmhkrezsd\",\"type\":\"EdgeZone\"},\"eTag\":\"heqdgcru\",\"id\":\"pinymmqgwokmikp\",\"name\":\"zfbmjxuv\",\"type\":\"ipfdvhaxdvwzaehp\"}]}";
+            = "{\"value\":[{\"properties\":{\"workflowVersionId\":\"qjywi\",\"specification\":{\"ndiloqkajwjuria\":\"\\\"dataycfjnc\\\"\",\"llanhzc\":\"\\\"datasb\\\"\",\"ygzkztxfexwacyy\":\"\\\"datanjxizbax\\\"\"},\"status\":{\"updateTime\":\"2021-04-28T19:14:01Z\",\"status\":83665170,\"statusMessage\":\"ndzkfevuiiui\",\"stageHistory\":[{\"status\":680356373,\"statusMessage\":\"ytqdcizeqqfop\",\"stage\":\"opmotdsf\",\"nextstage\":\"xqlyoazyfbkmvl\",\"errorMessage\":\"mxojzsvmaigbqk\",\"isActive\":\"inactive\",\"inputs\":{\"eecbpergwlc\":\"\\\"datath\\\"\",\"yqsokknpugzjwdiz\":\"\\\"dataihba\\\"\",\"rswksykk\":\"\\\"datarjixiujzkcsexg\\\"\"},\"outputs\":{\"vuqddlgg\":\"\\\"datatxbbwlmnwzok\\\"\",\"olgzubakdlkv\":\"\\\"dataq\\\"\",\"w\":\"\\\"datagcmfnsffetpkmixw\\\"\"}},{\"status\":35622882,\"statusMessage\":\"gsmepnqvxgvoh\",\"stage\":\"thhx\",\"nextstage\":\"ev\",\"errorMessage\":\"deepfhgan\",\"isActive\":\"inactive\",\"inputs\":{\"bvrhh\":\"\\\"datahpjhubohxvzga\\\"\",\"v\":\"\\\"datagalgxnwfm\\\"\",\"sanybzzghvdfeumy\":\"\\\"datatauebpamqxfc\\\"\",\"okj\":\"\\\"datasvcdhlywkh\\\"\"},\"outputs\":{\"oewapcqksaaapxjh\":\"\\\"dataxezriw\\\"\",\"vdaahlfrcqklpmvz\":\"\\\"dataitibenwsdf\\\"\",\"mlbmfggeokfe\":\"\\\"dataireszyaqg\\\"\"}},{\"status\":788601585,\"statusMessage\":\"lwkyeahhh\",\"stage\":\"pulnrfcqufmcihp\",\"nextstage\":\"owrer\",\"errorMessage\":\"xptch\",\"isActive\":\"inactive\",\"inputs\":{\"dgjvxl\":\"\\\"dataidqimlgbbfj\\\"\"},\"outputs\":{\"snlow\":\"\\\"datamheftyaphqeofyt\\\"\"}},{\"status\":1396952472,\"statusMessage\":\"qixuancc\",\"stage\":\"jfdgfqp\",\"nextstage\":\"u\",\"errorMessage\":\"jhcfaa\",\"isActive\":\"active\",\"inputs\":{\"blwal\":\"\\\"dataovmufzgug\\\"\",\"baot\":\"\\\"dataossnq\\\"\",\"mdqecv\":\"\\\"dataptgcsmanxxrwq\\\"\",\"bfewwpsibxo\":\"\\\"dataamqwzmn\\\"\"},\"outputs\":{\"clwgycv\":\"\\\"dataoqjrkblnd\\\"\",\"embtbwnalb\":\"\\\"dataqnzjcyqqz\\\"\",\"ajvmvvlooubsfxip\":\"\\\"datadpisjdl\\\"\"}}]},\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"skgocjomlupfaz\",\"type\":\"EdgeZone\"},\"eTag\":\"cdhus\",\"id\":\"dwzrgdqyxajc\",\"name\":\"grcavqc\",\"type\":\"yzoqzkmqcwwsjnk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class ExecutionsListByWorkflowVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Execution> response = manager.executions()
-            .listByWorkflowVersion("ynwlslrcigtzjcv", "xqlaps", "ssov", "xpavid", com.azure.core.util.Context.NONE);
+            .listByWorkflowVersion("wmvwryvdi", "kiikgpruccwmecbt", "syt", "texegw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ev", response.iterator().next().properties().workflowVersionId());
-        Assertions.assertEquals("nmhkrezsd", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("qjywi", response.iterator().next().properties().workflowVersionId());
+        Assertions.assertEquals("skgocjomlupfaz", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
     }
 }

@@ -41,6 +41,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersionResponseInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.ConfigTemplateListResult;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.HierarchySelector;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -137,6 +138,46 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ConfigTemplateUpdate properties,
             Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/linkToHierarchies")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> linkToHierarchies(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") HierarchySelector body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/linkToHierarchies")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> linkToHierarchiesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") HierarchySelector body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/unLinkFromHierarchies")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> unLinkFromHierarchies(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") HierarchySelector body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/unLinkFromHierarchies")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> unLinkFromHierarchiesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") HierarchySelector body, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/createVersion")
         @ExpectedResponses({ 200, 202 })
@@ -590,6 +631,343 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
     public ConfigTemplateInner update(String resourceGroupName, String configTemplateName,
         ConfigTemplateUpdate properties) {
         return updateWithResponse(resourceGroupName, configTemplateName, properties, Context.NONE).getValue();
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> linkToHierarchiesWithResponseAsync(String resourceGroupName,
+        String configTemplateName, HierarchySelector body) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.linkToHierarchies(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkToHierarchiesWithResponse(String resourceGroupName, String configTemplateName,
+        HierarchySelector body) {
+        final String contentType = "application/json";
+        return service.linkToHierarchiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, Context.NONE);
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkToHierarchiesWithResponse(String resourceGroupName, String configTemplateName,
+        HierarchySelector body, Context context) {
+        final String contentType = "application/json";
+        return service.linkToHierarchiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, context);
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginLinkToHierarchiesAsync(String resourceGroupName,
+        String configTemplateName, HierarchySelector body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = linkToHierarchiesWithResponseAsync(resourceGroupName, configTemplateName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginLinkToHierarchies(String resourceGroupName,
+        String configTemplateName, HierarchySelector body) {
+        Response<BinaryData> response = linkToHierarchiesWithResponse(resourceGroupName, configTemplateName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginLinkToHierarchies(String resourceGroupName,
+        String configTemplateName, HierarchySelector body, Context context) {
+        Response<BinaryData> response
+            = linkToHierarchiesWithResponse(resourceGroupName, configTemplateName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> linkToHierarchiesAsync(String resourceGroupName, String configTemplateName,
+        HierarchySelector body) {
+        return beginLinkToHierarchiesAsync(resourceGroupName, configTemplateName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
+        beginLinkToHierarchies(resourceGroupName, configTemplateName, body).getFinalResult();
+    }
+
+    /**
+     * Apply a Config Template to a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context) {
+        beginLinkToHierarchies(resourceGroupName, configTemplateName, body, context).getFinalResult();
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> unLinkFromHierarchiesWithResponseAsync(String resourceGroupName,
+        String configTemplateName, HierarchySelector body) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.unLinkFromHierarchies(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> unLinkFromHierarchiesWithResponse(String resourceGroupName, String configTemplateName,
+        HierarchySelector body) {
+        final String contentType = "application/json";
+        return service.unLinkFromHierarchiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, Context.NONE);
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> unLinkFromHierarchiesWithResponse(String resourceGroupName, String configTemplateName,
+        HierarchySelector body, Context context) {
+        final String contentType = "application/json";
+        return service.unLinkFromHierarchiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, body, context);
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUnLinkFromHierarchiesAsync(String resourceGroupName,
+        String configTemplateName, HierarchySelector body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = unLinkFromHierarchiesWithResponseAsync(resourceGroupName, configTemplateName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUnLinkFromHierarchies(String resourceGroupName,
+        String configTemplateName, HierarchySelector body) {
+        Response<BinaryData> response = unLinkFromHierarchiesWithResponse(resourceGroupName, configTemplateName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUnLinkFromHierarchies(String resourceGroupName,
+        String configTemplateName, HierarchySelector body, Context context) {
+        Response<BinaryData> response
+            = unLinkFromHierarchiesWithResponse(resourceGroupName, configTemplateName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> unLinkFromHierarchiesAsync(String resourceGroupName, String configTemplateName,
+        HierarchySelector body) {
+        return beginUnLinkFromHierarchiesAsync(resourceGroupName, configTemplateName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
+        beginUnLinkFromHierarchies(resourceGroupName, configTemplateName, body).getFinalResult();
+    }
+
+    /**
+     * Remove a Config Template from a particular hierarchy node.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context) {
+        beginUnLinkFromHierarchies(resourceGroupName, configTemplateName, body, context).getFinalResult();
     }
 
     /**

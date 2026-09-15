@@ -13,10 +13,10 @@ public final class WorkflowListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkflowListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"workflowTemplateId\":\"ocwah\",\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"tjeaahhvjhh\",\"type\":\"EdgeZone\"},\"eTag\":\"zybbj\",\"id\":\"dj\",\"name\":\"syxkyxvxevblb\",\"type\":\"ednljl\"}],\"nextLink\":\"euaulxu\"}")
+            "{\"value\":[{\"properties\":{\"workflowTemplateId\":\"aoaguhicqlli\",\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"csjvhrwef\",\"type\":\"CustomLocation\"},\"eTag\":\"qejpmvssehaepwa\",\"id\":\"xtczhupeuknijd\",\"name\":\"y\",\"type\":\"es\"},{\"properties\":{\"workflowTemplateId\":\"jfbocyvh\",\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"tywikd\",\"type\":\"EdgeZone\"},\"eTag\":\"akuflgbhgauacdix\",\"id\":\"ufr\",\"name\":\"ryjqgdkf\",\"type\":\"ozo\"},{\"properties\":{\"workflowTemplateId\":\"bvjhvefgwbmqj\",\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"asfaymxbulpze\",\"type\":\"EdgeZone\"},\"eTag\":\"mqkyojwyvfkmbts\",\"id\":\"hxsgxj\",\"name\":\"mmzrrscub\",\"type\":\"wsdrnpxqwodif\"}],\"nextLink\":\"xcjr\"}")
             .toObject(WorkflowListResult.class);
-        Assertions.assertEquals("tjeaahhvjhh", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("euaulxu", model.nextLink());
+        Assertions.assertEquals("csjvhrwef", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("xcjr", model.nextLink());
     }
 }
