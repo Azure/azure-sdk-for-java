@@ -90,21 +90,21 @@ public interface CveResource {
     CveComponent component();
 
     /**
-     * Gets the cvssScore property: Legacy property for the effective CVE score.
+     * Gets the cvssScore property: Legacy property for the effective CVE score (deprecated).
      * 
      * @return the cvssScore value.
      */
     String cvssScore();
 
     /**
-     * Gets the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed.
+     * Gets the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed. (deprecated).
      * 
      * @return the cvssV2Score value.
      */
     String cvssV2Score();
 
     /**
-     * Gets the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed.
+     * Gets the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed. (deprecated).
      * 
      * @return the cvssV3Score value.
      */
@@ -112,7 +112,7 @@ public interface CveResource {
 
     /**
      * Gets the cvssVersion property: Legacy property for the what CVSS version score was stored in the cvssScore
-     * property.
+     * property (deprecated).
      * 
      * @return the cvssVersion value.
      */
@@ -131,6 +131,20 @@ public interface CveResource {
      * @return the effectiveCvssVersion value.
      */
     Integer effectiveCvssVersion();
+
+    /**
+     * Gets the effectiveVectorString property: The CVSS vector string for the effectiveCvssVersion.
+     * 
+     * @return the effectiveVectorString value.
+     */
+    String effectiveVectorString();
+
+    /**
+     * Gets the effectiveExploitMaturity property: The CVSS exploit maturity value for the effectiveCvssVersion.
+     * 
+     * @return the effectiveExploitMaturity value.
+     */
+    ExploitMaturityLevel effectiveExploitMaturity();
 
     /**
      * Gets the cvssScores property: All known CVSS scores for the CVE.
@@ -152,6 +166,34 @@ public interface CveResource {
      * @return the description value.
      */
     String description();
+
+    /**
+     * Gets the epss property: EPSS (Exploit Prediction Scoring System) information related to this CVE.
+     * 
+     * @return the epss value.
+     */
+    EpssProperties epss();
+
+    /**
+     * Gets the cwes property: CWE (Common Weakness Enumeration) information related to this CVE.
+     * 
+     * @return the cwes value.
+     */
+    List<CweProperties> cwes();
+
+    /**
+     * Gets the kev property: KEV (Known Exploited Vulnerabilities) information related to this CVE.
+     * 
+     * @return the kev value.
+     */
+    KevProperties kev();
+
+    /**
+     * Gets the fixedInVersions property: The component versions in which this weakness was fixed, if any.
+     * 
+     * @return the fixedInVersions value.
+     */
+    List<String> fixedInVersions();
 
     /**
      * Gets the provisioningState property: The status of the last operation.

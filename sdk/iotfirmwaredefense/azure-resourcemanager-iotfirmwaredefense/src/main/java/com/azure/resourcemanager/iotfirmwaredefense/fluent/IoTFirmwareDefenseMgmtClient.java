@@ -122,4 +122,11 @@ public interface IoTFirmwareDefenseMgmtClient {
      * @return the UsageMetricsClient object.
      */
     UsageMetricsClient getUsageMetrics();
+
+    /**
+     * Gets the UnsafeFunctionCallsClient object to access its operations.
+     * 
+     * @return the UnsafeFunctionCallsClient object.
+     */
+    UnsafeFunctionCallsClient getUnsafeFunctionCalls();
 }
