@@ -28,7 +28,7 @@ public final class DrillRunsResumeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .resume("dmkxwxdcvjwcy", "iakeciqc", "xrtuicds", "wdfmmpzhzzwvywr", com.azure.core.util.Context.NONE);
+            .resume("azvdhctmmkosz", "dblnsntrp", "aqkiofkb", "fmhklbnld", com.azure.core.util.Context.NONE);
 
     }
 }

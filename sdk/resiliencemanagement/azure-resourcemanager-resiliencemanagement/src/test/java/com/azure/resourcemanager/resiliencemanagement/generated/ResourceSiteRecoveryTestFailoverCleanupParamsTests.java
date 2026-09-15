@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSiteRecoveryTestFailoverCleanupParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSiteRecoveryTestFailoverCleanupParams model = BinaryData.fromString("{\"comments\":\"ld\"}")
+        ResourceSiteRecoveryTestFailoverCleanupParams model = BinaryData.fromString("{\"comments\":\"ebxmubyynt\"}")
             .toObject(ResourceSiteRecoveryTestFailoverCleanupParams.class);
-        Assertions.assertEquals("ld", model.comments());
+        Assertions.assertEquals("ebxmubyynt", model.comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceSiteRecoveryTestFailoverCleanupParams model
-            = new ResourceSiteRecoveryTestFailoverCleanupParams().withComments("ld");
+            = new ResourceSiteRecoveryTestFailoverCleanupParams().withComments("ebxmubyynt");
         model = BinaryData.fromObject(model).toObject(ResourceSiteRecoveryTestFailoverCleanupParams.class);
-        Assertions.assertEquals("ld", model.comments());
+        Assertions.assertEquals("ebxmubyynt", model.comments());
     }
 }

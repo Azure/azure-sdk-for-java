@@ -11,19 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceLevelResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceLevelResource model = BinaryData.fromString(
-            "{\"serviceLevelIndicatorResourceId\":\"rzevdphlxaol\",\"serviceLevelObjectiveResourceId\":\"qtrgqjbpfzfsinzg\"}")
+        ServiceLevelResource model = BinaryData.fromString("{\"serviceLevelIndicatorResourceId\":\"paojakhmsbzjh\"}")
             .toObject(ServiceLevelResource.class);
-        Assertions.assertEquals("rzevdphlxaol", model.serviceLevelIndicatorResourceId());
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.serviceLevelObjectiveResourceId());
+        Assertions.assertEquals("paojakhmsbzjh", model.serviceLevelIndicatorResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceLevelResource model = new ServiceLevelResource().withServiceLevelIndicatorResourceId("rzevdphlxaol")
-            .withServiceLevelObjectiveResourceId("qtrgqjbpfzfsinzg");
+        ServiceLevelResource model = new ServiceLevelResource().withServiceLevelIndicatorResourceId("paojakhmsbzjh");
         model = BinaryData.fromObject(model).toObject(ServiceLevelResource.class);
-        Assertions.assertEquals("rzevdphlxaol", model.serviceLevelIndicatorResourceId());
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.serviceLevelObjectiveResourceId());
+        Assertions.assertEquals("paojakhmsbzjh", model.serviceLevelIndicatorResourceId());
     }
 }

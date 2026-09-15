@@ -73,7 +73,17 @@ public class ResourceBaseProtectionSolutionSetting implements JsonSerializable<R
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("AzureNative".equals(discriminatorValue)) {
+                if ("AzureTemplate".equals(discriminatorValue)) {
+                    return ResourceAzureTemplateProtectionSetting.fromJson(readerToUse.reset());
+                } else if ("AzureCosmosDB".equals(discriminatorValue)) {
+                    return ResourceCosmosDBProtectionSetting.fromJson(readerToUse.reset());
+                } else if ("AzureStorageAccount".equals(discriminatorValue)) {
+                    return ResourceStorageAccountProtectionSetting.fromJson(readerToUse.reset());
+                } else if ("AzureServiceBus".equals(discriminatorValue)) {
+                    return ResourceServiceBusProtectionSetting.fromJson(readerToUse.reset());
+                } else if ("AzureNetAppFiles".equals(discriminatorValue)) {
+                    return ResourceNetAppFilesProtectionSetting.fromJson(readerToUse.reset());
+                } else if ("AzureNative".equals(discriminatorValue)) {
                     return ResourceNativeProtectionSolutionSetting.fromJson(readerToUse.reset());
                 } else if ("CustomRunbook".equals(discriminatorValue)) {
                     return ResourceCustomProtectionSetting.fromJson(readerToUse.reset());

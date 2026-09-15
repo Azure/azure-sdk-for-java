@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class RecoveryResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
      */
     /**
      * Sample code: RecoveryResources_Get_CrossZoneVMRecovery.
@@ -24,7 +24,7 @@ public final class RecoveryResourcesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryResources_Get_MaximumSet.

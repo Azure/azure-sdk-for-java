@@ -14,28 +14,28 @@ public final class ChaosResourcePropertiesOfDrillTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosResourcePropertiesOfDrill model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"uo\"},\"chaosResourceIdentityForFaults\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"nyfln\"},\"chaosResourceId\":\"wmd\",\"faultDurationInMin\":1769195626}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"jgcyztsfmznba\"},\"chaosResourceIdentityForFaults\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"hchqnrnrpx\"},\"chaosResourceId\":\"uwrykqgaifmvikl\",\"faultDurationInMin\":703238637}")
             .toObject(ChaosResourcePropertiesOfDrill.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("uo", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals("jgcyztsfmznba", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             model.chaosResourceIdentityForFaults().type());
-        Assertions.assertEquals("nyfln", model.chaosResourceIdentityForFaults().userAssignedIdentity());
+        Assertions.assertEquals("hchqnrnrpx", model.chaosResourceIdentityForFaults().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChaosResourcePropertiesOfDrill model = new ChaosResourcePropertiesOfDrill()
             .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("uo"))
+                .withUserAssignedIdentity("jgcyztsfmznba"))
             .withChaosResourceIdentityForFaults(
-                new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentity("nyfln"));
+                new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentity("hchqnrnrpx"));
         model = BinaryData.fromObject(model).toObject(ChaosResourcePropertiesOfDrill.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("uo", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals("jgcyztsfmznba", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             model.chaosResourceIdentityForFaults().type());
-        Assertions.assertEquals("nyfln", model.chaosResourceIdentityForFaults().userAssignedIdentity());
+        Assertions.assertEquals("hchqnrnrpx", model.chaosResourceIdentityForFaults().userAssignedIdentity());
     }
 }

@@ -22,6 +22,11 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
     private RecoveryPlanPropertiesOfDrill recoveryPlanProperties;
 
     /*
+     * Goal Assignment properties.
+     */
+    private GoalAssignmentPropertiesOfDrill goalAssignmentProperties;
+
+    /*
      * Properties for internal resources that are created for the Drill.
      */
     private AssetPropertiesOfDrill drillAssetProperties;
@@ -75,6 +80,27 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
      */
     public DrillUpdateProperties withRecoveryPlanProperties(RecoveryPlanPropertiesOfDrill recoveryPlanProperties) {
         this.recoveryPlanProperties = recoveryPlanProperties;
+        return this;
+    }
+
+    /**
+     * Get the goalAssignmentProperties property: Goal Assignment properties.
+     * 
+     * @return the goalAssignmentProperties value.
+     */
+    public GoalAssignmentPropertiesOfDrill goalAssignmentProperties() {
+        return this.goalAssignmentProperties;
+    }
+
+    /**
+     * Set the goalAssignmentProperties property: Goal Assignment properties.
+     * 
+     * @param goalAssignmentProperties the goalAssignmentProperties value to set.
+     * @return the DrillUpdateProperties object itself.
+     */
+    public DrillUpdateProperties
+        withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill goalAssignmentProperties) {
+        this.goalAssignmentProperties = goalAssignmentProperties;
         return this;
     }
 
@@ -210,6 +236,7 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recoveryPlanProperties", this.recoveryPlanProperties);
+        jsonWriter.writeJsonField("goalAssignmentProperties", this.goalAssignmentProperties);
         jsonWriter.writeJsonField("drillAssetProperties", this.drillAssetProperties);
         jsonWriter.writeJsonField("chaosResourceProperties", this.chaosResourceProperties);
         jsonWriter.writeStringField("rbacSetupMode", this.rbacSetupMode == null ? null : this.rbacSetupMode.toString());
@@ -237,6 +264,9 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
                 if ("recoveryPlanProperties".equals(fieldName)) {
                     deserializedDrillUpdateProperties.recoveryPlanProperties
                         = RecoveryPlanPropertiesOfDrill.fromJson(reader);
+                } else if ("goalAssignmentProperties".equals(fieldName)) {
+                    deserializedDrillUpdateProperties.goalAssignmentProperties
+                        = GoalAssignmentPropertiesOfDrill.fromJson(reader);
                 } else if ("drillAssetProperties".equals(fieldName)) {
                     deserializedDrillUpdateProperties.drillAssetProperties = AssetPropertiesOfDrill.fromJson(reader);
                 } else if ("chaosResourceProperties".equals(fieldName)) {

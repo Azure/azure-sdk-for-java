@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Definition of goal assignment property.
@@ -23,50 +22,16 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     private String resourceArmId;
 
     /*
-     * Flag which depicts whether the Arm resource is excluded for high availability recommendation.
-     */
-    private ExclusionState highAvailabilityGoalParticipation;
-
-    /*
-     * Flag which depicts whether the Arm resource is manually attested for high availability recommendation.
-     */
-    private AttestationState highAvailabilityAttestationStatus;
-
-    /*
      * Zonal resiliency posture (participation, attestation, exclusion reason, and user confirmations) for the Arm
      * resource.
      */
     private ResiliencyProperties zonalResiliency;
 
     /*
-     * Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation.
+     * Regional resiliency posture (participation, attestation, exclusion reason, and user confirmations) for the Azure
+     * resource.
      */
-    private ExclusionState disasterRecoveryGoalParticipation;
-
-    /*
-     * Flag which depicts whether the Arm resource is manually attested for disaster recovery recommendation.
-     */
-    private AttestationState disasterRecoveryAttestationStatus;
-
-    /*
-     * Reason for exclusion from high availability goals.
-     */
-    private ExclusionReason exclusionReasonForHighAvailabilityGoals;
-
-    /*
-     * Reason for exclusion from disaster recovery goals.
-     */
-    private ExclusionReason exclusionReasonForDisasterRecoveryGoals;
-
-    /*
-     * List of user confirmations for high availability solutions.
-     */
-    private List<UserConfirmationItem> userConfirmationForHighAvailability;
-
-    /*
-     * List of service groups of which this resource is memberof.
-     */
-    private List<ServiceGroupMembership> serviceGroupMemberships;
+    private ResiliencyProperties regionalResiliency;
 
     /*
      * Provisioning state
@@ -100,52 +65,6 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     }
 
     /**
-     * Get the highAvailabilityGoalParticipation property: Flag which depicts whether the Arm resource is excluded for
-     * high availability recommendation.
-     * 
-     * @return the highAvailabilityGoalParticipation value.
-     */
-    public ExclusionState highAvailabilityGoalParticipation() {
-        return this.highAvailabilityGoalParticipation;
-    }
-
-    /**
-     * Set the highAvailabilityGoalParticipation property: Flag which depicts whether the Arm resource is excluded for
-     * high availability recommendation.
-     * 
-     * @param highAvailabilityGoalParticipation the highAvailabilityGoalParticipation value to set.
-     * @return the GoalResourceProperties object itself.
-     */
-    public GoalResourceProperties
-        withHighAvailabilityGoalParticipation(ExclusionState highAvailabilityGoalParticipation) {
-        this.highAvailabilityGoalParticipation = highAvailabilityGoalParticipation;
-        return this;
-    }
-
-    /**
-     * Get the highAvailabilityAttestationStatus property: Flag which depicts whether the Arm resource is manually
-     * attested for high availability recommendation.
-     * 
-     * @return the highAvailabilityAttestationStatus value.
-     */
-    public AttestationState highAvailabilityAttestationStatus() {
-        return this.highAvailabilityAttestationStatus;
-    }
-
-    /**
-     * Set the highAvailabilityAttestationStatus property: Flag which depicts whether the Arm resource is manually
-     * attested for high availability recommendation.
-     * 
-     * @param highAvailabilityAttestationStatus the highAvailabilityAttestationStatus value to set.
-     * @return the GoalResourceProperties object itself.
-     */
-    public GoalResourceProperties
-        withHighAvailabilityAttestationStatus(AttestationState highAvailabilityAttestationStatus) {
-        this.highAvailabilityAttestationStatus = highAvailabilityAttestationStatus;
-        return this;
-    }
-
-    /**
      * Get the zonalResiliency property: Zonal resiliency posture (participation, attestation, exclusion reason, and
      * user confirmations) for the Arm resource.
      * 
@@ -168,97 +87,25 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     }
 
     /**
-     * Get the disasterRecoveryGoalParticipation property: Flag which depicts whether the Arm resource is excluded for
-     * disaster recovery recommendation.
+     * Get the regionalResiliency property: Regional resiliency posture (participation, attestation, exclusion reason,
+     * and user confirmations) for the Azure resource.
      * 
-     * @return the disasterRecoveryGoalParticipation value.
+     * @return the regionalResiliency value.
      */
-    public ExclusionState disasterRecoveryGoalParticipation() {
-        return this.disasterRecoveryGoalParticipation;
+    public ResiliencyProperties regionalResiliency() {
+        return this.regionalResiliency;
     }
 
     /**
-     * Set the disasterRecoveryGoalParticipation property: Flag which depicts whether the Arm resource is excluded for
-     * disaster recovery recommendation.
+     * Set the regionalResiliency property: Regional resiliency posture (participation, attestation, exclusion reason,
+     * and user confirmations) for the Azure resource.
      * 
-     * @param disasterRecoveryGoalParticipation the disasterRecoveryGoalParticipation value to set.
+     * @param regionalResiliency the regionalResiliency value to set.
      * @return the GoalResourceProperties object itself.
      */
-    public GoalResourceProperties
-        withDisasterRecoveryGoalParticipation(ExclusionState disasterRecoveryGoalParticipation) {
-        this.disasterRecoveryGoalParticipation = disasterRecoveryGoalParticipation;
+    public GoalResourceProperties withRegionalResiliency(ResiliencyProperties regionalResiliency) {
+        this.regionalResiliency = regionalResiliency;
         return this;
-    }
-
-    /**
-     * Get the disasterRecoveryAttestationStatus property: Flag which depicts whether the Arm resource is manually
-     * attested for disaster recovery recommendation.
-     * 
-     * @return the disasterRecoveryAttestationStatus value.
-     */
-    public AttestationState disasterRecoveryAttestationStatus() {
-        return this.disasterRecoveryAttestationStatus;
-    }
-
-    /**
-     * Set the disasterRecoveryAttestationStatus property: Flag which depicts whether the Arm resource is manually
-     * attested for disaster recovery recommendation.
-     * 
-     * @param disasterRecoveryAttestationStatus the disasterRecoveryAttestationStatus value to set.
-     * @return the GoalResourceProperties object itself.
-     */
-    public GoalResourceProperties
-        withDisasterRecoveryAttestationStatus(AttestationState disasterRecoveryAttestationStatus) {
-        this.disasterRecoveryAttestationStatus = disasterRecoveryAttestationStatus;
-        return this;
-    }
-
-    /**
-     * Get the exclusionReasonForHighAvailabilityGoals property: Reason for exclusion from high availability goals.
-     * 
-     * @return the exclusionReasonForHighAvailabilityGoals value.
-     */
-    public ExclusionReason exclusionReasonForHighAvailabilityGoals() {
-        return this.exclusionReasonForHighAvailabilityGoals;
-    }
-
-    /**
-     * Get the exclusionReasonForDisasterRecoveryGoals property: Reason for exclusion from disaster recovery goals.
-     * 
-     * @return the exclusionReasonForDisasterRecoveryGoals value.
-     */
-    public ExclusionReason exclusionReasonForDisasterRecoveryGoals() {
-        return this.exclusionReasonForDisasterRecoveryGoals;
-    }
-
-    /**
-     * Get the userConfirmationForHighAvailability property: List of user confirmations for high availability solutions.
-     * 
-     * @return the userConfirmationForHighAvailability value.
-     */
-    public List<UserConfirmationItem> userConfirmationForHighAvailability() {
-        return this.userConfirmationForHighAvailability;
-    }
-
-    /**
-     * Set the userConfirmationForHighAvailability property: List of user confirmations for high availability solutions.
-     * 
-     * @param userConfirmationForHighAvailability the userConfirmationForHighAvailability value to set.
-     * @return the GoalResourceProperties object itself.
-     */
-    public GoalResourceProperties
-        withUserConfirmationForHighAvailability(List<UserConfirmationItem> userConfirmationForHighAvailability) {
-        this.userConfirmationForHighAvailability = userConfirmationForHighAvailability;
-        return this;
-    }
-
-    /**
-     * Get the serviceGroupMemberships property: List of service groups of which this resource is memberof.
-     * 
-     * @return the serviceGroupMemberships value.
-     */
-    public List<ServiceGroupMembership> serviceGroupMemberships() {
-        return this.serviceGroupMemberships;
     }
 
     /**
@@ -277,17 +124,8 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resourceArmId", this.resourceArmId);
-        jsonWriter.writeStringField("highAvailabilityGoalParticipation",
-            this.highAvailabilityGoalParticipation == null ? null : this.highAvailabilityGoalParticipation.toString());
-        jsonWriter.writeStringField("highAvailabilityAttestationStatus",
-            this.highAvailabilityAttestationStatus == null ? null : this.highAvailabilityAttestationStatus.toString());
         jsonWriter.writeJsonField("zonalResiliency", this.zonalResiliency);
-        jsonWriter.writeStringField("disasterRecoveryGoalParticipation",
-            this.disasterRecoveryGoalParticipation == null ? null : this.disasterRecoveryGoalParticipation.toString());
-        jsonWriter.writeStringField("disasterRecoveryAttestationStatus",
-            this.disasterRecoveryAttestationStatus == null ? null : this.disasterRecoveryAttestationStatus.toString());
-        jsonWriter.writeArrayField("userConfirmationForHighAvailability", this.userConfirmationForHighAvailability,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("regionalResiliency", this.regionalResiliency);
         return jsonWriter.writeEndObject();
     }
 
@@ -309,35 +147,10 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
 
                 if ("resourceArmId".equals(fieldName)) {
                     deserializedGoalResourceProperties.resourceArmId = reader.getString();
-                } else if ("highAvailabilityGoalParticipation".equals(fieldName)) {
-                    deserializedGoalResourceProperties.highAvailabilityGoalParticipation
-                        = ExclusionState.fromString(reader.getString());
-                } else if ("highAvailabilityAttestationStatus".equals(fieldName)) {
-                    deserializedGoalResourceProperties.highAvailabilityAttestationStatus
-                        = AttestationState.fromString(reader.getString());
                 } else if ("zonalResiliency".equals(fieldName)) {
                     deserializedGoalResourceProperties.zonalResiliency = ResiliencyProperties.fromJson(reader);
-                } else if ("disasterRecoveryGoalParticipation".equals(fieldName)) {
-                    deserializedGoalResourceProperties.disasterRecoveryGoalParticipation
-                        = ExclusionState.fromString(reader.getString());
-                } else if ("disasterRecoveryAttestationStatus".equals(fieldName)) {
-                    deserializedGoalResourceProperties.disasterRecoveryAttestationStatus
-                        = AttestationState.fromString(reader.getString());
-                } else if ("exclusionReasonForHighAvailabilityGoals".equals(fieldName)) {
-                    deserializedGoalResourceProperties.exclusionReasonForHighAvailabilityGoals
-                        = ExclusionReason.fromString(reader.getString());
-                } else if ("exclusionReasonForDisasterRecoveryGoals".equals(fieldName)) {
-                    deserializedGoalResourceProperties.exclusionReasonForDisasterRecoveryGoals
-                        = ExclusionReason.fromString(reader.getString());
-                } else if ("userConfirmationForHighAvailability".equals(fieldName)) {
-                    List<UserConfirmationItem> userConfirmationForHighAvailability
-                        = reader.readArray(reader1 -> UserConfirmationItem.fromJson(reader1));
-                    deserializedGoalResourceProperties.userConfirmationForHighAvailability
-                        = userConfirmationForHighAvailability;
-                } else if ("serviceGroupMemberships".equals(fieldName)) {
-                    List<ServiceGroupMembership> serviceGroupMemberships
-                        = reader.readArray(reader1 -> ServiceGroupMembership.fromJson(reader1));
-                    deserializedGoalResourceProperties.serviceGroupMemberships = serviceGroupMemberships;
+                } else if ("regionalResiliency".equals(fieldName)) {
+                    deserializedGoalResourceProperties.regionalResiliency = ResiliencyProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedGoalResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

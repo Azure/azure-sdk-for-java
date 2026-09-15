@@ -223,8 +223,10 @@ public interface DrillRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public, read-only summary of report generation for a Drill Run.
      */
-    void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName);
+    DrillReportSummary generateReport(String serviceGroupName, String operationId, String drillName,
+        String drillRunName);
 
     /**
      * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
@@ -239,9 +241,10 @@ public interface DrillRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public, read-only summary of report generation for a Drill Run.
      */
-    void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName,
-        Context context);
+    DrillReportSummary generateReport(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, Context context);
 
     /**
      * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
@@ -255,9 +258,10 @@ public interface DrillRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing a short-lived, read-only download URL for a Drill Run report.
      */
-    void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
-        ListReportDownloadUrlRequest body);
+    ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, ListReportDownloadUrlRequest body);
 
     /**
      * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
@@ -272,7 +276,8 @@ public interface DrillRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing a short-lived, read-only download URL for a Drill Run report.
      */
-    void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
-        ListReportDownloadUrlRequest body, Context context);
+    ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, ListReportDownloadUrlRequest body, Context context);
 }

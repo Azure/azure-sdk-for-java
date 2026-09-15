@@ -12,21 +12,21 @@ public final class RecoveryGroupBaseActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupBaseAction model = BinaryData.fromString(
-            "{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"runmp\",\"description\":\"tdbhrbnla\",\"timeoutInMinutes\":307935551}")
+            "{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"ukgjnpiucgygevq\",\"description\":\"typmrbpizcdrqjsd\",\"timeoutInMinutes\":1305658178}")
             .toObject(RecoveryGroupBaseAction.class);
-        Assertions.assertEquals("runmp", model.name());
-        Assertions.assertEquals("tdbhrbnla", model.description());
-        Assertions.assertEquals(307935551, model.timeoutInMinutes());
+        Assertions.assertEquals("ukgjnpiucgygevq", model.name());
+        Assertions.assertEquals("typmrbpizcdrqjsd", model.description());
+        Assertions.assertEquals(1305658178, model.timeoutInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryGroupBaseAction model = new RecoveryGroupBaseAction().withName("runmp")
-            .withDescription("tdbhrbnla")
-            .withTimeoutInMinutes(307935551);
+        RecoveryGroupBaseAction model = new RecoveryGroupBaseAction().withName("ukgjnpiucgygevq")
+            .withDescription("typmrbpizcdrqjsd")
+            .withTimeoutInMinutes(1305658178);
         model = BinaryData.fromObject(model).toObject(RecoveryGroupBaseAction.class);
-        Assertions.assertEquals("runmp", model.name());
-        Assertions.assertEquals("tdbhrbnla", model.description());
-        Assertions.assertEquals(307935551, model.timeoutInMinutes());
+        Assertions.assertEquals("ukgjnpiucgygevq", model.name());
+        Assertions.assertEquals("typmrbpizcdrqjsd", model.description());
+        Assertions.assertEquals(1305658178, model.timeoutInMinutes());
     }
 }

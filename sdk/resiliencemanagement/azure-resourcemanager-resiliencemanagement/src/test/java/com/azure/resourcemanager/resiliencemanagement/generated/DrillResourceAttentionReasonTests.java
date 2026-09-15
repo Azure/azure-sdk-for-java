@@ -14,12 +14,11 @@ public final class DrillResourceAttentionReasonTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillResourceAttentionReason model = BinaryData.fromString(
-            "{\"faultRbacOnTargetResource\":\"Set\",\"runbookFaultRbacOnTargets\":\"NotSet\",\"monitoringRbacOnTargets\":\"NotSet\",\"resourceState\":[\"ResourceStateIncompatibleWithFault\"]}")
+            "{\"faultRbacOnTargetResource\":\"NotSet\",\"runbookFaultRbacOnTargets\":\"NotSet\",\"monitoringRbacOnTargets\":\"Set\",\"resourceState\":[\"InServiceGroupNotInDrill\",\"InDrillNotInRecoveryPlan\",\"InServiceGroupNotInDrill\"]}")
             .toObject(DrillResourceAttentionReason.class);
-        Assertions.assertEquals(RBACState.SET, model.faultRbacOnTargetResource());
+        Assertions.assertEquals(RBACState.NOT_SET, model.faultRbacOnTargetResource());
         Assertions.assertEquals(RBACState.NOT_SET, model.runbookFaultRbacOnTargets());
-        Assertions.assertEquals(RBACState.NOT_SET, model.monitoringRbacOnTargets());
-        Assertions.assertEquals(DrillResourceState.RESOURCE_STATE_INCOMPATIBLE_WITH_FAULT,
-            model.resourceState().get(0));
+        Assertions.assertEquals(RBACState.SET, model.monitoringRbacOnTargets());
+        Assertions.assertEquals(DrillResourceState.IN_SERVICE_GROUP_NOT_IN_DRILL, model.resourceState().get(0));
     }
 }

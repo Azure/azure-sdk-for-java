@@ -59,14 +59,6 @@
 - [Get](#goalresources_get)
 - [List](#goalresources_list)
 
-## GoalTemplates
-
-- [CreateOrUpdate](#goaltemplates_createorupdate)
-- [Delete](#goaltemplates_delete)
-- [Get](#goaltemplates_get)
-- [List](#goaltemplates_list)
-- [Update](#goaltemplates_update)
-
 ## OperationStatus
 
 - [Get](#operationstatus_get)
@@ -139,7 +131,7 @@
  */
 public final class DrillResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillResources_Get_MaximumSet.
@@ -163,7 +155,7 @@ public final class DrillResourcesGetSamples {
  */
 public final class DrillResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillResources_List_MaximumSet.
@@ -186,7 +178,7 @@ public final class DrillResourcesListSamples {
  */
 public final class DrillRunResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRunResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRunResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRunResources_Get_MaximumSet.
@@ -210,7 +202,7 @@ public final class DrillRunResourcesGetSamples {
  */
 public final class DrillRunResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRunResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRunResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRunResources_List_MaximumSet.
@@ -236,7 +228,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesReq
  */
 public final class DrillRunsAddNotesSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_AddNotes_MaximumSet.
@@ -267,7 +259,7 @@ import java.util.Arrays;
  */
 public final class DrillRunsFailOverSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_FailOver_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_FailOver_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_FailOver_MaximumSet.
@@ -296,7 +288,7 @@ public final class DrillRunsFailOverSamples {
  */
 public final class DrillRunsGenerateReportSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_GenerateReport_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_GenerateReport_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_GenerateReport_MaximumSet.
@@ -320,7 +312,7 @@ public final class DrillRunsGenerateReportSamples {
  */
 public final class DrillRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_Get_MaximumSet.
@@ -344,7 +336,7 @@ public final class DrillRunsGetSamples {
  */
 public final class DrillRunsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_List_MaximumSet.
@@ -369,7 +361,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadU
  */
 public final class DrillRunsListReportDownloadUrlSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_ListReportDownloadUrl_MaximumSet.
@@ -398,7 +390,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.MarkAsCompleteReque
  */
 public final class DrillRunsMarkAsCompleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_MarkAsComplete_MaximumSet.
@@ -424,7 +416,7 @@ public final class DrillRunsMarkAsCompleteSamples {
  */
 public final class DrillRunsReprotectSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_Reprotect_MaximumSet.
@@ -448,7 +440,7 @@ public final class DrillRunsReprotectSamples {
  */
 public final class DrillRunsResumeSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/DrillRuns_Resume_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/DrillRuns_Resume_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_Resume_MaximumSet.
@@ -481,7 +473,7 @@ import java.util.Arrays;
  */
 public final class DrillsAddOrUpdateResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_AddOrUpdateResources_MaximumSet.
@@ -531,6 +523,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.AssetPropertiesOfDr
 import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
@@ -549,7 +542,7 @@ import java.util.Map;
  */
 public final class DrillsCreateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Create_MaximumSet.
@@ -564,6 +557,10 @@ public final class DrillsCreateSamples {
                     .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                     .withUserAssignedIdentity(
                         "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
+                .withGoalAssignmentProperties(new GoalAssignmentPropertiesOfDrill()
+                    .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity(
+                            "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
                 .withDrillAssetProperties(
                     new AssetPropertiesOfDrill().withSubscription("4e88bed3-114f-443d-9975-28f64122ec5e")
                         .withRegion("eastus")
@@ -624,7 +621,7 @@ public final class DrillsCreateSamples {
  */
 public final class DrillsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Delete_MaximumSet.
@@ -649,7 +646,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillEndRequest;
  */
 public final class DrillsEndSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_End_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_End_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_End_MaximumSet.
@@ -675,7 +672,7 @@ public final class DrillsEndSamples {
  */
 public final class DrillsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Get_MaximumSet.
@@ -697,7 +694,7 @@ public final class DrillsGetSamples {
  */
 public final class DrillsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_List_MaximumSet.
@@ -719,7 +716,7 @@ public final class DrillsListSamples {
  */
 public final class DrillsResyncReadinessCheckSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_ResyncReadinessCheck_MaximumSet.
@@ -745,7 +742,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillStartRequest;
  */
 public final class DrillsStartSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_Start_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_Start_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Start_MaximumSet.
@@ -769,6 +766,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdate;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdateProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
@@ -787,7 +785,7 @@ import java.util.Map;
  */
 public final class DrillsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Update_MaximumSet.
@@ -805,6 +803,10 @@ public final class DrillsUpdateSamples {
                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                         .withUserAssignedIdentity(
                             "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
+                    .withGoalAssignmentProperties(new GoalAssignmentPropertiesOfDrill()
+                        .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentity(
+                                "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
                     .withDrillAssetProperties(new AssetPropertiesOfDrill().withSubscription("pxlmwjuhcif")
                         .withRegion("zuvwzxnbqyzdkthrewruw"))
                     .withChaosResourceProperties(new ChaosResourcePropertiesOfDrill()
@@ -862,7 +864,7 @@ import java.util.Arrays;
  */
 public final class DrillsValidateForExecutionSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_ValidateForExecution_MaximumSet.
@@ -890,7 +892,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.EnrollmentPropertie
  */
 public final class EnrollmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Enrollments_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Enrollments_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_CreateOrUpdate_MaximumSet.
@@ -917,7 +919,7 @@ public final class EnrollmentsCreateOrUpdateSamples {
  */
 public final class EnrollmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Enrollments_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Enrollments_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_Delete_MaximumSet.
@@ -940,7 +942,7 @@ public final class EnrollmentsDeleteSamples {
  */
 public final class EnrollmentsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Enrollments_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Enrollments_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_Get_MaximumSet.
@@ -963,7 +965,7 @@ public final class EnrollmentsGetSamples {
  */
 public final class EnrollmentsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Enrollments_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Enrollments_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_List_MaximumSet.
@@ -982,7 +984,8 @@ public final class EnrollmentsListSamples {
 ```java
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalAssignmentInner;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentType;
+import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
+import com.azure.resourcemanager.resiliencemanagement.models.RegionalObjectives;
 import com.azure.resourcemanager.resiliencemanagement.models.ServiceLevelResource;
 import java.util.Arrays;
 
@@ -991,7 +994,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_CreateOrUpdate_MaximumSet.
@@ -1002,17 +1005,17 @@ public final class GoalAssignmentsCreateOrUpdateSamples {
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalAssignments()
             .createOrUpdate("sg1", "ga1", new GoalAssignmentInner().withProperties(new GoalAssignmentProperties()
-                .withGoalTemplateId("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1")
-                .withGoalAssignmentType(GoalAssignmentType.RESILIENCY)
+                .withRequireZonalResiliency(true)
+                .withRequireRegionalResiliency(true)
+                .withRegionalObjectives(new RegionalObjectives().withTargetRecoveryPointObjective(IsoDuration.PT15M)
+                    .withTargetRecoveryTimeObjective(IsoDuration.PT1H))
                 .withServiceLevelResources(Arrays.asList(new ServiceLevelResource().withServiceLevelIndicatorResourceId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")
-                    .withServiceLevelObjectiveResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
+                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_CreateOrUpdate_MinimumSet.
@@ -1022,11 +1025,8 @@ public final class GoalAssignmentsCreateOrUpdateSamples {
     public static void goalAssignmentsCreateOrUpdateMinimumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalAssignments()
-            .createOrUpdate("sg1", "ga1",
-                new GoalAssignmentInner().withProperties(new GoalAssignmentProperties()
-                    .withGoalTemplateId("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1")
-                    .withGoalAssignmentType(GoalAssignmentType.RESILIENCY)),
-                com.azure.core.util.Context.NONE);
+            .createOrUpdate("sg1", "ga1", new GoalAssignmentInner().withProperties(
+                new GoalAssignmentProperties().withRequireZonalResiliency(true)), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1039,7 +1039,7 @@ public final class GoalAssignmentsCreateOrUpdateSamples {
  */
 public final class GoalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_Delete_MaximumSet.
@@ -1061,7 +1061,7 @@ public final class GoalAssignmentsDeleteSamples {
  */
 public final class GoalAssignmentsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_Get_MaximumSet.
@@ -1083,7 +1083,7 @@ public final class GoalAssignmentsGetSamples {
  */
 public final class GoalAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_List_MaximumSet.
@@ -1096,7 +1096,7 @@ public final class GoalAssignmentsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_List_MinimumSet.
@@ -1121,7 +1121,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsRecommendCapacitySamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_RecommendCapacity_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_RecommendCapacity_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_RecommendCapacity_MaximumSet.
@@ -1147,7 +1147,7 @@ public final class GoalAssignmentsRecommendCapacitySamples {
  */
 public final class GoalAssignmentsRefreshGoalResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_RefreshGoalResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_RefreshGoalResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_RefreshGoalResources_MaximumSet.
@@ -1166,7 +1166,8 @@ public final class GoalAssignmentsRefreshGoalResourcesSamples {
 ```java
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalAssignmentInner;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentType;
+import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
+import com.azure.resourcemanager.resiliencemanagement.models.RegionalObjectives;
 import com.azure.resourcemanager.resiliencemanagement.models.ServiceLevelResource;
 import java.util.Arrays;
 
@@ -1175,7 +1176,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_Update_MaximumSet.
@@ -1186,12 +1187,12 @@ public final class GoalAssignmentsUpdateSamples {
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalAssignments()
             .update("sg1", "ga1", new GoalAssignmentInner().withProperties(new GoalAssignmentProperties()
-                .withGoalTemplateId("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1")
-                .withGoalAssignmentType(GoalAssignmentType.RESILIENCY)
+                .withRequireZonalResiliency(true)
+                .withRequireRegionalResiliency(true)
+                .withRegionalObjectives(new RegionalObjectives().withTargetRecoveryPointObjective(IsoDuration.PT15M)
+                    .withTargetRecoveryTimeObjective(IsoDuration.PT1H))
                 .withServiceLevelResources(Arrays.asList(new ServiceLevelResource().withServiceLevelIndicatorResourceId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")
-                    .withServiceLevelObjectiveResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
+                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1204,6 +1205,7 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalResource
 import com.azure.resourcemanager.resiliencemanagement.models.AttestationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ExclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalResourceProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.ResiliencyProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.UpdateGoalResourceRequest;
 import java.util.Arrays;
 
@@ -1212,7 +1214,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsUpdateGoalResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_UpdateGoalResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_UpdateGoalResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_UpdateGoalResources_MaximumSet.
@@ -1225,16 +1227,16 @@ public final class GoalAssignmentsUpdateGoalResourcesSamples {
             .updateGoalResources("sg1", "ga1", new UpdateGoalResourceRequest().withResources(Arrays.asList(
                 new GoalResourceInner().withProperties(new GoalResourceProperties().withResourceArmId(
                     "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")
-                    .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                    .withHighAvailabilityAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                    .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                    .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)),
+                    .withZonalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))
+                    .withRegionalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))),
                 new GoalResourceInner().withProperties(new GoalResourceProperties().withResourceArmId(
                     "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine1")
-                    .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                    .withHighAvailabilityAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                    .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                    .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)))),
+                    .withZonalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))
+                    .withRegionalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1248,7 +1250,7 @@ public final class GoalAssignmentsUpdateGoalResourcesSamples {
  */
 public final class GoalResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalResources_Get_Complete_Example.json
+     * x-ms-original-file: 2026-09-30-preview/GoalResources_Get_Complete_Example.json
      */
     /**
      * Sample code: GoalResources_Get_Complete_Example.
@@ -1263,7 +1265,7 @@ public final class GoalResourcesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_Get_MaximumSet.
@@ -1277,7 +1279,7 @@ public final class GoalResourcesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalResources_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalResources_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_Get_MinimumSet.
@@ -1299,7 +1301,7 @@ public final class GoalResourcesGetSamples {
  */
 public final class GoalResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_List_MaximumSet.
@@ -1313,184 +1315,6 @@ public final class GoalResourcesListSamples {
 }
 ```
 
-### GoalTemplates_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalTemplateInner;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalTemplateProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalType;
-import com.azure.resourcemanager.resiliencemanagement.models.RequirementSelected;
-
-/**
- * Samples for GoalTemplates CreateOrUpdate.
- */
-public final class GoalTemplatesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_CreateOrUpdate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_CreateOrUpdate_MinimumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesCreateOrUpdateMinimumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates()
-            .createOrUpdate("sg1", "gt1",
-                new GoalTemplateInner().withProperties(new GoalTemplateProperties().withGoalType(GoalType.RESILIENCY)),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_CreateOrUpdate_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_CreateOrUpdate_MaximumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesCreateOrUpdateMaximumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates()
-            .createOrUpdate("zumt", "gt1",
-                new GoalTemplateInner().withProperties(
-                    new GoalTemplateProperties().withRequireHighAvailability(RequirementSelected.REQUIRED)
-                        .withRequireDisasterRecovery(RequirementSelected.NOT_REQUIRED)
-                        .withRegionalRecoveryPointObjective("PT15M")
-                        .withRegionalRecoveryTimeObjective("PT30M")
-                        .withGoalType(GoalType.RESILIENCY)),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### GoalTemplates_Delete
-
-```java
-/**
- * Samples for GoalTemplates Delete.
- */
-public final class GoalTemplatesDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_Delete_MaximumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesDeleteMaximumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates().delete("ajsvdpsdgp", "gt1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_Delete_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_Delete_MinimumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesDeleteMinimumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates().delete("sg1", "gt1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### GoalTemplates_Get
-
-```java
-/**
- * Samples for GoalTemplates Get.
- */
-public final class GoalTemplatesGetSamples {
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_Get_MaximumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void
-        goalTemplatesGetMaximumSet(com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates().getWithResponse("qsqjquhxpermcblvegajq", "gt1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### GoalTemplates_List
-
-```java
-/**
- * Samples for GoalTemplates List.
- */
-public final class GoalTemplatesListSamples {
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_List_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_List_MaximumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesListMaximumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates().list("vmmacokmkuxzy", "xntbyoswztnmvitj", 69, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_List_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_List_MinimumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesListMinimumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates().list("sg1", null, null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### GoalTemplates_Update
-
-```java
-import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalTemplateInner;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalTemplateProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalType;
-import com.azure.resourcemanager.resiliencemanagement.models.RequirementSelected;
-
-/**
- * Samples for GoalTemplates Update.
- */
-public final class GoalTemplatesUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: GoalTemplates_Update_MaximumSet.
-     * 
-     * @param manager Entry point to ResilienceManagementManager.
-     */
-    public static void goalTemplatesUpdateMaximumSet(
-        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalTemplates()
-            .update("ipvrpvfcsfwltkmalhklsyg", "gt1",
-                new GoalTemplateInner().withProperties(
-                    new GoalTemplateProperties().withRequireHighAvailability(RequirementSelected.REQUIRED)
-                        .withRequireDisasterRecovery(RequirementSelected.NOT_REQUIRED)
-                        .withRegionalRecoveryPointObjective("PT15M")
-                        .withRegionalRecoveryTimeObjective("PT30M")
-                        .withGoalType(GoalType.RESILIENCY)),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### OperationStatus_Get
 
 ```java
@@ -1499,7 +1323,7 @@ public final class GoalTemplatesUpdateSamples {
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/OperationStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/OperationStatus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: OperationStatus_Get_MaximumSet.
@@ -1522,7 +1346,7 @@ public final class OperationStatusGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet.
@@ -1535,7 +1359,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet.
@@ -1557,7 +1381,7 @@ public final class OperationsListSamples {
  */
 public final class RecoveryJobResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobResources_Get_MaximumSet.
@@ -1581,7 +1405,7 @@ public final class RecoveryJobResourcesGetSamples {
  */
 public final class RecoveryJobResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobResources_List_MaximumSet.
@@ -1607,7 +1431,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.RecoveryActionReque
  */
 public final class RecoveryJobsCancelSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobs_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobs_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobs_Cancel_MaximumSet.
@@ -1632,7 +1456,7 @@ public final class RecoveryJobsCancelSamples {
  */
 public final class RecoveryJobsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobs_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobs_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobs_Get_MaximumSet.
@@ -1656,7 +1480,7 @@ public final class RecoveryJobsGetSamples {
  */
 public final class RecoveryJobsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobs_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobs_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobs_List_MaximumSet.
@@ -1680,7 +1504,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.RecoveryActionReque
  */
 public final class RecoveryJobsResumeSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobs_Resume_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobs_Resume_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobs_Resume_MaximumSet.
@@ -1705,7 +1529,7 @@ public final class RecoveryJobsResumeSamples {
  */
 public final class RecoveryJobsRetrySamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryJobs_Retry_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryJobs_Retry_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobs_Retry_MaximumSet.
@@ -1729,7 +1553,7 @@ public final class RecoveryJobsRetrySamples {
  */
 public final class RecoveryPlanActionsCheckReadinessSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_CheckReadiness_MaximumSet.
@@ -1759,7 +1583,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsFailoverSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_Failover_MaximumSet.
@@ -1789,7 +1613,7 @@ public final class RecoveryPlanActionsFailoverSamples {
  */
 public final class RecoveryPlanActionsFailoverCommitSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_FailoverCommit_MaximumSet.
@@ -1812,7 +1636,7 @@ public final class RecoveryPlanActionsFailoverCommitSamples {
  */
 public final class RecoveryPlanActionsFinalizeSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_Finalize_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_Finalize_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_Finalize_MaximumSet.
@@ -1839,7 +1663,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsReprotectSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_Reprotect_MaximumSet.
@@ -1872,7 +1696,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsTestFailoverSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_TestFailover_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_TestFailover_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_TestFailover_MaximumSet.
@@ -1904,7 +1728,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.TestFailoverCleanup
  */
 public final class RecoveryPlanActionsTestFailoverCleanupSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_TestFailoverCleanup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_TestFailoverCleanup_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_TestFailoverCleanup_MaximumSet.
@@ -1939,7 +1763,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsUpdateResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_UpdateResources_MaximumSet.
@@ -1981,7 +1805,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsValidateForFailoverSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForFailover_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_ValidateForFailover_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForFailover_MaximumSet.
@@ -2008,7 +1832,7 @@ public final class RecoveryPlanActionsValidateForFailoverSamples {
  */
 public final class RecoveryPlanActionsValidateForFailoverCommitSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet.
@@ -2035,7 +1859,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.ValidateForOperatio
  */
 public final class RecoveryPlanActionsValidateForOperationSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForOperation_MaximumSet.
@@ -2064,7 +1888,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsValidateForReprotectSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForReprotect_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_ValidateForReprotect_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForReprotect_MaximumSet.
@@ -2095,7 +1919,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsValidateForTestFailoverSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForTestFailover_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_ValidateForTestFailover_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForTestFailover_MaximumSet.
@@ -2122,7 +1946,7 @@ public final class RecoveryPlanActionsValidateForTestFailoverSamples {
  */
 public final class RecoveryPlanActionsValidateForTestFailoverCleanupSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet.
@@ -2161,7 +1985,7 @@ import java.util.Map;
  */
 public final class RecoveryPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_CreateOrUpdate_MaximumSet.
@@ -2590,7 +2414,7 @@ public final class RecoveryPlansCreateOrUpdateSamples {
  */
 public final class RecoveryPlansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlans_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlans_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Delete_MaximumSet.
@@ -2612,7 +2436,7 @@ public final class RecoveryPlansDeleteSamples {
  */
 public final class RecoveryPlansGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlans_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlans_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Get_MaximumSet.
@@ -2635,7 +2459,7 @@ public final class RecoveryPlansGetSamples {
  */
 public final class RecoveryPlansListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlans_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlans_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_List_MaximumSet.
@@ -2671,7 +2495,7 @@ import java.util.Map;
  */
 public final class RecoveryPlansUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryPlans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryPlans_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Update_MaximumSet.
@@ -3925,7 +3749,7 @@ public final class RecoveryPlansUpdateSamples {
  */
 public final class RecoveryResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
      */
     /**
      * Sample code: RecoveryResources_Get_CrossZoneVMRecovery.
@@ -3940,7 +3764,7 @@ public final class RecoveryResourcesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryResources_Get_MaximumSet.
@@ -3964,7 +3788,7 @@ public final class RecoveryResourcesGetSamples {
  */
 public final class RecoveryResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/RecoveryResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryResources_List_MaximumSet.
@@ -3986,7 +3810,7 @@ public final class RecoveryResourcesListSamples {
  */
 public final class UnifiedResilienceItemsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: UnifiedResilienceItems_Get_MaximumSet.
@@ -4008,7 +3832,7 @@ public final class UnifiedResilienceItemsGetSamples {
  */
 public final class UnifiedResilienceItemsListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: UnifiedResilienceItems_List_MaximumSet.
@@ -4022,7 +3846,7 @@ public final class UnifiedResilienceItemsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: UnifiedResilienceItems_List_MaximumSet - generated by [MinimumSet] rule.
@@ -4049,7 +3873,7 @@ import java.util.Map;
  */
 public final class UsagePlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_CreateOrUpdate_MaximumSet.
@@ -4089,7 +3913,7 @@ public final class UsagePlansCreateOrUpdateSamples {
  */
 public final class UsagePlansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UsagePlans_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UsagePlans_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_Delete_MaximumSet.
@@ -4111,7 +3935,7 @@ public final class UsagePlansDeleteSamples {
  */
 public final class UsagePlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UsagePlans_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UsagePlans_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_Get_MaximumSet.
@@ -4134,7 +3958,7 @@ public final class UsagePlansGetByResourceGroupSamples {
  */
 public final class UsagePlansListSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_ListBySubscription_MaximumSet.
@@ -4156,7 +3980,7 @@ public final class UsagePlansListSamples {
  */
 public final class UsagePlansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_ListByResourceGroup_MaximumSet.
@@ -4182,7 +4006,7 @@ import java.util.Map;
  */
 public final class UsagePlansUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/UsagePlans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/UsagePlans_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_Update_MaximumSet.

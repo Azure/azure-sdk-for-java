@@ -14,19 +14,19 @@ public final class ValidateForExecutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateForExecutionProperties model
-            = BinaryData.fromString("{\"operationName\":\"Failover\",\"sourceLocations\":[\"y\",\"vpo\"]}")
+            = BinaryData.fromString("{\"operationName\":\"Reprotect\",\"sourceLocations\":[\"cjdx\"]}")
                 .toObject(ValidateForExecutionProperties.class);
-        Assertions.assertEquals(DrillRunTasks.FAILOVER, model.operationName());
-        Assertions.assertEquals("y", model.sourceLocations().get(0));
+        Assertions.assertEquals(DrillRunTasks.REPROTECT, model.operationName());
+        Assertions.assertEquals("cjdx", model.sourceLocations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidateForExecutionProperties model
-            = new ValidateForExecutionProperties().withOperationName(DrillRunTasks.FAILOVER)
-                .withSourceLocations(Arrays.asList("y", "vpo"));
+            = new ValidateForExecutionProperties().withOperationName(DrillRunTasks.REPROTECT)
+                .withSourceLocations(Arrays.asList("cjdx"));
         model = BinaryData.fromObject(model).toObject(ValidateForExecutionProperties.class);
-        Assertions.assertEquals(DrillRunTasks.FAILOVER, model.operationName());
-        Assertions.assertEquals("y", model.sourceLocations().get(0));
+        Assertions.assertEquals(DrillRunTasks.REPROTECT, model.operationName());
+        Assertions.assertEquals("cjdx", model.sourceLocations().get(0));
     }
 }

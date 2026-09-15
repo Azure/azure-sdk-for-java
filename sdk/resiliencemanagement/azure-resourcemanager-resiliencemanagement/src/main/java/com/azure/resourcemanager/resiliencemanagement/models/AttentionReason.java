@@ -159,6 +159,26 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
      */
     private List<SliAttentionStatus> sliAttentionStatuses;
 
+    /*
+     * Drill object does not have the necessary RBAC on Goal Assignment.
+     */
+    private RBACState drillRbacOnGoalAssignment;
+
+    /*
+     * Permissions needed by the Drill MSI on Goal Assignment.
+     */
+    private List<String> rbacNeededForDrillOnGoalAssignment;
+
+    /*
+     * Goal Assignment not present.
+     */
+    private ExtensionObjectState goalAssignment;
+
+    /*
+     * Recovery plan not present.
+     */
+    private ExtensionObjectState recoveryPlan;
+
     /**
      * Creates an instance of AttentionReason class.
      */
@@ -431,6 +451,42 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
     }
 
     /**
+     * Get the drillRbacOnGoalAssignment property: Drill object does not have the necessary RBAC on Goal Assignment.
+     * 
+     * @return the drillRbacOnGoalAssignment value.
+     */
+    public RBACState drillRbacOnGoalAssignment() {
+        return this.drillRbacOnGoalAssignment;
+    }
+
+    /**
+     * Get the rbacNeededForDrillOnGoalAssignment property: Permissions needed by the Drill MSI on Goal Assignment.
+     * 
+     * @return the rbacNeededForDrillOnGoalAssignment value.
+     */
+    public List<String> rbacNeededForDrillOnGoalAssignment() {
+        return this.rbacNeededForDrillOnGoalAssignment;
+    }
+
+    /**
+     * Get the goalAssignment property: Goal Assignment not present.
+     * 
+     * @return the goalAssignment value.
+     */
+    public ExtensionObjectState goalAssignment() {
+        return this.goalAssignment;
+    }
+
+    /**
+     * Get the recoveryPlan property: Recovery plan not present.
+     * 
+     * @return the recoveryPlan value.
+     */
+    public ExtensionObjectState recoveryPlan() {
+        return this.recoveryPlan;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -490,6 +546,13 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
             this.drillRbacOnSli == null ? null : this.drillRbacOnSli.toString());
         jsonWriter.writeArrayField("sliAttentionStatuses", this.sliAttentionStatuses,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("drillRbacOnGoalAssignment",
+            this.drillRbacOnGoalAssignment == null ? null : this.drillRbacOnGoalAssignment.toString());
+        jsonWriter.writeArrayField("rbacNeededForDrillOnGoalAssignment", this.rbacNeededForDrillOnGoalAssignment,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("goalAssignment",
+            this.goalAssignment == null ? null : this.goalAssignment.toString());
+        jsonWriter.writeStringField("recoveryPlan", this.recoveryPlan == null ? null : this.recoveryPlan.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -587,6 +650,15 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
                     List<SliAttentionStatus> sliAttentionStatuses
                         = reader.readArray(reader1 -> SliAttentionStatus.fromJson(reader1));
                     deserializedAttentionReason.sliAttentionStatuses = sliAttentionStatuses;
+                } else if ("drillRbacOnGoalAssignment".equals(fieldName)) {
+                    deserializedAttentionReason.drillRbacOnGoalAssignment = RBACState.fromString(reader.getString());
+                } else if ("rbacNeededForDrillOnGoalAssignment".equals(fieldName)) {
+                    List<String> rbacNeededForDrillOnGoalAssignment = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAttentionReason.rbacNeededForDrillOnGoalAssignment = rbacNeededForDrillOnGoalAssignment;
+                } else if ("goalAssignment".equals(fieldName)) {
+                    deserializedAttentionReason.goalAssignment = ExtensionObjectState.fromString(reader.getString());
+                } else if ("recoveryPlan".equals(fieldName)) {
+                    deserializedAttentionReason.recoveryPlan = ExtensionObjectState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

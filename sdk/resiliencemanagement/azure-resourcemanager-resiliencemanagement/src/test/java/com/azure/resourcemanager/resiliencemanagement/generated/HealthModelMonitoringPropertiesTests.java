@@ -14,24 +14,22 @@ public final class HealthModelMonitoringPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthModelMonitoringProperties model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"fscjfnynszquji\"},\"discoveryRuleId\":\"dvoqyt\"}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"fsmlmbtxhwgfw\"},\"discoveryRuleId\":\"rtawcoezb\"}")
             .toObject(HealthModelMonitoringProperties.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("fscjfnynszquji", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("dvoqyt", model.discoveryRuleId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fsmlmbtxhwgfw", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("rtawcoezb", model.discoveryRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthModelMonitoringProperties model
-            = new HealthModelMonitoringProperties()
-                .withIdentity(
-                    new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentity("fscjfnynszquji"))
-                .withDiscoveryRuleId("dvoqyt");
+        HealthModelMonitoringProperties model = new HealthModelMonitoringProperties()
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("fsmlmbtxhwgfw"))
+            .withDiscoveryRuleId("rtawcoezb");
         model = BinaryData.fromObject(model).toObject(HealthModelMonitoringProperties.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("fscjfnynszquji", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("dvoqyt", model.discoveryRuleId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fsmlmbtxhwgfw", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("rtawcoezb", model.discoveryRuleId());
     }
 }

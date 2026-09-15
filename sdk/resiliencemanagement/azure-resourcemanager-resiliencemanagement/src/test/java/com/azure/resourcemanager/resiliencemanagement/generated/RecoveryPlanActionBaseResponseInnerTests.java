@@ -12,7 +12,7 @@ public final class RecoveryPlanActionBaseResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanActionBaseResponseInner model
-            = BinaryData.fromString("{\"jobId\":\"ughftqsx\"}").toObject(RecoveryPlanActionBaseResponseInner.class);
-        Assertions.assertEquals("ughftqsx", model.jobId());
+            = BinaryData.fromString("{\"jobId\":\"rgzdwmsweyp\"}").toObject(RecoveryPlanActionBaseResponseInner.class);
+        Assertions.assertEquals("rgzdwmsweyp", model.jobId());
     }
 }

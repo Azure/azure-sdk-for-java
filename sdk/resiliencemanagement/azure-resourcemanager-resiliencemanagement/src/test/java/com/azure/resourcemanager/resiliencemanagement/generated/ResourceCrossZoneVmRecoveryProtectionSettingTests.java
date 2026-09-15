@@ -12,19 +12,19 @@ public final class ResourceCrossZoneVmRecoveryProtectionSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCrossZoneVmRecoveryProtectionSetting model = BinaryData.fromString(
-            "{\"protectionSolutionType\":\"CrossZoneVMRecovery\",\"targetZone\":\"bpfvm\",\"capacityReservationGroupId\":\"hrfou\"}")
+            "{\"protectionSolutionType\":\"CrossZoneVMRecovery\",\"targetZone\":\"nzbtbhj\",\"capacityReservationGroupId\":\"lkfg\"}")
             .toObject(ResourceCrossZoneVmRecoveryProtectionSetting.class);
-        Assertions.assertEquals("bpfvm", model.targetZone());
-        Assertions.assertEquals("hrfou", model.capacityReservationGroupId());
+        Assertions.assertEquals("nzbtbhj", model.targetZone());
+        Assertions.assertEquals("lkfg", model.capacityReservationGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceCrossZoneVmRecoveryProtectionSetting model
-            = new ResourceCrossZoneVmRecoveryProtectionSetting().withTargetZone("bpfvm")
-                .withCapacityReservationGroupId("hrfou");
+            = new ResourceCrossZoneVmRecoveryProtectionSetting().withTargetZone("nzbtbhj")
+                .withCapacityReservationGroupId("lkfg");
         model = BinaryData.fromObject(model).toObject(ResourceCrossZoneVmRecoveryProtectionSetting.class);
-        Assertions.assertEquals("bpfvm", model.targetZone());
-        Assertions.assertEquals("hrfou", model.capacityReservationGroupId());
+        Assertions.assertEquals("nzbtbhj", model.targetZone());
+        Assertions.assertEquals("lkfg", model.capacityReservationGroupId());
     }
 }

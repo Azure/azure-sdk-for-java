@@ -51,6 +51,16 @@ public final class RegionalDrillProperties extends DrillProperties {
      * {@inheritDoc}
      */
     @Override
+    public RegionalDrillProperties
+        withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill goalAssignmentProperties) {
+        super.withGoalAssignmentProperties(goalAssignmentProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public RegionalDrillProperties withDrillAssetProperties(AssetPropertiesOfDrill drillAssetProperties) {
         super.withDrillAssetProperties(drillAssetProperties);
         return this;
@@ -109,6 +119,7 @@ public final class RegionalDrillProperties extends DrillProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recoveryPlanProperties", recoveryPlanProperties());
+        jsonWriter.writeJsonField("goalAssignmentProperties", goalAssignmentProperties());
         jsonWriter.writeJsonField("drillAssetProperties", drillAssetProperties());
         jsonWriter.writeJsonField("chaosResourceProperties", chaosResourceProperties());
         jsonWriter.writeStringField("rbacSetupMode", rbacSetupMode() == null ? null : rbacSetupMode().toString());
@@ -142,6 +153,9 @@ public final class RegionalDrillProperties extends DrillProperties {
                 } else if ("recoveryPlanProperties".equals(fieldName)) {
                     deserializedRegionalDrillProperties
                         .withRecoveryPlanProperties(RecoveryPlanPropertiesOfDrill.fromJson(reader));
+                } else if ("goalAssignmentProperties".equals(fieldName)) {
+                    deserializedRegionalDrillProperties
+                        .withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill.fromJson(reader));
                 } else if ("drillAssetProperties".equals(fieldName)) {
                     deserializedRegionalDrillProperties
                         .withDrillAssetProperties(AssetPropertiesOfDrill.fromJson(reader));

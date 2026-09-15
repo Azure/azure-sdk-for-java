@@ -26,7 +26,7 @@ public final class GoalResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceArmId\":\"xtxrdcqtjvidt\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"ManuallyAttested\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]},\"disasterRecoveryGoalParticipation\":\"Included\",\"disasterRecoveryAttestationStatus\":\"ManuallyAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"UserSelectedExclusion\",\"exclusionReasonForDisasterRecoveryGoals\":\"UnsupportedResource\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"buew\",\"membershipType\":\"ThroughSubscription\"},{\"serviceGroupId\":\"s\",\"membershipType\":\"ThroughResourceGroup\"},{\"serviceGroupId\":\"jlxuz\",\"membershipType\":\"ThroughSubscription\"},{\"serviceGroupId\":\"wpusxjbaqehg\",\"membershipType\":\"ThroughResourceGroup\"}],\"provisioningState\":\"Deleting\"},\"id\":\"jqatucoigebxn\",\"name\":\"nwfepbnwg\",\"type\":\"m\"}";
+            = "{\"properties\":{\"resourceArmId\":\"gouwtlmj\",\"zonalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]},\"regionalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"NotAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]},\"provisioningState\":\"NeedsAttention\"},\"id\":\"ulkpakd\",\"name\":\"ifmjnn\",\"type\":\"wtqabpxuckp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,14 +36,11 @@ public final class GoalResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GoalResource response = manager.goalResources()
-            .getWithResponse("wrtmjfjmy", "cxlzhcoxovnekh", "nlusfnrd", com.azure.core.util.Context.NONE)
+            .getWithResponse("agunbtgfebw", "nbmhyree", "dzqavbpdqmjxlyyz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xtxrdcqtjvidt", response.properties().resourceArmId());
-        Assertions.assertEquals(ExclusionState.EXCLUDED, response.properties().highAvailabilityGoalParticipation());
-        Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
-            response.properties().highAvailabilityAttestationStatus());
-        Assertions.assertEquals(ExclusionState.EXCLUDED, response.properties().zonalResiliency().goalParticipation());
+        Assertions.assertEquals("gouwtlmj", response.properties().resourceArmId());
+        Assertions.assertEquals(ExclusionState.INCLUDED, response.properties().zonalResiliency().goalParticipation());
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
             response.properties().zonalResiliency().attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
@@ -52,14 +49,15 @@ public final class GoalResourcesGetWithResponseMockTests {
             response.properties().zonalResiliency().userConfirmation().get(0).confirmationStatus());
         Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
             response.properties().zonalResiliency().userConfirmation().get(0).reasonForRequestingConfirmation());
-        Assertions.assertEquals(ExclusionState.INCLUDED, response.properties().disasterRecoveryGoalParticipation());
-        Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
-            response.properties().disasterRecoveryAttestationStatus());
+        Assertions.assertEquals(ExclusionState.EXCLUDED,
+            response.properties().regionalResiliency().goalParticipation());
+        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
+            response.properties().regionalResiliency().attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
-            response.properties().userConfirmationForHighAvailability().get(0).solutionDisplayName());
+            response.properties().regionalResiliency().userConfirmation().get(0).solutionDisplayName());
         Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
-            response.properties().userConfirmationForHighAvailability().get(0).confirmationStatus());
-        Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
-            response.properties().userConfirmationForHighAvailability().get(0).reasonForRequestingConfirmation());
+            response.properties().regionalResiliency().userConfirmation().get(0).confirmationStatus());
+        Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
+            response.properties().regionalResiliency().userConfirmation().get(0).reasonForRequestingConfirmation());
     }
 }

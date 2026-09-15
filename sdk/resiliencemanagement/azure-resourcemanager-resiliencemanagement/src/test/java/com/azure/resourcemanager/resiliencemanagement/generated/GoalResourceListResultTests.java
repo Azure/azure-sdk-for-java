@@ -9,7 +9,6 @@ import com.azure.resourcemanager.resiliencemanagement.implementation.models.Goal
 import com.azure.resourcemanager.resiliencemanagement.models.AttestationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ConfirmationStatus;
 import com.azure.resourcemanager.resiliencemanagement.models.ExclusionState;
-import com.azure.resourcemanager.resiliencemanagement.models.ReasonForRequestingConfirmation;
 import com.azure.resourcemanager.resiliencemanagement.models.SolutionDisplayName;
 import org.junit.jupiter.api.Assertions;
 
@@ -17,36 +16,25 @@ public final class GoalResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoalResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceArmId\":\"wbxgjvt\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"NotAttested\",\"zonalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"NotAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\"}]},\"disasterRecoveryGoalParticipation\":\"Excluded\",\"disasterRecoveryAttestationStatus\":\"NotAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"UserSelectedExclusion\",\"exclusionReasonForDisasterRecoveryGoals\":\"UnsupportedResource\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"izgazxu\",\"membershipType\":\"Direct\"},{\"serviceGroupId\":\"zuckyfi\",\"membershipType\":\"ThroughSubscription\"}],\"provisioningState\":\"Failed\"},\"id\":\"fvzwdzuhty\",\"name\":\"wisdkft\",\"type\":\"wxmnteiwao\"},{\"properties\":{\"resourceArmId\":\"km\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"ManuallyAttested\",\"zonalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\"}]},\"disasterRecoveryGoalParticipation\":\"Excluded\",\"disasterRecoveryAttestationStatus\":\"ManuallyAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"FailedOverResource\",\"exclusionReasonForDisasterRecoveryGoals\":\"UnsupportedResource\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"eiachboosflnr\",\"membershipType\":\"ThroughSubscription\"},{\"serviceGroupId\":\"fqpte\",\"membershipType\":\"ThroughSubscription\"},{\"serviceGroupId\":\"zzvypyqrimzinp\",\"membershipType\":\"Direct\"}],\"provisioningState\":\"Deleting\"},\"id\":\"kirsoodqxhc\",\"name\":\"mnoh\",\"type\":\"t\"},{\"properties\":{\"resourceArmId\":\"whdsoifiyip\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"ManuallyAttested\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\"}]},\"disasterRecoveryGoalParticipation\":\"Excluded\",\"disasterRecoveryAttestationStatus\":\"NotAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"UnsupportedResource\",\"exclusionReasonForDisasterRecoveryGoals\":\"UnsupportedResource\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"c\",\"membershipType\":\"ThroughSubscription\"}],\"provisioningState\":\"Provisioning\"},\"id\":\"a\",\"name\":\"bqidtqaj\",\"type\":\"yulpkudjkr\"},{\"properties\":{\"resourceArmId\":\"hbzhfepg\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"ManuallyAttested\",\"zonalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\"}]},\"disasterRecoveryGoalParticipation\":\"Included\",\"disasterRecoveryAttestationStatus\":\"NotAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"UserSelectedExclusion\",\"exclusionReasonForDisasterRecoveryGoals\":\"UserSelectedExclusion\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"xobnbdxkqpxok\",\"membershipType\":\"ThroughSubscription\"}],\"provisioningState\":\"Deleting\"},\"id\":\"pimexgstxgcpodg\",\"name\":\"aajrm\",\"type\":\"djwzrlov\"}],\"nextLink\":\"lwhijcoejctbzaq\"}")
+            "{\"value\":[{\"properties\":{\"resourceArmId\":\"bciqfouflm\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UserSelectedExclusion\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\"}]},\"regionalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"NotAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"}]},\"provisioningState\":\"Deleting\"},\"id\":\"pwgcuertu\",\"name\":\"kdosvqw\",\"type\":\"bmdg\"}],\"nextLink\":\"jfddgmbmbe\"}")
             .toObject(GoalResourceListResult.class);
-        Assertions.assertEquals("wbxgjvt", model.value().get(0).properties().resourceArmId());
+        Assertions.assertEquals("bciqfouflm", model.value().get(0).properties().resourceArmId());
         Assertions.assertEquals(ExclusionState.EXCLUDED,
-            model.value().get(0).properties().highAvailabilityGoalParticipation());
-        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
-            model.value().get(0).properties().highAvailabilityAttestationStatus());
-        Assertions.assertEquals(ExclusionState.INCLUDED,
             model.value().get(0).properties().zonalResiliency().goalParticipation());
-        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
+        Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
             model.value().get(0).properties().zonalResiliency().attestationStatus());
-        Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
-            model.value().get(0).properties().zonalResiliency().userConfirmation().get(0).solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER,
-            model.value().get(0).properties().zonalResiliency().userConfirmation().get(0).confirmationStatus());
-        Assertions.assertEquals(ExclusionState.EXCLUDED,
-            model.value().get(0).properties().disasterRecoveryGoalParticipation());
-        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
-            model.value().get(0).properties().disasterRecoveryAttestationStatus());
         Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
-            model.value().get(0).properties().userConfirmationForHighAvailability().get(0).solutionDisplayName());
+            model.value().get(0).properties().zonalResiliency().userConfirmation().get(0).solutionDisplayName());
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
+            model.value().get(0).properties().zonalResiliency().userConfirmation().get(0).confirmationStatus());
+        Assertions.assertEquals(ExclusionState.INCLUDED,
+            model.value().get(0).properties().regionalResiliency().goalParticipation());
+        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
+            model.value().get(0).properties().regionalResiliency().attestationStatus());
+        Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
+            model.value().get(0).properties().regionalResiliency().userConfirmation().get(0).solutionDisplayName());
         Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER,
-            model.value().get(0).properties().userConfirmationForHighAvailability().get(0).confirmationStatus());
-        Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
-            model.value()
-                .get(0)
-                .properties()
-                .userConfirmationForHighAvailability()
-                .get(0)
-                .reasonForRequestingConfirmation());
-        Assertions.assertEquals("lwhijcoejctbzaq", model.nextLink());
+            model.value().get(0).properties().regionalResiliency().userConfirmation().get(0).confirmationStatus());
+        Assertions.assertEquals("jfddgmbmbe", model.nextLink());
     }
 }

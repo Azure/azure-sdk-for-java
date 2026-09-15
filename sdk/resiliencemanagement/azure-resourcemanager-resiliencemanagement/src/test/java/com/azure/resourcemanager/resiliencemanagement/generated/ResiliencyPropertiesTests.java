@@ -19,13 +19,13 @@ public final class ResiliencyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResiliencyProperties model = BinaryData.fromString(
-            "{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]}")
+            "{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]}")
             .toObject(ResiliencyProperties.class);
-        Assertions.assertEquals(ExclusionState.EXCLUDED, model.goalParticipation());
+        Assertions.assertEquals(ExclusionState.INCLUDED, model.goalParticipation());
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED, model.attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
             model.userConfirmation().get(0).solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER,
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
             model.userConfirmation().get(0).confirmationStatus());
         Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
             model.userConfirmation().get(0).reasonForRequestingConfirmation());
@@ -33,23 +33,23 @@ public final class ResiliencyPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResiliencyProperties model = new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+        ResiliencyProperties model = new ResiliencyProperties().withGoalParticipation(ExclusionState.INCLUDED)
             .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
             .withUserConfirmation(Arrays.asList(
                 new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                    .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER)
+                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)
                     .withReasonForRequestingConfirmation(
                         ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY),
-                new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)
+                new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)
                     .withReasonForRequestingConfirmation(
                         ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL)));
         model = BinaryData.fromObject(model).toObject(ResiliencyProperties.class);
-        Assertions.assertEquals(ExclusionState.EXCLUDED, model.goalParticipation());
+        Assertions.assertEquals(ExclusionState.INCLUDED, model.goalParticipation());
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED, model.attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
             model.userConfirmation().get(0).solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER,
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
             model.userConfirmation().get(0).confirmationStatus());
         Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
             model.userConfirmation().get(0).reasonForRequestingConfirmation());

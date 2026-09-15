@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SystemMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SystemMetadata model = BinaryData
-            .fromString("{\"initialConfig\":\"Complete\",\"resourceTypeCategories\":[\"AzureSiteRecoveryVMsPresent\"]}")
+        SystemMetadata model = BinaryData.fromString(
+            "{\"initialConfig\":\"Pending\",\"resourceTypeCategories\":[\"AzureSiteRecoveryVMsPresent\",\"AzureSiteRecoveryVMsPresent\",\"AzureSiteRecoveryVMsPresent\"]}")
             .toObject(SystemMetadata.class);
-        Assertions.assertEquals(InitialConfig.COMPLETE, model.initialConfig());
+        Assertions.assertEquals(InitialConfig.PENDING, model.initialConfig());
     }
 }

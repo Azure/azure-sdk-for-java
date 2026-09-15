@@ -6,7 +6,8 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalAssignmentInner;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentType;
+import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
+import com.azure.resourcemanager.resiliencemanagement.models.RegionalObjectives;
 import com.azure.resourcemanager.resiliencemanagement.models.ServiceLevelResource;
 import java.util.Arrays;
 
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_CreateOrUpdate_MaximumSet.
@@ -26,17 +27,17 @@ public final class GoalAssignmentsCreateOrUpdateSamples {
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalAssignments()
             .createOrUpdate("sg1", "ga1", new GoalAssignmentInner().withProperties(new GoalAssignmentProperties()
-                .withGoalTemplateId("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1")
-                .withGoalAssignmentType(GoalAssignmentType.RESILIENCY)
+                .withRequireZonalResiliency(true)
+                .withRequireRegionalResiliency(true)
+                .withRegionalObjectives(new RegionalObjectives().withTargetRecoveryPointObjective(IsoDuration.PT15M)
+                    .withTargetRecoveryTimeObjective(IsoDuration.PT1H))
                 .withServiceLevelResources(Arrays.asList(new ServiceLevelResource().withServiceLevelIndicatorResourceId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")
-                    .withServiceLevelObjectiveResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
+                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_CreateOrUpdate_MinimumSet.
@@ -46,10 +47,7 @@ public final class GoalAssignmentsCreateOrUpdateSamples {
     public static void goalAssignmentsCreateOrUpdateMinimumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalAssignments()
-            .createOrUpdate("sg1", "ga1",
-                new GoalAssignmentInner().withProperties(new GoalAssignmentProperties()
-                    .withGoalTemplateId("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1")
-                    .withGoalAssignmentType(GoalAssignmentType.RESILIENCY)),
-                com.azure.core.util.Context.NONE);
+            .createOrUpdate("sg1", "ga1", new GoalAssignmentInner().withProperties(
+                new GoalAssignmentProperties().withRequireZonalResiliency(true)), com.azure.core.util.Context.NONE);
     }
 }

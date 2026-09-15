@@ -14,26 +14,27 @@ public final class FaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultProperties model = BinaryData.fromString(
-            "{\"availableFaults\":[{\"faultUrn\":\"sgsgbdhu\",\"faultName\":\"qgnjdgkynscli\",\"targetResourceId\":\"hzvhxnkomtkubo\"}],\"defaultFault\":{\"faultUrn\":\"pnvdxz\",\"faultName\":\"hihfrbbcevqagtlt\",\"targetResourceId\":\"hlfkqojpy\"},\"overriddenDefaultFault\":{\"faultUrn\":\"gtrd\",\"faultName\":\"nifmzzsdymbrnysu\",\"targetResourceId\":\"m\"},\"customFault\":{\"faultName\":\"a\",\"scriptResourceId\":\"wgck\"}}")
+            "{\"availableFaults\":[{\"faultUrn\":\"zoggculapz\",\"faultName\":\"y\",\"targetResourceId\":\"pgogtqxepny\"}],\"defaultFault\":{\"faultUrn\":\"fuajly\",\"faultName\":\"tlvofq\",\"targetResourceId\":\"hvfcibyfmow\"},\"overriddenDefaultFault\":{\"faultUrn\":\"rkjpvdwxfzwii\",\"faultName\":\"wzjbh\",\"targetResourceId\":\"zsxjrkambtrneg\"},\"customFault\":{\"faultName\":\"nvuqeqvldspa\",\"scriptResourceId\":\"tjb\"}}")
             .toObject(FaultProperties.class);
-        Assertions.assertEquals("gtrd", model.overriddenDefaultFault().faultUrn());
-        Assertions.assertEquals("nifmzzsdymbrnysu", model.overriddenDefaultFault().faultName());
-        Assertions.assertEquals("m", model.overriddenDefaultFault().targetResourceId());
-        Assertions.assertEquals("a", model.customFault().faultName());
-        Assertions.assertEquals("wgck", model.customFault().scriptResourceId());
+        Assertions.assertEquals("rkjpvdwxfzwii", model.overriddenDefaultFault().faultUrn());
+        Assertions.assertEquals("wzjbh", model.overriddenDefaultFault().faultName());
+        Assertions.assertEquals("zsxjrkambtrneg", model.overriddenDefaultFault().targetResourceId());
+        Assertions.assertEquals("nvuqeqvldspa", model.customFault().faultName());
+        Assertions.assertEquals("tjb", model.customFault().scriptResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FaultProperties model = new FaultProperties()
-            .withOverriddenDefaultFault(
-                new FaultDetails().withFaultUrn("gtrd").withFaultName("nifmzzsdymbrnysu").withTargetResourceId("m"))
-            .withCustomFault(new CustomFaultDetails().withFaultName("a").withScriptResourceId("wgck"));
+            .withOverriddenDefaultFault(new FaultDetails().withFaultUrn("rkjpvdwxfzwii")
+                .withFaultName("wzjbh")
+                .withTargetResourceId("zsxjrkambtrneg"))
+            .withCustomFault(new CustomFaultDetails().withFaultName("nvuqeqvldspa").withScriptResourceId("tjb"));
         model = BinaryData.fromObject(model).toObject(FaultProperties.class);
-        Assertions.assertEquals("gtrd", model.overriddenDefaultFault().faultUrn());
-        Assertions.assertEquals("nifmzzsdymbrnysu", model.overriddenDefaultFault().faultName());
-        Assertions.assertEquals("m", model.overriddenDefaultFault().targetResourceId());
-        Assertions.assertEquals("a", model.customFault().faultName());
-        Assertions.assertEquals("wgck", model.customFault().scriptResourceId());
+        Assertions.assertEquals("rkjpvdwxfzwii", model.overriddenDefaultFault().faultUrn());
+        Assertions.assertEquals("wzjbh", model.overriddenDefaultFault().faultName());
+        Assertions.assertEquals("zsxjrkambtrneg", model.overriddenDefaultFault().targetResourceId());
+        Assertions.assertEquals("nvuqeqvldspa", model.customFault().faultName());
+        Assertions.assertEquals("tjb", model.customFault().scriptResourceId());
     }
 }

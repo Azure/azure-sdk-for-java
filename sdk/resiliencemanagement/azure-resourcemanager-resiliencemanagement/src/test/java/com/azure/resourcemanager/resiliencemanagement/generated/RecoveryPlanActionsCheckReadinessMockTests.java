@@ -28,7 +28,7 @@ public final class RecoveryPlanActionsCheckReadinessMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.recoveryPlanActions()
-            .checkReadiness("ot", "jzcfyjzptwr", "ohapqinfsz", com.azure.core.util.Context.NONE);
+            .checkReadiness("sgnyyuuzivensrp", "eyyvpkpatl", "ijp", com.azure.core.util.Context.NONE);
 
     }
 }

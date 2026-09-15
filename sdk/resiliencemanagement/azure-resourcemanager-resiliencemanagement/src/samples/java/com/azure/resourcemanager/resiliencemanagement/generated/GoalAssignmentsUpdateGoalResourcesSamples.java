@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalResource
 import com.azure.resourcemanager.resiliencemanagement.models.AttestationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ExclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalResourceProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.ResiliencyProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.UpdateGoalResourceRequest;
 import java.util.Arrays;
 
@@ -16,7 +17,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsUpdateGoalResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_UpdateGoalResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/GoalAssignments_UpdateGoalResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_UpdateGoalResources_MaximumSet.
@@ -29,16 +30,16 @@ public final class GoalAssignmentsUpdateGoalResourcesSamples {
             .updateGoalResources("sg1", "ga1", new UpdateGoalResourceRequest().withResources(Arrays.asList(
                 new GoalResourceInner().withProperties(new GoalResourceProperties().withResourceArmId(
                     "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")
-                    .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                    .withHighAvailabilityAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                    .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                    .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)),
+                    .withZonalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))
+                    .withRegionalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))),
                 new GoalResourceInner().withProperties(new GoalResourceProperties().withResourceArmId(
                     "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine1")
-                    .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                    .withHighAvailabilityAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                    .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                    .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)))),
+                    .withZonalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))
+                    .withRegionalResiliency(new ResiliencyProperties().withGoalParticipation(ExclusionState.EXCLUDED)
+                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED))))),
                 com.azure.core.util.Context.NONE);
     }
 }

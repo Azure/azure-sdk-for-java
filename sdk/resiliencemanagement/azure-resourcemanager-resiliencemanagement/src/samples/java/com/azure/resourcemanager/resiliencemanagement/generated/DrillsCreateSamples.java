@@ -9,6 +9,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.AssetPropertiesOfDr
 import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 public final class DrillsCreateSamples {
     /*
-     * x-ms-original-file: 2026-08-31-preview/Drills_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30-preview/Drills_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Create_MaximumSet.
@@ -42,6 +43,10 @@ public final class DrillsCreateSamples {
                     .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                     .withUserAssignedIdentity(
                         "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
+                .withGoalAssignmentProperties(new GoalAssignmentPropertiesOfDrill()
+                    .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity(
+                            "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
                 .withDrillAssetProperties(
                     new AssetPropertiesOfDrill().withSubscription("4e88bed3-114f-443d-9975-28f64122ec5e")
                         .withRegion("eastus")

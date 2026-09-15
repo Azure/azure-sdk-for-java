@@ -66,6 +66,15 @@ public final class ZonalDrillProperties extends DrillProperties {
      * {@inheritDoc}
      */
     @Override
+    public ZonalDrillProperties withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill goalAssignmentProperties) {
+        super.withGoalAssignmentProperties(goalAssignmentProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ZonalDrillProperties withDrillAssetProperties(AssetPropertiesOfDrill drillAssetProperties) {
         super.withDrillAssetProperties(drillAssetProperties);
         return this;
@@ -124,6 +133,7 @@ public final class ZonalDrillProperties extends DrillProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recoveryPlanProperties", recoveryPlanProperties());
+        jsonWriter.writeJsonField("goalAssignmentProperties", goalAssignmentProperties());
         jsonWriter.writeJsonField("drillAssetProperties", drillAssetProperties());
         jsonWriter.writeJsonField("chaosResourceProperties", chaosResourceProperties());
         jsonWriter.writeStringField("rbacSetupMode", rbacSetupMode() == null ? null : rbacSetupMode().toString());
@@ -157,6 +167,9 @@ public final class ZonalDrillProperties extends DrillProperties {
                 } else if ("recoveryPlanProperties".equals(fieldName)) {
                     deserializedZonalDrillProperties
                         .withRecoveryPlanProperties(RecoveryPlanPropertiesOfDrill.fromJson(reader));
+                } else if ("goalAssignmentProperties".equals(fieldName)) {
+                    deserializedZonalDrillProperties
+                        .withGoalAssignmentProperties(GoalAssignmentPropertiesOfDrill.fromJson(reader));
                 } else if ("drillAssetProperties".equals(fieldName)) {
                     deserializedZonalDrillProperties.withDrillAssetProperties(AssetPropertiesOfDrill.fromJson(reader));
                 } else if ("chaosResourceProperties".equals(fieldName)) {

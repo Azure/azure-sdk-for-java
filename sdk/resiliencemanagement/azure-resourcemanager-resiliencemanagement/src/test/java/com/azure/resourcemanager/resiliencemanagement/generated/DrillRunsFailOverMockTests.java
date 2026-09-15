@@ -36,15 +36,15 @@ public final class DrillRunsFailOverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .failOver("byjanep", "bdpkxyqvgx", "aodetv", "hkxdxuwsaifmc",
-                new DrillRunFailoverRequest().withAutoFailover(AutoFailover.ENABLE)
-                    .withFailoverProperties(
-                        new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
-                            .withFailoverRequestProperties(new FailoverRequestProperties()
-                                .withSourceLocations(Arrays.asList("zlehgcvkbcknjolg", "y"))
-                                .withSelectedResourceIds(Arrays.asList("velsz", "rqz", "vxoqe"))
-                                .withExecutionConfigurations(
-                                    new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED)))),
+            .failOver("dhftukvhdxlwy", "jbfqzdk", "njyixh", "fratqxmbjroumzz",
+                new DrillRunFailoverRequest().withAutoFailover(AutoFailover.DISABLE)
+                    .withFailoverProperties(new FailoverRequest()
+                        .withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
+                        .withFailoverRequestProperties(new FailoverRequestProperties()
+                            .withSourceLocations(Arrays.asList("jrhuzgf", "on", "tpusllywp"))
+                            .withSelectedResourceIds(Arrays.asList("otz", "pdbollg", "yfqiuasig", "owsocnequygdjbo"))
+                            .withExecutionConfigurations(
+                                new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED)))),
                 com.azure.core.util.Context.NONE);
 
     }

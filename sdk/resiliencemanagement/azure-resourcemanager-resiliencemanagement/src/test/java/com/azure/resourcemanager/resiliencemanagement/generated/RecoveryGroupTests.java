@@ -15,46 +15,56 @@ public final class RecoveryGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroup model = BinaryData.fromString(
-            "{\"properties\":{\"groupUniqueId\":\"pewr\",\"orderId\":1511983432,\"description\":\"mwvvjektcxsenhw\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"ffrzpwvlqdqgbiqy\",\"description\":\"hkaetcktvfc\",\"timeoutInMinutes\":493965696}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"nkymuctqhjfbebrj\",\"description\":\"erfuwuttt\",\"timeoutInMinutes\":1379118334},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"vjrbirphxepcyvah\",\"description\":\"ljkyqxjvuuj\",\"timeoutInMinutes\":1970519416},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"idokgjlj\",\"description\":\"xgvcl\",\"timeoutInMinutes\":1773557410}]},\"id\":\"sncghkjeszz\",\"name\":\"bijhtxfvgxbf\",\"type\":\"mxnehmp\"}")
+            "{\"properties\":{\"groupUniqueId\":\"xw\",\"orderId\":1175125771,\"description\":\"wqsmbsur\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"moryocfsfksym\",\"description\":\"ys\",\"timeoutInMinutes\":1193107670},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"i\",\"description\":\"xhqyudxorrqnb\",\"timeoutInMinutes\":1322831619},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"czvyifq\",\"description\":\"kdvjsll\",\"timeoutInMinutes\":952204067},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"vvdfwatkpnpul\",\"description\":\"xbczwtruwiqz\",\"timeoutInMinutes\":1177469779}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"sovmyokacspkwl\",\"description\":\"dobpxjmflbvvn\",\"timeoutInMinutes\":681133133},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"rkcciwwzjuqk\",\"description\":\"sa\",\"timeoutInMinutes\":2114864042},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"wkuofoskghsauu\",\"description\":\"jmvxie\",\"timeoutInMinutes\":825029486}]},\"id\":\"gidyjrrf\",\"name\":\"y\",\"type\":\"osvexcsonpclhoc\"}")
             .toObject(RecoveryGroup.class);
-        Assertions.assertEquals("pewr", model.properties().groupUniqueId());
-        Assertions.assertEquals(1511983432, model.properties().orderId());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.properties().description());
-        Assertions.assertEquals("ffrzpwvlqdqgbiqy", model.properties().preActions().get(0).name());
-        Assertions.assertEquals("hkaetcktvfc", model.properties().preActions().get(0).description());
-        Assertions.assertEquals(493965696, model.properties().preActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.properties().postActions().get(0).name());
-        Assertions.assertEquals("erfuwuttt", model.properties().postActions().get(0).description());
-        Assertions.assertEquals(1379118334, model.properties().postActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("xw", model.properties().groupUniqueId());
+        Assertions.assertEquals(1175125771, model.properties().orderId());
+        Assertions.assertEquals("wqsmbsur", model.properties().description());
+        Assertions.assertEquals("moryocfsfksym", model.properties().preActions().get(0).name());
+        Assertions.assertEquals("ys", model.properties().preActions().get(0).description());
+        Assertions.assertEquals(1193107670, model.properties().preActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("sovmyokacspkwl", model.properties().postActions().get(0).name());
+        Assertions.assertEquals("dobpxjmflbvvn", model.properties().postActions().get(0).description());
+        Assertions.assertEquals(681133133, model.properties().postActions().get(0).timeoutInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryGroup model = new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("pewr")
-            .withOrderId(1511983432)
-            .withDescription("mwvvjektcxsenhw")
-            .withPreActions(Arrays.asList(new RecoveryGroupBaseAction().withName("ffrzpwvlqdqgbiqy")
-                .withDescription("hkaetcktvfc")
-                .withTimeoutInMinutes(493965696)))
+        RecoveryGroup model = new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("xw")
+            .withOrderId(1175125771)
+            .withDescription("wqsmbsur")
+            .withPreActions(Arrays.asList(
+                new RecoveryGroupBaseAction().withName("moryocfsfksym")
+                    .withDescription("ys")
+                    .withTimeoutInMinutes(1193107670),
+                new RecoveryGroupBaseAction().withName("i")
+                    .withDescription("xhqyudxorrqnb")
+                    .withTimeoutInMinutes(1322831619),
+                new RecoveryGroupBaseAction().withName("czvyifq")
+                    .withDescription("kdvjsll")
+                    .withTimeoutInMinutes(952204067),
+                new RecoveryGroupBaseAction().withName("vvdfwatkpnpul")
+                    .withDescription("xbczwtruwiqz")
+                    .withTimeoutInMinutes(1177469779)))
             .withPostActions(Arrays.asList(
-                new RecoveryGroupBaseAction().withName("nkymuctqhjfbebrj")
-                    .withDescription("erfuwuttt")
-                    .withTimeoutInMinutes(1379118334),
-                new RecoveryGroupBaseAction().withName("vjrbirphxepcyvah")
-                    .withDescription("ljkyqxjvuuj")
-                    .withTimeoutInMinutes(1970519416),
-                new RecoveryGroupBaseAction().withName("idokgjlj")
-                    .withDescription("xgvcl")
-                    .withTimeoutInMinutes(1773557410))));
+                new RecoveryGroupBaseAction().withName("sovmyokacspkwl")
+                    .withDescription("dobpxjmflbvvn")
+                    .withTimeoutInMinutes(681133133),
+                new RecoveryGroupBaseAction().withName("rkcciwwzjuqk")
+                    .withDescription("sa")
+                    .withTimeoutInMinutes(2114864042),
+                new RecoveryGroupBaseAction().withName("wkuofoskghsauu")
+                    .withDescription("jmvxie")
+                    .withTimeoutInMinutes(825029486))));
         model = BinaryData.fromObject(model).toObject(RecoveryGroup.class);
-        Assertions.assertEquals("pewr", model.properties().groupUniqueId());
-        Assertions.assertEquals(1511983432, model.properties().orderId());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.properties().description());
-        Assertions.assertEquals("ffrzpwvlqdqgbiqy", model.properties().preActions().get(0).name());
-        Assertions.assertEquals("hkaetcktvfc", model.properties().preActions().get(0).description());
-        Assertions.assertEquals(493965696, model.properties().preActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.properties().postActions().get(0).name());
-        Assertions.assertEquals("erfuwuttt", model.properties().postActions().get(0).description());
-        Assertions.assertEquals(1379118334, model.properties().postActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("xw", model.properties().groupUniqueId());
+        Assertions.assertEquals(1175125771, model.properties().orderId());
+        Assertions.assertEquals("wqsmbsur", model.properties().description());
+        Assertions.assertEquals("moryocfsfksym", model.properties().preActions().get(0).name());
+        Assertions.assertEquals("ys", model.properties().preActions().get(0).description());
+        Assertions.assertEquals(1193107670, model.properties().preActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("sovmyokacspkwl", model.properties().postActions().get(0).name());
+        Assertions.assertEquals("dobpxjmflbvvn", model.properties().postActions().get(0).description());
+        Assertions.assertEquals(681133133, model.properties().postActions().get(0).timeoutInMinutes());
     }
 }

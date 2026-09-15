@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SliSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SliSelection model = BinaryData.fromString("{\"sliId\":\"gxxlxsffgcvizq\",\"type\":\"Availability\"}")
-            .toObject(SliSelection.class);
-        Assertions.assertEquals("gxxlxsffgcvizq", model.sliId());
-        Assertions.assertEquals(SliType.AVAILABILITY, model.type());
+        SliSelection model
+            = BinaryData.fromString("{\"sliId\":\"kq\",\"type\":\"Latency\"}").toObject(SliSelection.class);
+        Assertions.assertEquals("kq", model.sliId());
+        Assertions.assertEquals(SliType.LATENCY, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliSelection model = new SliSelection().withSliId("gxxlxsffgcvizq").withType(SliType.AVAILABILITY);
+        SliSelection model = new SliSelection().withSliId("kq").withType(SliType.LATENCY);
         model = BinaryData.fromObject(model).toObject(SliSelection.class);
-        Assertions.assertEquals("gxxlxsffgcvizq", model.sliId());
-        Assertions.assertEquals(SliType.AVAILABILITY, model.type());
+        Assertions.assertEquals("kq", model.sliId());
+        Assertions.assertEquals(SliType.LATENCY, model.type());
     }
 }

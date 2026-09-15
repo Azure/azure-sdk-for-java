@@ -10,8 +10,9 @@ import com.azure.resourcemanager.resiliencemanagement.models.JobUserComment;
 public final class JobUserCommentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobUserComment model = BinaryData.fromString(
-            "{\"commentType\":\"Description\",\"commentTime\":\"2021-11-30T16:53:07Z\",\"comments\":\"vfelfktgplcrpwj\"}")
+        JobUserComment model = BinaryData
+            .fromString(
+                "{\"commentType\":\"ResumeReason\",\"commentTime\":\"2021-04-12T00:35:59Z\",\"comments\":\"sexso\"}")
             .toObject(JobUserComment.class);
     }
 }

@@ -17,11 +17,11 @@ public final class FailoverRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FailoverRequest model = BinaryData.fromString(
-            "{\"failoverDirection\":\"FromSpecificLocations\",\"failoverRequestProperties\":{\"sourceLocations\":[\"cktqumiekkezzi\",\"hlyfjhdgqgg\",\"bdunygaeqid\"],\"selectedResourceIds\":[\"atpxl\",\"rxcyjmoad\",\"uvarmywdmjsjq\",\"jhhyxxrwlycoduhp\"],\"executionConfigurations\":{\"userConsent\":\"Allowed\"}}}")
+            "{\"failoverDirection\":\"FromSpecificLocations\",\"failoverRequestProperties\":{\"sourceLocations\":[\"kcdyhbpk\",\"pwdreqnovvqf\",\"vljxywsu\",\"syrsndsytgadgvra\"],\"selectedResourceIds\":[\"neqn\"],\"executionConfigurations\":{\"userConsent\":\"Allowed\"}}}")
             .toObject(FailoverRequest.class);
         Assertions.assertEquals(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS, model.failoverDirection());
-        Assertions.assertEquals("cktqumiekkezzi", model.failoverRequestProperties().sourceLocations().get(0));
-        Assertions.assertEquals("atpxl", model.failoverRequestProperties().selectedResourceIds().get(0));
+        Assertions.assertEquals("kcdyhbpk", model.failoverRequestProperties().sourceLocations().get(0));
+        Assertions.assertEquals("neqn", model.failoverRequestProperties().selectedResourceIds().get(0));
         Assertions.assertEquals(UserConsent.ALLOWED,
             model.failoverRequestProperties().executionConfigurations().userConsent());
     }
@@ -31,13 +31,13 @@ public final class FailoverRequestTests {
         FailoverRequest model
             = new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
                 .withFailoverRequestProperties(new FailoverRequestProperties()
-                    .withSourceLocations(Arrays.asList("cktqumiekkezzi", "hlyfjhdgqgg", "bdunygaeqid"))
-                    .withSelectedResourceIds(Arrays.asList("atpxl", "rxcyjmoad", "uvarmywdmjsjq", "jhhyxxrwlycoduhp"))
+                    .withSourceLocations(Arrays.asList("kcdyhbpk", "pwdreqnovvqf", "vljxywsu", "syrsndsytgadgvra"))
+                    .withSelectedResourceIds(Arrays.asList("neqn"))
                     .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED)));
         model = BinaryData.fromObject(model).toObject(FailoverRequest.class);
         Assertions.assertEquals(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS, model.failoverDirection());
-        Assertions.assertEquals("cktqumiekkezzi", model.failoverRequestProperties().sourceLocations().get(0));
-        Assertions.assertEquals("atpxl", model.failoverRequestProperties().selectedResourceIds().get(0));
+        Assertions.assertEquals("kcdyhbpk", model.failoverRequestProperties().sourceLocations().get(0));
+        Assertions.assertEquals("neqn", model.failoverRequestProperties().selectedResourceIds().get(0));
         Assertions.assertEquals(UserConsent.ALLOWED,
             model.failoverRequestProperties().executionConfigurations().userConsent());
     }

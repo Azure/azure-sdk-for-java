@@ -32,7 +32,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resiliencemanagement.fluent.DrillRunsClient;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillReportSummaryInner;
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunInner;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.ListReportDownloadUrlResponseInner;
 import com.azure.resourcemanager.resiliencemanagement.implementation.models.DrillRunListResult;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunFailoverRequest;
@@ -1592,11 +1594,12 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link PollerFlux} for polling of public, read-only summary of report generation for a Drill Run.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGenerateReportAsync(String serviceGroupName, String operationId,
-        String drillName, String drillRunName) {
+    private PollerFlux<PollResult<DrillReportSummaryInner>, DrillReportSummaryInner>
+        beginGenerateReportAsync(String serviceGroupName, String operationId, String drillName, String drillRunName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = generateReportWithResponseAsync(serviceGroupName, operationId, drillName, drillRunName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<DrillReportSummaryInner, DrillReportSummaryInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DrillReportSummaryInner.class, DrillReportSummaryInner.class,
             this.client.getContext());
     }
 
@@ -1615,11 +1618,12 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link SyncPoller} for polling of public, read-only summary of report generation for a Drill Run.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGenerateReport(String serviceGroupName, String operationId,
-        String drillName, String drillRunName) {
+    public SyncPoller<PollResult<DrillReportSummaryInner>, DrillReportSummaryInner>
+        beginGenerateReport(String serviceGroupName, String operationId, String drillName, String drillRunName) {
         Response<BinaryData> response
             = generateReportWithResponse(serviceGroupName, operationId, drillName, drillRunName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<DrillReportSummaryInner, DrillReportSummaryInner>getLroResult(response,
+            DrillReportSummaryInner.class, DrillReportSummaryInner.class, Context.NONE);
     }
 
     /**
@@ -1638,11 +1642,12 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link SyncPoller} for polling of public, read-only summary of report generation for a Drill Run.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGenerateReport(String serviceGroupName, String operationId,
-        String drillName, String drillRunName, Context context) {
+    public SyncPoller<PollResult<DrillReportSummaryInner>, DrillReportSummaryInner> beginGenerateReport(
+        String serviceGroupName, String operationId, String drillName, String drillRunName, Context context) {
         Response<BinaryData> response
             = generateReportWithResponse(serviceGroupName, operationId, drillName, drillRunName, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<DrillReportSummaryInner, DrillReportSummaryInner>getLroResult(response,
+            DrillReportSummaryInner.class, DrillReportSummaryInner.class, context);
     }
 
     /**
@@ -1660,8 +1665,8 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return public, read-only summary of report generation for a Drill Run on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> generateReportAsync(String serviceGroupName, String operationId, String drillName,
-        String drillRunName) {
+    private Mono<DrillReportSummaryInner> generateReportAsync(String serviceGroupName, String operationId,
+        String drillName, String drillRunName) {
         return beginGenerateReportAsync(serviceGroupName, operationId, drillName, drillRunName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1678,10 +1683,12 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public, read-only summary of report generation for a Drill Run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName) {
-        beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName).getFinalResult();
+    public DrillReportSummaryInner generateReport(String serviceGroupName, String operationId, String drillName,
+        String drillRunName) {
+        return beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName).getFinalResult();
     }
 
     /**
@@ -1697,11 +1704,12 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public, read-only summary of report generation for a Drill Run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void generateReport(String serviceGroupName, String operationId, String drillName, String drillRunName,
-        Context context) {
-        beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName, context).getFinalResult();
+    public DrillReportSummaryInner generateReport(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, Context context) {
+        return beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName, context).getFinalResult();
     }
 
     /**
@@ -1795,12 +1803,14 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * Drill Run report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginListReportDownloadUrlAsync(String serviceGroupName,
-        String operationId, String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
+    private PollerFlux<PollResult<ListReportDownloadUrlResponseInner>, ListReportDownloadUrlResponseInner>
+        beginListReportDownloadUrlAsync(String serviceGroupName, String operationId, String drillName,
+            String drillRunName, ListReportDownloadUrlRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = listReportDownloadUrlWithResponseAsync(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<ListReportDownloadUrlResponseInner, ListReportDownloadUrlResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ListReportDownloadUrlResponseInner.class,
+            ListReportDownloadUrlResponseInner.class, this.client.getContext());
     }
 
     /**
@@ -1819,11 +1829,13 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * Drill Run report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginListReportDownloadUrl(String serviceGroupName, String operationId,
-        String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
+    public SyncPoller<PollResult<ListReportDownloadUrlResponseInner>, ListReportDownloadUrlResponseInner>
+        beginListReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
+            ListReportDownloadUrlRequest body) {
         Response<BinaryData> response
             = listReportDownloadUrlWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<ListReportDownloadUrlResponseInner, ListReportDownloadUrlResponseInner>getLroResult(
+            response, ListReportDownloadUrlResponseInner.class, ListReportDownloadUrlResponseInner.class, Context.NONE);
     }
 
     /**
@@ -1843,11 +1855,13 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * Drill Run report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginListReportDownloadUrl(String serviceGroupName, String operationId,
-        String drillName, String drillRunName, ListReportDownloadUrlRequest body, Context context) {
+    public SyncPoller<PollResult<ListReportDownloadUrlResponseInner>, ListReportDownloadUrlResponseInner>
+        beginListReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
+            ListReportDownloadUrlRequest body, Context context) {
         Response<BinaryData> response
             = listReportDownloadUrlWithResponse(serviceGroupName, operationId, drillName, drillRunName, body, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<ListReportDownloadUrlResponseInner, ListReportDownloadUrlResponseInner>getLroResult(
+            response, ListReportDownloadUrlResponseInner.class, ListReportDownloadUrlResponseInner.class, context);
     }
 
     /**
@@ -1866,8 +1880,8 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> listReportDownloadUrlAsync(String serviceGroupName, String operationId, String drillName,
-        String drillRunName, ListReportDownloadUrlRequest body) {
+    private Mono<ListReportDownloadUrlResponseInner> listReportDownloadUrlAsync(String serviceGroupName,
+        String operationId, String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
         return beginListReportDownloadUrlAsync(serviceGroupName, operationId, drillName, drillRunName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1884,11 +1898,13 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing a short-lived, read-only download URL for a Drill Run report.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
-        String drillRunName, ListReportDownloadUrlRequest body) {
-        beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body).getFinalResult();
+    public ListReportDownloadUrlResponseInner listReportDownloadUrl(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
+        return beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body)
+            .getFinalResult();
     }
 
     /**
@@ -1904,11 +1920,12 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing a short-lived, read-only download URL for a Drill Run report.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
-        String drillRunName, ListReportDownloadUrlRequest body, Context context) {
-        beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context)
+    public ListReportDownloadUrlResponseInner listReportDownloadUrl(String serviceGroupName, String operationId,
+        String drillName, String drillRunName, ListReportDownloadUrlRequest body, Context context) {
+        return beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context)
             .getFinalResult();
     }
 

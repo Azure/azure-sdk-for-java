@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DrillEndRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DrillEndRequest model = BinaryData.fromString("{\"attestation\":\"Success\",\"attestationNotes\":\"yuibhm\"}")
+        DrillEndRequest model = BinaryData.fromString("{\"attestation\":\"Success\",\"attestationNotes\":\"dcgzul\"}")
             .toObject(DrillEndRequest.class);
         Assertions.assertEquals(DrillAttestation.ATTESTED_SUCCESS, model.attestation());
-        Assertions.assertEquals("yuibhm", model.attestationNotes());
+        Assertions.assertEquals("dcgzul", model.attestationNotes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DrillEndRequest model
-            = new DrillEndRequest().withAttestation(DrillAttestation.ATTESTED_SUCCESS).withAttestationNotes("yuibhm");
+            = new DrillEndRequest().withAttestation(DrillAttestation.ATTESTED_SUCCESS).withAttestationNotes("dcgzul");
         model = BinaryData.fromObject(model).toObject(DrillEndRequest.class);
         Assertions.assertEquals(DrillAttestation.ATTESTED_SUCCESS, model.attestation());
-        Assertions.assertEquals("yuibhm", model.attestationNotes());
+        Assertions.assertEquals("dcgzul", model.attestationNotes());
     }
 }

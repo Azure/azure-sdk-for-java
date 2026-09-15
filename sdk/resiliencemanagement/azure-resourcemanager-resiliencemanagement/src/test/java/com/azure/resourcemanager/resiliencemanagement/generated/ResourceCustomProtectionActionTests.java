@@ -12,14 +12,14 @@ public final class ResourceCustomProtectionActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCustomProtectionAction model
-            = BinaryData.fromString("{\"resourceId\":\"ithhqzon\"}").toObject(ResourceCustomProtectionAction.class);
-        Assertions.assertEquals("ithhqzon", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"hhszh\"}").toObject(ResourceCustomProtectionAction.class);
+        Assertions.assertEquals("hhszh", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCustomProtectionAction model = new ResourceCustomProtectionAction().withResourceId("ithhqzon");
+        ResourceCustomProtectionAction model = new ResourceCustomProtectionAction().withResourceId("hhszh");
         model = BinaryData.fromObject(model).toObject(ResourceCustomProtectionAction.class);
-        Assertions.assertEquals("ithhqzon", model.resourceId());
+        Assertions.assertEquals("hhszh", model.resourceId());
     }
 }

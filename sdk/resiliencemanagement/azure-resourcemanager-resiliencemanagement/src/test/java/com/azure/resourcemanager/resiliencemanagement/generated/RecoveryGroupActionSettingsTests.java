@@ -11,7 +11,7 @@ public final class RecoveryGroupActionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupActionSettings model = BinaryData.fromString(
-            "{\"actionTask\":\"PostActionTask\",\"actionSequence\":498677295,\"recoveryGroupActionType\":\"ManualAction\",\"actionName\":\"dfdlwggyts\",\"actionDescription\":\"tov\"}")
+            "{\"actionTask\":\"PostActionTask\",\"actionSequence\":839437170,\"recoveryGroupActionType\":\"ManualAction\",\"actionName\":\"syingwfqatmtdht\",\"actionDescription\":\"vypgikdg\"}")
             .toObject(RecoveryGroupActionSettings.class);
     }
 }

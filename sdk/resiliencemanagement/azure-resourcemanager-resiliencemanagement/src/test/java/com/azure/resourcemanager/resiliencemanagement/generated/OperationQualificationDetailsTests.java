@@ -15,32 +15,34 @@ public final class OperationQualificationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationQualificationDetails model = BinaryData.fromString(
-            "{\"qualificationState\":\"Unknown\",\"notQualifiedReasons\":[\"dmsmlm\",\"qhoftrmaequiah\",\"icslfaoq\",\"piyylhalnswhccsp\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"vwitqscyw\",\"currentTargetSku\":{\"sku\":\"gwol\",\"vCpu\":1226562367,\"ram\":219242582,\"monthlyPrice\":17.418692894379674,\"currency\":\"ai\",\"offeringId\":\"brgz\"},\"status\":\"Flagged\",\"recommendedTargetSkus\":[{\"sku\":\"weyp\",\"vCpu\":2076786264,\"ram\":840450646,\"monthlyPrice\":30.45805226644529,\"currency\":\"cnxqhuexmkttlst\",\"offeringId\":\"zywemhzrncsdtclu\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"ypbsfgytguslfead\",\"currentTargetSku\":{\"sku\":\"gq\",\"vCpu\":860507177,\"ram\":2033561570,\"monthlyPrice\":3.4251781400468584,\"currency\":\"sx\",\"offeringId\":\"pelol\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"srp\",\"vCpu\":1097425723,\"ram\":2128211402,\"monthlyPrice\":33.19401521907267,\"currency\":\"twdw\",\"offeringId\":\"tswiby\"},{\"sku\":\"cdl\",\"vCpu\":1538697515,\"ram\":523065183,\"monthlyPrice\":4.802215876490735,\"currency\":\"cstwity\",\"offeringId\":\"evxccedcp\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"dyodnwzxltj\",\"currentTargetSku\":{\"sku\":\"nhltiugcxn\",\"vCpu\":1032415559,\"ram\":625256157,\"monthlyPrice\":92.90322280680466,\"currency\":\"qunyowxwlmdjr\",\"offeringId\":\"fgbvfvpdbo\"},\"status\":\"Flagged\",\"recommendedTargetSkus\":[{\"sku\":\"zsjqlh\",\"vCpu\":218475539,\"ram\":268834532,\"monthlyPrice\":23.08054185815841,\"currency\":\"qipqkghvxndz\",\"offeringId\":\"krefajpjo\"},{\"sku\":\"wkqnyhg\",\"vCpu\":132694968,\"ram\":809935790,\"monthlyPrice\":44.73718071010649,\"currency\":\"zs\",\"offeringId\":\"bibsystawfsdjpvk\"},{\"sku\":\"p\",\"vCpu\":911357247,\"ram\":1795251983,\"monthlyPrice\":37.18508107629012,\"currency\":\"dvncjabudurgk\",\"offeringId\":\"mokzhjjklf\"}]}]}")
+            "{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"wzsyyceuzs\",\"i\",\"judpfrxt\",\"thzvaytdwkqbrqu\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"h\",\"currentTargetSku\":{\"sku\":\"iilivpdtiirqtd\",\"vCpu\":887642500,\"ram\":1693357038,\"monthlyPrice\":16.886163052758963,\"currency\":\"gsquyfxrxxlept\",\"offeringId\":\"mxjezwlw\"},\"status\":\"NotApplicable\",\"recommendedTargetSkus\":[{\"sku\":\"qlcvydy\",\"vCpu\":1772856853,\"ram\":1972932814,\"monthlyPrice\":52.76586916186798,\"currency\":\"kniod\",\"offeringId\":\"oebwnujhemms\"},{\"sku\":\"vdkcrodtj\",\"vCpu\":321367930,\"ram\":2127235728,\"monthlyPrice\":48.601111864993506,\"currency\":\"kacjvefkdlfo\",\"offeringId\":\"ggkfpagaowpul\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"blylsyxkqjnsj\",\"currentTargetSku\":{\"sku\":\"vti\",\"vCpu\":574368120,\"ram\":1219711828,\"monthlyPrice\":57.00010229736245,\"currency\":\"mpsbzkfzbeyv\",\"offeringId\":\"qi\"},\"status\":\"Passed\",\"recommendedTargetSkus\":[{\"sku\":\"v\",\"vCpu\":273661642,\"ram\":611015935,\"monthlyPrice\":95.88628079977293,\"currency\":\"ukzclewyhmlwpaz\",\"offeringId\":\"pofncck\"},{\"sku\":\"yfzqwhxxbu\",\"vCpu\":27324889,\"ram\":437954475,\"monthlyPrice\":18.088224974528387,\"currency\":\"tpp\",\"offeringId\":\"o\"},{\"sku\":\"xorjaltolmncwsob\",\"vCpu\":981854920,\"ram\":1051180868,\"monthlyPrice\":42.05402405040643,\"currency\":\"cf\",\"offeringId\":\"cqdpfuv\"},{\"sku\":\"lsbjjcanvxbv\",\"vCpu\":1747022410,\"ram\":1741162391,\"monthlyPrice\":81.381784837469,\"currency\":\"rmrlxqtvcof\",\"offeringId\":\"f\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"kgjubgdknnqvsazn\",\"currentTargetSku\":{\"sku\":\"tor\",\"vCpu\":761865502,\"ram\":1449495124,\"monthlyPrice\":17.71073252254488,\"currency\":\"yc\",\"offeringId\":\"auwjuetaebu\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"movsmzlxwabmqoe\",\"vCpu\":1641212216,\"ram\":1043168058,\"monthlyPrice\":48.58376215745843,\"currency\":\"qujmqlgkf\",\"offeringId\":\"ndo\"},{\"sku\":\"ongbjcnt\",\"vCpu\":175195194,\"ram\":106360631,\"monthlyPrice\":6.367842959750202,\"currency\":\"twwaezkojvdcpzf\",\"offeringId\":\"ouicybxarzgszu\"}]}]}")
             .toObject(OperationQualificationDetails.class);
-        Assertions.assertEquals(QualificationState.UNKNOWN, model.qualificationState());
-        Assertions.assertEquals("dmsmlm", model.notQualifiedReasons().get(0));
+        Assertions.assertEquals(QualificationState.QUALIFIED, model.qualificationState());
+        Assertions.assertEquals("wzsyyceuzs", model.notQualifiedReasons().get(0));
         Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
             model.resourceFeasibilityReviews().get(0).feasibilityType());
-        Assertions.assertEquals("vwitqscyw", model.resourceFeasibilityReviews().get(0).resourceType());
-        Assertions.assertEquals("gwol", model.resourceFeasibilityReviews().get(0).currentTargetSku().sku());
-        Assertions.assertEquals(1226562367, model.resourceFeasibilityReviews().get(0).currentTargetSku().vCpu());
-        Assertions.assertEquals(219242582, model.resourceFeasibilityReviews().get(0).currentTargetSku().ram());
-        Assertions.assertEquals(17.418692894379674D,
+        Assertions.assertEquals("h", model.resourceFeasibilityReviews().get(0).resourceType());
+        Assertions.assertEquals("iilivpdtiirqtd", model.resourceFeasibilityReviews().get(0).currentTargetSku().sku());
+        Assertions.assertEquals(887642500, model.resourceFeasibilityReviews().get(0).currentTargetSku().vCpu());
+        Assertions.assertEquals(1693357038, model.resourceFeasibilityReviews().get(0).currentTargetSku().ram());
+        Assertions.assertEquals(16.886163052758963D,
             model.resourceFeasibilityReviews().get(0).currentTargetSku().monthlyPrice());
-        Assertions.assertEquals("ai", model.resourceFeasibilityReviews().get(0).currentTargetSku().currency());
-        Assertions.assertEquals("brgz", model.resourceFeasibilityReviews().get(0).currentTargetSku().offeringId());
-        Assertions.assertEquals(ResourceFeasibilityReviewStatus.FLAGGED,
+        Assertions.assertEquals("gsquyfxrxxlept",
+            model.resourceFeasibilityReviews().get(0).currentTargetSku().currency());
+        Assertions.assertEquals("mxjezwlw", model.resourceFeasibilityReviews().get(0).currentTargetSku().offeringId());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.NOT_APPLICABLE,
             model.resourceFeasibilityReviews().get(0).status());
-        Assertions.assertEquals("weyp", model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).sku());
-        Assertions.assertEquals(2076786264,
+        Assertions.assertEquals("qlcvydy",
+            model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).sku());
+        Assertions.assertEquals(1772856853,
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).vCpu());
-        Assertions.assertEquals(840450646,
+        Assertions.assertEquals(1972932814,
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).ram());
-        Assertions.assertEquals(30.45805226644529D,
+        Assertions.assertEquals(52.76586916186798D,
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).monthlyPrice());
-        Assertions.assertEquals("cnxqhuexmkttlst",
+        Assertions.assertEquals("kniod",
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).currency());
-        Assertions.assertEquals("zywemhzrncsdtclu",
+        Assertions.assertEquals("oebwnujhemms",
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).offeringId());
     }
 }

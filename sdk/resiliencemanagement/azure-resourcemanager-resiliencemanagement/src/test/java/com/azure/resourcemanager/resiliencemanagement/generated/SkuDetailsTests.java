@@ -12,13 +12,13 @@ public final class SkuDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuDetails model = BinaryData.fromString(
-            "{\"sku\":\"lwbtlhf\",\"vCpu\":901371312,\"ram\":1612307116,\"monthlyPrice\":83.09367387564373,\"currency\":\"jvfbgofelja\",\"offeringId\":\"qmqhldvriii\"}")
+            "{\"sku\":\"grtwae\",\"vCpu\":809360205,\"ram\":32016010,\"monthlyPrice\":33.80380554149822,\"currency\":\"inrfdwoyu\",\"offeringId\":\"ziuiefozbhdm\"}")
             .toObject(SkuDetails.class);
-        Assertions.assertEquals("lwbtlhf", model.sku());
-        Assertions.assertEquals(901371312, model.vCpu());
-        Assertions.assertEquals(1612307116, model.ram());
-        Assertions.assertEquals(83.09367387564373D, model.monthlyPrice());
-        Assertions.assertEquals("jvfbgofelja", model.currency());
-        Assertions.assertEquals("qmqhldvriii", model.offeringId());
+        Assertions.assertEquals("grtwae", model.sku());
+        Assertions.assertEquals(809360205, model.vCpu());
+        Assertions.assertEquals(32016010, model.ram());
+        Assertions.assertEquals(33.80380554149822D, model.monthlyPrice());
+        Assertions.assertEquals("inrfdwoyu", model.currency());
+        Assertions.assertEquals("ziuiefozbhdm", model.offeringId());
     }
 }
