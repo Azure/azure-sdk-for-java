@@ -632,7 +632,7 @@ public final class AgentsClientBuilder
          * {@code Foundry-Features} header required for voice-agent preview operations, so
          * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
-         * @return an instance of BetaVoiceAgentConversationsAsyncClient.
+         * @return an instance of BetaVoiceAgentsConversationsAsyncClient.
          */
         @Beta
         public BetaVoiceAgentsConversationsAsyncClient buildBetaVoiceAgentsConversationsAsyncClient() {
