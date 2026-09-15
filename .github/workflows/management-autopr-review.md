@@ -61,6 +61,8 @@ safe-outputs:
 timeout-minutes: 20
 ---
 
+<!-- cspell:ignore autopr -->
+
 # Management AutoPR Review
 
 Review pull request
