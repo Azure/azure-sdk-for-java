@@ -22,7 +22,7 @@ public final class ConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"ronasxift\",\"connectionStatus\":\"Approved\",\"privateLinkServiceId\":\"yzhftwesgogczh\",\"privateEndpointName\":\"nxkrlgnyhmossxkk\",\"privateEndpointResourceId\":\"h\",\"jobList\":[\"hxjbdhqxvc\"],\"provisioningState\":\"Deleting\"},\"id\":\"pdso\",\"name\":\"bshrnsvbuswd\",\"type\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"okkqfqjbvleo\",\"connectionStatus\":\"Rejected\",\"privateLinkServiceId\":\"luiqtqzfavyvnqq\",\"privateEndpointName\":\"aryeu\",\"privateEndpointResourceId\":\"jkqa\",\"jobList\":[\"zslesjcbher\",\"ntiew\",\"jcvb\",\"uwrbehwagoh\"],\"provisioningState\":\"Succeeded\"},\"id\":\"kmr\",\"name\":\"emvvhm\",\"type\":\"tdrjfutacoebj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,10 @@ public final class ConnectionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Connection> response
-            = manager.connections().list("mqnrojlpijnkr", "frddhcrati", com.azure.core.util.Context.NONE);
+        PagedIterable<Connection> response = manager.connections().list("kh", "dyg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ronasxift", response.iterator().next().properties().description());
-        Assertions.assertEquals("yzhftwesgogczh", response.iterator().next().properties().privateLinkServiceId());
-        Assertions.assertEquals("hxjbdhqxvc", response.iterator().next().properties().jobList().get(0));
+        Assertions.assertEquals("okkqfqjbvleo", response.iterator().next().properties().description());
+        Assertions.assertEquals("luiqtqzfavyvnqq", response.iterator().next().properties().privateLinkServiceId());
+        Assertions.assertEquals("zslesjcbher", response.iterator().next().properties().jobList().get(0));
     }
 }
