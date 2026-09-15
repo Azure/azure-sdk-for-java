@@ -6,8 +6,10 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
+import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nimbusds.jose.util.Base64;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
@@ -17,6 +19,7 @@ import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -322,8 +325,12 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertTrue(timeNow.plusSeconds(30).isEqual(newToken.getExpiresOn()));
         assertEquals("Fred", newToken.getIssuer());
 
-        assertDoesNotThrow(
-            () -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
+        // A signed token now requires the caller to supply the trusted signer; it may no longer vouch for
+        // itself via its embedded certificate chain (CWE-347 hardening).
+        AttestationSigner trustedSigner = AttestationSignerImpl
+            .fromCertificateChain(Collections.singletonList(Base64.encode(assertDoesNotThrow(cert::getEncoded))));
+        assertDoesNotThrow(() -> ((AttestationTokenImpl) newToken).validate(Collections.singletonList(trustedSigner),
+            new AttestationTokenValidationOptions()));
     }
 
     @Test

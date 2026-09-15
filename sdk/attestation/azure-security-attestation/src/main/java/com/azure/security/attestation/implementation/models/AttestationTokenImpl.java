@@ -331,7 +331,9 @@ public class AttestationTokenImpl implements AttestationToken {
             return;
         }
 
-        // First thing we do is to cryptographically verify the signature of the token.
+        // First thing we do is to cryptographically verify the signature of the token. This returns null only
+        // for unsigned ("none") tokens; a signed token whose signature cannot be verified is rejected inside
+        // validateTokenSignature (CWE-347: Improper Verification of Cryptographic Signature).
         AttestationSigner signer = validateTokenSignature(signers);
 
         validateTokenTimeProperties(options);
@@ -391,7 +393,8 @@ public class AttestationTokenImpl implements AttestationToken {
      * @param signers - candidate signers for the token.
      * @return the signer who signed this token, or null if the token is unsigned.
      *
-     * @throws RuntimeException if there is a validation error.
+     * @throws RuntimeException if the token is signed but none of the candidate signers could verify its
+     * signature, or if there is any other validation error.
      */
     private AttestationSigner validateTokenSignature(List<AttestationSigner> signers) {
         // Early out if we have an unsecured token.
@@ -433,14 +436,28 @@ public class AttestationTokenImpl implements AttestationToken {
                 throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
         }
-        return tokenSigner.get();
+
+        // The token is signed (unsigned "none" tokens returned early above), so a null signer here means no
+        // candidate signer could verify the signature. Fail closed - returning normally would let a token
+        // forged with an untrusted key be accepted as valid (CWE-347).
+        AttestationSigner foundSigner = tokenSigner.get();
+        if (foundSigner == null) {
+            throw logger.logExceptionAsError(
+                new RuntimeException("Could not find a certificate which was used to sign the token."));
+        }
+        return foundSigner;
     }
 
     /**
-     * Get a list of possible signers for this attestation token. If the "signers" parameter
-     * is supplied, pick from that list, otherwise consult the JWS header for possible signers.
-     * @param signers - possible list of candidate signers.
-     * @return A list of possible signers for this token.
+     * Get the list of candidate signers to validate this attestation token against.
+     * <p>
+     * Candidate signers are taken only from the caller-supplied {@code signers} list: when the token carries a
+     * Key ID, the signer whose Key ID matches is selected; otherwise the entire supplied list is used. This method
+     * does not fall back to key material embedded in the token itself (the JWS {@code x5c} / {@code jwk} header),
+     * so when no signers are supplied it throws rather than validating the token against its own embedded key.
+     * @param signers - the caller-supplied list of candidate signers.
+     * @return A non-empty list of candidate signers for this token.
+     * @throws RuntimeException if no candidate signers are available.
      */
     private List<AttestationSigner> getCandidateSigners(List<AttestationSigner> signers) {
         List<AttestationSigner> candidates = new ArrayList<>();
@@ -463,13 +480,11 @@ public class AttestationTokenImpl implements AttestationToken {
             if (signers != null && signers.size() != 0) {
                 candidates.addAll(signers);
             } else {
-                // The caller didn't provide a set of signers, maybe there's one in the token itself.
-                if (this.getCertificateChain() != null) {
-                    candidates.add(this.getCertificateChain());
-                }
-                if (this.getJsonWebKey() != null) {
-                    candidates.add(this.getJsonWebKey());
-                }
+                // No trusted signers were provided. Do NOT fall back to the key material embedded in the
+                // token itself - that would let a token vouch for its own signature and bypass validation
+                // (CWE-347). Mirror the other Azure Attestation SDKs and fail closed.
+                throw logger.logExceptionAsError(
+                    new RuntimeException("Unable to find any certificates which can be used to validate the token."));
             }
         }
         return candidates;
