@@ -12,8 +12,8 @@ public final class ScriptPackagesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackagesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"vrwxkv\",\"version\":\"k\",\"company\":\"lqwjygvjayvblm\",\"uri\":\"k\"},\"id\":\"hbxvvyhgsopbyrqu\",\"name\":\"egxuvwzf\",\"type\":\"nhlmctlpdng\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"mhrixkwmyijejve\",\"version\":\"hbpnaixexccbd\",\"company\":\"ax\",\"uri\":\"exdrrvqahqkg\"},\"id\":\"pwijnhy\",\"name\":\"svfycxzbfv\",\"type\":\"owvrvmtgjqppyos\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"myhgfipnsxkmc\",\"version\":\"ekrrjr\",\"company\":\"fxtsgum\",\"uri\":\"glikkxwslolb\"},\"id\":\"vuzlm\",\"name\":\"felfktg\",\"type\":\"lcrpw\"}],\"nextLink\":\"eznoig\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"sowueluqhhahhx\",\"version\":\"hmzk\",\"company\":\"jgwwspughftq\",\"uri\":\"hqxujxukndxdi\"},\"id\":\"jguufzdm\",\"name\":\"yqtfihwh\",\"type\":\"otzi\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"pph\",\"version\":\"zqzudph\",\"company\":\"mvdk\",\"uri\":\"ynwcvtbv\"},\"id\":\"yhmtnvyqiat\",\"name\":\"zwpcnpwzcjaesg\",\"type\":\"v\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"jguq\",\"version\":\"wygzlvdnkfxusem\",\"company\":\"zrmuhapfcqdps\",\"uri\":\"qvpsvuoymg\"},\"id\":\"elvezrypq\",\"name\":\"mfe\",\"type\":\"kerqwkyh\"}],\"nextLink\":\"bopgxedkowepbqp\"}")
             .toObject(ScriptPackagesList.class);
-        Assertions.assertEquals("eznoig", model.nextLink());
+        Assertions.assertEquals("bopgxedkowepbqp", model.nextLink());
     }
 }

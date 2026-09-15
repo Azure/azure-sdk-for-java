@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class TrunkedNetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Delete.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Delete.json
      */
     /**
      * Sample code: Delete trunked network.

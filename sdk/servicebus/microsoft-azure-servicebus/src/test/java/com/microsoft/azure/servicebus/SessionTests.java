@@ -14,12 +14,12 @@ import com.microsoft.azure.servicebus.management.ManagementClientAsync;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.management.SubscriptionDescription;
 import com.microsoft.azure.servicebus.management.TopicDescription;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -36,7 +36,7 @@ public abstract class SessionTests extends Tests {
     private String entityName;
     String receiveEntityPath;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         SessionTests.entityNameCreatedForAllTests = null;
         SessionTests.receiveEntityPathForAllTest = null;
@@ -45,7 +45,7 @@ public abstract class SessionTests extends Tests {
         managementClient = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws InterruptedException, ExecutionException, ServiceBusException {
         if (this.shouldCreateEntityForEveryTest() || SessionTests.entityNameCreatedForAllTests == null) {
              // Create entity
@@ -82,7 +82,7 @@ public abstract class SessionTests extends Tests {
         this.sender = ClientFactory.createMessageSenderFromEntityPath(this.factory, this.entityName);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
         if (!this.shouldCreateEntityForEveryTest()) {
             this.drainSession();
@@ -105,7 +105,7 @@ public abstract class SessionTests extends Tests {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
         if (managementClient != null) {
             if (SessionTests.entityNameCreatedForAllTests != null) {
@@ -259,7 +259,7 @@ public abstract class SessionTests extends Tests {
         this.sender.send(message);
 
         this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, null, ReceiveMode.PEEKLOCK);
-        Assert.assertNotNull("Did not receive a session", this.session);
+        Assertions.assertNotNull(this.session, "Did not receive a session");
     }
 
     @Test
@@ -270,11 +270,11 @@ public abstract class SessionTests extends Tests {
 		Thread.sleep(1000);
 		this.session.renewSessionLock();
 		Instant renewedValidity = this.session.getLockedUntilUtc();
-		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time. Before :" + initialValidity.toString() + ", After:" + renewedValidity.toString(), renewedValidity.isAfter(initialValidity));
+		Assertions.assertTrue(renewedValidity.isAfter(initialValidity), "RenewSessionLock did not renew session lockeduntil time. Before :" + initialValidity.toString() + ", After:" + renewedValidity.toString());
 		Thread.sleep(1000);
 		this.session.renewSessionLock();
 		Instant renewedValidity2 = this.session.getLockedUntilUtc();
-		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time. Before :" + renewedValidity.toString() + ", After:" + renewedValidity2.toString(), renewedValidity2.isAfter(renewedValidity));
+		Assertions.assertTrue(renewedValidity2.isAfter(renewedValidity), "RenewSessionLock did not renew session lockeduntil time. Before :" + renewedValidity.toString() + ", After:" + renewedValidity2.toString());
     }
 
     @Test
@@ -282,17 +282,17 @@ public abstract class SessionTests extends Tests {
         String sessionId = TestUtils.getRandomString();
         this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
         byte[] initialState = this.session.getState();
-        Assert.assertNull("Session state is not null for a new session", initialState);
+        Assertions.assertNull(initialState, "Session state is not null for a new session");
         byte[] customState = "Custom Session State".getBytes();
         this.session.setState(customState);
         byte[] updatedState = this.session.getState();
-        Assert.assertArrayEquals("Session state not updated properly", customState, updatedState);
+        Assertions.assertArrayEquals(customState, updatedState, "Session state not updated properly");
         this.session.setState(null);
         updatedState = this.session.getState();
-        Assert.assertNull("Session state is not removed by setting a null state", updatedState);
+        Assertions.assertNull(updatedState, "Session state is not removed by setting a null state");
         this.session.setState(customState);
         updatedState = this.session.getState();
-        Assert.assertArrayEquals("Session state not updated properly", customState, updatedState);
+        Assertions.assertArrayEquals(customState, updatedState, "Session state not updated properly");
     }
 
     @Test
@@ -302,7 +302,7 @@ public abstract class SessionTests extends Tests {
         ClientSettings shortTimeoutClientSettings = new ClientSettings(commonClientSettings.getTokenProvider(), commonClientSettings.getRetryPolicy(), Duration.ofSeconds(10));
         try {
             this.session = ClientFactory.acceptSessionFromEntityPath(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, null, shortTimeoutClientSettings, ReceiveMode.PEEKLOCK);
-            Assert.fail("Session " + this.session.getSessionId() + " accepted even though there is no such session on the entity.");
+            Assertions.fail("Session " + this.session.getSessionId() + " accepted even though there is no such session on the entity.");
         } catch (TimeoutException te) {
             // Expected..
         }
@@ -313,7 +313,7 @@ public abstract class SessionTests extends Tests {
         message.setSessionId(sessionId);
         this.sender.send(message);
         this.session = ClientFactory.acceptSessionFromEntityPath(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, null, shortTimeoutClientSettings, ReceiveMode.PEEKLOCK);
-        Assert.assertEquals("Accepted an unexpceted session.", sessionId, this.session.getSessionId());
+        Assertions.assertEquals(sessionId, this.session.getSessionId(), "Accepted an unexpceted session.");
     }
 
     @Test

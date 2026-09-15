@@ -4,7 +4,9 @@
 package com.microsoft.azure.batch;
 
 import org.joda.time.Period;
-import org.junit.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,7 +18,7 @@ import com.microsoft.azure.batch.protocol.models.*;
 public class PoolTests extends BatchIntegrationTestBase {
     private static NetworkConfiguration networkConfiguration;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         if(isRecordMode()) {
             createClient(AuthMode.AAD);
@@ -56,14 +58,14 @@ public class PoolTests extends BatchIntegrationTestBase {
                     .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
             batchClient.poolOperations().createPool(addParameter);
         }
-        Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+        Assertions.assertTrue(batchClient.poolOperations().existsPool(poolId));
 
         try {
             List<CloudPool> pools = batchClient.poolOperations()
                 .listPools(new DetailLevel.Builder().withSelectClause("id, state").build());
-            Assert.assertTrue(pools.size() > 0);
-            Assert.assertNotNull(pools.get(0).id());
-            Assert.assertNull(pools.get(0).vmSize());
+            Assertions.assertTrue(pools.size() > 0);
+            Assertions.assertNotNull(pools.get(0).id());
+            Assertions.assertNull(pools.get(0).vmSize());
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -114,7 +116,7 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         try {
             // GET
-            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+            Assertions.assertTrue(batchClient.poolOperations().existsPool(poolId));
 
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
@@ -122,20 +124,20 @@ public class PoolTests extends BatchIntegrationTestBase {
             // Wait for the VM to be allocated
             CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_MILLISECONDS);
 
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.DEFAULT, pool.targetNodeCommunicationMode());
-            Assert.assertTrue(pool.networkConfiguration().enableAcceleratedNetworking());
+            Assertions.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
+            Assertions.assertNotNull(pool.currentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
+            Assertions.assertEquals(NodeCommunicationMode.DEFAULT, pool.targetNodeCommunicationMode());
+            Assertions.assertTrue(pool.networkConfiguration().enableAcceleratedNetworking());
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
-            Assert.assertEquals(1, inboundEndpoints.size());
+            Assertions.assertEquals(1, inboundEndpoints.size());
             InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
-            Assert.assertEquals(5000, inboundEndpoint.backendPort());
-            Assert.assertTrue(inboundEndpoint.frontendPort() >= 60000);
-            Assert.assertTrue(inboundEndpoint.frontendPort() <= 60040);
-            Assert.assertTrue(inboundEndpoint.name().startsWith("testinbound."));
+            Assertions.assertEquals(5000, inboundEndpoint.backendPort());
+            Assertions.assertTrue(inboundEndpoint.frontendPort() >= 60000);
+            Assertions.assertTrue(inboundEndpoint.frontendPort() <= 60040);
+            Assertions.assertTrue(inboundEndpoint.name().startsWith("testinbound."));
 
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
@@ -146,11 +148,11 @@ public class PoolTests extends BatchIntegrationTestBase {
                     break;
                 }
             }
-            Assert.assertNotNull(poolNodeCount); // Single pool only
-            Assert.assertNotNull(poolNodeCount.lowPriority());
+            Assertions.assertNotNull(poolNodeCount); // Single pool only
+            Assertions.assertNotNull(poolNodeCount.lowPriority());
 
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, poolNodeCount.lowPriority().total());
-            Assert.assertEquals(POOL_VM_COUNT, poolNodeCount.dedicated().total());
+            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, poolNodeCount.lowPriority().total());
+            Assertions.assertEquals(POOL_VM_COUNT, poolNodeCount.dedicated().total());
 
             // Update NodeCommunicationMode to Simplified
             PoolUpdatePropertiesParameter updatePropertiesParam = new PoolUpdatePropertiesParameter();
@@ -161,23 +163,23 @@ public class PoolTests extends BatchIntegrationTestBase {
 
             batchClient.poolOperations().updatePoolProperties(poolId, updatePropertiesParam);
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.targetNodeCommunicationMode());
+            Assertions.assertNotNull(pool.currentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
+            Assertions.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.targetNodeCommunicationMode());
 
             // Patch NodeCommunicationMode to Classic
             PoolPatchParameter patchParam = new PoolPatchParameter();
             patchParam.withTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
             batchClient.poolOperations().patchPool(poolId, patchParam);
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.CLASSIC, pool.targetNodeCommunicationMode());
+            Assertions.assertNotNull(pool.currentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
+            Assertions.assertEquals(NodeCommunicationMode.CLASSIC, pool.targetNodeCommunicationMode());
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, 1, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(1, (long) pool.targetDedicatedNodes());
-            Assert.assertEquals(1, (long) pool.targetLowPriorityNodes());
+            Assertions.assertEquals(1, (long) pool.targetDedicatedNodes());
+            Assertions.assertEquals(1, (long) pool.targetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -201,7 +203,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
-            Assert.assertTrue(deleted);
+            Assertions.assertTrue(deleted);
 
         } finally {
             try {
@@ -250,14 +252,14 @@ public class PoolTests extends BatchIntegrationTestBase {
             // Wait for the VM to be allocated
             CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_Milliseconds);
 
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
+            Assertions.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             for(ComputeNode node : computeNodes){
                 NodeVMExtension nodeVMExtension = batchClient.protocolLayer().computeNodeExtensions().get(poolId, node.id(), VM_EXTENSION_NAME);
-                Assert.assertNotNull(nodeVMExtension);
-                Assert.assertTrue(nodeVMExtension.vmExtension().enableAutomaticUpgrade());
+                Assertions.assertNotNull(nodeVMExtension);
+                Assertions.assertTrue(nodeVMExtension.vmExtension().enableAutomaticUpgrade());
             }
 
             // DELETE
@@ -280,7 +282,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
-            Assert.assertTrue(deleted);
+            Assertions.assertTrue(deleted);
         }finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -326,7 +328,7 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         try {
             // GET
-            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+            Assertions.assertTrue(batchClient.poolOperations().existsPool(poolId));
 
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
@@ -334,9 +336,9 @@ public class PoolTests extends BatchIntegrationTestBase {
             // Wait for the VM to be allocated
             CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_MILLISECONDS);
 
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            Assertions.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
             // Check container type
-            Assert.assertEquals(ContainerType.DOCKER_COMPATIBLE,pool.virtualMachineConfiguration().containerConfiguration().type());
+            Assertions.assertEquals(ContainerType.DOCKER_COMPATIBLE,pool.virtualMachineConfiguration().containerConfiguration().type());
             // DELETE
             boolean deleted = false;
             elapsedTime = 0L;
@@ -359,7 +361,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
-            Assert.assertTrue(deleted);
+            Assertions.assertTrue(deleted);
         }
         finally {
             try {
@@ -401,8 +403,8 @@ public class PoolTests extends BatchIntegrationTestBase {
             batchClient.poolOperations().createPool(poolConfig);
 
             CloudPool pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(lun, pool.virtualMachineConfiguration().dataDisks().get(0).lun());
-            Assert.assertEquals(diskSizeGB, pool.virtualMachineConfiguration().dataDisks().get(0).diskSizeGB());
+            Assertions.assertEquals(lun, pool.virtualMachineConfiguration().dataDisks().get(0).lun());
+            Assertions.assertEquals(diskSizeGB, pool.virtualMachineConfiguration().dataDisks().get(0).diskSizeGB());
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -440,7 +442,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         } catch (BatchErrorException err) {
             if (err.body().code().equals("InsufficientPermissions")) {
                 // Accepted Error
-                Assert.assertTrue(err.body().values().get(0).value().contains(
+                Assertions.assertTrue(err.body().values().get(0).value().contains(
                         "The user identity used for this operation does not have the required privilege Microsoft.Compute/images/read on the specified resource"));
             } else {
                 if (!err.body().code().equals("InvalidPropertyValue")) {
@@ -489,7 +491,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 // Accepted Error
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
-                        Assert.assertEquals(
+                        Assertions.assertEquals(
                                 "The specified imageReference with publisher Canonical offer UbuntuServer sku 18.04-LTS does not support container feature.",
                                 err.body().values().get(i).value());
                         return;
@@ -549,7 +551,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 // Accepted Error
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
-                        Assert.assertEquals(
+                        Assertions.assertEquals(
                                 "The user configuration for user account 'testaccount' has a mismatch with the OS (Windows/Linux) configuration specified in VirtualMachineConfiguration",
                                 err.body().values().get(i).value());
                         return;
@@ -600,7 +602,7 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         try {
             // GET
-            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+            Assertions.assertTrue(batchClient.poolOperations().existsPool(poolId));
 
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
@@ -608,15 +610,15 @@ public class PoolTests extends BatchIntegrationTestBase {
             // Wait for the VM to be allocated
             CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_Milliseconds);
 
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
+            Assertions.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, null, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(0, (long) pool.targetDedicatedNodes());
-            Assert.assertEquals(1, (long) pool.targetLowPriorityNodes());
+            Assertions.assertEquals(0, (long) pool.targetDedicatedNodes());
+            Assertions.assertEquals(1, (long) pool.targetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -638,7 +640,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
-            Assert.assertTrue(deleted);
+            Assertions.assertTrue(deleted);
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -659,7 +661,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         // Wait for the VM to be allocated
         while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull(pool);
+            Assertions.assertNotNull(pool);
 
             if (pool.allocationState() == targetState) {
                 allocationStateReached = true;
@@ -671,7 +673,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
-        Assert.assertTrue("The pool did not reach a allocationStateReached state in the allotted time", allocationStateReached);
+        Assertions.assertTrue(allocationStateReached, "The pool did not reach a allocationStateReached state in the allotted time");
         return pool;
     }
 
@@ -709,7 +711,7 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         try {
             // GET
-            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+            Assertions.assertTrue(batchClient.poolOperations().existsPool(poolId));
 
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
@@ -717,15 +719,15 @@ public class PoolTests extends BatchIntegrationTestBase {
             // Wait for the VM to be allocated
             CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_Milliseconds);
 
-            Assert.assertNotNull(pool.userAccounts());
-            Assert.assertEquals("test-user-1", pool.userAccounts().get(0).name());
-            Assert.assertEquals(ElevationLevel.NON_ADMIN, pool.userAccounts().get(0).elevationLevel());
-            Assert.assertNull(pool.userAccounts().get(0).password());
-            Assert.assertEquals(ElevationLevel.ADMIN, pool.userAccounts().get(1).elevationLevel());
+            Assertions.assertNotNull(pool.userAccounts());
+            Assertions.assertEquals("test-user-1", pool.userAccounts().get(0).name());
+            Assertions.assertEquals(ElevationLevel.NON_ADMIN, pool.userAccounts().get(0).elevationLevel());
+            Assertions.assertNull(pool.userAccounts().get(0).password());
+            Assertions.assertEquals(ElevationLevel.ADMIN, pool.userAccounts().get(1).elevationLevel());
 
             // LIST
             List<CloudPool> pools = batchClient.poolOperations().listPools();
-            Assert.assertTrue(pools.size() > 0);
+            Assertions.assertTrue(pools.size() > 0);
 
             boolean found = false;
             for (CloudPool p : pools) {
@@ -735,7 +737,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
             }
 
-            Assert.assertTrue(found);
+            Assertions.assertTrue(found);
 
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
@@ -746,10 +748,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                     break;
                 }
             }
-            Assert.assertNotNull(poolNodeCount); // Single pool only
-            Assert.assertNotNull(poolNodeCount.lowPriority());
-            Assert.assertEquals(0, poolNodeCount.lowPriority().total());
-            Assert.assertEquals(3, poolNodeCount.dedicated().total());
+            Assertions.assertNotNull(poolNodeCount); // Single pool only
+            Assertions.assertNotNull(poolNodeCount.lowPriority());
+            Assertions.assertEquals(0, poolNodeCount.lowPriority().total());
+            Assertions.assertEquals(3, poolNodeCount.dedicated().total());
 
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<>();
@@ -757,13 +759,13 @@ public class PoolTests extends BatchIntegrationTestBase {
             batchClient.poolOperations().patchPool(poolId, null, null, null, metadata);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertTrue(pool.metadata().size() == 1);
-            Assert.assertTrue(pool.metadata().get(0).name().equals("key1"));
+            Assertions.assertTrue(pool.metadata().size() == 1);
+            Assertions.assertTrue(pool.metadata().get(0).name().equals("key1"));
 
             batchClient.poolOperations().updatePoolProperties(poolId, null, new LinkedList<CertificateReference>(),
                     new LinkedList<ApplicationPackageReference>(), new LinkedList<MetadataItem>());
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNull(pool.metadata());
+            Assertions.assertNull(pool.metadata());
 
             // DELETE
             boolean deleted = false;
@@ -785,7 +787,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 threadSleepInRecordMode(5 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
-            Assert.assertTrue(deleted);
+            Assertions.assertTrue(deleted);
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -843,11 +845,11 @@ public class PoolTests extends BatchIntegrationTestBase {
         }
         try {
             CloudPool pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull(pool);
-            Assert.assertEquals("automatic", pool.upgradePolicy().mode().toString());
-            Assert.assertTrue(pool.upgradePolicy().automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
-            Assert.assertTrue(pool.upgradePolicy().rollingUpgradePolicy().enableCrossZoneUpgrade());
-            Assert.assertEquals(20, (int) pool.upgradePolicy().rollingUpgradePolicy().maxBatchInstancePercent());
+            Assertions.assertNotNull(pool);
+            Assertions.assertEquals("automatic", pool.upgradePolicy().mode().toString());
+            Assertions.assertTrue(pool.upgradePolicy().automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
+            Assertions.assertTrue(pool.upgradePolicy().rollingUpgradePolicy().enableCrossZoneUpgrade());
+            Assertions.assertEquals(20, (int) pool.upgradePolicy().rollingUpgradePolicy().maxBatchInstancePercent());
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -902,19 +904,19 @@ public class PoolTests extends BatchIntegrationTestBase {
         }
         try {
             CloudPool pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull(pool);
+            Assertions.assertNotNull(pool);
             SecurityProfile sp = pool.virtualMachineConfiguration().securityProfile();
-            Assert.assertEquals(SecurityTypes.TRUSTED_LAUNCH, sp.securityType());
-            Assert.assertTrue(sp.encryptionAtHost());
-            Assert.assertTrue(sp.uefiSettings().secureBootEnabled());
-            Assert.assertTrue(sp.uefiSettings().vTpmEnabled());
+            Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, sp.securityType());
+            Assertions.assertTrue(sp.encryptionAtHost());
+            Assertions.assertTrue(sp.uefiSettings().secureBootEnabled());
+            Assertions.assertTrue(sp.uefiSettings().vTpmEnabled());
 
             OSDisk disk = pool.virtualMachineConfiguration().osDisk();
-            Assert.assertEquals("readwrite", pool.virtualMachineConfiguration().osDisk().caching().toString().toLowerCase());
+            Assertions.assertEquals("readwrite", pool.virtualMachineConfiguration().osDisk().caching().toString().toLowerCase());
 
-            Assert.assertEquals(StorageAccountType.STANDARD_LRS, disk.managedDisk().storageAccountType());
-            Assert.assertEquals(Integer.valueOf(50), disk.diskSizeGB());
-            Assert.assertTrue(disk.writeAcceleratorEnabled());
+            Assertions.assertEquals(StorageAccountType.STANDARD_LRS, disk.managedDisk().storageAccountType());
+            Assertions.assertEquals(Integer.valueOf(50), disk.diskSizeGB());
+            Assertions.assertTrue(disk.writeAcceleratorEnabled());
         } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
@@ -969,16 +971,16 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         try {
             CloudPool pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertNotNull(pool);
+            Assertions.assertNotNull(pool);
 
             SecurityProfile sp = pool.virtualMachineConfiguration().securityProfile();
-            Assert.assertEquals(SecurityTypes.CONFIDENTIAL_VM, sp.securityType());
-            Assert.assertTrue(sp.encryptionAtHost());
-            Assert.assertTrue(sp.uefiSettings().secureBootEnabled());
-            Assert.assertTrue(sp.uefiSettings().vTpmEnabled());
+            Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, sp.securityType());
+            Assertions.assertTrue(sp.encryptionAtHost());
+            Assertions.assertTrue(sp.uefiSettings().secureBootEnabled());
+            Assertions.assertTrue(sp.uefiSettings().vTpmEnabled());
 
             OSDisk disk = pool.virtualMachineConfiguration().osDisk();
-            Assert.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY, disk.managedDisk().securityProfile().securityEncryptionType());
+            Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY, disk.managedDisk().securityProfile().securityEncryptionType());
 
         } finally {
             try {
@@ -1023,11 +1025,11 @@ public class PoolTests extends BatchIntegrationTestBase {
         try {
             // Wait for the pool to be steady and nodes to be idle
             CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000);
-            Assert.assertNotNull(pool);  // Assert that pool is not null
-            Assert.assertEquals(AllocationState.STEADY, pool.allocationState());  // Ensure pool is steady
+            Assertions.assertNotNull(pool);  // Assert that pool is not null
+            Assertions.assertEquals(AllocationState.STEADY, pool.allocationState());  // Ensure pool is steady
 
             List<ComputeNode> nodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
-            Assert.assertFalse(nodes.isEmpty());  // Assert that there is at least one compute node
+            Assertions.assertFalse(nodes.isEmpty());  // Assert that there is at least one compute node
 
             String nodeId = nodes.get(0).id();
             ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
@@ -1045,7 +1047,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                     threadSleepInRecordMode(15 * 1000);
                 }
             }
-            Assert.assertEquals(ComputeNodeState.DEALLOCATED, computeNode.state());  // Assert that node is deallocated
+            Assertions.assertEquals(ComputeNodeState.DEALLOCATED, computeNode.state());  // Assert that node is deallocated
 
             // Start the node again using compute node operations
             batchClient.computeNodeOperations().startComputeNode(poolId, nodeId);
@@ -1060,7 +1062,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                     threadSleepInRecordMode(15 * 1000);
                 }
             }
-            Assert.assertEquals(ComputeNodeState.IDLE, computeNode.state());  // Assert the node is idle again
+            Assertions.assertEquals(ComputeNodeState.IDLE, computeNode.state());  // Assert the node is idle again
 
         } finally {
             // Clean up
