@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks.
+
 ### Other Changes
 
 ## 1.6.0 (2026-08-17)
