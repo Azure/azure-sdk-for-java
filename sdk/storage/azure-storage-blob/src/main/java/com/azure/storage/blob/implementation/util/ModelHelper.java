@@ -93,7 +93,7 @@ public final class ModelHelper {
      * but it is not a public API change.
      */
     private static final StorageResponseSerializationFormat DEFAULT_SERIALIZATION_FORMAT
-        = StorageResponseSerializationFormat.XML;
+        = StorageResponseSerializationFormat.ARROW;
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
