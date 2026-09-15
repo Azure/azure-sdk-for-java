@@ -4,6 +4,7 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -23,6 +24,7 @@ import java.util.Map;
  * The effective stable realtime session settings returned by the voice-agent service.
  */
 @Immutable
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceAgentSessionResponseConfig implements JsonSerializable<VoiceAgentSessionResponseConfig> {
 
     /*

@@ -4,9 +4,12 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.ai.agents.implementation.utils.Beta;
+
 /**
  * Request modes supported by Model Router session affinity.
  */
+@Beta(warningText = "Preview API. ModelRouterControls=V1Preview")
 public enum SessionAffinityRequestMode {
     /**
      * Attempts to reuse the model associated with the selected conversation identifier.
