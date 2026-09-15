@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Harden the local telemetry spool directory against symlink and path-squatting attacks, and reject telemetry retries whose stored connection string targets an untrusted endpoint. ([#50463](https://github.com/Azure/azure-sdk-for-java/pull/50463))
+
 ### Other Changes
 
 ## 1.6.0 (2026-08-17)
