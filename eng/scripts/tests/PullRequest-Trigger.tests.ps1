@@ -241,8 +241,8 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
         $jobs | Should -Not -Match '(?m)^    if:'
         $spellingSteps.Count | Should -Be 1
         $spellingSteps[0] | Should -Match '(?m)^        shell: pwsh\s*$'
-        $spellingSteps[0] | Should -Match ('(?s)run: >\s*\./eng/common/scripts/check-spelling-in-changed-files\.ps1\s*' +
-            '-CspellConfigPath \.vscode/cspell\.json\s*-ExitWithError\s*-SourceCommittish HEAD\s*-TargetCommittish HEAD\^')
+        $spellingSteps[0] | Should -Match ('(?m)^        run: \./eng/scripts/Invoke-PRValidation\.ps1 ' +
+            '-Check Spelling -OutputDirectory \$env:PR_VALIDATION_DIRECTORY\s*$')
     }
 
     It 'tracks the reviewed top-level docs file types' {
