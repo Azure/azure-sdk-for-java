@@ -95,7 +95,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * Response-specific audio settings.
      */
     @Generated
-    private PickPropertiesVoiceAgentAudioConfig audio;
+    private VoiceAgentResponseAudioConfig audio;
 
     /*
      * Conversation items used as inline response input.
@@ -356,20 +356,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @return the audio value.
      */
     @Generated
-    public PickPropertiesVoiceAgentAudioConfig getAudio() {
+    public VoiceAgentResponseAudioConfig getAudio() {
         return this.audio;
-    }
-
-    /**
-     * Set the audio property: Response-specific audio settings.
-     *
-     * @param audio the audio value to set.
-     * @return the VoiceAgentResponseCreateParams object itself.
-     */
-    @Generated
-    public VoiceAgentResponseCreateParams setAudio(PickPropertiesVoiceAgentAudioConfig audio) {
-        this.audio = audio;
-        return this;
     }
 
     /**
@@ -525,8 +513,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
                         = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
                     deserializedVoiceAgentResponseCreateParams.outputModalities = outputModalities;
                 } else if ("audio".equals(fieldName)) {
-                    deserializedVoiceAgentResponseCreateParams.audio
-                        = PickPropertiesVoiceAgentAudioConfig.fromJson(reader);
+                    deserializedVoiceAgentResponseCreateParams.audio = VoiceAgentResponseAudioConfig.fromJson(reader);
                 } else if ("input".equals(fieldName)) {
                     List<RealtimeConversationItem> input
                         = reader.readArray(reader1 -> RealtimeConversationItem.fromJson(reader1));
@@ -543,5 +530,17 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
             }
             return deserializedVoiceAgentResponseCreateParams;
         });
+    }
+
+    /**
+     * Set the audio property: Response-specific audio settings.
+     *
+     * @param audio the audio value to set.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    @Generated
+    public VoiceAgentResponseCreateParams setAudio(VoiceAgentResponseAudioConfig audio) {
+        this.audio = audio;
+        return this;
     }
 }

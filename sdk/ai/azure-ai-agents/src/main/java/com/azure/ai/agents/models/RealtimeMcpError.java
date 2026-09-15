@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The RealtimeMCPError model.
+ * The RealtimeMcpError model.
  */
 @Immutable
-public class RealtimeMCPError implements JsonSerializable<RealtimeMCPError> {
+public class RealtimeMcpError implements JsonSerializable<RealtimeMcpError> {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeMcpErrorType type = RealtimeMcpErrorType.fromString("RealtimeMCPError");
+    private RealtimeMcpErrorType type = RealtimeMcpErrorType.fromString("RealtimeMcpError");
 
     /**
-     * Creates an instance of RealtimeMCPError class.
+     * Creates an instance of RealtimeMcpError class.
      */
     @Generated
-    public RealtimeMCPError() {
+    public RealtimeMcpError() {
     }
 
     /**
@@ -52,15 +52,15 @@ public class RealtimeMCPError implements JsonSerializable<RealtimeMCPError> {
     }
 
     /**
-     * Reads an instance of RealtimeMCPError from the JsonReader.
+     * Reads an instance of RealtimeMcpError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeMCPError if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of RealtimeMcpError if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RealtimeMCPError.
+     * @throws IOException If an error occurs while reading the RealtimeMcpError.
      */
     @Generated
-    public static RealtimeMCPError fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeMcpError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -78,9 +78,9 @@ public class RealtimeMCPError implements JsonSerializable<RealtimeMCPError> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("protocol_error".equals(discriminatorValue)) {
-                    return RealtimeMCPProtocolError.fromJson(readerToUse.reset());
+                    return RealtimeMcpProtocolError.fromJson(readerToUse.reset());
                 } else if ("tool_execution_error".equals(discriminatorValue)) {
-                    return RealtimeMCPToolExecutionError.fromJson(readerToUse.reset());
+                    return RealtimeMcpToolExecutionError.fromJson(readerToUse.reset());
                 } else if ("http_error".equals(discriminatorValue)) {
                     return RealtimeMcpHttpError.fromJson(readerToUse.reset());
                 } else {
@@ -91,19 +91,19 @@ public class RealtimeMCPError implements JsonSerializable<RealtimeMCPError> {
     }
 
     @Generated
-    static RealtimeMCPError fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static RealtimeMcpError fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RealtimeMCPError deserializedRealtimeMCPError = new RealtimeMCPError();
+            RealtimeMcpError deserializedRealtimeMcpError = new RealtimeMcpError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedRealtimeMCPError.type = RealtimeMcpErrorType.fromString(reader.getString());
+                    deserializedRealtimeMcpError.type = RealtimeMcpErrorType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedRealtimeMCPError;
+            return deserializedRealtimeMcpError;
         });
     }
 }

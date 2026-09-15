@@ -24,6 +24,23 @@ import com.azure.ai.agents.models.VersionSelector;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
+    private static UpdateTelephonyBindingRequestAccessor updateTelephonyBindingRequestAccessor;
+
+    public interface UpdateTelephonyBindingRequestAccessor {
+        UpdateTelephonyBindingRequest prepareModelForJsonMergePatch(
+            UpdateTelephonyBindingRequest updateTelephonyBindingRequest, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateTelephonyBindingRequest updateTelephonyBindingRequest);
+    }
+
+    public static void setUpdateTelephonyBindingRequestAccessor(UpdateTelephonyBindingRequestAccessor accessor) {
+        updateTelephonyBindingRequestAccessor = accessor;
+    }
+
+    public static UpdateTelephonyBindingRequestAccessor getUpdateTelephonyBindingRequestAccessor() {
+        return updateTelephonyBindingRequestAccessor;
+    }
+
     private static AgentEndpointConfigAccessor agentEndpointConfigAccessor;
 
     public interface AgentEndpointConfigAccessor {
@@ -243,23 +260,6 @@ public class JsonMergePatchHelper {
 
     public static AgentCardSkillAccessor getAgentCardSkillAccessor() {
         return agentCardSkillAccessor;
-    }
-
-    private static UpdateTelephonyBindingRequestAccessor updateTelephonyBindingRequestAccessor;
-
-    public interface UpdateTelephonyBindingRequestAccessor {
-        UpdateTelephonyBindingRequest prepareModelForJsonMergePatch(
-            UpdateTelephonyBindingRequest updateTelephonyBindingRequest, boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(UpdateTelephonyBindingRequest updateTelephonyBindingRequest);
-    }
-
-    public static void setUpdateTelephonyBindingRequestAccessor(UpdateTelephonyBindingRequestAccessor accessor) {
-        updateTelephonyBindingRequestAccessor = accessor;
-    }
-
-    public static UpdateTelephonyBindingRequestAccessor getUpdateTelephonyBindingRequestAccessor() {
-        return updateTelephonyBindingRequestAccessor;
     }
 
     private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;

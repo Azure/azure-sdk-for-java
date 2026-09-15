@@ -57,7 +57,7 @@ public final class ToolboxesAsyncClient {
      *
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -67,7 +67,7 @@ public final class ToolboxesAsyncClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -108,9 +108,9 @@ public final class ToolboxesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -124,7 +124,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -188,7 +188,7 @@ public final class ToolboxesAsyncClient {
      *
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -207,7 +207,7 @@ public final class ToolboxesAsyncClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -292,7 +292,7 @@ public final class ToolboxesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -311,7 +311,7 @@ public final class ToolboxesAsyncClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -394,7 +394,7 @@ public final class ToolboxesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -408,7 +408,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -469,7 +469,7 @@ public final class ToolboxesAsyncClient {
      *
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -483,7 +483,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -546,7 +546,7 @@ public final class ToolboxesAsyncClient {
      *
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -554,9 +554,9 @@ public final class ToolboxesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -575,7 +575,7 @@ public final class ToolboxesAsyncClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -1045,21 +1045,21 @@ public final class ToolboxesAsyncClient {
      *
      * Invokes the latest version of the specified toolbox through its MCP endpoint.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>

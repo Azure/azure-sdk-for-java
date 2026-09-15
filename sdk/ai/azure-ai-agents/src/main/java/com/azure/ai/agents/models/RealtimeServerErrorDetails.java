@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The RealtimeServerEventErrorError model.
+ * The RealtimeServerErrorDetails model.
  */
 @Immutable
-public final class RealtimeServerEventErrorError implements JsonSerializable<RealtimeServerEventErrorError> {
+public final class RealtimeServerErrorDetails implements JsonSerializable<RealtimeServerErrorDetails> {
 
     /*
      * The type property.
@@ -48,13 +48,13 @@ public final class RealtimeServerEventErrorError implements JsonSerializable<Rea
     private String eventId;
 
     /**
-     * Creates an instance of RealtimeServerEventErrorError class.
+     * Creates an instance of RealtimeServerErrorDetails class.
      *
      * @param type the type value to set.
      * @param message the message value to set.
      */
     @Generated
-    private RealtimeServerEventErrorError(String type, String message) {
+    private RealtimeServerErrorDetails(String type, String message) {
         this.type = type;
         this.message = message;
     }
@@ -125,16 +125,16 @@ public final class RealtimeServerEventErrorError implements JsonSerializable<Rea
     }
 
     /**
-     * Reads an instance of RealtimeServerEventErrorError from the JsonReader.
+     * Reads an instance of RealtimeServerErrorDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventErrorError if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of RealtimeServerErrorDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventErrorError.
+     * @throws IOException If an error occurs while reading the RealtimeServerErrorDetails.
      */
     @Generated
-    public static RealtimeServerEventErrorError fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerErrorDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String type = null;
             String message = null;
@@ -158,12 +158,12 @@ public final class RealtimeServerEventErrorError implements JsonSerializable<Rea
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventErrorError deserializedRealtimeServerEventErrorError
-                = new RealtimeServerEventErrorError(type, message);
-            deserializedRealtimeServerEventErrorError.code = code;
-            deserializedRealtimeServerEventErrorError.param = param;
-            deserializedRealtimeServerEventErrorError.eventId = eventId;
-            return deserializedRealtimeServerEventErrorError;
+            RealtimeServerErrorDetails deserializedRealtimeServerErrorDetails
+                = new RealtimeServerErrorDetails(type, message);
+            deserializedRealtimeServerErrorDetails.code = code;
+            deserializedRealtimeServerErrorDetails.param = param;
+            deserializedRealtimeServerErrorDetails.eventId = eventId;
+            return deserializedRealtimeServerErrorDetails;
         });
     }
 }

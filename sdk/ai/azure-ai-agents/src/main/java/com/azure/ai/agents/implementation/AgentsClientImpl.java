@@ -31,7 +31,7 @@ public final class AgentsClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -45,7 +45,7 @@ public final class AgentsClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -59,7 +59,7 @@ public final class AgentsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -73,11 +73,39 @@ public final class AgentsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
+    }
+
+    /**
+     * The BetaVoiceAgentsConversationsImpl object to access its operations.
+     */
+    private final BetaVoiceAgentsConversationsImpl betaVoiceAgentsConversations;
+
+    /**
+     * Gets the BetaVoiceAgentsConversationsImpl object to access its operations.
+     *
+     * @return the BetaVoiceAgentsConversationsImpl object.
+     */
+    public BetaVoiceAgentsConversationsImpl getBetaVoiceAgentsConversations() {
+        return this.betaVoiceAgentsConversations;
+    }
+
+    /**
+     * The BetaVoiceAgentsTelephoniesImpl object to access its operations.
+     */
+    private final BetaVoiceAgentsTelephoniesImpl betaVoiceAgentsTelephonies;
+
+    /**
+     * Gets the BetaVoiceAgentsTelephoniesImpl object to access its operations.
+     *
+     * @return the BetaVoiceAgentsTelephoniesImpl object.
+     */
+    public BetaVoiceAgentsTelephoniesImpl getBetaVoiceAgentsTelephonies() {
+        return this.betaVoiceAgentsTelephonies;
     }
 
     /**
@@ -87,7 +115,7 @@ public final class AgentsClientImpl {
 
     /**
      * Gets the BetaMemoryStoresImpl object to access its operations.
-     * 
+     *
      * @return the BetaMemoryStoresImpl object.
      */
     public BetaMemoryStoresImpl getBetaMemoryStores() {
@@ -101,39 +129,11 @@ public final class AgentsClientImpl {
 
     /**
      * Gets the BetaAgentsImpl object to access its operations.
-     * 
+     *
      * @return the BetaAgentsImpl object.
      */
     public BetaAgentsImpl getBetaAgents() {
         return this.betaAgents;
-    }
-
-    /**
-     * The BetaAgentTelephoniesImpl object to access its operations.
-     */
-    private final BetaAgentTelephoniesImpl betaAgentTelephonies;
-
-    /**
-     * Gets the BetaAgentTelephoniesImpl object to access its operations.
-     * 
-     * @return the BetaAgentTelephoniesImpl object.
-     */
-    public BetaAgentTelephoniesImpl getBetaAgentTelephonies() {
-        return this.betaAgentTelephonies;
-    }
-
-    /**
-     * The BetaAgentEndpointConversationsImpl object to access its operations.
-     */
-    private final BetaAgentEndpointConversationsImpl betaAgentEndpointConversations;
-
-    /**
-     * Gets the BetaAgentEndpointConversationsImpl object to access its operations.
-     * 
-     * @return the BetaAgentEndpointConversationsImpl object.
-     */
-    public BetaAgentEndpointConversationsImpl getBetaAgentEndpointConversations() {
-        return this.betaAgentEndpointConversations;
     }
 
     /**
@@ -143,7 +143,7 @@ public final class AgentsClientImpl {
 
     /**
      * Gets the AgentsImpl object to access its operations.
-     * 
+     *
      * @return the AgentsImpl object.
      */
     public AgentsImpl getAgents() {
@@ -157,7 +157,7 @@ public final class AgentsClientImpl {
 
     /**
      * Gets the ToolboxesImpl object to access its operations.
-     * 
+     *
      * @return the ToolboxesImpl object.
      */
     public ToolboxesImpl getToolboxes() {
@@ -166,7 +166,7 @@ public final class AgentsClientImpl {
 
     /**
      * Initializes an instance of AgentsClient client.
-     * 
+     *
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
      * If you only have one Project in your Foundry Hub, or to target the default Project
@@ -181,7 +181,7 @@ public final class AgentsClientImpl {
 
     /**
      * Initializes an instance of AgentsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
@@ -196,7 +196,7 @@ public final class AgentsClientImpl {
 
     /**
      * Initializes an instance of AgentsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Foundry Project endpoint in the form
@@ -212,10 +212,10 @@ public final class AgentsClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
+        this.betaVoiceAgentsConversations = new BetaVoiceAgentsConversationsImpl(this);
+        this.betaVoiceAgentsTelephonies = new BetaVoiceAgentsTelephoniesImpl(this);
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
         this.betaAgents = new BetaAgentsImpl(this);
-        this.betaAgentTelephonies = new BetaAgentTelephoniesImpl(this);
-        this.betaAgentEndpointConversations = new BetaAgentEndpointConversationsImpl(this);
         this.agents = new AgentsImpl(this);
         this.toolboxes = new ToolboxesImpl(this);
     }

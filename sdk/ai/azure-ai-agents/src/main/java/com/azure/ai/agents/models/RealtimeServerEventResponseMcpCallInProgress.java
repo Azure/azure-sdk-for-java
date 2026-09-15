@@ -11,16 +11,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when an MCP tool call has failed.
+ * Returned when an MCP tool call has started and is in progress.
  */
 @Immutable
-public final class RealtimeServerEventResponseMCPCallFailed extends RealtimeServerEvent {
+public final class RealtimeServerEventResponseMcpCallInProgress extends RealtimeServerEvent {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_MCP_CALL_FAILED;
+    private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_MCP_CALL_IN_PROGRESS;
 
     /*
      * The unique ID of the server event.
@@ -41,14 +41,14 @@ public final class RealtimeServerEventResponseMCPCallFailed extends RealtimeServ
     private final String itemId;
 
     /**
-     * Creates an instance of RealtimeServerEventResponseMCPCallFailed class.
+     * Creates an instance of RealtimeServerEventResponseMcpCallInProgress class.
      *
      * @param eventId the eventId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private RealtimeServerEventResponseMCPCallFailed(String eventId, long outputIndex, String itemId) {
+    private RealtimeServerEventResponseMcpCallInProgress(String eventId, long outputIndex, String itemId) {
         this.eventId = eventId;
         this.outputIndex = outputIndex;
         this.itemId = itemId;
@@ -110,21 +110,21 @@ public final class RealtimeServerEventResponseMCPCallFailed extends RealtimeServ
     }
 
     /**
-     * Reads an instance of RealtimeServerEventResponseMCPCallFailed from the JsonReader.
+     * Reads an instance of RealtimeServerEventResponseMcpCallInProgress from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventResponseMCPCallFailed if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of RealtimeServerEventResponseMcpCallInProgress if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMCPCallFailed.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMcpCallInProgress.
      */
     @Generated
-    public static RealtimeServerEventResponseMCPCallFailed fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventResponseMcpCallInProgress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             long outputIndex = 0L;
             String itemId = null;
-            RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_MCP_CALL_FAILED;
+            RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_MCP_CALL_IN_PROGRESS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -140,10 +140,10 @@ public final class RealtimeServerEventResponseMCPCallFailed extends RealtimeServ
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventResponseMCPCallFailed deserializedRealtimeServerEventResponseMCPCallFailed
-                = new RealtimeServerEventResponseMCPCallFailed(eventId, outputIndex, itemId);
-            deserializedRealtimeServerEventResponseMCPCallFailed.type = type;
-            return deserializedRealtimeServerEventResponseMCPCallFailed;
+            RealtimeServerEventResponseMcpCallInProgress deserializedRealtimeServerEventResponseMcpCallInProgress
+                = new RealtimeServerEventResponseMcpCallInProgress(eventId, outputIndex, itemId);
+            deserializedRealtimeServerEventResponseMcpCallInProgress.type = type;
+            return deserializedRealtimeServerEventResponseMcpCallInProgress;
         });
     }
 }
